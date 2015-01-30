@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.viewer.views.plotview;
+package de.ptb.epics.eve.viewer.views.plotview.plot;
 
 import de.ptb.epics.eve.ecp1.types.DataModifier;
 

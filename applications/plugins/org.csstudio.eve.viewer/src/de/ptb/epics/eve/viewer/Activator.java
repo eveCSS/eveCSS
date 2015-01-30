@@ -33,7 +33,7 @@ import de.ptb.epics.eve.resources.init.Startup;
 import de.ptb.epics.eve.viewer.debug.PollInQueueSize;
 import de.ptb.epics.eve.viewer.views.messagesview.IMessageList;
 import de.ptb.epics.eve.viewer.views.messagesview.MessageList;
-import de.ptb.epics.eve.viewer.views.plotview.PlotDispatcher;
+import de.ptb.epics.eve.viewer.views.plotview.plot.PlotDispatcher;
 
 /**
  * The activator class controls the plug-in life cycle

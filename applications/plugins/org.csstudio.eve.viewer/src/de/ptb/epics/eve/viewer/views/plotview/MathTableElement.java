@@ -72,8 +72,6 @@ public class MathTableElement implements IMeasurementDataListener,
 		Activator.getDefault().getEcp1Client().addMeasurementDataListener(this);
 		Activator.getDefault().getEcp1Client().addEngineStatusListener(this);
 	}
-
-	
 	
 	/**
 	 * {@inheritDoc}
@@ -137,7 +135,6 @@ public class MathTableElement implements IMeasurementDataListener,
 	 * called by measurementDataTransmitted to convert the data
 	 */
 	private String convert(MeasurementData mData, int element) {
-		
 		if (mData.getValues().size() <= element) {
 			return "error";
 		}

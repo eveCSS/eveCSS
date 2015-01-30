@@ -204,6 +204,21 @@ public class YAxis implements IModelUpdateListener, IModelUpdateProvider {
 	}
 	
 	/**
+	 * Returns the composite id of detector channel and normalize channel or 
+	 * the channel name if {@link #isNormalized()} is <code>false</code>.
+	 * 
+	 * @return the composite id of detector channel and normalize channel
+	 * @since 1.22
+	 */
+	public String getNormalizedName() {
+		if (!isNormalized()) {
+			return this.detectorChannel.getName();
+		}
+		return this.detectorChannel.getName() + " / "
+				+ this.normalizeChannel.getName();
+	}
+	
+	/**
 	 * Returns the detector channel used for normalization.
 	 * 
 	 * @return the detector channel used for normalization

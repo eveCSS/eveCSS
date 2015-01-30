@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.viewer.views.plotview;
+package de.ptb.epics.eve.viewer.views.plotview.ui;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -25,12 +25,14 @@ import de.ptb.epics.eve.data.scandescription.YAxis;
 import de.ptb.epics.eve.ecp1.types.DataModifier;
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.preferences.PreferenceConstants;
+import de.ptb.epics.eve.viewer.views.plotview.plot.TraceDataCollector;
+import de.ptb.epics.eve.viewer.views.plotview.plot.TraceInfo;
 
 /**
  * @author Marcus Michalsky
  * @since 1.13
  */
-public class XyPlot extends Figure implements IStateListener {
+public class XyPlot extends Figure implements PlotViewComponent, IStateListener {
 	private static final Logger LOGGER = Logger.getLogger(XyPlot.class
 			.getName());
 	
@@ -56,9 +58,9 @@ public class XyPlot extends Figure implements IStateListener {
 	}
 	
 	/**
-	 * 
-	 * @param plotWindow
+	 * {@inheritDoc}
 	 */
+	@Override
 	public void setPlotWindow(PlotWindow plotWindow) {
 		if (mustInit(plotWindow)) {
 			this.clear();

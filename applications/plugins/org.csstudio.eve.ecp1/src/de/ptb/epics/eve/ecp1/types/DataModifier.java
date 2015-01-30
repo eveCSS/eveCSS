@@ -9,58 +9,118 @@ public enum DataModifier {
 	/**
 	 * the plain value
 	 */
-	UNMODIFIED,
-
-	/**
-	 * median ?
-	 */
-	CENTER,
+	UNMODIFIED {
+		@Override
+		public String toString() {
+			return "Recent";
+		}
+	},
 
 	/**
 	 * 
 	 */
-	EDGE,
+	CENTER {
+		@Override
+		public String toString() {
+			return "Center";
+		}
+	},
+
+	/**
+	 * 
+	 */
+	EDGE {
+		@Override
+		public String toString() {
+			return "Edge";
+		}
+	},
 
 	/**
 	 * the minimum
 	 */
-	MIN,
+	MIN {
+		@Override
+		public String toString() {
+			return "Minimum";
+		}
+	},
 
 	/**
 	 * the maximum
 	 */
-	MAX,
+	MAX {
+		@Override
+		public String toString() {
+			return "Maximum";
+		}
+	},
 
 	/**
 	 * the full width half ?
 	 */
-	FWHM,
+	FWHM {
+		@Override
+		public String toString() {
+			return "FWHM";
+		}
+	},
 
 	/**
 	 * the arithmetic mean
 	 */
-	MEAN_VALUE,
+	MEAN_VALUE {
+		@Override
+		public String toString() {
+			return "Average";
+		}
+	},
 
 	/**
 	 * the standard deviation
 	 */
-	STANDARD_DEVIATION,
+	STANDARD_DEVIATION {
+		@Override
+		public String toString() {
+			return "Deviation";
+		}
+	},
 
 	/**
 	 * the sum
 	 */
-	SUM,
+	SUM {
+		@Override
+		public String toString() {
+			return "Sum";
+		}
+	},
 
 	/**
 	 * the normalized data
 	 */
-	NORMALIZED,
+	NORMALIZED {
+		@Override
+		public String toString() {
+			return "Normalized";
+		}
+	},
 
 	/** Minimum or maximum peak */
-	PEAK,
+	PEAK {
+		@Override
+		public String toString() {
+			return "Peak";
+		}
+	},
 
 	/** unknown algorithm */
-	UNKNOWN;
+	UNKNOWN {
+		@Override
+		public String toString() {
+			return "Unknown";
+		}
+	};
 	
 	/**
 	 * Converts a {@link DataModifier} to its corresponding byte code.

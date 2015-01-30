@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.viewer.views.plotview;
+package de.ptb.epics.eve.viewer.views.plotview.plot;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;

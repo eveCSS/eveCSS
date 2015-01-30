@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<class-diagram version="1.1.4" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+<class-diagram version="1.1.6" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
   associations="true" dependencies="false" nesting-relationships="true">  
-  <class id="1" language="java" name="de.ptb.epics.eve.viewer.views.plotview.TraceDataCollector" 
+  <class id="1" language="java" name="de.ptb.epics.eve.viewer.views.plotview.plot.TraceDataCollector" 
     project="de.ptb.epics.eve.viewer" 
-    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/plotview/TraceDataCollector.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
+    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/plotview/plot/TraceDataCollector.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="573" y="688"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -12,9 +12,9 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <interface id="2" language="java" name="de.ptb.epics.eve.viewer.views.plotview.UpdateStrategy" 
+  <interface id="2" language="java" name="de.ptb.epics.eve.viewer.views.plotview.plot.UpdateStrategy" 
     project="de.ptb.epics.eve.viewer" 
-    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/plotview/UpdateStrategy.java" binary="false" 
+    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/plotview/plot/UpdateStrategy.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="926" y="539"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -23,9 +23,9 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <class id="3" language="java" name="de.ptb.epics.eve.viewer.views.plotview.SampleSizeUpdateStrategy" 
+  <class id="3" language="java" name="de.ptb.epics.eve.viewer.views.plotview.plot.SampleSizeUpdateStrategy" 
     project="de.ptb.epics.eve.viewer" 
-    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/plotview/SampleSizeUpdateStrategy.java" 
+    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/plotview/plot/SampleSizeUpdateStrategy.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1137" y="723"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -34,10 +34,10 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="de.ptb.epics.eve.viewer.views.plotview.TimeUpdateStrategy" 
+  <class id="4" language="java" name="de.ptb.epics.eve.viewer.views.plotview.plot.TimeUpdateStrategy" 
     project="de.ptb.epics.eve.viewer" 
-    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/plotview/TimeUpdateStrategy.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
+    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/plotview/plot/TimeUpdateStrategy.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="844" y="730"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -45,9 +45,9 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="5" language="java" name="de.ptb.epics.eve.viewer.views.plotview.TimeAndSampleSizeUpdateStrategy" 
+  <class id="5" language="java" name="de.ptb.epics.eve.viewer.views.plotview.plot.TimeAndSampleSizeUpdateStrategy" 
     project="de.ptb.epics.eve.viewer" 
-    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/plotview/TimeAndSampleSizeUpdateStrategy.java" 
+    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/plotview/plot/TimeAndSampleSizeUpdateStrategy.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1002" y="890"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -56,8 +56,9 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="6" language="java" name="de.ptb.epics.eve.viewer.views.plotview.XyPlot" project="de.ptb.epics.eve.viewer" 
-    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/plotview/XyPlot.java" binary="false" 
+  <class id="6" language="java" name="de.ptb.epics.eve.viewer.views.plotview.ui.XyPlot" 
+    project="de.ptb.epics.eve.viewer" 
+    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/plotview/ui/XyPlot.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="208" y="179"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -66,10 +67,10 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="7" language="java" name="de.ptb.epics.eve.viewer.views.plotview.AlwaysUpdateStrategy" 
+  <class id="7" language="java" name="de.ptb.epics.eve.viewer.views.plotview.plot.AlwaysUpdateStrategy" 
     project="de.ptb.epics.eve.viewer" 
-    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/plotview/AlwaysUpdateStrategy.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
+    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/plotview/plot/AlwaysUpdateStrategy.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1140" y="548"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -77,8 +78,9 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="8" language="java" name="de.ptb.epics.eve.viewer.views.plotview.Sample" project="de.ptb.epics.eve.viewer" 
-    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/plotview/Sample.java" binary="false" 
+  <class id="8" language="java" name="de.ptb.epics.eve.viewer.views.plotview.plot.Sample" 
+    project="de.ptb.epics.eve.viewer" 
+    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/plotview/plot/Sample.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="576" y="170"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -87,9 +89,9 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="9" language="java" name="de.ptb.epics.eve.viewer.views.plotview.TraceInfo" 
+  <class id="9" language="java" name="de.ptb.epics.eve.viewer.views.plotview.plot.TraceInfo" 
     project="de.ptb.epics.eve.viewer" 
-    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/plotview/TraceInfo.java" binary="false" 
+    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/plotview/plot/TraceInfo.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="998" y="225"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -99,8 +101,9 @@
     </display>  
   </class>  
   <interface id="10" language="java" name="org.csstudio.swt.xygraph.dataprovider.IDataProviderListener" 
-    project="de.ptb.epics.eve.viewer" file="/messung/eve/java/CSS/css/plugins/org.csstudio.swt.xygraph_2.0.2.jar" 
-    binary="true" corner="BOTTOM_RIGHT">    
+    project="de.ptb.epics.eve.viewer" 
+    file="/messung/eve/java/CSS/3.3.9/plugins/org.csstudio.swt.xygraph_2.0.3.201406112024.jar" binary="true" 
+    corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="186" y="634"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -109,8 +112,9 @@
     </display>  
   </interface>  
   <interface id="11" language="java" name="org.csstudio.swt.xygraph.dataprovider.IDataProvider" 
-    project="de.ptb.epics.eve.viewer" file="/messung/eve/java/CSS/css/plugins/org.csstudio.swt.xygraph_2.0.2.jar" 
-    binary="true" corner="BOTTOM_RIGHT">    
+    project="de.ptb.epics.eve.viewer" 
+    file="/messung/eve/java/CSS/3.3.9/plugins/org.csstudio.swt.xygraph_2.0.3.201406112024.jar" binary="true" 
+    corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="185" y="842"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -130,8 +134,9 @@
     </display>  
   </interface>  
   <interface id="13" language="java" name="org.csstudio.swt.xygraph.dataprovider.ISample" 
-    project="de.ptb.epics.eve.viewer" file="/messung/eve/java/CSS/css/plugins/org.csstudio.swt.xygraph_2.0.2.jar" 
-    binary="true" corner="BOTTOM_RIGHT">    
+    project="de.ptb.epics.eve.viewer" 
+    file="/messung/eve/java/CSS/3.3.9/plugins/org.csstudio.swt.xygraph_2.0.3.201406112024.jar" binary="true" 
+    corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="789" y="173"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -139,92 +144,92 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <association id="14">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="15" name="timeUpdateStrategy">        
-        <position height="16" width="102" x="868" y="817"/>      
-      </attribute>      
-      <multiplicity id="16" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="17">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="18" name="updateStrategy"/>      
-      <multiplicity id="19" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="20">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="21" name="traceInfo"/>      
-      <multiplicity id="22" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="23">    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="2"/>  
-  </realization>  
-  <realization id="24">    
+  <realization id="14">    
     <end type="SOURCE" refId="8"/>    
     <end type="TARGET" refId="13"/>  
   </realization>  
-  <association id="25">    
+  <association id="15">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="16" name="timeUpdateStrategy">        
+        <position height="16" width="102" x="868" y="817"/>      
+      </attribute>      
+      <multiplicity id="17" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="18">    
     <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="26" name="collectors"/>      
-      <multiplicity id="27" minimum="0" maximum="2147483647"/>    
+      <attribute id="19" name="collectors"/>      
+      <multiplicity id="20" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <realization id="28">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="12"/>  
+  <realization id="21">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="2"/>  
   </realization>  
-  <realization id="29">    
+  <realization id="22">    
     <end type="SOURCE" refId="4"/>    
     <end type="TARGET" refId="2"/>  
   </realization>  
-  <association id="30">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="31" name="sampleSizeUpdateStrategy">        
-        <position height="16" width="138" x="1003" y="816"/>      
-      </attribute>      
-      <multiplicity id="32" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="33">    
+  <association id="23">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="34" name="listeners"/>      
-      <multiplicity id="35" minimum="0" maximum="2147483647"/>    
+      <attribute id="24" name="listeners"/>      
+      <multiplicity id="25" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="10" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <realization id="36">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="11"/>  
-  </realization>  
-  <realization id="37">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="2"/>  
-  </realization>  
-  <realization id="38">    
+  <realization id="26">    
     <end type="SOURCE" refId="5"/>    
     <end type="TARGET" refId="2"/>  
   </realization>  
-  <association id="39">    
+  <realization id="27">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="11"/>  
+  </realization>  
+  <realization id="28">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="12"/>  
+  </realization>  
+  <association id="29">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="40" name="data"/>      
-      <multiplicity id="41" minimum="0" maximum="2147483647"/>    
+      <attribute id="30" name="traceInfo"/>      
+      <multiplicity id="31" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="32">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="33" name="data"/>      
+      <multiplicity id="34" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="35">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="2"/>  
+  </realization>  
+  <association id="36">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="37" name="sampleSizeUpdateStrategy">        
+        <position height="16" width="138" x="1003" y="816"/>      
+      </attribute>      
+      <multiplicity id="38" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="39">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="40" name="updateStrategy"/>      
+      <multiplicity id="41" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
