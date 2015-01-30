@@ -29,7 +29,6 @@ import de.ptb.epics.eve.ecp1.types.EngineStatus;
 import de.ptb.epics.eve.util.pdf.PlotStats;
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.IUpdateListener;
-import de.ptb.epics.eve.viewer.views.plotview.MathFunction;
 
 /**
  * <code>PlotView</code> contains an xy plot and tables with statistics 
