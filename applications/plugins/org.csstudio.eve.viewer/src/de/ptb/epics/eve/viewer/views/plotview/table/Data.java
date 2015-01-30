@@ -17,7 +17,7 @@ import de.ptb.epics.eve.ecp1.types.DataModifier;
 import de.ptb.epics.eve.ecp1.types.DataType;
 import de.ptb.epics.eve.ecp1.types.EngineStatus;
 import de.ptb.epics.eve.viewer.Activator;
-import de.ptb.epics.eve.viewer.views.plotview.GotoJob;
+import de.ptb.epics.eve.viewer.jobs.plot.GotoJob;
 
 /**
  * Aggregate Value of plot raw data.

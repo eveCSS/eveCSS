@@ -22,7 +22,6 @@ import org.eclipse.swt.widgets.TabItem;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.YAxis;
 import de.ptb.epics.eve.viewer.Activator;
-import de.ptb.epics.eve.viewer.views.plotview.MathTableElement;
 import de.ptb.epics.eve.viewer.views.plotview.table.Average;
 import de.ptb.epics.eve.viewer.views.plotview.table.Center;
 import de.ptb.epics.eve.viewer.views.plotview.table.Data;
@@ -177,13 +176,6 @@ public class TableComposite extends Composite implements PlotViewComponent,
 				return null;
 			}
 		});
-		
-		// provide content for the table
-		MathTableContentProvider contentProvider = new MathTableContentProvider(
-				tableViewer);
-		tableViewer.setContentProvider(contentProvider);
-		tableViewer.setInput(contentProvider);
-		
 		return tableViewer;
 	}
 

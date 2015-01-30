@@ -30,7 +30,6 @@ import de.ptb.epics.eve.util.pdf.PlotStats;
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.IUpdateListener;
 import de.ptb.epics.eve.viewer.views.plotview.MathFunction;
-import de.ptb.epics.eve.viewer.views.plotview.MathTableElement;
 
 /**
  * <code>PlotView</code> contains an xy plot and tables with statistics 
@@ -141,39 +140,6 @@ public class PlotView extends ViewPart implements IChainStatusListener,
 		// delegate to XyPlot
 		this.xyPlot.setPlotWindow(plotWindow);
 		this.tableComposite.setPlotWindow(plotWindow);
-		
-		/*
-		((MathTableContentProvider) table1Viewer.getContentProvider()).clear();
-		((MathTableContentProvider) table2Viewer.getContentProvider()).clear();
-		
-		YAxis yAxis1 = plotWindow.getYAxes().get(0);
-		if (yAxis1.getNormalizeChannel() != null) {
-			itemAxis1.setText(yAxis1.getDetectorChannel().getName() + "/"
-					+ yAxis1.getNormalizeChannel().getName());
-			fillTable(table1Viewer, plotWindow, yAxis1.getDetectorChannel()
-					.getID() + "__" + yAxis1.getNormalizeChannel().getID(), true, 1);
-		} else {
-			itemAxis1.setText(yAxis1.getDetectorChannel().getName());
-			fillTable(table1Viewer, plotWindow, yAxis1.getDetectorChannel()
-					.getID(), false, 1);
-		}
-		if (plotWindow.getYAxisAmount() > 1) {
-			YAxis yAxis2 = plotWindow.getYAxes().get(1);
-			if (yAxis2.getNormalizeChannel() != null) {
-				itemAxis2.setText(yAxis2.getDetectorChannel().getName()
-						+ "/" + yAxis2.getNormalizeChannel().getName());
-				fillTable(table2Viewer, plotWindow, yAxis2
-						.getDetectorChannel().getID() + "__"
-						+ yAxis2.getNormalizeChannel().getID(), true, 2);
-			} else {
-				itemAxis2.setText(yAxis2.getDetectorChannel().getName());
-				fillTable(table2Viewer, plotWindow, yAxis2.getDetectorChannel()
-						.getID(), false, 2);
-			}
-		} else {
-			itemAxis2.setText("-");
-		}
-		*/
 		LOGGER.debug("initializing plot window with id " + plotWindow.getId());
 	}
 	
@@ -228,6 +194,8 @@ public class PlotView extends ViewPart implements IChainStatusListener,
 		return plotStatList;
 	}
 	
+	// TODO
+	/*
 	private PlotStats getStats(List<MathTableElement> elements) {
 		PlotStats stats = new PlotStats();
 		for (MathTableElement element : elements) {
@@ -303,7 +271,7 @@ public class PlotView extends ViewPart implements IChainStatusListener,
 			}
 		}
 		return stats;
-	}
+	}*/
 	
 	/*
 	 * 

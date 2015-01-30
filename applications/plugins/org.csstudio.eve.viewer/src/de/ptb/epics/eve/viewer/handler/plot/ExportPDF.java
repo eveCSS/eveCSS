@@ -11,7 +11,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import de.ptb.epics.eve.viewer.views.plotview.ExportJob;
+import de.ptb.epics.eve.viewer.jobs.plot.ExportJob;
 import de.ptb.epics.eve.viewer.views.plotview.ui.PlotView;
 
 /**

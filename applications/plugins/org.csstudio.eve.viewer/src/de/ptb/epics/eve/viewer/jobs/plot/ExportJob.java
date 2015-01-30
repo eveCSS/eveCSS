@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.viewer.views.plotview;
+package de.ptb.epics.eve.viewer.jobs.plot;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
