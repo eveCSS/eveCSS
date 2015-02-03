@@ -75,8 +75,8 @@ public class TableComposite extends Composite implements PlotViewComponent,
 		det1Composite.setLayout(new FillLayout());
 		det1TabItem.setControl(det1Composite);
 		det1TableViewer = this.createTable(det1Composite);
-		det1TableViewer.setInput(det1Elements);
 		det1TableViewer.setContentProvider(new ObservableListContentProvider());
+		det1TableViewer.setInput(det1Elements);
 		
 		det2TabItem = new TabItem(tabFolder, SWT.NONE);
 		det2TabItem.setText("-");
@@ -84,8 +84,8 @@ public class TableComposite extends Composite implements PlotViewComponent,
 		det2Composite.setLayout(new FillLayout());
 		det2TabItem.setControl(det2Composite);
 		det2TableViewer = this.createTable(det2Composite);
-		det2TableViewer.setInput(det2Elements);
 		det2TableViewer.setContentProvider(new ObservableListContentProvider());
+		det2TableViewer.setInput(det2Elements);
 	}
 	
 	/*
