@@ -276,4 +276,18 @@ public class TableComposite extends Composite implements PlotViewComponent,
 			}
 		}
 	}
+
+	/**
+	 * @return the det1Elements
+	 */
+	public IObservableList getDet1Elements() {
+		return det1Elements;
+	}
+
+	/**
+	 * @return the det2Elements
+	 */
+	public IObservableList getDet2Elements() {
+		return det2Elements;
+	}
 }

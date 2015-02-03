@@ -27,6 +27,7 @@ import de.ptb.epics.eve.ecp1.types.EngineStatus;
 import de.ptb.epics.eve.util.pdf.PlotStats;
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.IUpdateListener;
+import de.ptb.epics.eve.viewer.views.plotview.table.Data;
 
 /**
  * <code>PlotView</code> contains an xy plot and tables with statistics 
@@ -179,83 +180,51 @@ public class PlotView extends ViewPart implements IChainStatusListener,
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<PlotStats> getPlotStatistics() {
 		// TODO delegate !
 		List<PlotStats> plotStatList = new ArrayList<PlotStats>();
-		/*
-		plotStatList.add(this.getStats(((MathTableContentProvider) table1Viewer
-				.getContentProvider()).getElements()));
-		plotStatList.add(this.getStats(((MathTableContentProvider) table2Viewer
-				.getContentProvider()).getElements()));
-				*/
+		plotStatList.add(this.getStats(tableComposite.getDet1Elements(), 0));
+		plotStatList.add(this.getStats(tableComposite.getDet2Elements(), 1));
 		return plotStatList;
 	}
 	
-	// TODO
-	/*
-	private PlotStats getStats(List<MathTableElement> elements) {
+	private PlotStats getStats(List<Data> elements, int yAxis) {
 		PlotStats stats = new PlotStats();
-		for (MathTableElement element : elements) {
-			stats.setMotorName(Activator.getDefault().getMeasuringStation()
-					.getMotorAxisById(element.getMotorId()).getName());
-			stats.setDetectorName(Activator.getDefault().getMeasuringStation()
-					.getDetectorChannelById(element.getDetectorId()).getName());
-			switch (element.getType()) {
-			case AVERAGE:
-				if (element.getPosition() != null) {
-					stats.getAverage().setL(element.getPosition());
-				}
-				if (element.getValue() != null) {
-					stats.getAverage().setR(element.getValue());
-				}
-				break;
+		for (Data data : elements) {
+			stats.setMotorName(data.getPlotWindow().getXAxis().getName());
+			stats.setDetectorName(data.getPlotWindow().getYAxes().get(yAxis)
+					.getNormalizedName());
+			String x = data.getMotorPosition();
+			String y = data.getDetectorValue();
+			switch (data.getDataModifier()) {
 			case CENTER:
-				if (element.getPosition() != null) {
-					stats.getCenter().setL(element.getPosition());
-				}
-				if (element.getValue() != null) {
-					stats.getCenter().setR(element.getValue());
-				}
-				break;
-			case DEVIATION:
-				if (element.getPosition() != null) {
-					stats.getDeviation().setL(element.getPosition());
-				}
-				if (element.getValue() != null) {
-					stats.getDeviation().setR(element.getValue());
-				}
+				stats.getCenter().setL(x);
+				stats.getCenter().setR(y);
 				break;
 			case EDGE:
-				if (element.getPosition() != null) {
-					stats.getEdge().setL(element.getPosition());
-				}
-				if (element.getValue() != null) {
-					stats.getEdge().setR(element.getValue());
-				}
+				stats.getEdge().setL(x);
+				stats.getEdge().setR(y);
 				break;
 			case FWHM:
-				if (element.getPosition() != null) {
-					stats.getFullWidthHalfMinimum().setL(element.getPosition());
-				}
-				if (element.getValue() != null) {
-					stats.getFullWidthHalfMinimum().setR(element.getValue());
-				}
+				stats.getFullWidthHalfMinimum().setL(x);
+				stats.getFullWidthHalfMinimum().setR(y);
 				break;
-			case MAXIMUM:
-				if (element.getPosition() != null) {
-					stats.getMaximum().setL(element.getPosition());
-				}
-				if (element.getValue() != null) {
-					stats.getMaximum().setR(element.getValue());
-				}
+			case MAX:
+				stats.getMaximum().setL(x);
+				stats.getMaximum().setR(y);
 				break;
-			case MINIMUM:
-				if (element.getPosition() != null) {
-					stats.getMinimum().setL(element.getPosition());
-				}
-				if (element.getValue() != null) {
-					stats.getMinimum().setR(element.getValue());
-				}
+			case MEAN_VALUE:
+				stats.getAverage().setL(x);
+				stats.getAverage().setR(y);
+				break;
+			case MIN:
+				stats.getMinimum().setL(x);
+				stats.getMinimum().setR(y);
+				break;
+			case STANDARD_DEVIATION:
+				stats.getDeviation().setL(x);
+				stats.getDeviation().setR(y);
 				break;
 			case NORMALIZED:
 			case PEAK:
@@ -268,8 +237,8 @@ public class PlotView extends ViewPart implements IChainStatusListener,
 			}
 		}
 		return stats;
-	}*/
-	
+	}
+
 	/*
 	 * 
 	 */
