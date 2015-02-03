@@ -29,7 +29,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=270007
 		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=361935
 		// TODO remove in 4.3 ?
-		register(ActionFactory.PRINT.create(window));
+		// register(ActionFactory.PRINT.create(window)); // see #1141
 		register(ActionFactory.UNDO.create(window));
 		register(ActionFactory.REDO.create(window));
 		register(ActionFactory.DELETE.create(window));
