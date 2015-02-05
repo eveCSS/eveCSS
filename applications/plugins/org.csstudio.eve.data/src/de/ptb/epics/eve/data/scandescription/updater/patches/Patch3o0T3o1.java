@@ -13,6 +13,12 @@ import de.ptb.epics.eve.data.scandescription.updater.Patch;
 import de.ptb.epics.eve.util.data.Version;
 
 /**
+ * Patches SCML v3.0 to v3.1 doing the following:
+ * 
+ * <ul>
+ * <li>increment version to 3.1</li>
+ * </ul>
+ * 
  * @author Marcus Michalsky
  * @since 1.22
  */

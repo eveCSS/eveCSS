@@ -17,6 +17,18 @@ import de.ptb.epics.eve.data.scandescription.updater.Patch;
 import de.ptb.epics.eve.util.data.Version;
 
 /**
+ * Patches SCML v2.3 to v3.0 doing the following:
+ * 
+ * <ul>
+ * <li>increment version to 3.0</li>
+ * <li>adding storage tag for scan modules (after valuecount)<br>
+ * possible values are {default, alternate, none}</li>
+ * <li>replacing scan module type advanced with one of {
+ * {@link de.ptb.epics.eve.data.scandescription.ScanModuleTypes#SAVE_AXIS_POSITIONS},
+ * {@link de.ptb.epics.eve.data.scandescription.ScanModuleTypes#SAVE_CHANNEL_VALUES}
+ * </li>
+ * </ul>
+ * 
  * @author Marcus Michalsky
  * @since 1.18
  */
