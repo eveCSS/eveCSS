@@ -16,7 +16,6 @@ import de.ptb.epics.eve.data.measuringstation.exceptions.ParentNotAllowedExcepti
  * @author Marcus Michalsky
  */
 public abstract class AbstractDevice implements Comparable<AbstractDevice> {
-
 	public static final String ABSTRACT_DEVICE_NAME_PROP = "name";
 	
 	private String name;

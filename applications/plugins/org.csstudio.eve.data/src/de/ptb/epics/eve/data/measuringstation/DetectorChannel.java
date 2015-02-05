@@ -18,6 +18,9 @@ public class DetectorChannel extends AbstractMainPhaseDevice implements Cloneabl
 	private Function stop;
 	private Function status;
 	
+	private boolean deferred;
+	private boolean saveValue;
+	
 	/**
 	 * Constructs an empty <code>DetectorChannel</code>.
 	 */
@@ -25,6 +28,8 @@ public class DetectorChannel extends AbstractMainPhaseDevice implements Cloneabl
 		this.read = new Function();
 		this.stop = new Function();
 		this.status = new Function();
+		this.deferred = false;
+		this.saveValue = true;
 	}
 	
 	/**
@@ -34,6 +39,7 @@ public class DetectorChannel extends AbstractMainPhaseDevice implements Cloneabl
 	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
 	public DetectorChannel(final Function read) {
+		this();
 		if(read == null) {
 			throw new IllegalArgumentException(
 					"The parameter 'read' must not be null!");
@@ -91,6 +97,38 @@ public class DetectorChannel extends AbstractMainPhaseDevice implements Cloneabl
 	public void setStatus(Function status) {
 		this.status = status;
 	}
+	
+	/**
+	 * @return the deferred
+	 * @since 1.22
+	 */
+	public boolean isDeferred() {
+		return deferred;
+	}
+
+	/**
+	 * @param deferred the deferred to set
+	 * @since 1.22
+	 */
+	public void setDeferred(boolean deferred) {
+		this.deferred = deferred;
+	}
+
+	/**
+	 * @return the saveValue
+	 * @since 1.22
+	 */
+	public boolean isSaveValue() {
+		return saveValue;
+	}
+
+	/**
+	 * @param saveValue the saveValue to set
+	 * @since 1.22
+	 */
+	public void setSaveValue(boolean saveValue) {
+		this.saveValue = saveValue;
+	}
 
 	/**
 	 * Returns the parent as detector.
@@ -144,17 +182,23 @@ public class DetectorChannel extends AbstractMainPhaseDevice implements Cloneabl
 	public Object clone() {
 		final DetectorChannel detectorChannel = new DetectorChannel();
 		
-		detectorChannel.read = (Function)
-			(this.read!=null?this.read.clone():null);
+		detectorChannel.read = (Function) (this.read != null ? this.read
+				.clone() : null);
+		detectorChannel.stop = (Function) (this.stop != null ? this.stop
+				.clone() : null);
+		detectorChannel.status = (Function) (this.status != null ? this.status
+				.clone() : null);
 		
 		detectorChannel.setClassName(this.getClassName());
-		detectorChannel.setTrigger((Function)
-				(this.getTrigger()!=null?this.getTrigger().clone():null));
+		detectorChannel.setTrigger((Function) (this.getTrigger() != null ? this
+				.getTrigger().clone() : null));
 		this.setName(this.getName());
 		detectorChannel.setName(this.getName());
 		detectorChannel.setId(this.getID());
-		detectorChannel.setUnit((Unit)
-				(this.getUnit()!=null?this.getUnit().clone():null));
+		detectorChannel.setUnit((Unit) (this.getUnit() != null ? this.getUnit()
+				.clone() : null));
+		detectorChannel.setDeferred(this.isDeferred());
+		detectorChannel.setSaveValue(this.isSaveValue());
 		
 		for(final Option option : this.getOptions()) {
 			detectorChannel.add((Option)option.clone());

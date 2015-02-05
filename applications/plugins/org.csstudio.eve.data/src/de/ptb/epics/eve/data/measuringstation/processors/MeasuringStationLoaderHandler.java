@@ -187,6 +187,14 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
 			} else if (qName.equals("channel")) {
 				this.currentDetectorChannel = new DetectorChannel();
+				if (atts.getValue("deferred") != null) {
+					this.currentDetectorChannel.setDeferred(Boolean
+							.parseBoolean(atts.getValue("deferred")));
+				}
+				if (atts.getValue("saveValue") != null) {
+					this.currentDetectorChannel.setSaveValue(Boolean
+							.parseBoolean(atts.getValue("saveValue")));
+				}
 				this.state = MeasuringStationLoaderStates.DETECTOR_CHANNEL_LOADING;
 			}
 			break;

@@ -364,6 +364,7 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	 */
 	public void setDetectorChannel(final DetectorChannel detectorChannel) {
 		this.abstractDevice = detectorChannel;
+		this.setDeferred(detectorChannel.isDeferred());
 		updateListeners();
 	}
 	
@@ -386,6 +387,7 @@ public class Channel extends AbstractMainPhaseBehavior implements
 		this.minimum = Double.NEGATIVE_INFINITY;
 		this.repeatOnRedo = false;
 		this.normalizeChannel = null;
+		this.deferred = this.getDetectorChannel().isDeferred();
 		this.redoControlEventManager.removeAllEvents();
 		logger.debug("Channel " + this.getDetectorChannel().getName()
 				+ " has been reset");

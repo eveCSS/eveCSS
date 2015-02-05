@@ -8,6 +8,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import de.ptb.epics.eve.data.scandescription.updater.patches.Patch2o3T3o0;
+import de.ptb.epics.eve.data.scandescription.updater.patches.Patch3o0T3o1;
 import de.ptb.epics.eve.util.data.Version;
 
 /**
@@ -38,6 +39,7 @@ public class Updater {
 	private Updater() {
 		this.patches = new LinkedList<Patch>();
 		this.patches.add(Patch2o3T3o0.getInstance());
+		this.patches.add(Patch3o0T3o1.getInstance());
 		
 		// TODO add patches
 	}

@@ -58,7 +58,9 @@ public class SaveAllChannelValues extends Job {
 		for(Detector det : scanModule.getChain().getScanDescription().
 							getMeasuringStation().getDetectors()) {
 			for(DetectorChannel ch : det.getChannels()) {
-				detectorChannels.add(ch);
+				if (ch.isSaveValue()) {
+					detectorChannels.add(ch);
+				}
 			}
 		}
 		

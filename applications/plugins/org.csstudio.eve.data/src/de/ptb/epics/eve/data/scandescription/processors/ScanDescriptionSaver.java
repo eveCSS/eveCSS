@@ -64,7 +64,6 @@ import de.ptb.epics.eve.data.scandescription.PositionMode;
  */
 public class ScanDescriptionSaver implements
 		IScanDescriptionSaver {
-
 	private static Logger logger = Logger
 			.getLogger(ScanDescriptionSaver.class.getName());
 	
@@ -638,6 +637,12 @@ public class ScanDescriptionSaver implements
 	private boolean writeDetectorChannel(final DetectorChannel channel) {
 		try {
 			this.atts.clear();
+			/*this.atts.addAttribute("", "", "deferred",
+					XMLConstants.CHARACTER_DATA,
+					Boolean.toString(channel.isDeferred()));
+			this.atts.addAttribute("", "", "saveValue",
+					XMLConstants.CHARACTER_DATA,
+					Boolean.toString(channel.isSaveValue()));*/
 			this.contentHandler.startElement("", "channel", "channel",
 					this.atts);
 			this.atts.clear();
@@ -796,7 +801,7 @@ public class ScanDescriptionSaver implements
 	private boolean writeTypeValue(final TypeValue typeValue, final String name) {
 		try {
 			this.atts.clear();
-			this.atts.addAttribute("", "", "type", "CDATA",
+			this.atts.addAttribute("", "", "type", XMLConstants.CHARACTER_DATA,
 					DataTypes.typeToString(typeValue.getType()));
 			this.contentHandler.startElement("", name, name, this.atts);
 			this.contentHandler.characters(
@@ -824,26 +829,30 @@ public class ScanDescriptionSaver implements
 	private boolean writeAccess(final Access access, final String name) {
 		try {
 			this.atts.clear();
-			this.atts.addAttribute("", "", "method", "CDATA",
+			this.atts.addAttribute("", "", "method",
+					XMLConstants.CHARACTER_DATA,
 					MethodTypes.typeToString(access.getMethod()));
 			if (access.getType() != null) {
-				this.atts.addAttribute("", "", "type", "CDATA",
+				this.atts.addAttribute("", "", "type",
+						XMLConstants.CHARACTER_DATA,
 						DataTypes.typeToString(access.getType()));
 			}
 			if (access.getCount() != 0) {
-				this.atts.addAttribute("", "", "count", "CDATA",
-						"" + access.getCount());
+				this.atts.addAttribute("", "", "count",
+						XMLConstants.CHARACTER_DATA, "" + access.getCount());
 			}
 			if (access.getTransport() != null) {
-				this.atts.addAttribute("", "", "transport", "CDATA",
+				this.atts.addAttribute("", "", "transport",
+						XMLConstants.CHARACTER_DATA,
 						TransportTypes.typeToString(access.getTransport()));
 			}
 			if (access.getMonitor()) {
-				this.atts.addAttribute("", "", "monitor", "CDATA", "true");
+				this.atts.addAttribute("", "", "monitor",
+						XMLConstants.CHARACTER_DATA, "true");
 			}
 			if (access.getTimeout() != 0.0) {
-				this.atts.addAttribute("", "", "timeout", "CDATA",
-						"" + access.getTimeout());
+				this.atts.addAttribute("", "", "timeout",
+						XMLConstants.CHARACTER_DATA, "" + access.getTimeout());
 			}
 			this.contentHandler.startElement("", name, name, this.atts);
 			this.contentHandler.characters(
@@ -888,7 +897,7 @@ public class ScanDescriptionSaver implements
 	private boolean writePlugin(final PlugIn plugin) {
 		try {
 			this.atts.clear();
-			this.atts.addAttribute("", "", "type", "CDATA",
+			this.atts.addAttribute("", "", "type", XMLConstants.CHARACTER_DATA,
 					PluginTypes.typeToString(plugin.getType()));
 			this.contentHandler.startElement("", "plugin", "plugin", this.atts);
 
@@ -927,16 +936,19 @@ public class ScanDescriptionSaver implements
 	private boolean writePluginParameter(final PluginParameter pluginParameter) {
 		try {
 			this.atts.clear();
-			this.atts.addAttribute("", "", "name", "CDATA",
+			this.atts.addAttribute("", "", "name", XMLConstants.CHARACTER_DATA,
 					pluginParameter.getName());
-			this.atts.addAttribute("", "", "datatype", "CDATA",
+			this.atts.addAttribute("", "", "datatype",
+					XMLConstants.CHARACTER_DATA,
 					PluginDataType.typeToString(pluginParameter.getType()));
 			if (pluginParameter.getDefaultValue() != null) {
-				this.atts.addAttribute("", "", "default", "CDATA",
+				this.atts.addAttribute("", "", "default",
+						XMLConstants.CHARACTER_DATA,
 						pluginParameter.getDefaultValue());
 			}
-			this.atts.addAttribute("", "", "mandatory", "CDATA", ""
-					+ pluginParameter.isMandatory());
+			this.atts.addAttribute("", "", "mandatory",
+					XMLConstants.CHARACTER_DATA,
+					"" + pluginParameter.isMandatory());
 			this.contentHandler.startElement("", "parameter", "parameter",
 					this.atts);
 
@@ -1069,7 +1081,7 @@ public class ScanDescriptionSaver implements
 	private boolean writeScanModule(final ScanModule scanModule) {
 		try {
 			this.atts.clear();
-			this.atts.addAttribute("", "id", "id", "CDATA",
+			this.atts.addAttribute("", "id", "id", XMLConstants.CHARACTER_DATA,
 					"" + scanModule.getId());
 			this.contentHandler.startElement("", "scanmodule", "scanmodule",
 					this.atts);

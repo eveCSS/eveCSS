@@ -21,7 +21,6 @@ import de.ptb.epics.eve.util.data.Version;
  * @since 1.18
  */
 public class Patch2o3T3o0 extends Patch {
-	
 	private static Patch2o3T3o0 INSTANCE;
 	
 	private Patch2o3T3o0(Version source, Version target, 
@@ -43,7 +42,6 @@ public class Patch2o3T3o0 extends Patch {
 	}
 	
 	private class Mod0 extends AbstractModification {
-
 		public Mod0(Patch patch) {
 			super(patch, "setting scml version to 3.0");
 		}
@@ -62,7 +60,6 @@ public class Patch2o3T3o0 extends Patch {
 	}
 	
 	private class Mod1 extends AbstractModification {
-		
 		public Mod1(Patch patch) {
 			super(patch, "Added storage tag for scan modules.");
 		}
@@ -93,7 +90,6 @@ public class Patch2o3T3o0 extends Patch {
 	}
 	
 	private class Mod2 extends AbstractModification {
-		
 		public Mod2(Patch patch) {
 			super(patch, "Replaced scan module type advanced");
 		}

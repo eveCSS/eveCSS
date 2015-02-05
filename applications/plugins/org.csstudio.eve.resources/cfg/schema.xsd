@@ -2,7 +2,7 @@
 <schema xmlns="http://www.w3.org/2001/XMLSchema" 
   targetNamespace="http://www.ptb.de/epics/SCML" 
   xmlns:tns="http://www.ptb.de/epics/SCML" 
-  version="3.0">
+  version="3.1">
 
   <!-- please increase version number on every modification
        If the corresponding XML-file of the previous schema version is still
@@ -315,6 +315,8 @@
       <element name="status" type="tns:access" minOccurs="0"></element>
       <element name="option" type="tns:option" minOccurs="0" maxOccurs="unbounded"></element>
     </sequence>
+    <attribute name="deferred" type="boolean" default="false"></attribute>
+    <attribute name="saveValue" type="boolean" default="true"></attribute>
   </complexType>
 
   <complexType name="unit">
