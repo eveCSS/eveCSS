@@ -23,6 +23,7 @@ import org.xml.sax.SAXException;
 import de.ptb.epics.eve.data.scandescription.updater.Patch;
 import de.ptb.epics.eve.data.scandescription.updater.Updater;
 import de.ptb.epics.eve.data.scandescription.updater.VersionTooOldException;
+import de.ptb.epics.eve.data.scandescription.updater.patches.SCMLUpdater;
 import de.ptb.epics.eve.util.data.Version;
 
 
@@ -48,7 +49,7 @@ public class ScanDescriptionEditorFileLoader {
 			builder = factory.newDocumentBuilder();
 			Document document = builder.parse(scanDescription);
 			
-			Updater updater = Updater.getInstance();
+			Updater updater = new SCMLUpdater();
 
 			this.appliedPatches = updater.update(document,
 					getCurrentSchemaVersion());

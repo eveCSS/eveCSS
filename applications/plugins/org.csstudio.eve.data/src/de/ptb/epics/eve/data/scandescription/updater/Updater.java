@@ -7,8 +7,6 @@ import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import de.ptb.epics.eve.data.scandescription.updater.patches.Patch2o3T3o0;
-import de.ptb.epics.eve.data.scandescription.updater.patches.Patch3o0T3o1;
 import de.ptb.epics.eve.util.data.Version;
 
 /**
@@ -24,35 +22,29 @@ import de.ptb.epics.eve.util.data.Version;
 public class Updater {
 	private static final Logger LOGGER = 
 			Logger.getLogger(Updater.class.getName());
-	
-	/*
-	 * Singleton with Eager initialization
-	 */
-	private static final Updater INSTANCE = new Updater();
-	
-	/*
-	 * the generated patch list must obey the following condition:
-	 * for each patch in list: patch.compareTo(next) < 0
-	 * meaning the patches are ordered (ascending) containing no gaps:
-	 * patch.targetVersion == next.sourceVersion
-	 */
-	private Updater() {
-		this.patches = new LinkedList<Patch>();
-		this.patches.add(Patch2o3T3o0.getInstance());
-		this.patches.add(Patch3o0T3o1.getInstance());
-		
-		// TODO add patches
-	}
-	
+
 	/**
-	 * 
-	 * @return
+	 * Constructor.
 	 */
-	public static Updater getInstance() {
-		return INSTANCE;
+	public Updater() {
+		this.patches = new LinkedList<Patch>();
 	}
 	
 	private List<Patch> patches;
+	
+	/**
+	 * Adds a patch to the Updater. The resulting patch list must obey the 
+	 * following condition:
+	 * for each patch in list: patch.compareTo(next) < 0
+	 * i.e. the patches are ordered (ascending) without gaps
+	 * i.e. patch.targetVersion == next.sourceVersion
+	 * 
+	 * @param patch the patch to add
+	 * @since 1.22
+	 */
+	public void addPatch(Patch patch) {
+		this.patches.add(patch);
+	}
 	
 	/**
 	 * Updates the given document to the given target version.

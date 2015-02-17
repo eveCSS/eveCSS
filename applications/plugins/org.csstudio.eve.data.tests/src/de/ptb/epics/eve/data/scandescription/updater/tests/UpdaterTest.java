@@ -26,6 +26,7 @@ import org.xml.sax.SAXException;
 
 import de.ptb.epics.eve.data.scandescription.updater.Updater;
 import de.ptb.epics.eve.data.scandescription.updater.VersionTooOldException;
+import de.ptb.epics.eve.data.scandescription.updater.patches.SCMLUpdater;
 import de.ptb.epics.eve.util.data.Version;
 
 /**
@@ -68,7 +69,8 @@ public class UpdaterTest {
 			
 			document = builder.parse(testFile);
 
-			Updater.getInstance().update(document, currentVersion);
+			Updater updater = new SCMLUpdater();
+			updater.update(document, currentVersion);
 
 			Schema schema = SchemaFactory.newInstance(
 					XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(
