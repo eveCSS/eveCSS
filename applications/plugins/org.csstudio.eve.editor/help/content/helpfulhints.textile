@@ -44,3 +44,7 @@ p. Wenn man in einer Motor Achse den Plugin Type __MotionDisabled__ auswählt, s
 
 Wichtig: Die Achse __Counter__ nutzt für jedes Scan Modul einen separaten Counter und steht deswegen in dem ScanModul __SaveMotorPositions__ immer auf 0. Damit kann der __Counter__ auch weggelassen werden.
  
+h2. Discrete Positions von Achsen
+
+p. Wenn man in einer Motor Achse diskrete Positionen deklariert, dürfen diese keine führenden Leerzeichen enthalten.
+ 
