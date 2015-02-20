@@ -26,7 +26,6 @@ public class ChannelTest implements PropertyChangeListener {
 	private boolean maxAttempts;
 	private boolean maxDeviation;
 	private boolean minimum;
-	private boolean repeatOnRedo;
 	private boolean normalizeChannel;
 	
 	/**
@@ -39,7 +38,6 @@ public class ChannelTest implements PropertyChangeListener {
 		this.maxAttempts = false;
 		this.maxDeviation = false;
 		this.minimum = false;
-		this.repeatOnRedo = false;
 		this.normalizeChannel = false;
 		
 		// listen to properties
@@ -48,7 +46,6 @@ public class ChannelTest implements PropertyChangeListener {
 		this.channel.addPropertyChangeListener("maxAttempts", this);
 		this.channel.addPropertyChangeListener("maxDeviation", this);
 		this.channel.addPropertyChangeListener("minimum", this);
-		this.channel.addPropertyChangeListener("repeatOnRedo", this);
 		this.channel.addPropertyChangeListener("normalizeChannel", this);
 		
 		// manipulate properties
@@ -56,7 +53,6 @@ public class ChannelTest implements PropertyChangeListener {
 		this.channel.setMaxAttempts(1);
 		this.channel.setMaxDeviation(1.0);
 		this.channel.setMinimum(1.0);
-		this.channel.setRepeatOnRedo(true);
 		this.channel.setNormalizeChannel(null);
 		
 		// check whether the manipulation was notified
@@ -64,7 +60,6 @@ public class ChannelTest implements PropertyChangeListener {
 		assertTrue(this.maxAttempts);
 		assertTrue(this.maxDeviation);
 		assertTrue(this.minimum);
-		assertTrue(this.repeatOnRedo);
 		assertTrue(this.normalizeChannel);
 	}
 
@@ -81,8 +76,6 @@ public class ChannelTest implements PropertyChangeListener {
 			this.maxDeviation = true;
 		} else if(evt.getPropertyName().equals("minimum")) {
 			this.minimum = true;
-		} else if(evt.getPropertyName().equals("repeatOnRedo")) {
-			this.repeatOnRedo = true;
 		} else if(evt.getPropertyName().equals("normalizeChannel")) {
 			this.normalizeChannel = true;
 		}
