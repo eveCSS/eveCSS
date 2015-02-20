@@ -326,6 +326,35 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	}
 	
 	/**
+	 * Returns all channels valid for normalization. A given channel can be
+	 * excluded from the result.
+	 * 
+	 * (A channel is not valid as normalization channel if itself is
+	 * normalized.)
+	 * 
+	 * @param excludeChannel
+	 *            if set the given channel will not be part of the result even
+	 *            if is valid.
+	 * @return a list of channels valid for normalization (given channel excluded)
+	 * @since 1.22
+	 */
+	public List<Channel> getValidNormalizationChannels(Channel excludeChannel) {
+		List<Channel> validNormalizationChannels = new ArrayList<>();
+		for (Channel ch : this.getChannels()) {
+			if (ch.getNormalizeChannel() != null) {
+				continue;
+			}
+			if (excludeChannel != null
+					&& ch.getDetectorChannel().getID().equals(
+							excludeChannel.getDetectorChannel().getID())) {
+				continue;
+			}
+			validNormalizationChannels.add(ch);
+		}
+		return validNormalizationChannels;
+	}
+	
+	/**
 	 * Gives back an Array that contains all axis behaviors.
 	 * 
 	 * @return An Array, that contains all axes behaviors.
