@@ -18,7 +18,6 @@ import org.xml.sax.SAXException;
 
 import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
-import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Channel;
@@ -185,6 +184,8 @@ public class DefaultsManager {
 	/**
 	 * Transfers the properties from the given default channel to the 
 	 * target channel.
+	 * If the default channel is normalized and the used normalize channel 
+	 * is not part of the scan module then it is added.
 	 * 
 	 * @param from the source values (defaults)
 	 * @param to the target channel

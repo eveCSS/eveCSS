@@ -2,8 +2,6 @@ package de.ptb.epics.eve.editor.views.detectorchannelview;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.Binding;
@@ -641,20 +639,9 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 			this.setPartName(currentChannel.getAbstractDevice().getName());
 
 			// fill combo box
-			List<Channel> channels = new ArrayList<Channel>();
-			for (Channel ch : this.scanModule.getChannels()) {
-				if (ch.getNormalizeChannel() != null) {
-					continue;
-				}
-				if (ch.getDetectorChannel()
-						.getID()
-						.equals(this.currentChannel.getDetectorChannel()
-								.getID())) {
-					continue;
-				}
-				channels.add(ch);
-			}
-			this.availableDetectorChannels = channels.toArray(new Channel[0]);
+			this.availableDetectorChannels = this.scanModule.
+					getValidNormalizationChannels(
+							this.currentChannel).toArray(new Channel[0]);
 			String[] detectorItems = new String[availableDetectorChannels.length];
 			for (int i = 0; i < availableDetectorChannels.length; ++i) {
 				detectorItems[i] = availableDetectorChannels[i]

@@ -31,7 +31,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
 public class Channel extends AbstractMainPhaseBehavior implements
 		PropertyChangeListener {
 
-	private static Logger logger = Logger.getLogger(Channel.class.getName());
+	private static Logger LOGGER = Logger.getLogger(Channel.class.getName());
 	
 	public static final String REDO_EVENT_PROP = "redoEvent";
 	
@@ -165,7 +165,7 @@ public class Channel extends AbstractMainPhaseBehavior implements
 			throw new IllegalArgumentException(
 					"The average must be larger than 0.");
 		}
-		logger.debug("average count set");
+		LOGGER.debug("average count set");
 		this.propertyChangeSupport.firePropertyChange("averageCount",
 				this.averageCount, this.averageCount = averageCount);
 		updateListeners();
@@ -279,9 +279,27 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	}
 
 	/**
+	 * Sets a channel for normalization. Only valid channels (as given by 
+	 * {@link de.ptb.epics.eve.data.scandescription.ScanModule#getValidNormalizationChannels(Channel)}) 
+	 * are eligible.
+	 * 
 	 * @param normalizeChannel the normalizeChannel to set
 	 */
 	public void setNormalizeChannel(DetectorChannel normalizeChannel) {
+		boolean valid = false;
+		for (Channel ch : this.getScanModule().getValidNormalizationChannels(
+				this)) {
+			if (ch.getDetectorChannel().getID()
+					.equals(normalizeChannel.getID())) {
+				valid = true;
+			}
+		}
+		if (!valid) {
+			LOGGER.warn(normalizeChannel.getName()
+					+ " is not valid for normalization of "
+					+ this.getDetectorChannel().getName());
+			return;
+		}
 		this.propertyChangeSupport.firePropertyChange("normalizeChannel", 
 				this.normalizeChannel, this.normalizeChannel = normalizeChannel);
 		updateListeners();
@@ -387,7 +405,7 @@ public class Channel extends AbstractMainPhaseBehavior implements
 		this.repeatOnRedo = false;
 		this.normalizeChannel = null;
 		this.redoControlEventManager.removeAllEvents();
-		logger.debug("Channel " + this.getDetectorChannel().getName()
+		LOGGER.debug("Channel " + this.getDetectorChannel().getName()
 				+ " has been reset");
 	}
 	
@@ -433,7 +451,7 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	public void propertyChange(PropertyChangeEvent e) {
 		if (e.getPropertyName().equals(ScanEvent.VALID_PROP) &&
 				e.getNewValue().equals(Boolean.FALSE)) {
-			logger.debug(((ScanEvent)e.getSource()).getName() +
+			LOGGER.debug(((ScanEvent)e.getSource()).getName() +
 					" (Det: " + this.getDetectorChannel().getName() + ") " +
 					" got invalid -> start removal");
 			this.removeInvalidScanEvents();
@@ -524,7 +542,7 @@ public class Channel extends AbstractMainPhaseBehavior implements
 			if (controlEvent.getEvent() instanceof ScanEvent &&
 					!((ScanEvent)controlEvent.getEvent()).isValid()) {
 				this.removeRedoEvent(controlEvent);
-				logger.debug("Redo Event " + controlEvent.getEvent().getName()
+				LOGGER.debug("Redo Event " + controlEvent.getEvent().getName()
 						+ " removed from channel "
 						+ this.getDetectorChannel().getName() + 
 						"(Chain  " + this.getScanModule().getChain().getId() + 
