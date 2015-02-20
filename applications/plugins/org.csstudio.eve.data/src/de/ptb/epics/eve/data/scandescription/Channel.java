@@ -287,11 +287,15 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	 */
 	public void setNormalizeChannel(DetectorChannel normalizeChannel) {
 		boolean valid = false;
-		for (Channel ch : this.getScanModule().getValidNormalizationChannels(
-				this)) {
-			if (ch.getDetectorChannel().getID()
-					.equals(normalizeChannel.getID())) {
-				valid = true;
+		if (normalizeChannel == null) {
+			valid = true;
+		} else {
+			for (Channel ch : this.getScanModule()
+					.getValidNormalizationChannels(this)) {
+				if (ch.getDetectorChannel().getID()
+						.equals(normalizeChannel.getID())) {
+					valid = true;
+				}
 			}
 		}
 		if (!valid) {
