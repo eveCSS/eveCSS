@@ -66,4 +66,29 @@ h2(#combine). Combining _Chain_ and _ScanModule_ Events
 
 p. Chains and scan modules have _independent_ pause states, i.e. both scan module and chain states must be _running_ in order to continue a scan.
 
-p. When monitor events are combined (one in the chain, one in the scan module) a redo occurs if at least one of their last sent values was @true@. Only when both last sent @false@ the scan continues normally.
+p. When monitor events are combined (one in the chain, one in the scan module) a redo, pause...  occurs if at least one of their last sent values was @true@. But only when both last sent @false@ the scan continues normally.
+
+h3(eveTopic). Example 1
+
+p. 2 Pause Events in a ScanModule: SMEvent1 and SMEvent2 with Action _ONOFF_
+
+p. Scan start with SMEvent1 = @false@ and SMEvent2 = @false@
+
+p. SMEvent1 = @true@ => ScanModule paused
+SMEvent2 = @true@ => nothing happens
+SMEvent2 = @false@ => ScanModuel continues running 
+SMEvent1 = @false@ => nothing happens
+
+
+h3(eveTopic). Example 2
+
+p. 2 Pause Events in a ScanModule and 1 Pause Event in the Chain: SMEvent1 and SMEvent2 with Action _ONOFF_, ChEvent with Action _ONOFF_
+
+p. Scan start with SMEvent1 = @false@, SMEvent2 = @false@ and ChEvent = @false@
+
+p. SMEvent1 = @true@ => ScanModule paused
+ChEvent = @true@ => Chain paused, nothing happens
+SMEvent2 = @false@ => ScanModule ready for running, nothing happens because ChEvent is @true@ 
+ChEvent = @false@ => Chain ready, Scan continues
+
+
