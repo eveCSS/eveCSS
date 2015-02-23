@@ -1472,7 +1472,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		List<DetectorChannel> detectorChannels = new ArrayList<DetectorChannel>();
 		for (Detector det : measuringStation.getDetectors()) {
 			for (DetectorChannel ch : det.getChannels()) {
-				detectorChannels.add(ch);
+				if (ch.isSaveValue()) {
+					detectorChannels.add(ch);
+				}
 			}
 		}
 		// creating channels

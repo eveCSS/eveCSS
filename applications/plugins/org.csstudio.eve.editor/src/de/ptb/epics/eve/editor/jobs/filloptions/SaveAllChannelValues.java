@@ -91,6 +91,7 @@ public class SaveAllChannelValues extends Job {
 			Channel channel = new Channel(scanModule);
 			channel.setDetectorChannel(ch);
 			channel.setAverageCount(1);
+			channel.setDeferred(false);
 			channels.add(channel);
 			if(logger.isDebugEnabled()) {
 				// progress view in "Slow Motion" when debugging
@@ -154,7 +155,6 @@ public class SaveAllChannelValues extends Job {
 	 * @since 1.1
 	 */
 	private class AddAllChannels extends UIJob {
-		
 		private final List<Channel> channels;
 		
 		/**
