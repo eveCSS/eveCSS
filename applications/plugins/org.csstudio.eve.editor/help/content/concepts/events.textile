@@ -62,6 +62,24 @@ h3. Break/Stop/Trigger Event
 
 Caused by a trigger event (detector or schedule) and monitor event sending @true@.
 
+h3. Monitor Event in a Scan Module
+
+table(eveDataTable).
+|_.Event|_.during initialization|_.at start|_.in the Scan Module|
+|<. Pause |no action| ScanModule paused| ScanModule paused|
+|<. Redo |no action| no scan point reading| no scan point reading|
+|<. Skip |no action |%(red)no action%| skip to next ScanModule |
+
+h3. Monitor Event in the Chain
+
+table(eveDataTable).
+|_.Event|_.during initialization|_.at start|_.in the Scan Module|
+|<. Pause |no action| ScanModule paused| ScanModule paused|
+|<. Redo |no action| no scan point reading| no scan point reading|
+|<. Skip |no action |%(red)no action%| Skip to next ScanModule |
+|<. Stop |%(red)exit scan% |%(red)not possible% | Stop the Scan |
+
+
 h2(#combine). Combining _Chain_ and _ScanModule_ Events
 
 p. Chains and scan modules have _independent_ pause states, i.e. both scan module and chain states must be _running_ in order to continue a scan.
