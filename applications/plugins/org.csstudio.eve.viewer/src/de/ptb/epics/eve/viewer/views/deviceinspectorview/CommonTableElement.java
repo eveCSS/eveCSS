@@ -33,7 +33,6 @@ import de.ptb.epics.eve.viewer.views.messagesview.ViewerMessage;
  * @author Hartmut Scherr
  */
 public class CommonTableElement {
-
 	private static Logger LOGGER = 
 			Logger.getLogger(CommonTableElement.class.getName());
 	
@@ -634,8 +633,6 @@ public class CommonTableElement {
 						return "Home";
 					} else if ((status & 512) > 0) {
 						return "Problem";
-					} else if ((status & 1024) > 0) {
-						return "Moving";
 					} else if ((status & 8192) > 0) {
 						return "Limit (-)";
 					} else {
