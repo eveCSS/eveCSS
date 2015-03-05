@@ -3,7 +3,7 @@
 		xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 		targetNamespace="http://www.ptb.de/epics/SCML"
 		xmlns:tns="http://www.ptb.de/epics/SCML"
-		version="1.0">
+		version="1.1">
 	
 	<xsd:include schemaLocation="schema.xsd" />
 	
@@ -16,6 +16,8 @@
 	<xsd:element name="defaults">
 		<xsd:complexType>
 			<xsd:sequence>
+				<xsd:element name="workingDirectory" type="xsd:string"
+					minOccurs="0" />
 				<xsd:element name="axes">
 					<xsd:complexType>
 						<xsd:sequence>

@@ -29,7 +29,6 @@ import org.eclipse.swt.widgets.Button;
 
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.axismode.FileMode;
-import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.views.motoraxisview.MotorAxisViewComposite;
 
 /**
@@ -254,7 +253,9 @@ public class FileComposite extends MotorAxisViewComposite implements
 				filePath = axisPath;
 			} else if (fileMode.getFile() == null
 					|| fileMode.getFile().getAbsolutePath().isEmpty()) {
-				filePath = Activator.getDefault().getRootDirectory();
+				filePath = de.ptb.epics.eve.resources.Activator.getDefault()
+						.getDefaultsManager().getWorkingDirectory()
+						.getAbsolutePath();
 			} else {
 				lastSeperatorIndex = fileMode.getFile().getAbsolutePath()
 						.lastIndexOf(File.separatorChar);

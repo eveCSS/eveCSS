@@ -11,13 +11,18 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.jobs.Job;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
+import de.ptb.epics.eve.data.scandescription.defaults.DefaultsManager;
+import de.ptb.epics.eve.resources.init.Startup;
+import de.ptb.epics.eve.resources.jobs.defaults.SaveDefaults;
 import de.ptb.epics.eve.util.data.Version;
 
 /**
@@ -37,6 +42,8 @@ public class Activator implements BundleActivator {
 	private static Activator plugin;
 
 	private static Version schemaVersion;
+	
+	private DefaultsManager defaultsManager = null;
 	
 	/**
 	 * Constructor
@@ -64,6 +71,36 @@ public class Activator implements BundleActivator {
 	}
 
 	/**
+	 * 
+	 * @return
+	 */
+	public DefaultsManager getDefaultsManager() {
+		if (this.defaultsManager == null) {
+			this.defaultsManager = new DefaultsManager();
+			File defaultsFile = ResourcesPlugin.getWorkspace().getRoot()
+					.getLocation().append("/defaults.xml").toFile();
+			if (defaultsFile.exists()) {
+				LOGGER.info("found defaults file for user "
+						+ System.getProperty("user.name") + " (" + 
+						ResourcesPlugin.getWorkspace().getRoot().getLocation().
+						lastSegment() + ")");
+			} else {
+				LOGGER.info("no defaults file for user "
+						+ System.getProperty("user.name") + " (" + 
+						ResourcesPlugin.getWorkspace().getRoot().getLocation().
+						lastSegment() + ")");
+			}
+			this.defaultsManager.init(defaultsFile,
+					de.ptb.epics.eve.resources.Activator.getDefaultsSchema());
+			if (!this.defaultsManager.getWorkingDirectory().exists()) {
+				this.defaultsManager.setWorkingDirectory(new File(Startup
+						.readStartupParameters().getRootDir()));
+			}
+		}
+		return this.defaultsManager;
+	}
+	
+	/**
 	 * {@inheritDoc}
 	 */
 	public void start(BundleContext bundleContext) throws Exception {
@@ -74,6 +111,15 @@ public class Activator implements BundleActivator {
 	 * {@inheritDoc}
 	 */
 	public void stop(BundleContext bundleContext) throws Exception {
+		// saving defaults
+		File defaultsFile = ResourcesPlugin.getWorkspace().getRoot()
+				.getLocation().append("/defaults.xml").toFile();
+		File schemaFile = de.ptb.epics.eve.resources.Activator
+				.getDefaultsSchema();
+		Job job = new SaveDefaults("Saving Defaults", this.defaultsManager,
+				null, defaultsFile, schemaFile);
+		job.schedule();
+		job.join();
 		Activator.context = null;
 	}
 	

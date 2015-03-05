@@ -48,7 +48,9 @@ public class ImportAxesFromCSV implements IHandler {
 				.getActiveShell(), SWT.OPEN);
 		fileDialog.setFilterExtensions(new String[] {"*.csv;*.txt"});
 		fileDialog.setFilterNames(new String[] {"CSV file (.csv;.txt)"});
-		fileDialog.setFilterPath(Activator.getDefault().getRootDirectory());
+		fileDialog.setFilterPath(de.ptb.epics.eve.resources.Activator
+				.getDefault().getDefaultsManager().getWorkingDirectory()
+				.getAbsolutePath());
 		String result = fileDialog.open();
 		
 		if (result == null) {
@@ -66,6 +68,9 @@ public class ImportAxesFromCSV implements IHandler {
 			throw new ExecutionException("File not found!");
 		} else {
 			LOGGER.info("File " + csvFile.getAbsolutePath() + " selected.");
+			de.ptb.epics.eve.resources.Activator.getDefault()
+					.getDefaultsManager()
+					.setWorkingDirectory(csvFile.getParentFile());
 		}
 		
 		IWorkbenchPart activePart = HandlerUtil.getActivePart(event);

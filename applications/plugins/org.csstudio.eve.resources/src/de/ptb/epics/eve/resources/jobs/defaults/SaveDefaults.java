@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.editor.jobs.defaults;
+package de.ptb.epics.eve.resources.jobs.defaults;
 
 import java.io.File;
 
@@ -30,7 +30,7 @@ public class SaveDefaults extends Job {
 	/**
 	 * @param name the name of the job
 	 * @param defaultsManager the defaults manager used
-	 * @param scanDescription the scan description that is saved
+	 * @param scanDescription the scan description that is saved (set <code>null</code> to save without updating)
 	 * @param defaultsFile the file to save to
 	 * @param schemaFile the schema file
 	 */
@@ -51,7 +51,9 @@ public class SaveDefaults extends Job {
 		try {
 			monitor.beginTask("Saving Defaults", 2);
 			monitor.subTask("collecting data");
-			this.defaultsManager.update(scanDescription);
+			if (this.scanDescription != null) {
+				this.defaultsManager.update(scanDescription);
+			}
 			monitor.worked(1);
 			monitor.subTask("writing to file");
 			this.defaultsManager.save(defaultsFile, schemaFile);

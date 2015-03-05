@@ -146,6 +146,23 @@ public class DefaultsManager {
 	}
 	
 	/**
+	 * 
+	 * @return
+	 * @since 1.22
+	 */
+	public File getWorkingDirectory() {
+		return new File(this.defaults.getWorkingDirectory());
+	}
+	
+	/**
+	 * 
+	 * @since 1.22
+	 */
+	public void setWorkingDirectory(File workingDirectory) {
+		this.defaults.setWorkingDirectory(workingDirectory.getPath());
+	}
+	
+	/**
 	 * Returns the axis with the given id or <code>null</code> if not found.
 	 * 
 	 * @param id the id of the axis to get defaults for

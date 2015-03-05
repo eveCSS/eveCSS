@@ -43,13 +43,18 @@ public class AddFileToPlayListAction extends Action implements IWorkbenchAction 
 	public void run() {
 		String filePath;
 		String rootdir = Activator.getDefault().getRootDirectory();
-		File file = new File(rootdir + "scml/");
+		File file = new File(rootdir + "eve/scml/");
 		if(file.exists()) {
-			filePath = rootdir + "scml/";
+			filePath = rootdir + "eve/scml/";
 		} else {
-			filePath = rootdir;
+			filePath = rootdir + "eve/";
 		}
 		file = null;
+		File workingDirectory = de.ptb.epics.eve.resources.Activator
+				.getDefault().getDefaultsManager().getWorkingDirectory();
+		if (workingDirectory.isDirectory()) {
+			filePath = workingDirectory.getPath();
+		}
 		
 		logger.debug(filePath);
 		
@@ -60,7 +65,7 @@ public class AddFileToPlayListAction extends Action implements IWorkbenchAction 
 		fileDialog.setFilterExtensions(extensions);
 		fileDialog.open();
 		String[] names = fileDialog.getFileNames();
-
+		
 		for(int i = 0; i < names.length; ++i) {
 			try {
 				Activator.getDefault().getEcp1Client().getPlayListController().
@@ -72,6 +77,15 @@ public class AddFileToPlayListAction extends Action implements IWorkbenchAction 
 			} catch (IOException e) {
 				logger.error(e.getMessage(), e);
 			}
+		}
+		
+		// refresh defaults working directory
+		File chosenFile = new File(fileDialog.getFilterPath()
+				+ File.separator + fileDialog.getFileName());
+		if (chosenFile.isFile()) {
+			de.ptb.epics.eve.resources.Activator.getDefault()
+					.getDefaultsManager()
+					.setWorkingDirectory(chosenFile.getParentFile());
 		}
 	}
 	

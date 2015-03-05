@@ -7,6 +7,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 import org.apache.log4j.Logger;
 
@@ -19,17 +20,35 @@ import de.ptb.epics.eve.data.scandescription.Stepfunctions;
  * @since 1.8
  */
 @XmlRootElement(name="defaults", namespace="http://www.ptb.de/epics/SCML")
+@XmlType(propOrder={"workingDirectory", "axes", "channels"})
 public class Defaults {
 	private static final Logger LOGGER = Logger.getLogger(Defaults.class
 			.getName());
 	
+	private String workingDirectory;
 	private List<DefaultsAxis> axes;
 	private List<DefaultsChannel> channels;
 	
 	/** */
 	public Defaults() {
+		this.workingDirectory = "";
 		this.axes = new ArrayList<DefaultsAxis>();
 		this.channels = new ArrayList<DefaultsChannel>();
+	}
+	
+	/**
+	 * @return the workingDirectory
+	 */
+	public String getWorkingDirectory() {
+		return workingDirectory;
+	}
+	
+	/**
+	 * @param workingDirectory the workingDirectory to set
+	 */
+	@XmlElement(name="workingDirectory")
+	public void setWorkingDirectory(String workingDirectory) {
+		this.workingDirectory = workingDirectory;
 	}
 	
 	/**

@@ -20,11 +20,10 @@ import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
 import de.ptb.epics.eve.resources.init.Parameters;
 import de.ptb.epics.eve.resources.init.Startup;
+import de.ptb.epics.eve.resources.jobs.defaults.SaveDefaults;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeFilter;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.defaults.DefaultsManager;
-import de.ptb.epics.eve.editor.jobs.defaults.LoadDefaults;
-import de.ptb.epics.eve.editor.jobs.defaults.SaveDefaults;
 import de.ptb.epics.eve.editor.logging.EclipseLogListener;
 
 /**
@@ -204,24 +203,8 @@ public class Activator extends AbstractUIPlugin {
 	 * 
 	 */
 	private void loadDefaults() {
-		this.defaultsManager = new DefaultsManager();
-		File defaultsFile = ResourcesPlugin.getWorkspace().getRoot()
-				.getLocation().append("/defaults.xml").toFile();
-		if (defaultsFile.exists()) {
-			logger.info("found defaults file for user "
-					+ System.getProperty("user.name") + " (" + 
-					ResourcesPlugin.getWorkspace().getRoot().getLocation().
-					lastSegment() + ")");
-		} else {
-			logger.info("no defaults file for user "
-					+ System.getProperty("user.name") + " (" + 
-					ResourcesPlugin.getWorkspace().getRoot().getLocation().
-					lastSegment() + ")");
-		}
-		Job job = new LoadDefaults("Loading Defaults", this.defaultsManager,
-				defaultsFile,
-				de.ptb.epics.eve.resources.Activator.getDefaultsSchema());
-		job.schedule();
+		this.defaultsManager = de.ptb.epics.eve.resources.Activator
+				.getDefault().getDefaultsManager();
 	}
 	
 	/**
