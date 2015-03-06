@@ -1,5 +1,12 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.22
+
+* [Feature] introduced toggle state for (application wide) plot scaling
+
+* [Bug Fix] the MOVING bit in MSTA is no longer considered
+* [Bug Fix] plot pdf export now also works with normalized axes
+
 h2(eveTopic). Version 1.21
 
 * [Bug Fix] removed performance issues in the messages View

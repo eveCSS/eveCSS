@@ -1,5 +1,11 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.22
+
+* [Feature] added user specific filter paths in several file dialogs by introducing a defaults folder
+
+* [Bug Fix] removed a bug where a null pointer could occur on certain selections after starting the application (due to missing action/command handler for print)
+
 h2(eveTopic). Version 1.21
 
 * [Feature] eveCSS is now based on CSS 3.3.9

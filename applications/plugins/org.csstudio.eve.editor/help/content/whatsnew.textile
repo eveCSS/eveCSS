@@ -1,5 +1,20 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.22
+
+* [Feature] introduced new file name macros MONTHSTR and DAYSTR
+* [Feature] now taking account for detector channels with save value preset
+* [Feature] now taking account for detector channels with deferred trigger preset
+* [Feature] added select all for monitor options
+
+* [Bug Fix] fixed a bug where elements of action composite tables did not refresh properly
+* [Bug Fix] removed possibility to create "double normalization" due to default automation
+* [Bug Fix] fixed a bug where using a detector ready event did not work due to missing XML entry
+* [Bug Fix] switching monitor options to custom no longer removes previos entries
+* [Bug Fix] fixed a bug where certain classes were missing in monitor options selection tree
+* [Bug Fix] fixed a bug where an axis was not selected after it was added to a scan module
+* [Bug Fix] fixed a bug where the event tab of a detector channel was not shown by default
+
 h2(eveTopic). Version 1.21
 
 * [Feature] added scan module template for top up mode
