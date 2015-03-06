@@ -11,6 +11,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
+import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.util.Activator;
 import de.ptb.epics.eve.util.jface.ViewerComparator;
 
@@ -32,10 +34,13 @@ import de.ptb.epics.eve.util.jface.ViewerComparator;
  * @author Marcus Michalsky
  * @since 1.2
  */
-public abstract class ActionComposite extends Composite {
+public abstract class ActionComposite extends Composite implements
+		IModelUpdateListener {
 
 	private static Logger logger = 
 			Logger.getLogger(ActionComposite.class.getName());
+	
+	private ScanModule currentScanModule;
 	
 	protected TableViewer tableViewer;
 	protected TableViewerColumn sortColumn;
@@ -57,6 +62,7 @@ public abstract class ActionComposite extends Composite {
 	public ActionComposite(final ScanModuleView parentView, Composite parent, 
 			int style) {
 		super(parent, style);
+		this.currentScanModule = null;
 		this.parentView = parentView;
 		
 		this.tableViewerSortState = ViewerComparator.NONE;
@@ -76,7 +82,14 @@ public abstract class ActionComposite extends Composite {
 	 */
 	public void setScanModule(final ScanModule scanModule) {
 		logger.debug(this.getClass().getName());
+		if (this.currentScanModule != null) {
+			this.currentScanModule.removeModelUpdateListener(this);
+		}
+		this.currentScanModule = scanModule;
 		this.tableViewer.setInput(scanModule);
+		if (this.currentScanModule != null) {
+			this.currentScanModule.addModelUpdateListener(this);
+		}
 	}
 
 	/**
@@ -118,6 +131,14 @@ public abstract class ActionComposite extends Composite {
 			break;
 		default: throw new IllegalArgumentException("Illegal sort state.");
 		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
+		this.tableViewer.refresh();
 	}
 	
 	// ************************************************************************
