@@ -92,7 +92,8 @@ public class Activator implements BundleActivator {
 			}
 			this.defaultsManager.init(defaultsFile,
 					de.ptb.epics.eve.resources.Activator.getDefaultsSchema());
-			if (!this.defaultsManager.getWorkingDirectory().exists()) {
+			if (this.defaultsManager.isInitialized() && 
+					!this.defaultsManager.getWorkingDirectory().exists()) {
 				this.defaultsManager.setWorkingDirectory(new File(Startup
 						.readStartupParameters().getRootDir()));
 			}
