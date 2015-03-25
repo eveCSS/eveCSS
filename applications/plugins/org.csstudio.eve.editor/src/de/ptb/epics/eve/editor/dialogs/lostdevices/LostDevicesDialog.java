@@ -41,26 +41,24 @@ public class LostDevicesDialog extends TitleAreaDialog {
 		this.scanDescriptionLoader = scanDescriptionLoader;
 	}
 
+	@Override
+	public void create() {
+		super.create();
+		this.setTitle("Error while loading file: " + 
+				scanDescriptionLoader.getScanDescription().getFileName());
+		this.setMessage("Below is a list of problems encountered while loading the above mentioned scml file", 
+				IMessageProvider.WARNING);
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
 	protected Control createDialogArea(final Composite parent) {
 		Composite area = (Composite) super.createDialogArea(parent);
-		Composite container = new Composite(area, SWT.NONE);
-		container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		
 		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 1;
-		container.setLayout(gridLayout);
-		
-		this.createViewer(container);
+		area.setLayout(gridLayout);
+		this.createViewer(area);
 		this.viewer.setInput(scanDescriptionLoader.getLostDevices());
-		
-		this.setTitle("Error while loading file: " + 
-				scanDescriptionLoader.getFileToLoad().getName());
-		this.setMessage("Below is a list of problems encountered while loading the above mentioned scml file", 
-				IMessageProvider.WARNING);
-		
 		return area;
 	}
 	
@@ -106,11 +104,8 @@ public class LostDevicesDialog extends TitleAreaDialog {
 		this.viewer = new TableViewer(parent);
 		this.viewer.getTable().setHeaderVisible(true);
 		this.viewer.setContentProvider(new ContentProvider());
-		GridData gridData = new GridData();
-		gridData.minimumHeight = 150;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		gridData.verticalAlignment = SWT.TOP;
+		GridData gridData = new GridData(GridData.FILL, GridData.FILL, true,
+				true);
 		this.viewer.getTable().setLayoutData(gridData);
 		
 		TableViewerColumn typeColumn = new TableViewerColumn(viewer, SWT.LEFT);
