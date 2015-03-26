@@ -37,6 +37,7 @@ public class OpenSCML extends AbstractHandler {
 			throw new ExecutionException(
 					"Could not get Shell of Workbench Window!");
 		}
+		boolean workingDirectoryUsed = false;
 		FileDialog fileDialog = new FileDialog(shell, SWT.OPEN);
 		File workingDirectory = de.ptb.epics.eve.editor.Activator.getDefault()
 				.getDefaults().getWorkingDirectory();
@@ -48,6 +49,7 @@ public class OpenSCML extends AbstractHandler {
 			File scmlDir = new File(file.getAbsolutePath() + "scml");
 			if (scmlDir.isDirectory()) {
 				fileDialog.setFilterPath(scmlDir.getAbsolutePath());
+				workingDirectoryUsed = true;
 			} else {
 				fileDialog.setFilterPath(file.getAbsolutePath());
 			}
@@ -67,6 +69,10 @@ public class OpenSCML extends AbstractHandler {
 				.getActiveWorkbenchWindow().getActivePage();
 		try {
 			IDE.openEditorOnFileStore(page, fileStore);
+			if (workingDirectoryUsed) {
+				de.ptb.epics.eve.editor.Activator.getDefault().getDefaults()
+						.setWorkingDirectory(new File(scmlPath));
+			}
 		} catch (PartInitException e) {
 			LOGGER.error(e.getMessage(), e);
 		}
