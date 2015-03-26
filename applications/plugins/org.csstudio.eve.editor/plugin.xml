@@ -147,7 +147,7 @@
                </visibleWhen>
             </command>
             <command
-                  commandId="org.eclipse.ui.edit.text.openLocalFile"
+                  commandId="de.ptb.epics.eve.editor.command.openscml"
                   icon="icons/fldr_obj.gif"
                   label="Open"
                   style="push">
@@ -702,6 +702,14 @@
          </menu>
       </menuContribution>
       <menuContribution
+            locationURI="menu:file?before=new.ext">
+         <command
+               commandId="de.ptb.epics.eve.editor.command.openscml"
+               label="Open Scan Description..."
+               style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
             locationURI="menu:file?after=additions">
          <command
                commandId="org.eclipse.ui.file.print"
@@ -1124,6 +1132,12 @@
             defaultHandler="de.ptb.epics.eve.editor.handler.editor.FillClear"
             id="de.ptb.epics.eve.editor.command.clear"
             name="Clear">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.commands"
+            defaultHandler="de.ptb.epics.eve.editor.handler.editor.OpenSCML"
+            id="de.ptb.epics.eve.editor.command.openscml"
+            name="Open SCML">
       </command>
    </extension>
    <extension
