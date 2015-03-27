@@ -3,6 +3,8 @@ package de.ptb.epics.eve.util.io;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * @author Marcus Michalsky
  * @since 1.10
@@ -108,5 +110,19 @@ public final class StringUtil {
 			buff.append(", ");
 		}
 		return buff.toString().substring(0, buff.toString().lastIndexOf(","));
+	}
+	
+	/**
+	 * 
+	 * @param text
+	 * @param searchList
+	 * @param replacementList
+	 * @return
+	 * @since 1.23
+	 */
+	public static String replaceEach(String text, List<String> searchList,
+			List<String> replacementList) {
+		return StringUtils.replaceEach(text, searchList.toArray(new String[0]),
+				replacementList.toArray(new String[0]));
 	}
 }

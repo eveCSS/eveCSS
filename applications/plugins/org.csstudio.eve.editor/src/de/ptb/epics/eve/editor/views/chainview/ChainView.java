@@ -119,6 +119,8 @@ public class ChainView extends ViewPart implements IEditorView,
 
 	private Button filenameBrowseButton;
 
+	private Label filenameInputResolved;
+	
 	private Button saveScanDescriptionCheckBox;
 	private Button confirmSaveCheckBox;
 	private Button autoIncrementCheckBox;
@@ -150,6 +152,9 @@ public class ChainView extends ViewPart implements IEditorView,
 
 	private ISelectionProvider selectionProvider;
 	private IObservableValue selectionObservable;
+	
+	private IObservableValue filenameInputResolvedTargetObservable;
+	private IObservableValue filenameInputResolvedModelObservable;
 	
 	private IObservableValue saveScanDescriptionTargetObservable;
 	private IObservableValue saveScanDescriptionModelObservable;
@@ -289,7 +294,7 @@ public class ChainView extends ViewPart implements IEditorView,
 		this.fileNameInputControlDecoration.hide();
 		fileNameInputModifiedListener = new FileNameInputModifiedListener();
 		this.filenameInput.addModifyListener(fileNameInputModifiedListener);
-
+		
 		// Browse Button
 		this.filenameBrowseButton = new Button(this.saveOptionsComposite,
 				SWT.NONE);
@@ -301,6 +306,20 @@ public class ChainView extends ViewPart implements IEditorView,
 		this.filenameBrowseButton
 				.addMouseListener(new SearchButtonMouseListener());
 
+		/*Label filenameInputResolvedLabel = new Label(this.saveOptionsComposite,
+				SWT.NONE);
+		filenameInputResolvedLabel.setText("Filename:");*/
+		
+		this.filenameInputResolved = new Label(this.saveOptionsComposite,
+				SWT.NONE);
+		this.filenameInputResolved.setText("");
+		gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.verticalAlignment = GridData.CENTER;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.horizontalSpan = 3;
+		this.filenameInputResolved.setLayoutData(gridData);
+		
 		// Save Scan Description check box
 		this.saveScanDescriptionCheckBox = new Button(
 				this.saveOptionsComposite, SWT.CHECK);
@@ -457,6 +476,16 @@ public class ChainView extends ViewPart implements IEditorView,
 		this.selectionObservable = ViewersObservables
 				.observeSingleSelection(selectionProvider);
 
+		this.filenameInputResolvedTargetObservable = SWTObservables
+				.observeText(this.filenameInputResolved);
+		this.filenameInputResolvedModelObservable = BeansObservables
+				.observeDetailValue(selectionObservable, Chain.class,
+						Chain.RESOLVED_FILENAME_PROP, String.class);
+		this.context.bindValue(filenameInputResolvedTargetObservable,
+				filenameInputResolvedModelObservable, new UpdateValueStrategy(
+						UpdateValueStrategy.POLICY_UPDATE),
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
+		
 		this.saveScanDescriptionTargetObservable = SWTObservables
 				.observeSelection(saveScanDescriptionCheckBox);
 		this.saveScanDescriptionModelObservable = BeansObservables
@@ -835,7 +864,6 @@ public class ChainView extends ViewPart implements IEditorView,
 		 */
 		@Override
 		public void mouseDown(MouseEvent e) {
-
 			int lastSeperatorIndex;
 			final String filePath;
 

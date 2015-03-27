@@ -19,6 +19,7 @@ import org.apache.log4j.Logger;
 import de.ptb.epics.eve.data.measuringstation.event.DetectorEvent;
 import de.ptb.epics.eve.data.measuringstation.event.ScanEvent;
 import de.ptb.epics.eve.data.measuringstation.event.ScheduleEvent;
+import de.ptb.epics.eve.data.scandescription.macro.MacroResolver;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventTypes;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
@@ -62,6 +63,8 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	/** */
 	public static final String COMMENT_PROP = "comment";
 	
+	public static final String RESOLVED_FILENAME_PROP = "resolvedFilename";
+	
 	/**
 	 * @since 1.19
 	 */
@@ -77,6 +80,8 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	
 	// filename where the results should be saved
 	private String saveFilename;
+	
+	private String resolvedFilename;
 	
 	// indicates if the save should be manually confirmed by the user
 	private boolean confirmSave;
@@ -152,6 +157,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 				.observableList(new ArrayList<ScanModule>());
 		this.scanModuleMap = new HashMap<Integer, ScanModule>();
 		this.saveFilename = "";
+		this.resolvedFilename = "";
 		this.updateListener = new ArrayList<IModelUpdateListener>();
 		
 		this.savePlugInController = new PluginController();
@@ -461,8 +467,26 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		this.propertyChangeSupport.firePropertyChange(Chain.FILE_NAME_PROP,
 				this.saveFilename, this.saveFilename = saveFilename);
 		updateListeners();
+		this.setResolvedFilename(MacroResolver.getInstance().resolve(
+				saveFilename));
 	}
 	
+	/**
+	 * @return the resolvedFilename
+	 */
+	public String getResolvedFilename() {
+		return resolvedFilename;
+	}
+
+	/**
+	 * @param resolvedFilename the resolvedFilename to set
+	 */
+	public void setResolvedFilename(String resolvedFilename) {
+		this.propertyChangeSupport.firePropertyChange(
+				Chain.RESOLVED_FILENAME_PROP, this.resolvedFilename,
+				this.resolvedFilename = resolvedFilename);
+	}
+
 	/**
 	 * Checks whether the scan description should be saved in the results file.
 	 * 
