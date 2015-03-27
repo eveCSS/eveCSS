@@ -54,6 +54,8 @@
 				<pathelement
 					path="${env.WORKSPACE}/repo/applications/plugins/org.csstudio.eve.util/lib/commons-csv-1.0.jar" />
 				<pathelement
+					path="${env.WORKSPACE}/repo/applications/plugins/org.csstudio.eve.util/lib/commons-lang3-3.3.2.jar" />
+				<pathelement
 					path="${env.WORKSPACE}/repo/applications/plugins/org.csstudio.eve.util.tests/files/" />
 				<pathelement
 					path="${env.WORKSPACE}/repo/applications/plugins/org.csstudio.eve.resources/cfg/" />
