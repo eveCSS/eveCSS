@@ -119,6 +119,7 @@ public class ChainView extends ViewPart implements IEditorView,
 
 	private Button filenameBrowseButton;
 
+	private Label filenameInputResolvedLabel;
 	private Label filenameInputResolved;
 	
 	private Button saveScanDescriptionCheckBox;
@@ -267,7 +268,7 @@ public class ChainView extends ViewPart implements IEditorView,
 
 		// GUI: "Filename: <Textfield>"
 		this.filenameLabel = new Label(this.saveOptionsComposite, SWT.NONE);
-		this.filenameLabel.setText("Filename:");
+		this.filenameLabel.setText("Format:");
 		this.filenameInput = new Text(this.saveOptionsComposite, SWT.BORDER);
 		String tooltip = "The file name where the data should be saved.\n "
 				+ "The following macros can be used:\n"
@@ -300,15 +301,16 @@ public class ChainView extends ViewPart implements IEditorView,
 				SWT.NONE);
 		this.filenameBrowseButton.setText("Browse...");
 		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.END;
-		gridData.verticalAlignment = GridData.CENTER;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.verticalAlignment = GridData.FILL;
+		gridData.verticalSpan = 2;
 		this.filenameBrowseButton.setLayoutData(gridData);
 		this.filenameBrowseButton
 				.addMouseListener(new SearchButtonMouseListener());
 
-		/*Label filenameInputResolvedLabel = new Label(this.saveOptionsComposite,
+		Label filenameInputResolvedLabel = new Label(this.saveOptionsComposite,
 				SWT.NONE);
-		filenameInputResolvedLabel.setText("Filename:");*/
+		filenameInputResolvedLabel.setText("Filename:");
 		
 		this.filenameInputResolved = new Label(this.saveOptionsComposite,
 				SWT.NONE);
@@ -317,7 +319,7 @@ public class ChainView extends ViewPart implements IEditorView,
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.verticalAlignment = GridData.CENTER;
 		gridData.horizontalAlignment = GridData.FILL;
-		gridData.horizontalSpan = 3;
+		//gridData.horizontalSpan = 3;
 		this.filenameInputResolved.setLayoutData(gridData);
 		
 		// Save Scan Description check box

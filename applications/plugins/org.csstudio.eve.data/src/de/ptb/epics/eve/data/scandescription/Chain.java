@@ -467,8 +467,13 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		this.propertyChangeSupport.firePropertyChange(Chain.FILE_NAME_PROP,
 				this.saveFilename, this.saveFilename = saveFilename);
 		updateListeners();
-		this.setResolvedFilename(MacroResolver.getInstance().resolve(
-				saveFilename));
+		
+		new Thread("Macro Resolver") {
+			public void run() {
+				setResolvedFilename(MacroResolver.getInstance().resolve(
+						saveFilename));
+			};
+		}.start();
 	}
 	
 	/**

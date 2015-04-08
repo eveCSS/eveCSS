@@ -2,6 +2,10 @@ package de.ptb.epics.eve.data.scandescription.macro;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
+import org.apache.log4j.Logger;
 
 import de.ptb.epics.eve.util.io.StringUtil;
 
@@ -10,6 +14,9 @@ import de.ptb.epics.eve.util.io.StringUtil;
  * @since 1.23
  */
 public class MacroResolver {
+	private static final Logger LOGGER = Logger.getLogger(MacroResolver.class
+			.getName());
+	
 	private static MacroResolver INSTANCE;
 	
 	private List<Macro> macros;
@@ -43,13 +50,71 @@ public class MacroResolver {
 	 * @return the resolved string
 	 */
 	public String resolve(String macroString) {
+		// extract pv names
+		Pattern p = Pattern.compile("\\$\\{PV\\:[^\\}\\$]*\\}");
+		Matcher m = p.matcher(macroString);
+		final List<String> pvmacros = new ArrayList<String>();
+		while (m.find()) {
+			pvmacros.add(m.group());
+		}
+		
+		// connect pvs
+		final List<MacroPV> pvs = new ArrayList<>();
+		for (String s : pvmacros) {
+			pvs.add(new MacroPV(s));
+		}
+		;
+		
+		// add non-pv macros
 		List<String> searchList = new ArrayList<>();
 		List<String> replacementList = new ArrayList<>();
 		for (Macro macro : this.macros) {
 			searchList.add(macro.getName());
 			replacementList.add(macro.resolve());
 		}
+		
+		int loops = 0;
+		final int max_loops = 30;
+		
+		while (loops < max_loops) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				LOGGER.warn(e.getMessage(), e);
+			}
+			if (allResolved(pvs)) {
+				break;
+			}
+			loops++;
+		}
+		if (!pvs.isEmpty()) {
+			if (loops < max_loops) {
+				LOGGER.info("PVs read. Resolving macros.");
+			} else {
+				LOGGER.warn("One or more PVs could not be read and will not be resolved.");
+			}
+		}
+		for (MacroPV macroPV: pvs) {
+			if (!macroPV.isResolved()) {
+				macroPV.disconnect();
+			}
+			searchList.add(macroPV.getName());
+			replacementList.add(macroPV.resolve());
+		}
+		
 		return StringUtil.replaceEach(macroString, searchList, replacementList);
+	}
+	
+	/*
+	 * 
+	 */
+	private boolean allResolved(List<MacroPV> macropvlist) {
+		for (MacroPV macroPV : macropvlist) {
+			if (!macroPV.isResolved()) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	/**
