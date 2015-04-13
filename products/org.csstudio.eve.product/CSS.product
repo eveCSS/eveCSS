@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Css" id="org.csstudio.eve.product.product" application="org.csstudio.eve.product.application" version="1.22.0" useFeatures="true" includeLaunchers="true">
+<product name="Css" id="org.csstudio.eve.product.product" application="org.csstudio.eve.product.application" version="1.22.1" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/org.csstudio.eve.product/icons/about.gif"/>
@@ -30,8 +30,10 @@ See http://ics-web.sns.ornl.gov/css
       <vmArgs>-Xmx256m
 -Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.SimpleLog
 -Dorg.apache.commons.logging.simplelog.defaultlog=fatal
--Dno_proxy=127.0.0.1,localhost</vmArgs>
-      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
+-Dno_proxy=127.0.0.1,localhost
+      </vmArgs>
+      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
+      </vmArgsMac>
    </launcherArgs>
 
    <windowImages i16="/org.csstudio.eve.product/icons/css16.gif" i32="/org.csstudio.eve.product/icons/css32.gif" i48="/org.csstudio.eve.product/icons/css48.gif" i64="/org.csstudio.eve.product/icons/css64.gif" i128="/org.csstudio.eve.product/icons/css128.gif"/>
