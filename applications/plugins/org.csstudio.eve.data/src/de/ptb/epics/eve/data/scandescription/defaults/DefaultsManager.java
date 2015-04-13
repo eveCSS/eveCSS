@@ -56,7 +56,7 @@ public class DefaultsManager {
 	public void init(File pathToDefaults, File schema) {
 		if (!pathToDefaults.exists()) {
 			LOGGER.debug("no defaults file found.");
-			defaults = null;
+			defaults = new Defaults();
 			return;
 		}
 		SchemaFactory schemaFactory = SchemaFactory.newInstance(
