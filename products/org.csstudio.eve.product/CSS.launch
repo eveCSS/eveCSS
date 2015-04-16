@@ -18,6 +18,7 @@
 <stringAttribute key="location" value="${workspace_loc}/../runtime-CSS"/>
 <mapAttribute key="org.eclipse.debug.core.environmentVariables">
 <mapEntry key="EPICS_CA_MAX_ARRAY_BYTES" value="400100"/>
+<mapEntry key="GTK2_RC_FILES" value="/usr/share/themes/Raleigh/gtk-2.0/gtkrc"/>
 <mapEntry key="no_proxy" value="127.0.0.1,localhost"/>
 </mapAttribute>
 <mapAttribute key="org.eclipse.debug.core.preferred_launchers">
