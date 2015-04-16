@@ -364,6 +364,11 @@ public enum MeasuringStationLoaderStates {
 	MOTOR_AXIS_LOWLIMIT_LOADING,
 	
 	/**
+	 * limit violation loading
+	 */
+	MOTOR_AXIS_LIMITVIOLATION_LOADING,
+	
+	/**
 	 * The dead band of a motor axis is loading. Processing is done in sub 
 	 * states.
 	 */

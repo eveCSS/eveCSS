@@ -48,6 +48,8 @@ public class MotorAxis extends AbstractMainPhaseDevice implements Cloneable {
 	private Function softHighLimit;
 	private Function softLowLimit;
 
+	private Function limitViolation;
+	
 	// channel access work is delegated
 	private MotorAxisChannelAccess channelAccess;
 	private int connections;
@@ -457,6 +459,20 @@ public class MotorAxis extends AbstractMainPhaseDevice implements Cloneable {
 	public void setSoftLowLimit(Function softLowLimit) {
 		this.softLowLimit = softLowLimit;
 	}
+	
+	/**
+	 * @return the limitViolation
+	 */
+	public Function getLimitViolation() {
+		return limitViolation;
+	}
+
+	/**
+	 * @param limitViolation the limitViolation to set
+	 */
+	public void setLimitViolation(Function limitViolation) {
+		this.limitViolation = limitViolation;
+	}
 
 	/**
 	 * Connects the motor axis via channel access
@@ -535,6 +551,8 @@ public class MotorAxis extends AbstractMainPhaseDevice implements Cloneable {
 		motorAxis.softHighLimit = (Function) (this.softHighLimit != null ? this.softHighLimit
 				.clone() : null);
 		motorAxis.softLowLimit = (Function) (this.softLowLimit != null ? this.softLowLimit
+				.clone() : null);
+		motorAxis.limitViolation = (Function) (this.limitViolation != null ? this.limitViolation
 				.clone() : null);
 		motorAxis.status = (Function) (this.status != null ? this.status
 				.clone() : null);

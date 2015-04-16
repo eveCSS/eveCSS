@@ -676,7 +676,7 @@ public class DeviceInspectorView extends ViewPart {
 				return null;
 			}
 		});
-		statusColumn.getColumn().setWidth(70);
+		statusColumn.getColumn().setWidth(75);
 		
 		TableViewerColumn tweakRColumn = 
 				new TableViewerColumn(axisTableViewer, SWT.NONE);

@@ -2,15 +2,11 @@
 <schema xmlns="http://www.w3.org/2001/XMLSchema" 
   targetNamespace="http://www.ptb.de/epics/SCML" 
   xmlns:tns="http://www.ptb.de/epics/SCML" 
-  version="3.1">
+  version="3.2">
 
   <!-- please increase version number on every modification
        If the corresponding XML-file of the previous schema version is still
        valid with the current schema version, change the minor version number only -->
-  <!-- Note:
-       The default value for both maxOccurs and minOccurs is 1! 
-       Please do not use tabs, use two white spaces instead
-  -->
 	
   <element name ="scml">
     <complexType>
@@ -240,6 +236,7 @@
       <element name="stop" type="tns:access"></element>
       <element name="highlimit" type="tns:access" minOccurs="0"></element>
       <element name="lowlimit" type="tns:access" minOccurs="0"></element>
+      <element name="limitviolation" type="tns:access" minOccurs="0"></element>
       <element name="status" type="tns:access" minOccurs="0"></element>
       <element name="movedone" type="tns:access" minOccurs="0"></element>
       <element name="trigger" type="tns:access" minOccurs="0"></element>

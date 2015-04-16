@@ -52,6 +52,7 @@ public class CommonTableElement {
 	private CommonTableElementPV offsetPv = null;
 	private CommonTableElementPV softHighLimitPv = null;
 	private CommonTableElementPV softLowLimitPv = null;
+	private CommonTableElementPV limitViolationPv = null;
 	private String unit;
 	private CommonTableElementEngineData engine;
 	private boolean initialized = false;
@@ -180,6 +181,10 @@ public class CommonTableElement {
 							.getSoftLowLimit().getAccess().getVariableID(),
 							this);
 				}
+			}
+			if (motorAxis.getLimitViolation() != null) {
+				this.limitViolationPv = new CommonTableElementPV(motorAxis
+						.getLimitViolation().getAccess().getVariableID(), this);
 			}
 		}
 		if(device instanceof DetectorChannel) {
@@ -320,6 +325,9 @@ public class CommonTableElement {
 		}
 		if (softLowLimitPv != null) {
 			softLowLimitPv.disconnect();
+		}
+		if (limitViolationPv != null) {
+			limitViolationPv.disconnect();
 		}
 		cellEditorHash.clear();
 	}
@@ -635,6 +643,15 @@ public class CommonTableElement {
 						return "Problem";
 					} else if ((status & 8192) > 0) {
 						return "Limit (-)";
+					} else if (limitViolationPv != null) {
+						String limitString = limitViolationPv.getValue();
+						int limitViolation = (int) Double
+								.parseDouble(limitString);
+						if (limitViolation == 1) {
+							return "Soft-Limit";
+						} else {
+							return "Idle";
+						}
 					} else {
 						return "Idle";
 					}

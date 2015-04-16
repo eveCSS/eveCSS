@@ -303,6 +303,10 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				this.currentFunction = new Function();
 				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_LOWLIMIT_LOADING;
 				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
+			} else if (qName.equals("limitviolation")) {
+				this.currentFunction = new Function();
+				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_LIMITVIOLATION_LOADING;
+				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
 			} else if (qName.equals("trigger")) {
 				this.currentFunction = new Function();
 				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_TRIGGER_LOADING;
@@ -1069,6 +1073,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_LOADING;
 				this.subState = MeasuringStationLoaderSubStates.NONE;
 			}
+			break;
 
 		case MOTOR_AXIS_LOWLIMIT_LOADING:
 			if (qName.equals("lowlimit")) {
@@ -1076,7 +1081,16 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_LOADING;
 				this.subState = MeasuringStationLoaderSubStates.NONE;
 			}
+			break;
 
+		case MOTOR_AXIS_LIMITVIOLATION_LOADING:
+			if (qName.equals("limitviolation")) {
+				this.currentMotorAxis.setLimitViolation(this.currentFunction);
+				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_LOADING;
+				this.subState = MeasuringStationLoaderSubStates.NONE;
+			}
+			break;
+			
 		case DEVICES_LOADING:
 			if (qName.equals("devices")) {
 				this.state = MeasuringStationLoaderStates.ROOT;
