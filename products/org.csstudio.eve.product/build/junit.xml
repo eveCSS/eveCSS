@@ -43,7 +43,7 @@
 	<target name="test" depends="test-compile">
 		<mkdir dir="${env.WORKSPACE}/tests/doc" />
 		
-		<junit fork="yes" forkmode="perBatch" haltonfailure="false" failureproperty="failed">
+		<junit fork="yes" includeantruntime="true" forkmode="perBatch" haltonfailure="false" failureproperty="failed">
 			<classpath>
 				<fileset dir="${env.WORKSPACE}/tests/bin/eveCSS">
 					<include name="**/*.jar" />
