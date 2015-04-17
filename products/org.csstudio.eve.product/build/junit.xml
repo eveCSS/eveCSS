@@ -29,7 +29,8 @@
 				destdir="${env.WORKSPACE}/tests/build/"
 				source="1.7"
 				target="1.7"
-				debug="on">
+				debug="on"
+				includeantruntime="true">
 			<classpath>
 				<fileset dir="${env.WORKSPACE}/tests/bin">
 					<include name="**/*.jar" />
