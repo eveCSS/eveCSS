@@ -87,7 +87,7 @@ public class XyPlot extends Figure implements PlotViewComponent, IStateListener 
 	 */
 	private void initXAxis(PlotWindow plotWindow) {
 		this.xyGraph.primaryXAxis.setTitle(plotWindow.getXAxis().getName());
-		boolean timedataX = (Activator.getDefault().getMeasuringStation()
+		boolean timedataX = (Activator.getDefault().getCurrentScanDescription().getMeasuringStation()
 				.getMotorAxisById(plotWindow.getXAxis().getID()).getType() 
 				== DataTypes.DATETIME);
 		if (timedataX) {

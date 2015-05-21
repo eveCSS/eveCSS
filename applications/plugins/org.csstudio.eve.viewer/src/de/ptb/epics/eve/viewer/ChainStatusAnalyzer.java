@@ -152,7 +152,10 @@ public class ChainStatusAnalyzer implements IEngineStatusListener,
 								.getScanModulId()) {
 							this.initializingScanModules.remove(scanModules
 									.get(j));
-							this.executingScanModules.add(scanModules.get(j));
+							if (!this.executingScanModules.contains(scanModules.get(j))) {
+								// scan module j noch nicht in der Liste vorhanden
+								this.executingScanModules.add(scanModules.get(j));
+							}
 							this.pausedScanModules.remove(scanModules.get(j));
 							this.waitingScanModules.remove(scanModules.get(j));
 							this.exitedScanModules.remove(scanModules.get(j));
