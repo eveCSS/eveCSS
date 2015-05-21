@@ -141,10 +141,11 @@ public class ScanDescriptionLoader {
 		final Schema schema = sFactory.newSchema(schemaFile);
 
 		final SAXParserFactory factory = SAXParserFactory.newInstance();
+		factory.setValidating(false);
+		factory.setNamespaceAware(true);
 		factory.setSchema(schema);
-		factory.setValidating(true);
 		final SAXParser saxParser = factory.newSAXParser();
-
+		
 		final ScanDescriptionLoaderHandler handler = new ScanDescriptionLoaderHandler(
 				this.measuringStation);
 		saxParser.parse(this.fileToLoad, handler);

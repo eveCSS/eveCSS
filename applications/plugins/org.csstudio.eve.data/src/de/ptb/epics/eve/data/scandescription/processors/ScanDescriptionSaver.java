@@ -1950,12 +1950,12 @@ public class ScanDescriptionSaver implements
 			final String name) {
 		this.atts.clear();
 		try {
-			this.atts.addAttribute("", "type", "type", "CDATA",
-					EventTypes.typeToString(controlEvent.getEventType()));
 			this.contentHandler.startElement("", name, name, this.atts);
 			this.atts.clear();
 
 			if (controlEvent.getEventType() == EventTypes.MONITOR) {
+				this.contentHandler.startElement("", "monitorevent",
+						"monitorevent", this.atts);
 				this.contentHandler.startElement("", "id", "id", this.atts);
 				this.contentHandler.characters(controlEvent.getEvent().getId()
 						.toCharArray(), 0, controlEvent.getEvent().getId()
@@ -1986,18 +1986,21 @@ public class ScanDescriptionSaver implements
 						.getValue().length());
 				this.contentHandler.endElement("", "limit", "limit");
 			} else if (controlEvent.getEventType() == EventTypes.DETECTOR) {
-				this.atts.clear();
+				this.contentHandler.startElement("", "detectorevent",
+						"detectorevent", this.atts);
 				this.contentHandler.startElement("", "id", "id", this.atts);
 				this.contentHandler.characters(controlEvent.getEvent().getId()
 						.toCharArray(), 0, controlEvent.getEvent().getId()
 						.length());
 				this.contentHandler.endElement("", "id", "id");
 			} else if (controlEvent.getEventType() == EventTypes.SCHEDULE) {
+				this.contentHandler.startElement("", "scheduleevent",
+						"scheduleevent", this.atts);
 				this.contentHandler.startElement("", "incident", "incident",
 						this.atts);
 				ScheduleEvent scheduleEvent = (ScheduleEvent) controlEvent
 						.getEvent();
-				String incident = scheduleEvent.getScheduleTime().toString();
+				String incident = scheduleEvent.getScheduleTime().getXmlValue();
 				this.contentHandler.characters(incident.toCharArray(), 0,
 						incident.length());
 				this.contentHandler.endElement("", "incident", "incident");
@@ -2016,6 +2019,23 @@ public class ScanDescriptionSaver implements
 						tag.length());
 				this.contentHandler.endElement("", "smid", "smid");
 			}
+			this.atts.clear();
+			switch (controlEvent.getEventType()) {
+			case DETECTOR:
+				this.contentHandler.endElement("", "detectorevent",
+						"detectorevent");
+				break;
+			case MONITOR:
+				this.contentHandler.endElement("", "monitorevent",
+						"monitorevent");
+				break;
+			case SCHEDULE:
+				this.contentHandler.endElement("", "scheduleevent",
+						"scheduleevent");
+				break;
+			default:
+				break;
+			}
 			if (name.equals("pauseevent")) {
 				atts.clear();
 				this.contentHandler.startElement("", "action",
@@ -2027,6 +2047,7 @@ public class ScanDescriptionSaver implements
 								.toString()).length());
 				this.contentHandler.endElement("", "action", "action");
 			}
+			this.atts.clear();
 			this.contentHandler.endElement("", name, name);
 		} catch (SAXException e) {
 			logger.error(e.getMessage(), e);

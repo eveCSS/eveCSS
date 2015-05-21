@@ -42,7 +42,7 @@ public class AddEvent implements IHandler {
 	public Object execute(ExecutionEvent executionEvent) throws ExecutionException {
 		String eventId = executionEvent.getParameter(
 				"de.ptb.epics.eve.editor.command.AddEvent.EventId");
-		EventTypes eventType = EventTypes.valueOf(executionEvent.getParameter(
+		EventTypes eventType = EventTypes.stringToType(executionEvent.getParameter(
 				"de.ptb.epics.eve.editor.command.AddEvent.EventType"));
 		EventImpacts eventImpact = EventImpacts.valueOf(executionEvent.getParameter(
 				"de.ptb.epics.eve.editor.command.AddEvent.EventImpact"));

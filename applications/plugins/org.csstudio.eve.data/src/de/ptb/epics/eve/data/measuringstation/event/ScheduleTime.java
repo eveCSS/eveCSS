@@ -1,5 +1,7 @@
 package de.ptb.epics.eve.data.measuringstation.event;
 
+import javax.xml.bind.annotation.XmlEnumValue;
+
 /**
  * @author Marcus Michalsky
  * @since 1.19
@@ -9,22 +11,39 @@ public enum ScheduleTime {
 	/**
 	 * The ScheduleEvent is triggered at the start of the scan module
 	 */
-	START {
+	@XmlEnumValue(value = "Start")
+	START("Start") {
 		@Override 
 		public String toString() {
-			return "S";
+			return "Start";
 		}
 	},
 	
 	/**
 	 * The Schedule Event is triggered at the end of the scan module
 	 */
-	END {
+	@XmlEnumValue(value = "End")
+	END("End") {
 		@Override 
 		public String toString() {
-			return "E";
+			return "End";
 		}
 	};
+	
+	private String value;
+	
+	private ScheduleTime(String s) {
+		this.value = s;
+	}
+	
+	/**
+	 * Returns the String representation (used in XML)
+	 * @return the String representation (used in XML)
+	 * @since 1.23
+	 */
+	public String getXmlValue() {
+		return this.value;
+	}
 	
 	public static ScheduleTime stringToEnum(String s) {
 		switch (s) {

@@ -1,14 +1,16 @@
 package de.ptb.epics.eve.data.scandescription.defaults;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.bind.annotation.*;
 
 /**
  * @author Marcus Michalsky
  * @since 1.8
  */
 @XmlType(propOrder = { "id", "averageCount", "maxDeviation", "minimum",
-		"maxAttempts", "normalizeId", "deferred" })
+		"maxAttempts", "normalizeId", "redoEvents", "deferred" })
 public class DefaultsChannel implements Comparable<DefaultsChannel> {
 	private String id;
 	private Integer averageCount;
@@ -16,6 +18,7 @@ public class DefaultsChannel implements Comparable<DefaultsChannel> {
 	private Double minimum;
 	private Integer maxAttempts;
 	private String normalizeId;
+	private List<DefaultsRedoEvent> redoEvents;
 	private Boolean deferred;
 	
 	/**
@@ -29,6 +32,7 @@ public class DefaultsChannel implements Comparable<DefaultsChannel> {
 		this.maxAttempts = null;
 		this.normalizeId = null;
 		this.deferred = false;
+		this.redoEvents = new ArrayList<DefaultsRedoEvent>();
 	}
 	
 	/**
@@ -120,6 +124,21 @@ public class DefaultsChannel implements Comparable<DefaultsChannel> {
 	@XmlElement(name="normalize_id")
 	public void setNormalizeId(String normalizeId) {
 		this.normalizeId = normalizeId;
+	}
+	
+	/**
+	 * @return the redoEvents
+	 */
+	public List<DefaultsRedoEvent> getRedoEvents() {
+		return redoEvents;
+	}
+
+	/**
+	 * @param redoEvents the redoEvents to set
+	 */
+	@XmlElement(name = "redoevent")
+	public void setRedoEvents(List<DefaultsRedoEvent> redoEvents) {
+		this.redoEvents = redoEvents;
 	}
 
 	/**

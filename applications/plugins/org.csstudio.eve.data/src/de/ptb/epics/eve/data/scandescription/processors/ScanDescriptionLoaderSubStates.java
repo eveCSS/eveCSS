@@ -7,11 +7,11 @@ package de.ptb.epics.eve.data.scandescription.processors;
  * @author Marcus Michalsky
  */
 public enum ScanDescriptionLoaderSubStates {
-
 	NONE,
 	
 	SCHEDULEEVENT_LOADING,
 	MONITOREVENT_LOADING,
+	DETECTOREVENT_LOADING,
 	EVENT_ID_NEXT,
 	EVENT_ID_READ,
 	EVENT_LIMIT_NEXT,

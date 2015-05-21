@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schema xmlns="http://www.w3.org/2001/XMLSchema" 
-  targetNamespace="http://www.ptb.de/epics/SCML" 
+  targetNamespace="http://www.ptb.de/epics/SCML"
   xmlns:tns="http://www.ptb.de/epics/SCML" 
-  version="3.2">
+  version="4.0">
 
   <!-- please increase version number on every modification
        If the corresponding XML-file of the previous schema version is still
@@ -115,31 +115,42 @@
       <group ref="tns:smeventGroup"></group>
       <element name="action" type="tns:eventactions"></element>
     </sequence>
-    <attribute name="type" type="tns:event" use="required"></attribute>
   </complexType>
 
   <complexType name="smevent">
     <sequence>
       <group ref="tns:smeventGroup"></group>
     </sequence>
-    <attribute name="type" type="tns:event" use="required"></attribute>
   </complexType>
   
   <group name="smeventGroup">
-    <sequence>
-      <choice>
-        <sequence>
-          <element name="id" type="tns:identifier"></element>
-          <element name="limit" type="tns:limit" minOccurs="0"></element>
-        </sequence>
-        <sequence>
-          <element name="incident" type="tns:incident" default="End"></element>
-          <element name="chainid" type="tns:zeroToThousand"></element>
-          <element name="smid" type="tns:zeroToHundredthousand"></element>
-        </sequence>
-      </choice>
-    </sequence>
+    <choice>
+      <element name="detectorevent" type="tns:detectorevent"></element>
+      <element name="monitorevent" type="tns:monitorevent"></element>
+      <element name="scheduleevent" type="tns:scheduleevent"></element>
+    </choice>
   </group>
+
+  <complexType name="detectorevent">
+    <sequence>
+      <element name="id" type="tns:identifier"></element>
+    </sequence>
+  </complexType>
+
+  <complexType name="monitorevent">
+    <sequence>
+      <element name="id" type="tns:identifier"></element>
+      <element name="limit" type="tns:limit"></element>
+    </sequence>
+  </complexType>
+  
+  <complexType name="scheduleevent">
+    <sequence>
+      <element name="incident" type="tns:incident" default="End"></element>
+      <element name="chainid" type="tns:zeroToThousand"></element>
+      <element name="smid" type="tns:zeroToHundredthousand"></element>
+    </sequence>
+  </complexType>
 
   <simpleType name="eventactions">
     <restriction base="string">

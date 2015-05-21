@@ -30,7 +30,7 @@ public class DetectorEvent extends ScanEvent implements
 				" " + (char)187 + " " + 
 				this.channel.getAbstractDevice().getName() + 
 				" ( D-" + this.channel.getScanModule().getChain().getId() + 
-				"-" + this.channel.getScanModule().getId() + ")";
+				"-" + this.channel.getScanModule().getId() + " )";
 		this.channel.getScanModule().addChannelChangeListener(this);
 		//this.channel.getScanModule().getChain().addScanModuleChangeListener(this);
 	}

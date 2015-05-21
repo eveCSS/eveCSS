@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlEnumValue;
+
 /**
  * Contains all available comparison types 
  *
@@ -15,33 +17,51 @@ public enum ComparisonTypes {
 	
 	/**
 	 * Equals
-	 *
-	 * @uml.property  name="eQ"
-	 * @uml.associationEnd  
 	 */
-	EQ, 
+	@XmlEnumValue(value = "eq")
+	EQ("eq") {
+		@Override
+		public String toString() {
+			return "eq";
+		}
+	},
+	
 	/**
 	 * Not Equal
-	 *
-	 * @uml.property  name="nE"
-	 * @uml.associationEnd  
 	 */
-	NE,
+	@XmlEnumValue(value = "ne")
+	NE("ne") {
+		@Override
+		public String toString() {
+			return "ne";
+		}
+	},
+	
 	/**
 	 * Greater Than
-	 *
-	 * @uml.property  name="gT"
-	 * @uml.associationEnd  
 	 */
-	GT,
+	@XmlEnumValue(value = "gt")
+	GT("gt") {
+		@Override
+		public String toString() {
+			return "gt";
+		}
+	},
+	
 	/**
 	 * Less Than
-	 *
-	 * @uml.property  name="lT"
-	 * @uml.associationEnd  
 	 */
-	LT;
+	@XmlEnumValue(value = "lt")
+	LT("lt") {
+		@Override
+		public String toString() {
+			return "lt";
+		}
+	};
 
+	private ComparisonTypes(String s) {
+	}
+	
 	/**
 	 * Converts a <code>String</code> into its corresponding 
 	 * <code>ComparisonType</code>.
@@ -65,7 +85,7 @@ public enum ComparisonTypes {
 		} else if(name.equals("lt")) {
 			return ComparisonTypes.LT;
 		} 
-		return null;		
+		return null;
 	}
 	
 	/**

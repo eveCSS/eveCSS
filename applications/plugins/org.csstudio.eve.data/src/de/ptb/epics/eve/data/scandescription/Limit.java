@@ -5,6 +5,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlValue;
+
 import de.ptb.epics.eve.data.ComparisonTypes;
 import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
@@ -17,26 +21,12 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @author Marcus Michalsky
  */
+@XmlType
 public class Limit implements IModelUpdateProvider {
-
-	/*
-	 * The data type for the value.
-	 */
 	private DataTypes type;
-	
-	/*
-	 * The comparison type or operator.
-	 */
 	private ComparisonTypes comparison;
-	
-	/*
-	 * the value on the right side.
-	 */
 	private String value;
 
-	/*
-	 * Listeners that will be notified of updates of this object.
-	 */
 	private List<IModelUpdateListener> modelUpdateListener;
 	
 	/**
@@ -102,6 +92,7 @@ public class Limit implements IModelUpdateProvider {
 	 * @param comparison the operator of the comparison
 	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
+	@XmlAttribute(name = "comparison")
 	public void setComparison(final ComparisonTypes comparison) {
 		if(comparison == null) {
 			throw new IllegalArgumentException(
@@ -126,6 +117,7 @@ public class Limit implements IModelUpdateProvider {
 	 * @param type the data type of the value.
 	 * @throws IllegalArgumentException if the argument is <code>null</code>.
 	 */
+	@XmlAttribute(name = "type")
 	public void setType(final DataTypes type) {
 		if(type == null) {
 			throw new IllegalArgumentException(
@@ -150,6 +142,7 @@ public class Limit implements IModelUpdateProvider {
 	 * @param value the value of the Limit.
 	 * @throws IllegalArgumentException if the argument is <code>null</code>.
 	 */
+	@XmlValue
 	public void setValue(final String value) {
 		if(value == null) {
 			throw new IllegalArgumentException(

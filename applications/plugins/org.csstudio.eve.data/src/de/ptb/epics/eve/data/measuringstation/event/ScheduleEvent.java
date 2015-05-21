@@ -73,13 +73,30 @@ public class ScheduleEvent extends ScanEvent implements
 	}
 	
 	/**
+	 * 
+	 * @return
+	 * @since 1.23
+	 */
+	public String getShortId() {
+		if (this.scheduleTime.equals(ScheduleTime.START)) {
+			return this.getId().substring(0, this.getId().length() - 3); 
+		} else {
+			return this.getId().substring(0, this.getId().length() - 6);
+		}
+	}
+	
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public String getName() {
 		return this.name;
 	}
-
+	
+	public String getShortName() {
+		return "Schedule ( " + this.getShortId() + " )";
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */

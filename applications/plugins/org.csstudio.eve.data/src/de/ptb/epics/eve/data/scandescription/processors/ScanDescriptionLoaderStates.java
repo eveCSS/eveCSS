@@ -49,16 +49,6 @@ public enum ScanDescriptionLoaderStates {
 	CHAIN_LOADING,
 
 	/**
-	 * The begin tag of the start event has been read.
-	 */
-	CHAIN_STARTEVENT_NEXT,
-
-	/**
-	 * The start event has been read and the handler waits for the closing tag.
-	 */
-	CHAIN_STARTEVENT_READ,
-
-	/**
 	 * The begin tag of the comment has been read.
 	 */
 	CHAIN_COMMENT_NEXT,
@@ -116,29 +106,13 @@ public enum ScanDescriptionLoaderStates {
 	CHAIN_SAVESCANDESCRIPTION_READ,
 
 	/**
-	 * The start events are loading.
+	 * The begin tag of the start event has been read.
 	 */
-	CHAIN_STARTEVENT,
-
-	/**
-	 * The pause events are loading.
-	 */
-	CHAIN_PAUSEEVENT,
-
-	/**
-	 * The redo events are loading.
-	 */
-	CHAIN_REDOEVENT,
-
-	/**
-	 * The break events are loading.
-	 */
-	CHAIN_BREAKEVENT,
-
-	/**
-	 * The stop events are loading.
-	 */
-	CHAIN_STOPEVENT,
+	CHAIN_STARTEVENT_LOADING,
+	CHAIN_REDOEVENT_LOADING,
+	CHAIN_BREAKEVENT_LOADING,
+	CHAIN_STOPEVENT_LOADING,
+	CHAIN_PAUSEEVENT_LOADING,
 
 	/**
 	 * The scan modules section ha begun.
@@ -291,25 +265,10 @@ public enum ScanDescriptionLoaderStates {
 	 */
 	CHAIN_SCANMODULE_TRIGGERCONFIRMCHANNEL_READ,
 	
-	/**
-	 * The trigger events of the scan module are loading.
-	 */
-	CHAIN_SCANMODULE_TRIGGEREVENT,
-
-	/**
-	 * The break events of the scan module are loading.
-	 */
-	CHAIN_SCANMODULE_BREAKEVENT,
-
-	/**
-	 * The redo events of the scan module are loading.
-	 */
-	CHAIN_SCANMODULE_REDOEVENT,
-
-	/**
-	 * The pause events of the scan module are loading.
-	 */
-	CHAIN_SCANMODULE_PAUSEEVENT,
+	CHAIN_SCANMODULE_TRIGGEREVENT_LOADING,
+	CHAIN_SCANMODULE_BREAKEVENT_LOADING,
+	CHAIN_SCANMODULE_REDOEVENT_LOADING,
+	CHAIN_SCANMODULE_PAUSEEVENT_LOADING,
 
 	/**
 	 * A Prescan is loading.
@@ -627,7 +586,7 @@ public enum ScanDescriptionLoaderStates {
 	/**
 	 * The redo event to the detector channel is loading.
 	 */
-	CHAIN_SCANMODULE_DETECTOR_REDOEVENT,
+	CHAIN_SCANMODULE_DETECTOR_REDOEVENT_LOADING,
 
 	CHAIN_SCANMODULE_DETECTOR_DEFERRED_NEXT,
 	

@@ -1,5 +1,7 @@
 package de.ptb.epics.eve.data;
 
+import javax.xml.bind.annotation.XmlEnumValue;
+
 /**
  * The event types used in the Application.
  * 
@@ -12,20 +14,41 @@ public enum EventTypes {
 	 * Used for monitor events. These are events which are defined in the scan
 	 * description and represents a state at the measuring station.
 	 */
-	MONITOR,
+	@XmlEnumValue(value = "monitor")
+	MONITOR("monitor") {
+		@Override
+		public String toString() {
+			return "monitor";
+		}
+	},
 
 	/**
 	 * Used for schedule events. These are events which are defined in a
 	 * relation to a Scan Module and occur when the Scan Module has finished.
 	 */
-	SCHEDULE,
+	@XmlEnumValue(value = "schedule")
+	SCHEDULE("schedule") {
+		@Override
+		public String toString() {
+			return "schedule";
+		}
+	},
 
 	/**
 	 * Used for detector ready event, which may be sent if a detector is ready
 	 * to take data.
 	 */
-	DETECTOR;
+	@XmlEnumValue(value = "detector")
+	DETECTOR("detector") {
+		@Override
+		public String toString() {
+			return "detector";
+		}
+	};
 
+	private EventTypes(String s) {
+	}
+	
 	/**
 	 * Converts a <code>String</code> of a method type (<code>MethodTypes</code>
 	 * ) into its corresponding event type (<code>EventTypes</code>).

@@ -23,6 +23,7 @@ import org.csstudio.swt.xygraph.figures.Trace.TraceType;
 import org.eclipse.swt.graphics.RGB;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import de.ptb.epics.eve.data.ComparisonTypes;
@@ -75,7 +76,7 @@ import de.ptb.epics.eve.data.scandescription.processors.adaptees.ScheduleEventAd
 public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 	// logging
-	private static Logger logger = Logger
+	private static Logger LOGGER = Logger
 			.getLogger(ScanDescriptionLoaderHandler.class.getName());
 
 	// The measuring station that contains the devices
@@ -170,6 +171,30 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		this.measuringStation = measuringStation;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void error(SAXParseException e) throws SAXException {
+		LOGGER.error(e.getMessage(), e);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void fatalError(SAXParseException e) throws SAXException {
+		LOGGER.fatal(e.getMessage(), e);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void warning(SAXParseException e) throws SAXException {
+		LOGGER.warn(e.getMessage(), e);
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -274,65 +299,20 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			} else if (qName.equals("savescandescription")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SAVESCANDESCRIPTION_NEXT;
 			} else if (qName.equals("startevent")) {
-				this.currentControlEvent = new ControlEvent(
-						EventTypes.stringToType(atts.getValue("type")));
-				if (atts.getValue("type").equals("schedule")) {
-					this.currentScheduleEventAdaptee = new ScheduleEventAdaptee();
-					this.subState = ScanDescriptionLoaderSubStates.SCHEDULEEVENT_LOADING;
-				} else { // Detector and Monitor ??
-					this.currentDetectorEventAdaptee = new DetectorEventAdaptee();
-					this.subState = ScanDescriptionLoaderSubStates.MONITOREVENT_LOADING;
-				}
-				this.state = ScanDescriptionLoaderStates.CHAIN_STARTEVENT;
+				this.state = ScanDescriptionLoaderStates.CHAIN_STARTEVENT_LOADING;
 			} else if (qName.equals("pauseevent")) {
-				this.currentControlEvent = new PauseEvent(
-						EventTypes.stringToType(atts.getValue("type")));
-				if (atts.getValue("type").equals("schedule")) {
-					this.currentScheduleEventAdaptee = new ScheduleEventAdaptee();
-					this.subState = ScanDescriptionLoaderSubStates.PAUSESCHEDULEEVENT_LOADING;
-				} else { // Detector and Monitor
-					this.currentDetectorEventAdaptee = new DetectorEventAdaptee();
-					this.subState = ScanDescriptionLoaderSubStates.PAUSEMONITOREVENT_LOADING;
-				}
-				this.state = ScanDescriptionLoaderStates.CHAIN_PAUSEEVENT;
+				this.state = ScanDescriptionLoaderStates.CHAIN_PAUSEEVENT_LOADING;
 			} else if (qName.equals("redoevent")) {
-				this.currentControlEvent = new ControlEvent(
-						EventTypes.stringToType(atts.getValue("type")));
-				if (atts.getValue("type").equals("schedule")) {
-					this.currentScheduleEventAdaptee = new ScheduleEventAdaptee();
-					this.subState = ScanDescriptionLoaderSubStates.SCHEDULEEVENT_LOADING;
-				} else { // Detector and Monitor
-					this.currentDetectorEventAdaptee = new DetectorEventAdaptee();
-					this.subState = ScanDescriptionLoaderSubStates.MONITOREVENT_LOADING;
-				}
-				this.state = ScanDescriptionLoaderStates.CHAIN_REDOEVENT;
+				this.state = ScanDescriptionLoaderStates.CHAIN_REDOEVENT_LOADING;
 			} else if (qName.equals("breakevent")) {
-				this.currentControlEvent = new ControlEvent(
-						EventTypes.stringToType(atts.getValue("type")));
-				if (atts.getValue("type").equals("schedule")) {
-					this.currentScheduleEventAdaptee = new ScheduleEventAdaptee();
-					this.subState = ScanDescriptionLoaderSubStates.SCHEDULEEVENT_LOADING;
-				} else { // Detector and Monitor
-					this.currentDetectorEventAdaptee = new DetectorEventAdaptee();
-					this.subState = ScanDescriptionLoaderSubStates.MONITOREVENT_LOADING;
-				}
-				this.state = ScanDescriptionLoaderStates.CHAIN_BREAKEVENT;
+				this.state = ScanDescriptionLoaderStates.CHAIN_BREAKEVENT_LOADING;
 			} else if (qName.equals("stopevent")) {
-				this.currentControlEvent = new ControlEvent(
-						EventTypes.stringToType(atts.getValue("type")));
-				if (atts.getValue("type").equals("schedule")) {
-					this.currentScheduleEventAdaptee = new ScheduleEventAdaptee();
-					this.subState = ScanDescriptionLoaderSubStates.SCHEDULEEVENT_LOADING;
-				} else { // Detector and Monitor
-					this.currentDetectorEventAdaptee = new DetectorEventAdaptee();
-					this.subState = ScanDescriptionLoaderSubStates.MONITOREVENT_LOADING;
-				}
-				this.state = ScanDescriptionLoaderStates.CHAIN_STOPEVENT;
+				this.state = ScanDescriptionLoaderStates.CHAIN_STOPEVENT_LOADING;
 			} else if (qName.equals("scanmodules")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULES_LOADING;
 			}
 			break;
-
+			
 		case CHAIN_SCANMODULES_LOADING:
 			if (qName.equals("scanmodule")) {
 				this.currentScanModule = new ScanModule(Integer.parseInt(atts
@@ -372,49 +352,13 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			} else if (qName.equals("triggerconfirmchannel")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_TRIGGERCONFIRMCHANNEL_NEXT;
 			} else if (qName.equals("triggerevent")) {
-				this.currentControlEvent = new ControlEvent(
-						EventTypes.stringToType(atts.getValue("type")));
-				if (atts.getValue("type").equals("schedule")) {
-					this.currentScheduleEventAdaptee = new ScheduleEventAdaptee();
-					this.subState = ScanDescriptionLoaderSubStates.SCHEDULEEVENT_LOADING;
-				} else { // Detector and Monitor
-					this.currentDetectorEventAdaptee = new DetectorEventAdaptee();
-					this.subState = ScanDescriptionLoaderSubStates.MONITOREVENT_LOADING;
-				}
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_TRIGGEREVENT;
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_TRIGGEREVENT_LOADING;
 			} else if (qName.equals("breakevent")) {
-				this.currentControlEvent = new ControlEvent(
-						EventTypes.stringToType(atts.getValue("type")));
-				if (atts.getValue("type").equals("schedule")) {
-					this.currentScheduleEventAdaptee = new ScheduleEventAdaptee();
-					this.subState = ScanDescriptionLoaderSubStates.SCHEDULEEVENT_LOADING;
-				} else { // Detector and Monitor
-					this.currentDetectorEventAdaptee = new DetectorEventAdaptee();
-					this.subState = ScanDescriptionLoaderSubStates.MONITOREVENT_LOADING;
-				}
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_BREAKEVENT;
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_BREAKEVENT_LOADING;
 			} else if (qName.equals("redoevent")) {
-				this.currentControlEvent = new ControlEvent(
-						EventTypes.stringToType(atts.getValue("type")));
-				if (atts.getValue("type").equals("schedule")) {
-					this.currentScheduleEventAdaptee = new ScheduleEventAdaptee();
-					this.subState = ScanDescriptionLoaderSubStates.SCHEDULEEVENT_LOADING;
-				} else { // Detector and Monitor
-					this.currentDetectorEventAdaptee = new DetectorEventAdaptee();
-					this.subState = ScanDescriptionLoaderSubStates.MONITOREVENT_LOADING;
-				}
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_REDOEVENT;
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_REDOEVENT_LOADING;
 			} else if (qName.equals("pauseevent")) {
-				this.currentControlEvent = new PauseEvent(
-						EventTypes.stringToType(atts.getValue("type")));
-				if (atts.getValue("type").equals("schedule")) {
-					this.currentScheduleEventAdaptee = new ScheduleEventAdaptee();
-					this.subState = ScanDescriptionLoaderSubStates.PAUSESCHEDULEEVENT_LOADING;
-				} else { // Detector and Monitor
-					this.currentDetectorEventAdaptee = new DetectorEventAdaptee();
-					this.subState = ScanDescriptionLoaderSubStates.PAUSEMONITOREVENT_LOADING;
-				}
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PAUSEEVENT;
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PAUSEEVENT_LOADING;
 			} else if (qName.equals("prescan")) {
 				this.currentPrescan = new Prescan();
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PRESCAN_LOADING;
@@ -437,7 +381,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PLOT_LOADING;
 			}
 			break;
-
+			
 		case CHAIN_SCANMODULE_POSITIONING_LOADING:
 			if (qName.equals("axis_id")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSITIONING_AXIS_ID_NEXT;
@@ -543,21 +487,52 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			} else if (qName.equals("sendreadyevent")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_DETECTORREADYEVENT_NEXT;
 			} else if (qName.equals("redoevent")) {
-				this.currentControlEvent = new ControlEvent(
-						EventTypes.stringToType(atts.getValue("type")));
-				if (atts.getValue("type").equals("schedule")) {
-					this.currentScheduleEventAdaptee = new ScheduleEventAdaptee();
-					this.subState = ScanDescriptionLoaderSubStates.SCHEDULEEVENT_LOADING;
-				} else { // Detector and Monitor
-					this.currentDetectorEventAdaptee = new DetectorEventAdaptee();
-					this.subState = ScanDescriptionLoaderSubStates.MONITOREVENT_LOADING;
-				}
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_REDOEVENT;
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_REDOEVENT_LOADING;
 			} else if (qName.equals("deferredtrigger")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_DEFERRED_NEXT;
 			}
 			break;
 
+		case CHAIN_STARTEVENT_LOADING:
+		case CHAIN_REDOEVENT_LOADING:
+		case CHAIN_BREAKEVENT_LOADING:
+		case CHAIN_STOPEVENT_LOADING:
+		case CHAIN_SCANMODULE_TRIGGEREVENT_LOADING:
+		case CHAIN_SCANMODULE_BREAKEVENT_LOADING:
+		case CHAIN_SCANMODULE_REDOEVENT_LOADING:
+		case CHAIN_SCANMODULE_DETECTOR_REDOEVENT_LOADING:
+			if (qName.equals("detectorevent")) {
+				this.currentControlEvent = new ControlEvent(EventTypes.DETECTOR);
+				this.currentDetectorEventAdaptee = new DetectorEventAdaptee();
+				this.subState = ScanDescriptionLoaderSubStates.DETECTOREVENT_LOADING;
+			} else if (qName.equals("monitorevent")) {
+				this.currentControlEvent = new ControlEvent(EventTypes.MONITOR);
+				this.currentDetectorEventAdaptee = new DetectorEventAdaptee();
+				this.subState = ScanDescriptionLoaderSubStates.MONITOREVENT_LOADING;
+			} else if (qName.equals("scheduleevent")) {
+				this.currentControlEvent = new ControlEvent(EventTypes.SCHEDULE);
+				this.currentScheduleEventAdaptee = new ScheduleEventAdaptee();
+				this.subState = ScanDescriptionLoaderSubStates.SCHEDULEEVENT_LOADING;
+			}
+			break;
+			
+		case CHAIN_PAUSEEVENT_LOADING:
+		case CHAIN_SCANMODULE_PAUSEEVENT_LOADING:
+			if (qName.equals("detectorevent")) {
+				this.currentControlEvent = new PauseEvent(EventTypes.DETECTOR);
+				this.currentDetectorEventAdaptee = new DetectorEventAdaptee();
+				this.subState = ScanDescriptionLoaderSubStates.DETECTOREVENT_LOADING;
+			} else if (qName.equals("monitorevent")) {
+				this.currentControlEvent = new PauseEvent(EventTypes.MONITOR);
+				this.currentDetectorEventAdaptee = new DetectorEventAdaptee();
+				this.subState = ScanDescriptionLoaderSubStates.DETECTOREVENT_LOADING;
+			} else if (qName.equals("scheduleevent")) {
+				this.currentControlEvent = new PauseEvent(EventTypes.SCHEDULE);
+				this.currentScheduleEventAdaptee = new ScheduleEventAdaptee();
+				this.subState = ScanDescriptionLoaderSubStates.SCHEDULEEVENT_LOADING;
+			}
+			break;
+			
 		case CHAIN_SCANMODULE_PLOT_LOADING:
 			if (qName.equals("name")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PLOT_NAME_NEXT;
@@ -582,6 +557,12 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 		switch (this.subState) {
 
+		case DETECTOREVENT_LOADING:
+			if (qName.equals("id")) {
+				this.subState = ScanDescriptionLoaderSubStates.EVENT_ID_NEXT;
+			}
+			break;
+		
 		case MONITOREVENT_LOADING:
 			if (qName.equals("id")) {
 				this.subState = ScanDescriptionLoaderSubStates.EVENT_ID_NEXT;
@@ -685,6 +666,10 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 	public void endElement(final String uri, final String localName,
 			final String qName) throws SAXException {
 
+		if (textBuffer == null) {
+			textBuffer = new StringBuffer();
+		}
+		
 		String temp = textBuffer.toString().trim();
 		textBuffer = new StringBuffer(temp);
 
@@ -727,7 +712,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 					.parseBoolean(textBuffer.toString()));
 			this.state = ScanDescriptionLoaderStates.CHAIN_SAVESCANDESCRIPTION_READ;
 			break;
-
+			
 		case CHAIN_SCANMODULE_TYPE_NEXT:
 			this.currentScanModule.setType(ScanModuleTypes.getEnum(textBuffer.toString()));
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_TYPE_READ;
@@ -771,7 +756,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			try {
 				settletime = Double.parseDouble(textBuffer.toString());
 			} catch (final NumberFormatException e) {
-				logger.error(e.getMessage(), e);
+				LOGGER.error(e.getMessage(), e);
 			}
 			this.currentScanModule.setSettleTime(settletime);
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SETTLETIME_READ;
@@ -782,7 +767,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			try {
 				triggerdelay = Double.parseDouble(textBuffer.toString());
 			} catch (final NumberFormatException e) {
-				logger.error(e.getMessage(), e);
+				LOGGER.error(e.getMessage(), e);
 			}
 			this.currentScanModule.setTriggerDelay(triggerdelay);
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_TRIGGERDELAY_READ;
@@ -888,7 +873,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 									"yyyy-MM-dd HH:mm:ss.SSS")
 									.parse(startValue));
 						} catch (ParseException e) {
-							logger.error(e.getMessage(), e);
+							LOGGER.error(e.getMessage(), e);
 						}
 						break;
 					case RELATIVE:
@@ -898,7 +883,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 							this.currentAxis.setStart(factory
 									.newDuration(textBuffer.toString()));
 						} catch (DatatypeConfigurationException e2) {
-							logger.error(e2.getMessage(), e2);
+							LOGGER.error(e2.getMessage(), e2);
 						}
 						break;
 					}
@@ -929,7 +914,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 											"yyyy-MM-dd HH:mm:ss.SSS")
 											.parse(stopValue));
 						} catch (ParseException e1) {
-							logger.error(e1.getMessage(), e1);
+							LOGGER.error(e1.getMessage(), e1);
 						}
 						break;
 					case RELATIVE:
@@ -939,7 +924,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 							this.currentAxis.setStop(factory
 									.newDuration(textBuffer.toString()));
 						} catch (DatatypeConfigurationException e2) {
-							logger.error(e2.getMessage(), e2);
+							LOGGER.error(e2.getMessage(), e2);
 						}
 						break;
 					}
@@ -968,7 +953,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 							this.currentAxis.setStepwidth(new SimpleDateFormat(
 									"HH:mm:ss.SSS").parse(stepwidthValue));
 						} catch (ParseException e) {
-							logger.error(e.getMessage(), e);
+							LOGGER.error(e.getMessage(), e);
 						}
 						break;
 					case RELATIVE:
@@ -978,7 +963,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 							this.currentAxis.setStepwidth(factory
 									.newDuration(textBuffer.toString()));
 						} catch (DatatypeConfigurationException e2) {
-							logger.error(e2.getMessage(), e2);
+							LOGGER.error(e2.getMessage(), e2);
 						}
 						break;
 					}
@@ -1037,7 +1022,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			try {
 				averageCount = Integer.parseInt(textBuffer.toString());
 			} catch (NumberFormatException e) {
-				logger.error(e.getMessage(), e);
+				LOGGER.error(e.getMessage(), e);
 			}
 
 			if (this.currentChannel.getAbstractDevice() != null) {
@@ -1336,7 +1321,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 						foundMarkstyle = true;
 					}
 				} catch (UnsupportedEncodingException e) {
-					logger.error(e.getMessage(), e);
+					LOGGER.error(e.getMessage(), e);
 				}
 			}
 
@@ -1349,7 +1334,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 							this.currentYAxis.setMarkstyle(markstyles[i]);
 						}
 					} catch (UnsupportedEncodingException e) {
-						logger.error(e.getMessage(), e);
+						LOGGER.error(e.getMessage(), e);
 					}
 				}
 			}
@@ -1480,7 +1465,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.scanDescription.add(this.currentChain);
 			}
 			break;
-
+			
 		case CHAIN_COMMENT_READ:
 			if (qName.equals("comment")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
@@ -1519,7 +1504,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			}
 			break;
 
-		case CHAIN_STARTEVENT:
+		case CHAIN_STARTEVENT_LOADING:
 			if (qName.equals("startevent")) {
 				this.currentChain.addStartEvent(this.currentControlEvent);
 				this.createEventPair();
@@ -1527,18 +1512,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 			}
 			break;
-
-		case CHAIN_PAUSEEVENT:
-			if (qName.equals("pauseevent")) {
-				this.currentChain.addPauseEvent((PauseEvent) 
-						this.currentControlEvent);
-				this.createEventPair();
-				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
-				this.subState = ScanDescriptionLoaderSubStates.NONE;
-			}
-			break;
-
-		case CHAIN_REDOEVENT:
+			
+		case CHAIN_REDOEVENT_LOADING:
 			if (qName.equals("redoevent")) {
 				this.currentChain.addRedoEvent(this.currentControlEvent);
 				this.createEventPair();
@@ -1546,8 +1521,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 			}
 			break;
-
-		case CHAIN_BREAKEVENT:
+			
+		case CHAIN_BREAKEVENT_LOADING:
 			if (qName.equals("breakevent")) {
 				this.currentChain.addBreakEvent(this.currentControlEvent);
 				this.createEventPair();
@@ -1555,10 +1530,20 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 			}
 			break;
-
-		case CHAIN_STOPEVENT:
+				
+		case CHAIN_STOPEVENT_LOADING:
 			if (qName.equals("stopevent")) {
 				this.currentChain.addStopEvent(this.currentControlEvent);
+				this.createEventPair();
+				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
+				this.subState = ScanDescriptionLoaderSubStates.NONE;
+			}
+			break;
+				
+		case CHAIN_PAUSEEVENT_LOADING:
+			if (qName.equals("pauseevent")) {
+				this.currentChain.addPauseEvent((PauseEvent) 
+						this.currentControlEvent);
 				this.createEventPair();
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
@@ -1659,7 +1644,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			}
 			break;
 			
-		case CHAIN_SCANMODULE_TRIGGEREVENT:
+		case CHAIN_SCANMODULE_TRIGGEREVENT_LOADING:
 			if (qName.equals("triggerevent")) {
 				this.currentScanModule.addTriggerEvent(this.currentControlEvent);
 				this.createEventPair();
@@ -1667,8 +1652,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 			}
 			break;
-
-		case CHAIN_SCANMODULE_REDOEVENT:
+			
+		case CHAIN_SCANMODULE_REDOEVENT_LOADING:
 			if (qName.equals("redoevent")) {
 				this.currentScanModule.addRedoEvent(this.currentControlEvent);
 				this.createEventPair();
@@ -1676,8 +1661,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 			}
 			break;
-
-		case CHAIN_SCANMODULE_BREAKEVENT:
+			
+		case CHAIN_SCANMODULE_BREAKEVENT_LOADING:
 			if (qName.equals("breakevent")) {
 				this.currentScanModule.addBreakEvent(this.currentControlEvent);
 				this.createEventPair();
@@ -1685,8 +1670,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 			}
 			break;
-
-		case CHAIN_SCANMODULE_PAUSEEVENT:
+			
+		case CHAIN_SCANMODULE_PAUSEEVENT_LOADING:
 			if (qName.equals("pauseevent")) {
 				this.currentScanModule.addPauseEvent((PauseEvent) 
 						this.currentControlEvent);
@@ -1791,7 +1776,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			}
 			break;
 
-		case CHAIN_SCANMODULE_DETECTOR_REDOEVENT:
+		case CHAIN_SCANMODULE_DETECTOR_REDOEVENT_LOADING:
 			if (qName.equals("redoevent")) {
 				this.currentChannel.addRedoEvent(this.currentControlEvent);
 				this.createEventPair();
@@ -2151,7 +2136,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				startEvent = this.scanDescription.getDefaultStartEvent();
 			}
 			if (startEvent == null) {
-				logger.fatal("unable to create start event!");
+				LOGGER.fatal("unable to create start event!");
 				startEvent = this.scanDescription.getDefaultStartEvent();
 			}
 
@@ -2339,7 +2324,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				pair.getKey().setEvent(
 						this.scheduleEventAdapter.marshal(pair.getValue()));
 			} catch (Exception e) {
-				logger.error(e.getMessage(), e);
+				LOGGER.error(e.getMessage(), e);
 			}
 		}
 		for (Pair<ControlEvent, DetectorEventAdaptee> pair : this.detectorEventPairs) {
@@ -2347,7 +2332,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				pair.getKey().setEvent(
 						this.detectorEventAdapter.marshal(pair.getValue()));
 			} catch (Exception e) {
-				logger.error(e.getMessage(), e);
+				LOGGER.error(e.getMessage(), e);
 			}
 		}
 		
