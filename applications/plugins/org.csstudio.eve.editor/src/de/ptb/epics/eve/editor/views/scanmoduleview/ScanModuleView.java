@@ -33,6 +33,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.MouseAdapter;
@@ -94,6 +95,9 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	private ScanModule currentScanModule;
 
 	private Composite top;
+	// Scrolled Composite wrapping top to enable scrolling
+	private ScrolledComposite sc;
+
 	private Composite generalComposite;
 	private Composite actionsComposite;
 	private Composite eventsComposite;
@@ -223,13 +227,16 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		this.maximizeIcon = Activator.getDefault().getImageRegistry()
 				.get("MAXIMIZE");
 
-		this.top = new Composite(parent, SWT.NONE);
+		this.sc = new ScrolledComposite(parent, SWT.V_SCROLL);
+		
+		this.top = new Composite(sc, SWT.NONE);
 		GridLayout gridLayout = new GridLayout();
-		gridLayout.marginWidth = 0;
-		gridLayout.marginHeight = 0;
-		gridLayout.verticalSpacing = 4;
 		this.top.setLayout(gridLayout);
 
+		this.sc.setExpandHorizontal(true);
+		this.sc.setExpandVertical(true);
+		this.sc.setContent(this.top);
+		
 		this.createGeneralComposite(this.top);
 		this.sashForm = new SashForm(this.top, SWT.VERTICAL);
 		this.sashForm.SASH_WIDTH = 4;
@@ -246,6 +253,8 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		this.eventsCompositeMaximized = false;
 
 		this.restoreState();
+
+		this.sc.setMinSize(this.top.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 
 		top.setVisible(false);
 
