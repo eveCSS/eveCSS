@@ -79,7 +79,7 @@ public class EventComposite extends Composite implements PropertyChangeListener 
 	private void createViewer() {
 		this.tableViewer = new TableViewer(this, SWT.V_SCROLL | SWT.H_SCROLL);
 		GridData gridData = new GridData();
-		gridData.minimumHeight = 120;
+		gridData.minimumHeight = 50;
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;

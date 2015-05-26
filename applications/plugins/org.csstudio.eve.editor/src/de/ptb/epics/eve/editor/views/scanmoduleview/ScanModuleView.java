@@ -254,7 +254,7 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 
 		this.restoreState();
 
-		this.sc.setMinSize(this.top.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+		this.sc.setMinSize(this.top.computeSize(500, 500));
 
 		top.setVisible(false);
 
