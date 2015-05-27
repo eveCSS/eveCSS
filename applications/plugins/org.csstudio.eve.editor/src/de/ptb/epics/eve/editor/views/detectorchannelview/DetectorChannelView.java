@@ -331,16 +331,15 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 		this.eventComposite = new Composite(this.bar, SWT.NONE);
 		gridLayout = new GridLayout();
 		this.eventComposite.setLayout(gridLayout);
-
+		
 		// Event Options Tab
 		eventsTabFolder = new CTabFolder(this.eventComposite, SWT.FLAT);
 		this.eventsTabFolder.setSimple(true);
 		this.eventsTabFolder.setBorderVisible(true);
 		gridData = new GridData();
-		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
+		gridData.minimumHeight = 150;
 		gridData.verticalAlignment = GridData.FILL;
-		gridData.horizontalAlignment = GridData.FILL;
 		eventsTabFolder.setLayoutData(gridData);
 
 		redoEventComposite = new EventComposite(eventsTabFolder, SWT.NONE,
