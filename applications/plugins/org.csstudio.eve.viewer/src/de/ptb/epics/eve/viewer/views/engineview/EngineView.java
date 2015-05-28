@@ -4,6 +4,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.Binding;
@@ -406,6 +407,8 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		Activator.getDefault().getEcp1Client().addConnectionStateListener(this);
 		
 		Activator.getDefault().getEcp1Client().addChainStatusListener(this);
+
+		this.sc.setMinSize(this.top.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		
 		// test whether the engine is already running
 		if (Activator.getDefault().getEcp1Client().isRunning()) {
@@ -777,6 +780,8 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 					}
 				});
 				break;
+		default:
+			break;
 		}
 	}
 

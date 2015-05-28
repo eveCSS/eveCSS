@@ -45,7 +45,7 @@ public class DetectorChannelComposite extends ActionComposite {
 	private void createViewer() {
 		this.tableViewer = new TableViewer(this, SWT.FULL_SELECTION);
 		GridData gridData = new GridData();
-		gridData.minimumHeight = 120;
+		gridData.minimumHeight = 50;
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;

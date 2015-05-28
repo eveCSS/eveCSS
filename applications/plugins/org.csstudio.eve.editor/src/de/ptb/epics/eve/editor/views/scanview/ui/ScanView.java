@@ -22,6 +22,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -76,6 +77,7 @@ public class ScanView extends ViewPart implements IEditorView,
 	private ScanDescription currentScanDescription;
 
 	// the utmost composite (which contains all elements)
+	private ScrolledComposite sc = null;
 	private Composite top;
 
 	private Label repeatCountLabel;
@@ -131,9 +133,15 @@ public class ScanView extends ViewPart implements IEditorView,
 			return;
 		}
 
+		this.sc = new ScrolledComposite(parent, SWT.V_SCROLL);
+
 		// top composite
-		this.top = new Composite(parent, SWT.NONE);
+		this.top = new Composite(sc, SWT.NONE);
 		this.top.setLayout(new GridLayout(3, false));
+
+		this.sc.setExpandHorizontal(true);
+		this.sc.setExpandVertical(true);
+		this.sc.setContent(this.top);
 
 		this.repeatCountLabel = new Label(this.top, SWT.NONE);
 		this.repeatCountLabel.setText("Repeat Count:");
@@ -173,6 +181,8 @@ public class ScanView extends ViewPart implements IEditorView,
 		
 		this.createTable(this.top);
 
+		this.sc.setMinSize(this.top.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+
 		this.top.setVisible(false);
 
 		// listen to selection changes (if a chain (or one of its scan modules)
@@ -202,6 +212,7 @@ public class ScanView extends ViewPart implements IEditorView,
 		GridData gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
+		gridData.minimumHeight = 100;
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.FILL;
 		gridData.horizontalSpan = 3;
