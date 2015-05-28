@@ -3,8 +3,10 @@ package de.ptb.epics.eve.ecp1.debug;
 import org.apache.log4j.Logger;
 
 import de.ptb.epics.eve.ecp1.client.interfaces.IChainStatusListener;
+import de.ptb.epics.eve.ecp1.client.interfaces.IChainProgressListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IConnectionStateListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IEngineStatusListener;
+import de.ptb.epics.eve.ecp1.client.interfaces.IEngineVersionListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IErrorListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IMeasurementDataListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.INewXMLFileListener;
@@ -15,14 +17,15 @@ import de.ptb.epics.eve.ecp1.client.model.Error;
 import de.ptb.epics.eve.ecp1.client.model.MeasurementData;
 import de.ptb.epics.eve.ecp1.client.model.Request;
 import de.ptb.epics.eve.ecp1.commands.ChainStatusCommand;
+import de.ptb.epics.eve.ecp1.commands.ChainProgressCommand;
 import de.ptb.epics.eve.ecp1.types.EngineStatus;
 
 /**
  * @author Marcus Michalsky
  * @since 1.13
  */
-public class ECP1ClientLogger implements IEngineStatusListener,
-		IChainStatusListener, IErrorListener, IMeasurementDataListener,
+public class ECP1ClientLogger implements IEngineStatusListener, IEngineVersionListener,
+		IChainStatusListener, IChainProgressListener, IErrorListener, IMeasurementDataListener,
 		IRequestListener, INewXMLFileListener, IConnectionStateListener,
 		IPlayListListener {
 	
@@ -84,8 +87,17 @@ public class ECP1ClientLogger implements IEngineStatusListener,
 	public void chainStatusChanged(ChainStatusCommand chainStatusCommand) {
 		LOGGER.debug(chainStatusCommand.getChainStatus() + 
 				" | Chain: " + chainStatusCommand.getChainId() +
-				" | SM: " + chainStatusCommand.getScanModulId() +
-				" | PosCnt: " + chainStatusCommand.getPositionCounter()
+				" | SMs: " + chainStatusCommand.getAllScanModuleIds().size()
+				);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void chainProgressChanged(ChainProgressCommand chainProgressCommand) {
+		LOGGER.debug( "Chain: " + chainProgressCommand.getChainId() +
+				" | PosCnt: " + chainProgressCommand.getPositionCounter()
 				);
 	}
 
@@ -97,6 +109,17 @@ public class ECP1ClientLogger implements IEngineStatusListener,
 			int repeatCount) {
 		LOGGER.debug(engineStatus + 
 				" | XML: " + xmlName
+				);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void engineVersionChanged(int version, int revision,
+			int patchlevel) {
+		LOGGER.debug("Engine Version: " + version + "." + revision + "." +
+				patchlevel
 				);
 	}
 
