@@ -77,6 +77,8 @@ import de.ptb.epics.eve.util.jface.SelectionProviderWrapper;
  */
 public class ChainView extends ViewPart implements IEditorView,
 		ISelectionListener, IModelUpdateListener {
+	public ChainView() {
+	}
 
 	/** the unique identifier of the view */
 	public static final String ID = "de.ptb.epics.eve.editor.views.ChainView";
@@ -119,7 +121,6 @@ public class ChainView extends ViewPart implements IEditorView,
 
 	private Button filenameBrowseButton;
 
-	private Label filenameInputResolvedLabel;
 	private Label filenameInputResolved;
 	
 	private Button saveScanDescriptionCheckBox;
@@ -393,17 +394,22 @@ public class ChainView extends ViewPart implements IEditorView,
 		// **************************************
 
 		this.eventsComposite = new Composite(this.bar, SWT.NONE);
-		fillLayout = new FillLayout();
-		fillLayout.marginWidth = 5;
-		this.eventsComposite.setLayout(fillLayout);
+		gridLayout = new GridLayout();
+		this.eventsComposite.setLayout(gridLayout);
 
 		// events tab folder contains the tabs pause, redo, break & stop
-		eventsTabFolder = new CTabFolder(this.eventsComposite, SWT.FLAT);
+		this.eventsTabFolder = new CTabFolder(this.eventsComposite, SWT.FLAT);
 		this.eventsTabFolder.setSimple(true);
 		this.eventsTabFolder.setBorderVisible(true);
-		eventsTabFolder
+		this.eventsTabFolder
 				.addSelectionListener(new EventsTabFolderSelectionListener());
 
+		gridData = new GridData();
+		gridData.verticalAlignment = GridData.FILL;
+		gridData.minimumHeight = 150;
+		gridData.grabExcessVerticalSpace = true;
+		this.eventsTabFolder.setLayoutData(gridData);
+		
 		pauseEventComposite = new EventComposite(eventsTabFolder, SWT.NONE,
 				ControlEventTypes.PAUSE_EVENT, this);
 		redoEventComposite = new EventComposite(eventsTabFolder, SWT.NONE,

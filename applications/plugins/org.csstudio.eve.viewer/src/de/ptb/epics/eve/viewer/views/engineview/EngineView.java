@@ -357,6 +357,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 4;
+		gridData.minimumHeight = 100;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
 		
@@ -368,7 +369,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		tableColumn.setWidth(50);
 		tableColumn.setText("Chain");
 		TableColumn tableColumn1 = new TableColumn(this.statusTable, SWT.NONE);
-		tableColumn1.setWidth(45);
+		tableColumn1.setWidth(50);
 		tableColumn1.setText("SM ID");
 		TableColumn tableColumn2 = new TableColumn(this.statusTable, SWT.NONE);
 		tableColumn2.setWidth(100);
@@ -398,6 +399,8 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		Activator.getDefault().getEcp1Client().addConnectionStateListener(this);
 		
 		Activator.getDefault().getEcp1Client().addChainStatusListener(this);
+
+		this.sc.setMinSize(this.top.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		
 		// test whether the engine is already running
 		if (Activator.getDefault().getEcp1Client().isRunning()) {
@@ -653,6 +656,8 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 								this.skipButton.setEnabled(true);
 								this.haltButton.setEnabled(true);
 			break;
+		default:
+			break;
 		}
 	}	
 	
@@ -863,6 +868,8 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 					}
 				});
 				break;
+		default:
+			break;
 		}
 	}
 
