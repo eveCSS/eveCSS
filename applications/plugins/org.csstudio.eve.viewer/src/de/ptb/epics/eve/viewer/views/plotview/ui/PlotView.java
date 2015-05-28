@@ -349,7 +349,7 @@ public class PlotView extends ViewPart implements IChainStatusListener,
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void updateOccured(int remainTime) {
+	public void updateOccured(int chainId, int remainTime) {
 	}
 
 	/**
@@ -362,10 +362,10 @@ public class PlotView extends ViewPart implements IChainStatusListener,
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
-	public void fillStatusTable(int chainId, int scanModuleId, String smName, String status,
-			int remainTime) {
-	}
+//	@Override
+//	public void fillStatusTable(int chainId, int scanModuleId, String smName, String status,
+//			int remainTime) {
+//	}
 
 	/**
 	 * {@inheritDoc}
@@ -393,8 +393,21 @@ public class PlotView extends ViewPart implements IChainStatusListener,
 	 */
 	@Override
 	public void chainStatusChanged(ChainStatusCommand chainStatusCommand) {
-		if (chainStatusCommand.getChainStatus().equals(ChainStatus.EXECUTING_SM)) {
+		if (chainStatusCommand.getChainStatus().equals(ChainStatus.EXECUTING)) {
 			this.loadedScmlFile = this.bufferedScmlFile;
 		}
+	}
+
+	@Override
+	public void fillChainStatus(int chainId, String status) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void fillScanModuleStatus(int chainId, int scanModuleId,
+			String status, String reason) {
+		// TODO Auto-generated method stub
+		
 	}
 }

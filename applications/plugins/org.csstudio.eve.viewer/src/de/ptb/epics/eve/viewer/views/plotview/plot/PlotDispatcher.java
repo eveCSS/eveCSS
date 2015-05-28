@@ -61,59 +61,51 @@ public class PlotDispatcher implements PropertyChangeListener,
 			LOGGER.debug("chain status changed, but no scan description received.");
 			return;
 		}
-		if (chainStatusCommand.getChainStatus().equals(ChainStatus.EXECUTING_SM)) {
+		final Chain chain = this.scanDescription.getChain(chainStatusCommand.getChainId());
+		if (chain == null) {
+			return;
+		}
+
+		if (chainStatusCommand.getChainStatus().equals(ChainStatus.EXECUTING)) {
 			// scan module executes
-			final Chain chain = this.scanDescription
-					.getChain(chainStatusCommand.getChainId());
-			if (chain == null) {
-				return;
-			}
-			final ScanModule sm = chain.getScanModuleById(chainStatusCommand
-					.getScanModulId());
-			if (sm == null) {
-				return;
-			}
-			if (this.initializedModules.contains(
-					new Pair<Integer, Integer>(chain.getId(), sm.getId()))) {
-				if (LOGGER.isDebugEnabled()) {
-					LOGGER.debug("SM " + sm.getId() + " (Chain "
-							+ chain.getId() + ") already initialized");
+			for (int smid : chainStatusCommand.getAllScanModuleIds()) {
+				final ScanModule sm = chain.getScanModuleById(smid);
+				if ((sm != null) && (!this.initializedModules.contains(
+							new Pair<Integer, Integer>(chain.getId(), sm.getId())))) {
+						this.initializedModules.add(new Pair<Integer, Integer>(chain
+								.getId(), sm.getId()));
+						Activator.getDefault().getWorkbench().getDisplay()
+								.syncExec(new Runnable() {
+									@Override
+									public void run() {
+										initPlotWindows(java.util.Arrays.asList(sm
+												.getPlotWindows()));
+									}
+								});
+
+						
+						
+						
+						
 				}
-				return;
 			}
-			this.initializedModules.add(new Pair<Integer, Integer>(chain
-					.getId(), sm.getId()));
-			Activator.getDefault().getWorkbench().getDisplay()
-					.syncExec(new Runnable() {
-						@Override
-						public void run() {
-							initPlotWindows(java.util.Arrays.asList(sm
-									.getPlotWindows()));
-						}
-					});
-		} else if (chainStatusCommand.getChainStatus().equals(ChainStatus.EXITING_SM)) {
+		} else if (chainStatusCommand.getChainStatus().equals(ChainStatus.EXECUTING_DONE)) {
 			// scan module finished
-			final Chain chain = this.scanDescription
-					.getChain(chainStatusCommand.getChainId());
-			if (chain == null) {
-				return;
-			}
-			final ScanModule sm = chain.getScanModuleById(chainStatusCommand
-					.getScanModulId());
-			if (sm == null) {
-				return;
-			}
-			this.initializedModules.remove(new Pair<Integer, Integer>(chain
-					.getId(), sm.getId()));
-			LOGGER.debug("finishing SM " + sm.getId() + " (Chain "
-					+ chain.getId() + ")");
-			for (final PlotView plotView : this.plotViews) {
-				Activator.getDefault().getWorkbench().getDisplay()
-				.syncExec(new Runnable() {
-					@Override
-					public void run() {
-						plotView.finish();
-					}});
+			for (int smid : chainStatusCommand.getAllScanModuleIds()) {
+				final ScanModule sm = chain.getScanModuleById(smid);
+				final Pair<Integer, Integer> checkIds = 
+						new Pair<Integer, Integer>(chain.getId(), sm.getId());
+				if ((sm != null) && (this.initializedModules.contains(checkIds))) {
+						this.initializedModules.remove(checkIds);
+						for (final PlotView plotView : this.plotViews) {
+							Activator.getDefault().getWorkbench().getDisplay()
+							.syncExec(new Runnable() {
+								@Override
+								public void run() {
+									plotView.finish();
+								}});
+						}
+				}
 			}
 		}
 	}

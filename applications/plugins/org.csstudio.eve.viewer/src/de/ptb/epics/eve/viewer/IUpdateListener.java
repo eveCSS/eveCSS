@@ -8,7 +8,7 @@ public interface IUpdateListener {
 	 * 
 	 * @param remainTime
 	 */
-	void updateOccured(int remainTime);
+	void updateOccured(int chainId, int remainTime);
 	
 	/**
 	 * 
@@ -22,8 +22,23 @@ public interface IUpdateListener {
 	 * @param status
 	 * @param remainTime
 	 */
-	void fillStatusTable(int chainId, int scanModuleId, String smName, String status, int remainTime);
+	//void fillStatusTable(int chainId, int scanModuleId, String smName, String status, int remainTime);
 	
+	/**
+	 * 
+	 * @param chainId
+	 * @param status
+	 */
+	void fillChainStatus(int chainId, String status);
+
+	/**
+	 * 
+	 * @param chainId
+	 * @param scanModuleId
+	 * @param status
+	 */
+	void fillScanModuleStatus(int chainId, int scanModuleId, String status, String reason);
+
 	/**
 	 * 
 	 * @param name

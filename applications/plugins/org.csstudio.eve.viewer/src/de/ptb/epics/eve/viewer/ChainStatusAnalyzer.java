@@ -3,45 +3,33 @@ package de.ptb.epics.eve.viewer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
-import de.ptb.epics.eve.data.scandescription.Chain;
-import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.ecp1.client.interfaces.IChainStatusListener;
+import de.ptb.epics.eve.ecp1.client.interfaces.IChainProgressListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IEngineStatusListener;
 import de.ptb.epics.eve.ecp1.commands.ChainStatusCommand;
+import de.ptb.epics.eve.ecp1.commands.ChainProgressCommand;
+import de.ptb.epics.eve.ecp1.types.ChainStatus;
 import de.ptb.epics.eve.ecp1.types.EngineStatus;
+import de.ptb.epics.eve.ecp1.types.ScanModuleReason;
+import de.ptb.epics.eve.ecp1.types.ScanModuleStatus;
 
 public class ChainStatusAnalyzer implements IEngineStatusListener,
-		IChainStatusListener {
+		IChainStatusListener, IChainProgressListener {
 
 	private static Logger logger = Logger.getLogger(ChainStatusAnalyzer.class.getName());
 
-	private final List<Chain> idleChains;
-	private final List<Chain> runningChains;
-	private final List<Chain> pausedChains;
-	private final List<Chain> exitedChains;
-	private final List<ScanModule> initializingScanModules;
-	private final List<ScanModule> executingScanModules;
-	private final List<ScanModule> pausedScanModules;
-	private final List<ScanModule> waitingScanModules;
-	private final List<ScanModule> exitedScanModules;
+	private HashMap<Integer, ChainStatusCommand> LastChainStatus;
 
 	private final List<IUpdateListener> updateListener;
 
 	public ChainStatusAnalyzer() {
 
-		this.idleChains = new ArrayList<Chain>();
-		this.runningChains = new ArrayList<Chain>();
-		this.pausedChains = new ArrayList<Chain>();
-		this.exitedChains = new ArrayList<Chain>();
-
-		this.initializingScanModules = new ArrayList<ScanModule>();
-		this.executingScanModules = new ArrayList<ScanModule>();
-		this.pausedScanModules = new ArrayList<ScanModule>();
-		this.waitingScanModules = new ArrayList<ScanModule>();
-		this.exitedScanModules = new ArrayList<ScanModule>();
+		LastChainStatus = new HashMap<Integer, ChainStatusCommand>();
 
 		this.updateListener = new ArrayList<IUpdateListener>();
 
@@ -53,20 +41,15 @@ public class ChainStatusAnalyzer implements IEngineStatusListener,
 		logger.debug(engineStatus);
 		
 		if (engineStatus == EngineStatus.LOADING_XML) {
-			this.resetChainList();
-		} else if (engineStatus == EngineStatus.IDLE_XML_LOADED) {
 			for (IUpdateListener iul : this.updateListener) {
-				iul.setLoadedScmlFile(xmlName);
-				if (engineStatus == EngineStatus.IDLE_XML_LOADED) {
-					iul.fillEngineStatus(engineStatus, repeatCount);
-				}
+				if (engineStatus == EngineStatus.IDLE_XML_LOADED) iul.setLoadedScmlFile(xmlName);
+				iul.clearStatusTable();;
 			}
-		} else {
-			// bei allen anderen Engine Status Meldungen wird gesetzt, was
-			// gemacht werden darf.
-			final Iterator<IUpdateListener> it = this.updateListener.iterator();
-			while (it.hasNext()) {
-				it.next().fillEngineStatus(engineStatus, repeatCount);
+
+		} else  {
+			for (IUpdateListener iul : this.updateListener) {
+				if (engineStatus == EngineStatus.IDLE_XML_LOADED) iul.setLoadedScmlFile(xmlName);
+				iul.fillEngineStatus(engineStatus, repeatCount);
 			}
 		}
 	}
@@ -80,222 +63,53 @@ public class ChainStatusAnalyzer implements IEngineStatusListener,
 
 	}
 
+	public void chainProgressChanged(final ChainProgressCommand chainProgressCommand) {
+		for (IUpdateListener iul : this.updateListener) {
+			iul.updateOccured(chainProgressCommand.getChainId(), 
+					chainProgressCommand.getRemainingTime());
+		}
+	}
+	
 	public void chainStatusChanged(final ChainStatusCommand chainStatusCommand) {
-
+		
 		logger.debug(chainStatusCommand.getChainStatus());
 
-		if (Activator.getDefault().getCurrentScanDescription() == null) {
-			switch (chainStatusCommand.getChainStatus()) {
-			case STARTING_SM:
-				final Iterator<IUpdateListener> it = this.updateListener
-						.iterator();
-				while (it.hasNext()) {
-					it.next().fillStatusTable(chainStatusCommand.getChainId(),
-							chainStatusCommand.getScanModulId(), 
-							" ", "initialized",
-							chainStatusCommand.getRemainingTime());
-				}
-				break;
-			}
-
-			return;
-		}
-		List<Chain> chains = null;
+		int chid = chainStatusCommand.getChainId();
+		ChainStatusCommand csd = chainStatusCommand;
 		
-		switch (chainStatusCommand.getChainStatus()) {
-		case IDLE:
-			chains = Activator.getDefault().getCurrentScanDescription()
-					.getChains();
-			for (int i = 0; i < chains.size(); ++i) {
-				if (chains.get(i).getId() == chainStatusCommand.getChainId()) {
-					this.idleChains.add(chains.get(i));
-					this.runningChains.remove(chains.get(i));
-					this.pausedChains.remove(chains.get(i));
-					this.exitedChains.remove(chains.get(i));
-					break;
-				}
-			}
-			break;
-
-		case STARTING_SM:
-			chains = Activator.getDefault().getCurrentScanDescription()
-					.getChains();
-			for (int i = 0; i < chains.size(); ++i) {
-				if (chains.get(i).getId() == chainStatusCommand.getChainId()) {
-					List<ScanModule> scanModules = chains.get(i)
-							.getScanModules();
-					for (int j = 0; j < scanModules.size(); ++j) {
-						if (scanModules.get(j).getId() == chainStatusCommand
-								.getScanModulId()) {
-							this.initializingScanModules
-									.add(scanModules.get(j));
-							this.executingScanModules
-									.remove(scanModules.get(j));
-							this.pausedScanModules.remove(scanModules.get(j));
-							this.waitingScanModules.remove(scanModules.get(j));
-							this.exitedScanModules.remove(scanModules.get(j));
-						}
+		if (LastChainStatus.containsKey(chid)) {
+			ChainStatusCommand oldStatus = LastChainStatus.get(chid);
+			Set<Integer> oldSMIds = oldStatus.getAllScanModuleIds();
+			for (IUpdateListener iul : this.updateListener) {
+				if (oldStatus.getChainStatus() != csd.getChainStatus()) 
+					iul.fillChainStatus(chid, ChainStatus.toString(csd.getChainStatus()));
+				for (int smid : csd.getAllScanModuleIds()) {
+					if (!(oldSMIds.contains(smid) && (csd.getScanModuleStatus(smid) == oldStatus.getScanModuleStatus(smid)) 
+							&& csd.getScanModuleReason(smid) == oldStatus.getScanModuleReason(smid))){
+						iul.fillScanModuleStatus(chid, smid, ScanModuleStatus.toString(csd.getScanModuleStatus(smid)),
+								ScanModuleReason.toString(csd.getScanModuleReason(smid)));
 					}
 				}
 			}
-			break;
-
-		case EXECUTING_SM:
-			chains = Activator.getDefault().getCurrentScanDescription()
-					.getChains();
-			for (int i = 0; i < chains.size(); ++i) {
-				if (chains.get(i).getId() == chainStatusCommand.getChainId()) {
-					List<ScanModule> scanModules = chains.get(i)
-							.getScanModules();
-					for (int j = 0; j < scanModules.size(); ++j) {
-						if (scanModules.get(j).getId() == chainStatusCommand
-								.getScanModulId()) {
-							this.initializingScanModules.remove(scanModules
-									.get(j));
-							if (!this.executingScanModules.contains(scanModules.get(j))) {
-								// scan module j noch nicht in der Liste vorhanden
-								this.executingScanModules.add(scanModules.get(j));
-							}
-							this.pausedScanModules.remove(scanModules.get(j));
-							this.waitingScanModules.remove(scanModules.get(j));
-							this.exitedScanModules.remove(scanModules.get(j));
-
-							this.idleChains.remove(scanModules.get(j)
-									.getChain());
-							if (!this.runningChains.contains(scanModules.get(j)
-									.getChain())) {
-								// chain i noch nicht in der Liste vorhanden
-								this.runningChains.add(scanModules.get(j)
-										.getChain());
-								this.pausedChains.remove(scanModules.get(j)
-										.getChain());
-							}
-						}
-					}
-				}
-			}
-			break;
-
-		case SM_PAUSED:
-			chains = Activator.getDefault().getCurrentScanDescription()
-					.getChains();
-			for (int i = 0; i < chains.size(); ++i) {
-				if (chains.get(i).getId() == chainStatusCommand.getChainId()) {
-					List<ScanModule> scanModules = chains.get(i)
-							.getScanModules();
-					for (int j = 0; j < scanModules.size(); ++j) {
-						if (scanModules.get(j).getId() == chainStatusCommand
-								.getScanModulId()) {
-							// Über die Listen die hier gefüllt werden, werden nur die Zustände in der
-							// Tabelle der Engine View gesetzt. Die Knöpfe wie Play usw. werden
-							// nur in der EngineView gesetzt!
-							this.initializingScanModules.remove(scanModules
-									.get(j));
-							this.executingScanModules
-									.remove(scanModules.get(j));
-							this.pausedScanModules.add(scanModules.get(j));
-							this.waitingScanModules.remove(scanModules.get(j));
-							this.exitedScanModules.remove(scanModules.get(j));
-
-//							this.idleChains.add(scanModules.get(j).getChain());
-//							this.runningChains.remove(scanModules.get(j)
-//									.getChain());
-						}
-					}
-				}
-			}
-			break;
-
-		case WAITING_FOR_MANUAL_TRIGGER:
-			chains = Activator.getDefault().getCurrentScanDescription()
-					.getChains();
-			for (int i = 0; i < chains.size(); ++i) {
-				if (chains.get(i).getId() == chainStatusCommand.getChainId()) {
-					List<ScanModule> scanModules = chains.get(i)
-							.getScanModules();
-					for (int j = 0; j < scanModules.size(); ++j) {
-						if (scanModules.get(j).getId() == chainStatusCommand
-								.getScanModulId()) {
-							this.initializingScanModules.remove(scanModules
-									.get(j));
-							this.executingScanModules
-									.remove(scanModules.get(j));
-							this.pausedScanModules.remove(scanModules.get(j));
-							this.waitingScanModules.add(scanModules.get(j));
-							this.exitedScanModules.add(scanModules.get(j));
-
-							this.idleChains.add(scanModules.get(j).getChain());
-							this.runningChains.remove(scanModules.get(j)
-									.getChain());
-						}
-					}
-				}
-			}
-			break;
-
-		case EXITING_SM:
-			chains = Activator.getDefault().getCurrentScanDescription()
-					.getChains();
-			for (int i = 0; i < chains.size(); ++i) {
-				if (chains.get(i).getId() == chainStatusCommand.getChainId()) {
-					List<ScanModule> scanModules = chains.get(i)
-							.getScanModules();
-					for (int j = 0; j < scanModules.size(); ++j) {
-						if (scanModules.get(j).getId() == chainStatusCommand
-								.getScanModulId()) {
-							this.initializingScanModules.remove(scanModules
-									.get(j));
-							this.executingScanModules
-									.remove(scanModules.get(j));
-							this.pausedScanModules.remove(scanModules.get(j));
-							this.waitingScanModules.remove(scanModules.get(j));
-							this.exitedScanModules.add(scanModules.get(j));
-						}
-					}
-				}
-			}
-			break;
-
-		case EXITING_CHAIN:
-			chains = Activator.getDefault().getCurrentScanDescription()
-					.getChains();
-			for (int i = 0; i < chains.size(); ++i) {
-				if (chains.get(i).getId() == chainStatusCommand.getChainId()) {
-					this.idleChains.remove(chains.get(i));
-					this.runningChains.remove(chains.get(i));
-					this.pausedChains.remove(chains.get(i));
-					this.exitedChains.add(chains.get(i));
-				}
-			}
-			break;
-
-		case STORAGE_DONE:
-			final Iterator<IUpdateListener> it2 = this.updateListener
-					.iterator();
-			while (it2.hasNext()) {
-				it2.next().disableSendToFile();
-			}
-			break;
-
-		case CHAIN_PAUSED:
-			chains = Activator.getDefault().getCurrentScanDescription()
-					.getChains();
-//			for (Chain chain: Activator.getDefault().getCurrentScanDescription()
-//					.getChains())
-			for (int i = 0; i < chains.size(); ++i) {
-				if (chains.get(i).getId() == chainStatusCommand.getChainId()) {
-					this.pausedChains.add(chains.get(i));
-					this.runningChains.remove(chains.get(i));
-				}
-			}
-			break;
-			
 		}
-		final Iterator<IUpdateListener> it = this.updateListener.iterator();
-		while (it.hasNext()) {
-			it.next().updateOccured(chainStatusCommand.getRemainingTime());
+		else {
+			for (IUpdateListener iul : this.updateListener) {
+				iul.fillChainStatus(chid, ChainStatus.toString(csd.getChainStatus()));
+				for (int smid : csd.getAllScanModuleIds()) {
+					iul.fillScanModuleStatus(chid, smid, ScanModuleStatus.toString(csd.getScanModuleStatus(smid)),
+							ScanModuleReason.toString(csd.getScanModuleReason(smid)));
+				}
+			}
+		}
+		LastChainStatus.put(chid, chainStatusCommand);
+		
+		if (csd.getChainStatus() == ChainStatus.STORAGE_DONE){
+			for (IUpdateListener iul : this.updateListener) {
+				iul.disableSendToFile();
+			}
 		}
 
+		
 	}
 
 	public boolean addUpdateListener(final IUpdateListener updateListener) {
@@ -306,57 +120,4 @@ public class ChainStatusAnalyzer implements IEngineStatusListener,
 		return this.updateListener.remove(updateListener);
 	}
 
-	public List<Chain> getIdleChains() {
-		return new ArrayList<Chain>(this.idleChains);
-	}
-
-	public List<Chain> getRunningChains() {
-		return new ArrayList<Chain>(this.runningChains);
-	}
-
-	public List<Chain> getPausedChains() {
-		return new ArrayList<Chain>(this.pausedChains);
-	}
-
-	public List<Chain> getExitedChains() {
-		return new ArrayList<Chain>(this.exitedChains);
-	}
-
-	public List<ScanModule> getInitializingScanModules() {
-		return new ArrayList<ScanModule>(this.initializingScanModules);
-	}
-
-	public List<ScanModule> getExecutingScanModules() {
-		return new ArrayList<ScanModule>(this.executingScanModules);
-	}
-
-	public List<ScanModule> getPausedScanModules() {
-		return new ArrayList<ScanModule>(this.pausedScanModules);
-	}
-
-	public List<ScanModule> getWaitingScanModules() {
-		return new ArrayList<ScanModule>(this.waitingScanModules);
-	}
-
-	public List<ScanModule> getExitingScanModules() {
-		return new ArrayList<ScanModule>(this.exitedScanModules);
-	}
-
-	private void resetChainList() {
-		this.idleChains.clear();
-		this.runningChains.clear();
-		this.pausedChains.clear();
-		this.exitedChains.clear();
-
-		this.executingScanModules.clear();
-		this.initializingScanModules.clear();
-		this.pausedScanModules.clear();
-		this.waitingScanModules.clear();
-		this.exitedScanModules.clear();
-
-		final Iterator<IUpdateListener> it = this.updateListener.iterator();
-		while (it.hasNext()) {
-			it.next().clearStatusTable();
-		}
-	}
 }

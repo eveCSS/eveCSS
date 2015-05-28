@@ -14,12 +14,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ProgressBar;
 
-import de.ptb.epics.eve.ecp1.client.interfaces.IChainStatusListener;
+import de.ptb.epics.eve.ecp1.client.interfaces.IChainProgressListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IConnectionStateListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IEngineStatusListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IErrorListener;
 import de.ptb.epics.eve.ecp1.client.model.Error;
-import de.ptb.epics.eve.ecp1.commands.ChainStatusCommand;
+import de.ptb.epics.eve.ecp1.commands.ChainProgressCommand;
 import de.ptb.epics.eve.ecp1.types.EngineStatus;
 import de.ptb.epics.eve.ecp1.types.ErrorType;
 
@@ -29,7 +29,7 @@ import de.ptb.epics.eve.ecp1.types.ErrorType;
  */
 public class ProgressBarComposite extends Composite implements
 		IConnectionStateListener, IEngineStatusListener, IErrorListener,
-		IChainStatusListener {
+		IChainProgressListener {
 	private static final Logger LOGGER = Logger
 			.getLogger(ProgressBarComposite.class.getName());
 	
@@ -76,8 +76,8 @@ public class ProgressBarComposite extends Composite implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void chainStatusChanged(ChainStatusCommand chainStatusCommand) {
-		final ChainStatusCommand finalCommand = chainStatusCommand;
+	public void chainProgressChanged(ChainProgressCommand chainProgressCommand) {
+		final ChainProgressCommand finalCommand = chainProgressCommand;
 		this.progressBar.getDisplay().syncExec(new Runnable() {
 			@Override public void run() {
 				if (finalCommand.getPositionCounter() >= 0) {
