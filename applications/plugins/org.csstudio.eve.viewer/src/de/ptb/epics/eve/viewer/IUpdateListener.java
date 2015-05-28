@@ -18,15 +18,6 @@ public interface IUpdateListener {
 	/**
 	 * 
 	 * @param chainId
-	 * @param scanModuleId
-	 * @param status
-	 * @param remainTime
-	 */
-	//void fillStatusTable(int chainId, int scanModuleId, String smName, String status, int remainTime);
-	
-	/**
-	 * 
-	 * @param chainId
 	 * @param status
 	 */
 	void fillChainStatus(int chainId, String status);

@@ -611,7 +611,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		this.statusTable.getDisplay().syncExec(new Runnable() {
 			@Override public void run() {
 				if (chainIdItems.containsKey(chainId)){
-					chainIdItems.get(chainId).setText( 4, ""+remainTime);		
+					chainIdItems.get(chainId).setText( 5, ""+remainTime);		
 				}
 			}
 		});

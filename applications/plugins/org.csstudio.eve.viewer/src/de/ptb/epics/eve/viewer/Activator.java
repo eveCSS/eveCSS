@@ -129,6 +129,7 @@ public class Activator extends AbstractUIPlugin {
 				XMLDispatcher.DEVICE_DEFINITION_PROP, this.messageList);
 		this.ecp1Client.addEngineStatusListener(this.chainStatusAnalyzer);
 		this.ecp1Client.addChainStatusListener(this.chainStatusAnalyzer);
+		this.ecp1Client.addChainProgressListener(this.chainStatusAnalyzer);
 		this.requestProcessor = new RequestProcessor(Display.getCurrent());
 		this.ecp1Client.addRequestListener(this.requestProcessor);
 		
