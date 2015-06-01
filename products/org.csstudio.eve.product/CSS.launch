@@ -8,7 +8,7 @@
 <stringAttribute key="bootstrap" value=""/>
 <stringAttribute key="checked" value="[NONE]"/>
 <booleanAttribute key="clearConfig" value="false"/>
-<booleanAttribute key="clearws" value="false"/>
+<booleanAttribute key="clearws" value="true"/>
 <booleanAttribute key="clearwslog" value="false"/>
 <stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/CSS"/>
 <booleanAttribute key="default" value="false"/>
@@ -35,12 +35,6 @@
 <setEntry value="org.csstudio.eve.applications.feature:default"/>
 <setEntry value="org.csstudio.eve.core.feature:default"/>
 <setEntry value="org.csstudio.eve.eclipse.feature:default"/>
-<setEntry value="org.csstudio.libs.feature:default"/>
-<setEntry value="org.csstudio.pvmanager.autocomplete.feature:default"/>
-<setEntry value="org.csstudio.pvmanager.ca.feature:default"/>
-<setEntry value="org.csstudio.pvmanager.exec.feature:default"/>
-<setEntry value="org.csstudio.pvmanager.extra.feature:default"/>
-<setEntry value="org.csstudio.pvmanager.feature:default"/>
 <setEntry value="org.eclipse.equinox.p2.core.feature:default"/>
 <setEntry value="org.eclipse.help:default"/>
 <setEntry value="org.eclipse.rcp:default"/>

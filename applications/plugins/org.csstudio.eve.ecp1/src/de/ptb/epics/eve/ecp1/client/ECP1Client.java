@@ -20,8 +20,10 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import org.apache.log4j.Logger;
 
 import de.ptb.epics.eve.ecp1.client.interfaces.IChainStatusListener;
+import de.ptb.epics.eve.ecp1.client.interfaces.IChainProgressListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IConnectionStateListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IEngineStatusListener;
+import de.ptb.epics.eve.ecp1.client.interfaces.IEngineVersionListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IErrorListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IMeasurementDataListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IPlayController;
@@ -31,8 +33,10 @@ import de.ptb.epics.eve.ecp1.client.model.MeasurementData;
 import de.ptb.epics.eve.ecp1.client.model.Request;
 import de.ptb.epics.eve.ecp1.commands.CancelRequestCommand;
 import de.ptb.epics.eve.ecp1.commands.ChainStatusCommand;
+import de.ptb.epics.eve.ecp1.commands.ChainProgressCommand;
 import de.ptb.epics.eve.ecp1.commands.CurrentXMLCommand;
 import de.ptb.epics.eve.ecp1.commands.EngineStatusCommand;
+import de.ptb.epics.eve.ecp1.commands.EngineVersionCommand;
 import de.ptb.epics.eve.ecp1.commands.ErrorCommand;
 import de.ptb.epics.eve.ecp1.commands.GenericRequestCommand;
 import de.ptb.epics.eve.ecp1.commands.IECP1Command;
@@ -48,10 +52,13 @@ import de.ptb.epics.eve.ecp1.commands.PlayListCommand;
  * </ul>
  * To get information about the engine several listeners can be added:
  * <ul>
+ * 	<li>{@link #addEngineVersionListener(IEngineVersionListener)} : engine version</li>
  * 	<li>{@link #addEngineStatusListener(IEngineStatusListener)} : engine status 
  * 		updates as in {@link de.ptb.epics.eve.ecp1.types.EngineStatus}</li>
- * 	<li>{@link #addChainStatusListener(IChainStatusListener)} : chain status
+ * 	<li>{@link #addChainStatusListener(IChainOldStatusListener)} : chain status
  * 		updates as in {@link de.ptb.epics.eve.ecp1.types.ChainStatus}</li>
+ * 	<li>{@link #addChainProgressListener(IChainProgressListener)} : chain progress
+ * 		updates as in {@link de.ptb.epics.eve.ecp1.types.ChainProgress}</li>
  *  <li>{@link #addErrorListener(IErrorListener)} : errors as in 
  *  	{@link de.ptb.epics.eve.ecp1.client.model.Error}</li>
  *  <li>{@link #addMeasurementDataListener(IMeasurementDataListener)} : 
@@ -90,7 +97,9 @@ public class ECP1Client {
 	private PlayListController playListController;
 
 	private final Queue<IEngineStatusListener> engineStatusListener;
+	private final Queue<IEngineVersionListener> engineVersionListener;
 	private final Queue<IChainStatusListener> chainStatusListener;
+	private final Queue<IChainProgressListener> chainProgressListener;
 	private final Queue<IErrorListener> errorListener;
 	private final Queue<IMeasurementDataListener> measurementDataListener;
 	private final Queue<IRequestListener> requestListener;
@@ -118,8 +127,12 @@ public class ECP1Client {
 
 		this.engineStatusListener = 
 				new ConcurrentLinkedQueue<IEngineStatusListener>();
+		this.engineVersionListener = 
+				new ConcurrentLinkedQueue<IEngineVersionListener>();
 		this.chainStatusListener = 
 				new ConcurrentLinkedQueue<IChainStatusListener>();
+		this.chainProgressListener = 
+				new ConcurrentLinkedQueue<IChainProgressListener>();
 		this.errorListener = new ConcurrentLinkedQueue<IErrorListener>();
 		this.measurementDataListener = 
 				new ConcurrentLinkedQueue<IMeasurementDataListener>();
@@ -144,6 +157,7 @@ public class ECP1Client {
 		this.classNames.add(packageName + "CurrentXMLCommand");
 		this.classNames.add(packageName + "EndProgramCommand");
 		this.classNames.add(packageName + "EngineStatusCommand");
+		this.classNames.add(packageName + "EngineVersionCommand");
 		this.classNames.add(packageName + "ErrorCommand");
 
 		this.classNames.add(packageName + "GenericRequestCommand");
@@ -157,6 +171,7 @@ public class ECP1Client {
 		this.classNames.add(packageName + "RepeatCountCommand");
 		this.classNames.add(packageName + "StartCommand");
 		this.classNames.add(packageName + "StopCommand");
+		this.classNames.add(packageName + "ChainProgressCommand");
 
 		this.commands = new HashMap<Character, Constructor<? extends IECP1Command>>();
 		
@@ -355,6 +370,32 @@ public class ECP1Client {
 
 	/**
 	 * Adds the given 
+	 * {@link de.ptb.epics.eve.ecp1.client.interfaces.IEngineVersionListener}.
+	 * 
+	 * @param engineVersionListener the listener that should be added
+	 * @return <code>true</code> if the listener was added, 
+	 * 			<code>false</code> otherwise
+	 */
+	public boolean addEngineVersionListener(
+			final IEngineVersionListener engineVersionListener) {
+		return this.engineVersionListener.add(engineVersionListener);
+	}
+
+	/**
+	 * Removes the given 
+	 * {@link de.ptb.epics.eve.ecp1.client.interfaces.IEngineVersionListener}.
+	 * 
+	 * @param engineVersionListener the listener that should be removed
+	 * @return <code>true</code> if the listener was removed, 
+	 * 			<code>false</code> otherwise
+	 */
+	public boolean removeEngineVersionListener(
+			final IEngineVersionListener engineVersionListener) {
+		return this.engineVersionListener.remove(engineVersionListener);
+	}
+
+	/**
+	 * Adds the given 
 	 * {@link de.ptb.epics.eve.ecp1.client.interfaces.IChainStatusListener}.
 	 * 
 	 * @param chainStatusListener the listener that should be added
@@ -377,6 +418,32 @@ public class ECP1Client {
 	public boolean removeChainStatusListener(
 			final IChainStatusListener chainStatusListener) {
 		return this.chainStatusListener.remove(chainStatusListener);
+	}
+
+	/**
+	 * Adds the given 
+	 * {@link de.ptb.epics.eve.ecp1.client.interfaces.IChainProgressListener}.
+	 * 
+	 * @param chainProgressListener the listener that should be added
+	 * @return <code>true</code> if the listener was added, 
+	 * 			<code>false</code> otherwise
+	 */
+	public boolean addChainProgressListener(
+			final IChainProgressListener chainProgressListener) {
+		return this.chainProgressListener.add(chainProgressListener);
+	}
+
+	/**
+	 * Removes the given 
+	 * {@link de.ptb.epics.eve.ecp1.client.interfaces.IChainProgressListener}.
+	 * 
+	 * @param chainProgressListener the listener that should be removed
+	 * @return <code>true</code> if the listener was removed, 
+	 * 			<code>false</code> otherwise
+	 */
+	public boolean removeChainProgressListener(
+			final IChainProgressListener chainProgressListener) {
+		return this.chainProgressListener.remove(chainProgressListener);
 	}
 
 	/**
@@ -528,6 +595,20 @@ public class ECP1Client {
 										(ChainStatusCommand) command;
 								for (IChainStatusListener csl : chainStatusListener) {
 									csl.chainStatusChanged(chainStatusCommand);
+								}
+							} else if (command instanceof EngineVersionCommand) {
+								final EngineVersionCommand engineVersionCommand = 
+										(EngineVersionCommand) command;
+								for (IEngineVersionListener evl : engineVersionListener) {
+									evl.engineVersionChanged(engineVersionCommand.getVersion(),
+											engineVersionCommand.getRevision(),
+											engineVersionCommand.getPatchlevel());
+								}
+							} else if (command instanceof ChainProgressCommand) {
+								final ChainProgressCommand chainProgressCommand = 
+										(ChainProgressCommand) command;
+								for (IChainProgressListener csl : chainProgressListener) {
+									csl.chainProgressChanged(chainProgressCommand);
 								}
 							} else if (command instanceof ErrorCommand) {
 								final ErrorCommand errorCommand = 

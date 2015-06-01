@@ -3,6 +3,7 @@ package de.ptb.epics.eve.viewer.views.engineview;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -52,7 +53,6 @@ import de.ptb.epics.eve.ecp1.client.interfaces.IConnectionStateListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IErrorListener;
 import de.ptb.epics.eve.ecp1.client.model.Error;
 import de.ptb.epics.eve.ecp1.commands.ChainStatusCommand;
-import de.ptb.epics.eve.ecp1.types.ChainStatus;
 import de.ptb.epics.eve.ecp1.types.EngineStatus;
 import de.ptb.epics.eve.ecp1.types.ErrorType;
 import de.ptb.epics.eve.viewer.Activator;
@@ -135,11 +135,17 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 	private Image autoPlayOnIcon;
 	private Image autoPlayOffIcon;
 	
+	private HashMap<Integer, TableItem> chainIdItems;
+	private HashMap<Integer, HashMap<Integer, TableItem> > scanMItemByChainId;
+	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void createPartControl(final Composite parent) {
+		chainIdItems = new HashMap<Integer, TableItem>();
+		scanMItemByChainId = new HashMap<Integer, HashMap<Integer, TableItem> >();
+
 		playIcon = Activator.getDefault().getImageRegistry().get("PLAY16");
 		pauseIcon = Activator.getDefault().getImageRegistry().get("PAUSE16");
 		stopIcon = Activator.getDefault().getImageRegistry().get("STOP16");
@@ -357,7 +363,6 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 4;
-		gridData.minimumHeight = 100;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
 		
@@ -369,7 +374,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		tableColumn.setWidth(50);
 		tableColumn.setText("Chain");
 		TableColumn tableColumn1 = new TableColumn(this.statusTable, SWT.NONE);
-		tableColumn1.setWidth(50);
+		tableColumn1.setWidth(45);
 		tableColumn1.setText("SM ID");
 		TableColumn tableColumn2 = new TableColumn(this.statusTable, SWT.NONE);
 		tableColumn2.setWidth(100);
@@ -378,8 +383,11 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		tableColumn3.setWidth(80);
 		tableColumn3.setText("Status");
 		TableColumn tableColumn4 = new TableColumn(this.statusTable, SWT.NONE);
-		tableColumn4.setWidth(120);
-		tableColumn4.setText("remaining Time");
+		tableColumn4.setWidth(80);
+		tableColumn4.setText("Reason");
+		TableColumn tableColumn5 = new TableColumn(this.statusTable, SWT.NONE);
+		tableColumn5.setWidth(20);
+		tableColumn5.setText("Time");
 		
 		// SelectionListener um zu erkennen, wann eine Zeile selektiert wird
 		this.statusTable.addSelectionListener(new StatusTableSelectionListener());
@@ -391,11 +399,11 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		Activator.getDefault().getEcp1Client()
 				.addConnectionStateListener(progressBarComposite);
 		Activator.getDefault().getEcp1Client()
-				.addChainStatusListener(progressBarComposite);
+				.addChainProgressListener(progressBarComposite);
 		
 		Activator.getDefault().getChainStatusAnalyzer().addUpdateListener(this);
 		Activator.getDefault().getEcp1Client().addErrorListener(this);
-		this.rebuildText(0);
+//		this.rebuildText(0);
 		Activator.getDefault().getEcp1Client().addConnectionStateListener(this);
 		
 		Activator.getDefault().getEcp1Client().addChainStatusListener(this);
@@ -479,75 +487,6 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		});
 	}
 
-	/*
-	 * 
-	 */
-	private void rebuildText(int remainTime) {
-		if(Activator.getDefault().getCurrentScanDescription() != null) {
-			for(Chain ch : Activator.getDefault().
-					getCurrentScanDescription().getChains()) {
-				
-				if(Activator.getDefault().getChainStatusAnalyzer().
-						getRunningChains().contains(ch)) {
-					fillStatusTable(ch.getId(), -1, " ", "running", remainTime);
-				} else if(Activator.getDefault().getChainStatusAnalyzer().
-						getExitedChains().contains(ch)) {
-					fillStatusTable(ch.getId(), -1, " ", "exited", remainTime);	
-				} else if(Activator.getDefault().getChainStatusAnalyzer().
-						getPausedChains().contains(ch)) {
-					fillStatusTable(ch.getId(), -1, " ", "paused", remainTime);	
-				} else {
-					fillStatusTable(ch.getId(), -1, " ", "idle", remainTime);
-				}
-				final List<ScanModule> scanModules = ch.getScanModules();
-				
-				final List<ScanModule> running = Activator.getDefault().
-						getChainStatusAnalyzer().getExecutingScanModules();
-				for(final ScanModule scanModule : running) {
-					if(scanModules.contains(scanModule)) {
-						fillStatusTable(ch.getId(), scanModule.getId(), scanModule.getName(), 
-								"running", remainTime);
-					}
-				}
-				
-				final List<ScanModule> exited = Activator.getDefault().
-						getChainStatusAnalyzer().getExitingScanModules();
-				for(final ScanModule scanModule : exited) {
-					if(scanModules.contains(scanModule)) {
-						fillStatusTable(ch.getId(), scanModule.getId(), scanModule.getName(),
-								"exited", remainTime);
-					}
-				}
-				
-				final List<ScanModule> initialized = Activator.getDefault().
-						getChainStatusAnalyzer().getInitializingScanModules();
-				for(final ScanModule scanModule : initialized) {
-					if(scanModules.contains(scanModule)) {
-						fillStatusTable(ch.getId(), scanModule.getId(), scanModule.getName(),
-								"initialized", remainTime);
-					}
-				}
-				
-				final List<ScanModule> paused = Activator.getDefault().
-						getChainStatusAnalyzer().getPausedScanModules();
-				for(final ScanModule scanModule : paused) {
-					if(scanModules.contains( scanModule)) {
-						fillStatusTable(ch.getId(), scanModule.getId(), scanModule.getName(),
-								"paused", remainTime);
-					}
-				}
-				
-				final List<ScanModule> waiting = Activator.getDefault().
-						getChainStatusAnalyzer().getWaitingScanModules();
-				for(final ScanModule scanModule : waiting) {
-					if(scanModules.contains(scanModule)) {
-						fillStatusTable(ch.getId(), scanModule.getId(), scanModule.getName(),
-								"waiting for trigger", remainTime);
-					}
-				}
-			}
-		}
-	}
 
 	/*
 	 * 
@@ -638,32 +577,6 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 	/*
 	 * 
 	 */
-	private void setChainStatus(ChainStatus status) {
-		switch(status) {
-			case SM_PAUSED:	this.playButton.setEnabled(true);
-							this.stopButton.setEnabled(true);
-							this.skipButton.setEnabled(true);
-							this.haltButton.setEnabled(true);
-							break;
-			case EXECUTING_SM: 	this.playButton.setEnabled(false);
-								this.pauseButton.setEnabled(true);
-								this.stopButton.setEnabled(true);
-								this.skipButton.setEnabled(true);
-								this.haltButton.setEnabled(true);
-								break;
-			case CHAIN_PAUSED:	this.playButton.setEnabled(true);
-								this.stopButton.setEnabled(true);
-								this.skipButton.setEnabled(true);
-								this.haltButton.setEnabled(true);
-			break;
-		default:
-			break;
-		}
-	}	
-	
-	/*
-	 * 
-	 */
 	private void setAutoPlay(boolean autoPlay) {
 		if(autoPlay) {
 			autoPlayToggleButton.setToolTipText("AutoPlay is on");
@@ -680,10 +593,14 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 	 */
 	@Override
 	public void chainStatusChanged(ChainStatusCommand chainStatusCommand) {
-		final ChainStatus status = chainStatusCommand.getChainStatus();
+		final Boolean isPaused = chainStatusCommand.isAnyScanModulePaused();
 		Display.getDefault().syncExec(new Runnable() {
 				@Override public void run() {
-					setChainStatus(status);
+						playButton.setEnabled(true);
+						stopButton.setEnabled(true);
+						skipButton.setEnabled(true);
+						haltButton.setEnabled(true);
+						if (!isPaused) pauseButton.setEnabled(true);
 				}
 			});
 	}
@@ -692,8 +609,79 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void updateOccured(int remainTime) {
-		this.rebuildText(remainTime);
+	public void updateOccured(final int chainId, final int remainTime) {
+		if (remainTime < 0) return;
+		this.statusTable.getDisplay().syncExec(new Runnable() {
+			@Override public void run() {
+				if (chainIdItems.containsKey(chainId)){
+					chainIdItems.get(chainId).setText( 5, ""+remainTime);		
+				}
+			}
+		});
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void fillChainStatus(final int chainId, final String status) {
+		this.statusTable.getDisplay().syncExec(new Runnable() {
+			@Override public void run() {
+				if (chainIdItems.containsKey(chainId)){
+					chainIdItems.get(chainId).setText( 3, status);
+				}
+				else {
+					TableItem tableItem = new TableItem( statusTable, 0 );
+					chainIdItems.put(chainId, tableItem);
+					tableItem.setText( 0, " "+chainId);
+					tableItem.setText( 1, " ");
+					tableItem.setText( 2, " ");
+					tableItem.setText( 3, status);
+					tableItem.setText( 4, " ");
+					tableItem.setText( 5, " ");
+				}
+			}
+		});
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void fillScanModuleStatus(final int chainId, final int scanModuleId, 
+			final String status, final String reason) {
+		this.statusTable.getDisplay().syncExec(new Runnable() {
+			@Override public void run() {
+				String scanModuleName = " ";
+				if(Activator.getDefault().getCurrentScanDescription() != null){
+					Chain chain = Activator.getDefault().getCurrentScanDescription().getChain(chainId);
+					if (chain != null){
+						ScanModule sm = chain.getScanModuleById(scanModuleId);
+						if (sm != null){
+							scanModuleName = sm.getName();
+						}
+					}
+				}
+				if (!scanMItemByChainId.containsKey(chainId)){
+					scanMItemByChainId.put(chainId, new HashMap<Integer, TableItem>());
+				}
+				HashMap<Integer, TableItem> ScanModuleItems = scanMItemByChainId.get(chainId);
+				if (ScanModuleItems.containsKey(scanModuleId)){
+					ScanModuleItems.get(scanModuleId).setText( 3, status);
+					ScanModuleItems.get(scanModuleId).setText( 4, reason);
+				}
+				else {
+					TableItem tableItem = new TableItem( statusTable, 0 );
+					ScanModuleItems.put(scanModuleId, tableItem);
+					tableItem.setText( 0, " "+chainId);
+					tableItem.setText( 1, " "+scanModuleId);
+					tableItem.setText( 2, " "+scanModuleName); 
+					tableItem.setText( 3, status);
+					tableItem.setText( 4, reason);
+					tableItem.setText( 5, " ");
+				}
+			}
+		});
 	}
 
 	/**
@@ -705,71 +693,15 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		this.statusTable.getDisplay().syncExec(new Runnable() {
 			@Override public void run() {
 				statusTable.removeAll();
+				chainIdItems.clear();
+				for ( int chainId : scanMItemByChainId.keySet()) {
+					scanMItemByChainId.get(chainId).clear();
+				}
+				scanMItemByChainId.clear();
 			}
 		});
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void fillStatusTable(final int chainId, final int scanModuleId,
-			final String scanModuleName, final String statString, final int remainTime) {
-		// Wenn die scanModuleId -1 ist, wird eine Zeile geändert in der nur die chainId eingetragen ist
-
-		this.statusTable.getDisplay().syncExec(new Runnable() {
-			@Override public void run() {
-				// Die sichtbare Höhe wird auf 3 Zeilen eingestellt
-				int height = statusTable.getBounds().y + statusTable.getHeaderHeight() * 4 + 5;
-				int width = scanComposite.getBounds().x + repeatCountText.getBounds().x + repeatCountText.getBounds().width + 5;
-				sc.setMinSize(width, height);
-				
-				final TableItem[] rows = statusTable.getItems();
-				boolean neu = true;
-				for ( int i=0; i<rows.length; i++) {
-					String text0 = rows[i].getText(0).toString().trim();
-					String text1 = rows[i].getText(1).toString().trim();
-					int cell0 = Integer.parseInt(text0);
-					int cell1;
-	
-					if (text1.equals("")) {
-						// smid-Feld ist leer, cell1 wird auf -1 gesetzt
-						cell1 = -1;
-					}
-					else {
-						cell1 = Integer.parseInt(text1.trim());
-					}
-					
-					if ( (chainId == cell0) && (scanModuleId == cell1)) {
-						// neuen Wert für die Zeile eintragen
-						neu = false;
-						rows[i].setText(3, statString);
-						if ((cell1 == -1) && (remainTime > -1)) {
-							rows[i].setText(4, ""+remainTime);
-						}
-					}
-				}
-				
-				if (neu) {
-					// neuer Tabelleneintrag muß gemacht werden
-					TableItem tableItem = new TableItem( statusTable, 0 );
-					tableItem.setText( 0, " "+chainId);
-					if (scanModuleId == -1) {
-						tableItem.setText( 1, " ");
-						tableItem.setText( 2, " ");
-						if (remainTime > -1) {
-							tableItem.setText( 3, ""+remainTime);
-						}
-					}
-					else {
-						tableItem.setText( 1, " "+scanModuleId);
-						tableItem.setText( 2, scanModuleName);
-					}
-					tableItem.setText( 3, statString);
-				}
-			}
-		});
-	}
 
 	/**
 	 * {@inheritDoc}
@@ -795,6 +727,8 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 
 		switch(engineStatus) {
 			case IDLE_NO_XML_LOADED:
+			case STOPPED:
+			case HALTED:
 				this.playButton.getDisplay().syncExec(new Runnable() {
 					@Override public void run() {
 						playButton.setEnabled(false);
@@ -843,28 +777,6 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 						stopButton.setEnabled(true);
 						skipButton.setEnabled(true);
 						haltButton.setEnabled(true);
-					}
-				});
-				break;
-			case STOPPED:
-				this.playButton.getDisplay().syncExec(new Runnable() {
-					@Override public void run() {
-						playButton.setEnabled(false);
-						pauseButton.setEnabled(false);
-						stopButton.setEnabled(false);
-						skipButton.setEnabled(false);
-						haltButton.setEnabled(false);
-					}
-				});
-				break;
-			case HALTED:
-				this.playButton.getDisplay().syncExec(new Runnable() {
-					@Override public void run() {
-						playButton.setEnabled(false);
-						pauseButton.setEnabled(false);
-						stopButton.setEnabled(false);
-						skipButton.setEnabled(false);
-						haltButton.setEnabled(false);
 					}
 				});
 				break;

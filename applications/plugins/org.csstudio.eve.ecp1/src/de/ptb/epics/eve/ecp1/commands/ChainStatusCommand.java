@@ -5,46 +5,37 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Set;
 
 import de.ptb.epics.eve.ecp1.intern.exceptions.AbstractRestoreECP1CommandException;
-import de.ptb.epics.eve.ecp1.intern.exceptions.WrongByteArrayLengthException;
+
 import de.ptb.epics.eve.ecp1.intern.exceptions.WrongLengthException;
 import de.ptb.epics.eve.ecp1.intern.exceptions.WrongStartTagException;
 import de.ptb.epics.eve.ecp1.intern.exceptions.WrongTypeIdException;
 import de.ptb.epics.eve.ecp1.intern.exceptions.WrongVersionException;
+import de.ptb.epics.eve.ecp1.types.ScanModuleReason;
+import de.ptb.epics.eve.ecp1.types.ScanModuleStatus;
 import de.ptb.epics.eve.ecp1.types.ChainStatus;
 
 public class ChainStatusCommand implements IECP1Command {
 
-	public static final char COMMAND_TYPE_ID = 0x0103;
+	public static final char COMMAND_TYPE_ID = 0x0112;
 
-	private long timestamp;
-	private ChainStatus chainStatus;
 	private int chainId;
-	private int scanModulId;
-	private int positionCounter;
-	private int remainingTime;
-
-	public ChainStatusCommand(final long timestamp,
-			final ChainStatus chainStatus, final int chainId,
-			final int scanModulId, final int positionCounter,
-			final int remainingTime) {
-		this.timestamp = timestamp;
-		this.chainStatus = chainStatus;
-		this.chainId = chainId;
-		this.scanModulId = scanModulId;
-		this.positionCounter = positionCounter;
-		this.remainingTime = remainingTime;
-	}
-
+	private int generalTimeStamp;
+	private int nanoseconds;
+	private ChainStatus chainStatus;
+	private HashMap<Integer,Integer> SMFullStatus;
+	
 	public ChainStatusCommand(final byte[] byteArray) throws IOException,
 			AbstractRestoreECP1CommandException {
+
+		SMFullStatus = new HashMap<Integer,Integer>();
+		
 		if (byteArray == null) {
 			throw new IllegalArgumentException(
 					"The parameter 'byteArray' must not be null!");
-		}
-		if (byteArray.length != 40) {
-			throw new WrongByteArrayLengthException(byteArray, 40);
 		}
 
 		final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(
@@ -68,22 +59,27 @@ public class ChainStatusCommand implements IECP1Command {
 					ChainStatusCommand.COMMAND_TYPE_ID);
 		}
 
-		final int length = dataInputStream.readInt();
-		if (length != 28) {
-			throw new WrongLengthException(byteArray, length, 28);
+		int datalength = dataInputStream.readInt();
+		if ((datalength < 16) || (datalength % 8 != 0)) {
+			throw new WrongLengthException(byteArray, datalength, 16);
 		}
 
-		this.timestamp = dataInputStream.readLong();
-		dataInputStream.readChar();
-		dataInputStream.readByte();
-		this.chainStatus = ChainStatus.byteToChainStatus(dataInputStream
-				.readByte());
+		this.generalTimeStamp = dataInputStream.readInt();
+		this.nanoseconds = dataInputStream.readInt();
 		this.chainId = dataInputStream.readInt();
-		this.scanModulId = dataInputStream.readInt();
-		this.positionCounter = dataInputStream.readInt();
-		this.remainingTime = dataInputStream.readInt();
+		this.chainStatus = ChainStatus.intToChainStatus(dataInputStream.readInt());
+		
+		datalength -= 16;
+		while (datalength > 0){
+			int smid = dataInputStream.readInt();
+			int smstatus = dataInputStream.readInt();
+			if (!SMFullStatus.containsKey(smid)){
+				SMFullStatus.put(smid, smstatus);				
+			}
+			datalength -= 8;
+		}
 	}
-
+	
 	public byte[] getByteArray() throws IOException {
 		final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 		final DataOutputStream dataOutputStream = new DataOutputStream(
@@ -92,67 +88,60 @@ public class ChainStatusCommand implements IECP1Command {
 		dataOutputStream.writeInt(IECP1Command.START_TAG);
 		dataOutputStream.writeChar(IECP1Command.VERSION);
 		
-		dataOutputStream.writeChar(ChainStatusCommand.COMMAND_TYPE_ID);
-		dataOutputStream.writeInt(40);
-		dataOutputStream.writeLong(this.timestamp);
-		dataOutputStream.writeChar(0);
-		dataOutputStream.writeByte(0);
-		dataOutputStream.writeByte(ChainStatus
-				.chainStatusToByte(this.chainStatus));
-		dataOutputStream.writeInt(this.chainId);
-		dataOutputStream.writeInt(this.scanModulId);
-		dataOutputStream.writeInt(this.positionCounter);
-		dataOutputStream.writeInt(this.remainingTime);
+		dataOutputStream.writeChar(MeasurementDataCommand.COMMAND_TYPE_ID);
+
+		final int length = 16 + SMFullStatus.size()*8;
+
+		dataOutputStream.writeInt(length);
+		dataOutputStream.writeInt(chainId);
+		dataOutputStream.writeInt(ChainStatus.chainStatusToInt(chainStatus));
+		for (int smid : SMFullStatus.keySet()) {
+			dataOutputStream.writeInt(smid);
+			dataOutputStream.writeInt(SMFullStatus.get(smid));
+		}
 		dataOutputStream.close();
 
 		return byteArrayOutputStream.toByteArray();
 	}
-
+	
+	public Boolean isAnyScanModulePaused(){
+		for (int smid : SMFullStatus.keySet()) {
+			if (getScanModuleStatus(smid) == ScanModuleStatus.PAUSED ) return true;
+		}
+		return false;
+	}
+	
 	public int getChainId() {
 		return this.chainId;
-	}
-
-	public void setChainId(final int chainId) {
-		this.chainId = chainId;
 	}
 
 	public ChainStatus getChainStatus() {
 		return this.chainStatus;
 	}
-
-	public void setChainStatus(final ChainStatus chainStatus) {
-		this.chainStatus = chainStatus;
+	
+	public ScanModuleStatus getScanModuleStatus(int smid) {
+		if (SMFullStatus.containsKey(smid)){
+			return ScanModuleStatus.intToScanModuleStatus(SMFullStatus.get(smid) >> 16);
+		}
+		return ScanModuleStatus.UNKNOWN;
 	}
 
-	public long getTimeStamp() {
-		return this.timestamp;
+	public ScanModuleReason getScanModuleReason(int smid) {
+		if (SMFullStatus.containsKey(smid)){
+			return ScanModuleReason.intToScanModuleReason(SMFullStatus.get(smid) & 0xff);
+		}
+		return ScanModuleReason.NONE;		
 	}
 
-	public void setTimestamp(final long timestamp) {
-		this.timestamp = timestamp;
+	public Set<Integer> getAllScanModuleIds() {
+		return this.SMFullStatus.keySet();
 	}
 
-	public int getPositionCounter() {
-		return this.positionCounter;
+	public int getTimeStampSeconds() {
+		return this.generalTimeStamp;
 	}
 
-	public void setPositionCounter(final int positionCounter) {
-		this.positionCounter = positionCounter;
-	}
-
-	public int getRemainingTime() {
-		return this.remainingTime;
-	}
-
-	public void setRemainingTime(final int remainingTime) {
-		this.remainingTime = remainingTime;
-	}
-
-	public int getScanModulId() {
-		return this.scanModulId;
-	}
-
-	public void setScanModulId(final int scanModulId) {
-		this.scanModulId = scanModulId;
+	public int getTimeStampNanoSeconds() {
+		return this.nanoseconds;
 	}
 }

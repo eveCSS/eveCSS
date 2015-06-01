@@ -11,7 +11,7 @@ public interface IChainStatusListener {
 	/**
 	 * Gets called if the chain status has changed.
 	 * 
-	 * @param chainStatusCommand the chain status command
+	 * @param chainFullStatusCommand the chain status command
 	 */
 	void chainStatusChanged(final ChainStatusCommand chainStatusCommand);
 }

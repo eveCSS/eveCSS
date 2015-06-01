@@ -12,7 +12,7 @@ public interface IECP1Command {
 	/**
 	 * 
 	 */
-	final char VERSION = 0x0100;
+	final char VERSION = 0x0200;
 	
 	/**
 	 * 
