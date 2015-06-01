@@ -1,7 +1,13 @@
 package de.ptb.epics.eve.editor.gef.commands;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.eclipse.gef.commands.Command;
 
+import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 
@@ -31,9 +37,16 @@ public class CopyScanModuleChannels extends Command {
 	 */
 	@Override
 	public void execute() {
+		List<Channel> clones = new ArrayList<Channel>();
+		Map<Channel, DetectorChannel> channelMap = new HashMap<>();
 		for (Channel channel : from.getChannels()) {
-			to.add(Channel.newInstance(channel, to));
+			Channel clone = Channel.newInstance(channel, to);
+			clones.add(clone);
+			if (channel.getNormalizeChannel() != null) {
+				channelMap.put(clone, channel.getNormalizeChannel());
+			}
 		}
+		to.addAll(clones, channelMap);
 	}
 	
 	/**

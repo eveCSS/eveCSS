@@ -77,6 +77,16 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	private boolean deferred;
 
 	/*
+	 * Indicates when the channel was loaded into the scan module.
+	 * Should be used during Loading to preserve the order in 
+	 * which they were introduced into the scan module. 
+	 * E.g. during XML Loading channels are reordered to account for
+	 * normalization dependencies. Afterwards the original order can 
+	 * be reestablished.
+	 */
+	private int loadTime; 
+	
+	/*
 	 * This control event manager controls the redo events.
 	 */
 	private ControlEventManager redoControlEventManager;
@@ -101,6 +111,7 @@ public class Channel extends AbstractMainPhaseBehavior implements
 		this.repeatOnRedo = false;
 		this.deferred = false;
 		this.normalizeChannel = null;
+		this.loadTime = 0;
 		this.redoControlEventManager = new ControlEventManager(
 				ControlEventTypes.CONTROL_EVENT);
 		this.redoControlEventManager.addModelUpdateListener(this);
@@ -136,6 +147,7 @@ public class Channel extends AbstractMainPhaseBehavior implements
 		newChannel.setMinimum(channel.getMinimum());
 		newChannel.setDeferred(channel.isDeferred());
 		newChannel.setNormalizeChannel(channel.getNormalizeChannel());
+		newChannel.setLoadTime(channel.getLoadTime());
 		for (ControlEvent event : channel.getRedoEvents()) {
 			newChannel.addRedoEvent(ControlEvent.newInstance(event));
 		}
@@ -397,6 +409,20 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	 */
 	public DetectorChannel getDetectorChannel() {
 		return (DetectorChannel)this.abstractDevice;
+	}
+
+	/**
+	 * @return the loadTime
+	 */
+	public int getLoadTime() {
+		return loadTime;
+	}
+
+	/**
+	 * @param loadTime the loadTime to set
+	 */
+	public void setLoadTime(int loadTime) {
+		this.loadTime = loadTime;
 	}
 
 	/**

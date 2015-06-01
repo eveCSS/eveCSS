@@ -35,6 +35,7 @@ import de.ptb.epics.eve.data.PluginTypes;
 import de.ptb.epics.eve.data.TypeValue;
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.AbstractPrePostscanDevice;
+import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.data.measuringstation.PlugIn;
@@ -64,6 +65,11 @@ import de.ptb.epics.eve.data.scandescription.processors.adaptees.DetectorEventAd
 import de.ptb.epics.eve.data.scandescription.processors.adaptees.DetectorEventAdapter;
 import de.ptb.epics.eve.data.scandescription.processors.adaptees.ScheduleEventAdaptee;
 import de.ptb.epics.eve.data.scandescription.processors.adaptees.ScheduleEventAdapter;
+import de.ptb.epics.eve.util.graph.Graph;
+import de.ptb.epics.eve.util.graph.GraphALImpl;
+import de.ptb.epics.eve.util.graph.Sort;
+import de.ptb.epics.eve.util.graph.Vertex;
+import de.ptb.epics.eve.util.graph.VertexImpl;
 
 /**
  * This class represents a load handler for SAX that loads a scan description
@@ -107,7 +113,12 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 	
 	// The currently constructed scan module
 	private ScanModule currentScanModule;
-
+	// channel graph determines the order in which channel have to be added 
+	// to the scan module to preserve normalize channel dependencies
+	private List<Channel> smChannels;
+	private Graph<Channel> currentChannelGraph;
+	private Map<Channel, DetectorChannel> normalizationMap;
+	
 	// The currently constructed prescan
 	private Prescan currentPrescan;
 
@@ -122,6 +133,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 	// The currently constructed channel
 	private Channel currentChannel;
+	private int channelLoadTime;
 
 	// The currently constructed plot window
 	private PlotWindow currentPlotWindow;
@@ -320,6 +332,10 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.currentScanModule.sm_loading = true;
 				this.currentRelationReminder = new ScanModulRelationReminder(
 						this.currentScanModule);
+				this.smChannels = new ArrayList<Channel>();
+				this.currentChannelGraph = new GraphALImpl<Channel>();
+				this.normalizationMap = new HashMap<Channel, DetectorChannel>();
+				this.channelLoadTime = 0;
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 			}
 			break;
@@ -1057,9 +1073,12 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 		case CHAIN_SCANMODULE_DETECTOR_NORMALIZECHANNEL_NEXT:
 			if (this.currentChannel.getAbstractDevice() != null) {
-				this.currentChannel.setNormalizeChannel(
+				this.normalizationMap.put(this.currentChannel,
+						this.measuringStation.getDetectorChannelById(textBuffer
+								.toString()));
+				/*this.currentChannel.setNormalizeChannel(
 						this.measuringStation.getDetectorChannelById(
-								textBuffer.toString()));
+								textBuffer.toString()));*/
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_NORMALIZECHANNEL_READ;
 			break;
@@ -1570,7 +1589,15 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 					this.idToScanModulMap.put(this.currentScanModule.getId(),
 							this.currentScanModule);
 				}
-
+				// topological insert only necessary for classic modules
+				if (this.currentScanModule.getType().equals(ScanModuleTypes.CLASSIC)) {
+					this.currentScanModule.addAll(this.smChannels,
+						this.normalizationMap);
+				} else {
+					for (Channel channel : this.smChannels) {
+						this.currentScanModule.add(channel);
+					}
+				}
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULES_LOADING;
 			}
 			break;
@@ -1770,7 +1797,11 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		case CHAIN_SCANMODULE_DETECTOR_LOADING:
 			if (qName.equals("smchannel")) {
 				if (this.currentChannel.getAbstractDevice() != null) {
-					this.currentScanModule.add(this.currentChannel);
+					this.smChannels.add(currentChannel);
+					/*Vertex<Channel> channelVertex = new VertexImpl<Channel>(
+							this.currentChannel);
+					this.currentChannelGraph.addVertex(channelVertex);*/ // TODO
+					this.currentChannel.setLoadTime(this.channelLoadTime++);
 				}
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 			}
