@@ -4,7 +4,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.Binding;
@@ -569,6 +568,11 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 								this.commentSendButton.setEnabled(false);
 								// engine stuff
 								this.statusTable.removeAll();
+								chainIdItems.clear();
+								for ( int chainId : scanMItemByChainId.keySet()) {
+									scanMItemByChainId.get(chainId).clear();
+								}
+								scanMItemByChainId.clear();
 								this.statusTable.setEnabled(false);
 								break;
 		}

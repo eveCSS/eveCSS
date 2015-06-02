@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 
 import de.ptb.epics.eve.ecp1.client.interfaces.IChainStatusListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IChainProgressListener;
+import de.ptb.epics.eve.ecp1.client.interfaces.IConnectionStateListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IEngineStatusListener;
 import de.ptb.epics.eve.ecp1.commands.ChainStatusCommand;
 import de.ptb.epics.eve.ecp1.commands.ChainProgressCommand;
@@ -19,7 +20,7 @@ import de.ptb.epics.eve.ecp1.types.ScanModuleReason;
 import de.ptb.epics.eve.ecp1.types.ScanModuleStatus;
 
 public class ChainStatusAnalyzer implements IEngineStatusListener,
-		IChainStatusListener, IChainProgressListener {
+IConnectionStateListener, IChainStatusListener, IChainProgressListener {
 
 	private static Logger logger = Logger.getLogger(ChainStatusAnalyzer.class.getName());
 
@@ -42,13 +43,12 @@ public class ChainStatusAnalyzer implements IEngineStatusListener,
 		
 		if (engineStatus == EngineStatus.LOADING_XML) {
 			for (IUpdateListener iul : this.updateListener) {
-				if (engineStatus == EngineStatus.IDLE_XML_LOADED) iul.setLoadedScmlFile(xmlName);
-				iul.clearStatusTable();;
+				iul.clearStatusTable();
 			}
 
 		} else  {
 			for (IUpdateListener iul : this.updateListener) {
-				if (engineStatus == EngineStatus.IDLE_XML_LOADED) iul.setLoadedScmlFile(xmlName);
+				iul.setLoadedScmlFile(xmlName);
 				iul.fillEngineStatus(engineStatus, repeatCount);
 			}
 		}
@@ -111,6 +111,21 @@ public class ChainStatusAnalyzer implements IEngineStatusListener,
 
 		
 	}
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void stackConnected() {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void stackDisconnected() {
+		LastChainStatus.clear();
+	}
+
 
 	public boolean addUpdateListener(final IUpdateListener updateListener) {
 		return this.updateListener.add(updateListener);
