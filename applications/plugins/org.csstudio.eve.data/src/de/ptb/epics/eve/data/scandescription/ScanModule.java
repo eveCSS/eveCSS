@@ -5,7 +5,11 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javafx.collections.FXCollections;
@@ -36,6 +40,12 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventType
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateProvider;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
+import de.ptb.epics.eve.util.graph.Graph;
+import de.ptb.epics.eve.util.graph.GraphALImpl;
+import de.ptb.epics.eve.util.graph.Sort;
+import de.ptb.epics.eve.util.graph.Vertex;
+import de.ptb.epics.eve.util.graph.VertexImpl;
+import de.ptb.epics.eve.util.graph.VisitState;
 import de.ptb.epics.eve.util.math.statistics.DescriptiveStats;
 
 /**
@@ -434,6 +444,52 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 				ScanModule.CHANNELS_PROP, channel);
 		propertyChangeSupport.firePropertyChange("addChannel", channel, null);
 		updateListeners();
+	}
+	
+	/**
+	 * Adds all given channels (regarding normalization dependencies)
+	 * 
+	 * @param channels
+	 *            the channels to be added
+	 * @param channelMap
+	 *            Normalization Dependencies (Key: Channel, Value: Normalize
+	 *            Channel)
+	 * @since 1.23
+	 */
+	public void addAll(List<Channel> channels,
+			Map<Channel, DetectorChannel> channelMap) {
+		Graph<Channel> graph = new GraphALImpl<Channel>();
+		for (Channel channel : channels) {
+			graph.addVertex(new VertexImpl<Channel>(channel));
+		}
+		for (Channel channel : channelMap.keySet()) {
+			Vertex<Channel> from = null;
+			Vertex<Channel> to = null;
+			for (Vertex<Channel> vertex : graph.getVertices()) {
+				if (vertex.getContent().getDetectorChannel().equals(
+						channelMap.get(channel))) {
+					from = vertex;
+				}
+			}
+			for (Vertex<Channel> vertex : graph.getVertices()) {
+				if (vertex.getContent().equals(channel)) {
+					to = vertex;
+				}
+			}
+			if (from != null && to != null) {
+				graph.addEdge(from, to);
+			} else {
+				logger.error("could not create edge in normalization graph");
+			}
+		}
+		for (Vertex<Channel> vertex : Sort.topologicalSort(graph)) {
+			this.add(vertex.getContent());
+			if (channelMap.get(vertex.getContent()) != null) {
+				vertex.getContent().setNormalizeChannel(
+						channelMap.get(vertex.getContent()));
+			}
+		}
+		this.reorderChannels();
 	}
 	
 	/**
@@ -1585,6 +1641,21 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		for(PlotWindow plot : this.getPlotWindows()) {
 			this.remove(plot);
 		}
+	}
+	
+	/**
+	 * Reorders the channels to their original loading order.
+	 * 
+	 * @since 1.23
+	 */
+	public void reorderChannels() {
+		Collections.sort(this.channels, new Comparator<Channel>() {
+			@Override
+			public int compare(Channel o1, Channel o2) {
+				return o1.getLoadTime() - o2.getLoadTime();
+			}
+			
+		});
 	}
 	
 	/**
