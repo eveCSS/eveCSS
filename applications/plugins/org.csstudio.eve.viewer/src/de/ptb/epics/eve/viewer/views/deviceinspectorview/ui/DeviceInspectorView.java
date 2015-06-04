@@ -552,8 +552,9 @@ public class DeviceInspectorView extends ViewPart {
 		TableViewerColumn valueColumn = 
 				new TableViewerColumn(axisTableViewer, SWT.NONE);
 		valueColumn.getColumn().setText("Position");
-		valueColumn.setEditingSupport(
-				new CommonTableEditingSupport(axisTableViewer, "value"));
+		valueColumn.setEditingSupport(null);
+//		valueColumn.setEditingSupport(
+//				new CommonTableEditingSupport(axisTableViewer, "value"));
 		valueColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override public String getText(Object element) {
 				return ((CommonTableElement) element).getValue("value");
