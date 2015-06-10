@@ -556,4 +556,15 @@ public class Channel extends AbstractMainPhaseBehavior implements
 			}
 		}
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		if (this.getDetectorChannel() != null) {
+			return this.getDetectorChannel().getName();
+		}
+		return super.toString();
+	}
 }

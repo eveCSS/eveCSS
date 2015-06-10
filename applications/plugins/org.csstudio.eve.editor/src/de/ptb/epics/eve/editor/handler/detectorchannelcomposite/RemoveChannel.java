@@ -1,18 +1,24 @@
 package de.ptb.epics.eve.editor.handler.detectorchannelcomposite;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
+import de.ptb.epics.eve.util.io.StringUtil;
 
 /**
  * Default handler of the remove channel command.
@@ -37,12 +43,45 @@ public class RemoveChannel implements IHandler {
 					getCurrentScanModule();
 			ISelection selection = HandlerUtil.getCurrentSelection(event);
 			if(selection instanceof IStructuredSelection) {
-				Object o = ((IStructuredSelection)selection).getFirstElement();
+				final Object o = ((IStructuredSelection)selection).getFirstElement();
 				if(o instanceof Channel) {
+					final List<Channel> normalizationChannels = new ArrayList<>();
+					for (Channel channel : sm.getChannels()) {
+						if (channel.equals((Channel)o)) {
+							continue;
+						}
+						if (channel.getNormalizeChannel() != null &&
+								channel.getNormalizeChannel().equals(((Channel)o).getDetectorChannel())) {
+							normalizationChannels.add(channel);
+						}
+					}
 					sm.remove((Channel)o);
 					if(logger.isDebugEnabled()) {
 						logger.debug("Channel " + ((Channel)o).getDetectorChannel().
 							getName() + " removed");
+					}
+					if (!normalizationChannels.isEmpty()) {
+						final String message;
+						if (normalizationChannels.size() > 1) {
+							message = "Channel " + ((Channel) o)
+								.getDetectorChannel().getName()
+								+ " was also removed as Normalization Channel from Channels "
+								+ StringUtil.buildCommaSeparatedString(normalizationChannels) + ".";
+						} else {
+							message = "Channel " + ((Channel) o)
+									.getDetectorChannel().getName()
+									+ " was also removed as Normalization Channel from Channel "
+									+ StringUtil.buildCommaSeparatedString(normalizationChannels) + ".";
+						}
+						Display.getDefault().asyncExec(new Runnable() {
+							@Override
+							public void run() {
+								MessageDialog.openInformation(Display
+										.getDefault().getActiveShell(),
+										"Normalization Removed",
+										message);
+							}
+						});
 					}
 				}
 			}
