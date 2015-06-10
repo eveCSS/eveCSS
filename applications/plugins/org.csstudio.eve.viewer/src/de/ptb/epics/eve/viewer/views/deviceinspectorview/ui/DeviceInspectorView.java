@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewerEditorActivationEvent;
 import org.eclipse.jface.viewers.ColumnViewerEditorActivationListener;
@@ -30,6 +31,7 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -559,6 +561,10 @@ public class DeviceInspectorView extends ViewPart {
 			@Override public String getText(Object element) {
 				return ((CommonTableElement) element).getValue("value");
 			}
+			@Override public Font getFont(Object element) {
+				return JFaceResources.getFontRegistry().getBold(
+						JFaceResources.DEFAULT_FONT);
+			}
 			@Override public Color getForeground(Object element) {
 				return ((CommonTableElement) element).getSeverityColor("value");
 			}
@@ -830,6 +836,10 @@ public class DeviceInspectorView extends ViewPart {
 			@Override public String getText(Object element) {
 				return ((CommonTableElement) element).getValue("value");
 			}
+			@Override public Font getFont(Object element) {
+				return JFaceResources.getFontRegistry().getBold(
+						JFaceResources.DEFAULT_FONT);
+			}
 			@Override public Color getForeground(Object element) {
 				return ((CommonTableElement) element).getSeverityColor("value");
 			}
@@ -1031,6 +1041,10 @@ public class DeviceInspectorView extends ViewPart {
 		valueColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override public String getText(Object element) {
 				return ((CommonTableElement) element).getValue("value");
+			}
+			@Override public Font getFont(Object element) {
+				return JFaceResources.getFontRegistry().getBold(
+						JFaceResources.DEFAULT_FONT);
 			}
 			@Override public Color getForeground(Object element) {
 				return ((CommonTableElement) element).getSeverityColor("value");
