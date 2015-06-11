@@ -7,7 +7,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -45,7 +44,6 @@ import de.ptb.epics.eve.util.graph.GraphALImpl;
 import de.ptb.epics.eve.util.graph.Sort;
 import de.ptb.epics.eve.util.graph.Vertex;
 import de.ptb.epics.eve.util.graph.VertexImpl;
-import de.ptb.epics.eve.util.graph.VisitState;
 import de.ptb.epics.eve.util.math.statistics.DescriptiveStats;
 
 /**
@@ -508,9 +506,12 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		this.axes.add(axis);
 		if (axis.isMainAxis()) {
 			// should only be executed during scml load
+			Axis oldMainAxis = this.mainAxis;
 			this.mainAxis = axis;
 			axis.addPropertyChangeListener(
 					AddMultiplyMode.STEPCOUNT_PROP, this);
+			this.propertyChangeSupport.firePropertyChange(
+					ScanModule.MAIN_AXIS_PROP, oldMainAxis, this.mainAxis);
 		}
 		if (axis.getMode() instanceof AddMultiplyMode<?>) {
 			((AddMultiplyMode<?>)axis.getMode()).matchMainAxis(this.mainAxis);
