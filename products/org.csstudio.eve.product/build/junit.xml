@@ -37,6 +37,10 @@
 				</fileset>
 				<pathelement
 						path="${env.WORKSPACE}/repo/applications/plugins/org.csstudio.eve.util/lib/jfxrt.jar" />
+				<pathelement
+						path="${env.WORKSPACE}/repo/applications/plugins/org.csstudio.eve.data.tests/lib/mockito-core-1.10.19.jar" />
+				<pathelement
+						path="${env.WORKSPACE}/repo/applications/plugins/org.csstudio.eve.data.tests/lib/objenesis-2.1.jar" />
 			</classpath>
 		</javac>
 	</target>
@@ -62,6 +66,10 @@
 					path="${env.WORKSPACE}/repo/applications/plugins/org.csstudio.eve.resources/cfg/" />
 				<pathelement
 					path="${env.WORKSPACE}/repo/applications/plugins/org.csstudio.eve.data/lib/jfxrt.jar" />
+				<pathelement
+					path="${env.WORKSPACE}/repo/applications/plugins/org.csstudio.eve.data.tests/lib/mockito-core-1.10.19.jar" />
+				<pathelement
+					path="${env.WORKSPACE}/repo/applications/plugins/org.csstudio.eve.data.tests/lib/objenesis-2.1.jar" />
 			</classpath>
 
 			<formatter type="brief" usefile="false" />
