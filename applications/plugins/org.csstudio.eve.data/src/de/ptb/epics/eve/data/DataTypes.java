@@ -24,10 +24,12 @@ public enum DataTypes {
 	/**
 	 * Used to display On or Off for data of type integer.
 	 */
+	@XmlEnumValue("OnOff")
 	ONOFF,
 	/**
 	 * Used to display Open or Close for data of type integer.
 	 */
+	@XmlEnumValue("OpenClose")
 	OPENCLOSE,
 	/**
 	 * Normal integer data type.
@@ -42,6 +44,7 @@ public enum DataTypes {
 	/**
 	 * Normal String data type.
 	 */
+	@XmlEnumValue("string")
 	STRING,
 
 	/**
