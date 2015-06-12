@@ -7,7 +7,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import de.ptb.epics.eve.ecp1.intern.exceptions.AbstractRestoreECP1CommandException;
-import de.ptb.epics.eve.ecp1.intern.exceptions.BrokenByteArrayException;
 import de.ptb.epics.eve.ecp1.intern.exceptions.WrongByteArrayLengthException;
 import de.ptb.epics.eve.ecp1.intern.exceptions.WrongLengthException;
 import de.ptb.epics.eve.ecp1.intern.exceptions.WrongStartTagException;

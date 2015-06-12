@@ -3,6 +3,7 @@ package de.ptb.epics.eve.viewer.views.engineview;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.IOException;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
@@ -14,9 +15,11 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -42,6 +45,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.ViewPart;
+import org.osgi.framework.Version;
 
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Chain;
@@ -49,6 +53,7 @@ import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.ecp1.client.interfaces.IChainStatusListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IConnectionStateListener;
+import de.ptb.epics.eve.ecp1.client.interfaces.IEngineVersionListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IErrorListener;
 import de.ptb.epics.eve.ecp1.client.model.Error;
 import de.ptb.epics.eve.ecp1.commands.ChainStatusCommand;
@@ -57,6 +62,8 @@ import de.ptb.epics.eve.ecp1.types.ErrorType;
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.IUpdateListener;
 import de.ptb.epics.eve.viewer.preferences.PreferenceConstants;
+import de.ptb.epics.eve.viewer.views.messagesview.Levels;
+import de.ptb.epics.eve.viewer.views.messagesview.ViewerMessage;
 
 /**
  * <code>EngineView</code>.
@@ -64,8 +71,9 @@ import de.ptb.epics.eve.viewer.preferences.PreferenceConstants;
  * @author Hartmut Scherr
  * @author Marcus Michalsky
  */
-public final class EngineView extends ViewPart implements IUpdateListener, 
-		IConnectionStateListener, IErrorListener, IChainStatusListener {
+public final class EngineView extends ViewPart implements IUpdateListener,
+		IConnectionStateListener, IErrorListener, IChainStatusListener,
+		IEngineVersionListener {
 	public static final String REPEAT_COUNT_PROP = "repeatCount";
 	
 	public EngineView() {
@@ -399,6 +407,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 				.addConnectionStateListener(progressBarComposite);
 		Activator.getDefault().getEcp1Client()
 				.addChainProgressListener(progressBarComposite);
+		Activator.getDefault().getEcp1Client().addEngineVersionListener(this);
 		
 		Activator.getDefault().getChainStatusAnalyzer().addUpdateListener(this);
 		Activator.getDefault().getEcp1Client().addErrorListener(this);
@@ -1566,5 +1575,39 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		this.propertyChangeSupport.firePropertyChange(
 				EngineView.REPEAT_COUNT_PROP, this.repeatCount,
 				this.repeatCount = repeatCount);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void engineVersionChanged(final int version, final int revision,
+			final int patchlevel) {
+		if (!versionMatch(new Version(version, revision, patchlevel))) {
+			Display.getDefault().asyncExec(new Runnable() {
+				@Override
+				public void run() {
+					MessageDialog.openError(Display.getCurrent()
+							.getActiveShell(), "Version mismatch",
+							"eveCSS Version "
+									+ Platform.getProduct().getDefiningBundle()
+											.getVersion().toString()
+									+ " does not match Engine Version "
+									+ version + "." + revision + "."
+									+ patchlevel + " !"
+									+ " Closing Connection.");
+					try {
+						Activator.getDefault().getEcp1Client().disconnect();
+					} catch (IOException e) {
+						logger.error("Engine could not be disconnected", e);
+					}
+				}
+			});
+		}
+	}
+	
+	private boolean versionMatch(Version version) {
+		return version.equals(Platform.getProduct().getDefiningBundle()
+				.getVersion());
 	}
 }
