@@ -20,12 +20,24 @@ import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.Stepfunctions;
 
+/**
+ * ScanModule related Unit Testing.
+ * 
+ * @author Marcus Michalsky
+ * @since 1.23
+ */
 public class ScanModuleTest implements PropertyChangeListener {
 	private ScanModule scanModule;
 	private Axis axis1;
 	private Axis axis2;
 	private boolean mainAxis;
 	
+	/**
+	 * Inserts two axes into a scan module, sets one as main axes and validates 
+	 * that the step width is adjusted.
+	 * 
+	 * @since 1.23
+	 */
 	@Test
 	public void testSetMainAxis() {
 		this.mockAxes();
@@ -49,6 +61,71 @@ public class ScanModuleTest implements PropertyChangeListener {
 		assertEquals(2.0, (double) axis2.getStepwidth(), 0);
 	}
 	
+	/**
+	 * Inserts an axis into a scan module, sets it as main axis and adds another 
+	 * axis. The second axis' stepwidth should be adjusted.
+	 * 
+	 * @since 1.23
+	 */
+	@Test
+	public void testAddAxisAfterSetMainAxis() {
+		this.mockAxes();
+		
+		axis1.setStepfunction(Stepfunctions.ADD);
+		axis2.setStepfunction(Stepfunctions.ADD);
+		
+		axis1.setStart(0.0);
+		axis1.setStop(100.0);
+		axis1.setStepwidth(10.0);
+		
+		this.scanModule.add(axis1);
+		axis1.setMainAxis(true);
+		
+		axis2.setStart(0.0);
+		axis2.setStop(20.0);
+		axis2.setStepwidth(1.0); // should be 2 after setting main axis
+		
+		this.scanModule.add(axis2);
+		
+		assertEquals(2.0, (double) axis2.getStepwidth(), 0);
+	}
+	
+	/**
+	 * Adds an axis to a scan module and another one with the MainAxis Property
+	 * enabled. The first axis' stepwidth should be adjusted.
+	 * 
+	 * @since 1.23
+	 */
+	@Test
+	public void testAddMainAxis() {
+	this.mockAxes();
+		
+		axis1.setStepfunction(Stepfunctions.ADD);
+		axis2.setStepfunction(Stepfunctions.ADD);
+		
+		axis2.setStart(0.0);
+		axis2.setStop(20.0);
+		axis2.setStepwidth(1.0); // should be 2 after adding main axis
+		
+		this.scanModule.add(axis2);
+		
+		axis1.setStart(0.0);
+		axis1.setStop(100.0);
+		axis1.setStepwidth(10.0);
+		
+		axis1.setMainAxis(true);
+		this.scanModule.add(axis1);
+		
+		assertEquals(2.0, (double) axis2.getStepwidth(), 0);
+	}
+	
+	/**
+	 * Adds two axes to a scan module, sets one as main axis and removes it.
+	 * The remaining axis should be editable. The ScanModule should not have 
+	 * a main axis anymore.
+	 * 
+	 * @since 1.23
+	 */
 	@Test
 	public void testRemoveMainAxis() {
 		this.mockAxes();
@@ -80,6 +157,9 @@ public class ScanModuleTest implements PropertyChangeListener {
 		assertNull(this.scanModule.getMainAxis());
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		switch (evt.getPropertyName()) {
@@ -109,8 +189,7 @@ public class ScanModuleTest implements PropertyChangeListener {
 	// ***********************************************************************
 	
 	/**
-	 * Initializes logging (Class wide setup 
-	 * method of the test).
+	 * Class wide setup method of the test
 	 */
 	@BeforeClass
 	public static void runBeforeClass() {
