@@ -3,7 +3,6 @@ package de.ptb.epics.eve.viewer.views.engineview;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.io.IOException;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
@@ -62,8 +61,6 @@ import de.ptb.epics.eve.ecp1.types.ErrorType;
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.IUpdateListener;
 import de.ptb.epics.eve.viewer.preferences.PreferenceConstants;
-import de.ptb.epics.eve.viewer.views.messagesview.Levels;
-import de.ptb.epics.eve.viewer.views.messagesview.ViewerMessage;
 
 /**
  * <code>EngineView</code>.
@@ -1587,27 +1584,28 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 			Display.getDefault().asyncExec(new Runnable() {
 				@Override
 				public void run() {
-					MessageDialog.openError(Display.getCurrent()
+					MessageDialog.openWarning(Display.getCurrent()
 							.getActiveShell(), "Version mismatch",
 							"eveCSS Version "
 									+ Platform.getProduct().getDefiningBundle()
-											.getVersion().toString()
+											.getVersion().getMajor()
+									+ "." 
+									+ Platform.getProduct().getDefiningBundle()
+											.getVersion().getMinor()
 									+ " does not match Engine Version "
-									+ version + "." + revision + "."
-									+ patchlevel + " !"
-									+ " Closing Connection.");
-					try {
-						Activator.getDefault().getEcp1Client().disconnect();
-					} catch (IOException e) {
-						logger.error("Engine could not be disconnected", e);
-					}
+									+ version 
+									+ "." 
+									+ revision 
+									+ " !");
 				}
 			});
 		}
 	}
 	
-	private boolean versionMatch(Version version) {
-		return version.equals(Platform.getProduct().getDefiningBundle()
-				.getVersion());
+	private boolean versionMatch(Version target) {
+		Version platform = Platform.getProduct().getDefiningBundle()
+				.getVersion();
+		return platform.getMajor() == target.getMajor()
+				&& platform.getMinor() == target.getMinor();
 	}
 }
