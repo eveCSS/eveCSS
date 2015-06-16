@@ -213,7 +213,11 @@ public class Axis extends AbstractMainPhaseBehavior implements
 	}
 
 	private void setMode(AxisMode mode) {
+		if (this.mode != null) {
+			this.mode.removePropertyChangeListener(this);
+		}
 		this.mode = mode;
+		this.mode.addPropertyChangeListener(this);
 	}
 	
 	/**
