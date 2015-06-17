@@ -1,5 +1,15 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.23
+
+* [Feature] Display a warning if connecting to an unsupported Engine version
+* [Feature] Engine View now always shows all chains and scan modules (even when connecting after a scan has started)
+* [Feature] Position/Value Column of Device Inspector is now shown in bold face
+* [Feature] new Engine View column: Reason (of Pause)
+* [Feature] the Device Inspector now shows soft limit warnings (status column)
+
+* [Bug Fix] fixed a bug where the plot window was not initialized due to wrong device definition handling
+
 h2(eveTopic). Version 1.22
 
 * [Feature] introduced toggle state for (application wide) plot scaling

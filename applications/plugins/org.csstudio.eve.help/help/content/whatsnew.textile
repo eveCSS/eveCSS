@@ -1,5 +1,11 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.23
+
+* [Feature] incremented XML schema version to 4.0
+
+* [Bug Fix] The Help is temporarily shown externally (browser) due to ==<a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=404776" target="_blank">Eclipse Bug  404776</a>== until eveCSS uses Eclipse 4.3 Kepler or newer.
+
 h2(eveTopic). Version 1.22
 
 * [Feature] added user specific filter paths in several file dialogs by introducing a defaults folder

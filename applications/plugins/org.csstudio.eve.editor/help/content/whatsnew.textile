@@ -1,5 +1,17 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.23
+
+* [Feature] Report uses of a Channel as normalize channel when removing it from a scan module
+* [Feature] Redo Events of Detector Channels are now saved within user defaults
+* [Feature] the Chain View filename's macros are now being resolved
+* [Feature] introduced File->Open Scan Description and modified toolbar command for better SCML Handling
+
+* [Bug Fix] fixed a bug where main axis adjustments malfunctioned after copy/pasting a scan module
+* [Bug Fix] fixed a bug where normalization was missing after loading a SCML file or copying a scan module
+* [Bug Fix] fixed a bug where the editor could not be initialized due to missing defaults
+* [Bug Fix] fixed a bug where the lost devices dialog (SCML loading) showed the name of the temporary file
+
 h2(eveTopic). Version 1.22
 
 * [Feature] introduced new file name macros MONTHSTR and DAYSTR
