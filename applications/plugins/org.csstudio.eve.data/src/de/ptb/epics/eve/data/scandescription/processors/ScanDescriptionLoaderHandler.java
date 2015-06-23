@@ -537,15 +537,15 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			if (qName.equals("detectorevent")) {
 				this.currentControlEvent = new PauseEvent(EventTypes.DETECTOR);
 				this.currentDetectorEventAdaptee = new DetectorEventAdaptee();
-				this.subState = ScanDescriptionLoaderSubStates.DETECTOREVENT_LOADING;
+				this.subState = ScanDescriptionLoaderSubStates.PAUSEDETECTOREVENT_LOADING;
 			} else if (qName.equals("monitorevent")) {
 				this.currentControlEvent = new PauseEvent(EventTypes.MONITOR);
 				this.currentDetectorEventAdaptee = new DetectorEventAdaptee();
-				this.subState = ScanDescriptionLoaderSubStates.DETECTOREVENT_LOADING;
+				this.subState = ScanDescriptionLoaderSubStates.PAUSEMONITOREVENT_LOADING;
 			} else if (qName.equals("scheduleevent")) {
 				this.currentControlEvent = new PauseEvent(EventTypes.SCHEDULE);
 				this.currentScheduleEventAdaptee = new ScheduleEventAdaptee();
-				this.subState = ScanDescriptionLoaderSubStates.SCHEDULEEVENT_LOADING;
+				this.subState = ScanDescriptionLoaderSubStates.PAUSESCHEDULEEVENT_LOADING;
 			}
 			break;
 			
@@ -572,7 +572,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		}
 
 		switch (this.subState) {
-
+		
 		case DETECTOREVENT_LOADING:
 			if (qName.equals("id")) {
 				this.subState = ScanDescriptionLoaderSubStates.EVENT_ID_NEXT;
@@ -591,7 +591,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.subState = ScanDescriptionLoaderSubStates.EVENT_LIMIT_NEXT;
 			}
 			break;
-
+			
 		case SCHEDULEEVENT_LOADING:
 			if (qName.equals("incident")) {
 				this.subState = ScanDescriptionLoaderSubStates.EVENT_INCIDENT_NEXT;
@@ -602,6 +602,12 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			}
 			break;
 
+		case PAUSEDETECTOREVENT_LOADING:
+			if (qName.equals("id")) {
+				this.subState = ScanDescriptionLoaderSubStates.PAUSEEVENT_ID_NEXT;
+			}
+			break;
+			
 		case PAUSEMONITOREVENT_LOADING:
 			if (qName.equals("id")) {
 				this.subState = ScanDescriptionLoaderSubStates.PAUSEEVENT_ID_NEXT;
