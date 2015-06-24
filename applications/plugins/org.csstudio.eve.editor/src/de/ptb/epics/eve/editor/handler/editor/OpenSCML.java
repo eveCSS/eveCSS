@@ -43,6 +43,7 @@ public class OpenSCML extends AbstractHandler {
 				.getDefaults().getWorkingDirectory();
 		if (workingDirectory.isDirectory()) {
 			fileDialog.setFilterPath(workingDirectory.getAbsolutePath());
+			workingDirectoryUsed = true;
 		} else {
 			File file = new File(Startup.readStartupParameters()
 					.getRootDir() + "eve/");
@@ -70,8 +71,12 @@ public class OpenSCML extends AbstractHandler {
 		try {
 			IDE.openEditorOnFileStore(page, fileStore);
 			if (workingDirectoryUsed) {
-				de.ptb.epics.eve.editor.Activator.getDefault().getDefaults()
-						.setWorkingDirectory(new File(scmlPath));
+				de.ptb.epics.eve.editor.Activator
+						.getDefault()
+						.getDefaults()
+						.setWorkingDirectory(
+								new File(scmlPath.substring(0,
+										scmlPath.lastIndexOf(File.separator))));
 			}
 		} catch (PartInitException e) {
 			LOGGER.error(e.getMessage(), e);
