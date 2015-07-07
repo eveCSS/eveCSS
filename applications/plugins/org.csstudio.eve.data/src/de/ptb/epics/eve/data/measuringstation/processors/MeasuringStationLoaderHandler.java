@@ -663,7 +663,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 		switch (this.subState) {
 
 		case OPTION_NAME_NEXT:
-			this.currentOption.setName(textBuffer.toString());
+			this.currentOption.setName(textBuffer.toString().intern());
 			this.subState = MeasuringStationLoaderSubStates.OPTION_NAME_READ;
 			break;
 		case OPTION_ID_NEXT:
