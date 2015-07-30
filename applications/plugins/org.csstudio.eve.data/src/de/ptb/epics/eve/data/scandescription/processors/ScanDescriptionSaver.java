@@ -5,7 +5,6 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
-import java.util.Iterator;
 
 import javax.xml.datatype.Duration;
 
@@ -1344,43 +1343,28 @@ public class ScanDescriptionSaver implements
 					.getPlugin().getLocation().length());
 			this.contentHandler.endElement("", tagName, tagName);
 
-			Iterator<PluginParameter> it = pluginController.getPlugin()
-					.getParameters().iterator();
+			for (PluginParameter pluginParameter : pluginController.getPlugin().getParameters()) {
+				final String parameterName = pluginParameter.getName();
 
-			while (it.hasNext()) {
-				final PluginParameter actPlugin = it.next();
-				final String parameterName = actPlugin.getName();
-
-				if (actPlugin.isMandatory()) {
-					// Parameter ist ein Pflichtfeld und muß auf jeden Fall
-					// gespeichert werden
+				if (pluginParameter.isMandatory()) {
 					this.atts.clear();
-					this.atts.addAttribute("", Literals.XML_ATTRIBUTE_NAME_NAME, Literals.XML_ATTRIBUTE_NAME_NAME, Literals.CHARACTER_DATA,
-							parameterName);
+					this.atts.addAttribute("", Literals.XML_ATTRIBUTE_NAME_NAME, Literals.XML_ATTRIBUTE_NAME_NAME,
+							Literals.CHARACTER_DATA, parameterName);
 					this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_PARAMETER,
 							Literals.XML_ELEMENT_NAME_PARAMETER, this.atts);
-					this.contentHandler.characters(
-							pluginController.get(parameterName).toCharArray(),
-							0, pluginController.get(parameterName).length());
+					this.contentHandler.characters(pluginController.get(parameterName).toCharArray(), 0,
+							pluginController.get(parameterName).length());
 					this.contentHandler.endElement("", tagName, tagName);
 				} else {
-					// Parameter ist freiwilliger Eintrag und wird nur
-					// gespeichert, wenn ein Wert vorhanden ist.
 					if (pluginController.get(parameterName) != null) {
-						// Wert vorhanden, Parameter wird gespeichert
 						this.atts.clear();
-						this.atts.addAttribute("", Literals.XML_ATTRIBUTE_NAME_NAME, Literals.XML_ATTRIBUTE_NAME_NAME, Literals.CHARACTER_DATA,
-								parameterName);
+						this.atts.addAttribute("", Literals.XML_ATTRIBUTE_NAME_NAME, Literals.XML_ATTRIBUTE_NAME_NAME,
+								Literals.CHARACTER_DATA, parameterName);
 						this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_PARAMETER,
 								Literals.XML_ELEMENT_NAME_PARAMETER, this.atts);
-						this.contentHandler.characters(
-								pluginController.get(parameterName)
-										.toCharArray(), 0, pluginController
-										.get(parameterName).length());
+						this.contentHandler.characters(pluginController.get(parameterName).toCharArray(), 0,
+								pluginController.get(parameterName).length());
 						this.contentHandler.endElement("", tagName, tagName);
-					} else {
-						// kein Mandatory, kein Wert vorhanden, nichts wird
-						// gespeichert
 					}
 				}
 			}
