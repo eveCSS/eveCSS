@@ -19,6 +19,8 @@ import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.Stepfunctions;
+import de.ptb.epics.eve.data.scandescription.axismode.AddMultiplyMode;
+import de.ptb.epics.eve.data.scandescription.axismode.AdjustParameter;
 
 /**
  * ScanModule related Unit Testing.
@@ -98,7 +100,7 @@ public class ScanModuleTest implements PropertyChangeListener {
 	 */
 	@Test
 	public void testAddMainAxis() {
-	this.mockAxes();
+		this.mockAxes();
 		
 		axis1.setStepfunction(Stepfunctions.ADD);
 		axis2.setStepfunction(Stepfunctions.ADD);
@@ -117,6 +119,59 @@ public class ScanModuleTest implements PropertyChangeListener {
 		this.scanModule.add(axis1);
 		
 		assertEquals(2.0, (double) axis2.getStepwidth(), 0);
+	}
+	
+	/**
+	 * Set an Axis as main axis when another one is already set. The old one 
+	 * should be replaced.
+	 * 
+	 * @since 1.24
+	 */
+	@Test
+	public void testOverwriteMainAxis() {
+		Axis axis1 = mockAxis();
+		Axis axis2 = mockAxis();
+		Axis axis3 = mockAxis();
+		
+		axis1.setStepfunction(Stepfunctions.ADD);
+		axis2.setStepfunction(Stepfunctions.ADD);
+		axis3.setStepfunction(Stepfunctions.ADD);
+		
+		axis1.setStart(0.0);
+		axis1.setStop(10.0);
+		axis1.setStepwidth(1.0);
+		
+		axis2.setStart(0.0);
+		axis2.setStop(10.0);
+		axis2.setStepwidth(2.0);
+		
+		axis3.setStart(0.0);
+		axis3.setStop(10.0);
+		axis3.setStepwidth(5.0);
+		
+		this.scanModule.add(axis1);
+		this.scanModule.add(axis2);
+		this.scanModule.add(axis3);
+		
+		axis1.setMainAxis(true);
+		
+		assertEquals(1.0, (double) axis2.getStepwidth(), 0);
+		assertEquals(1.0, (double) axis3.getStepwidth(), 0);
+		
+		axis3.setMainAxis(true);
+		
+		assertTrue(axis3.isMainAxis());
+		assertEquals(AdjustParameter.STEPCOUNT, 
+				((AddMultiplyMode<?>)axis3.getMode()).getAdjustParameter());
+		
+		assertFalse(axis1.isMainAxis());
+		assertEquals(AdjustParameter.STEPWIDTH, 
+				((AddMultiplyMode<?>)axis1.getMode()).getAdjustParameter());
+		
+		axis3.setStepwidth(5.0);
+		
+		assertEquals(5.0, (double) axis1.getStepwidth(), 0);
+		assertEquals(5.0, (double) axis2.getStepwidth(), 0);
 	}
 	
 	/**
@@ -173,12 +228,32 @@ public class ScanModuleTest implements PropertyChangeListener {
 		}
 	}
 	
+	/*
+	 * Creates a Mock Axis
+	 */
+	private Axis mockAxis() {
+		Axis axis = new Axis(this.scanModule);
+		MotorAxis mockAxis = mock(MotorAxis.class);
+		when(mockAxis.getType()).thenReturn(DataTypes.DOUBLE);
+		when(mockAxis.getDefaultValue()).thenReturn("0");
+		when(mockAxis.getName()).thenReturn("MockAxis");
+		Function mockFunction = mock(Function.class);
+		when(mockFunction.isDiscrete()).thenReturn(false);
+		when(mockAxis.getGoto()).thenReturn(mockFunction);
+		axis.setMotorAxis(mockAxis);
+		return axis;
+	}
+	
+	/*
+	 * @Deprecated - Should not be Used, use mockAxis():Axis instead
+	 */
 	private void mockAxes() {
 		axis1 = new Axis(this.scanModule);
 		axis2 = new Axis(this.scanModule);
 		MotorAxis mockAxis = mock(MotorAxis.class);
 		when(mockAxis.getType()).thenReturn(DataTypes.DOUBLE);
 		when(mockAxis.getDefaultValue()).thenReturn("0");
+		when(mockAxis.getName()).thenReturn("MockAxis");
 		Function mockFunction = mock(Function.class);
 		when(mockFunction.isDiscrete()).thenReturn(false);
 		when(mockAxis.getGoto()).thenReturn(mockFunction);

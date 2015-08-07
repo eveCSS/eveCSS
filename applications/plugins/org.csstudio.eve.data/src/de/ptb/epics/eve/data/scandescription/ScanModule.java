@@ -1430,8 +1430,12 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 						AddMultiplyMode.STEPCOUNT_PROP, this);
 			}
 			if (logger.isDebugEnabled()) {
-				logger.debug("Axis " + this.mainAxis.getMotorAxis().getName()
-						+ " has been set as main axis");
+				if (this.mainAxis != null) {
+					logger.debug("Axis " + this.mainAxis.getMotorAxis().getName()
+							+ " has been set as main axis");
+				} else {
+					logger.debug("Main Axis removed.");
+				}
 			}
 		} else if (e.getPropertyName().equals(AddMultiplyMode.STEPCOUNT_PROP)) { 
 			for (Axis axis : this.axes) {

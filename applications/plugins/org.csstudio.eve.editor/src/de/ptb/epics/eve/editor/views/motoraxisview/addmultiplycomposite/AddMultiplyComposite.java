@@ -10,6 +10,8 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.observable.ChangeEvent;
+import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.SelectObservableValue;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
@@ -417,6 +419,14 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 				mainAxisModelObservable, mainAxisTargetToModel,
 				mainAxisModelToTarget);
 		
+		this.mainAxisModelObservable.addChangeListener(new IChangeListener() {
+			@Override
+			public void handleChange(ChangeEvent event) {
+				setEnabled();
+				selectBinding.updateModelToTarget();
+			}
+		});
+		
 		this.startText.addFocusListener(startTextFocusListener);
 		this.stopText.addFocusListener(stopTextFocusListener);
 		this.stepwidthText.addFocusListener(stepwidthTextFocusListener);
@@ -524,7 +534,7 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 		if (this.addMultiplyMode.getReferenceAxis() != null) {
 			this.stepcountText.setEnabled(false);
 			this.stepcountRadioButton.setEnabled(false);
-			this.mainAxisCheckBox.setEnabled(false);
+			// this.mainAxisCheckBox.setEnabled(false);
 		}
 	}
 	

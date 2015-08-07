@@ -69,8 +69,11 @@ public abstract class AddMultiplyMode<T extends Object> extends AxisMode {
 						+ " to " + mainAxis.getMotorAxis().getName());
 			}
 		}
-		if (this.isMainAxis()) {
-			// this axis is the main axis
+		if (this.isMainAxis() && mainAxis != this.getAxis()) {
+			this.mainAxis = false;
+		}
+		if (this.isMainAxis()) { // this.getAxis() == mainAxis) { //this.isMainAxis()) {
+			this.adjustParameter = AdjustParameter.STEPCOUNT;
 			return;
 		}
 		this.referenceAxis = mainAxis;
@@ -83,7 +86,7 @@ public abstract class AddMultiplyMode<T extends Object> extends AxisMode {
 		this.stepcount = ((AddMultiplyMode<?>)mainAxis.getMode()).getStepcount();
 		this.adjust();
 	}
-
+	
 	/*
 	 * adjusts the value set in adjustParameter to satisfy the other three
 	 */

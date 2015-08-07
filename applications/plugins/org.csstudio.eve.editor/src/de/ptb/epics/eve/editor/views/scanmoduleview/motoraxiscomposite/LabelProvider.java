@@ -48,6 +48,9 @@ public class LabelProvider implements ITableLabelProvider {
 	public String getColumnText(final Object axis, final int colIndex) {
 		switch (colIndex) {
 		case 1:
+			if (((Axis)axis).isMainAxis()) {
+				return ((Axis)axis).getAbstractDevice().getName() + " " + (char) 171 + " Main Axis";
+			}
 			return ((Axis)axis).getAbstractDevice().getName();
 		case 2:
 			return ((Axis)axis).getStepfunction().toString();
