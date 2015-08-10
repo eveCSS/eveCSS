@@ -11,12 +11,16 @@ import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.IMemento;
+import org.eclipse.ui.IViewSite;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
 
 import de.ptb.epics.eve.util.swt.FontHelper;
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.views.messagesview.FilterSettings;
 import de.ptb.epics.eve.viewer.views.messagesview.LevelFilter;
+import de.ptb.epics.eve.viewer.views.messagesview.Levels;
 import de.ptb.epics.eve.viewer.views.messagesview.MessageFilter;
 import de.ptb.epics.eve.viewer.views.messagesview.MessageList;
 import de.ptb.epics.eve.viewer.views.messagesview.SourceFilter;
@@ -35,6 +39,19 @@ public final class MessagesView extends ViewPart implements PropertyChangeListen
 	private TableViewer tableViewer;
 	
 	private FilterSettings filterSettings;
+	private IMemento memento;
+	private static final String SHOW_VIEWER_MESSAGES_MEMENTO = "showViewerMessages";
+	private static final String SHOW_ENGINE_MESSAGES_MEMENTO = "showEngineMessages";
+	private static final String MESSAGE_LEVEL_MEMENTO = "messageLevel";
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void init(IViewSite site, IMemento memento) throws PartInitException {
+		super.init(site, memento);
+		this.memento = memento;
+	}
 	
 	/**
 	 * {@inheritDoc}
@@ -85,8 +102,10 @@ public final class MessagesView extends ViewPart implements PropertyChangeListen
 				MessageList.MESSAGE_MAX_WIDTH_PROP, this);
 		
 		this.filterSettings = new FilterSettings();
+		this.restoreState();
 		MessageFilter sourceFilter = new SourceFilter(this.filterSettings);
 		MessageFilter levelFilter = new LevelFilter(this.filterSettings);
+		
 		this.tableViewer.setFilters(new ViewerFilter[] { sourceFilter,
 				levelFilter });
 		
@@ -113,6 +132,42 @@ public final class MessagesView extends ViewPart implements PropertyChangeListen
 	@Override
 	public void setFocus() {
 		this.tableViewer.getTable().setFocus();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 * @since 1.24
+	 */
+	@Override
+	public void saveState(IMemento memento) {
+		super.saveState(memento);
+		memento.putBoolean(MessagesView.SHOW_VIEWER_MESSAGES_MEMENTO, 
+				this.filterSettings.isShowViewerMessages());
+		memento.putBoolean(MessagesView.SHOW_ENGINE_MESSAGES_MEMENTO, 
+				this.filterSettings.isShowEngineMessages());
+		memento.putString(MessagesView.MESSAGE_LEVEL_MEMENTO, 
+				this.filterSettings.getMessageThreshold().toString());
+	}
+	
+	private void restoreState() {
+		if (this.memento == null) {
+			return;
+		}
+		Boolean showViewerMessages = this.memento.getBoolean(
+				MessagesView.SHOW_VIEWER_MESSAGES_MEMENTO);
+		if (showViewerMessages != null) {
+			this.filterSettings.setShowViewerMessages(showViewerMessages);
+		}
+		Boolean showEngineMessages = this.memento.getBoolean(
+				MessagesView.SHOW_ENGINE_MESSAGES_MEMENTO);
+		if (showEngineMessages != null) {
+			this.filterSettings.setShowEngineMessages(showEngineMessages);
+		}
+		String messageLevel = this.memento.getString(MESSAGE_LEVEL_MEMENTO);
+		if (messageLevel != null) {
+			this.filterSettings.setMessageThreshold(Levels.stringToEnum(
+					messageLevel.toUpperCase()));
+		}
 	}
 	
 	/**
