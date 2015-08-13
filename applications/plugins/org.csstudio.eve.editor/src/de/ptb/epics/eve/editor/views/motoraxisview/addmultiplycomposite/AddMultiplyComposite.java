@@ -22,6 +22,8 @@ import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
@@ -32,6 +34,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
 import de.ptb.epics.eve.data.DataTypes;
@@ -107,6 +110,8 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 	private IObservableValue mainAxisTargetObservable;
 	private IObservableValue mainAxisModelObservable;
 	
+	private Control[] controls; 
+	
 	private Image contentProposalImage;
 	
 	private final String descriptionText = "Click to open Date Selector";
@@ -129,10 +134,11 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 		gridLayout.numColumns = 2;
 		this.setLayout(gridLayout);
 		
-		// initialize start elements
-		this.startRadioButton = new Button(this, SWT.RADIO);
-		this.startRadioButton.setText("Start:");
+		this.controls = new Control[4];
 		
+
+		this.startRadioButton = new Button(this, SWT.RADIO);
+		this.startRadioButton.setText("Start:");		
 		this.startText = new Text(this, SWT.BORDER);
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -150,12 +156,10 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 				startTextControlDecorationSelectionListener);
 		this.startTextFocusListener = new TextFocusListener(this.startText);
 		this.startTextMouseListener = new TextMouseListener(this.startText);
-		// end of: initialize start elements
+		this.controls[0] = this.startText;
 		
-		// initialize stop elements
 		this.stopRadioButton = new Button(this, SWT.RADIO);
 		this.stopRadioButton.setText("Stop:");
-		
 		this.stopText = new Text(this, SWT.BORDER);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -173,12 +177,10 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 				stopTextControlDecorationSelectionListener);
 		this.stopTextFocusListener = new TextFocusListener(stopText);
 		this.stopTextMouseListener = new TextMouseListener(stopText);
-		// end of: initialize stop elements
+		this.controls[1] = this.stopText;
 		
-		// initialize step width elements
 		this.stepwidthRadioButton = new Button(this, SWT.RADIO);
 		this.stepwidthRadioButton.setText("Stepwidth:");
-		
 		this.stepwidthText = new Text(this, SWT.BORDER);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -197,12 +199,10 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 				stepwidhtTextControlDecorationSelectionListener);
 		this.stepwidthTextFocusListener = new TextFocusListener(stepwidthText);
 		this.stepwidthTextMouseListener = new TextMouseListener(stepwidthText);
-		// end of: initialize step width elements 
+		this.controls[2] = this.stepwidthText;
 		
-		// initialize step count elements
 		this.stepcountRadioButton = new Button(this, SWT.RADIO);
 		this.stepcountRadioButton.setText("Stepcount:");
-		
 		this.stepcountText = new Text(this, SWT.BORDER);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -211,7 +211,12 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 		this.stepcountText.setLayoutData(gridData);
 		this.stepcountTextFocusListener = new TextFocusListener(stepcountText);
 		this.stepcountTextMouseListener = new TextMouseListener(stepcountText);
-		// end of: initialize step count elements
+		this.controls[3] = this.stepcountText;
+		
+		this.startText.addKeyListener(new TextKeyListener(0));
+		this.stopText.addKeyListener(new TextKeyListener(1));
+		this.stepwidthText.addKeyListener(new TextKeyListener(2));
+		this.stepcountText.addKeyListener(new TextKeyListener(3));
 		
 		this.mainAxisCheckBox = new Button(this, SWT.CHECK);
 		this.mainAxisCheckBox.setText("Main Axis");
@@ -575,16 +580,70 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 		}
 	}
 	
-	/* ********************************************************************** */
-	/* **************************** Listeners ******************************* */
-	/* ********************************************************************** */
+	/**
+	 * @author Marcus Michalsky
+	 * @since 1.24
+	 */
+	private class TextKeyListener implements KeyListener {
+		private int controlPosition;
+		
+		/**
+		 * Constructor.
+		 * 
+		 * @param controlPosition the position of the control (e.g. start is 0, 
+		 * 		stop is 1, ...)
+		 */
+		public TextKeyListener(int controlPosition) {
+			this.controlPosition = controlPosition;
+		}
+
+		@Override
+		public void keyPressed(KeyEvent keyEvent) {
+			if (keyEvent.character == SWT.CR || keyEvent.character == SWT.LF) {
+				keyEvent.doit = false;
+				
+				int stepsForward=1;
+				switch (addMultiplyMode.getAdjustParameter()) {
+				case START:
+					if (controlPosition == 3) {
+						stepsForward++;
+					}
+					break;
+				case STOP:
+					if (controlPosition == 0) {
+						stepsForward++;
+					}
+					break;
+				case STEPWIDTH:
+					if (controlPosition == 1) {
+						stepsForward++;
+					}
+					break;
+				case STEPCOUNT:
+					if (controlPosition == 2) {
+						stepsForward++;
+					}
+					break;
+				default:
+					break;
+				}
+				
+				Control next = controls[(controlPosition + stepsForward) % 4];
+				next.setFocus();
+				next.forceFocus();
+			}
+		}
+
+		@Override
+		public void keyReleased(KeyEvent keyEvent) {
+		}
+	}
 	
 	/**
 	 * @author Marcus Michalsky
 	 * @since 1.7
 	 */
 	private class TextFocusListener implements FocusListener {
-
 		private Text widget;
 		
 		/**
@@ -630,7 +689,6 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 	 * @since 1.8
 	 */
 	private class TextMouseListener extends MouseAdapter {
-		
 		private Text widget;
 		
 		/**
@@ -659,7 +717,6 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 	 * @since 1.7
 	 */
 	private class DateTimeProposalSelectionListener implements SelectionListener {
-
 		private Text text;
 		
 		/**
