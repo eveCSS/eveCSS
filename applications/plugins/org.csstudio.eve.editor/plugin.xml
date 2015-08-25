@@ -867,7 +867,9 @@
             name="EveEditor">
       </command>
       <command
+            categoryId="de.ptb.epics.eve.editor.commands"
             defaultHandler="de.ptb.epics.eve.editor.handler.HandOver"
+            description="Send SCML file to Engine (and optionally switch perspective)"
             id="de.ptb.epics.eve.editor.command.handover"
             name="Handover">
          <commandParameter
@@ -1201,5 +1203,28 @@
             id="de.ptb.epics.eve.editor.PreferencePage"
             name="EVE Editor">
       </page>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="de.ptb.epics.eve.editor.command.handover"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+ARROW_DOWN">
+         <parameter
+               id="de.ptb.epics.eve.editor.command.handover.switchPerspective"
+               value="true">
+         </parameter>
+      </key>
+      <key
+            commandId="de.ptb.epics.eve.editor.command.handover"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+ARROW_UP">
+         <parameter
+               id="de.ptb.epics.eve.editor.command.handover.switchPerspective"
+               value="false">
+         </parameter>
+      </key>
    </extension>
 </plugin>
