@@ -33,6 +33,16 @@ import de.ptb.epics.eve.viewer.views.messagesview.ViewerMessage;
  * @author Hartmut Scherr
  */
 public class CommonTableElement {
+	public static final String NAME_PROP = "name";
+	public static final String VALUE_PROP = "value";
+	public static final String GOTO_PROP = "goto";
+	public static final String ENGINE_PROP = "engine";
+	public static final String UNIT_PROP = "unit";
+	public static final String STOP_PROP = "stop";
+	public static final String STATUS_PROP = "status";
+	public static final String TWEAKVALUE_PROP = "tweakvalue";
+	public static final String DEFINE_PROP = "define";
+	
 	private static Logger LOGGER = 
 			Logger.getLogger(CommonTableElement.class.getName());
 	
@@ -341,16 +351,16 @@ public class CommonTableElement {
 	 * 			given property is read only, <code>false</code> otherwise
 	 */
 	public boolean isReadonly(String property) {
-		if (property.equals("value") && (valuePv != null)) {
+		if (property.equals(CommonTableElement.VALUE_PROP) && (valuePv != null)) {
 			return valuePv.isReadOnly();
 		}
-		else if (property.equals("goto") && (gotoPv != null)) {
+		else if (property.equals(CommonTableElement.GOTO_PROP) && (gotoPv != null)) {
 			return gotoPv.isReadOnly();
 		}
-		else if (property.equals("unit") && (unitPv != null)) {
+		else if (property.equals(CommonTableElement.UNIT_PROP) && (unitPv != null)) {
 			return unitPv.isReadOnly();
 		}
-		else if (property.equals("status") && (statusPv != null)) {
+		else if (property.equals(CommonTableElement.STATUS_PROP) && (statusPv != null)) {
 			return statusPv.isReadOnly();
 		}
 		else if (property.equals("stop") && (stopPv != null)) {
@@ -359,7 +369,7 @@ public class CommonTableElement {
 		else if (property.equals("trigger") && (triggerPv != null)) {
 			return triggerPv.isReadOnly();
 		}
-		else if (property.equals("tweakvalue") && (tweakvaluePv != null)) {
+		else if (property.equals(CommonTableElement.TWEAKVALUE_PROP) && (tweakvaluePv != null)) {
 			return tweakvaluePv.isReadOnly();
 		}
 		else if (property.equals("tweakforward") && (tweakforwardPv != null)) {
@@ -368,7 +378,7 @@ public class CommonTableElement {
 		else if (property.equals("tweakreverse") && (tweakreversePv != null)) {
 			return tweakreversePv.isReadOnly();
 		}
-		else if (property.equals("define") && (offsetPv != null)) {
+		else if (property.equals(CommonTableElement.DEFINE_PROP) && (offsetPv != null)) {
 			return offsetPv.isReadOnly();
 		}
 		return true;
@@ -383,16 +393,16 @@ public class CommonTableElement {
 	 * 			given property is discrete, <code>false</code> otherwise
 	 */
 	public boolean isDiscrete(String property) {
-		if (property.equals("value") && valuePv != null) {
+		if (property.equals(CommonTableElement.VALUE_PROP) && valuePv != null) {
 			return valuePv.isDiscrete();
 		}
-		else if (property.equals("goto") && gotoPv != null) {
+		else if (property.equals(CommonTableElement.GOTO_PROP) && gotoPv != null) {
 			return gotoPv.isDiscrete();
 		}
-		else if (property.equals("unit") && unitPv != null) {
+		else if (property.equals(CommonTableElement.UNIT_PROP) && unitPv != null) {
 			return unitPv.isDiscrete();
 		}
-		else if (property.equals("status") && statusPv != null) {
+		else if (property.equals(CommonTableElement.STATUS_PROP) && statusPv != null) {
 			return statusPv.isDiscrete();
 		}
 		else if (property.equals("stop") && stopPv != null) {
@@ -401,7 +411,7 @@ public class CommonTableElement {
 		else if (property.equals("trigger") && triggerPv != null) {
 			return triggerPv.isDiscrete();
 		}
-		else if (property.equals("tweakvalue") && tweakvaluePv != null) {
+		else if (property.equals(CommonTableElement.TWEAKVALUE_PROP) && tweakvaluePv != null) {
 			return tweakvaluePv.isDiscrete();
 		}
 		else if (property.equals("tweakforward") && tweakforwardPv != null) {
@@ -410,7 +420,7 @@ public class CommonTableElement {
 		else if (property.equals("tweakreverse") && tweakreversePv != null) {
 			return tweakreversePv.isDiscrete();
 		}
-		else if (property.equals("define") && offsetPv != null) {
+		else if (property.equals(CommonTableElement.DEFINE_PROP) && offsetPv != null) {
 			return offsetPv.isDiscrete();
 		}
 		return false;
@@ -433,7 +443,7 @@ public class CommonTableElement {
 				return valuePv.isConnected();
 			}
 		}
-		else if (property.equals("value")) {
+		else if (property.equals(CommonTableElement.VALUE_PROP)) {
 			if (this.type != null && this.type.equals(TransportTypes.LOCAL)) {
 				return true;
 			}
@@ -441,13 +451,13 @@ public class CommonTableElement {
 				return valuePv.isConnected();
 			}
 		}
-		else if (property.equals("goto") && gotoPv != null) {
+		else if (property.equals(CommonTableElement.GOTO_PROP) && gotoPv != null) {
 			return gotoPv.isConnected();
 		}
-		else if (property.equals("unit") && unitPv != null) {
+		else if (property.equals(CommonTableElement.UNIT_PROP) && unitPv != null) {
 			return unitPv.isConnected();
 		}
-		else if (property.equals("status") && statusPv != null) {
+		else if (property.equals(CommonTableElement.STATUS_PROP) && statusPv != null) {
 			return statusPv.isConnected();
 		}
 		else if (property.equals("stop") && stopPv != null) {
@@ -456,7 +466,7 @@ public class CommonTableElement {
 		else if (property.equals("trigger") && triggerPv != null) {
 			return triggerPv.isConnected();
 		}
-		else if (property.equals("tweakvalue") && tweakvaluePv != null) {
+		else if (property.equals(CommonTableElement.TWEAKVALUE_PROP) && tweakvaluePv != null) {
 			return tweakvaluePv.isConnected();
 		}
 		else if (property.equals("tweakforward") && tweakforwardPv != null) {
@@ -465,7 +475,7 @@ public class CommonTableElement {
 		else if (property.equals("tweakreverse") && tweakreversePv != null) {
 			return tweakreversePv.isConnected();
 		}
-		else if (property.equals("define") && offsetPv != null) {
+		else if (property.equals(CommonTableElement.DEFINE_PROP) && offsetPv != null) {
 			return offsetPv.isConnected();
 		}
 		return false;
@@ -490,20 +500,20 @@ public class CommonTableElement {
 	 */
 	public Color getSeverityColor(String property) {
 		AlarmSeverity status = AlarmSeverity.UNDEFINED; 
-		if ((property.equals("value")) && (valuePv != null)) {
-			String statusVal = getValue("status");
+		if ((property.equals(CommonTableElement.VALUE_PROP)) && (valuePv != null)) {
+			String statusVal = getValue(CommonTableElement.STATUS_PROP);
 			if (statusVal.equals("Moving")) {
 				return Activator.getDefault().getColor("COLOR_PV_MOVING");
 			}
 			status = valuePv.getSeverity();
-		} else if (property.equals("unit") && unitPv != null) {
+		} else if (property.equals(CommonTableElement.UNIT_PROP) && unitPv != null) {
 				status = unitPv.getSeverity();
-		} else if (property.equals("goto") && gotoPv != null) {
+		} else if (property.equals(CommonTableElement.GOTO_PROP) && gotoPv != null) {
 				status = gotoPv.getSeverity();
-		} else if (property.equals("tweakvalue") && tweakvaluePv != null) {
+		} else if (property.equals(CommonTableElement.TWEAKVALUE_PROP) && tweakvaluePv != null) {
 				status = tweakvaluePv.getSeverity();
-		} else if ((property.equals("status")) && (statusPv != null)) {
-			String statusVal = getValue("status");
+		} else if ((property.equals(CommonTableElement.STATUS_PROP)) && (statusPv != null)) {
+			String statusVal = getValue(CommonTableElement.STATUS_PROP);
 			if (statusVal.equals("Moving")) {
 				return Activator.getDefault().getColor("COLOR_PV_MOVING");
 			}
@@ -542,11 +552,11 @@ public class CommonTableElement {
 	 */
 	public String[] getSelectStrings(String property) {
 		if (isDiscrete(property)) {
-			if (property.equals("value")) {
+			if (property.equals(CommonTableElement.VALUE_PROP)) {
 				if ((valuePv != null) && valuePv.isDiscrete()) {
 					return valuePv.getDiscreteValues();
 				}
-			} else if (property.equals("goto")) {
+			} else if (property.equals(CommonTableElement.GOTO_PROP)) {
 				if ((gotoPv != null) && gotoPv.isDiscrete()) {
 					return gotoPv.getDiscreteValues();
 				}
@@ -602,15 +612,15 @@ public class CommonTableElement {
 	 * @return
 	 */
 	public String getValue(String property) {
-		if (property.equals("goto") && (gotoPv != null)) {
+		if (property.equals(CommonTableElement.GOTO_PROP) && (gotoPv != null)) {
 			return gotoPv.getValue();
 		} else if (property.equals("engine") && (engine != null)) {
 			return engine.getValue();
 		} else if (property.equals( "name")) {
 			return name;
-		} else if (property.equals("value") && (valuePv != null)) {
+		} else if (property.equals(CommonTableElement.VALUE_PROP) && (valuePv != null)) {
 			return valuePv.getValue();
-		} else if (property.equals("status")) {
+		} else if (property.equals(CommonTableElement.STATUS_PROP)) {
 			if (device instanceof DetectorChannel) {
 				if (statusPv != null) {
 					return statusPv.getValue();
@@ -659,16 +669,16 @@ public class CommonTableElement {
 					return valueString;
 				}
 			}
-		} else if (property.equals("unit")) {
+		} else if (property.equals(CommonTableElement.UNIT_PROP)) {
 			if (unitPv != null) {
 				return unitPv.getValue();
 			}
 			return unit;
 		}
-		else if (property.equals("tweakvalue") && (tweakvaluePv != null)) {
+		else if (property.equals(CommonTableElement.TWEAKVALUE_PROP) && (tweakvaluePv != null)) {
 			return tweakvaluePv.getValue();
 		}
-		else if (property.equals("define") && (offsetPv != null)) {
+		else if (property.equals(CommonTableElement.DEFINE_PROP) && (offsetPv != null)) {
 			return "";
 		}
 		return "";
@@ -695,15 +705,15 @@ public class CommonTableElement {
 			newValue = (String) value;
 		}
 
-		if (column.equals("goto") && (gotoPv != null)) {
+		if (column.equals(CommonTableElement.GOTO_PROP) && (gotoPv != null)) {
 			gotoPv.setValue(newValue);
-		} else if (column.equals("value") && (valuePv != null)) {
+		} else if (column.equals(CommonTableElement.VALUE_PROP) && (valuePv != null)) {
 			valuePv.setValue(newValue);
-		} else if (column.equals("unit") && (unitPv != null)) {
+		} else if (column.equals(CommonTableElement.UNIT_PROP) && (unitPv != null)) {
 			unitPv.setValue(newValue);
-		} else if (column.equals("tweakvalue") && (tweakvaluePv != null)) {
+		} else if (column.equals(CommonTableElement.TWEAKVALUE_PROP) && (tweakvaluePv != null)) {
 			tweakvaluePv.setValue(newValue);
-		} else if (column.equals("define") && (offsetPv != null)) {
+		} else if (column.equals(CommonTableElement.DEFINE_PROP) && (offsetPv != null)) {
 			// this is a define of the motor position
 			// first, remember softHighLimit and softLowLimit
 			String softHighLimit = softHighLimitPv.getValue();

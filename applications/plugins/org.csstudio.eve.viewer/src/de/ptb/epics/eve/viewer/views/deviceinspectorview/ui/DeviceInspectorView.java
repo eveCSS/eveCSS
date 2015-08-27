@@ -528,7 +528,8 @@ public class DeviceInspectorView extends ViewPart {
 			@Override public Image getImage(Object element) {return deleteIcon;}
 			@Override public String getText(Object element) {return null;}
 			@Override public String getToolTipText(Object element) {
-				String name = ((CommonTableElement)element).getValue("name");
+				String name = ((CommonTableElement)element).getValue(
+						CommonTableElement.NAME_PROP);
 				return "Remove \"" + name + "\"";
 			}
 		});
@@ -537,14 +538,16 @@ public class DeviceInspectorView extends ViewPart {
 		TableViewerColumn nameColumn = 
 				new TableViewerColumn(axisTableViewer, SWT.NONE);
 		nameColumn.getColumn().setText("Name");
-		nameColumn.setEditingSupport(
-				new CommonTableEditingSupport(axisTableViewer, "name"));
+		nameColumn.setEditingSupport(new CommonTableEditingSupport(
+				axisTableViewer, CommonTableElement.NAME_PROP));
 		nameColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override public String getText(Object element) {
-				return ((CommonTableElement) element).getValue("name");
+				return ((CommonTableElement) element).getValue(
+						CommonTableElement.NAME_PROP);
 			}
 			@Override public Color getForeground(Object element) {
-				return ((CommonTableElement) element).getConnectColor("value");
+				return ((CommonTableElement) element).getConnectColor(
+						CommonTableElement.VALUE_PROP);
 			}
 		});
 		nameColumn.getColumn().setWidth(200);
@@ -555,18 +558,20 @@ public class DeviceInspectorView extends ViewPart {
 				new TableViewerColumn(axisTableViewer, SWT.NONE);
 		valueColumn.getColumn().setText("Position");
 		valueColumn.setEditingSupport(null);
-//		valueColumn.setEditingSupport(
-//				new CommonTableEditingSupport(axisTableViewer, "value"));
+//		valueColumn.setEditingSupport(new CommonTableEditingSupport(
+		// axisTableViewer, CommonTableElement.VALUE_PROP));
 		valueColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override public String getText(Object element) {
-				return ((CommonTableElement) element).getValue("value");
+				return ((CommonTableElement) element).getValue(
+						CommonTableElement.VALUE_PROP);
 			}
 			@Override public Font getFont(Object element) {
 				return JFaceResources.getFontRegistry().getBold(
 						JFaceResources.DEFAULT_FONT);
 			}
 			@Override public Color getForeground(Object element) {
-				return ((CommonTableElement) element).getSeverityColor("value");
+				return ((CommonTableElement) element).getSeverityColor(
+						CommonTableElement.VALUE_PROP);
 			}
 			@Override public String getToolTipText(Object element) {
 				MotorAxis axis = (MotorAxis) 
@@ -585,11 +590,12 @@ public class DeviceInspectorView extends ViewPart {
 			TableViewerColumn engineColumn = 
 				new TableViewerColumn(axisTableViewer, SWT.NONE);
 			engineColumn.getColumn().setText("Engine");
-			engineColumn.setEditingSupport(
-				new CommonTableEditingSupport(axisTableViewer, "engine"));
+			engineColumn.setEditingSupport(new CommonTableEditingSupport(
+					axisTableViewer, CommonTableElement.ENGINE_PROP));
 			engineColumn.setLabelProvider(new ColumnLabelProvider() {
 				@Override public String getText(Object element) {
-					return ((CommonTableElement) element).getValue("engine");
+					return ((CommonTableElement) element).getValue(
+							CommonTableElement.ENGINE_PROP);
 				}
 			});
 			engineColumn.getColumn().setWidth(100);
@@ -598,11 +604,12 @@ public class DeviceInspectorView extends ViewPart {
 		TableViewerColumn unitColumn = 
 				new TableViewerColumn(axisTableViewer, SWT.NONE);
 		unitColumn.getColumn().setText("Unit");
-		unitColumn.setEditingSupport(
-				new CommonTableEditingSupport(axisTableViewer, "unit"));
+		unitColumn.setEditingSupport(new CommonTableEditingSupport(
+				axisTableViewer, CommonTableElement.UNIT_PROP));
 		unitColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override public String getText(Object element) {
-				return ((CommonTableElement) element).getValue("unit");
+				return ((CommonTableElement) element).getValue(
+						CommonTableElement.UNIT_PROP);
 			}
 			@Override public String getToolTipText(Object element) {
 				MotorAxis axis = (MotorAxis) 
@@ -640,12 +647,12 @@ public class DeviceInspectorView extends ViewPart {
 		
 		TableViewerColumn stopColumn = 
 				new TableViewerColumn(axisTableViewer, SWT.NONE);
-		stopColumn.setEditingSupport(
-				new CommonTableEditingSupport(axisTableViewer, "stop"));
+		stopColumn.setEditingSupport(new CommonTableEditingSupport(
+				axisTableViewer, CommonTableElement.STOP_PROP));
 		stopColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override public Image getImage(Object element) {
 				CommonTableElement cte = (CommonTableElement) element;
-				if(cte.isConnected("stop")) {
+				if(cte.isConnected(CommonTableElement.STOP_PROP)) {
 					return stopIcon;
 				}
 				return stopIconDisabled;
@@ -665,14 +672,16 @@ public class DeviceInspectorView extends ViewPart {
 		TableViewerColumn statusColumn = 
 				new TableViewerColumn(axisTableViewer, SWT.NONE);
 		statusColumn.getColumn().setText("Status");
-		statusColumn.setEditingSupport(
-				new CommonTableEditingSupport(axisTableViewer, "status"));
+		statusColumn.setEditingSupport(new CommonTableEditingSupport(
+				axisTableViewer, CommonTableElement.STATUS_PROP));
 		statusColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override public String getText(Object element) {
-				return ((CommonTableElement) element).getValue("status");
+				return ((CommonTableElement) element).getValue(
+						CommonTableElement.STATUS_PROP);
 			}
 			@Override public Color getForeground(Object element) {
-				return ((CommonTableElement) element).getSeverityColor("status");
+				return ((CommonTableElement) element).getSeverityColor(
+						CommonTableElement.STATUS_PROP);
 			}
 			@Override public String getToolTipText(Object element) {
 				MotorAxis axis = (MotorAxis) 
@@ -691,7 +700,7 @@ public class DeviceInspectorView extends ViewPart {
 				new CommonTableEditingSupport(axisTableViewer, "tweakreverse"));
 		tweakRColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override public Image getImage(Object element) {
-				if(((CommonTableElement)element).isConnected("tweakvalue")) {
+				if(((CommonTableElement)element).isConnected(CommonTableElement.TWEAKVALUE_PROP)) {
 					return leftArrowIcon;
 				}
 				return leftArrowIconDisabled;
@@ -711,14 +720,16 @@ public class DeviceInspectorView extends ViewPart {
 		TableViewerColumn tweakValueColumn = 
 				new TableViewerColumn(axisTableViewer, SWT.NONE);
 		tweakValueColumn.getColumn().setText("Tweak");
-		tweakValueColumn.setEditingSupport(
-				new CommonTableEditingSupport(axisTableViewer, "tweakvalue"));
+		tweakValueColumn.setEditingSupport(new CommonTableEditingSupport(
+				axisTableViewer, CommonTableElement.TWEAKVALUE_PROP));
 		tweakValueColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override public String getText(Object element) {
-				return ((CommonTableElement) element).getValue("tweakvalue");
+				return ((CommonTableElement) element).getValue(
+						CommonTableElement.TWEAKVALUE_PROP);
 			}
 			@Override public Color getForeground(Object element) {
-				return ((CommonTableElement) element).getSeverityColor("tweakvalue");
+				return ((CommonTableElement) element).getSeverityColor(
+						CommonTableElement.TWEAKVALUE_PROP);
 			}
 			@Override public String getToolTipText(Object element) {
 				MotorAxis axis = (MotorAxis) 
@@ -738,7 +749,7 @@ public class DeviceInspectorView extends ViewPart {
 				new CommonTableEditingSupport(axisTableViewer, "tweakforward"));
 		tweakFColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override public Image getImage(Object element) {
-				if(((CommonTableElement)element).isConnected("tweakvalue")) {
+				if(((CommonTableElement)element).isConnected(CommonTableElement.TWEAKVALUE_PROP)) {
 					return rightArrowIcon;
 				}
 				return rightArrowIconDisabled;
@@ -804,7 +815,8 @@ public class DeviceInspectorView extends ViewPart {
 			@Override public Image getImage(Object element) {return deleteIcon;}
 			@Override public String getText(Object element) {return null;}
 			@Override public String getToolTipText(Object element) {
-				String name = ((CommonTableElement)element).getValue("name");
+				String name = ((CommonTableElement)element).getValue(
+						CommonTableElement.NAME_PROP);
 				return "Remove \"" + name + "\"";
 			}
 		});
@@ -813,14 +825,16 @@ public class DeviceInspectorView extends ViewPart {
 		TableViewerColumn  nameColumn = 
 				new TableViewerColumn(channelTableViewer, SWT.NONE);
 		nameColumn.getColumn().setText("Name");
-		nameColumn.setEditingSupport(
-				new CommonTableEditingSupport(channelTableViewer, "name"));
+		nameColumn.setEditingSupport(new CommonTableEditingSupport(
+				channelTableViewer, CommonTableElement.NAME_PROP));
 		nameColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override public String getText(Object element) {
-				return ((CommonTableElement) element).getValue("name");
+				return ((CommonTableElement) element).getValue(
+						CommonTableElement.NAME_PROP);
 			}
 			@Override public Color getForeground(Object element) {
-				return ((CommonTableElement) element).getConnectColor("name");
+				return ((CommonTableElement) element).getConnectColor(
+						CommonTableElement.NAME_PROP);
 			}
 		});
 		nameColumn.getColumn().setWidth(200);
@@ -830,18 +844,20 @@ public class DeviceInspectorView extends ViewPart {
 		TableViewerColumn valueColumn = 
 				new TableViewerColumn(channelTableViewer, SWT.NONE);
 		valueColumn.getColumn().setText("Value");
-		valueColumn.setEditingSupport(
-				new CommonTableEditingSupport(channelTableViewer, "value"));
+		valueColumn.setEditingSupport(new CommonTableEditingSupport(
+				channelTableViewer, CommonTableElement.VALUE_PROP));
 		valueColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override public String getText(Object element) {
-				return ((CommonTableElement) element).getValue("value");
+				return ((CommonTableElement) element).getValue(
+						CommonTableElement.VALUE_PROP);
 			}
 			@Override public Font getFont(Object element) {
 				return JFaceResources.getFontRegistry().getBold(
 						JFaceResources.DEFAULT_FONT);
 			}
 			@Override public Color getForeground(Object element) {
-				return ((CommonTableElement) element).getSeverityColor("value");
+				return ((CommonTableElement) element).getSeverityColor(
+						CommonTableElement.VALUE_PROP);
 			}
 			@Override public String getToolTipText(Object element) {
 				DetectorChannel channel = (DetectorChannel) 
@@ -859,14 +875,16 @@ public class DeviceInspectorView extends ViewPart {
 			TableViewerColumn engineColumn = 
 				new TableViewerColumn(channelTableViewer, SWT.NONE);
 			engineColumn.getColumn().setText("Engine");
-			engineColumn.setEditingSupport(
-				new CommonTableEditingSupport(channelTableViewer, "engine"));
+			engineColumn.setEditingSupport(new CommonTableEditingSupport(
+					channelTableViewer, CommonTableElement.ENGINE_PROP));
 			engineColumn.setLabelProvider(new ColumnLabelProvider() {
 				@Override public String getText(Object element) {
-					return ((CommonTableElement) element).getValue("engine");
+					return ((CommonTableElement) element).getValue(
+							CommonTableElement.ENGINE_PROP);
 				}
 				@Override public Color getForeground(Object element) {
-					return ((CommonTableElement) element).getSeverityColor("value");
+					return ((CommonTableElement) element).getSeverityColor(
+							CommonTableElement.VALUE_PROP);
 				}
 			});
 			engineColumn.getColumn().setWidth(100);
@@ -875,11 +893,12 @@ public class DeviceInspectorView extends ViewPart {
 		TableViewerColumn unitColumn = 
 				new TableViewerColumn(channelTableViewer, SWT.NONE);
 		unitColumn.getColumn().setText("Unit");
-		unitColumn.setEditingSupport(
-				new CommonTableEditingSupport(channelTableViewer, "unit"));
+		unitColumn.setEditingSupport(new CommonTableEditingSupport(
+				channelTableViewer, CommonTableElement.UNIT_PROP));
 		unitColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override public String getText(Object element) {
-				return ((CommonTableElement) element).getValue("unit");
+				return ((CommonTableElement) element).getValue(
+						CommonTableElement.UNIT_PROP);
 			}
 			@Override public String getToolTipText(Object element) {
 				DetectorChannel channel = (DetectorChannel) 
@@ -926,11 +945,11 @@ public class DeviceInspectorView extends ViewPart {
 		TableViewerColumn stopColumn = 
 				new TableViewerColumn(channelTableViewer, SWT.NONE);
 		stopColumn.getColumn().setText("");
-		stopColumn.setEditingSupport(
-				new CommonTableEditingSupport(channelTableViewer, "stop"));
+		stopColumn.setEditingSupport(new CommonTableEditingSupport(
+				channelTableViewer, CommonTableElement.STOP_PROP));
 		stopColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override public Image getImage(Object element) {
-				if (((CommonTableElement)element).isConnected("stop")) {
+				if (((CommonTableElement)element).isConnected(CommonTableElement.STOP_PROP)) {
 					return stopIcon;
 				}
 				return stopIconDisabled;
@@ -961,7 +980,8 @@ public class DeviceInspectorView extends ViewPart {
 		statusColumn.getColumn().setText("Status");
 		statusColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override public String getText(Object element) {
-				return ((CommonTableElement) element).getValue("status");
+				return ((CommonTableElement) element).getValue(
+						CommonTableElement.STATUS_PROP);
 			}
 			@Override public String getToolTipText(Object element) {
 				DetectorChannel channel = (DetectorChannel) 
@@ -1008,7 +1028,8 @@ public class DeviceInspectorView extends ViewPart {
 			@Override public Image getImage(Object element) {return deleteIcon;}
 			@Override public String getText(Object element) {return null;}
 			@Override public String getToolTipText(Object element) {
-				String name = ((CommonTableElement)element).getValue("name");
+				String name = ((CommonTableElement)element).getValue(
+						CommonTableElement.NAME_PROP);
 				return "Remove \"" + name + "\"";
 			}
 		});
@@ -1018,14 +1039,16 @@ public class DeviceInspectorView extends ViewPart {
 				new TableViewerColumn(deviceTableViewer, SWT.NONE);
 		nameColumn.getColumn().setText("Name");
 		nameColumn.getColumn().setMoveable(true);
-		nameColumn.setEditingSupport(
-				new CommonTableEditingSupport(deviceTableViewer, "name"));
+		nameColumn.setEditingSupport(new CommonTableEditingSupport(
+				deviceTableViewer, CommonTableElement.NAME_PROP));
 		nameColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override public String getText(Object element) {
-				return ((CommonTableElement) element).getValue("name");
+				return ((CommonTableElement) element).getValue(
+						CommonTableElement.NAME_PROP);
 			}
 			@Override public Color getForeground(Object element) {
-				return ((CommonTableElement) element).getConnectColor("name");
+				return ((CommonTableElement) element).getConnectColor(
+						CommonTableElement.NAME_PROP);
 			}
 		});
 		nameColumn.getColumn().setWidth(200);
@@ -1036,18 +1059,20 @@ public class DeviceInspectorView extends ViewPart {
 				new TableViewerColumn(deviceTableViewer, SWT.NONE);
 		valueColumn.getColumn().setText("Value");
 		valueColumn.getColumn().setMoveable(true);
-		valueColumn.setEditingSupport(
-				new CommonTableEditingSupport(deviceTableViewer, "value"));
+		valueColumn.setEditingSupport(new CommonTableEditingSupport(
+				deviceTableViewer, CommonTableElement.VALUE_PROP));
 		valueColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override public String getText(Object element) {
-				return ((CommonTableElement) element).getValue("value");
+				return ((CommonTableElement) element).getValue(
+						CommonTableElement.VALUE_PROP);
 			}
 			@Override public Font getFont(Object element) {
 				return JFaceResources.getFontRegistry().getBold(
 						JFaceResources.DEFAULT_FONT);
 			}
 			@Override public Color getForeground(Object element) {
-				return ((CommonTableElement) element).getSeverityColor("value");
+				return ((CommonTableElement) element).getSeverityColor(
+						CommonTableElement.VALUE_PROP);
 			}
 			@Override public String getToolTipText(Object element) {
 				Device device = (Device) 
@@ -1064,11 +1089,12 @@ public class DeviceInspectorView extends ViewPart {
 				new TableViewerColumn(deviceTableViewer, SWT.NONE);
 		unitColumn.getColumn().setText("Unit");
 		unitColumn.getColumn().setMoveable(true);
-		unitColumn.setEditingSupport(
-				new CommonTableEditingSupport(deviceTableViewer, "unit"));
+		unitColumn.setEditingSupport(new CommonTableEditingSupport(
+				deviceTableViewer, CommonTableElement.UNIT_PROP));
 		unitColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override public String getText(Object element) {
-				return ((CommonTableElement) element).getValue("unit");
+				return ((CommonTableElement) element).getValue(
+						CommonTableElement.UNIT_PROP);
 			}
 			@Override public String getToolTipText(Object element) {
 				Device device = (Device) 
