@@ -102,4 +102,21 @@ public enum Levels {
 				return "U";
 		}
 	}
+	
+	public static Levels stringToEnum(String level) {
+		switch (level) {
+		case "D": 
+			return Levels.DEBUG;
+		case "I":
+			return Levels.INFO;
+		case "M":
+			return Levels.MINOR;
+		case "E":
+			return Levels.ERROR;
+		case "F":
+			return Levels.FATAL;
+		default:
+			return Levels.MINOR;
+		}
+	}
 }
