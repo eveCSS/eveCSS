@@ -18,7 +18,6 @@ import org.xml.sax.SAXException;
 
 import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.EventTypes;
-import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.event.DetectorEvent;
 import de.ptb.epics.eve.data.measuringstation.event.Event;
@@ -335,7 +334,7 @@ public class DefaultsManager {
 		switch (from.getStepfunction()) {
 		case ADD:
 		case MULTIPLY:
-			to.setMainAxis(from.isMainAxis());
+			// to.setMainAxis(from.isMainAxis());
 			switch (to.getMotorAxis().getType()) {
 			case DATETIME:
 				if (to.getPositionMode().equals(PositionMode.ABSOLUTE)) {
