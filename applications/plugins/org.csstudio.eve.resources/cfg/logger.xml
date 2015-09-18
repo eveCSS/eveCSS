@@ -108,6 +108,16 @@
 		</layout>
 	</appender>
 
+	<appender name="MessageListAppender" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="threshold" value="INFO" />
+		<param name="datePattern" value="'.'yyyy-MM-dd" />
+		<param name="file" value="${eve.messagedir}/${eve.version}/${user.name}/messages.log" />
+		<param name="Append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %-5p: %m%n" />
+		</layout>
+	</appender>
+
 	<appender name="socketHubAppender" class="org.apache.log4j.net.SocketHubAppender">
 		<param name="threshold" value="WARN" />
 		<param name="Port" value="4445" />
@@ -157,6 +167,11 @@
 	<logger name="de.ptb.epics.eve.viewer.plot">
 		<level value="WARN" />
 		<appender-ref ref="PlotDailyAppender" />
+	</logger>
+
+	<logger name="de.ptb.epics.eve.viewer.views.messagesview.MessageList">
+		<level value="INFO" />
+		<appender-ref ref="MessageListAppender" />
 	</logger>
 
 	<root>

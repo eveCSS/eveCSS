@@ -62,10 +62,36 @@ public class MessageList implements IMessageList {
 		final int newSourceWidth = message.getMessageSource().toString().length();
 		final int newMessageWidth = message.getMessage().toString().length();
 		
+		/*
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("adding message: ["
 					+ message.getMessageSource().toString() + "] -> "
 					+ message.getMessage().toString());
+		}*/
+		
+		String logMessage = "["
+				+ message.getMessageSource().toString() + "] -> "
+				+ message.getMessage().toString();
+		switch(message.getMessageType()) {
+		case DEBUG:
+			LOGGER.debug(logMessage);
+			break;
+		case INFO:
+			LOGGER.info(logMessage);
+			break;
+		case MINOR:
+			LOGGER.warn(logMessage);
+			break;
+		case ERROR:
+			LOGGER.error(logMessage);
+			break;
+		case FATAL:
+			LOGGER.fatal(logMessage);
+			break;
+		case SYSTEM:
+			break;
+		default:
+			break;
 		}
 		
 		this.realm.asyncExec(new Runnable() {

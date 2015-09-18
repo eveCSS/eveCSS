@@ -94,6 +94,7 @@ public final class Startup {
 				.getVersion();
 		System.setProperty("eve.version", eveVersion.getMajor() + "."
 				+ eveVersion.getMinor());
+		System.setProperty("eve.messagedir", rootDir + "eve/messages");
 		String pathToConfigFile = rootDir + "eve/logger-debug.xml";
 		if (debug) {
 			// the logging configuration is taken from the eve root if present
