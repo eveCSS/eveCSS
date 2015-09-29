@@ -4,6 +4,10 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.commands.Command;
+import org.eclipse.core.commands.State;
+import org.eclipse.core.databinding.observable.list.IListChangeListener;
+import org.eclipse.core.databinding.observable.list.ListChangeEvent;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -14,11 +18,14 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.part.ViewPart;
 
 import de.ptb.epics.eve.util.swt.FontHelper;
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.views.messagesview.FilterSettings;
+import de.ptb.epics.eve.viewer.views.messagesview.IMessageList;
 import de.ptb.epics.eve.viewer.views.messagesview.LevelFilter;
 import de.ptb.epics.eve.viewer.views.messagesview.Levels;
 import de.ptb.epics.eve.viewer.views.messagesview.MessageFilter;
@@ -39,10 +46,14 @@ public final class MessagesView extends ViewPart implements PropertyChangeListen
 	private TableViewer tableViewer;
 	
 	private FilterSettings filterSettings;
+	
+	private boolean scrollLock;
+	
 	private IMemento memento;
 	private static final String SHOW_VIEWER_MESSAGES_MEMENTO = "showViewerMessages";
 	private static final String SHOW_ENGINE_MESSAGES_MEMENTO = "showEngineMessages";
 	private static final String MESSAGE_LEVEL_MEMENTO = "messageLevel";
+	private static final String AUTO_SCROLL_MEMENTO = "scrollLock";
 	
 	/**
 	 * {@inheritDoc}
@@ -96,10 +107,20 @@ public final class MessagesView extends ViewPart implements PropertyChangeListen
 		this.tableViewer.setInput(Activator.getDefault().
 				getMessageList().getList());
 		
-		Activator.getDefault().getMessageList().addPropertyChangeListener(
+		IMessageList messageList = Activator.getDefault().getMessageList();
+		messageList.addPropertyChangeListener(
 				MessageList.SOURCE_MAX_WIDTH_PROP, this);
-		Activator.getDefault().getMessageList().addPropertyChangeListener(
+		messageList.addPropertyChangeListener(
 				MessageList.MESSAGE_MAX_WIDTH_PROP, this);
+		messageList.getList().addListChangeListener(new IListChangeListener() {
+			@Override
+			public void handleListChange(ListChangeEvent event) {
+				if (!scrollLock) {
+					LOGGER.debug("new element & auto scroll on -> show top");
+					tableViewer.getTable().setTopIndex(0);
+				}
+			}
+		});
 		
 		this.filterSettings = new FilterSettings();
 		this.restoreState();
@@ -110,6 +131,34 @@ public final class MessagesView extends ViewPart implements PropertyChangeListen
 				levelFilter });
 		
 		this.tableViewer.setComparator(new TimeViewerComparator());
+		
+		this.refreshToggleButton();
+	}
+	
+	/**
+	 * @param scrollLock
+	 * @since 1.24
+	 */
+	public void setScrollLock(boolean scrollLock) {
+		this.scrollLock = scrollLock;
+	}
+	
+	/*
+	 * @since 1.24
+	 */
+	private void refreshToggleButton() {
+		ICommandService commandService = (ICommandService) PlatformUI
+				.getWorkbench().getService(ICommandService.class);
+		Command toggleCommand = commandService
+				.getCommand("de.ptb.epics.eve.viewer.messages.scrolllock");
+
+		State state = toggleCommand
+				.getState("org.eclipse.ui.commands.toggleState");
+
+		state.setValue(this.scrollLock);
+		
+		commandService.refreshElements(
+				"de.ptb.epics.eve.viewer.messages.scrolllock", null);
 	}
 	
 	/**
@@ -147,6 +196,7 @@ public final class MessagesView extends ViewPart implements PropertyChangeListen
 				this.filterSettings.isShowEngineMessages());
 		memento.putString(MessagesView.MESSAGE_LEVEL_MEMENTO, 
 				this.filterSettings.getMessageThreshold().toString());
+		memento.putBoolean(MessagesView.AUTO_SCROLL_MEMENTO, this.scrollLock);
 	}
 	
 	private void restoreState() {
@@ -168,6 +218,10 @@ public final class MessagesView extends ViewPart implements PropertyChangeListen
 			this.filterSettings.setMessageThreshold(Levels.stringToEnum(
 					messageLevel.toUpperCase()));
 		}
+		this.scrollLock = 
+			this.memento.getBoolean(MessagesView.AUTO_SCROLL_MEMENTO) == null 
+				? false
+				: this.memento.getBoolean(MessagesView.AUTO_SCROLL_MEMENTO);
 	}
 	
 	/**

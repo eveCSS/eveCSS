@@ -267,6 +267,16 @@
             id="de.ptb.epics.eve.viewer.messagesview.save"
             name="Save Messages">
       </command>
+      <command
+            categoryId="de.ptb.epics.eve.viewer.messages"
+            defaultHandler="de.ptb.epics.eve.viewer.handler.messages.ScrollLock"
+            id="de.ptb.epics.eve.viewer.messages.scrolllock"
+            name="Scroll Lock">
+         <state
+               class="org.eclipse.ui.handlers.RegistryToggleState:true"
+               id="org.eclipse.ui.commands.toggleState">
+         </state>
+      </command>
       <category
             id="de.ptb.epics.eve.viewer.views.plotview"
             name="PlotView">
@@ -599,6 +609,12 @@
                icon="icons/save_edit.gif"
                label="Save Messages to File"
                style="push">
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.viewer.messages.scrolllock"
+               icon="icons/lock_co.gif"
+               label="Scroll Lock"
+               style="toggle">
          </command>
       </menuContribution>
       <menuContribution
