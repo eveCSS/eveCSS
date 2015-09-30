@@ -160,6 +160,8 @@ public class ProgressBarComposite extends Composite implements
 				} else {
 					progressBar.setEnabled(false);
 				}
+				progressBar.setSelection(currentPosition);
+				progressBar.redraw();
 			}
 		});
 	}

@@ -137,6 +137,7 @@ public class Activator extends AbstractUIPlugin {
 		if (startupParams.isDebug()) {
 			this.ecpLogger = new ECP1ClientLogger();
 			this.ecp1Client.addChainStatusListener(ecpLogger);
+			this.ecp1Client.addChainProgressListener(ecpLogger);
 			this.ecp1Client.addConnectionStateListener(ecpLogger);
 			this.ecp1Client.addEngineStatusListener(ecpLogger);
 			this.ecp1Client.addErrorListener(ecpLogger);
