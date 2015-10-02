@@ -48,3 +48,38 @@ h2. Discrete Positions von Achsen
 
 p. Wenn man in einer Motor Achse diskrete Positionen deklariert, dürfen diese keine führenden Leerzeichen enthalten.
  
+h2. Normierung der Channels, deren Messwerte und Auswirkungen
+
+p. Durch die Möglichkeit an verschiedenen Stellen Channels zur Normierung zu verwenden gibt es dabei eine Vielzahl an Dingen zu beachten um zu verstehen, was in dem Scan passiert.
+
+h3. Normierter Channel steht mehrfach im Datenfile
+
+p. Wenn man in einem Scan Modul z.B. zwei Keithleys (Keihtley1 und Keithley2) ausliest und beide auf den Ringstrom1 normiert, stehen dann im Datenfile beim Ringstrom zu jedem PosCounter Eintrag 2 Ringstromwerte. Die Information welcher Ringstromwert zu Keihtley1 und welcher zu Keithley2 gehört gibt es nicht!
+
+h4. zusätzliche Mittelung
+
+p. Wenn dann außerdem noch das Keithley1 durch 3 Werte (Average Zahl) gebildet wird und das Keithley2 nur durch einen Wert ergeben sich durch die Zeitverzögerung auch noch (echte) unterschiedliche Ringstromwerte bei gleichem Position Counter.
+
+h3. Zuordnung von Normiertem Wert zu den Einzelwerten
+
+p. Wenn im Scan ein Detector Channel auf einen anderen normiert wird und dabei mehrere Werte (z.B. 3) zur Mittelung genommen werden, gibt es im Datenfile die folgenden 3 Spalten, deren Zahlenwerte nicht direkt zueinander passen. Das liegt daran wie die einzelnen Werte gebildet werden.
+
+normierter Wert
+Detector Channel
+Normalize Channel
+
+Der Detector Channel wird gebildet aus ( D1 + D2 + D3 ) / 3
+Der Normalize Channel wird gebildet aus ( N1 + N2 + N3 ) / 3
+Der normierte Wert wird gebildet aus ( D1/N1 + D2/N2 + D3/N3 ) /3
+
+Da aber (D1+D2+D3) / (N1+N2+N3) nicht gleich (D1/N1+D2/N2+D3/N3) / 3 ist,
+ist eben der normierte Wert nicht gleich dem Channel Wert durch den Normalize Wert.
+
+h3. Plot Auswahl
+
+p. Wenn im Plot als Detector Channel oder Normalize Channel ein Channel ausgewählt wird, zu dem es mehrere Einträge für einen Position Counter gibt, so kann nicht gesagt werden, welcher der Einträge im Plot verwendet wird. Es kann also sein, das im Plot z.B. Keithley1 / Ringstrom1 angezeigt werden soll, aber für Ringstrom1 Werte verwendet werden die zum Channel Keithley2 gehören.
+
+h3. Positioning Auswahl
+
+p. In der Auswahl beim Positioning gilt das gleiche wie beim Plot. Wenn es für den Detector Channel und/oder auch für den Normalize Channel mehrere Einträge pro Position Counter gibt, kann nicht gesagt werden, welcher Eintrag bei der Berechnung verwendet wird.
+
