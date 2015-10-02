@@ -9,6 +9,8 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.observable.ChangeEvent;
+import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.gef.EditPart;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
@@ -35,10 +37,12 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISharedImages;
@@ -351,7 +355,7 @@ public class ChainView extends ViewPart implements IEditorView,
 		gridData = new GridData();
 		gridData.horizontalSpan = 4;
 		this.autoIncrementCheckBox.setLayoutData(gridData);
-
+		
 		// add expand item to the expander
 		this.saveOptionsExpandItem = new ExpandItem(this.bar, SWT.NONE, 0);
 		saveOptionsExpandItem.setText("Save Options");
@@ -447,7 +451,7 @@ public class ChainView extends ViewPart implements IEditorView,
 		this.eventsExpandItem.setExpanded(true);
 
 		this.eventsTabFolder.showItem(this.pauseTabItem);
-
+		
 		// **************************************
 		// ******* end of Events Expander *******
 		// **************************************
@@ -472,6 +476,14 @@ public class ChainView extends ViewPart implements IEditorView,
 				.addPerspectiveListener(perspectiveListener);
 
 		this.bindValues();
+		
+		this.filenameInputResolvedModelObservable.addChangeListener(new IChangeListener() {
+			@Override
+			public void handleChange(ChangeEvent event) {
+				filenameInputResolved.setToolTipText(
+						filenameInputResolved.getText());
+			}
+		});
 	}
 
 	/*
@@ -537,10 +549,6 @@ public class ChainView extends ViewPart implements IEditorView,
 						UpdateValueStrategy.POLICY_UPDATE),
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
 	}
-
-	// ************************************************************************
-	// *********************** End of createPartControl ***********************
-	// ************************************************************************
 
 	/**
 	 * {@inheritDoc}
