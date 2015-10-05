@@ -256,11 +256,9 @@ public class PositionlistComposite extends MotorAxisViewComposite implements
 		 */
 		@Override
 		public void focusLost(FocusEvent e) {
-			if (positionlistText.getText().isEmpty()) {
 				positionlistBinding.updateModelToTarget();
 				positionlistBinding.validateTargetToModel();
 				countPositions();
-			}
 		}
 	}
 }
