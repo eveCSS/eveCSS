@@ -608,6 +608,9 @@ public class ScanDescriptionSaver implements
 			if (detector.getTrigger() != null) {
 				this.writeFunction(detector.getTrigger(), "trigger");
 			}
+			if (detector.getStop() != null) {
+				this.writeFunction(detector.getStop(), "stop");
+			}
 
 			for(DetectorChannel ch : detector.getChannels()) {
 				this.writeDetectorChannel(ch);
@@ -672,6 +675,9 @@ public class ScanDescriptionSaver implements
 			}
 			if (channel.getTrigger() != null) {
 				this.writeFunction(channel.getTrigger(), "trigger");
+			}
+			if (channel.getStop() != null) {
+				this.writeFunction(channel.getStop(), "stop");
 			}
 
 			for (Option o : channel.getOptions()) {
