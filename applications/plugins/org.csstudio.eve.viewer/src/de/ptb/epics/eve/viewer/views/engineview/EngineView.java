@@ -391,7 +391,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		tableColumn4.setText("Reason");
 		TableColumn tableColumn5 = new TableColumn(this.statusTable, SWT.NONE);
 		tableColumn5.setWidth(20);
-		tableColumn5.setText("Time");
+		tableColumn5.setText("Remaining Time");
 		
 		// SelectionListener um zu erkennen, wann eine Zeile selektiert wird
 		this.statusTable.addSelectionListener(new StatusTableSelectionListener());
@@ -624,7 +624,20 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		this.statusTable.getDisplay().syncExec(new Runnable() {
 			@Override public void run() {
 				if (chainIdItems.containsKey(chainId)){
-					chainIdItems.get(chainId).setText( 5, ""+remainTime);		
+					String humanReadableTime = "";
+					if (remainTime / 3600 > 0) {
+						int hours = remainTime / 3600;
+						int minutes = remainTime / 60 - hours * 60;
+						int seconds = remainTime % 60;
+						humanReadableTime = String.format("%dh %dmin %02ds", 
+							hours, minutes, seconds);
+					} else {
+						int minutes = remainTime / 60;
+						int seconds = remainTime % 60;
+						humanReadableTime = String.format(
+							"%dmin %02ds", minutes, seconds);
+					}
+					chainIdItems.get(chainId).setText( 5, humanReadableTime);
 				}
 			}
 		});
