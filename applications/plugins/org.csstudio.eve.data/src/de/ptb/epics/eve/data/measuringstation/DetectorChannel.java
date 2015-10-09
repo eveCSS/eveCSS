@@ -26,7 +26,7 @@ public class DetectorChannel extends AbstractMainPhaseDevice implements Cloneabl
 	 */
 	public DetectorChannel() {
 		this.read = new Function();
-		this.stop = new Function();
+		//this.stop = new Function();
 		this.status = new Function();
 		this.deferred = false;
 		this.saveValue = true;

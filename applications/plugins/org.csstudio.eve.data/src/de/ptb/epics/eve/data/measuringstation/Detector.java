@@ -35,7 +35,7 @@ public class Detector extends AbstractMainPhaseDevice implements Cloneable {
 	 */
 	public Detector() {
 		this.channels = new ArrayList<DetectorChannel>();
-		this.stop = new Function();
+		//this.stop = new Function();
 		this.status = new Function();
 	}
 	
