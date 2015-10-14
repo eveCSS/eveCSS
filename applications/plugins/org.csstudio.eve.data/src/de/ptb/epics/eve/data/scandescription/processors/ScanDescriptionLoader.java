@@ -110,7 +110,6 @@ public class ScanDescriptionLoader {
 
 		final SAXParserFactory factory = SAXParserFactory.newInstance();
 		factory.setSchema(schema);
-		factory.setValidating(true);
 		final SAXParser saxParser = factory.newSAXParser();
 
 		final ScanDescriptionLoaderHandler handler = new ScanDescriptionLoaderHandler(

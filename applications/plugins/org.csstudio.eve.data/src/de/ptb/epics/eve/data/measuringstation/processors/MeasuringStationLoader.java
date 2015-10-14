@@ -74,7 +74,6 @@ public class MeasuringStationLoader {
 		
 		final SAXParserFactory factory = SAXParserFactory.newInstance();
 		factory.setSchema(schema);
-		factory.setValidating(true);
 		final SAXParser saxParser = factory.newSAXParser();
 		
 		final MeasuringStationLoaderHandler handler = 
