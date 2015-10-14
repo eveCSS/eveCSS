@@ -56,7 +56,10 @@ public enum ErrorFacility {
 	LTIMER,
 	
 	/** */
-	MATH;
+	MATH,
+	
+	/** */
+	XMLVALIDATOR;
 	
 	/**
 	 * Returns the byte code of the given error facility.
@@ -100,6 +103,8 @@ public enum ErrorFacility {
 				return 0x17;
 			case MATH:
 				return 0x18;
+			case XMLVALIDATOR:
+				return 0x19;
 		}
 		return Byte.MAX_VALUE;
 	}
@@ -148,6 +153,8 @@ public enum ErrorFacility {
 				return ErrorFacility.LTIMER;
 			case 0x18:
 				return ErrorFacility.MATH;
+			case 0x19:
+				return ErrorFacility.XMLVALIDATOR;
 		}
 		return null;
 	}
