@@ -109,6 +109,7 @@ public class ScanDescriptionLoader {
 		final Schema schema = sFactory.newSchema(schemaFile);
 
 		final SAXParserFactory factory = SAXParserFactory.newInstance();
+		factory.setNamespaceAware(true);
 		factory.setSchema(schema);
 		final SAXParser saxParser = factory.newSAXParser();
 
@@ -140,7 +141,6 @@ public class ScanDescriptionLoader {
 		final Schema schema = sFactory.newSchema(schemaFile);
 
 		final SAXParserFactory factory = SAXParserFactory.newInstance();
-		factory.setValidating(false);
 		factory.setNamespaceAware(true);
 		factory.setSchema(schema);
 		final SAXParser saxParser = factory.newSAXParser();
