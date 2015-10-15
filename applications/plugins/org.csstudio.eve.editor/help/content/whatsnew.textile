@@ -1,5 +1,20 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.24
+
+* [Feature] the data file name (Chain View) id now also viewable in its tool tip
+* [Feature] introduced hot keys for sending scans from the editor to the engine
+* [Feature] introduced hot key for faster axis bounds input
+* [Feature] the main axis can now be replaced (without resetting the previous one) 
+* [Feature] improvements in memory consumption
+
+* [Bug Fix] fixed a bug where the stop entry of a detector was missing in the saved SCML file
+* [Bug Fix] invalid position list entries are now replaced by the saved value when the text field looses focus
+* [Bug Fix] fixed a bug where inserting a main axis which was a main axis by default caused having multiple main axes
+* [Bug Fix] replaced SWT Version due to a native memory leak
+* [Bug Fix] fixed a bug where the defaults directory was not properly updated during SCML loading
+* [Bug Fix] fixed a bug where the action property of pause events was ignored during SCML loading
+
 h2(eveTopic). Version 1.23
 
 * [Feature] Report uses of a Channel as normalize channel when removing it from a scan module

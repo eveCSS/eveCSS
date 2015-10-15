@@ -1,5 +1,15 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.24
+
+* [Feature] SCML validation errors are now shown in the Messages View
+* [Feature] remaining time of a scan (Engine View) is now more "human readable"
+* [Feature] introduced optional auto scrolling in Messages View
+* [Feature] Messages View content is now being persisted 
+* [Feature] Messages View Filter Settings are now being persisted
+
+* [Bug Fix] fixed a bug where the progress bar behaved incorrectly
+
 h2(eveTopic). Version 1.23
 
 * [Feature] Display a warning if connecting to an unsupported Engine version
