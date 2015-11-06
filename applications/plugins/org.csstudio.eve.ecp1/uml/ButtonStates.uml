@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_abxyoISrEeW0JZ_NCrl3_A" name="RootElement">
+  <packagedElement xmi:type="uml:StateMachine" xmi:id="_adN9EISrEeW0JZ_NCrl3_A" name="ButtonStates">
+    <region xmi:type="uml:Region" xmi:id="_afa8gISrEeW0JZ_NCrl3_A" name="Region1">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_ClhdQIStEeW0JZ_NCrl3_A" annotatedElement="_o7PF0ISrEeW0JZ_NCrl3_A">
+        <body>PLAY: disabled
+PAUSE: disabled
+STOP: disabled
+SKIP: disabled
+HALT: disabled
+TRIGGER: disabled</body>
+      </ownedComment>
+      <ownedComment xmi:type="uml:Comment" xmi:id="_LNbuQIStEeW0JZ_NCrl3_A" annotatedElement="_ZeWroISsEeW0JZ_NCrl3_A">
+        <body>PLAY: enabled
+PAUSE: disabled
+STOP: enabled
+SKIP: disabled
+HALT: enabled
+TRIGGER: disabled</body>
+      </ownedComment>
+      <ownedComment xmi:type="uml:Comment" xmi:id="_Xw2WEISuEeW0JZ_NCrl3_A" annotatedElement="_afa8gISrEeW0JZ_NCrl3_A">
+        <body>PLAY: disabled
+PAUSE: disabled
+STOP: disabled
+SKIP: disabled
+HALT: disabled
+TRIGGER: disabled</body>
+      </ownedComment>
+      <ownedComment xmi:type="uml:Comment" xmi:id="_f6J_gISuEeW0JZ_NCrl3_A" annotatedElement="_afa8gISrEeW0JZ_NCrl3_A">
+        <body>PLAY: disabled
+PAUSE: enabled
+STOP: enabled
+SKIP: enabled
+HALT: enabled
+TRIGGER: disabled</body>
+      </ownedComment>
+      <ownedComment xmi:type="uml:Comment" xmi:id="_MDHHIISvEeW0JZ_NCrl3_A" annotatedElement="_qq728IStEeW0JZ_NCrl3_A">
+        <body>PLAY: enabled
+PAUSE: enabled
+STOP: enabled
+SKIP: enabled
+HALT: enabled
+TRIGGER: disabled</body>
+      </ownedComment>
+      <ownedComment xmi:type="uml:Comment" xmi:id="_SGXqEISvEeW0JZ_NCrl3_A" annotatedElement="_lSd9cIStEeW0JZ_NCrl3_A">
+        <body>PLAY: enabled
+PAUSE: disabled
+STOP: enabled
+SKIP: enabled
+HALT: enabled
+TRIGGER: disabled</body>
+      </ownedComment>
+      <ownedComment xmi:type="uml:Comment" xmi:id="_Y9SekISvEeW0JZ_NCrl3_A" annotatedElement="_afa8gISrEeW0JZ_NCrl3_A">
+        <body>PLAY: disabled
+PAUSE: disabled
+STOP: enabled
+SKIP: enabled
+HALT: enabled
+TRIGGER: enabled</body>
+      </ownedComment>
+      <ownedComment xmi:type="uml:Comment" xmi:id="_eKh_gISvEeW0JZ_NCrl3_A" annotatedElement="_gJRPAIStEeW0JZ_NCrl3_A">
+        <body>PLAY: disabled
+PAUSE: disabvled
+STOP: disabled
+SKIP: disabled
+HALT: disabled
+TRIGGER: disabled</body>
+      </ownedComment>
+      <transition xmi:type="uml:Transition" xmi:id="_S1sVkISsEeW0JZ_NCrl3_A" source="_swFQcISrEeW0JZ_NCrl3_A" target="_o7PF0ISrEeW0JZ_NCrl3_A"/>
+      <transition xmi:type="uml:Transition" xmi:id="_m3IDkISsEeW0JZ_NCrl3_A" source="_o7PF0ISrEeW0JZ_NCrl3_A" target="_Lj3twISsEeW0JZ_NCrl3_A"/>
+      <transition xmi:type="uml:Transition" xmi:id="_nziogISsEeW0JZ_NCrl3_A" source="_Lj3twISsEeW0JZ_NCrl3_A" target="_o7PF0ISrEeW0JZ_NCrl3_A"/>
+      <transition xmi:type="uml:Transition" xmi:id="_o5uNcISsEeW0JZ_NCrl3_A" source="_Lj3twISsEeW0JZ_NCrl3_A" target="_ZeWroISsEeW0JZ_NCrl3_A"/>
+      <transition xmi:type="uml:Transition" xmi:id="_5PeecIStEeW0JZ_NCrl3_A" source="_ZeWroISsEeW0JZ_NCrl3_A" target="_gJRPAIStEeW0JZ_NCrl3_A"/>
+      <transition xmi:type="uml:Transition" xmi:id="_51sJ4IStEeW0JZ_NCrl3_A" source="_ZeWroISsEeW0JZ_NCrl3_A" target="_coNjEIStEeW0JZ_NCrl3_A"/>
+      <transition xmi:type="uml:Transition" xmi:id="_6QQmAIStEeW0JZ_NCrl3_A" source="_ZeWroISsEeW0JZ_NCrl3_A" target="_jCDaAIStEeW0JZ_NCrl3_A"/>
+      <transition xmi:type="uml:Transition" xmi:id="_7fuCwIStEeW0JZ_NCrl3_A" source="_V3tfoIStEeW0JZ_NCrl3_A" target="_gJRPAIStEeW0JZ_NCrl3_A"/>
+      <transition xmi:type="uml:Transition" xmi:id="_77v3cIStEeW0JZ_NCrl3_A" source="_V3tfoIStEeW0JZ_NCrl3_A" target="_coNjEIStEeW0JZ_NCrl3_A"/>
+      <transition xmi:type="uml:Transition" xmi:id="_8emF0IStEeW0JZ_NCrl3_A" source="_V3tfoIStEeW0JZ_NCrl3_A" target="_jCDaAIStEeW0JZ_NCrl3_A"/>
+      <transition xmi:type="uml:Transition" xmi:id="_Cka0kISuEeW0JZ_NCrl3_A" source="_coNjEIStEeW0JZ_NCrl3_A" target="_lSd9cIStEeW0JZ_NCrl3_A"/>
+      <transition xmi:type="uml:Transition" xmi:id="_DIJMsISuEeW0JZ_NCrl3_A" source="_coNjEIStEeW0JZ_NCrl3_A" target="_qq728IStEeW0JZ_NCrl3_A"/>
+      <transition xmi:type="uml:Transition" xmi:id="_E-NWcISuEeW0JZ_NCrl3_A" source="_lSd9cIStEeW0JZ_NCrl3_A" target="_jCDaAIStEeW0JZ_NCrl3_A"/>
+      <transition xmi:type="uml:Transition" xmi:id="_FZ3-wISuEeW0JZ_NCrl3_A" source="_lSd9cIStEeW0JZ_NCrl3_A" target="_coNjEIStEeW0JZ_NCrl3_A"/>
+      <transition xmi:type="uml:Transition" xmi:id="_F5_pQISuEeW0JZ_NCrl3_A" source="_lSd9cIStEeW0JZ_NCrl3_A" target="_gJRPAIStEeW0JZ_NCrl3_A"/>
+      <transition xmi:type="uml:Transition" xmi:id="_GUhpIISuEeW0JZ_NCrl3_A" source="_qq728IStEeW0JZ_NCrl3_A" target="_gJRPAIStEeW0JZ_NCrl3_A"/>
+      <transition xmi:type="uml:Transition" xmi:id="_G2ixEISuEeW0JZ_NCrl3_A" source="_qq728IStEeW0JZ_NCrl3_A" target="_coNjEIStEeW0JZ_NCrl3_A"/>
+      <transition xmi:type="uml:Transition" xmi:id="_HbLvMISuEeW0JZ_NCrl3_A" source="_qq728IStEeW0JZ_NCrl3_A" target="_jCDaAIStEeW0JZ_NCrl3_A"/>
+      <transition xmi:type="uml:Transition" xmi:id="_VbDjYISuEeW0JZ_NCrl3_A" source="_jCDaAIStEeW0JZ_NCrl3_A" target="_t2CL4ISrEeW0JZ_NCrl3_A"/>
+      <transition xmi:type="uml:Transition" xmi:id="_V-V2oISuEeW0JZ_NCrl3_A" source="_gJRPAIStEeW0JZ_NCrl3_A" target="_t2CL4ISrEeW0JZ_NCrl3_A"/>
+      <transition xmi:type="uml:Transition" xmi:id="_su0vYISvEeW0JZ_NCrl3_A" source="_coNjEIStEeW0JZ_NCrl3_A" target="_gJRPAIStEeW0JZ_NCrl3_A"/>
+      <transition xmi:type="uml:Transition" xmi:id="_tR_G0ISvEeW0JZ_NCrl3_A" source="_coNjEIStEeW0JZ_NCrl3_A" target="_jCDaAIStEeW0JZ_NCrl3_A"/>
+      <transition xmi:type="uml:Transition" xmi:id="_ZlV44IS2EeW0JZ_NCrl3_A" source="_coNjEIStEeW0JZ_NCrl3_A" target="_V3tfoIStEeW0JZ_NCrl3_A"/>
+      <subvertex xmi:type="uml:State" xmi:id="_o7PF0ISrEeW0JZ_NCrl3_A" name="IDLE_NO_XML_LOADED">
+        <entry xmi:type="uml:Interaction" xmi:id="_Aw_OcIS2EeW0JZ_NCrl3_A" name="EngineStatus 0x01"/>
+      </subvertex>
+      <subvertex xmi:type="uml:Pseudostate" xmi:id="_swFQcISrEeW0JZ_NCrl3_A" name=""/>
+      <subvertex xmi:type="uml:FinalState" xmi:id="_t2CL4ISrEeW0JZ_NCrl3_A" name=""/>
+      <subvertex xmi:type="uml:State" xmi:id="_Lj3twISsEeW0JZ_NCrl3_A" name="LOADING_XML"/>
+      <subvertex xmi:type="uml:State" xmi:id="_ZeWroISsEeW0JZ_NCrl3_A" name="IDLE_XML_LOADED">
+        <entry xmi:type="uml:Interaction" xmi:id="_DctN0IS2EeW0JZ_NCrl3_A" name="EngineStatus 0x02"/>
+      </subvertex>
+      <subvertex xmi:type="uml:State" xmi:id="_V3tfoIStEeW0JZ_NCrl3_A" name="WAITING_FOR_TRIGGER">
+        <entry xmi:type="uml:Interaction" xmi:id="_WDpTwIS2EeW0JZ_NCrl3_A" name="SMStatus 0x0400"/>
+      </subvertex>
+      <subvertex xmi:type="uml:State" xmi:id="_ZcRykIStEeW0JZ_NCrl3_A" name="INVALID"/>
+      <subvertex xmi:type="uml:State" xmi:id="_coNjEIStEeW0JZ_NCrl3_A" name="EXECUTING">
+        <entry xmi:type="uml:Interaction" xmi:id="_GEnrQIS2EeW0JZ_NCrl3_A" name="EngineStatus 0x04"/>
+      </subvertex>
+      <subvertex xmi:type="uml:State" xmi:id="_gJRPAIStEeW0JZ_NCrl3_A" name="STOPPED">
+        <entry xmi:type="uml:Interaction" xmi:id="_5FzrcIS1EeW0JZ_NCrl3_A" name="EngineStatus 0x06"/>
+      </subvertex>
+      <subvertex xmi:type="uml:State" xmi:id="_jCDaAIStEeW0JZ_NCrl3_A" name="HALTED">
+        <entry xmi:type="uml:Interaction" xmi:id="_M2AfgIS2EeW0JZ_NCrl3_A" name="EngineStatus 0x07"/>
+      </subvertex>
+      <subvertex xmi:type="uml:State" xmi:id="_lSd9cIStEeW0JZ_NCrl3_A" name="PAUSED (USER)">
+        <entry xmi:type="uml:Interaction" xmi:id="_P9J2oIS2EeW0JZ_NCrl3_A" name="EngineStatus 0x05"/>
+      </subvertex>
+      <subvertex xmi:type="uml:State" xmi:id="_qq728IStEeW0JZ_NCrl3_A" name="PAUSED (EVENT)">
+        <entry xmi:type="uml:Interaction" xmi:id="_hZJMYIS2EeW0JZ_NCrl3_A" name="SMStatus 0x0300"/>
+      </subvertex>
+    </region>
+  </packagedElement>
+</uml:Model>
