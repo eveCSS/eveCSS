@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.viewer.views.engineview;
+package de.ptb.epics.eve.viewer.views.engineview.ui;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;

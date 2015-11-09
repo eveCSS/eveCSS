@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.viewer.views.engineview;
+package de.ptb.epics.eve.viewer.views.engineview.ui;
 
 import org.eclipse.core.databinding.conversion.IConverter;
 

@@ -25,7 +25,7 @@
       </view>
       <view
             category="eveViewerCategory"
-            class="de.ptb.epics.eve.viewer.views.engineview.EngineView"
+            class="de.ptb.epics.eve.viewer.views.engineview.ui.EngineView"
             icon="icons/threadgroup_obj.gif"
             id="EngineView"
             name="%view.name.0">

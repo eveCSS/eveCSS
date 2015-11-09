@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.viewer.views.engineview;
+package de.ptb.epics.eve.viewer.views.engineview.ui;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -140,7 +140,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 	private Image autoPlayOffIcon;
 	
 	private HashMap<Integer, TableItem> chainIdItems;
-	private HashMap<Integer, HashMap<Integer, TableItem> > scanMItemByChainId;
+	private HashMap<Integer, HashMap<Integer, TableItem>> scanMItemByChainId;
 	
 	/**
 	 * {@inheritDoc}
