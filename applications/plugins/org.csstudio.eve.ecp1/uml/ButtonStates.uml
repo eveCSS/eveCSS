@@ -3,7 +3,12 @@
   <packagedElement xmi:type="uml:StateMachine" xmi:id="_adN9EISrEeW0JZ_NCrl3_A" name="ButtonStates">
     <region xmi:type="uml:Region" xmi:id="_afa8gISrEeW0JZ_NCrl3_A" name="Region1">
       <ownedComment xmi:type="uml:Comment" xmi:id="_ClhdQIStEeW0JZ_NCrl3_A" annotatedElement="_o7PF0ISrEeW0JZ_NCrl3_A">
-        <body>PLAY: disabled
+        <body>START: disabled
+KILL: enabled
+CONNECT: disabled
+DISCONNECT: enabled
+-
+PLAY: disabled
 PAUSE: disabled
 STOP: disabled
 SKIP: disabled
@@ -11,7 +16,12 @@ HALT: disabled
 TRIGGER: disabled</body>
       </ownedComment>
       <ownedComment xmi:type="uml:Comment" xmi:id="_LNbuQIStEeW0JZ_NCrl3_A" annotatedElement="_ZeWroISsEeW0JZ_NCrl3_A">
-        <body>PLAY: enabled
+        <body>START: disabled
+KILL: enabled
+CONNECT: disabled
+DISCONNECT: enabled
+-
+PLAY: enabled
 PAUSE: disabled
 STOP: enabled
 SKIP: disabled
@@ -19,7 +29,12 @@ HALT: enabled
 TRIGGER: disabled</body>
       </ownedComment>
       <ownedComment xmi:type="uml:Comment" xmi:id="_Xw2WEISuEeW0JZ_NCrl3_A" annotatedElement="_afa8gISrEeW0JZ_NCrl3_A">
-        <body>PLAY: disabled
+        <body>START: disabled
+KILL: enabled
+CONNECT: disabled
+DISCONNECT: enabled
+-
+PLAY: disabled
 PAUSE: disabled
 STOP: disabled
 SKIP: disabled
@@ -27,7 +42,12 @@ HALT: disabled
 TRIGGER: disabled</body>
       </ownedComment>
       <ownedComment xmi:type="uml:Comment" xmi:id="_f6J_gISuEeW0JZ_NCrl3_A" annotatedElement="_afa8gISrEeW0JZ_NCrl3_A">
-        <body>PLAY: disabled
+        <body>START: disabled
+KILL: enabled
+CONNECT: disabled
+DISCONNECT: enabled
+-
+PLAY: disabled
 PAUSE: enabled
 STOP: enabled
 SKIP: enabled
@@ -35,7 +55,12 @@ HALT: enabled
 TRIGGER: disabled</body>
       </ownedComment>
       <ownedComment xmi:type="uml:Comment" xmi:id="_MDHHIISvEeW0JZ_NCrl3_A" annotatedElement="_qq728IStEeW0JZ_NCrl3_A">
-        <body>PLAY: enabled
+        <body>START: disabled
+KILL: enabled
+CONNECT: disabled
+DISCONNECT: enabled
+-
+PLAY: enabled
 PAUSE: enabled
 STOP: enabled
 SKIP: enabled
@@ -43,7 +68,12 @@ HALT: enabled
 TRIGGER: disabled</body>
       </ownedComment>
       <ownedComment xmi:type="uml:Comment" xmi:id="_SGXqEISvEeW0JZ_NCrl3_A" annotatedElement="_lSd9cIStEeW0JZ_NCrl3_A">
-        <body>PLAY: enabled
+        <body>START: disabled
+KILL: enabled
+CONNECT: disabled
+DISCONNECT: enabled
+-
+PLAY: enabled
 PAUSE: disabled
 STOP: enabled
 SKIP: enabled
@@ -51,7 +81,12 @@ HALT: enabled
 TRIGGER: disabled</body>
       </ownedComment>
       <ownedComment xmi:type="uml:Comment" xmi:id="_Y9SekISvEeW0JZ_NCrl3_A" annotatedElement="_afa8gISrEeW0JZ_NCrl3_A">
-        <body>PLAY: disabled
+        <body>START: disabled
+KILL: enabled
+CONNECT: disabled
+DISCONNECT: enabled
+-
+PLAY: disabled
 PAUSE: disabled
 STOP: enabled
 SKIP: enabled
@@ -59,8 +94,26 @@ HALT: enabled
 TRIGGER: enabled</body>
       </ownedComment>
       <ownedComment xmi:type="uml:Comment" xmi:id="_eKh_gISvEeW0JZ_NCrl3_A" annotatedElement="_gJRPAIStEeW0JZ_NCrl3_A">
-        <body>PLAY: disabled
+        <body>START: disabled
+KILL: enabled
+CONNECT: disabled
+DISCONNECT: enabled
+-
+PLAY: disabled
 PAUSE: disabvled
+STOP: disabled
+SKIP: disabled
+HALT: disabled
+TRIGGER: disabled</body>
+      </ownedComment>
+      <ownedComment xmi:type="uml:Comment" xmi:id="_v4KtgIiiEeW62cHjRJtkTA" annotatedElement="_riIhYIiiEeW62cHjRJtkTA">
+        <body>START: enabled
+KILL: disabled
+CONNECT: enabled
+DISCONNECT: disabled
+-
+PLAY: disabled
+PAUSE: disabled
 STOP: disabled
 SKIP: disabled
 HALT: disabled
@@ -117,6 +170,7 @@ TRIGGER: disabled</body>
       <subvertex xmi:type="uml:State" xmi:id="_qq728IStEeW0JZ_NCrl3_A" name="PAUSED (EVENT)">
         <entry xmi:type="uml:Interaction" xmi:id="_hZJMYIS2EeW0JZ_NCrl3_A" name="SMStatus 0x0300"/>
       </subvertex>
+      <subvertex xmi:type="uml:State" xmi:id="_riIhYIiiEeW62cHjRJtkTA" name="DISCONNECTED"/>
     </region>
   </packagedElement>
 </uml:Model>
