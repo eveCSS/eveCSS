@@ -10,15 +10,43 @@ public class EnginePausedEvent extends AbstractEngineState {
 	private EnginePausedEvent() {
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public EngineState getInstance() {
+	public static EngineState getInstance() {
 		if (EnginePausedEvent.instance == null) {
 			EnginePausedEvent.instance = new EnginePausedEvent();
 		}
 		return EnginePausedEvent.instance;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isStart() {
+		return false;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isKill() {
+		return true;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isConnect() {
+		return false;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isDisconnect() {
+		return true;
 	}
 	
 	/**

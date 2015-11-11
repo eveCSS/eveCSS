@@ -10,15 +10,43 @@ public class EngineWaitingForTrigger extends AbstractEngineState {
 	private EngineWaitingForTrigger() {
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public EngineState getInstance() {
+	public static EngineState getInstance() {
 		if (EngineWaitingForTrigger.instance == null) {
 			EngineWaitingForTrigger.instance = new EngineWaitingForTrigger();
 		}
 		return EngineWaitingForTrigger.instance;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isStart() {
+		return false;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isKill() {
+		return true;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isConnect() {
+		return false;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isDisconnect() {
+		return true;
 	}
 	
 	/**

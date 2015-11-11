@@ -10,15 +10,43 @@ public class EngineStopped extends AbstractEngineState {
 	private EngineStopped() {
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public EngineState getInstance() {
+	public static EngineState getInstance() {
 		if (EngineStopped.instance == null) {
 			EngineStopped.instance = new EngineStopped();
 		}
 		return EngineStopped.instance;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isStart() {
+		return false;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isKill() {
+		return true;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isConnect() {
+		return false;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isDisconnect() {
+		return true;
 	}
 	
 	/**

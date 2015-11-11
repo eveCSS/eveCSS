@@ -4,17 +4,17 @@ package de.ptb.epics.eve.viewer.views.engineview;
  * @author Marcus Michalsky
  * @since 1.25
  */
-public class EngineExecuting extends AbstractEngineState {
+public class EngineInvalid extends AbstractEngineState {
 	private static EngineState instance;
 	
-	private EngineExecuting() {
+	private EngineInvalid() {
 	}
 	
 	public static EngineState getInstance() {
-		if (EngineExecuting.instance == null) {
-			EngineExecuting.instance = new EngineExecuting();
+		if (EngineInvalid.instance == null) {
+			EngineInvalid.instance = new EngineInvalid();
 		}
-		return EngineExecuting.instance;
+		return EngineInvalid.instance;
 	}
 	
 	/**
@@ -62,7 +62,7 @@ public class EngineExecuting extends AbstractEngineState {
 	 */
 	@Override
 	public boolean isPause() {
-		return true;
+		return false;
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class EngineExecuting extends AbstractEngineState {
 	 */
 	@Override
 	public boolean isStop() {
-		return true;
+		return false;
 	}
 
 	/**
@@ -78,7 +78,7 @@ public class EngineExecuting extends AbstractEngineState {
 	 */
 	@Override
 	public boolean isSkip() {
-		return true;
+		return false;
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class EngineExecuting extends AbstractEngineState {
 	 */
 	@Override
 	public boolean isHalt() {
-		return true;
+		return false;
 	}
 
 	/**

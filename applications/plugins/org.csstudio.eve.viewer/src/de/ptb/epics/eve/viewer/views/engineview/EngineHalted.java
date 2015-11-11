@@ -9,16 +9,44 @@ public class EngineHalted extends AbstractEngineState {
 	
 	private EngineHalted() {
 	}
+
+	public static EngineState getInstance() {
+		if (EngineHalted.instance == null) {
+			EngineHalted.instance = new EngineHalted();
+		}
+		return EngineHalted.instance;
+	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public EngineState getInstance() {
-		if (EngineHalted.instance == null) {
-			EngineHalted.instance = new EngineHalted();
-		}
-		return EngineHalted.instance;
+	public boolean isStart() {
+		return false;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isKill() {
+		return true;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isConnect() {
+		return false;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isDisconnect() {
+		return true;
 	}
 	
 	/**

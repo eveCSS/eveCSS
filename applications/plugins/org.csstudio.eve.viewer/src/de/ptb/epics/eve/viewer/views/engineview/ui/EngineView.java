@@ -32,6 +32,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -50,17 +51,18 @@ import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
-import de.ptb.epics.eve.ecp1.client.interfaces.IChainStatusListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IConnectionStateListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IEngineVersionListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IErrorListener;
 import de.ptb.epics.eve.ecp1.client.model.Error;
-import de.ptb.epics.eve.ecp1.commands.ChainStatusCommand;
 import de.ptb.epics.eve.ecp1.types.EngineStatus;
 import de.ptb.epics.eve.ecp1.types.ErrorType;
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.IUpdateListener;
 import de.ptb.epics.eve.viewer.preferences.PreferenceConstants;
+import de.ptb.epics.eve.viewer.views.engineview.ButtonManager;
+import de.ptb.epics.eve.viewer.views.engineview.EngineDisconnected;
+import de.ptb.epics.eve.viewer.views.engineview.EngineState;
 
 /**
  * <code>EngineView</code>.
@@ -69,12 +71,9 @@ import de.ptb.epics.eve.viewer.preferences.PreferenceConstants;
  * @author Marcus Michalsky
  */
 public final class EngineView extends ViewPart implements IUpdateListener,
-		IConnectionStateListener, IErrorListener, IChainStatusListener,
-		IEngineVersionListener {
+		IConnectionStateListener, IErrorListener, IEngineVersionListener , 
+		PropertyChangeListener {
 	public static final String REPEAT_COUNT_PROP = "repeatCount";
-	
-	public EngineView() {
-	}
 
 	/** the public identifier of the view */
 	public static final String id = "EngineView";
@@ -99,6 +98,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 	private Button stopButton;
 	private Button skipButton;
 	private Button haltButton;
+	private Button triggerButton;
 	private Button autoPlayToggleButton;
 	private Label repeatCountLabel;
 	private Text repeatCountText;
@@ -138,9 +138,12 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 	private Image haltIcon;
 	private Image autoPlayOnIcon;
 	private Image autoPlayOffIcon;
+	private Image triggerIcon;
 	
 	private HashMap<Integer, TableItem> chainIdItems;
 	private HashMap<Integer, HashMap<Integer, TableItem>> scanMItemByChainId;
+	
+	private ButtonManager buttonManager;
 	
 	/**
 	 * {@inheritDoc}
@@ -159,6 +162,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 				get("AUTOPLAY_ON");
 		autoPlayOffIcon = Activator.getDefault().getImageRegistry().
 				get("AUTOPLAY_OFF");
+		triggerIcon = Activator.getDefault().getImageRegistry().get("TRIGGER16");
 		
 		parent.setLayout(new FillLayout());
 		
@@ -224,39 +228,50 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		
 		this.scanComposite = new Composite(this.top, SWT.NONE);
 		gridLayout = new GridLayout();
-		gridLayout.numColumns = 8;
+		gridLayout.numColumns = 3;
 		this.scanComposite.setLayout(gridLayout);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 3;
 		this.scanComposite.setLayoutData(gridData);
 		
-		this.playButton = new Button(this.scanComposite, SWT.PUSH);
+		Composite scanButtonComposite = new Composite(this.scanComposite, SWT.NONE);
+		RowLayout rowLayout = new RowLayout();
+		rowLayout.type = SWT.HORIZONTAL;
+		rowLayout.spacing = 5;
+		scanButtonComposite.setLayout(rowLayout);
+		
+		this.playButton = new Button(scanButtonComposite, SWT.PUSH);
 		this.playButton.setImage(playIcon);
 		this.playButton.setToolTipText("Play");
 		this.playButton.addSelectionListener(new PlayButtonSelectionListener());
 		
-		this.pauseButton = new Button(this.scanComposite, SWT.PUSH);
+		this.pauseButton = new Button(scanButtonComposite, SWT.PUSH);
 		this.pauseButton.setImage(pauseIcon);
 		this.pauseButton.setToolTipText("Pause");
 		this.pauseButton.addSelectionListener(new PauseButtonSelectionListener());
 		
-		this.stopButton = new Button(this.scanComposite, SWT.PUSH );
+		this.stopButton = new Button(scanButtonComposite, SWT.PUSH );
 		this.stopButton.setImage(stopIcon);
 		this.stopButton.setToolTipText("Stop");
 		this.stopButton.addSelectionListener(new StopButtonSelectionListener());
 		
-		this.skipButton = new Button(this.scanComposite, SWT.PUSH);
+		this.skipButton = new Button(scanButtonComposite, SWT.PUSH);
 		this.skipButton.setImage(skipIcon);
 		this.skipButton.setToolTipText("Skip");
 		this.skipButton.addSelectionListener(new SkipButtonSelectionListener());
 		
-		this.haltButton = new Button(this.scanComposite, SWT.PUSH);
+		this.haltButton = new Button(scanButtonComposite, SWT.PUSH);
 		this.haltButton.setImage(haltIcon);
 		this.haltButton.setToolTipText("Halt");
 		this.haltButton.addSelectionListener(new HaltButtonSelectionListener());
 		
-		this.autoPlayToggleButton = new Button(this.scanComposite, SWT.TOGGLE);
+		this.triggerButton = new Button(scanButtonComposite, SWT.PUSH);
+		this.triggerButton.setImage(triggerIcon);
+		this.triggerButton.setToolTipText("Manual Trigger");
+		// TODO
+		
+		this.autoPlayToggleButton = new Button(scanButtonComposite, SWT.TOGGLE);
 		this.autoPlayToggleButton.setImage(autoPlayOffIcon);
 		this.autoPlayToggleButton.setSelection(false);
 		this.autoPlayToggleButton.setToolTipText("AutoPlay is off");
@@ -396,6 +411,11 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		// SelectionListener um zu erkennen, wann eine Zeile selektiert wird
 		this.statusTable.addSelectionListener(new StatusTableSelectionListener());
 		
+		this.buttonManager = ButtonManager.getInstance();
+		this.buttonManager.addPropertyChangeListener(
+				ButtonManager.ENGINE_STATE_PROP, this);
+		this.refreshButtons(EngineDisconnected.getInstance());
+		
 		Activator.getDefault().getEcp1Client()
 				.addEngineStatusListener(progressBarComposite);
 		Activator.getDefault().getEcp1Client()
@@ -410,8 +430,6 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		Activator.getDefault().getEcp1Client().addErrorListener(this);
 //		this.rebuildText(0);
 		Activator.getDefault().getEcp1Client().addConnectionStateListener(this);
-		
-		Activator.getDefault().getEcp1Client().addChainStatusListener(this);
 
 		this.sc.setMinSize(this.top.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		
@@ -520,10 +538,6 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 				.getInt(PreferenceConstants.P_DEFAULT_ENGINE_PORT);
 		switch(status) {
 			case CONNECTED:		// engine stuff
-								this.startButton.setEnabled(false);
-								this.killButton.setEnabled(true);
-								this.connectButton.setEnabled(false);
-								this.disconnectButton.setEnabled(true);
 								this.statusLabel.setText("connected to " + 
 										engineHost + ":" + 
 										Integer.toString(enginePort));
@@ -545,18 +559,9 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 								this.statusTable.setEnabled(true);
 								break;
 			case DISCONNECTED:	// engine stuff
-								this.startButton.setEnabled(true);
-								this.killButton.setEnabled(false);
-								this.connectButton.setEnabled(true);
-								this.disconnectButton.setEnabled(false);
 								this.statusLabel.setText("not connected");
 								// scan stuff
 								this.scanLabel.setEnabled(false);
-								this.playButton.setEnabled(false);
-								this.pauseButton.setEnabled(false);
-								this.stopButton.setEnabled(false);
-								this.skipButton.setEnabled(false);
-								this.haltButton.setEnabled(false);
 								this.autoPlayToggleButton.setEnabled(false);
 								this.repeatCountLabel.setEnabled(false);
 								this.repeatCountText.setText("");
@@ -596,23 +601,6 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 			autoPlayToggleButton.setImage(autoPlayOffIcon);
 		}
 		autoPlayToggleButton.setSelection(autoPlay);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void chainStatusChanged(ChainStatusCommand chainStatusCommand) {
-		final Boolean isPaused = chainStatusCommand.isAnyScanModulePaused();
-		Display.getDefault().syncExec(new Runnable() {
-				@Override public void run() {
-						playButton.setEnabled(true);
-						stopButton.setEnabled(true);
-						skipButton.setEnabled(true);
-						haltButton.setEnabled(true);
-						if (!isPaused) pauseButton.setEnabled(true);
-				}
-			});
 	}
 
 	/**
@@ -749,27 +737,9 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		setCurrentRepeatCount(repeatCount);
 
 		switch(engineStatus) {
-			case IDLE_NO_XML_LOADED:
-			case STOPPED:
-			case HALTED:
-				this.playButton.getDisplay().syncExec(new Runnable() {
-					@Override public void run() {
-						playButton.setEnabled(false);
-						pauseButton.setEnabled(false);
-						stopButton.setEnabled(false);
-						skipButton.setEnabled(false);
-						haltButton.setEnabled(false);
-					}
-				});
-				break;
 			case IDLE_XML_LOADED:
 				this.playButton.getDisplay().syncExec(new Runnable() {
 					@Override public void run() {
-						playButton.setEnabled(true);
-						pauseButton.setEnabled(false);
-						stopButton.setEnabled(false);
-						skipButton.setEnabled(false);
-						haltButton.setEnabled(true);
 						// alte Info-Fenster des letzten XML-Files werden gelöscht
 						for ( int j=0; j<shellTable.length; j++) {
 							if (shellTable[j] != null) {
@@ -781,30 +751,6 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 					}
 				});
 				break;
-			case EXECUTING:
-				this.playButton.getDisplay().syncExec(new Runnable() {
-					@Override public void run() {
-						playButton.setEnabled(false);
-						pauseButton.setEnabled(true);
-						stopButton.setEnabled(true);
-						skipButton.setEnabled(true);
-						haltButton.setEnabled(true);
-					}
-				});
-				break;
-			case PAUSED:
-				this.playButton.getDisplay().syncExec(new Runnable() {
-					@Override public void run() {
-						playButton.setEnabled(true);
-						pauseButton.setEnabled(false);
-						stopButton.setEnabled(true);
-						skipButton.setEnabled(true);
-						haltButton.setEnabled(true);
-					}
-				});
-				break;
-		default:
-			break;
 		}
 	}
 
@@ -870,6 +816,66 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 				}
 			});
 		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void engineVersionChanged(final int version, final int revision,
+			final int patchlevel) {
+		if (!versionMatch(new Version(version, revision, patchlevel))) {
+			Display.getDefault().asyncExec(new Runnable() {
+				@Override
+				public void run() {
+					MessageDialog.openWarning(Display.getCurrent()
+							.getActiveShell(), "Version mismatch",
+							"eveCSS Version "
+									+ Platform.getProduct().getDefiningBundle()
+											.getVersion().getMajor()
+									+ "." 
+									+ Platform.getProduct().getDefiningBundle()
+											.getVersion().getMinor()
+									+ " does not match Engine Version "
+									+ version 
+									+ "." 
+									+ revision 
+									+ " !");
+				}
+			});
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * @since 1.25
+	 */
+	@Override
+	public void propertyChange(PropertyChangeEvent e) {
+		if (e.getPropertyName().equals(ButtonManager.ENGINE_STATE_PROP)) {
+			if (e.getNewValue() != null) {
+				this.refreshButtons((EngineState)e.getNewValue());
+			}
+		}
+	}
+
+	private void refreshButtons(final EngineState engineState) {
+		Display.getDefault().syncExec(new Runnable() {
+			@Override
+			public void run() {
+				startButton.setEnabled(engineState.isStart());
+				killButton.setEnabled(engineState.isKill());
+				connectButton.setEnabled(engineState.isConnect());
+				disconnectButton.setEnabled(engineState.isDisconnect());
+				
+				playButton.setEnabled(engineState.isPlay());
+				pauseButton.setEnabled(engineState.isPause());
+				stopButton.setEnabled(engineState.isStop());
+				skipButton.setEnabled(engineState.isSkip());
+				haltButton.setEnabled(engineState.isHalt());
+				triggerButton.setEnabled(engineState.isTrigger());
+			}
+		});
 	}
 	
 	/**
@@ -1587,34 +1593,6 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 				this.repeatCount = repeatCount);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void engineVersionChanged(final int version, final int revision,
-			final int patchlevel) {
-		if (!versionMatch(new Version(version, revision, patchlevel))) {
-			Display.getDefault().asyncExec(new Runnable() {
-				@Override
-				public void run() {
-					MessageDialog.openWarning(Display.getCurrent()
-							.getActiveShell(), "Version mismatch",
-							"eveCSS Version "
-									+ Platform.getProduct().getDefiningBundle()
-											.getVersion().getMajor()
-									+ "." 
-									+ Platform.getProduct().getDefiningBundle()
-											.getVersion().getMinor()
-									+ " does not match Engine Version "
-									+ version 
-									+ "." 
-									+ revision 
-									+ " !");
-				}
-			});
-		}
-	}
-	
 	private boolean versionMatch(Version target) {
 		Version platform = Platform.getProduct().getDefiningBundle()
 				.getVersion();

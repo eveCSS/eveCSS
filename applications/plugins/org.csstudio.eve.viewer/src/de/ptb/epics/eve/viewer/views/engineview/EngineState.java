@@ -9,6 +9,34 @@ package de.ptb.epics.eve.viewer.views.engineview;
 public interface EngineState {
 	
 	/**
+	 * Returns whether the start button is enabled
+	 * @return <code>true</code> if the start button is enabled, 
+	 * 		<code>false</code> otherwise
+	 */
+	public boolean isStart();
+	
+	/**
+	 * Returns whether the kill button is enabled
+	 * @return <code>true</code> if the kill button is enabled, 
+	 * 		<code>false</code> otherwise
+	 */
+	public boolean isKill();
+	
+	/**
+	 * Returns whether the connect button is enabled
+	 * @return <code>true</code> if the connect button is enabled, 
+	 * 		<code>false</code> otherwise
+	 */
+	public boolean isConnect();
+	
+	/**
+	 * Returns whether the disconnect button is enabled
+	 * @return <code>true</code> if the disconnect button is enabled, 
+	 * 		<code>false</code> otherwise
+	 */
+	public boolean isDisconnect();
+	
+	/**
 	 * Returns whether the play button is enabled
 	 * @return <code>true</code> if the play button is enabled, 
 	 * 		<code>false</code> otherwise

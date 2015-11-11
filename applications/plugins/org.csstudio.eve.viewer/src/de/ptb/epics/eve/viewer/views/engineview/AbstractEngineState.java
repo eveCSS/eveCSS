@@ -5,5 +5,4 @@ package de.ptb.epics.eve.viewer.views.engineview;
  * @since 1.25
  */
 public abstract class AbstractEngineState implements EngineState {
-	public abstract EngineState getInstance();
 }

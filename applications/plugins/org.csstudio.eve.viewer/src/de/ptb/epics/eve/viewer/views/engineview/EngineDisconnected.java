@@ -4,17 +4,17 @@ package de.ptb.epics.eve.viewer.views.engineview;
  * @author Marcus Michalsky
  * @since 1.25
  */
-public class EngineExecuting extends AbstractEngineState {
+public class EngineDisconnected extends AbstractEngineState {
 	private static EngineState instance;
 	
-	private EngineExecuting() {
+	private EngineDisconnected() {
 	}
 	
 	public static EngineState getInstance() {
-		if (EngineExecuting.instance == null) {
-			EngineExecuting.instance = new EngineExecuting();
+		if (EngineDisconnected.instance == null) {
+			EngineDisconnected.instance = new EngineDisconnected();
 		}
-		return EngineExecuting.instance;
+		return EngineDisconnected.instance;
 	}
 	
 	/**
@@ -22,7 +22,7 @@ public class EngineExecuting extends AbstractEngineState {
 	 */
 	@Override
 	public boolean isStart() {
-		return false;
+		return true;
 	}
 	
 	/**
@@ -30,14 +30,6 @@ public class EngineExecuting extends AbstractEngineState {
 	 */
 	@Override
 	public boolean isKill() {
-		return true;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean isConnect() {
 		return false;
 	}
 	
@@ -45,8 +37,16 @@ public class EngineExecuting extends AbstractEngineState {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean isDisconnect() {
+	public boolean isConnect() {
 		return true;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isDisconnect() {
+		return false;
 	}
 	
 	/**
@@ -62,7 +62,7 @@ public class EngineExecuting extends AbstractEngineState {
 	 */
 	@Override
 	public boolean isPause() {
-		return true;
+		return false;
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class EngineExecuting extends AbstractEngineState {
 	 */
 	@Override
 	public boolean isStop() {
-		return true;
+		return false;
 	}
 
 	/**
@@ -78,7 +78,7 @@ public class EngineExecuting extends AbstractEngineState {
 	 */
 	@Override
 	public boolean isSkip() {
-		return true;
+		return false;
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class EngineExecuting extends AbstractEngineState {
 	 */
 	@Override
 	public boolean isHalt() {
-		return true;
+		return false;
 	}
 
 	/**

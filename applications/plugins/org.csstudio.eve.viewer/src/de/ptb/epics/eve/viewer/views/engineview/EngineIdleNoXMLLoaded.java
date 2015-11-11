@@ -10,15 +10,43 @@ public class EngineIdleNoXMLLoaded extends AbstractEngineState {
 	private EngineIdleNoXMLLoaded() {
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public EngineState getInstance() {
+	public static EngineState getInstance() {
 		if (EngineIdleNoXMLLoaded.instance == null) {
 			EngineIdleNoXMLLoaded.instance = new EngineIdleNoXMLLoaded();
 		}
 		return EngineIdleNoXMLLoaded.instance;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isStart() {
+		return false;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isKill() {
+		return true;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isConnect() {
+		return false;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isDisconnect() {
+		return true;
 	}
 	
 	/**
