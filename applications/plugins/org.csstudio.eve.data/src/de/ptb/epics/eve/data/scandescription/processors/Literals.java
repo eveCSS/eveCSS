@@ -16,6 +16,7 @@ public class Literals {
 	public static final String XML_ELEMENT_NAME_AVERAGECOUNT = "averagecount";
 	public static final String XML_ELEMENT_NAME_AXIS = "axis";
 	public static final String XML_ELEMENT_NAME_AXISID ="axis_id";
+	public static final String XML_ELEMENT_NAME_BREAKEVENT = "breakevent";
 	public static final String XML_ELEMENT_NAME_CHAIN = "chain";
 	public static final String XML_ELEMENT_NAME_CHAINID = "chainid";
 	public static final String XML_ELEMENT_NAME_CHANNELID = "channel_id";
@@ -50,6 +51,7 @@ public class Literals {
 	public static final String XML_ELEMENT_NAME_OPTION = "option";
 	public static final String XML_ELEMENT_NAME_PARAMETER = "parameter";
 	public static final String XML_ELEMENT_NAME_PARENT = "parent";
+	public static final String XML_ELEMENT_NAME_PAUSEEVENT = "pauseevent";
 	public static final String XML_ELEMENT_NAME_PLOT = "plot";
 	public static final String XML_ELEMENT_NAME_PLUGINS = "plugins";
 	public static final String XML_ELEMENT_NAME_PLUGIN = "plugin";
@@ -58,6 +60,7 @@ public class Literals {
 	public static final String XML_ELEMENT_NAME_POSITIONMODE = "positionmode";
 	public static final String XML_ELEMENT_NAME_POSTSCAN = "postscan";
 	public static final String XML_ELEMENT_NAME_PRESCAN = "prescan";
+	public static final String XML_ELEMENT_NAME_REDOEVENT = "redoevent";
 	public static final String XML_ELEMENT_NAME_RESETORIGINALVALUE = "reset_originalvalue";
 	public static final String XML_ELEMENT_NAME_SAVEFILENAME = "savefilename";
 	public static final String XML_ELEMENT_NAME_SAVESCANDESCRIPTION = "savescandescription";

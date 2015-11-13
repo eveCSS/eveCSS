@@ -312,11 +312,11 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SAVESCANDESCRIPTION_NEXT;
 			} else if (qName.equals("startevent")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_STARTEVENT_LOADING;
-			} else if (qName.equals("pauseevent")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_PAUSEEVENT)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_PAUSEEVENT_LOADING;
-			} else if (qName.equals("redoevent")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_REDOEVENT)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_REDOEVENT_LOADING;
-			} else if (qName.equals("breakevent")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_BREAKEVENT)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_BREAKEVENT_LOADING;
 			} else if (qName.equals("stopevent")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_STOPEVENT_LOADING;
@@ -369,11 +369,11 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_TRIGGERCONFIRMCHANNEL_NEXT;
 			} else if (qName.equals("triggerevent")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_TRIGGEREVENT_LOADING;
-			} else if (qName.equals("breakevent")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_BREAKEVENT)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_BREAKEVENT_LOADING;
-			} else if (qName.equals("redoevent")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_REDOEVENT)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_REDOEVENT_LOADING;
-			} else if (qName.equals("pauseevent")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_PAUSEEVENT)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PAUSEEVENT_LOADING;
 			} else if (qName.equals("prescan")) {
 				this.currentPrescan = new Prescan();
@@ -502,7 +502,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_REPEATONREDO_NEXT;
 			} else if (qName.equals("sendreadyevent")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_DETECTORREADYEVENT_NEXT;
-			} else if (qName.equals("redoevent")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_REDOEVENT)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_REDOEVENT_LOADING;
 			} else if (qName.equals("deferredtrigger")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_DEFERRED_NEXT;
@@ -1539,7 +1539,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 			
 		case CHAIN_REDOEVENT_LOADING:
-			if (qName.equals("redoevent")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_REDOEVENT)) {
 				this.currentChain.addRedoEvent(this.currentControlEvent);
 				this.createEventPair();
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
@@ -1548,7 +1548,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 			
 		case CHAIN_BREAKEVENT_LOADING:
-			if (qName.equals("breakevent")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_BREAKEVENT)) {
 				this.currentChain.addBreakEvent(this.currentControlEvent);
 				this.createEventPair();
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
@@ -1566,7 +1566,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 				
 		case CHAIN_PAUSEEVENT_LOADING:
-			if (qName.equals("pauseevent")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_PAUSEEVENT)) {
 				this.currentChain.addPauseEvent((PauseEvent) 
 						this.currentControlEvent);
 				this.createEventPair();
@@ -1687,7 +1687,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 			
 		case CHAIN_SCANMODULE_REDOEVENT_LOADING:
-			if (qName.equals("redoevent")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_REDOEVENT)) {
 				this.currentScanModule.addRedoEvent(this.currentControlEvent);
 				this.createEventPair();
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
@@ -1696,7 +1696,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 			
 		case CHAIN_SCANMODULE_BREAKEVENT_LOADING:
-			if (qName.equals("breakevent")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_BREAKEVENT)) {
 				this.currentScanModule.addBreakEvent(this.currentControlEvent);
 				this.createEventPair();
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
@@ -1705,7 +1705,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 			
 		case CHAIN_SCANMODULE_PAUSEEVENT_LOADING:
-			if (qName.equals("pauseevent")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_PAUSEEVENT)) {
 				this.currentScanModule.addPauseEvent((PauseEvent) 
 						this.currentControlEvent);
 				this.createEventPair();
@@ -1814,7 +1814,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case CHAIN_SCANMODULE_DETECTOR_REDOEVENT_LOADING:
-			if (qName.equals("redoevent")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_REDOEVENT)) {
 				this.currentChannel.addRedoEvent(this.currentControlEvent);
 				this.createEventPair();
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_LOADING;
