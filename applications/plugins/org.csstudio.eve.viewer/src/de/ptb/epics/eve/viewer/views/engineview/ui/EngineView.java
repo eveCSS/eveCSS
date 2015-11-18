@@ -98,7 +98,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 	private Button stopButton;
 	private Button skipButton;
 	private Button haltButton;
-	private Button triggerButton;
+	// private Button triggerButton;
 	private Button autoPlayToggleButton;
 	private Label repeatCountLabel;
 	private Text repeatCountText;
@@ -266,11 +266,12 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		this.haltButton.setToolTipText("Halt");
 		this.haltButton.addSelectionListener(new HaltButtonSelectionListener());
 		
+		/*
 		this.triggerButton = new Button(scanButtonComposite, SWT.PUSH);
 		this.triggerButton.setImage(triggerIcon);
 		this.triggerButton.setToolTipText("Manual Trigger");
 		// TODO
-		
+		*/
 		this.autoPlayToggleButton = new Button(scanButtonComposite, SWT.TOGGLE);
 		this.autoPlayToggleButton.setImage(autoPlayOffIcon);
 		this.autoPlayToggleButton.setSelection(false);
@@ -873,7 +874,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 				stopButton.setEnabled(engineState.isStop());
 				skipButton.setEnabled(engineState.isSkip());
 				haltButton.setEnabled(engineState.isHalt());
-				triggerButton.setEnabled(engineState.isTrigger());
+				// triggerButton.setEnabled(engineState.isTrigger());
 			}
 		});
 	}
