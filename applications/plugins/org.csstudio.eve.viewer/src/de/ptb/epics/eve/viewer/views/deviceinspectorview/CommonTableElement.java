@@ -773,7 +773,8 @@ public class CommonTableElement {
 				}
 			} else if (device instanceof DetectorChannel) {
 				DetectorChannel ch = (DetectorChannel) device;
-				if (ch.getStop().getValue() != null) {
+				if (ch.getStop() != null &&
+					ch.getStop().getValue() != null) {
 					try {
 						stopPv.setValue(Integer.parseInt(ch.getStop().getValue()
 								.getDefaultValue()));
