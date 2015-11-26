@@ -1,6 +1,5 @@
 package de.ptb.epics.eve.editor.views;
 
-
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -25,7 +24,7 @@ public class PluginControllerValueEditingSupport extends EditingSupport {
 			.getLogger(PluginControllerValueEditingSupport.class.getName());
 
 	private TableViewer viewer;
-	
+
 	/**
 	 * Constructor.
 	 * 
@@ -42,19 +41,22 @@ public class PluginControllerValueEditingSupport extends EditingSupport {
 	@Override
 	protected CellEditor getCellEditor(Object element) {
 		logger.debug("getCellEditor");
-		final PluginParameterValue pluginParameterValue = (PluginParameterValue)element;
+		final PluginParameterValue pluginParameterValue = (PluginParameterValue) element;
 
-		PluginParameter pluginParameter = pluginParameterValue.getPluginParameter();
+		PluginParameter pluginParameter = pluginParameterValue
+				.getPluginParameter();
 
 		if (pluginParameter != null) {
 			if (pluginParameter.isDiscrete()) {
-				List<String> discrValuesList = pluginParameter.getDiscreteValues();
-				return new MyComboBoxCellEditor(this.viewer.getTable(), 
+				List<String> discrValuesList = pluginParameter
+						.getDiscreteValues();
+				return new MyComboBoxCellEditor(this.viewer.getTable(),
 						discrValuesList.toArray(new String[0]));
 			} else {
 				return new TextCellEditor(this.viewer.getTable()) {
-					@Override protected void focusLost() {
-						if(isActivated()) {
+					@Override
+					protected void focusLost() {
+						if (isActivated()) {
 							fireCancelEditor();
 						}
 						deactivate();
@@ -80,17 +82,23 @@ public class PluginControllerValueEditingSupport extends EditingSupport {
 	protected Object getValue(Object element) {
 		logger.debug("getCellValue");
 
-		final PluginParameterValue pluginParameterValue = (PluginParameterValue)element;
+		final PluginParameterValue pluginParameterValue = (PluginParameterValue) element;
 
 		if (pluginParameterValue.getPluginParameter().isDiscrete()) {
 			// Wert einer ComoboBox muss ermittelt werden
 			// Der Index muss zurückgegeben werden
-			List <String> idList = pluginParameterValue.getPluginParameter().getDiscreteIDs();
+			List<String> idList = pluginParameterValue.getPluginParameter()
+					.getDiscreteIDs();
 			int index = idList.indexOf(pluginParameterValue.getValue());
 			return index;
-		} else{
+		} else {
 			// Text Cell, es wird einfach der Wert zurückgegeben
-			return pluginParameterValue.getValue();
+			// wenn er != null ist 
+			if (pluginParameterValue.getValue() != null) {
+				return pluginParameterValue.getValue();
+			}
+			return "";
+			
 		}
 	}
 
@@ -101,15 +109,26 @@ public class PluginControllerValueEditingSupport extends EditingSupport {
 	protected void setValue(Object element, Object value) {
 		logger.debug("setValue");
 
-		final PluginParameterValue pluginParameterValue = (PluginParameterValue)element;
-		
+		final PluginParameterValue pluginParameterValue = (PluginParameterValue) element;
+
 		if (pluginParameterValue.getPluginParameter().isDiscrete()) {
 			// Wert einer ComoboBox muss mit dem Index gesetzt werden
-			pluginParameterValue.getPluginController().set(pluginParameterValue.getPluginParameter().getName(), 
-					pluginParameterValue.getPluginParameter().getDiscreteIDs().get((int)value) );
-		} else{
+			pluginParameterValue.getPluginController().set(
+					pluginParameterValue.getPluginParameter().getName(),
+					pluginParameterValue.getPluginParameter().getDiscreteIDs()
+							.get((int) value));
+		} else {
 			// Text Cell, es wird einfach der Wert zurückgegeben
-			pluginParameterValue.getPluginController().set(pluginParameterValue.getPluginParameter().getName(), value.toString());
+			if (!"".equals(value)) {
+				pluginParameterValue.getPluginController().set(
+					pluginParameterValue.getPluginParameter().getName(),
+					value.toString());
+			} else {
+				// ein leerer String wird nicht ins Model geschrieben,
+				// dann wird null geschrieben
+				pluginParameterValue.getPluginController().set(
+						pluginParameterValue.getPluginParameter().getName(),null);
+			}
 		}
 	}
 }

@@ -296,13 +296,19 @@ public class PluginController implements IModelErrorProvider,
 					errorList.add(new PluginError(this,
 							PluginErrorTypes.MISSING_MANDATORY_PARAMETER,
 							parameter.getName()));
-				}
-				if (this.values.containsKey(parameter.getName())
-						&& !parameter.isValuePossible(this.values.get(parameter
-								.getName()))) {
+				} 
+
+				if (this.values.containsKey(parameter.getName())) {
+					/* Wenn Parameter nicht Mandatory ist, ist ein leerer Value OK */
+					if (!parameter.isMandatory() 
+						&& this.values.get(parameter.getName()) == null) {
+					}
+					else if (!parameter.isValuePossible(this.values.get(parameter.getName()))) {
 					errorList.add(new PluginError(this,
 							PluginErrorTypes.WRONG_VALUE, parameter.getName()));
+					}
 				}
+			
 			}
 		} else {
 			errorList.add(new PluginError(this,

@@ -86,7 +86,11 @@ public class PluginParameter {
 			return defaultValue;
 		}
 		else {
-			if (this.isDiscrete()) {
+			// wenn Parameter nicht mandatory ist, wird kein default Wert erzeugt
+			if (this.mandatory == false){
+				return null;
+			}
+			else if (this.isDiscrete()) {
 				// Value ist diskret, ersten ID Eintrag als default setzen
 				String[] values = this.getDiscreteIDs().toArray(new String[0]);
 				return values[0];
