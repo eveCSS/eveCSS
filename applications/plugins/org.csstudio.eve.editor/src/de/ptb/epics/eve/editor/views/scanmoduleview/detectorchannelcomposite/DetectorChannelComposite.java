@@ -40,6 +40,7 @@ public class DetectorChannelComposite extends ActionComposite {
 		this.setLayout(new GridLayout());
 		this.tableViewerComparator = new TableViewerComparator();
 		createViewer();
+		this.initDnD();
 	}
 
 	/*

@@ -10,9 +10,6 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.dnd.DND;
-import org.eclipse.swt.dnd.TextTransfer;
-import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -21,8 +18,6 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 import de.ptb.epics.eve.data.scandescription.AbstractBehavior;
 import de.ptb.epics.eve.editor.views.DelColumnEditingSupport;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
-import de.ptb.epics.eve.editor.views.scanmoduleview.dnd.ActionCompositeDragSourceListener;
-import de.ptb.epics.eve.editor.views.scanmoduleview.dnd.ActionCompositeDropTargetListener;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ActionComposite;
 
 /**
@@ -36,9 +31,7 @@ import de.ptb.epics.eve.editor.views.scanmoduleview.ActionComposite;
 public class MotorAxisComposite extends ActionComposite {
 	private static final Logger LOGGER = Logger
 			.getLogger(MotorAxisComposite.class.getName());
-	
-	private ActionCompositeDropTargetListener actionCompositeDropTargetListener;
-	
+
 	/**
 	 * Constructs a <code>MotorAxisComposite</code>.
 	 * 
@@ -59,6 +52,7 @@ public class MotorAxisComposite extends ActionComposite {
 				LOGGER.debug("SELECTION: " + event.getSelection().toString());
 			}
 		});
+		this.initDnD();
 	}
 	
 	/*
@@ -80,15 +74,6 @@ public class MotorAxisComposite extends ActionComposite {
 		this.tableViewer.setLabelProvider(new LabelProvider());
 		this.tableViewer.getTable().addFocusListener(new 
 				TableViewerFocusListener());
-		
-		int ops = DND.DROP_MOVE;
-		Transfer[] transfers = new Transfer[] {TextTransfer.getInstance()};
-		this.tableViewer.addDragSupport(ops, transfers, 
-				new ActionCompositeDragSourceListener(this.tableViewer, this));
-		this.actionCompositeDropTargetListener =
-				new ActionCompositeDropTargetListener(this.tableViewer, this);
-		this.tableViewer.addDropSupport(ops, transfers,
-				this.actionCompositeDropTargetListener);
 		
 		// create context menu
 		MenuManager menuManager = new MenuManager();

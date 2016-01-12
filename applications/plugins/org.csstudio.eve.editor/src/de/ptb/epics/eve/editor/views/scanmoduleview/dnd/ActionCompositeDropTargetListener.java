@@ -94,11 +94,16 @@ public class ActionCompositeDropTargetListener extends ViewerDropAdapter {
 		
 		if (location == ViewerDropAdapter.LOCATION_AFTER) {
 			LOGGER.debug("perform drop: insert source after target");
-			
+			this.actionComposite.disableSelectionService();
 			ListUtil.move(model, sourceIndex, targetIndex);
+			this.actionComposite.enableSelectionService();
+			this.actionComposite.setSelection(dragItem);
 		} else if (location == ViewerDropAdapter.LOCATION_BEFORE) {
 			LOGGER.debug("perform drop: insert source before target");
+			this.actionComposite.disableSelectionService();
 			ListUtil.move(model, sourceIndex, targetIndex - 1);
+			this.actionComposite.enableSelectionService();
+			this.actionComposite.setSelection(dragItem);
 		}
 		return false;
 	}

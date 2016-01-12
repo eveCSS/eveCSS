@@ -3,8 +3,12 @@ package de.ptb.epics.eve.editor.views.scanmoduleview;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -16,6 +20,8 @@ import de.ptb.epics.eve.data.scandescription.AbstractBehavior;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
+import de.ptb.epics.eve.editor.views.scanmoduleview.dnd.ActionCompositeDragSourceListener;
+import de.ptb.epics.eve.editor.views.scanmoduleview.dnd.ActionCompositeDropTargetListener;
 import de.ptb.epics.eve.util.Activator;
 import de.ptb.epics.eve.util.jface.ViewerComparator;
 
@@ -76,6 +82,15 @@ public abstract class ActionComposite extends Composite implements
 				.get("SORT_DESCENDING");
 	}
 
+	protected void initDnD() {
+		int ops = DND.DROP_MOVE;
+		Transfer[] transfers = new Transfer[] {TextTransfer.getInstance()};
+		this.tableViewer.addDragSupport(ops, transfers, 
+				new ActionCompositeDragSourceListener(this.tableViewer, this));
+		this.tableViewer.addDropSupport(ops, transfers,
+				new ActionCompositeDropTargetListener(this.tableViewer, this));
+	}
+	
 	/**
 	 * Sets the {@link de.ptb.epics.eve.data.scandescription.ScanModule}.
 	 * 
@@ -112,6 +127,22 @@ public abstract class ActionComposite extends Composite implements
 	 * @since 1.25
 	 */
 	public abstract List<? extends AbstractBehavior> getModel();
+	
+	/**
+	 * Sets the table viewer as selection provider.
+	 * @since 1.25
+	 */
+	public void enableSelectionService() {
+		this.parentView.setSelectionProvider(this.tableViewer);
+	}
+	
+	/**
+	 * Resets the selection provider.
+	 * @since 1.25
+	 */
+	public void disableSelectionService() {
+		this.parentView.setSelectionProvider(null);
+	}
 	
 	/**
 	 * Returns the current sort state of the contained table viewer.
@@ -152,6 +183,10 @@ public abstract class ActionComposite extends Composite implements
 			break;
 		default: throw new IllegalArgumentException("Illegal sort state.");
 		}
+	}
+	
+	public void setSelection(AbstractBehavior abstractBehavior) {
+		this.tableViewer.setSelection(new StructuredSelection(abstractBehavior), true);
 	}
 	
 	/**
