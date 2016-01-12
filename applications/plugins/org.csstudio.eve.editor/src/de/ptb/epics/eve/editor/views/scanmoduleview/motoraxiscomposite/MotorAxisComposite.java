@@ -1,21 +1,28 @@
 package de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbenchActionConstants;
 
+import de.ptb.epics.eve.data.scandescription.AbstractBehavior;
 import de.ptb.epics.eve.editor.views.DelColumnEditingSupport;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
+import de.ptb.epics.eve.editor.views.scanmoduleview.dnd.ActionCompositeDragSourceListener;
+import de.ptb.epics.eve.editor.views.scanmoduleview.dnd.ActionCompositeDropTargetListener;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ActionComposite;
 
 /**
@@ -29,6 +36,8 @@ import de.ptb.epics.eve.editor.views.scanmoduleview.ActionComposite;
 public class MotorAxisComposite extends ActionComposite {
 	private static final Logger LOGGER = Logger
 			.getLogger(MotorAxisComposite.class.getName());
+	
+	private ActionCompositeDropTargetListener actionCompositeDropTargetListener;
 	
 	/**
 	 * Constructs a <code>MotorAxisComposite</code>.
@@ -45,11 +54,6 @@ public class MotorAxisComposite extends ActionComposite {
 		createViewer();
 		
 		this.tableViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-			
-			private boolean update;
-			
-			private ISelection lastSelection;
-			
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				LOGGER.debug("SELECTION: " + event.getSelection().toString());
@@ -76,6 +80,15 @@ public class MotorAxisComposite extends ActionComposite {
 		this.tableViewer.setLabelProvider(new LabelProvider());
 		this.tableViewer.getTable().addFocusListener(new 
 				TableViewerFocusListener());
+		
+		int ops = DND.DROP_MOVE;
+		Transfer[] transfers = new Transfer[] {TextTransfer.getInstance()};
+		this.tableViewer.addDragSupport(ops, transfers, 
+				new ActionCompositeDragSourceListener(this.tableViewer, this));
+		this.actionCompositeDropTargetListener =
+				new ActionCompositeDropTargetListener(this.tableViewer, this);
+		this.tableViewer.addDropSupport(ops, transfers,
+				this.actionCompositeDropTargetListener);
 		
 		// create context menu
 		MenuManager menuManager = new MenuManager();
@@ -113,5 +126,13 @@ public class MotorAxisComposite extends ActionComposite {
 				this.tableViewer, SWT.NONE);
 		stepfunctionColumn.getColumn().setText("Stepfunction");
 		stepfunctionColumn.getColumn().setWidth(80);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<? extends AbstractBehavior> getModel() {
+		return this.getCurrentScanModule().getAxesList();
 	}
 }

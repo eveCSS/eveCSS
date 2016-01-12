@@ -54,7 +54,7 @@ import de.ptb.epics.eve.util.math.statistics.DescriptiveStats;
  * @author Hartmut Scherr
  */
 public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, 
-								IModelErrorProvider, PropertyChangeListener {
+								IModelErrorProvider, PropertyChangeListener, ListChangeListener<AbstractBehavior> {
 	
 	private static Logger logger = Logger.getLogger(ScanModule.class.getName());
 	
@@ -212,7 +212,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		this.prescans = new ArrayList<Prescan>();
 		this.postscans = new ArrayList<Postscan>();
 		this.channels = FXCollections.observableList(new ArrayList<Channel>());
+		this.channels.addListener(this);
 		this.axes = FXCollections.observableList(new ArrayList<Axis>());
+		this.axes.addListener(this);
 		this.mainAxis = null;
 		this.plotWindows = new ArrayList<PlotWindow>();
 		this.valueCount = 1;
@@ -334,6 +336,15 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	}
 	
 	/**
+	 * Returns the channel list
+	 * @return the channel list
+	 * @since 1.25
+	 */
+	public List<Channel> getChannelList() {
+		return this.channels;
+	}
+	
+	/**
 	 * Returns all channels valid for normalization. A given channel can be
 	 * excluded from the result.
 	 * 
@@ -369,6 +380,15 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 */
 	public Axis[] getAxes() {
 		return this.axes.toArray(new Axis[0]);
+	}
+	
+	/**
+	 * Returns the axes list
+	 * @return the axes list
+	 * @since 1.25
+	 */
+	public List<Axis> getAxesList() {
+		return this.axes;
 	}
 	
 	/**
@@ -1861,6 +1881,24 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 						controlEvent.getEvent().getName() + 
 						" removed from sm " + this.getName() +
 						" (Chain " + this.getChain().getId() + ") ");
+			}
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Necessary to get notified if axes or channels were permutated
+	 */
+	@Override
+	public void onChanged(javafx.collections.ListChangeListener.Change<? extends AbstractBehavior> change) {
+		while (change.next()) {
+			if (change.wasPermutated()) {
+				updateListeners();
+			} else if (change.wasUpdated()) {
+				updateListeners();
+			} else {
+				updateListeners();
 			}
 		}
 	}

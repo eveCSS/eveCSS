@@ -1,5 +1,7 @@
 package de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite;
 
+import java.util.List;
+
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.TableViewer;
@@ -10,6 +12,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbenchActionConstants;
 
+import de.ptb.epics.eve.data.scandescription.AbstractBehavior;
 import de.ptb.epics.eve.editor.views.DelColumnEditingSupport;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ActionComposite;
@@ -100,5 +103,13 @@ public class DetectorChannelComposite extends ActionComposite {
 				this.tableViewer, SWT.LEFT);
 		deferredColumn.getColumn().setText("Deferred");
 		deferredColumn.getColumn().setWidth(100);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<? extends AbstractBehavior> getModel() {
+		return this.getCurrentScanModule().getChannelList();
 	}
 }

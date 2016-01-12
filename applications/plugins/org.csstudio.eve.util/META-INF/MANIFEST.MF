@@ -12,6 +12,7 @@ Require-Bundle: org.csstudio.utility.pvmanager;bundle-version="1.0.0",
  org.csstudio.platform.libs.epics;bundle-version="3.3.0",
  org.epics.util;bundle-version="0.3.2"
 Export-Package: de.ptb.epics.eve.util;uses:="org.eclipse.ui.plugin",
+ de.ptb.epics.eve.util.collection,
  de.ptb.epics.eve.util.csv,
  de.ptb.epics.eve.util.data,
  de.ptb.epics.eve.util.graph,

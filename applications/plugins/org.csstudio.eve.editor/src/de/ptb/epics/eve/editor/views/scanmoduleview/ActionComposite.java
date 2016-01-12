@@ -1,5 +1,7 @@
 package de.ptb.epics.eve.editor.views.scanmoduleview;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -10,6 +12,7 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
+import de.ptb.epics.eve.data.scandescription.AbstractBehavior;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
@@ -92,6 +95,24 @@ public abstract class ActionComposite extends Composite implements
 		}
 	}
 
+	
+	/**
+	 * Returns the scan module
+	 * @return the scan module
+	 */
+	public ScanModule getCurrentScanModule() {
+		return currentScanModule;
+	}
+
+	/**
+	 * Returns the model (collection) the composite represents.
+	 * 
+	 * Used for a generic DnD implementation.
+	 * @return the model (collection) the composite represents
+	 * @since 1.25
+	 */
+	public abstract List<? extends AbstractBehavior> getModel();
+	
 	/**
 	 * Returns the current sort state of the contained table viewer.
 	 * 

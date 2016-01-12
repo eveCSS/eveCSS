@@ -1,5 +1,7 @@
 package de.ptb.epics.eve.editor.views.scanmoduleview.prescancomposite;
 
+import java.util.List;
+
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.TableViewer;
@@ -10,6 +12,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbenchActionConstants;
 
+import de.ptb.epics.eve.data.scandescription.AbstractBehavior;
 import de.ptb.epics.eve.editor.views.DelColumnEditingSupport;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ActionComposite;
@@ -92,5 +95,14 @@ public class PrescanComposite extends ActionComposite {
 		valueColumn.getColumn().setText("Value");
 		valueColumn.getColumn().setWidth(80);
 		valueColumn.setEditingSupport(new ValueEditingSupport(this.tableViewer));
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<? extends AbstractBehavior> getModel() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

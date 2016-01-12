@@ -110,6 +110,7 @@ public class CommonTableContentProvider implements IStructuredContentProvider {
 	 * @param predecessor the item after which the drag item should be inserted
 	 * @throws IllegalArgumentException if either dragItem or predecessor are 
 	 * 			not found
+	 * @see {@link java.util.Collections#rotate(List, int)}
 	 */
 	public void moveItem(CommonTableElement dragItem,
 			CommonTableElement predecessor) throws IllegalArgumentException {

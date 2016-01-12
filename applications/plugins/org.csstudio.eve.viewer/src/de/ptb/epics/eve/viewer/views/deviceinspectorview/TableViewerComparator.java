@@ -4,7 +4,6 @@ import org.eclipse.jface.viewers.Viewer;
 
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.util.jface.ViewerComparator;
-import de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.DeviceInspectorView;
 
 /**
  * <code>TableViewerComparator</code> is the comparator used by the table 
