@@ -20,7 +20,11 @@ public class WeekMacro extends Macro {
 	 */
 	@Override
 	public String resolve() {
-		return Integer.toString(Calendar.getInstance().get(
-				Calendar.WEEK_OF_YEAR));
+		int week = Calendar.getInstance().get(
+				Calendar.WEEK_OF_YEAR);
+		if (week < 10) {
+			return "0" + Integer.toString(week);
+		}
+		return Integer.toString(week);
 	}
 }
