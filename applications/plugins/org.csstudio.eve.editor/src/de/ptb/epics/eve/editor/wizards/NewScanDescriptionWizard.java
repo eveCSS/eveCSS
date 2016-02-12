@@ -111,9 +111,13 @@ public class NewScanDescriptionWizard extends Wizard implements INewWizard {
 		monitor.beginTask("Creating " + fileName, 2);
 		
 		monitor.worked(1);
-		monitor.setTaskName("Opening file for editing...");
 		
 		final File file = new File(fileName);
+		final File parent = file.getParentFile();
+		if(!parent.exists() && !parent.mkdirs()) {
+			logger.error("Directory could not be created!");
+			return;
+		}
 		if(!file.exists()) {
 			overwrite = true;
 			try {
@@ -142,6 +146,8 @@ public class NewScanDescriptionWizard extends Wizard implements INewWizard {
 		if(!overwrite) {
 			return;
 		}
+		
+		monitor.setTaskName("Opening file for editing...");
 		
 		final IMeasuringStation measuringStation =  
 				Activator.getDefault().getMeasuringStation();
