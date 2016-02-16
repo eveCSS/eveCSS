@@ -2,11 +2,15 @@ h1(eveTopic). Known Bugs
 
 {toc}
 
-h3(eveKnownBug). (#244) Device Inspector opened by Window -> Show View -> Other... -> EVE Viewer -> Device Inspector does not accept devices added per double click.
+h3{eveKnownBug}. (#2430) DeviceOptionsView doesn't show selected device's options
 
-p. If all previous Device Inspector Views were closed and a new one is added via the above mentioned Window menu it won't accept device by double clicking them in the Devices View.
+p. If a DeviceOptionsView is opened via the Window -> Show View Menu it doesn't work properly. This is due to ==<a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=294066" target="_blank">Eclipse Bug #294066</a>==: [Commands] org.eclipse.ui.views.showView command should have a secondaryId parameter.
 
-p. __Workaround:__ Open a Device Inspector by the above mentioned method. Then add another one with the toolbar button. Close the first one. Use the second one.
+p. __Workaround:__ Open DeviceOptionViews via the ContextMenu of a Device in the Devices or DeviceInspector Views.
+
+h3(eveKnownBug). (#1471) PV channel transport closed when using DBE_PROPERTY monitor
+
+p. When DBE_PROPERTY monitoring is set in CSS Core -> Epics preferences and a CA gateway with EPICS base 3.14.12.2 is used, PV access won't work properly. For more information see ==<a href="http://www.aps.anl.gov/epics/tech-talk/2012/msg02352.php" target="_blank">Using CAJ in production (DBE_PROPERTY and CA gateway)</a>== and ==<a href="https://bugs.launchpad.net/epics-base/+bug/730720" target="_blank">bad resource id msg from portable cas</a>==
 
 h3(eveKnownBug). (#523) No file name in Engine View under certain circumstances
 
@@ -18,6 +22,8 @@ p. If the following conditions are met, no file name is given in the engine view
 
 p. __Workaround:__ Disconnect and Reconnect the engine via the respective buttons.
 
-h3(eveKnownBug). (#1471) PV channel transport closed when using DBE_PROPERTY monitor
+h3(eveKnownBug). (#244) Device Inspector opened by Window -> Show View -> Other... -> EVE Viewer -> Device Inspector does not accept devices added per double click.
 
-p. When DBE_PROPERTY monitoring is set in CSS Core -> Epics preferences and a CA gateway with EPICS base 3.14.12.2 is used, PV access won't work properly. For more information see ==<a href="http://www.aps.anl.gov/epics/tech-talk/2012/msg02352.php" target="_blank">Using CAJ in production (DBE_PROPERTY and CA gateway)</a>== and ==<a href="https://bugs.launchpad.net/epics-base/+bug/730720" target="_blank">bad resource id msg from portable cas</a>==
+p. If all previous Device Inspector Views were closed and a new one is added via the above mentioned Window menu it won't accept device by double clicking them in the Devices View.
+
+p. __Workaround:__ Open a Device Inspector by the above mentioned method. Then add another one with the toolbar button. Close the first one. Use the second one.

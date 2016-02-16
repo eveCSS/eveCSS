@@ -56,7 +56,7 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 	 */
 	public static String activeDeviceOptionsView;
 	
-	private static Logger logger = 
+	private static Logger LOGGER = 
 			Logger.getLogger(DeviceOptionsView.class.getName());
 	
 	// ensures that the right Device Options View is active after a perspective 
@@ -153,6 +153,9 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 		if(deviceOptionsView == null) {
 			activeDeviceOptionsView = this.getViewSite().getSecondaryId();
 		}
+		if (this.getViewSite().getSecondaryId() == null) {
+			LOGGER.warn("Views secondary Id is null!");
+		}
 		
 		// listen to part changes (necessary to distinguish between the 
 		// DeviceOptionsViews of the EveEngine and EveDevice Perspective).
@@ -236,7 +239,8 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 		getSite().getWorkbenchWindow().getSelectionService().
 			removeSelectionListener(this);
 		
-		if(this.getViewSite().getSecondaryId().equals(activeDeviceOptionsView)) {
+		if(this.getViewSite().getSecondaryId() != null && 
+				this.getViewSite().getSecondaryId().equals(activeDeviceOptionsView)) {
 			activeDeviceOptionsView = null;
 		}
 		super.dispose();
@@ -256,15 +260,15 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 		
-		if(logger.isDebugEnabled() && selection != null) {
-			logger.debug(selection.toString());
+		if(LOGGER.isDebugEnabled() && selection != null) {
+			LOGGER.debug(selection.toString());
 		}
 		
-		if (logger.isDebugEnabled() && 
+		if (LOGGER.isDebugEnabled() && 
 			selection instanceof IStructuredSelection && !selection.isEmpty()) {
 			Object o = ((IStructuredSelection) selection).toList().get(0);
 			if(o instanceof OptionPV) {
-				logger.debug(((OptionPV)o).getName());
+				LOGGER.debug(((OptionPV)o).getName());
 			}
 		}
 		
@@ -272,7 +276,7 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 		// (the one in front) -> do nothing
 		if (activeDeviceOptionsView == null ||
 			!(activeDeviceOptionsView.equals(this.getViewSite().getSecondaryId()))) {
-				logger.debug("Secondary Id different -> do nothing");
+				LOGGER.debug("Secondary Id different -> do nothing");
 				return;
 		}
 		
@@ -399,8 +403,8 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			logger.debug("option column clicked");
-			logger.debug("old options table sort state: " + tableViewerSortState);
+			LOGGER.debug("option column clicked");
+			LOGGER.debug("old options table sort state: " + tableViewerSortState);
 			switch(tableViewerSortState) {
 				case TableViewerComparator.NONE: // was no sorting -> now ascending
 						tableViewerComparator.setDirection(
@@ -424,7 +428,7 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 			// if it becomes 3 it has to be 0 again
 			// but before the state has to be increased to the new state
 			tableViewerSortState = ++tableViewerSortState % 3;
-			logger.debug("new options table sort state: " + tableViewerSortState);
+			LOGGER.debug("new options table sort state: " + tableViewerSortState);
 		}
 	}
 }
