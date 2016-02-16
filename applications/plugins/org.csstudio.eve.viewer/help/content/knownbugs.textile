@@ -2,7 +2,7 @@ h1(eveTopic). Known Bugs
 
 {toc}
 
-h3{eveKnownBug}. (#2430) DeviceOptionsView doesn't show selected device's options
+h3(eveKnownBug). (#2430) DeviceOptionsView doesn't show selected device's options
 
 p. If a DeviceOptionsView is opened via the Window -> Show View Menu it doesn't work properly. This is due to ==<a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=294066" target="_blank">Eclipse Bug #294066</a>==: [Commands] org.eclipse.ui.views.showView command should have a secondaryId parameter.
 
