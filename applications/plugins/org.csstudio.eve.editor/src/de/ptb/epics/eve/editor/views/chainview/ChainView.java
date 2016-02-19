@@ -37,12 +37,10 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISharedImages;
@@ -279,6 +277,7 @@ public class ChainView extends ViewPart implements IEditorView,
 				+ "The following macros can be used:\n"
 				+ "${WEEK} : calendar week\n" 
 				+ "${YEAR} : year as yyyy\n"
+				+ "${YR} : year as yy\n"
 				+ "${MONTH} : month as MM\n" 
 				+ "${MONTHSTR} : month as MMM (e.g., Jul)\n"
 				+ "${DAY} : day as dd\n"
