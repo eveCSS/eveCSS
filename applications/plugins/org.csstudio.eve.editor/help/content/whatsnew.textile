@@ -1,5 +1,14 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.25
+
+* [Feature] Motor Axis and Detector Channel Order are now changeable via Drag n Drop in the ScanModuleView
+* [Feature] introduced a new macro for two digit year (Chain View filename)
+
+* [Bug Fix] fixed a bug where (non-existing) folders were not created during SCML creation
+* [Bug Fix] fixed a bug where the live preview of the filename macros did not show a leading zero within calendar week 1 through 9
+* [Bug Fix] fixed a bug which could lead a a SAXParseException during SCML Loading
+
 h2(eveTopic). Version 1.24
 
 * [Feature] the data file name (Chain View) id now also viewable in its tool tip
