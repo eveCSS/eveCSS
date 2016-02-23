@@ -3,6 +3,7 @@ package de.ptb.epics.eve.viewer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -24,7 +25,7 @@ IConnectionStateListener, IChainStatusListener, IChainProgressListener {
 
 	private static Logger logger = Logger.getLogger(ChainStatusAnalyzer.class.getName());
 
-	private HashMap<Integer, ChainStatusCommand> LastChainStatus;
+	private Map<Integer, ChainStatusCommand> LastChainStatus;
 
 	private final List<IUpdateListener> updateListener;
 

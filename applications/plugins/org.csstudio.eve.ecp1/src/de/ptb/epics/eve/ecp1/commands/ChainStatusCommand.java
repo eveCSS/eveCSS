@@ -6,6 +6,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import de.ptb.epics.eve.ecp1.intern.exceptions.AbstractRestoreECP1CommandException;
@@ -26,7 +27,7 @@ public class ChainStatusCommand implements IECP1Command {
 	private int generalTimeStamp;
 	private int nanoseconds;
 	private ChainStatus chainStatus;
-	private HashMap<Integer,Integer> SMFullStatus;
+	private Map<Integer,Integer> SMFullStatus;
 	
 	public ChainStatusCommand(final byte[] byteArray) throws IOException,
 			AbstractRestoreECP1CommandException {
