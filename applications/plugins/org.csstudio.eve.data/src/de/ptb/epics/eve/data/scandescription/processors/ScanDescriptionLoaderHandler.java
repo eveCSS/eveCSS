@@ -329,7 +329,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			if (qName.equals("scanmodule")) {
 				this.currentScanModule = new ScanModule(Integer.parseInt(atts
 						.getValue("id")));
-				this.currentScanModule.sm_loading = true;
+				this.currentScanModule.smLoading = true;
 				this.currentRelationReminder = new ScanModulRelationReminder(
 						this.currentScanModule);
 				this.smChannels = new ArrayList<Channel>();
@@ -1448,7 +1448,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.state = ScanDescriptionLoaderStates.ROOT;
 
 				for (ScanModule sm : this.currentChain.getScanModules()) {
-					sm.sm_loading = false; // TODO public attribute ?!
+					sm.smLoading = false; // TODO public attribute ?!
 				}
 			}
 			

@@ -27,12 +27,12 @@ public class ChainStatusCommand implements IECP1Command {
 	private int generalTimeStamp;
 	private int nanoseconds;
 	private ChainStatus chainStatus;
-	private Map<Integer,Integer> SMFullStatus;
+	private Map<Integer,Integer> sMFullStatus;
 	
 	public ChainStatusCommand(final byte[] byteArray) throws IOException,
 			AbstractRestoreECP1CommandException {
 
-		SMFullStatus = new HashMap<Integer,Integer>();
+		sMFullStatus = new HashMap<Integer,Integer>();
 		
 		if (byteArray == null) {
 			throw new IllegalArgumentException(
@@ -74,8 +74,8 @@ public class ChainStatusCommand implements IECP1Command {
 		while (datalength > 0){
 			int smid = dataInputStream.readInt();
 			int smstatus = dataInputStream.readInt();
-			if (!SMFullStatus.containsKey(smid)){
-				SMFullStatus.put(smid, smstatus);				
+			if (!sMFullStatus.containsKey(smid)){
+				sMFullStatus.put(smid, smstatus);				
 			}
 			datalength -= 8;
 		}
@@ -91,14 +91,14 @@ public class ChainStatusCommand implements IECP1Command {
 		
 		dataOutputStream.writeChar(MeasurementDataCommand.COMMAND_TYPE_ID);
 
-		final int length = 16 + SMFullStatus.size()*8;
+		final int length = 16 + sMFullStatus.size()*8;
 
 		dataOutputStream.writeInt(length);
 		dataOutputStream.writeInt(chainId);
 		dataOutputStream.writeInt(ChainStatus.chainStatusToInt(chainStatus));
-		for (int smid : SMFullStatus.keySet()) {
+		for (int smid : sMFullStatus.keySet()) {
 			dataOutputStream.writeInt(smid);
-			dataOutputStream.writeInt(SMFullStatus.get(smid));
+			dataOutputStream.writeInt(sMFullStatus.get(smid));
 		}
 		dataOutputStream.close();
 
@@ -106,7 +106,7 @@ public class ChainStatusCommand implements IECP1Command {
 	}
 	
 	public Boolean isAnyScanModulePaused(){
-		for (int smid : SMFullStatus.keySet()) {
+		for (int smid : sMFullStatus.keySet()) {
 			if (getScanModuleStatus(smid) == ScanModuleStatus.PAUSED ) return true;
 		}
 		return false;
@@ -121,21 +121,21 @@ public class ChainStatusCommand implements IECP1Command {
 	}
 	
 	public ScanModuleStatus getScanModuleStatus(int smid) {
-		if (SMFullStatus.containsKey(smid)){
-			return ScanModuleStatus.intToScanModuleStatus(SMFullStatus.get(smid) >> 16);
+		if (sMFullStatus.containsKey(smid)){
+			return ScanModuleStatus.intToScanModuleStatus(sMFullStatus.get(smid) >> 16);
 		}
 		return ScanModuleStatus.UNKNOWN;
 	}
 
 	public ScanModuleReason getScanModuleReason(int smid) {
-		if (SMFullStatus.containsKey(smid)){
-			return ScanModuleReason.intToScanModuleReason(SMFullStatus.get(smid) & 0xff);
+		if (sMFullStatus.containsKey(smid)){
+			return ScanModuleReason.intToScanModuleReason(sMFullStatus.get(smid) & 0xff);
 		}
 		return ScanModuleReason.NONE;		
 	}
 
 	public Set<Integer> getAllScanModuleIds() {
-		return this.SMFullStatus.keySet();
+		return this.sMFullStatus.keySet();
 	}
 
 	public int getTimeStampSeconds() {

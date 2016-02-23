@@ -25,13 +25,13 @@ IConnectionStateListener, IChainStatusListener, IChainProgressListener {
 
 	private static Logger logger = Logger.getLogger(ChainStatusAnalyzer.class.getName());
 
-	private Map<Integer, ChainStatusCommand> LastChainStatus;
+	private Map<Integer, ChainStatusCommand> lastChainStatus;
 
 	private final List<IUpdateListener> updateListener;
 
 	public ChainStatusAnalyzer() {
 
-		LastChainStatus = new HashMap<Integer, ChainStatusCommand>();
+		lastChainStatus = new HashMap<Integer, ChainStatusCommand>();
 
 		this.updateListener = new ArrayList<IUpdateListener>();
 
@@ -78,8 +78,8 @@ IConnectionStateListener, IChainStatusListener, IChainProgressListener {
 		int chid = chainStatusCommand.getChainId();
 		ChainStatusCommand csd = chainStatusCommand;
 		
-		if (LastChainStatus.containsKey(chid)) {
-			ChainStatusCommand oldStatus = LastChainStatus.get(chid);
+		if (lastChainStatus.containsKey(chid)) {
+			ChainStatusCommand oldStatus = lastChainStatus.get(chid);
 			Set<Integer> oldSMIds = oldStatus.getAllScanModuleIds();
 			for (IUpdateListener iul : this.updateListener) {
 				if (oldStatus.getChainStatus() != csd.getChainStatus()) 
@@ -102,7 +102,7 @@ IConnectionStateListener, IChainStatusListener, IChainProgressListener {
 				}
 			}
 		}
-		LastChainStatus.put(chid, chainStatusCommand);
+		lastChainStatus.put(chid, chainStatusCommand);
 		
 		if (csd.getChainStatus() == ChainStatus.STORAGE_DONE){
 			for (IUpdateListener iul : this.updateListener) {
@@ -124,7 +124,7 @@ IConnectionStateListener, IChainStatusListener, IChainProgressListener {
 	 */
 	@Override
 	public void stackDisconnected() {
-		LastChainStatus.clear();
+		lastChainStatus.clear();
 	}
 
 

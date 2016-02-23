@@ -493,7 +493,7 @@ public class Channel extends AbstractMainPhaseBehavior implements
 			return;
 		}
 
-		if (this.getScanModule().sm_loading) {
+		if (this.getScanModule().smLoading) {
 			// Scan is loading
 			return;
 		}
