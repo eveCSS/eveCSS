@@ -141,6 +141,15 @@ public class Detector extends AbstractMainPhaseDevice implements Cloneable {
 	 * {@inheritDoc}
 	 */
 	@Override
+	public int hashCode() {
+		// TODO Auto-generated method stub
+		return super.hashCode();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;

@@ -4,6 +4,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.Binding;
@@ -140,8 +141,8 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 	private Image autoPlayOffIcon;
 	private Image triggerIcon;
 	
-	private HashMap<Integer, TableItem> chainIdItems;
-	private HashMap<Integer, HashMap<Integer, TableItem>> scanMItemByChainId;
+	private Map<Integer, TableItem> chainIdItems;
+	private Map<Integer, HashMap<Integer, TableItem>> scanMItemByChainId;
 	
 	private ButtonManager buttonManager;
 	
