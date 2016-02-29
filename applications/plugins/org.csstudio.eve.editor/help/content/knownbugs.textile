@@ -2,6 +2,10 @@ h1(eveTopic). Known Bugs
 
 {toc}
 
+h3(eveKnownBug). (#2408) Number of scan points (motor positions) limited to 2.147.483.648.
+
+p. Due to the limitation of a (signed) integer scans should not use more than 2<sup>31</sup>-1 scan points. The resulting number shown is number of scan points mod 2<sup>31</sup>-1. 
+
 h3(eveKnownBug). (#1288) The Editor state is dirty but File -> Save is disabled.
 
 p. Sometimes although a scan description in the editor is unsaved the File -> Save menu entries are not enabled. In order to save such a file you can either move a scan module a bit or click on another view. Either will trigger a re-evaluation of the menu entries.
