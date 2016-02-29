@@ -24,6 +24,7 @@ p. The first click will sort the rows by name ascending. Another click sorts the
 
 p. __Note__ that when closing the application it remembers the position and contents of the Device Inspector views as long as you stay in the same workspace. When starting the application all connections are reestablished.
 
+p. __Note also__ that the Device Inspector View (as any View) belongs to a perspective, and thus it is not visible on other perspectives. To create a Device Inspector which is shared between perspectives use the "__Global Device Inspector View__":globaldeviceinspectorview.html instead.
 <hr/>
 
 fn1. Adding all devices should be used with caution.

@@ -40,7 +40,8 @@ public class AddToDeviceInspectorSubMenuContribution extends
 		ArrayList<IContributionItem> result = new ArrayList<IContributionItem>();
 		
 		for(IViewReference view : ref) {
-			if(view.getId().equals(DeviceInspectorView.ID)) {
+			if(view.getId().equals(DeviceInspectorView.ID) ||
+					view.getId().equals(DeviceInspectorView.GLOBAL_ID)) {
 				Map<String,String> params = new HashMap<String,String>();
 				params.put("DeviceInspectorSecondaryId", view.getSecondaryId());
 				

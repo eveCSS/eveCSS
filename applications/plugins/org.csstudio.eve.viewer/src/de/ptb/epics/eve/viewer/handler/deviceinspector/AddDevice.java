@@ -39,7 +39,6 @@ public class AddDevice implements IHandler {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		
 		if(logger.isDebugEnabled()) {
 			logger.debug("parameter: " + 
 					event.getParameter("DeviceInspectorSecondaryId"));
@@ -56,7 +55,8 @@ public class AddDevice implements IHandler {
 		DeviceInspectorView deviceInspectorView = null;
 		for(IViewReference ivr : ref) {
 			logger.debug("1st: " + ivr.getId() + " , 2nd: " + ivr.getSecondaryId());
-			if (ivr.getId().equals(DeviceInspectorView.ID)) {
+			if (ivr.getId().equals(DeviceInspectorView.ID) ||
+					ivr.getId().equals(DeviceInspectorView.GLOBAL_ID)) {
 				if(ivr.getSecondaryId().equals(
 						event.getParameter("DeviceInspectorSecondaryId"))) {
 					deviceInspectorView = (DeviceInspectorView)ivr.getPart(false);

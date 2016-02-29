@@ -56,6 +56,20 @@
       <view
             allowMultiple="true"
             category="eveViewerCategory"
+            class="de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.DeviceInspectorView"
+            icon="icons/deviceinspector_global.gif"
+            id="GlobalDeviceInspectorView"
+            name="Global Device Inspector">
+      </view>
+      <stickyView
+            closeable="true"
+            id="GlobalDeviceInspectorView"
+            location="TOP"
+            moveable="true">
+      </stickyView>
+      <view
+            allowMultiple="true"
+            category="eveViewerCategory"
             class="de.ptb.epics.eve.viewer.views.deviceoptionsview.DeviceOptionsView"
             icon="icons/extension_obj.gif"
             id="DeviceOptionsView"
@@ -119,6 +133,11 @@
             description="New Device Inspector"
             id="de.ptb.epics.eve.viewer.newDeviceInspectorCommand"
             name="newDeviceInspectorCommand">
+         <commandParameter
+               id="DeviceInspectorGlobal"
+               name="Global"
+               optional="false">
+         </commandParameter>
       </command>
       <command
             categoryId="de.ptb.epics.eve.viewer.views.deviceinspectorview"
@@ -385,6 +404,10 @@
                label="newDeviceInspector"
                style="push"
                tooltip="create new Device Inspector">
+            <parameter
+                  name="DeviceInspectorGlobal"
+                  value="false">
+            </parameter>
          </command>
          <command
                commandId="de.ptb.epics.eve.viewer.renameDeviceInspectorCommand"
@@ -455,6 +478,34 @@
                icon="icons/device_clear.gif"
                label="clear devices"
                style="pulldown">
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:GlobalDeviceInspectorView">
+         <command
+               commandId="de.ptb.epics.eve.viewer.newDeviceInspectorCommand"
+               icon="icons/new_fastview.gif"
+               label="newGlobalDeviceInspector"
+               style="push"
+               tooltip="create new Global Device Inspector">
+            <parameter
+                  name="DeviceInspectorGlobal"
+                  value="true">
+            </parameter>
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.viewer.renameDeviceInspectorCommand"
+               icon="icons/editor_area.gif"
+               label="renameDeviceInspector"
+               style="push"
+               tooltip="rename Device Inspector">
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.viewer.ResetDeviceInspector"
+               icon="icons/cp_order_obj.gif"
+               label="resetDeviceInspector"
+               style="push"
+               tooltip="Reset Layout">
          </command>
       </menuContribution>
       <menuContribution
@@ -656,6 +707,32 @@
                label="y2-Axis Auto Scale"
                style="toggle">
          </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:org.eclipse.ui.main.toolbar">
+         <toolbar
+               id="de.ptb.epics.eve.viewer.toolbar.deviceinspector?after=additions">
+            <command
+                  commandId="de.ptb.epics.eve.viewer.newDeviceInspectorCommand"
+                  icon="icons/device_inspector_add.gif"
+                  label="Add Device Inspector"
+                  style="push">
+               <parameter
+                     name="DeviceInspectorGlobal"
+                     value="false">
+               </parameter>
+            </command>
+            <command
+                  commandId="de.ptb.epics.eve.viewer.newDeviceInspectorCommand"
+                  icon="icons/deviceinspector_global_add.gif"
+                  label="Add Global Device Inspector"
+                  style="push">
+               <parameter
+                     name="DeviceInspectorGlobal"
+                     value="true">
+               </parameter>
+            </command>
+         </toolbar>
       </menuContribution>
    </extension>
    <extension

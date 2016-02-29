@@ -24,7 +24,6 @@ import de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.DeviceInspectorView;
  * @since 0.4.1
  */
 public class New implements IHandler {
-
 	private static Logger logger = Logger.getLogger(
 			New.class.getName());
 	
@@ -33,16 +32,23 @@ public class New implements IHandler {
 	 */
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		
 		IWorkbenchPage page = 
 				HandlerUtil.getActiveWorkbenchWindow(event).getActivePage();
+		
+		String globalParam = event.getParameter("DeviceInspectorGlobal");
+		boolean global;
+		if (globalParam == null) {
+			global = false;
+		} else {
+			global = Boolean.parseBoolean(globalParam);
+		}
 		
 		try {
 			final InputDialog input = 
 				new InputDialog(HandlerUtil.getActiveShell(event), 
 				"Create Device Inspector", 
 				"Please enter a name", 
-				"Device Inspector", 
+				global ? "Global Device Inspector" : "Device Inspector", 
 				null);
 			
 			String name = "";
@@ -50,9 +56,15 @@ public class New implements IHandler {
 			if(input.open() == InputDialog.OK) {
 				name = input.getValue();
 				
-				page.showView("DeviceInspectorView", 
+				if (global) {
+					page.showView("GlobalDeviceInspectorView", 
+							String.valueOf(System.nanoTime()), 
+							IWorkbenchPage.VIEW_ACTIVATE);
+				} else {
+					page.showView("DeviceInspectorView", 
 						String.valueOf(System.nanoTime()), 
 						IWorkbenchPage.VIEW_ACTIVATE);
+				}
 				
 				DeviceInspectorView deviceInspectorView = 
 					(DeviceInspectorView)HandlerUtil.getActivePart(event);
@@ -61,7 +73,6 @@ public class New implements IHandler {
 		} catch (PartInitException e) {
 			logger.error(e.getMessage(), e);
 		}
-		
 		return null;
 	}
 	

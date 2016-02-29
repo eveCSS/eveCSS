@@ -1,0 +1,13 @@
+h1(eveTopic). Global Device Inspector View
+
+p. In Addition to devices observed and manipulated in a certain perspective there are scan independent devices which should always be accessible. To create a Device Inspector which is shared between perspectives add a Global Device Inspector View. This can be achieved by
+
+* clicking the button in the main toolbar
+
+!(eveImage)../../img/concepts/globaldeviceinspector-coolbar.png(Add Global Device Inspector View via main toolbar)!
+
+* clicking the button in the toolbar of an existing Global Device Inspector View
+
+!(eveImage)../../img/concepts/globaldeviceinspector-toolbar.png(Add Global Device Inspector View via local toolbar)!
+
+p. As for adding, deleting, moving, sorting etc. the __Global Device Inspector View__ behaves exactly like the "__Device Inspector View__":deviceinspector.html.

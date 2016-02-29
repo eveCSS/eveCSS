@@ -76,6 +76,7 @@ public class DeviceInspectorView extends ViewPart {
 	 * the public identifier of this view 
 	 */
 	public static final String ID = "DeviceInspectorView";
+	public static final String GLOBAL_ID = "GlobalDeviceInspectorView";
 	
 	/** 
 	 * the secondary id of the <code>DeviceInspectorView</code> that is shown 
