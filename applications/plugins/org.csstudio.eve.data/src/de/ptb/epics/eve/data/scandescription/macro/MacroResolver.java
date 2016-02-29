@@ -25,6 +25,7 @@ public class MacroResolver {
 		macros = new ArrayList<Macro>();
 		macros.add(new WeekMacro());
 		macros.add(new YearMacro());
+		macros.add(new Year2DMacro());
 		macros.add(new MonthMacro());
 		macros.add(new MonthStrMacro());
 		macros.add(new DayMacro());
