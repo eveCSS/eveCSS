@@ -1,4 +1,4 @@
-h1(eveTopic). Wichtige Hinweise
+h1(eveTopic). Nützliche Hinweise
 
 p. Hier gibt es einige Hinweise die beim Aufbau eines Scans zu beachten sind. Gerade im Vergleich mit dem bisherigen Messprogramm gibt es einige Unterschiede.
 
