@@ -5,6 +5,7 @@ import de.ptb.epics.eve.data.MethodTypes;
 import de.ptb.epics.eve.data.TransportTypes;
 import de.ptb.epics.eve.data.TypeValue;
 import de.ptb.epics.eve.data.measuringstation.Access;
+import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.Device;
 import de.ptb.epics.eve.data.measuringstation.Function;
 import de.ptb.epics.eve.data.measuringstation.Motor;
@@ -27,7 +28,6 @@ public class ModelBuilder {
 		m.setId(id);
 		m.setName(id);
 		m.setClassName("MotorClass");
-
 		return m;
 	}
 
@@ -48,6 +48,14 @@ public class ModelBuilder {
 		return o;
 	}
 
+	public static Detector createDetector(String id) {
+		Detector detector = new Detector();
+		detector.setId(id);
+		detector.setName(id);
+		detector.setClassName("DetectorClass");
+		return detector;
+	}
+	
 	public static Device createDevice(String id) {
 		Device device = new Device();
 		device.setId(id);

@@ -80,7 +80,7 @@ public class Configurator {
 	protected static IMeasuringStation createMeasuringStation() {
 		MeasuringStation ims = new MeasuringStation();
 		ims.setLoadedFileName("JUNIT");
-		ims.setVersion("2.2");
+		ims.setVersion("4.0");
 		ims.setSchemaFileName(Configurator.getSchemaFile().getAbsolutePath());
 		
 		ims.add(ModelBuilder.createMotorWithAxisAndOptions());
