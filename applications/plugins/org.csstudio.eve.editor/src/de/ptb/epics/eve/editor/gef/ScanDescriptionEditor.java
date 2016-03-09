@@ -220,8 +220,10 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 		// show dialog preconfigured with path of "last" file name
 		final FileDialog fileDialog = 
 				new FileDialog(this.getEditorSite().getShell(), SWT.SAVE);
-		fileDialog.setFilterPath(new File(((FileStoreEditorInput)
-				this.getEditorInput()).getURI()).getParent());
+		File currentFile = new File(((FileStoreEditorInput)
+				this.getEditorInput()).getURI());
+		fileDialog.setFilterPath(currentFile.getParent());
+		fileDialog.setFileName(currentFile.getName());
 		final String dialogName = fileDialog.open();
 		
 		// file path where the file will be saved
@@ -240,6 +242,17 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 		} else {
 			// user pressed "cancel" -> do nothing
 			return;
+		}
+		
+		File newFile = new File(saveFileName);
+		if (newFile.isFile() && newFile.exists()) {
+			boolean ok = MessageDialog.openConfirm(
+					this.getSite().getShell(), 
+					"File already exists!", 
+					"File already exists! Overwrite?");
+			if (!ok) {
+				return;
+			}
 		}
 		
 		// create the save job

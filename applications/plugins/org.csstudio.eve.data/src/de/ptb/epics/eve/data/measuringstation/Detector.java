@@ -173,6 +173,8 @@ public class Detector extends AbstractMainPhaseDevice implements Cloneable {
 			detector.add((DetectorChannel)channel.clone());
 		}
 		detector.setClassName(this.getClassName());
+		detector.setStop((Function)
+				(this.getStop() != null ? this.getStop().clone() : null));
 		detector.setTrigger((Function)
 				(this.getTrigger()!=null?this.getTrigger().clone():null));
 		this.setName(this.getName());

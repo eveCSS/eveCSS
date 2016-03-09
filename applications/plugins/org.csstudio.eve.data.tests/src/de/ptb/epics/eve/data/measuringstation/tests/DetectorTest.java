@@ -20,7 +20,7 @@ import de.ptb.epics.eve.data.tests.mothers.measuringstation.DetectorMother;
  */
 public class DetectorTest {
 	private List<Detector> detectors;
-	
+
 	/**
 	 * 
 	 */
@@ -53,7 +53,6 @@ public class DetectorTest {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() {
-
 	}
 
 	/**
