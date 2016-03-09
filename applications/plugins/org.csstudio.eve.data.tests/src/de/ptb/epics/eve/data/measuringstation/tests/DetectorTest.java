@@ -1,8 +1,8 @@
 package de.ptb.epics.eve.data.measuringstation.tests;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
@@ -12,39 +12,34 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.ptb.epics.eve.data.measuringstation.Detector;
-import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
-import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
-import de.ptb.epics.eve.data.tests.internal.Configurator;
+import de.ptb.epics.eve.data.tests.mothers.measuringstation.DetectorMother;
 
 /**
  * @author Marcus Michalsky
- * @since 1.25.1
+ * @since 1.26
  */
 public class DetectorTest {
-	private static List<IMeasuringStation> stations;
+	private List<Detector> detectors;
 	
 	/**
 	 * 
 	 */
 	@Test
 	public void testClone() {
-		for(IMeasuringStation measuringStation : stations) {
-			for (Detector detector : measuringStation.getDetectors()) {
-				Detector clone = (Detector)detector.clone();
-				
-				assertEquals(detector.getClassName(), clone.getClassName());
-				assertEquals(detector.getName(), clone.getName());
-				assertEquals(detector.getID(), clone.getID());
-				
-				assertEquals(detector.getStop(), clone.getStop());
-				assertEquals(detector.getStatus(), clone.getStatus());
-				
-				for (DetectorChannel channel : detector.getChannels()) {
-					// TODO
-				}
-				
-				// TODO options
-			}
+		for (Detector detector : detectors) {
+			Detector clone = (Detector) detector.clone();
+
+			assertEquals(detector.getClassName(), clone.getClassName());
+			assertEquals(detector.getName(), clone.getName());
+			assertEquals(detector.getID(), clone.getID());
+
+			assertEquals(detector.getStop(), clone.getStop());
+			assertEquals(detector.getStatus(), clone.getStatus());
+			assertEquals(detector.getTrigger(), clone.getTrigger());
+
+			assertEquals(detector.getOptions(), clone.getOptions());
+			
+			assertEquals(detector.getChannels(), clone.getChannels());
 		}
 	}
 	
@@ -54,16 +49,11 @@ public class DetectorTest {
 	}
 	
 	/**
-	 * Initializes logging and loads the measuring station (Class wide setup 
-	 * method of the test).
+	 * Class wide setup method of the test.
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() {
-		stations = Configurator.getMeasuringStations();
-		
-		for(IMeasuringStation ims : stations) {
-			assertNotNull(ims);
-		}
+
 	}
 
 	/**
@@ -78,6 +68,12 @@ public class DetectorTest {
 	 */
 	@Before
 	public void setUp() {
+		this.detectors = new ArrayList<>();
+		this.detectors.add(DetectorMother.createNewDetector());
+		this.detectors.add(DetectorMother.addOption(
+				DetectorMother.createNewDetector()));
+		this.detectors.add(DetectorMother.addDetectorChannel(
+				DetectorMother.createNewDetector()));
 	}
 
 	/**
