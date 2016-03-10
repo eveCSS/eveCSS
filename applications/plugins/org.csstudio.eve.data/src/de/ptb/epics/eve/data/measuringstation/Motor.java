@@ -32,7 +32,7 @@ public class Motor extends AbstractMainPhaseDevice implements Cloneable {
 	 * 
 	 * @return A List of MotorAxis objects of the Motor.
 	 */
-	public List<MotorAxis> getAxes() {	
+	public List<MotorAxis> getAxes() {
 		List<MotorAxis> axes = new ArrayList<MotorAxis>(this.axis);
 		Collections.sort(axes);
 		return axes;

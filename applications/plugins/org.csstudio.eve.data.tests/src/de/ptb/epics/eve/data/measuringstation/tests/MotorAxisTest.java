@@ -1,6 +1,8 @@
 package de.ptb.epics.eve.data.measuringstation.tests;
 
+import java.util.ArrayList;
 import java.util.List;
+
 
 import static org.junit.Assert.*;
 
@@ -10,57 +12,42 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
-import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
-import de.ptb.epics.eve.data.tests.internal.Configurator;
+import de.ptb.epics.eve.data.tests.mothers.measuringstation.MotorAxisMother;
 
 /**
- * <code>MotorAxisTest</code> contains 
- * <a href="http://www.junit.org/">JUnit</a>-Tests for 
- * {@link de.ptb.epics.eve.data.measuringstation.MotorAxis}.
- * 
  * @author Marcus Michalsky
- * @since 0.4.1
+ * @since 1.26
  */
 public class MotorAxisTest {
-	private static List<IMeasuringStation> stations;
+	private List<MotorAxis> motorAxes;
 	
-	/**
-	 * Test method for 
-	 * {@link de.ptb.epics.eve.data.measuringstation.MotorAxis#clone()} and 
-	 * {@link de.ptb.epics.eve.data.measuringstation.MotorAxis#equals(Object)}.
-	 */
 	@Test
-	public void testCloneEquals() {
-		for(IMeasuringStation measuringStation : stations) {
-			for(Motor m : measuringStation.getMotors()) {
-				for(MotorAxis ma : m.getAxes()) {
-					MotorAxis clone = (MotorAxis) ma.clone();
-				
-					assertEquals(ma,ma);
-					assertEquals(clone,clone);
-					assertEquals(ma,clone);
-					assertEquals(clone,ma);
-				}
-			}
+	public void testClone() {
+		for (MotorAxis motorAxis : motorAxes) {
+			MotorAxis clone = (MotorAxis) motorAxis.clone();
+			
+			assertEquals(motorAxis.getPosition(), clone.getPosition());
+			assertEquals(motorAxis.getStatus(), clone.getStatus());
+			assertEquals(motorAxis.getMoveDone(), clone.getMoveDone());
+			assertEquals(motorAxis.getGoto(), clone.getGoto());
+			assertEquals(motorAxis.getStop(), clone.getStop());
+			assertEquals(motorAxis.getDeadband(), clone.getDeadband());
+			assertEquals(motorAxis.getOffset(), clone.getOffset());
+			assertEquals(motorAxis.getTweakValue(), clone.getTweakValue());
+			assertEquals(motorAxis.getTweakForward(), clone.getTweakForward());
+			assertEquals(motorAxis.getTweakReverse(), clone.getTweakReverse());
+			assertEquals(motorAxis.getSoftHighLimit(), clone.getSoftHighLimit());
+			assertEquals(motorAxis.getSoftLowLimit(), clone.getSoftLowLimit());
+			assertEquals(motorAxis.getLimitViolation(), clone.getLimitViolation());
 		}
 	}
-	
-	// **********************************************************************
-	// **************************** Setup ***********************************
-	// **********************************************************************
 	
 	/**
 	 * Class wide setup method of the test
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() {
-		stations = Configurator.getMeasuringStations();
-		
-		for(IMeasuringStation ims : stations) {
-			assertNotNull(ims);
-		}
 	}
 
 	/**
@@ -75,6 +62,10 @@ public class MotorAxisTest {
 	 */
 	@Before
 	public void setUp() {
+		this.motorAxes = new ArrayList<>();
+		this.motorAxes.add(MotorAxisMother.createNewMotorAxis());
+		this.motorAxes.add(MotorAxisMother.addOption(
+				MotorAxisMother.createNewMotorAxis()));
 	}
 
 	/**

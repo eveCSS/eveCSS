@@ -1,5 +1,6 @@
 package de.ptb.epics.eve.data.measuringstation.tests;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -10,55 +11,34 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.Motor;
-import de.ptb.epics.eve.data.tests.internal.Configurator;
+import de.ptb.epics.eve.data.tests.mothers.measuringstation.MotorMother;
 
 /**
- * <code>MotorTest</code> contains 
- * <a href="http://www.junit.org/">JUnit</a>-Tests for 
- * {@link de.ptb.epics.eve.data.measuringstation.Motor}.
- * 
  * @author Marcus Michalsky
- * @since 0.4.1
+ * @since 1.26
  */
 public class MotorTest {
-	private static List<IMeasuringStation> stations;
+	private List<Motor> motors;
 	
-	/**
-	 * Test method for 
-	 * {@link de.ptb.epics.eve.data.measuringstation.Motor#clone()} and 
-	 * {@link de.ptb.epics.eve.data.measuringstation.Motor#equals(Object)}.
-	 */
 	@Test
-	public void testCloneEquals() {
-		for(IMeasuringStation measuringStation : stations) {
-			for(Motor m : measuringStation.getMotors()) {
-				Motor clone = (Motor) m.clone();
-				
-				assertEquals(m, m);
-				assertEquals(clone, clone);
-				assertEquals(m, clone);
-				assertEquals(clone, m);
-			}
+	public void testClone() {
+		for (Motor motor : motors) {
+			Motor clone = (Motor)motor.clone();
+			
+			assertEquals(motor.getID(), clone.getID());
+			assertEquals(motor.getName(), clone.getName());
+			assertEquals(motor.getClassName(), clone.getClassName());
+			assertEquals(motor.getAxes(), clone.getAxes());
+			assertEquals(motor.getOptions(), clone.getOptions());
 		}
 	}
 	
-	// **********************************************************************
-	// **************************** Setup ***********************************
-	// **********************************************************************
-	
 	/**
-	 * Initializes logging and loads the measuring station (Class wide setup 
-	 * method of the test).
+	 * Class wide setup method of the test.
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() {
-		stations = Configurator.getMeasuringStations();
-		
-		for(IMeasuringStation ims : stations) {
-			assertNotNull(ims);
-		}
 	}
 
 	/**
@@ -73,6 +53,10 @@ public class MotorTest {
 	 */
 	@Before
 	public void setUp() {
+		this.motors = new ArrayList<>();
+		this.motors.add(MotorMother.createNewMotor());
+		this.motors.add(MotorMother.addOption(MotorMother.createNewMotor()));
+		this.motors.add(MotorMother.addMotorAxis(MotorMother.createNewMotor()));
 	}
 
 	/**

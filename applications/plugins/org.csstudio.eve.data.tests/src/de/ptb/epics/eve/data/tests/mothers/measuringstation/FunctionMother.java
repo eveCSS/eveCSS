@@ -1,7 +1,5 @@
 package de.ptb.epics.eve.data.tests.mothers.measuringstation;
 
-import java.beans.PropertyChangeEvent;
-
 import de.ptb.epics.eve.data.measuringstation.Function;
 
 /**
