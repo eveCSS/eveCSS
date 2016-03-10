@@ -18,9 +18,6 @@ public class FunctionMother {
 	 */
 	public static Function createNewFunction() {
 		return new Function(AccessMother.createNewAccess(),
-				TypeValueMother.createNewTypeValue()) {
-			public void readDiscreteValues() {};
-			public synchronized void propertyChange(PropertyChangeEvent evt) {};
-		};
+				TypeValueMother.createNewTypeValue());
 	}
 }

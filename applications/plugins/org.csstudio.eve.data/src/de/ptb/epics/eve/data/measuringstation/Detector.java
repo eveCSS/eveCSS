@@ -169,22 +169,34 @@ public class Detector extends AbstractMainPhaseDevice implements Cloneable {
 	@Override
 	public Object clone() {
 		final Detector detector = new Detector();
-		for(final DetectorChannel channel : this.channels) {
-			detector.add((DetectorChannel)channel.clone());
-		}
-		detector.setClassName(this.getClassName());
-		detector.setStop((Function)
-				(this.getStop() != null ? this.getStop().clone() : null));
-		detector.setTrigger((Function)
-				(this.getTrigger()!=null?this.getTrigger().clone():null));
-		this.setName(this.getName());
-		detector.setName(this.getName());
+		
 		detector.setId(this.getID());
-		detector.setUnit((Unit)
-				(this.getUnit()!=null?this.getUnit().clone():null));
+		detector.setName(this.getName());
+		detector.setClassName(this.getClassName());
+		
+		detector.setStop((Function) (this.getStop() != null 
+				? this.getStop().clone() 
+				: null));
+		detector.setStatus((Function) (this.getStatus() != null
+				? this.getStatus().clone()
+				: null));
+		detector.setTrigger((Function) (this.getTrigger() != null
+				? this.getTrigger().clone()
+				: null));
+		this.setName(this.getName());
+		
+		detector.setUnit((Unit) (this.getUnit() != null
+				? this.getUnit().clone()
+				: null));
+		
 		for(final Option option : this.getOptions()) {
 			detector.add((Option)option.clone());
 		}
+		
+		for(final DetectorChannel channel : this.channels) {
+			detector.add((DetectorChannel)channel.clone());
+		}
+		
 		return detector;
 	}
 }
