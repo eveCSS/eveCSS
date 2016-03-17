@@ -110,7 +110,18 @@ public class ImportAxesFromCSV implements IHandler {
 					}
 				}
 			}
-			if (!present.isEmpty() || !invalid.isEmpty()) {
+			
+			boolean showWarning = Activator.getDefault().getPreferenceStore()
+					.getBoolean(PreferenceConstants.P_CSV_SHOW_WARNING);
+			boolean showError = Activator.getDefault().getPreferenceStore()
+					.getBoolean(PreferenceConstants.P_CSV_SHOW_ERROR);
+			
+			/* show dialog if all of the following apply
+			 * - warnings and/or errors should be displayed (preferences)
+			 * - neither present nor invalid is empty
+			 */
+			if ((showWarning || showError) && 
+					!(present.isEmpty() && invalid.isEmpty())) {
 				CSVImportDialog csvDialog = new CSVImportDialog(Display
 						.getDefault().getActiveShell(), present, absent,
 						invalid);

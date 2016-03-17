@@ -1,5 +1,6 @@
 package de.ptb.epics.eve.editor.preferences;
 
+import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.StringFieldEditor;
@@ -38,6 +39,18 @@ public class PreferencePage extends FieldEditorPreferencePage implements
 				new String [][] {{"Comma", ","},{"Semicolon", ";"}}, 
 				this.getFieldEditorParent());
 		addField(csvDelimiter);
+		
+		BooleanFieldEditor csvShowWarning = new BooleanFieldEditor(
+				PreferenceConstants.P_CSV_SHOW_WARNING,
+				"show CSV import warnings",
+				this.getFieldEditorParent());
+		addField(csvShowWarning);
+		
+		BooleanFieldEditor csvShowError = new BooleanFieldEditor(
+				PreferenceConstants.P_CSV_SHOW_ERROR,
+				"show CSV import errors",
+				this.getFieldEditorParent());
+		addField(csvShowError);
 		
 		StringFieldEditor topUpPV = new StringFieldEditor(
 				PreferenceConstants.P_TOPUP_PV, 

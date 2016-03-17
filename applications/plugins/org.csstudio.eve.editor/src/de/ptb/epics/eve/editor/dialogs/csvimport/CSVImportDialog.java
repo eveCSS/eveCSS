@@ -4,6 +4,7 @@ import java.util.List;
 
 import javafx.util.Pair;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
@@ -19,6 +20,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.ISharedImages;
 
 import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.editor.preferences.PreferenceConstants;
 import de.ptb.epics.eve.util.io.StringUtil;
 
 /**
@@ -26,6 +28,9 @@ import de.ptb.epics.eve.util.io.StringUtil;
  * @since 1.20
  */
 public class CSVImportDialog extends TitleAreaDialog {
+	private static final Logger LOGGER = Logger.getLogger(
+			CSVImportDialog.class.getName());
+	
 	private List<Pair<String, List<String>>> present;
 	private List<Pair<String, List<String>>> absent;
 	private List<Pair<String, List<String>>> invalid;
@@ -61,7 +66,17 @@ public class CSVImportDialog extends TitleAreaDialog {
 		area.setLayout(layout);
 		area.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
-		if (!invalid.isEmpty()) {
+		boolean showWarning = Activator.getDefault().getPreferenceStore()
+				.getBoolean(PreferenceConstants.P_CSV_SHOW_WARNING);
+		boolean showError = Activator.getDefault().getPreferenceStore()
+				.getBoolean(PreferenceConstants.P_CSV_SHOW_ERROR);
+		
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("show warnings: " + showWarning);
+			LOGGER.debug("show errors: " + showError);
+		}
+		
+		if (showError && !invalid.isEmpty()) {
 			Group invalidGroup = new Group(area, SWT.BORDER);
 			invalidGroup.setLayout(new GridLayout());
 			invalidGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
@@ -70,13 +85,13 @@ public class CSVImportDialog extends TitleAreaDialog {
 			CLabel invalidText = new CLabel(invalidGroup, SWT.NONE);
 			invalidText.setImage(Activator.getDefault().getWorkbench()
 					.getSharedImages()
-					.getImage(ISharedImages.IMG_DEC_FIELD_ERROR));
+					.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
 			invalidText.setText("The following axes could not be found and will not be imported!");
 
 			this.createViewer(invalidGroup, invalid);
 		}
 		
-		if (!present.isEmpty()) {
+		if (showWarning && !present.isEmpty()) {
 			Group presentGroup = new Group(area, SWT.BORDER);
 			presentGroup.setLayout(new GridLayout());
 			presentGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
@@ -85,7 +100,7 @@ public class CSVImportDialog extends TitleAreaDialog {
 			CLabel absentText = new CLabel(presentGroup, SWT.NONE);
 			absentText.setImage(Activator.getDefault().getWorkbench()
 					.getSharedImages()
-					.getImage(ISharedImages.IMG_DEC_FIELD_WARNING));
+					.getImage(ISharedImages.IMG_OBJS_WARN_TSK));
 			absentText.setText("The following axes are already present and will be overwritten!");
 
 			this.createViewer(presentGroup, present);
