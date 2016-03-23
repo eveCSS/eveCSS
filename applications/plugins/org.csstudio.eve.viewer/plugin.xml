@@ -194,6 +194,12 @@
             id="de.ptb.epics.eve.viewer.clearDevices"
             name="clear devices table">
       </command>
+      <command
+            categoryId="de.ptb.epics.eve.viewer.views.deviceinspectorview"
+            defaultHandler="de.ptb.epics.eve.viewer.handler.deviceinspector.Remove"
+            id="de.ptb.epics.eve.viewer.deviceinspector.remove"
+            name="Remove Selected Devices">
+      </command>
       <category
             id="de.ptb.epics.eve.viewer.views.engineview"
             name="EngineView">
@@ -512,27 +518,78 @@
             locationURI="popup:de.ptb.epics.eve.viewer.views.deviceinspectorview.axistablepopup">
          <command
                commandId="de.ptb.epics.eve.viewer.OpenDeviceInDeviceOptionsView"
+               icon="icons/extension_obj.gif"
                label="Open in separate options window"
                style="push"
                tooltip="Open Device in a new Device Options window">
+            <visibleWhen>
+               <reference
+                     definitionId="de.ptb.epics.eve.viewer.definition.selection.commontableelements">
+               </reference>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.viewer.deviceinspector.remove"
+               icon="icons/rem_co.gif"
+               label="Remove"
+               style="push">
+            <visibleWhen>
+               <reference
+                     definitionId="de.ptb.epics.eve.viewer.definition.selection.commontableelements">
+               </reference>
+            </visibleWhen>
          </command>
       </menuContribution>
       <menuContribution
             locationURI="popup:de.ptb.epics.eve.viewer.views.deviceinspectorview.channeltablepopup">
          <command
                commandId="de.ptb.epics.eve.viewer.OpenDeviceInDeviceOptionsView"
+               icon="icons/extension_obj.gif"
                label="Open in separate options window"
                style="push"
                tooltip="Open Device in a new Device Options window">
+            <visibleWhen>
+               <reference
+                     definitionId="de.ptb.epics.eve.viewer.definition.selection.commontableelements">
+               </reference>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.viewer.deviceinspector.remove"
+               icon="icons/rem_co.gif"
+               label="Remove"
+               style="push">
+            <visibleWhen>
+               <reference
+                     definitionId="de.ptb.epics.eve.viewer.definition.selection.commontableelements">
+               </reference>
+            </visibleWhen>
          </command>
       </menuContribution>
       <menuContribution
             locationURI="popup:de.ptb.epics.eve.viewer.views.deviceinspectorview.devicetablepopup">
          <command
                commandId="de.ptb.epics.eve.viewer.OpenDeviceInDeviceOptionsView"
+               icon="icons/extension_obj.gif"
                label="Open in separate options window"
                style="push"
                tooltip="Open Device in a new Device Options window">
+            <visibleWhen>
+               <reference
+                     definitionId="de.ptb.epics.eve.viewer.definition.selection.commontableelements">
+               </reference>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.viewer.deviceinspector.remove"
+               icon="icons/rem_co.gif"
+               label="Remove"
+               style="push">
+            <visibleWhen>
+               <reference
+                     definitionId="de.ptb.epics.eve.viewer.definition.selection.commontableelements">
+               </reference>
+            </visibleWhen>
          </command>
       </menuContribution>
       <menuContribution
@@ -744,6 +801,18 @@
             <equals
                   value="DeviceInspectorView">
             </equals>
+         </with>
+      </definition>
+      <definition
+            id="de.ptb.epics.eve.viewer.definition.selection.commontableelements">
+         <with
+               variable="selection">
+            <iterate
+                  ifEmpty="false">
+               <instanceof
+                     value="de.ptb.epics.eve.viewer.views.deviceinspectorview.CommonTableElement">
+               </instanceof>
+            </iterate>
          </with>
       </definition>
    </extension>

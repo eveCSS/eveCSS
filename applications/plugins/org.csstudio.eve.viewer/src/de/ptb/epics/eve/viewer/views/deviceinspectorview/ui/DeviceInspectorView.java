@@ -12,6 +12,7 @@ import org.eclipse.jface.viewers.ColumnViewerEditorActivationEvent;
 import org.eclipse.jface.viewers.ColumnViewerEditorActivationListener;
 import org.eclipse.jface.viewers.ColumnViewerEditorDeactivationEvent;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.window.ToolTip;
@@ -26,8 +27,8 @@ import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
@@ -267,7 +268,7 @@ public class DeviceInspectorView extends ViewPart {
 		motorLabel.setText("Motor Axes:");
 		
 		axisTableViewer = new TableViewer(motorAxesComposite, SWT.BORDER
-				| SWT.V_SCROLL | SWT.FULL_SELECTION);
+				| SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.MULTI);
 		GridData gridData = new GridData();
 		gridData.horizontalSpan = 3;
 		gridData.minimumHeight = 25;
@@ -340,7 +341,7 @@ public class DeviceInspectorView extends ViewPart {
 		channelLabel.setText("Detector Channels:");
 		
 		channelTableViewer = new TableViewer(detectorChannelsComposite,
-				SWT.BORDER | SWT.V_SCROLL | SWT.FULL_SELECTION);
+				SWT.BORDER | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.MULTI);
 		gridData = new GridData();
 		gridData.horizontalSpan = 3;
 		gridData.grabExcessHorizontalSpace = true;
@@ -411,7 +412,7 @@ public class DeviceInspectorView extends ViewPart {
 		deviceLabel.setText("Devices:");
 		
 		deviceTableViewer = new TableViewer(devicesComposite, SWT.BORDER
-				| SWT.V_SCROLL | SWT.FULL_SELECTION);
+				| SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.MULTI);
 		gridData = new GridData();
 		gridData.horizontalSpan = 3;
 		gridData.grabExcessHorizontalSpace = true;
@@ -1282,6 +1283,28 @@ public class DeviceInspectorView extends ViewPart {
 		}
 	}
 	
+	
+	/**
+	 * Hopefully temporary method to remove an element by command.
+	 * Required because of mysterious data model used as table viewer input 
+	 * (CommonTableContentProvider). The Content Provider here acts as both 
+	 * content provider and data input...
+	 * 
+	 * @param element the element to remove
+	 * @since 1.26
+	 */
+	public void removeElement(final CommonTableElement element) {
+		AbstractDevice device = element.getAbstractDevice();
+		if (device instanceof MotorAxis) {
+			axisTableContentProvider.removeElement(element);
+		} else if (device instanceof DetectorChannel) {
+			channelTableContentProvider.removeElement(element);
+		} else if (device instanceof Device) {
+			deviceTableContentProvider.removeElement(element);
+		}
+		this.devices.remove(device);
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -1451,14 +1474,7 @@ public class DeviceInspectorView extends ViewPart {
 	/**
 	 * @author Marcus Michalsky
 	 */
-	private class MotorIconMouseListener implements MouseListener {
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void mouseDoubleClick(MouseEvent e) {
-		}
+	private class MotorIconMouseListener extends MouseAdapter {
 		
 		/**
 		 * {@inheritDoc}
@@ -1476,24 +1492,12 @@ public class DeviceInspectorView extends ViewPart {
 				motorAxesCompositeMaximized = true;
 			}
 		}
-		
-		/** {@inheritDoc} */
-		@Override
-		public void mouseUp(MouseEvent e) {	
-		}
 	}
 	
 	/**
 	 * @author Marcus Michalsky
 	 */
-	private class DetectorIconMouseListener implements MouseListener {
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void mouseDoubleClick(MouseEvent e) {
-		}
+	private class DetectorIconMouseListener extends MouseAdapter {
 		
 		/**
 		 * {@inheritDoc}
@@ -1511,26 +1515,12 @@ public class DeviceInspectorView extends ViewPart {
 				detectorChannelsCompositeMaximized = true;
 			}
 		}
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void mouseUp(MouseEvent e) {
-		}
 	}
 	
 	/**
 	 * @author Marcus Michalsky
 	 */
-	private class DeviceIconMouseListener implements MouseListener {
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void mouseDoubleClick(MouseEvent e) {
-		}
+	private class DeviceIconMouseListener extends MouseAdapter {
 
 		/**
 		 * {@inheritDoc}
@@ -1547,13 +1537,6 @@ public class DeviceInspectorView extends ViewPart {
 				sashForm.setMaximizedControl(devicesComposite);
 				devicesCompositeMaximized = true;
 			}
-		}
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void mouseUp(MouseEvent e) {	
 		}
 	}
 	
