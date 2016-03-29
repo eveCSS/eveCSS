@@ -26,7 +26,8 @@ public class Remove extends AbstractHandler {
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
-		if (activePart.getSite().getId().equals(DeviceInspectorView.ID)) {
+		if (activePart.getSite().getId().equals(DeviceInspectorView.ID) ||
+				activePart.getSite().getId().equals(DeviceInspectorView.GLOBAL_ID)) {
 			ISelection selection = HandlerUtil.getCurrentSelection(event);
 			if(selection instanceof IStructuredSelection) {
 				for (Object o : ((IStructuredSelection)selection).toList()) {

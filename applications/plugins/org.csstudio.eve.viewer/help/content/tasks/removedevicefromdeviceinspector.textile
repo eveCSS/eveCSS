@@ -1,0 +1,19 @@
+h1(eveTopic). Remove Devices from Device Inspector
+
+p. This feature is available in both perspectives (EveDevice and EveEngine). There are multiple ways of removing devices from Device Inspectors.
+
+h2(eveTopic). Remove via Delete Icon
+
+p. Each device in the device inspector has an icon representing a red X in its first column. By clicking on it the device will be removed:
+
+!(eveImage)../../img/tasks/removefromdeviceinspector-firstcolumn.png(Click on first column)!
+
+h2(eveTopic). Remove via Context Menu
+
+p. A device can also be removed via context menu. After selecting the item open the context menu by clicking the right mouse button. An entry "Remove" will appear:
+
+!(eveImage)../../img/tasks/removefromdeviceinspector-rightclick.png(Remove via context menu)!
+
+p. Removing via context menu also allows to remove multiple devices at once. To do this select the corresponding devices (with Ctrl-Click) and select "Remove" in the context menu:
+
+!(eveImage)../../img/tasks/removefromdeviceinspector-rightclick-multiple.png(Remove multiple via context menu)!
