@@ -502,7 +502,7 @@ public class CommonTableElement {
 		AlarmSeverity status = AlarmSeverity.UNDEFINED; 
 		if ((property.equals(CommonTableElement.VALUE_PROP)) && (valuePv != null)) {
 			String statusVal = getValue(CommonTableElement.STATUS_PROP);
-			if (statusVal.equals("Moving")) {
+			if (statusVal.equals(PVStatus.MOVING.toString())) {
 				return Activator.getDefault().getColor("COLOR_PV_MOVING");
 			}
 			status = valuePv.getSeverity();
@@ -514,10 +514,12 @@ public class CommonTableElement {
 				status = tweakvaluePv.getSeverity();
 		} else if ((property.equals(CommonTableElement.STATUS_PROP)) && (statusPv != null)) {
 			String statusVal = getValue(CommonTableElement.STATUS_PROP);
-			if (statusVal.equals("Moving")) {
+			if (statusVal.equals(PVStatus.MOVING.toString())) {
 				return Activator.getDefault().getColor("COLOR_PV_MOVING");
 			}
-			if (statusVal.equals("Limit")) {
+			if (statusVal.equals(PVStatus.LIMIT_POSITIVE.toString()) 
+					|| statusVal.equals(PVStatus.LIMIT_NEGATIVE.toString())
+					|| statusVal.equals(PVStatus.SOFT_LIMIT.toString())) {
 				status = AlarmSeverity.MAJOR;
 			} else {
 				status = AlarmSeverity.NONE;
@@ -634,7 +636,7 @@ public class CommonTableElement {
 					try {
 						int moveStatusInt = (int) Double.parseDouble(moveStatus);
 						if (moveStatusInt == 0) {
-							return "Moving";
+							return PVStatus.MOVING.toString();
 						}
 					} catch (NumberFormatException e) {
 						LOGGER.error(e.getMessage(), e);
@@ -646,24 +648,24 @@ public class CommonTableElement {
 				try {
 					int status = (int) Double.parseDouble(valueString);
 					if((status & 4) > 0) {
-						return "Limit (+)";
+						return PVStatus.LIMIT_POSITIVE.toString();
 					} else if ((status & 8) > 0 || (status & 128) > 0) {
-						return "Home";
+						return PVStatus.HOME.toString();
 					} else if ((status & 512) > 0) {
-						return "Problem";
+						return PVStatus.PROBLEM.toString();
 					} else if ((status & 8192) > 0) {
-						return "Limit (-)";
+						return PVStatus.LIMIT_NEGATIVE.toString();
 					} else if (limitViolationPv != null) {
 						String limitString = limitViolationPv.getValue();
 						int limitViolation = (int) Double
 								.parseDouble(limitString);
 						if (limitViolation == 1) {
-							return "Soft-Limit";
+							return PVStatus.SOFT_LIMIT.toString();
 						} else {
-							return "Idle";
+							return PVStatus.IDLE.toString();
 						}
 					} else {
-						return "Idle";
+						return PVStatus.IDLE.toString();
 					}
 				} catch (Exception e) {
 					return valueString;

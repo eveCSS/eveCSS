@@ -59,6 +59,7 @@ import de.ptb.epics.eve.util.jface.SelectionProviderWrapper;
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.views.deviceinspectorview.CommonTableElement;
 import de.ptb.epics.eve.viewer.views.deviceinspectorview.DragNDropPrefix;
+import de.ptb.epics.eve.viewer.views.deviceinspectorview.PVStatus;
 import de.ptb.epics.eve.viewer.views.deviceinspectorview.TableViewerComparator;
 
 /**
@@ -678,6 +679,19 @@ public class DeviceInspectorView extends ViewPart {
 			@Override public String getText(Object element) {
 				return ((CommonTableElement) element).getValue(
 						CommonTableElement.STATUS_PROP);
+			}
+			@Override
+			public Font getFont(Object element) {
+				CommonTableElement cte = (CommonTableElement)element;
+				String status = cte.getValue(CommonTableElement.STATUS_PROP);
+				if (status.equals(PVStatus.LIMIT_POSITIVE.toString()) 
+						|| status.equals(PVStatus.LIMIT_NEGATIVE.toString())
+						|| status.equals(PVStatus.SOFT_LIMIT.toString())) {
+					return JFaceResources.getFontRegistry().getBold(
+							JFaceResources.DEFAULT_FONT);
+				}
+				return JFaceResources.getFontRegistry().get(
+						JFaceResources.DEFAULT_FONT);
 			}
 			@Override public Color getForeground(Object element) {
 				return ((CommonTableElement) element).getSeverityColor(
