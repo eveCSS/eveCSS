@@ -1,35 +1,25 @@
 package de.ptb.epics.eve.editor.handler.motoraxiscomposite;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-import javafx.util.Pair;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
-import de.ptb.epics.eve.data.measuringstation.MotorAxis;
-import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
-import de.ptb.epics.eve.data.scandescription.Stepfunctions;
 import de.ptb.epics.eve.editor.Activator;
-import de.ptb.epics.eve.editor.dialogs.csvimport.CSVImportDialog;
+import de.ptb.epics.eve.editor.jobs.file.ImportCSV;
 import de.ptb.epics.eve.editor.preferences.PreferenceConstants;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
-import de.ptb.epics.eve.util.csv.CSVUtil;
-import de.ptb.epics.eve.util.io.StringUtil;
 
 /**
  * @author Marcus Michalsky
@@ -78,78 +68,12 @@ public class ImportAxesFromCSV implements IHandler {
 				.equals("de.ptb.epics.eve.editor.views.ScanModulView")) {
 			ScanModule scanModule = ((ScanModuleView) activePart)
 					.getCurrentScanModule();
-			List<Pair<String, List<String>>> axesList = CSVUtil.getColumns(
-					csvFile, Activator.getDefault().getPreferenceStore()
-							.getString(PreferenceConstants.P_CSV_DELIMITER)
-							.charAt(0));
 			
-			List<Pair<String, List<String>>> present = new ArrayList<>();
-			List<Pair<String, List<String>>> absent = new ArrayList<>();
-			List<Pair<String, List<String>>> invalid = new ArrayList<>();
-			List<Axis> toRemove = new ArrayList<>();
-			
-			for (Pair<String, List<String>> axis : axesList) {
-				MotorAxis motorAxis = this.getAxisByName(scanModule
-						.getChain().getScanDescription()
-						.getMeasuringStation(), axis.getKey());
-				if (motorAxis == null) {
-					invalid.add(axis);
-				} else {
-					boolean exists = false;
-					for (Axis smAxis : scanModule.getAxes()) {
-						if (smAxis.getAbstractDevice().getName()
-								.equals(axis.getKey())) {
-							exists = true;
-							toRemove.add(smAxis);
-						}
-					}
-					if (exists) {
-						present.add(axis);
-					} else {
-						absent.add(axis);
-					}
-				}
-			}
-			if (!present.isEmpty() || !invalid.isEmpty()) {
-				CSVImportDialog csvDialog = new CSVImportDialog(Display
-						.getDefault().getActiveShell(), present, absent,
-						invalid);
-				csvDialog.open();
-				if (csvDialog.getReturnCode() == Window.CANCEL) {
-					LOGGER.info("CSV import canceled.");
-					return null;
-				}
-			}
-			
-			for (Axis smAxis : toRemove) {
-				scanModule.remove(smAxis);
-			}
-			for (Pair<String, List<String>> axis : present) {
-				addAxis(scanModule, axis);
-			}
-			for (Pair<String, List<String>> axis : absent) {
-				addAxis(scanModule, axis);
-			}
-		}
-		return null;
-	}
-	
-	private void addAxis(ScanModule scanModule, Pair<String, List<String>> axis) {
-		Axis smAxis = new Axis(scanModule, this.getAxisByName(scanModule
-				.getChain().getScanDescription().getMeasuringStation(),
-				axis.getKey()));
-		smAxis.setStepfunction(Stepfunctions.POSITIONLIST);
-		smAxis.setPositionlist(StringUtil.buildCommaSeparatedString(
-				axis.getValue()));
-		scanModule.add(smAxis);
-	}
-	
-	private MotorAxis getAxisByName(IMeasuringStation measuringStation, 
-			String name) {
-		for (MotorAxis axis : measuringStation.getMotorAxes().values()) {
-			if (axis.getName().equals(name)) {
-				return axis;
-			}
+			Job csvImport = new ImportCSV(csvFile, Activator.getDefault().
+				getPreferenceStore().getString(
+					PreferenceConstants.P_CSV_DELIMITER).charAt(0), scanModule);
+			csvImport.setUser(true);
+			csvImport.schedule();
 		}
 		return null;
 	}

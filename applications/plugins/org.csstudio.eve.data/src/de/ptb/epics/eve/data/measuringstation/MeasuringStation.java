@@ -429,6 +429,19 @@ public class MeasuringStation extends AbstractMeasuringStation{
 	 * {@inheritDoc}
 	 */
 	@Override
+	public MotorAxis getMotorAxisByName(String name) {
+		for (MotorAxis axis : this.getMotorAxes().values()) {
+			if (axis.getName().equals(name)) {
+				return axis;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public DetectorChannel getDetectorChannelById(final String id) {
 		return this.detectorChannelsMap.get(id);
 	}
