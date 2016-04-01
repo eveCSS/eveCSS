@@ -10,7 +10,6 @@ import java.util.List;
 
 import javafx.util.Pair;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import de.ptb.epics.eve.util.csv.CSVUtil;
@@ -20,14 +19,14 @@ import de.ptb.epics.eve.util.csv.CSVUtil;
  * @since 1.20
  */
 public class CSVUtilTest {
-	
-	@Ignore
+
 	@Test
 	public void testGetColumns() {
-		assertNotNull(new File("test1.csv"));
+		File file = new File(this.getClass().getResource("test1.csv").getFile());
+		assertTrue(file.exists());
 		
-		List<Pair<String, List<String>>> csvdata = 
-				CSVUtil.getColumns(new File("test1.csv"), ',');
+		List<Pair<String, List<String>>> csvdata = CSVUtil.getColumns(file, ',');
+		assertNotNull(csvdata);
 		
 		for (Pair<String, List<String>> pair : csvdata) {
 			if (pair.getKey().equals("col1")) {
