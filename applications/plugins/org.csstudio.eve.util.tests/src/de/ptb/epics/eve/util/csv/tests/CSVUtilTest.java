@@ -10,6 +10,7 @@ import java.util.List;
 
 import javafx.util.Pair;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.ptb.epics.eve.util.csv.CSVUtil;
@@ -20,6 +21,7 @@ import de.ptb.epics.eve.util.csv.CSVUtil;
  */
 public class CSVUtilTest {
 
+	@Ignore
 	@Test
 	public void testGetColumns() {
 		File file = new File(this.getClass().getResource("test1.csv").getFile());
