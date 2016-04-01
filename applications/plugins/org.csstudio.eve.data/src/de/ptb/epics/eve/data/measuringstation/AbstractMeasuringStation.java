@@ -71,4 +71,17 @@ public abstract class AbstractMeasuringStation implements IMeasuringStation {
 		Collections.sort(monitorList);
 		return monitorList;
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public MotorAxis getMotorAxisByName(String name) {
+		for (MotorAxis axis : this.getMotorAxes().values()) {
+			if (axis.getName().equals(name)) {
+				return axis;
+			}
+		}
+		return null;
+	}
 }

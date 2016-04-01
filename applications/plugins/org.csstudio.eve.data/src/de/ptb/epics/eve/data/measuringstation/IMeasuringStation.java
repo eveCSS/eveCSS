@@ -139,6 +139,15 @@ public interface IMeasuringStation extends IModelUpdateProvider {
 	MotorAxis getMotorAxisById(final String id);
 
 	/**
+	 * Returns the motor axis with the given name (first occurrence).
+	 * 
+	 * @param name the name of the motor axis
+	 * @return the motor axis with the given name (first occurrence)
+	 * @since 1.25.2
+	 */
+	MotorAxis getMotorAxisByName(final String name);
+	
+	/**
 	 * Returns the 
 	 * {@link de.ptb.epics.eve.data.measuringstation.DetectorChannel} with the 
 	 * given id.
