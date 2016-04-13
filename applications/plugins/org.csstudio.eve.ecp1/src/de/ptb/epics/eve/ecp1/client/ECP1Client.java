@@ -556,6 +556,7 @@ public class ECP1Client {
 	 */
 	private class InDispatcher implements Runnable {
 		@Override public void run() {
+			try {
 			while (running) {
 				if (!inQueue.isEmpty()) {
 					// long before = System.nanoTime();
@@ -683,6 +684,9 @@ public class ECP1Client {
 						LOGGER.warn(e.getMessage(), e);
 					}
 				}
+			}
+			} catch(Exception e) {
+				LOGGER.error(e.getMessage(), e);
 			}
 		}
 	}
