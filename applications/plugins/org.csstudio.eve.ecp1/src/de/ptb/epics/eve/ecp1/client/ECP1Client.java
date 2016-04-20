@@ -255,9 +255,19 @@ public class ECP1Client {
 		this.outHandler = new OutHandler(this.socket.getOutputStream(),
 				this.outQueue);
 		this.dispatchHandler = new ECP1Client.InDispatcher();
+		
 		this.inThread = new Thread(this.inHandler);
+		this.inThread.setName("InHandler");
+		this.inThread.setUncaughtExceptionHandler(new ThreadExceptionHandler());
+		
 		this.outThread = new Thread(this.outHandler);
+		this.outThread.setName("OutHandler");
+		this.outThread.setUncaughtExceptionHandler(new ThreadExceptionHandler());
+		
 		this.dispatchThread = new Thread(this.dispatchHandler);
+		this.dispatchThread.setName("Dispatcher");
+		this.dispatchThread.setUncaughtExceptionHandler(
+				new ThreadExceptionHandler());
 
 		this.inThread.start();
 		this.outThread.start();

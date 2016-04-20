@@ -81,10 +81,16 @@ public class TraceDataCollector implements IDataProvider,
 			this.motorPosCount = measurementData.getPositionCounter();
 			switch (measurementData.getDataType()) {
 			case INT8:
+				this.motorValue = ((Byte) measurementData.getValues().get(0)).
+					doubleValue();
+				break;
 			case INT16:
+				this.motorValue = ((Short) measurementData.getValues().get(0)).
+					doubleValue();
+				break;
 			case INT32:
 				this.motorValue = ((Integer) measurementData.getValues().get(0))
-						.doubleValue();
+					.doubleValue();
 				break;
 			case FLOAT:
 				this.motorValue = ((Float) measurementData.getValues().get(0))
@@ -115,8 +121,14 @@ public class TraceDataCollector implements IDataProvider,
 				measurementData.getName().equals(this.traceInfo.getNormalizeId()))) {
 			this.detectorPosCount = measurementData.getPositionCounter();
 			switch (measurementData.getDataType()) {
-			case INT8:
+			case INT8: 
+				this.detectorValue = ((Byte) measurementData.getValues().
+						get(0)).doubleValue();
+				break;
 			case INT16:
+				this.detectorValue = ((Short) measurementData.getValues().
+						get(0)).doubleValue();
+				break;
 			case INT32:
 				this.detectorValue = ((Integer) measurementData.getValues()
 						.get(0)).doubleValue();
