@@ -3,7 +3,6 @@ package de.ptb.epics.eve.ecp1.client;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -256,16 +255,19 @@ public class ECP1Client {
 		this.outHandler = new OutHandler(this.socket.getOutputStream(),
 				this.outQueue);
 		this.dispatchHandler = new ECP1Client.InDispatcher();
-		this.inThread = new Thread(this.inHandler);
-		this.outThread = new Thread(this.outHandler);
-		this.dispatchThread = new Thread(this.dispatchHandler);
 		
-		this.dispatchThread.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
-			@Override
-			public void uncaughtException(Thread t, Throwable e) {
-				LOGGER.error(t.getName() + ": " + e.getMessage(), e);
-			}
-		});
+		this.inThread = new Thread(this.inHandler);
+		this.inThread.setName("InHandler");
+		this.inThread.setUncaughtExceptionHandler(new ThreadExceptionHandler());
+		
+		this.outThread = new Thread(this.outHandler);
+		this.outThread.setName("OutHandler");
+		this.outThread.setUncaughtExceptionHandler(new ThreadExceptionHandler());
+		
+		this.dispatchThread = new Thread(this.dispatchHandler);
+		this.dispatchThread.setName("Dispatcher");
+		this.dispatchThread.setUncaughtExceptionHandler(
+				new ThreadExceptionHandler());
 
 		this.inThread.start();
 		this.outThread.start();
@@ -564,7 +566,6 @@ public class ECP1Client {
 	 */
 	private class InDispatcher implements Runnable {
 		@Override public void run() {
-			try {
 			while (running) {
 				if (!inQueue.isEmpty()) {
 					// long before = System.nanoTime();
@@ -692,9 +693,6 @@ public class ECP1Client {
 						LOGGER.warn(e.getMessage(), e);
 					}
 				}
-			}
-			} catch(Exception e) {
-				LOGGER.error(e.getMessage(), e);
 			}
 		}
 	}
