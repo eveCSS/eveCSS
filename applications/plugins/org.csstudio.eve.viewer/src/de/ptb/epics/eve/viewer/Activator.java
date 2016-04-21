@@ -1,6 +1,7 @@
 package de.ptb.epics.eve.viewer;
 
 import java.io.File;
+import java.lang.Thread.UncaughtExceptionHandler;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.observable.Realm;
@@ -155,6 +156,13 @@ public class Activator extends AbstractUIPlugin {
 		if (logger.isDebugEnabled()) {
 			this.pollInQueueSize = new PollInQueueSize();
 			this.pollInQueueSizeThread = new Thread(this.pollInQueueSize);
+			this.pollInQueueSizeThread.setName("PollInQueueSize");
+			this.pollInQueueSizeThread.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+				@Override
+				public void uncaughtException(Thread t, Throwable e) {
+					logger.error(t.getName() + ": " + e.getMessage(), e);
+				}
+			});
 			this.pollInQueueSizeThread.start();
 		}
 	}
