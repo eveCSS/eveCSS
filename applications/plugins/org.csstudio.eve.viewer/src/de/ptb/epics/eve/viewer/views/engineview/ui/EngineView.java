@@ -3,8 +3,6 @@ package de.ptb.epics.eve.viewer.views.engineview.ui;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.Binding;
@@ -51,7 +49,6 @@ import org.osgi.framework.Version;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Channel;
-import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.ecp1.client.interfaces.IConnectionStateListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IEngineVersionListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IErrorListener;
@@ -121,7 +118,6 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 
 	private ProgressBarComposite progressBarComposite;
 	
-	private Table statusTable;
 	// Wenn nötig, wird shellTable[] im Programmablauf vergrößert
 	private Shell shellTable[] = new Shell[10];
 
@@ -141,9 +137,6 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 	private Image autoPlayOffIcon;
 	private Image triggerIcon;
 	
-	private Map<Integer, TableItem> chainIdItems;
-	private Map<Integer, HashMap<Integer, TableItem>> scanMItemByChainId;
-	
 	private ButtonManager buttonManager;
 	
 	/**
@@ -151,9 +144,6 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 	 */
 	@Override
 	public void createPartControl(final Composite parent) {
-		chainIdItems = new HashMap<Integer, TableItem>();
-		scanMItemByChainId = new HashMap<Integer, HashMap<Integer, TableItem> >();
-
 		playIcon = Activator.getDefault().getImageRegistry().get("PLAY16");
 		pauseIcon = Activator.getDefault().getImageRegistry().get("PAUSE16");
 		stopIcon = Activator.getDefault().getImageRegistry().get("STOP16");
@@ -379,40 +369,16 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		gridData.grabExcessHorizontalSpace = true;
 		this.progressBarComposite.setLayoutData(gridData);
 		
-		// Tabelle für die Statuswerte erzeugen
+		StatusTableComposite statusTableComposite = 
+				new StatusTableComposite(top, SWT.BORDER);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 4;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
-		
-		this.statusTable = new Table(top, SWT.NONE);
-		this.statusTable.setHeaderVisible(true);
-		this.statusTable.setLinesVisible(true);
-		this.statusTable.setLayoutData(gridData);
-		TableColumn tableColumn = new TableColumn(this.statusTable, SWT.NONE);
-		tableColumn.setWidth(50);
-		tableColumn.setText("Chain");
-		TableColumn tableColumn1 = new TableColumn(this.statusTable, SWT.NONE);
-		tableColumn1.setWidth(45);
-		tableColumn1.setText("SM ID");
-		TableColumn tableColumn2 = new TableColumn(this.statusTable, SWT.NONE);
-		tableColumn2.setWidth(100);
-		tableColumn2.setText("SM Name");
-		TableColumn tableColumn3 = new TableColumn(this.statusTable, SWT.NONE);
-		tableColumn3.setWidth(80);
-		tableColumn3.setText("Status");
-		TableColumn tableColumn4 = new TableColumn(this.statusTable, SWT.NONE);
-		tableColumn4.setWidth(80);
-		tableColumn4.setText("Reason");
-		TableColumn tableColumn5 = new TableColumn(this.statusTable, SWT.NONE);
-		tableColumn5.setWidth(20);
-		tableColumn5.setText("Remaining Time");
-		
-		// SelectionListener um zu erkennen, wann eine Zeile selektiert wird
-		this.statusTable.addSelectionListener(new StatusTableSelectionListener());
-		
+		statusTableComposite.setLayoutData(gridData);
+
 		this.buttonManager = ButtonManager.getInstance();
 		this.buttonManager.addPropertyChangeListener(
 				ButtonManager.ENGINE_STATE_PROP, this);
@@ -557,8 +523,6 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 								this.filenameText.setEnabled(true);
 								this.commentLabel.setEnabled(true);
 								this.commentText.setEnabled(true);
-								// table stuff
-								this.statusTable.setEnabled(true);
 								break;
 			case DISCONNECTED:	// engine stuff
 								this.statusLabel.setText("not connected");
@@ -579,14 +543,6 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 								this.commentText.setText("");
 								this.commentText.setEnabled(false);
 								this.commentSendButton.setEnabled(false);
-								// engine stuff
-								this.statusTable.removeAll();
-								chainIdItems.clear();
-								for ( int chainId : scanMItemByChainId.keySet()) {
-									scanMItemByChainId.get(chainId).clear();
-								}
-								scanMItemByChainId.clear();
-								this.statusTable.setEnabled(false);
 								break;
 		}
 	}
@@ -610,27 +566,6 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 	 */
 	@Override
 	public void updateOccured(final int chainId, final int remainTime) {
-		if (remainTime < 0) return;
-		this.statusTable.getDisplay().syncExec(new Runnable() {
-			@Override public void run() {
-				if (chainIdItems.containsKey(chainId)){
-					String humanReadableTime = "";
-					if (remainTime / 3600 > 0) {
-						int hours = remainTime / 3600;
-						int minutes = remainTime / 60 - hours * 60;
-						int seconds = remainTime % 60;
-						humanReadableTime = String.format("%dh %dmin %02ds", 
-							hours, minutes, seconds);
-					} else {
-						int minutes = remainTime / 60;
-						int seconds = remainTime % 60;
-						humanReadableTime = String.format(
-							"%dmin %02ds", minutes, seconds);
-					}
-					chainIdItems.get(chainId).setText( 5, humanReadableTime);
-				}
-			}
-		});
 	}
 
 	/**
@@ -638,23 +573,6 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 	 */
 	@Override
 	public void fillChainStatus(final int chainId, final String status) {
-		this.statusTable.getDisplay().syncExec(new Runnable() {
-			@Override public void run() {
-				if (chainIdItems.containsKey(chainId)){
-					chainIdItems.get(chainId).setText( 3, status);
-				}
-				else {
-					TableItem tableItem = new TableItem( statusTable, 0 );
-					chainIdItems.put(chainId, tableItem);
-					tableItem.setText( 0, " "+chainId);
-					tableItem.setText( 1, " ");
-					tableItem.setText( 2, " ");
-					tableItem.setText( 3, status);
-					tableItem.setText( 4, " ");
-					tableItem.setText( 5, " ");
-				}
-			}
-		});
 	}
 
 	/**
@@ -663,38 +581,6 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 	@Override
 	public void fillScanModuleStatus(final int chainId, final int scanModuleId, 
 			final String status, final String reason) {
-		this.statusTable.getDisplay().syncExec(new Runnable() {
-			@Override public void run() {
-				String scanModuleName = " ";
-				if(Activator.getDefault().getCurrentScanDescription() != null){
-					Chain chain = Activator.getDefault().getCurrentScanDescription().getChain(chainId);
-					if (chain != null){
-						ScanModule sm = chain.getScanModuleById(scanModuleId);
-						if (sm != null){
-							scanModuleName = sm.getName();
-						}
-					}
-				}
-				if (!scanMItemByChainId.containsKey(chainId)){
-					scanMItemByChainId.put(chainId, new HashMap<Integer, TableItem>());
-				}
-				HashMap<Integer, TableItem> ScanModuleItems = scanMItemByChainId.get(chainId);
-				if (ScanModuleItems.containsKey(scanModuleId)){
-					ScanModuleItems.get(scanModuleId).setText( 3, status);
-					ScanModuleItems.get(scanModuleId).setText( 4, reason);
-				}
-				else {
-					TableItem tableItem = new TableItem( statusTable, 0 );
-					ScanModuleItems.put(scanModuleId, tableItem);
-					tableItem.setText( 0, " "+chainId);
-					tableItem.setText( 1, " "+scanModuleId);
-					tableItem.setText( 2, " "+scanModuleName); 
-					tableItem.setText( 3, status);
-					tableItem.setText( 4, reason);
-					tableItem.setText( 5, " ");
-				}
-			}
-		});
 	}
 
 	/**
@@ -702,17 +588,6 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 	 */
 	@Override
 	public void clearStatusTable() {
-		// die Tabelle mit den Statusanzeigen wird geleert
-		this.statusTable.getDisplay().syncExec(new Runnable() {
-			@Override public void run() {
-				statusTable.removeAll();
-				chainIdItems.clear();
-				for ( int chainId : scanMItemByChainId.keySet()) {
-					scanMItemByChainId.get(chainId).clear();
-				}
-				scanMItemByChainId.clear();
-			}
-		});
 	}
 
 
@@ -1171,6 +1046,8 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 	 * wird, öffnet sich ein separates Fenster in dem die Detail der Chain/SM 
 	 * zu sehen sind. Beim nochmaligen anklicken wird das Fenster wieder 
 	 * entfernt.
+	 * 
+	 * @deprecated
 	 */
 	private class StatusTableSelectionListener implements SelectionListener {
 		/**
@@ -1187,7 +1064,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		public void widgetSelected(SelectionEvent e) {
 			// für die selektierte Zeile wird ein Info-Fenster angezeigt
 			// mit den Details der Chain oder des ScanModuls
-			int selection = statusTable.getSelectionIndex();
+			int selection = 1; // statusTable.getSelectionIndex(); // TODO
 			
 			// nachsehen ob es für diese selection schon eine shellTable gibt
 			if (selection >= shellTable.length) {
@@ -1211,7 +1088,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 				}
 			}
 			
-			final TableItem[] rows = statusTable.getItems();
+			final TableItem[] rows = null; // statusTable.getItems(); // TODO
 
 			int aktChain = Integer.parseInt(rows[selection].getText(0).trim());
 			int aktSM;
