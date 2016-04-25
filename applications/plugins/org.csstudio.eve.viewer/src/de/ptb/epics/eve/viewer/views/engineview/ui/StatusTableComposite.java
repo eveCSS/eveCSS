@@ -7,6 +7,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 
 import de.ptb.epics.eve.ecp1.client.ECP1Client;
 import de.ptb.epics.eve.ecp1.client.interfaces.IConnectionStateListener;
@@ -40,6 +41,12 @@ public class StatusTableComposite extends Composite implements IConnectionStateL
 		engine.addChainStatusListener(statusTracker);
 		
 		this.tableViewer.setInput(statusTracker);
+		
+		StatusTableSelectionListener selectionListener = 
+				new StatusTableSelectionListener(this.tableViewer);
+		engine.addEngineStatusListener(selectionListener);
+		this.tableViewer.getTable().addSelectionListener(
+				selectionListener);
 	}
 	
 	private void createViewer() {
@@ -130,11 +137,15 @@ public class StatusTableComposite extends Composite implements IConnectionStateL
 	}
 
 	/**
-	 * {@inheritDoc}}
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void stackConnected() {
-		this.tableViewer.getTable().setEnabled(true);
+		Display.getDefault().syncExec(new Runnable() {
+			@Override public void run() {
+				tableViewer.getTable().setEnabled(true);
+			}
+		});
 	}
 
 	/**
@@ -142,6 +153,10 @@ public class StatusTableComposite extends Composite implements IConnectionStateL
 	 */
 	@Override
 	public void stackDisconnected() {
-		this.tableViewer.getTable().setEnabled(false);
+		Display.getDefault().syncExec(new Runnable() {
+			@Override public void run() {
+				tableViewer.getTable().setEnabled(false);
+			}
+		});
 	}
 }
