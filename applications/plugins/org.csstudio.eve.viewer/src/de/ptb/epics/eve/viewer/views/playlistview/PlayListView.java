@@ -221,8 +221,6 @@ public final class PlayListView extends ViewPart
 	 */
 	@Override
 	public void autoPlayHasChanged(final IPlayListController playListController) {
-		Activator.getDefault().getChainStatusAnalyzer().
-				setAutoPlayStatus(playListController.isAutoplay());
 	}
 
 	/**

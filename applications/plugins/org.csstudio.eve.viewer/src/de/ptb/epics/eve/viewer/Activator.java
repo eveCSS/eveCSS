@@ -55,7 +55,6 @@ public class Activator extends AbstractUIPlugin {
 	private final IMessageList messageList;
 	private final XMLDispatcher xmlFileDispatcher;
 	private final PlotDispatcher plotDispatcher;
-	private final ChainStatusAnalyzer chainStatusAnalyzer;
 	private IMeasuringStation measuringStation;
 	private ColorRegistry colorreg;
 	private FontRegistry fontreg;
@@ -91,7 +90,6 @@ public class Activator extends AbstractUIPlugin {
 		this.messageList = new MessageList(Realm.getDefault());
 		this.xmlFileDispatcher = new XMLDispatcher();
 		this.plotDispatcher = new PlotDispatcher();
-		this.chainStatusAnalyzer = new ChainStatusAnalyzer();
 		
 		this.eveViewerPerspectiveListener = new EveViewerPerspectiveListener();
 		this.workbenchListener = new WorkbenchListener();
@@ -127,10 +125,6 @@ public class Activator extends AbstractUIPlugin {
 		this.ecp1Client.addErrorListener(this.messageList);
 		this.xmlFileDispatcher.addPropertyChangeListener(
 				XMLDispatcher.DEVICE_DEFINITION_PROP, this.messageList);
-		this.ecp1Client.addEngineStatusListener(this.chainStatusAnalyzer);
-		this.ecp1Client.addChainStatusListener(this.chainStatusAnalyzer);
-		this.ecp1Client.addConnectionStateListener(this.chainStatusAnalyzer);
-		this.ecp1Client.addChainProgressListener(this.chainStatusAnalyzer);
 		this.requestProcessor = new RequestProcessor(Display.getCurrent());
 		this.ecp1Client.addRequestListener(this.requestProcessor);
 		
@@ -273,14 +267,6 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public IMessageList getMessageList() {
 		return this.messageList;
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public ChainStatusAnalyzer getChainStatusAnalyzer() {
-		return this.chainStatusAnalyzer;
 	}
 
 	/**

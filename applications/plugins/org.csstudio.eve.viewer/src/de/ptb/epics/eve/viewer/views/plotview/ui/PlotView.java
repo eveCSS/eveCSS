@@ -21,12 +21,12 @@ import org.eclipse.ui.part.ViewPart;
 
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.ecp1.client.interfaces.IChainStatusListener;
+import de.ptb.epics.eve.ecp1.client.interfaces.IEngineStatusListener;
 import de.ptb.epics.eve.ecp1.commands.ChainStatusCommand;
 import de.ptb.epics.eve.ecp1.types.ChainStatus;
 import de.ptb.epics.eve.ecp1.types.EngineStatus;
 import de.ptb.epics.eve.util.pdf.PlotStats;
 import de.ptb.epics.eve.viewer.Activator;
-import de.ptb.epics.eve.viewer.IUpdateListener;
 import de.ptb.epics.eve.viewer.views.plotview.table.Data;
 
 /**
@@ -36,7 +36,7 @@ import de.ptb.epics.eve.viewer.views.plotview.table.Data;
  * @author Marcus Michalsky
  */
 public class PlotView extends ViewPart implements IChainStatusListener,
-		IUpdateListener {
+		IEngineStatusListener {
 	/** the unique identifier of this view */
 	public static final String ID = "PlotView";
 
@@ -88,7 +88,7 @@ public class PlotView extends ViewPart implements IChainStatusListener,
 		this.loadedScmlFile = "unknown";
 		this.bufferedScmlFile = "unknown";
 		
-		Activator.getDefault().getChainStatusAnalyzer().addUpdateListener(this);
+		Activator.getDefault().getEcp1Client().addEngineStatusListener(this);
 		Activator.getDefault().getEcp1Client().addChainStatusListener(this);
 		
 		this.restoreState();
@@ -331,61 +331,10 @@ public class PlotView extends ViewPart implements IChainStatusListener,
 				removeListener(this.xyPlot);
 		}
 		
-		Activator.getDefault().getChainStatusAnalyzer().removeUpdateListener(this);
+		Activator.getDefault().getEcp1Client().removeEngineStatusListener(this);
 		Activator.getDefault().getEcp1Client().removeChainStatusListener(this);
 		this.xyPlot.clear();
 		super.dispose();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void setLoadedScmlFile(String name) {
-		this.bufferedScmlFile = name;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void updateOccured(int chainId, int remainTime) {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void clearStatusTable() {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-//	@Override
-//	public void fillStatusTable(int chainId, int scanModuleId, String smName, String status,
-//			int remainTime) {
-//	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void fillEngineStatus(EngineStatus engineStatus, int repeatCount) {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void setAutoPlayStatus(boolean autoPlayStatus) {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void disableSendToFile() {
 	}
 
 	/**
@@ -398,16 +347,14 @@ public class PlotView extends ViewPart implements IChainStatusListener,
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public void fillChainStatus(int chainId, String status) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void fillScanModuleStatus(int chainId, int scanModuleId,
-			String status, String reason) {
-		// TODO Auto-generated method stub
-		
+	public void engineStatusChanged(EngineStatus engineStatus, String xmlName, 
+			int repeatCount) {
+		if (!EngineStatus.LOADING_XML.equals(engineStatus)) {
+			this.bufferedScmlFile = xmlName;
+		}
 	}
 }

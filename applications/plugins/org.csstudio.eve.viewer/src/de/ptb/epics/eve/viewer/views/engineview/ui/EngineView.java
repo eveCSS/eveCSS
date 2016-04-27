@@ -41,14 +41,19 @@ import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.ViewPart;
 import org.osgi.framework.Version;
 
+import de.ptb.epics.eve.ecp1.client.interfaces.IChainStatusListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IConnectionStateListener;
+import de.ptb.epics.eve.ecp1.client.interfaces.IEngineStatusListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IEngineVersionListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IErrorListener;
+import de.ptb.epics.eve.ecp1.client.interfaces.IPlayListController;
+import de.ptb.epics.eve.ecp1.client.interfaces.IPlayListListener;
 import de.ptb.epics.eve.ecp1.client.model.Error;
+import de.ptb.epics.eve.ecp1.commands.ChainStatusCommand;
+import de.ptb.epics.eve.ecp1.types.ChainStatus;
 import de.ptb.epics.eve.ecp1.types.EngineStatus;
 import de.ptb.epics.eve.ecp1.types.ErrorType;
 import de.ptb.epics.eve.viewer.Activator;
-import de.ptb.epics.eve.viewer.IUpdateListener;
 import de.ptb.epics.eve.viewer.preferences.PreferenceConstants;
 import de.ptb.epics.eve.viewer.views.engineview.ButtonManager;
 import de.ptb.epics.eve.viewer.views.engineview.EngineDisconnected;
@@ -60,8 +65,8 @@ import de.ptb.epics.eve.viewer.views.engineview.EngineState;
  * @author Hartmut Scherr
  * @author Marcus Michalsky
  */
-public final class EngineView extends ViewPart implements IUpdateListener,
-		IConnectionStateListener, IErrorListener, IEngineVersionListener , 
+public final class EngineView extends ViewPart implements IConnectionStateListener, IErrorListener,
+		IEngineVersionListener, IEngineStatusListener, IChainStatusListener, IPlayListListener, 
 		PropertyChangeListener {
 	public static final String REPEAT_COUNT_PROP = "repeatCount";
 
@@ -383,9 +388,11 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 				.addChainProgressListener(progressBarComposite);
 		Activator.getDefault().getEcp1Client().addEngineVersionListener(this);
 		
-		Activator.getDefault().getChainStatusAnalyzer().addUpdateListener(this);
+		Activator.getDefault().getEcp1Client().addEngineStatusListener(this);
+		Activator.getDefault().getEcp1Client().addChainStatusListener(this);
+		Activator.getDefault().getEcp1Client().getPlayListController().
+				addPlayListListener(this);
 		Activator.getDefault().getEcp1Client().addErrorListener(this);
-//		this.rebuildText(0);
 		Activator.getDefault().getEcp1Client().addConnectionStateListener(this);
 
 		this.sc.setMinSize(this.top.computeSize(SWT.DEFAULT, SWT.DEFAULT));
@@ -549,82 +556,6 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		}
 		autoPlayToggleButton.setSelection(autoPlay);
 	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void updateOccured(final int chainId, final int remainTime) {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void fillChainStatus(final int chainId, final String status) {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void fillScanModuleStatus(final int chainId, final int scanModuleId, 
-			final String status, final String reason) {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void clearStatusTable() {
-	}
-
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void setLoadedScmlFile(final String filename) {
-		logger.debug("loaded scml File: " + filename);
-		// der Name des geladenen scml-Files wird angezeigt
-		this.loadedScmlText.getDisplay().syncExec( new Runnable() {
-			@Override public void run() {
-				loadedScmlText.setText(filename);
-			}
-		});
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void fillEngineStatus(EngineStatus engineStatus, int repeatCount) {
-		logger.debug(engineStatus);
-		setCurrentRepeatCount(repeatCount);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void setAutoPlayStatus(final boolean autoPlayStatus) {
-		this.autoPlayToggleButton.getDisplay().syncExec(new Runnable() {
-			@Override public void run() {
-				setAutoPlay(autoPlayStatus);
-			}
-		});
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void disableSendToFile() {
-		this.commentSendButton.getDisplay().syncExec(new Runnable() {
-			@Override public void run() {
-				commentSendButton.setEnabled(false);
-			}
-		});
-	}
 	
 	/**
 	 * {@inheritDoc}
@@ -694,6 +625,56 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void playListHasChanged(IPlayListController playListController) {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void autoPlayHasChanged(final IPlayListController playListController) {
+		this.autoPlayToggleButton.getDisplay().syncExec(new Runnable() {
+			@Override public void run() {
+				setAutoPlay(playListController.isAutoplay());
+			}
+		});
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void chainStatusChanged(ChainStatusCommand chainStatusCommand) {
+		if (ChainStatus.STORAGE_DONE.equals(chainStatusCommand.getChainStatus())) {
+			this.commentSendButton.getDisplay().syncExec(new Runnable() {
+				@Override public void run() {
+					commentSendButton.setEnabled(false);
+				}
+			});
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void engineStatusChanged(EngineStatus engineStatus, 
+			final String xmlName, int repeatCount) {
+		if (!EngineStatus.LOADING_XML.equals(engineStatus)) {
+			this.setCurrentRepeatCount(repeatCount);
+			logger.debug("loaded scml File: " + xmlName);
+			this.loadedScmlText.getDisplay().syncExec( new Runnable() {
+				@Override public void run() {
+					loadedScmlText.setText(xmlName);
+				}
+			});
+		}
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 * @since 1.25

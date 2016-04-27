@@ -71,7 +71,7 @@ public class StatusTracker implements IConnectionStateListener,
 	 */
 	@Override
 	public void engineStatusChanged(EngineStatus engineStatus, String xmlName, int repeatCount) {
-		if (EngineStatus.IDLE_XML_LOADED.equals(engineStatus)) {
+		if (EngineStatus.LOADING_XML.equals(engineStatus)) {
 			ScanInfo oldValue = this.scanInfo;
 			this.scanInfo = new ScanInfo();
 			this.propertyChangeSupprt.firePropertyChange(
