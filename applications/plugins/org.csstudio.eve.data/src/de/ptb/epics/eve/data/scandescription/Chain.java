@@ -25,6 +25,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventType
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateProvider;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
+import de.ptb.epics.eve.util.graph.tree.Node;
 import de.ptb.epics.eve.data.scandescription.errors.ChainError;
 import de.ptb.epics.eve.data.scandescription.errors.ChainErrorTypes;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
@@ -961,6 +962,39 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 				this.isPauseEventOfTheChain((PauseEvent)controlEvent)) || 
 				this.isBreakEventOfTheChain(controlEvent) || 
 				this.isRedoEventOfTheChain(controlEvent);
+	}
+	
+	/**
+	 * Returns a list of integers containing the scan module ids in order 
+	 * they are executed (started).
+	 * 
+	 * @return a list of integers containing scan module ids in execution order
+	 * @since 1.26
+	 */
+	public List<Integer> getExecutionOrder() {
+		Node<Integer> binTree = getBinaryTree(this.getStartEvent().
+				getConnector().getChildScanModule());
+		List<Integer> preOrderList = new ArrayList<>();
+		binTree.preOrder(preOrderList);
+		return preOrderList;
+	}
+	
+	private Node<Integer> getBinaryTree(ScanModule root) {
+		if (root.getNested() == null && root.getAppended() == null) {
+			return new Node<Integer>(root.getId(), null, null);
+		}
+		if (root.getNested() == null) {
+			return new Node<Integer>(root.getId(), null, 
+					getBinaryTree(root.getAppended().getChildScanModule()));
+		}
+		if (root.getAppended() == null) {
+			return new Node<Integer>(root.getId(),  
+					getBinaryTree(root.getNested().getChildScanModule()), 
+					null);
+		}
+		return new Node<Integer>(root.getId(), 
+				getBinaryTree(root.getNested().getChildScanModule()), 
+				getBinaryTree(root.getAppended().getChildScanModule()));
 	}
 	
 	/**

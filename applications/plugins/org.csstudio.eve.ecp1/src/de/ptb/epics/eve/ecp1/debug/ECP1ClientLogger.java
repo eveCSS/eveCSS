@@ -89,6 +89,9 @@ public class ECP1ClientLogger implements IEngineStatusListener, IEngineVersionLi
 				" | Chain: " + chainStatusCommand.getChainId() +
 				" | SMs: " + chainStatusCommand.getAllScanModuleIds().size()
 				);
+		for (Integer smId : chainStatusCommand.getAllScanModuleIds()) {
+			LOGGER.debug("SM | " + smId + " | " + chainStatusCommand.getScanModuleStatus(smId));
+		}
 	}
 
 	/**

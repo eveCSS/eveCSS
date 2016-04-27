@@ -3,8 +3,6 @@ package de.ptb.epics.eve.viewer.views.engineview.ui;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.Binding;
@@ -21,7 +19,6 @@ import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -38,28 +35,25 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.ViewPart;
 import org.osgi.framework.Version;
 
-import de.ptb.epics.eve.data.scandescription.Axis;
-import de.ptb.epics.eve.data.scandescription.Chain;
-import de.ptb.epics.eve.data.scandescription.Channel;
-import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.ecp1.client.interfaces.IChainStatusListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IConnectionStateListener;
+import de.ptb.epics.eve.ecp1.client.interfaces.IEngineStatusListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IEngineVersionListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IErrorListener;
+import de.ptb.epics.eve.ecp1.client.interfaces.IPlayListController;
+import de.ptb.epics.eve.ecp1.client.interfaces.IPlayListListener;
 import de.ptb.epics.eve.ecp1.client.model.Error;
+import de.ptb.epics.eve.ecp1.commands.ChainStatusCommand;
+import de.ptb.epics.eve.ecp1.types.ChainStatus;
 import de.ptb.epics.eve.ecp1.types.EngineStatus;
 import de.ptb.epics.eve.ecp1.types.ErrorType;
 import de.ptb.epics.eve.viewer.Activator;
-import de.ptb.epics.eve.viewer.IUpdateListener;
 import de.ptb.epics.eve.viewer.preferences.PreferenceConstants;
 import de.ptb.epics.eve.viewer.views.engineview.ButtonManager;
 import de.ptb.epics.eve.viewer.views.engineview.EngineDisconnected;
@@ -71,8 +65,8 @@ import de.ptb.epics.eve.viewer.views.engineview.EngineState;
  * @author Hartmut Scherr
  * @author Marcus Michalsky
  */
-public final class EngineView extends ViewPart implements IUpdateListener,
-		IConnectionStateListener, IErrorListener, IEngineVersionListener , 
+public final class EngineView extends ViewPart implements IConnectionStateListener, IErrorListener,
+		IEngineVersionListener, IEngineStatusListener, IChainStatusListener, IPlayListListener, 
 		PropertyChangeListener {
 	public static final String REPEAT_COUNT_PROP = "repeatCount";
 
@@ -120,10 +114,6 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 	private Button commentSendButton;
 
 	private ProgressBarComposite progressBarComposite;
-	
-	private Table statusTable;
-	// Wenn nötig, wird shellTable[] im Programmablauf vergrößert
-	private Shell shellTable[] = new Shell[10];
 
 	private int repeatCount;
 	
@@ -141,9 +131,6 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 	private Image autoPlayOffIcon;
 	private Image triggerIcon;
 	
-	private Map<Integer, TableItem> chainIdItems;
-	private Map<Integer, HashMap<Integer, TableItem>> scanMItemByChainId;
-	
 	private ButtonManager buttonManager;
 	
 	/**
@@ -151,9 +138,6 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 	 */
 	@Override
 	public void createPartControl(final Composite parent) {
-		chainIdItems = new HashMap<Integer, TableItem>();
-		scanMItemByChainId = new HashMap<Integer, HashMap<Integer, TableItem> >();
-
 		playIcon = Activator.getDefault().getImageRegistry().get("PLAY16");
 		pauseIcon = Activator.getDefault().getImageRegistry().get("PAUSE16");
 		stopIcon = Activator.getDefault().getImageRegistry().get("STOP16");
@@ -379,40 +363,16 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		gridData.grabExcessHorizontalSpace = true;
 		this.progressBarComposite.setLayoutData(gridData);
 		
-		// Tabelle für die Statuswerte erzeugen
+		StatusTableComposite statusTableComposite = 
+				new StatusTableComposite(top, SWT.BORDER);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 4;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
-		
-		this.statusTable = new Table(top, SWT.NONE);
-		this.statusTable.setHeaderVisible(true);
-		this.statusTable.setLinesVisible(true);
-		this.statusTable.setLayoutData(gridData);
-		TableColumn tableColumn = new TableColumn(this.statusTable, SWT.NONE);
-		tableColumn.setWidth(50);
-		tableColumn.setText("Chain");
-		TableColumn tableColumn1 = new TableColumn(this.statusTable, SWT.NONE);
-		tableColumn1.setWidth(45);
-		tableColumn1.setText("SM ID");
-		TableColumn tableColumn2 = new TableColumn(this.statusTable, SWT.NONE);
-		tableColumn2.setWidth(100);
-		tableColumn2.setText("SM Name");
-		TableColumn tableColumn3 = new TableColumn(this.statusTable, SWT.NONE);
-		tableColumn3.setWidth(80);
-		tableColumn3.setText("Status");
-		TableColumn tableColumn4 = new TableColumn(this.statusTable, SWT.NONE);
-		tableColumn4.setWidth(80);
-		tableColumn4.setText("Reason");
-		TableColumn tableColumn5 = new TableColumn(this.statusTable, SWT.NONE);
-		tableColumn5.setWidth(20);
-		tableColumn5.setText("Remaining Time");
-		
-		// SelectionListener um zu erkennen, wann eine Zeile selektiert wird
-		this.statusTable.addSelectionListener(new StatusTableSelectionListener());
-		
+		statusTableComposite.setLayoutData(gridData);
+
 		this.buttonManager = ButtonManager.getInstance();
 		this.buttonManager.addPropertyChangeListener(
 				ButtonManager.ENGINE_STATE_PROP, this);
@@ -428,9 +388,11 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 				.addChainProgressListener(progressBarComposite);
 		Activator.getDefault().getEcp1Client().addEngineVersionListener(this);
 		
-		Activator.getDefault().getChainStatusAnalyzer().addUpdateListener(this);
+		Activator.getDefault().getEcp1Client().addEngineStatusListener(this);
+		Activator.getDefault().getEcp1Client().addChainStatusListener(this);
+		Activator.getDefault().getEcp1Client().getPlayListController().
+				addPlayListListener(this);
 		Activator.getDefault().getEcp1Client().addErrorListener(this);
-//		this.rebuildText(0);
 		Activator.getDefault().getEcp1Client().addConnectionStateListener(this);
 
 		this.sc.setMinSize(this.top.computeSize(SWT.DEFAULT, SWT.DEFAULT));
@@ -557,8 +519,6 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 								this.filenameText.setEnabled(true);
 								this.commentLabel.setEnabled(true);
 								this.commentText.setEnabled(true);
-								// table stuff
-								this.statusTable.setEnabled(true);
 								break;
 			case DISCONNECTED:	// engine stuff
 								this.statusLabel.setText("not connected");
@@ -579,14 +539,6 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 								this.commentText.setText("");
 								this.commentText.setEnabled(false);
 								this.commentSendButton.setEnabled(false);
-								// engine stuff
-								this.statusTable.removeAll();
-								chainIdItems.clear();
-								for ( int chainId : scanMItemByChainId.keySet()) {
-									scanMItemByChainId.get(chainId).clear();
-								}
-								scanMItemByChainId.clear();
-								this.statusTable.setEnabled(false);
 								break;
 		}
 	}
@@ -603,181 +555,6 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 			autoPlayToggleButton.setImage(autoPlayOffIcon);
 		}
 		autoPlayToggleButton.setSelection(autoPlay);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void updateOccured(final int chainId, final int remainTime) {
-		if (remainTime < 0) return;
-		this.statusTable.getDisplay().syncExec(new Runnable() {
-			@Override public void run() {
-				if (chainIdItems.containsKey(chainId)){
-					String humanReadableTime = "";
-					if (remainTime / 3600 > 0) {
-						int hours = remainTime / 3600;
-						int minutes = remainTime / 60 - hours * 60;
-						int seconds = remainTime % 60;
-						humanReadableTime = String.format("%dh %dmin %02ds", 
-							hours, minutes, seconds);
-					} else {
-						int minutes = remainTime / 60;
-						int seconds = remainTime % 60;
-						humanReadableTime = String.format(
-							"%dmin %02ds", minutes, seconds);
-					}
-					chainIdItems.get(chainId).setText( 5, humanReadableTime);
-				}
-			}
-		});
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void fillChainStatus(final int chainId, final String status) {
-		this.statusTable.getDisplay().syncExec(new Runnable() {
-			@Override public void run() {
-				if (chainIdItems.containsKey(chainId)){
-					chainIdItems.get(chainId).setText( 3, status);
-				}
-				else {
-					TableItem tableItem = new TableItem( statusTable, 0 );
-					chainIdItems.put(chainId, tableItem);
-					tableItem.setText( 0, " "+chainId);
-					tableItem.setText( 1, " ");
-					tableItem.setText( 2, " ");
-					tableItem.setText( 3, status);
-					tableItem.setText( 4, " ");
-					tableItem.setText( 5, " ");
-				}
-			}
-		});
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void fillScanModuleStatus(final int chainId, final int scanModuleId, 
-			final String status, final String reason) {
-		this.statusTable.getDisplay().syncExec(new Runnable() {
-			@Override public void run() {
-				String scanModuleName = " ";
-				if(Activator.getDefault().getCurrentScanDescription() != null){
-					Chain chain = Activator.getDefault().getCurrentScanDescription().getChain(chainId);
-					if (chain != null){
-						ScanModule sm = chain.getScanModuleById(scanModuleId);
-						if (sm != null){
-							scanModuleName = sm.getName();
-						}
-					}
-				}
-				if (!scanMItemByChainId.containsKey(chainId)){
-					scanMItemByChainId.put(chainId, new HashMap<Integer, TableItem>());
-				}
-				HashMap<Integer, TableItem> ScanModuleItems = scanMItemByChainId.get(chainId);
-				if (ScanModuleItems.containsKey(scanModuleId)){
-					ScanModuleItems.get(scanModuleId).setText( 3, status);
-					ScanModuleItems.get(scanModuleId).setText( 4, reason);
-				}
-				else {
-					TableItem tableItem = new TableItem( statusTable, 0 );
-					ScanModuleItems.put(scanModuleId, tableItem);
-					tableItem.setText( 0, " "+chainId);
-					tableItem.setText( 1, " "+scanModuleId);
-					tableItem.setText( 2, " "+scanModuleName); 
-					tableItem.setText( 3, status);
-					tableItem.setText( 4, reason);
-					tableItem.setText( 5, " ");
-				}
-			}
-		});
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void clearStatusTable() {
-		// die Tabelle mit den Statusanzeigen wird geleert
-		this.statusTable.getDisplay().syncExec(new Runnable() {
-			@Override public void run() {
-				statusTable.removeAll();
-				chainIdItems.clear();
-				for ( int chainId : scanMItemByChainId.keySet()) {
-					scanMItemByChainId.get(chainId).clear();
-				}
-				scanMItemByChainId.clear();
-			}
-		});
-	}
-
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void setLoadedScmlFile(final String filename) {
-		logger.debug("loaded scml File: " + filename);
-		// der Name des geladenen scml-Files wird angezeigt
-		this.loadedScmlText.getDisplay().syncExec( new Runnable() {
-			@Override public void run() {
-				loadedScmlText.setText(filename);
-			}
-		});
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void fillEngineStatus(EngineStatus engineStatus, int repeatCount) {
-		logger.debug(engineStatus);
-		
-		setCurrentRepeatCount(repeatCount);
-
-		switch(engineStatus) {
-			case IDLE_XML_LOADED:
-				this.playButton.getDisplay().syncExec(new Runnable() {
-					@Override public void run() {
-						// alte Info-Fenster des letzten XML-Files werden gelöscht
-						for ( int j=0; j<shellTable.length; j++) {
-							if (shellTable[j] != null) {
-								if (!shellTable[j].isDisposed()) {
-									shellTable[j].dispose();
-								}
-							}
-						}
-					}
-				});
-				break;
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void setAutoPlayStatus(final boolean autoPlayStatus) {
-		this.autoPlayToggleButton.getDisplay().syncExec(new Runnable() {
-			@Override public void run() {
-				setAutoPlay(autoPlayStatus);
-			}
-		});
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void disableSendToFile() {
-		this.commentSendButton.getDisplay().syncExec(new Runnable() {
-			@Override public void run() {
-				commentSendButton.setEnabled(false);
-			}
-		});
 	}
 	
 	/**
@@ -848,6 +625,56 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void playListHasChanged(IPlayListController playListController) {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void autoPlayHasChanged(final IPlayListController playListController) {
+		this.autoPlayToggleButton.getDisplay().syncExec(new Runnable() {
+			@Override public void run() {
+				setAutoPlay(playListController.isAutoplay());
+			}
+		});
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void chainStatusChanged(ChainStatusCommand chainStatusCommand) {
+		if (ChainStatus.STORAGE_DONE.equals(chainStatusCommand.getChainStatus())) {
+			this.commentSendButton.getDisplay().syncExec(new Runnable() {
+				@Override public void run() {
+					commentSendButton.setEnabled(false);
+				}
+			});
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void engineStatusChanged(EngineStatus engineStatus, 
+			final String xmlName, int repeatCount) {
+		if (!EngineStatus.LOADING_XML.equals(engineStatus)) {
+			this.setCurrentRepeatCount(repeatCount);
+			logger.debug("loaded scml File: " + xmlName);
+			this.loadedScmlText.getDisplay().syncExec( new Runnable() {
+				@Override public void run() {
+					loadedScmlText.setText(xmlName);
+				}
+			});
+		}
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 * @since 1.25
@@ -1161,413 +988,6 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		public void widgetSelected(SelectionEvent e) {
 			Activator.getDefault().getEcp1Client().getPlayController().
 					addLiveComment(commentText.getText());
-		}
-	}
-
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener}
-	 * <p>
-	 * Wenn eine Zeile in der Tabelle der Chains und ScanModule angeklickt 
-	 * wird, öffnet sich ein separates Fenster in dem die Detail der Chain/SM 
-	 * zu sehen sind. Beim nochmaligen anklicken wird das Fenster wieder 
-	 * entfernt.
-	 */
-	private class StatusTableSelectionListener implements SelectionListener {
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
-	
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetSelected(SelectionEvent e) {
-			// für die selektierte Zeile wird ein Info-Fenster angezeigt
-			// mit den Details der Chain oder des ScanModuls
-			int selection = statusTable.getSelectionIndex();
-			
-			// nachsehen ob es für diese selection schon eine shellTable gibt
-			if (selection >= shellTable.length) {
-				// shellTable muss vergrößert werden (auf 5 mehr als selection)
-				Shell tempShell[] = new Shell[selection+5];
-				System.arraycopy(shellTable, 0, tempShell, 0, shellTable.length);
-				shellTable = tempShell;
-			}
-			
-			// Überprüfen, ob Info schon da ist oder nicht.
-			// Wenn ja, Info wieder wegnehmen.
-			if (shellTable[selection] != null) {
-				// Info ist vorhanden, da shellTable gesetzt
-				
-				// Wenn Info-Fenster wirklich nicht gelöscht wurde, wird es jetzt
-				// gelöscht, ansonsten wird das Info-Fenster geöffnet
-				if (!shellTable[selection].isDisposed()) {
-					shellTable[selection].dispose();
-					shellTable[selection] = null;
-					return;
-				}
-			}
-			
-			final TableItem[] rows = statusTable.getItems();
-
-			int aktChain = Integer.parseInt(rows[selection].getText(0).trim());
-			int aktSM;
-			if (rows[selection].getText(1).trim().equals("")) {
-				aktSM = 0;
-			} else {
-				aktSM = Integer.parseInt(rows[selection].getText(1).trim());
-			}
-			
-			Chain displayChain = Activator.getDefault()
-					.getCurrentScanDescription().getChain(aktChain);
-			
-			if (aktSM > 0) {
-				// ScanModule Zeile wurde ausgewählt, ScanModule Infos anzeigen
-				
-				Display display = Activator.getDefault().getWorkbench()
-						.getDisplay();
-				Shell chainShell = new Shell(display);
-				chainShell.setSize(650,400);
-				chainShell.setText("Scan Module Info");
-				
-				GridLayout gridLayout = new GridLayout();
-				gridLayout.numColumns = 6;
-				GridData gridData;
-				
-				chainShell.setLayout(gridLayout);
-
-				// 1. Zeile wird gefüllt
-				Label chainLabel = new Label(chainShell,SWT.NONE);
-				chainLabel.setText("Chain ID:");
-				gridData = new GridData();
-				gridData.horizontalAlignment = GridData.FILL;
-				chainLabel.setLayoutData(gridData);
-				Label chainText = new Label(chainShell,SWT.NONE);
-				chainText.setText(rows[selection].getText(0));
-				gridData = new GridData();
-				gridData.horizontalAlignment = GridData.FILL;
-				chainText.setLayoutData(gridData);
-				
-				Label numOfMeasurementsLabel = new Label(chainShell,SWT.NONE);
-				numOfMeasurementsLabel.setText("No of Measurements:");
-				gridData = new GridData();
-				gridData.horizontalAlignment = GridData.FILL;
-				numOfMeasurementsLabel.setLayoutData(gridData);
-				Label numOfMeasurementsText = new Label(chainShell,SWT.NONE);
-				numOfMeasurementsText.setText(""+displayChain.getScanModuleById(aktSM).getValueCount());
-				gridData = new GridData();
-				gridData.horizontalAlignment = GridData.FILL;
-				numOfMeasurementsText.setLayoutData(gridData);
-
-				Label storageLabel = new Label(chainShell,SWT.NONE);
-				storageLabel.setText("Storage:");
-				gridData = new GridData();
-				gridData.horizontalAlignment = GridData.FILL;
-				storageLabel.setLayoutData(gridData);
-				Label storageText = new Label(chainShell,SWT.NONE);
-				storageText.setText(""+displayChain.getScanModuleById(aktSM).getStorage());
-				gridData = new GridData();
-				gridData.horizontalAlignment = GridData.FILL;
-				storageText.setLayoutData(gridData);
-				
-				// 2. Zeile wird gefüllt
-				Label smLabel = new Label(chainShell,SWT.NONE);
-				smLabel.setText("Scan Module ID:");
-				gridData = new GridData();
-				gridData.horizontalAlignment = GridData.FILL;
-				smLabel.setLayoutData(gridData);
-				Label smText = new Label(chainShell,SWT.NONE);
-				smText.setText(rows[selection].getText(1));
-				gridData = new GridData();
-				gridData.horizontalAlignment = GridData.FILL;
-				smText.setLayoutData(gridData);
-
-				Label trigDelLabel = new Label(chainShell,SWT.NONE);
-				trigDelLabel.setText("Trigger Delay:");
-				gridData = new GridData();
-				gridData.horizontalAlignment = GridData.FILL;
-				trigDelLabel.setLayoutData(gridData);
-				Label trigDelText = new Label(chainShell,SWT.NONE);
-				trigDelText.setText(""+displayChain.getScanModuleById(aktSM).getTriggerDelay());
-				gridData = new GridData();
-				gridData.horizontalAlignment = GridData.FILL;
-				trigDelText.setLayoutData(gridData);
-				
-				Label confLabelMot = new Label(chainShell,SWT.NONE);
-				confLabelMot.setText("Manual Trigger Motors:");
-				gridData = new GridData();
-				gridData.horizontalAlignment = GridData.FILL;
-				confLabelMot.setLayoutData(gridData);
-				Label confTextMot = new Label(chainShell,SWT.NONE);
-				if (displayChain.getScanModuleById(aktSM).isTriggerConfirmAxis()) {
-					confTextMot.setText(" YES ");
-				} else {
-					confTextMot.setText(" NO ");
-				}
-				gridData = new GridData();
-				gridData.horizontalAlignment = GridData.FILL;
-				confTextMot.setLayoutData(gridData);
-				
-				// 3. Zeile wird gefüllt
-				Label smName = new Label(chainShell,SWT.NONE);
-				smName.setText("Scan Module Name:");
-				gridData = new GridData();
-				gridData.horizontalAlignment = GridData.FILL;
-				smName.setLayoutData(gridData);
-				Label smNameText = new Label(chainShell,SWT.NONE);
-				smNameText.setText(rows[selection].getText(2));
-				gridData = new GridData();
-				gridData.horizontalAlignment = GridData.FILL;
-				smName.setLayoutData(gridData);
-				
-				Label settleLabel = new Label(chainShell,SWT.NONE);
-				settleLabel.setText("Settle Time:");
-				gridData = new GridData();
-				gridData.horizontalAlignment = GridData.FILL;
-				settleLabel.setLayoutData(gridData);
-				Label settleText = new Label(chainShell,SWT.NONE);
-				settleText.setText(""+displayChain.getScanModuleById(aktSM).getSettleTime());
-				gridData = new GridData();
-				gridData.horizontalAlignment = GridData.FILL;
-				settleText.setLayoutData(gridData);
-				
-				Label confLabelDet = new Label(chainShell,SWT.NONE);
-				confLabelDet.setText("Manual Trigger Detectors:");
-				gridData = new GridData();
-				gridData.horizontalAlignment = GridData.FILL;
-				confLabelDet.setLayoutData(gridData);
-				Label confTextDet = new Label(chainShell,SWT.NONE);
-				if (displayChain.getScanModuleById(aktSM).isTriggerConfirmChannel()) {
-					confTextDet.setText(" YES ");
-				} else {
-					confTextDet.setText(" NO ");
-				}
-				gridData = new GridData();
-				gridData.horizontalAlignment = GridData.FILL;
-				confTextDet.setLayoutData(gridData);
-
-				SashForm sashForm = new SashForm(chainShell, SWT.VERTICAL);
-				sashForm.SASH_WIDTH = 4;
-				gridData = new GridData();
-				gridData.horizontalSpan = 6;
-				gridData.horizontalAlignment = GridData.FILL;
-				gridData.verticalAlignment = GridData.FILL;
-				gridData.grabExcessHorizontalSpace = true;
-				gridData.grabExcessVerticalSpace = true;
-				sashForm.setLayoutData(gridData);
-				
-				// Tabelle für die Motor Axes erzeugen
-				gridData = new GridData();
-				gridData.horizontalAlignment = GridData.FILL;
-				gridData.verticalAlignment = GridData.FILL;
-				gridData.horizontalSpan = 2;
-				gridData.grabExcessHorizontalSpace = true;
-				gridData.grabExcessVerticalSpace = true;
-				
-				Table motTable = new Table(sashForm, SWT.NONE);
-				motTable.setHeaderVisible(true);
-				motTable.setLinesVisible(true);
-				motTable.setLayoutData(gridData);
-				TableColumn motColumn = new TableColumn(motTable, SWT.NONE);
-				motColumn.setWidth(130);
-				motColumn.setText("Motor Axis");
-				TableColumn motColumn1 = new TableColumn(motTable, SWT.NONE);
-				motColumn1.setWidth(100);
-				motColumn1.setText("Function");
-				TableColumn motColumn2 = new TableColumn(motTable, SWT.NONE);
-				motColumn2.setWidth(160);
-				motColumn2.setText("Start, Plugin, File");
-				TableColumn motColumn3 = new TableColumn(motTable, SWT.NONE);
-				motColumn3.setWidth(80);
-				motColumn3.setText("Stop");
-				TableColumn motColumn4 = new TableColumn(motTable, SWT.NONE);
-				motColumn4.setWidth(80);
-				motColumn4.setText("Stepwidth");
-	
-				Axis[] axis = displayChain.getScanModuleById(aktSM).getAxes();
-				for (int i=0; i<axis.length; i++) {
-					// Neuer Tabelleneintrag muß gemacht werden
-					switch (axis[i].getStepfunction()) {
-					case ADD:
-					case MULTIPLY:
-						TableItem tableItem = new TableItem( motTable, 0 );
-						tableItem.setText( 0, axis[i].getAbstractDevice().getName());
-						tableItem.setText( 1, axis[i].getStepfunction().toString());
-						tableItem.setText( 2, axis[i].getStart().toString());
-						tableItem.setText( 3, axis[i].getStop().toString());
-						tableItem.setText( 4, axis[i].getStepwidth().toString());
-						break;
-					case FILE:
-						TableItem tableItemFile = new TableItem( motTable, 0 );
-						tableItemFile.setText( 0, axis[i].getAbstractDevice().getName());
-						tableItemFile.setText( 1, axis[i].getStepfunction().toString());
-						tableItemFile.setText( 2, axis[i].getFile().getAbsolutePath());
-						break;
-					case PLUGIN:
-						TableItem tableItemPlug = new TableItem( motTable, 0 );
-						tableItemPlug.setText( 0, axis[i].getAbstractDevice().getName());
-						tableItemPlug.setText( 1, axis[i].getStepfunction().toString());
-						tableItemPlug.setText( 2, axis[i].getPluginController().getPlugin().getName());
-						break;
-					case POSITIONLIST:
-						TableItem tableItemPos = new TableItem( motTable, 0 );
-						tableItemPos.setText( 0, axis[i].getAbstractDevice().getName());
-						tableItemPos.setText( 1, axis[i].getStepfunction().toString());
-						tableItemPos.setText( 2, axis[i].getPositionlist());
-						break;
-					default:
-						break;
-					}
-				}
-	
-				// Tabelle für die Detector Channels erzeugen
-				gridData = new GridData();
-				gridData.horizontalAlignment = GridData.FILL;
-				gridData.verticalAlignment = GridData.FILL;
-				gridData.horizontalSpan = 2;
-				gridData.grabExcessHorizontalSpace = true;
-				gridData.grabExcessVerticalSpace = true;
-				
-				Table detTable = new Table(sashForm, SWT.NONE);
-				detTable.setHeaderVisible(true);
-				detTable.setLinesVisible(true);
-				detTable.setLayoutData(gridData);
-				TableColumn detColumn = new TableColumn(detTable, SWT.NONE);
-				detColumn.setWidth(130);
-				detColumn.setText("Detector Channel");
-				TableColumn detColumn1 = new TableColumn(detTable, SWT.NONE);
-				detColumn1.setWidth(70);
-				detColumn1.setText("Average");
-				TableColumn detColumn2 = new TableColumn(detTable, SWT.NONE);
-				detColumn2.setWidth(70);
-				detColumn2.setText("Deferred");
-				TableColumn detColumn3 = new TableColumn(detTable, SWT.NONE);
-				detColumn3.setWidth(70);
-				detColumn3.setText("Max. Dev.");
-				TableColumn detColumn4 = new TableColumn(detTable, SWT.NONE);
-				detColumn4.setWidth(70);
-				detColumn4.setText("Minimum");
-				TableColumn detColumn5 = new TableColumn(detTable, SWT.NONE);
-				detColumn5.setWidth(100);
-				detColumn5.setText("Max. Attempts");
-				TableColumn detColumn6 = new TableColumn(detTable, SWT.NONE);
-				detColumn6.setWidth(100);
-				detColumn6.setText("Norm. Channel");
-				
-				Channel[] channels = displayChain.getScanModuleById(aktSM).getChannels();
-				for (int i=0; i<channels.length; i++) {
-					// Neuer Tabelleneintrag muß gemacht werden
-					TableItem tableItem = new TableItem( detTable, 0 );
-					tableItem.setText( 0, channels[i].getAbstractDevice().getName());
-					tableItem.setText( 1, "" + channels[i].getAverageCount());
-					tableItem.setText( 2, "" + channels[i].isDeferred());
-					Double d = channels[i].getMaxDeviation();
-					if (!d.isInfinite()) {
-						tableItem.setText( 3, "" + d);
-					}
-					d = channels[i].getMinimum();
-					if (!d.isInfinite()) {
-						tableItem.setText( 4, "" + d);
-					}
-					if (channels[i].getMaxAttempts() != Integer.MIN_VALUE) {
-						tableItem.setText( 5, "" + channels[i].getMaxAttempts());
-					}
-					if (channels[i].getNormalizeChannel() != null) {
-						tableItem.setText( 6, "" + channels[i].getNormalizeChannel().getName());
-					}
-				}
-				
-				chainShell.open();
-				shellTable[selection] = chainShell;
-			} else {
-				// Chain Infos anzeigen
-				Display display = Activator.getDefault().getWorkbench().getDisplay();
-				Shell chainShell = new Shell(display);
-				chainShell.setSize(500,200);
-				chainShell.setText("Chain Info");
-				
-				GridLayout gridLayout = new GridLayout();
-				gridLayout.numColumns = 2;
-				GridData gridData;
-				
-				chainShell.setLayout(gridLayout);
-				
-				Label chainLabel = new Label(chainShell,SWT.NONE);
-				chainLabel.setText("Chain ID:");
-				gridData = new GridData();
-				gridData.horizontalAlignment = GridData.FILL;
-				chainLabel.setLayoutData(gridData);
-				Label chainText = new Label(chainShell,SWT.NONE);
-				chainText.setText(rows[selection].getText(0));
-				gridData = new GridData();
-				gridData.horizontalAlignment = GridData.FILL;
-				chainText.setLayoutData(gridData);
-				
-				Label descLabel = new Label(chainShell,SWT.NONE);
-				descLabel.setText("Save Scan-Description:");
-				gridData = new GridData();
-				gridData.horizontalAlignment = GridData.FILL;
-				descLabel.setLayoutData(gridData);
-				Label descText = new Label(chainShell,SWT.NONE);
-				if (displayChain.isSaveScanDescription()) {
-					descText.setText(" YES ");
-				}
-				else {
-					descText.setText(" NO ");
-				}
-				gridData = new GridData();
-				gridData.horizontalAlignment = GridData.FILL;
-				descText.setLayoutData(gridData);
-	
-				Label confLabel = new Label(chainShell,SWT.NONE);
-				confLabel.setText("Confirm Save:");
-				gridData = new GridData();
-				gridData.horizontalAlignment = GridData.FILL;
-				confLabel.setLayoutData(gridData);
-				Label confText = new Label(chainShell,SWT.NONE);
-				if (displayChain.isConfirmSave()) {
-					confText.setText(" YES ");
-				}
-				else {
-					confText.setText(" NO ");
-				}
-				gridData = new GridData();
-				gridData.horizontalAlignment = GridData.FILL;
-				confText.setLayoutData(gridData);
-	
-				Label autoincrLabel = new Label(chainShell,SWT.NONE);
-				autoincrLabel.setText("Add Autoincrementing Number to Filename:");
-				gridData = new GridData();
-				gridData.horizontalAlignment = GridData.FILL;
-				autoincrLabel.setLayoutData(gridData);
-				Label autoincrText = new Label(chainShell,SWT.NONE);
-				if (displayChain.isAutoNumber()) {
-					autoincrText.setText(" YES ");
-				}
-				else {
-					autoincrText.setText(" NO ");
-				}
-				gridData = new GridData();
-				gridData.horizontalAlignment = GridData.FILL;
-				autoincrText.setLayoutData(gridData);
-	
-				Label commentLabel = new Label(chainShell,SWT.NONE);
-				commentLabel.setText("Comment:");
-				gridData = new GridData();
-				gridData.horizontalAlignment = GridData.FILL;
-				commentLabel.setLayoutData(gridData);
-				Label commentText = new Label(chainShell,SWT.NONE);
-				commentText.setText(displayChain.getComment());
-				gridData = new GridData();
-				gridData.horizontalAlignment = GridData.FILL;
-				commentText.setLayoutData(gridData);
-				
-				chainShell.open();
-				shellTable[selection] = chainShell;
-			}
 		}
 	}
 	
