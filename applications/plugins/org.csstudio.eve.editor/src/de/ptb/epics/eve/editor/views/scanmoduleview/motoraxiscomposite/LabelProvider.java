@@ -7,6 +7,7 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
 import de.ptb.epics.eve.data.scandescription.Axis;
+import de.ptb.epics.eve.data.scandescription.Stepfunctions;
 import de.ptb.epics.eve.data.scandescription.errors.AxisError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 
@@ -53,7 +54,19 @@ public class LabelProvider implements ITableLabelProvider {
 			}
 			return ((Axis)axis).getAbstractDevice().getName();
 		case 2:
+			if (Stepfunctions.PLUGIN.equals(((Axis)axis).getStepfunction())) {
+				if (((Axis)axis).getPluginController() == null || 
+					((Axis)axis).getPluginController().getPlugin() == null) {
+						return "Plugin";
+				}
+				return "Plugin (" + ((Axis)axis).getPluginController().
+						getPlugin().getName() + ")";
+			}
 			return ((Axis)axis).getStepfunction().toString();
+		case 3:
+			return ((Axis)axis).getMode().getPositionCount() == null 
+				? "N/A"
+				: ((Axis)axis).getMode().getPositionCount().toString();
 		}
 		return null;
 	}
