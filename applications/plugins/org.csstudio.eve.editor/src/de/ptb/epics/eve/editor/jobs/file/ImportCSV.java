@@ -202,7 +202,7 @@ public class ImportCSV extends Job {
 		private void addAxis(ScanModule scanModule, Pair<String, List<String>> axis) {
 			Axis smAxis = new Axis(scanModule, scanModule.getChain().
 					getScanDescription().getMeasuringStation().
-					getMotorAxisByName(axis.getKey()));
+					getMotorAxisByName(axis.getKey()), false);
 			smAxis.setStepfunction(Stepfunctions.POSITIONLIST);
 			smAxis.setPositionlist(StringUtil.buildCommaSeparatedString(
 					axis.getValue()));

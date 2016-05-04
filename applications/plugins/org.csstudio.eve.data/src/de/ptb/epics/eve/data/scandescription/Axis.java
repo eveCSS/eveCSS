@@ -69,7 +69,7 @@ public class Axis extends AbstractMainPhaseBehavior implements
 	 * @throws IllegalArgumentException if <code>scanModule</code> is 
 	 * 			<code>null</code>
 	 */
-	public Axis(final ScanModule scanModule, MotorAxis axis) {
+	public Axis(final ScanModule scanModule, MotorAxis axis, boolean connect) {
 		this(scanModule);
 		this.setMotorAxis(axis);
 		if (axis.getGoto().isDiscrete()) {
@@ -81,13 +81,30 @@ public class Axis extends AbstractMainPhaseBehavior implements
 			}
 			this.setPositionlist(sb.substring(0, sb.length() - 1));
 			
-			axis.connect();
+			if (connect) {
+				axis.connect();
+			}
 			axis.addPropertyChangeListener("discreteValues", this);
 		} else {
 			this.setStepfunction(Stepfunctions.ADD);
 		}
 	}
 
+	/**
+	 * Constructor imitating the old one which now has an additional parameter 
+	 * to enable/disable PV read of discrete values.
+	 * 
+	 * <i>Note</i>: This constructor always connects via channel access (if 
+	 * possible) for discrete axes.
+	 * 
+	 * @param scanModule the scan module the axis corresponds to
+	 * @param axis the device for this behavior
+	 * @since 1.25.2
+	 */
+	public Axis(final ScanModule scanModule, MotorAxis axis) {
+		this(scanModule, axis, true);
+	}
+	
 	/**
 	 * Copy Constructor.
 	 * 
