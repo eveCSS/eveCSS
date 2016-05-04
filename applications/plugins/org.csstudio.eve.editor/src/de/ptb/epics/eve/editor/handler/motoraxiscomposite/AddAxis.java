@@ -55,6 +55,7 @@ public class AddAxis implements IHandler {
 				DefaultsAxis defMa = Activator.getDefault().getDefaults()
 						.getAxis(motorAxis.getID());
 				if (defMa != null) {
+					axis.getMotorAxis().disconnect();
 					DefaultsManager.transferDefaults(defMa, axis);
 				}
 			}
