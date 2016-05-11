@@ -15,5 +15,5 @@ public interface PlotViewComponent {
 	 * 
 	 * @param plotWindow the plot window whose elements should be shown
 	 */
-	public void setPlotWindow(PlotWindow plotWindow);
+	void setPlotWindow(PlotWindow plotWindow);
 }

@@ -18,5 +18,5 @@ public interface ConvexHullStrategy {
 	 * @param points a list of at least three points
 	 * @return the convex hull as a polygon
 	 */
-	public Polygon compute(List<Point> points);
+	Polygon compute(List<Point> points);
 }

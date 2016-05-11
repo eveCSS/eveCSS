@@ -11,15 +11,15 @@ public interface Modification {
 	/**
 	 * @return a change log text
 	 */
-	public String getChangeLog();
+	String getChangeLog();
 	
 	/**
 	 * @return the patch it belongs to
 	 */
-	public Patch belongsTo();
+	Patch belongsTo();
 	
 	/**
 	 * @param document the document that should be modified
 	 */
-	public void modify(Document document);
+	void modify(Document document);
 }

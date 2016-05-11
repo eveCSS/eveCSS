@@ -13,68 +13,68 @@ public interface EngineState {
 	 * @return <code>true</code> if the start button is enabled, 
 	 * 		<code>false</code> otherwise
 	 */
-	public boolean isStart();
+	boolean isStart();
 	
 	/**
 	 * Returns whether the kill button is enabled
 	 * @return <code>true</code> if the kill button is enabled, 
 	 * 		<code>false</code> otherwise
 	 */
-	public boolean isKill();
+	boolean isKill();
 	
 	/**
 	 * Returns whether the connect button is enabled
 	 * @return <code>true</code> if the connect button is enabled, 
 	 * 		<code>false</code> otherwise
 	 */
-	public boolean isConnect();
+	boolean isConnect();
 	
 	/**
 	 * Returns whether the disconnect button is enabled
 	 * @return <code>true</code> if the disconnect button is enabled, 
 	 * 		<code>false</code> otherwise
 	 */
-	public boolean isDisconnect();
+	boolean isDisconnect();
 	
 	/**
 	 * Returns whether the play button is enabled
 	 * @return <code>true</code> if the play button is enabled, 
 	 * 		<code>false</code> otherwise
 	 */
-	public boolean isPlay();
+	boolean isPlay();
 	
 	/**
 	 * Returns whether the pause button is enabled
 	 * @return <code>true</code> if the pause button is enabled, 
 	 * 		<code>false</code> otherwise
 	 */
-	public boolean isPause();
+	boolean isPause();
 	
 	/**
 	 * Returns whether the stop button is enabled
 	 * @return <code>true</code> if the stop button is enabled, 
 	 * 		<code>false</code> otherwise
 	 */
-	public boolean isStop();
+	boolean isStop();
 	
 	/**
 	 * Returns whether the skip button is enabled
 	 * @return <code>true</code> if the skip button is enabled, 
 	 * 		<code>false</code> otherwise
 	 */
-	public boolean isSkip();
+	boolean isSkip();
 	
 	/**
 	 * Returns whether the halt button is enabled
 	 * @return <code>true</code> if the halt button is enabled, 
 	 * 		<code>false</code> otherwise
 	 */
-	public boolean isHalt();
+	boolean isHalt();
 	
 	/**
 	 * Returns whether the trigger button is enabled
 	 * @return <code>true</code> if the trigger button is enabled, 
 	 * 		<code>false</code> otherwise
 	 */
-	public boolean isTrigger();
+	boolean isTrigger();
 }
