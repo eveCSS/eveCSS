@@ -51,4 +51,7 @@ public class DateTime {
 		}
 		return "";
 	}
+	
+	private DateTime() {
+	}
 }

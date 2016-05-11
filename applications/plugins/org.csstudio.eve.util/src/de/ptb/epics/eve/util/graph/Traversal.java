@@ -30,4 +30,7 @@ public class Traversal {
 		}
 		v.finished(++time);
 	}
+	
+	private Traversal() {
+	}
 }

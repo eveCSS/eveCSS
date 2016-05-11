@@ -24,4 +24,7 @@ public class Geometry {
 				// new GrahamsScanConvexHullStrategy();
 		return strategy.compute(points);
 	}
+	
+	private Geometry() {
+	}
 }

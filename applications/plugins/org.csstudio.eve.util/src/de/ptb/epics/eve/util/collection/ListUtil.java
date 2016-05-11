@@ -27,4 +27,7 @@ public class ListUtil {
 			Collections.rotate(list.subList(targetIndex + 1, sourceIndex + 1), 1);
 		}
 	}
+	
+	private ListUtil() {
+	}
 }

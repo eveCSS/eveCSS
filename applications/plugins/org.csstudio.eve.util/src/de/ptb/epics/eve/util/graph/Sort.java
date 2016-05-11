@@ -22,4 +22,7 @@ public class Sort {
 		Collections.reverse(vertices);
 		return vertices;
 	}
+	
+	private Sort() {
+	}
 }
