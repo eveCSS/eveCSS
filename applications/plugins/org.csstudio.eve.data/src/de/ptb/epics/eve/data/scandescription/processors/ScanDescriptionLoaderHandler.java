@@ -65,11 +65,6 @@ import de.ptb.epics.eve.data.scandescription.processors.adaptees.DetectorEventAd
 import de.ptb.epics.eve.data.scandescription.processors.adaptees.DetectorEventAdapter;
 import de.ptb.epics.eve.data.scandescription.processors.adaptees.ScheduleEventAdaptee;
 import de.ptb.epics.eve.data.scandescription.processors.adaptees.ScheduleEventAdapter;
-import de.ptb.epics.eve.util.graph.Graph;
-import de.ptb.epics.eve.util.graph.GraphALImpl;
-import de.ptb.epics.eve.util.graph.Sort;
-import de.ptb.epics.eve.util.graph.Vertex;
-import de.ptb.epics.eve.util.graph.VertexImpl;
 
 /**
  * This class represents a load handler for SAX that loads a scan description
@@ -116,7 +111,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 	// channel graph determines the order in which channel have to be added 
 	// to the scan module to preserve normalize channel dependencies
 	private List<Channel> smChannels;
-	private Graph<Channel> currentChannelGraph;
 	private Map<Channel, DetectorChannel> normalizationMap;
 	
 	// The currently constructed prescan
@@ -333,7 +327,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.currentRelationReminder = new ScanModulRelationReminder(
 						this.currentScanModule);
 				this.smChannels = new ArrayList<Channel>();
-				this.currentChannelGraph = new GraphALImpl<Channel>();
 				this.normalizationMap = new HashMap<Channel, DetectorChannel>();
 				this.channelLoadTime = 0;
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
@@ -1588,10 +1581,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.scanModulChainMap.put(this.currentScanModule,
 						this.currentChain);
 
-				if (this.idToScanModulMap.containsKey(this.currentScanModule
+				if (!this.idToScanModulMap.containsKey(this.currentScanModule
 						.getId())) {
-
-				} else {
 					this.idToScanModulMap.put(this.currentScanModule.getId(),
 							this.currentScanModule);
 				}
@@ -1718,9 +1709,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			if (qName.equals("prescan")) {
 				if (this.currentPrescan.getAbstractPrePostscanDevice() != null) {
 					this.currentScanModule.add(this.currentPrescan);
-					if (!this.currentPrescan.getAbstractPrePostscanDevice()
-							.isValuePossible(this.currentPrescan.getValue())) {
-					}
 				}
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 			}
@@ -1730,12 +1718,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			if (qName.equals("postscan")) {
 				if (this.currentPostscan.getAbstractPrePostscanDevice() != null) {
 					this.currentScanModule.add(this.currentPostscan);
-					if (!this.currentPostscan.getAbstractPrePostscanDevice()
-							.isValuePossible(this.currentPostscan.getValue())) {
-						if (!this.currentPostscan.isReset()) {
-
-						}
-					}
 				}
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 			}
@@ -2234,8 +2216,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 								prescans[j] = null;
 							}
 						}
-						if (device != null) {
-						}
 					}
 				}
 
@@ -2253,8 +2233,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 								axis[j] = null;
 							}
 						}
-						if (device != null) {
-						}
 					}
 				}
 
@@ -2269,8 +2247,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 								device = channels[i].getAbstractDevice();
 								channels[j] = null;
 							}
-						}
-						if (device != null) {
 						}
 					}
 				}
@@ -2287,13 +2263,10 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 								postscans[j] = null;
 							}
 						}
-						if (device != null) {
-						}
 					}
 				}
 			}
 		}
-		// --- Checking for multiple command to the same device
 	}
 
 	/**
