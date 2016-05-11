@@ -400,7 +400,8 @@ public class PVWrapper {
 					if (LOGGER.isDebugEnabled()) {
 						StringBuilder sb = new StringBuilder();
 						for (String s : discreteValues) {
-							sb.append(s + ",");
+							sb.append(s);
+							sb.append(",");
 						}
 						LOGGER.debug("got enums: "
 								+ sb.toString().substring(0,
