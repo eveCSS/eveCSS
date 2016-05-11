@@ -93,4 +93,7 @@ public class Literals {
 	public static final String XML_ELEMENT_NAME_XPOS = "xpos";
 	public static final String XML_ELEMENT_NAME_YAXIS = "yaxis";
 	public static final String XML_ELEMENT_NAME_YPOS = "ypos";
+	
+	private Literals() {
+	}
 }
