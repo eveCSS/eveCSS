@@ -153,9 +153,9 @@ public class ScanDescription implements IModelUpdateProvider,
 	 * @return the version of the scan description.
 	 */
 	public String getVersion() {
-		return String.valueOf(inputVersion) + "." + 
-			   String.valueOf(inputRevision) + "." + 
-			   String.valueOf(inputModification);
+		return inputVersion + "." + 
+			   inputRevision + "." + 
+			   inputModification;
 	}
 
 	/**
