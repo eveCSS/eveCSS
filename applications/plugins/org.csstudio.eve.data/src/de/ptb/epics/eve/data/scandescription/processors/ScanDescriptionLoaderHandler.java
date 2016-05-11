@@ -75,9 +75,7 @@ import de.ptb.epics.eve.data.scandescription.processors.adaptees.ScheduleEventAd
  * @author Hartmut Scherr
  */
 public class ScanDescriptionLoaderHandler extends DefaultHandler {
-
-	// logging
-	private static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(ScanDescriptionLoaderHandler.class.getName());
 
 	// The measuring station that contains the devices

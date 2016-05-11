@@ -12,7 +12,6 @@ import org.eclipse.jface.viewers.ColumnViewerEditorActivationEvent;
 import org.eclipse.jface.viewers.ColumnViewerEditorActivationListener;
 import org.eclipse.jface.viewers.ColumnViewerEditorDeactivationEvent;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.window.ToolTip;
@@ -80,13 +79,13 @@ public class DeviceInspectorView extends ViewPart {
 	public static final String ID = "DeviceInspectorView";
 	public static final String GLOBAL_ID = "GlobalDeviceInspectorView";
 	
+	private static final Logger LOGGER = 
+			Logger.getLogger(DeviceInspectorView.class.getName());
+	
 	/** 
 	 * the secondary id of the <code>DeviceInspectorView</code> that is shown 
 	 */
 	public static String activeDeviceInspectorView = "";
-	
-	private static Logger LOGGER = 
-			Logger.getLogger(DeviceInspectorView.class.getName());
 
 	private SashForm sashForm;
 	

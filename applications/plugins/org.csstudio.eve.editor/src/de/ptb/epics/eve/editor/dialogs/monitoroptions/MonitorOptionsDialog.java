@@ -48,7 +48,7 @@ import de.ptb.epics.eve.editor.Activator;
  * @since 1.14
  */
 public class MonitorOptionsDialog extends Dialog {
-	private static Logger LOGGER = 
+	private static final Logger LOGGER = 
 			Logger.getLogger(MonitorOptionsDialog.class.getName());
 
 	private ScanDescription scanDescription;

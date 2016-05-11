@@ -13,7 +13,7 @@ import de.ptb.epics.eve.data.measuringstation.exceptions.ParentNotAllowedExcepti
  */
 public class Option extends AbstractPrePostscanDevice implements Cloneable {
 
-	public static String OPTION_MONITOR_PROP = "monitor";
+	public static final String OPTION_MONITOR_PROP = "monitor";
 	
 	private boolean monitor;
 	

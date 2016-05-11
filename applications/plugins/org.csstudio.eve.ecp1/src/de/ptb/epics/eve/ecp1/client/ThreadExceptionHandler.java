@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
  * @since 1.25.2
  */
 public class ThreadExceptionHandler implements UncaughtExceptionHandler {
-	private static Logger LOGGER = Logger.getLogger(
+	private static final Logger LOGGER = Logger.getLogger(
 			ThreadExceptionHandler.class.getName());
 	
 	/**

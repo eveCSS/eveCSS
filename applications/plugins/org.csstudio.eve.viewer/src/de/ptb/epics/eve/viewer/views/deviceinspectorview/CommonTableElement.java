@@ -43,7 +43,7 @@ public class CommonTableElement {
 	public static final String TWEAKVALUE_PROP = "tweakvalue";
 	public static final String DEFINE_PROP = "define";
 	
-	private static Logger LOGGER = 
+	private static final Logger LOGGER = 
 			Logger.getLogger(CommonTableElement.class.getName());
 	
 	private AbstractDevice device;

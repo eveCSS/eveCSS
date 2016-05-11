@@ -50,14 +50,14 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 	/** the unique identifier of this view */
 	public static final String ID = "DeviceOptionsView";
 
+	private static final Logger LOGGER = 
+			Logger.getLogger(DeviceOptionsView.class.getName());
+	
 	/** 
 	 * The secondary id of the <code>DeviceOptionsView</code> that is shown. 
 	 * (Changes in the selection service will be addressed only by this one) 
 	 */
 	public static String activeDeviceOptionsView;
-	
-	private static Logger LOGGER = 
-			Logger.getLogger(DeviceOptionsView.class.getName());
 	
 	// ensures that the right Device Options View is active after a perspective 
 	// switch.

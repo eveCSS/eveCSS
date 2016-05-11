@@ -31,7 +31,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
 public class Channel extends AbstractMainPhaseBehavior implements
 		PropertyChangeListener {
 
-	private static Logger LOGGER = Logger.getLogger(Channel.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(Channel.class.getName());
 	
 	public static final String REDO_EVENT_PROP = "redoEvent";
 	

@@ -18,7 +18,7 @@ import de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.DeviceInspectorView;
  * @since 1.26
  */
 public class Remove extends AbstractHandler {
-	private static Logger LOGGER = Logger.getLogger(Remove.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(Remove.class.getName());
 	
 	/**
 	 * {@inheritDoc}
