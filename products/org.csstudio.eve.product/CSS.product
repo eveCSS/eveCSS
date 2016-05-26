@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Css" id="org.csstudio.eve.product.product" application="org.csstudio.eve.product.application" version="1.25.1" useFeatures="true" includeLaunchers="true">
+<product name="Css" id="org.csstudio.eve.product.product" application="org.csstudio.eve.product.application" version="1.25.2" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/org.csstudio.eve.product/icons/about.gif"/>
