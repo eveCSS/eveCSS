@@ -81,7 +81,8 @@ public class ProgressBarComposite extends Composite implements
 		this.progressBar.getDisplay().syncExec(new Runnable() {
 			@Override public void run() {
 				if (finalCommand.getPositionCounter() >= 0) {
-					currentPosition = finalCommand.getPositionCounter();
+					// current position is not measured yet -> progress = cPos-1
+					currentPosition = finalCommand.getPositionCounter() - 1;
 					progressBar.setSelection(currentPosition);
 					LOGGER.debug("Current Position: " + currentPosition);
 				}
@@ -121,6 +122,14 @@ public class ProgressBarComposite extends Composite implements
 		if (engineStatus.equals(EngineStatus.IDLE_XML_LOADED)) {
 			this.engineStatus = engineStatus;
 			this.refreshStatus();
+		} else if (engineStatus.equals(EngineStatus.IDLE_NO_XML_LOADED)) {
+			this.progressBar.getDisplay().syncExec(new Runnable() {
+				@Override public void run() {
+					currentPosition = maxPositions;
+					progressBar.setSelection(maxPositions);
+					progressBar.redraw();
+				}
+			});
 		}
 	}
 
@@ -165,8 +174,6 @@ public class ProgressBarComposite extends Composite implements
 			}
 		});
 	}
-	
-	/* ********************************************************************* */
 	
 	/**
 	 * @author Marcus Michalsky
