@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="eveCSSide4" sequenceNumber="41">
-<locations>
-<location path="/messung/eve/java/Eclipse/swtbot" type="Directory"/>
-<location path="/messung/eve/java/CSS/3.3.9" type="Directory"/>
-<location path="/messung/eve/java/Eclipse/eclipse-rcp-indigo-SR2-linux-gtk-x86_64-swtpatch" type="Directory"/>
-</locations>
-</target>
