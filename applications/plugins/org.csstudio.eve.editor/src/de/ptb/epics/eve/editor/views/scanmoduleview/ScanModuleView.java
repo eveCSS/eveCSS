@@ -349,6 +349,7 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		gridData.horizontalIndent = 7;
 		this.storageCombo.setLayoutData(gridData);
 		this.storageCombo.setItems(Storage.stringValues());
+		this.storageCombo.setEnabled(false);
 		
 		// Manual Trigger
 		Label triggerLabel = new Label(this.generalComposite, SWT.NONE);
