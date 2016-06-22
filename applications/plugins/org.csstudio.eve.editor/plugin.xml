@@ -737,7 +737,7 @@
             locationURI="toolbar:de.ptb.epics.eve.editor.views.MotorAxisView">
          <command
                commandId="org.eclipse.ui.help.displayHelp"
-               icon="icons/conditional_ovr.gif"
+               icon="icons/help_contents.gif"
                label="Click to learn more about the Motor Axis View."
                style="push">
             <parameter
@@ -750,7 +750,7 @@
             locationURI="toolbar:de.ptb.epics.eve.editor.views.DetectorChannelView">
          <command
                commandId="org.eclipse.ui.help.displayHelp"
-               icon="icons/conditional_ovr.gif"
+               icon="icons/help_contents.gif"
                label="Click to learn more about the Detector Channel View."
                style="push">
             <parameter
@@ -763,7 +763,7 @@
             locationURI="toolbar:de.ptb.epics.eve.editor.views.PlotWindowView">
          <command
                commandId="org.eclipse.ui.help.displayHelp"
-               icon="icons/conditional_ovr.gif"
+               icon="icons/help_contents.gif"
                label="Click to learn more about the Plot Wiondow View."
                style="push">
             <parameter
@@ -776,7 +776,7 @@
             locationURI="toolbar:de.ptb.epics.eve.editor.views.ScanModulView">
          <command
                commandId="org.eclipse.ui.help.displayHelp"
-               icon="icons/conditional_ovr.gif"
+               icon="icons/help_contents.gif"
                label="Click to learn more about the Scan Module View"
                style="push">
             <parameter
@@ -789,7 +789,7 @@
             locationURI="toolbar:de.ptb.epics.eve.editor.views.ScanView">
          <command
                commandId="org.eclipse.ui.help.displayHelp"
-               icon="icons/conditional_ovr.gif"
+               icon="icons/help_contents.gif"
                label="Click to learn more about the Chain View"
                style="push">
             <parameter
