@@ -2,14 +2,23 @@ package de.ptb.epics.eve.editor.views.motoraxisview.positionlistcomposite;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.observable.ChangeEvent;
+import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.swt.SWT;
@@ -17,15 +26,21 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.axismode.PositionlistMode;
+import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.editor.jobs.file.PositionlistToFile;
 import de.ptb.epics.eve.editor.views.motoraxisview.MotorAxisViewComposite;
 
 /**
@@ -53,10 +68,13 @@ public class PositionlistComposite extends MotorAxisViewComposite implements
 	private IObservableValue positionlistModelObservable;
 	private IObservableValue positionlistGUIObservable;
 	private ControlDecorationSupport positionlistControlDecorationSupport;
+	private PositionlistValidator positionlistValidator;
 	
 	private Label positionCountLabel;
 	
 	private Image infoImage;
+	
+	private Button saveButton;
 	
 	/**
 	 * Constructs a <code>MotorAxisPositionlistComposite</code>.
@@ -66,7 +84,7 @@ public class PositionlistComposite extends MotorAxisViewComposite implements
 	 * @param parentView the view the composite is contained in
 	 */
 	public PositionlistComposite(final Composite parent, final int style) {
-		super(parent, style);
+		super(parent, style | SWT.BORDER);
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 1;
 		this.setLayout(gridLayout);
@@ -74,8 +92,17 @@ public class PositionlistComposite extends MotorAxisViewComposite implements
 		this.infoImage = FieldDecorationRegistry.getDefault().getFieldDecoration(
 				FieldDecorationRegistry.DEC_INFORMATION).getImage();
 		
+		Composite positionListHeaderComposite = new Composite(this, SWT.NONE);
+		gridLayout = new GridLayout();
+		gridLayout.numColumns = 2;
+		gridLayout.marginBottom = 0;
+		positionListHeaderComposite.setLayout(gridLayout);
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment = SWT.FILL;
+		positionListHeaderComposite.setLayoutData(gridData);
+		
 		// position list Label
-		this.positionlistLabel = new Label(this, SWT.NONE);
+		this.positionlistLabel = new Label(positionListHeaderComposite, SWT.NONE);
 		this.positionlistLabel.setText("Positionlist:");
 		this.positionlistLabelDecoration = new ControlDecoration(
 				positionlistLabel, SWT.TOP | SWT.RIGHT);
@@ -83,10 +110,63 @@ public class PositionlistComposite extends MotorAxisViewComposite implements
 		this.positionlistLabelDecoration.setDescriptionText(
 				"use , (comma) as delimiter");
 		this.positionlistLabelDecoration.show();
+		gridData = new GridData();
+		gridData.verticalAlignment = SWT.BOTTOM;
+		this.positionlistLabel.setLayoutData(gridData);
+		
+		Image saveIcon = Activator.getDefault().getImageRegistry().get("SAVE");
+		this.saveButton = new Button(positionListHeaderComposite, SWT.NONE);
+		this.saveButton.setImage(saveIcon);
+		this.saveButton.setToolTipText("Save position list to file...");
+		gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalAlignment = SWT.RIGHT;
+		this.saveButton.setLayoutData(gridData);
+		this.saveButton.setEnabled(false);
+		this.saveButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				FileDialog dialog = new FileDialog(saveButton.getParent().
+						getDisplay().getActiveShell(), SWT.SAVE);
+				String [] filterNames = new String [] {"*.txt"};
+				String [] filterExtensions = new String [] {"*.txt;"};
+				dialog.setFilterNames(filterNames);
+				dialog.setFilterExtensions(filterExtensions);
+				dialog.setFilterPath(
+						de.ptb.epics.eve.resources.Activator.getDefault()
+						.getDefaultsManager().getWorkingDirectory()
+						.getAbsolutePath());
+				Date date = Calendar.getInstance().getTime();
+				String now = new SimpleDateFormat("yyyyMMdd-HHmmss").format(date);
+				dialog.setFileName("positionlist-" + now + ".txt");
+				String result = dialog.open();
+				if (result == null) {
+					LOGGER.info(
+						"Save Positionlist to File canceled or error occurred.");
+					return;
+				}
+				File positionlistFile = new File(result);
+				if (positionlistFile.exists()) {
+					boolean overwrite = MessageDialog.openConfirm(
+						saveButton.getParent().getDisplay().getActiveShell(), 
+						"File already exists", 
+						"File " + result + " already exists. Overwrite ?");
+					if (!overwrite) {
+						LOGGER.info("File exists, do not overwrite -> Abort.");
+						return;
+					}
+				}
+				Job savePositionListToFile = new PositionlistToFile(
+						"Save position list to file", positionlistFile, 
+						positionlistMode.getPositionList());
+				savePositionListToFile.setUser(true);
+				savePositionListToFile.schedule();
+			}
+		});
 		
 		// position list Text field 
 		this.positionlistText = new Text(this, SWT.BORDER | SWT.V_SCROLL | SWT.WRAP);
-		GridData gridData = new GridData();
+		gridData = new GridData();
 		gridData.horizontalSpan = 2;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
@@ -146,6 +226,7 @@ public class PositionlistComposite extends MotorAxisViewComposite implements
 				PositionlistMode.POSITIONLIST_PROP, this);
 		this.createBinding();
 		this.countPositions();
+		this.refreshSaveButtion();
 		this.positionlistMode.getAxis().getMotorAxis()
 				.addPropertyChangeListener("highlimit", this);
 		this.positionlistMode.getAxis().getMotorAxis()
@@ -163,14 +244,21 @@ public class PositionlistComposite extends MotorAxisViewComposite implements
 				this.positionlistText, SWT.Modify);
 		UpdateValueStrategy targetToModel = new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE);
-		targetToModel.setAfterGetValidator(new PositionlistValidator(
-				this.positionlistMode.getAxis()));
+		this.positionlistValidator = new PositionlistValidator(
+				this.positionlistMode.getAxis());
+		targetToModel.setAfterGetValidator(this.positionlistValidator);
 		UpdateValueStrategy modelToTarget = new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE);
 		this.positionlistBinding = context.bindValue(positionlistGUIObservable,
 				positionlistModelObservable, targetToModel, modelToTarget);
 		this.positionlistControlDecorationSupport = ControlDecorationSupport.
 				create(positionlistBinding, SWT.LEFT);
+		this.positionlistBinding.getTarget().addChangeListener(new IChangeListener() {
+			@Override
+			public void handleChange(ChangeEvent event) {
+				refreshSaveButtion();
+			}
+		});
 	}
 	
 	/**
@@ -195,6 +283,7 @@ public class PositionlistComposite extends MotorAxisViewComposite implements
 		}
 		this.positionlistMode = null;
 		this.positionCountLabel.setText("0 positions");
+		this.positionlistValidator = null;
 		this.redraw();
 	}
 	
@@ -211,9 +300,19 @@ public class PositionlistComposite extends MotorAxisViewComposite implements
 		}
 	}
 
-	/*
-	 * 
-	 */
+	private void refreshSaveButtion() {
+		this.positionlistBinding.validateTargetToModel();
+		IStatus status = (IStatus)this.positionlistBinding.
+				getValidationStatus().getValue();
+		LOGGER.debug("Validation Status: " + status.getSeverity() + 
+				" (" + status.getMessage() + ")");
+		if(status.isOK()) {
+			this.saveButton.setEnabled(true);
+		} else {
+			this.saveButton.setEnabled(false);
+		}
+	}
+	
 	private void countPositions() {
 		if (this.positionlistMode.getPositionCount() == null) {
 			this.positionCountLabel.setText("calculation not possible");
@@ -233,10 +332,6 @@ public class PositionlistComposite extends MotorAxisViewComposite implements
 		}
 		this.positionCountLabel.getParent().layout();
 	}
-	
-	/* ******************************************************************** */
-	/* ************************** Listeners ******************************* */
-	/* ******************************************************************** */
 	
 	/**
 	 * @author Marcus Michalsky

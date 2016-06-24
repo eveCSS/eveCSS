@@ -18,7 +18,6 @@ import de.ptb.epics.eve.util.math.statistics.Range;
  * @since 1.7
  */
 public class PositionlistValidator implements IValidator {
-	
 	private DataTypes type;
 	private Axis axis;
 	
