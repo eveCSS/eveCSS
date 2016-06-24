@@ -1141,11 +1141,6 @@
             id="de.ptb.epics.eve.editor.command.openscml"
             name="Open SCML">
       </command>
-      <command
-            defaultHandler="de.ptb.epics.eve.editor.handler.motoraxisview.SavePositionList"
-            id="de.ptb.epics.eve.editor.command.savePositionList"
-            name="Save Positionlist to File">
-      </command>
    </extension>
    <extension
          point="org.eclipse.help.toc">
