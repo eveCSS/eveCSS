@@ -9,8 +9,12 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * Represents the base for all filters of measuring station descriptions.
  * The filter itself is a measuring station description that can be used
  * in all parts of the application.
- * 
+ * <p>
  * The filter mechanism is implemented in the updateEvent Method.
+ * <p>
+ * If this Filter is not used anymore (should be Garbage Collected) it is 
+ * necessary to call {@link MeasuringStationFilter#setSource(IMeasuringStation)}
+ * with <code>null</code> argument.
  * 
  * @author Stephan Rehfeld
  * @author Marcus Michalsky
@@ -51,6 +55,9 @@ public abstract class MeasuringStationFilter extends AbstractMeasuringStation im
 	
 	/**
 	 * Sets the measuring station the filter should be based on.
+	 * <p>
+	 * If this Filter is not used anymore (should be Garbage Collected) it is 
+	 * necessary to call this method with <code>null</code> argument.
 	 * 
 	 * @param source the measuring station the filter should be based on
 	 */

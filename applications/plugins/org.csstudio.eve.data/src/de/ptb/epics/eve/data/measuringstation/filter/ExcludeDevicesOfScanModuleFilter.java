@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Set;
 
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
-import de.ptb.epics.eve.data.measuringstation.AbstractMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.AbstractPrePostscanDevice;
 import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
@@ -48,6 +47,10 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * <br><br>
  * An example application of this filter is 
  * {@link de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView}.
+ * <p>
+ * If this Filter is not used anymore (should be Garbage Collected) it is 
+ * necessary to call {@link ExcludeDevicesOfScanModuleFilter#setScanModule(ScanModule)} 
+ * with <code>null</code> argument.
  * 
  * @author ?
  * @author Marcus Michalsky
@@ -131,14 +134,14 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 		this.motors = new ArrayList<Motor>();
 		this.detectors = new ArrayList<Detector>();
 		this.selections = new Selections();
-		this.pluginsMap = new HashMap< String, PlugIn>();
-		this.motorAxisMap = new HashMap< String, MotorAxis >();
-		this.detectorChannelsMap = new HashMap< String, DetectorChannel >();
-		this.prePostscanDeviceMap = new HashMap< String, AbstractPrePostscanDevice >();
+		this.pluginsMap = new HashMap<String, PlugIn>();
+		this.motorAxisMap = new HashMap<String, MotorAxis>();
+		this.detectorChannelsMap = new HashMap<String, DetectorChannel>();
+		this.prePostscanDeviceMap = new HashMap<String, AbstractPrePostscanDevice>();
 		this.classMap = new HashMap<String, List<AbstractDevice>>();
-		this.eventsMap = new HashMap< String, Event >();
-		this.modelUpdateListener = new ArrayList< IModelUpdateListener >();
-		this.excludeList = new ArrayList< AbstractDevice >();
+		this.eventsMap = new HashMap<String, Event>();
+		this.modelUpdateListener = new ArrayList<IModelUpdateListener>();
+		this.excludeList = new ArrayList<AbstractDevice>();
 		this.excludeAxes = excludeAxes;
 		this.excludeChannels = excludeChannels;
 		this.excludePrescans = excludePrescans;
@@ -579,29 +582,29 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 
 		if(this.getSource() != null) {
 			this.excludeList.clear();
-			if(this.scanModule != null) {
-				if(this.excludeAxes) {
-					for(final Axis axis : this.scanModule.getAxes()) {
+			if (this.scanModule != null) {
+				if (this.excludeAxes) {
+					for (final Axis axis : this.scanModule.getAxes()) {
 						this.excludeList.add(axis.getAbstractDevice());
 					}
 				}
-				if(this.excludeChannels) {
-					for(final Channel channel : this.scanModule.getChannels()) {
+				if (this.excludeChannels) {
+					for (final Channel channel : this.scanModule.getChannels()) {
 						this.excludeList.add(channel.getAbstractDevice());
 					}
 				}
-				if(this.excludePrescans) {
-					for(final Prescan prescan : this.scanModule.getPrescans()) {
-						this.excludeList.add( prescan.getAbstractDevice());
+				if (this.excludePrescans) {
+					for (final Prescan prescan : this.scanModule.getPrescans()) {
+						this.excludeList.add(prescan.getAbstractDevice());
 					}
 				}
-				if(this.excludePostscans) {
-					for(final Postscan postscan : this.scanModule.getPostscans()) {
-						this.excludeList.add( postscan.getAbstractDevice());
+				if (this.excludePostscans) {
+					for (final Postscan postscan : this.scanModule.getPostscans()) {
+						this.excludeList.add(postscan.getAbstractDevice());
 					}
 				}
-				if(this.excludePositionsings) {
-					for(final Positioning positioning : this.scanModule.getPositionings()) {
+				if (this.excludePositionsings) {
+					for (final Positioning positioning : this.scanModule.getPositionings()) {
 						this.excludeList.add(positioning.getMotorAxis());
 					}
 				}
@@ -718,6 +721,9 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 	/**
 	 * Sets the {@link de.ptb.epics.eve.data.scandescription.ScanModule} 
 	 * related to this filter.
+	 * <p>
+	 * If this Filter is not used anymore (should be Garbage Collected) it is 
+	 * necessary to call this method with <code>null</code> argument.
 	 * 
 	 * @param scanModule the 
 	 * 		  {@link de.ptb.epics.eve.data.scandescription.ScanModule} related 
@@ -742,7 +748,7 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 
 		for (final Motor motor : this.motors) {
 			if (motor.getClassName() != null
-					&& !motor.getClassName().equals("")) {
+					&& !motor.getClassName().isEmpty()) {
 				List<AbstractDevice> devices = null;
 				if (this.classMap.containsKey(motor.getClassName())) {
 					devices = this.classMap.get(motor.getClassName());
@@ -755,7 +761,7 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 			for (final MotorAxis motorAxis : motor.getAxes()) {
 				List<AbstractDevice> devices = null;
 				if (motorAxis.getClassName() != null
-						&& !motorAxis.getClassName().equals("")) {
+						&& !motorAxis.getClassName().isEmpty()) {
 					if (this.classMap.containsKey(motorAxis.getClassName())) {
 						devices = this.classMap.get(motorAxis.getClassName());
 					} else {
@@ -769,7 +775,7 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 
 		for (final Detector detector : this.detectors) {
 			if (detector.getClassName() != null
-					&& !detector.getClassName().equals("")) {
+					&& !detector.getClassName().isEmpty()) {
 				List<AbstractDevice> devices = null;
 				if (this.classMap.containsKey(detector.getClassName())) {
 					devices = this.classMap.get(detector.getClassName());
@@ -782,7 +788,7 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 			for (final DetectorChannel detectorChannel : detector.getChannels()) {
 				List<AbstractDevice> devices = null;
 				if (detectorChannel.getClassName() != null
-						&& !detectorChannel.getClassName().equals("")) {
+						&& !detectorChannel.getClassName().isEmpty()) {
 					if (this.classMap.containsKey(detectorChannel
 							.getClassName())) {
 						devices = this.classMap.get(detectorChannel
@@ -799,7 +805,7 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 
 		for (final Device device : this.devices) {
 			if (device.getClassName() != null
-					&& !device.getClassName().equals("")) {
+					&& !device.getClassName().isEmpty()) {
 				List<AbstractDevice> devices = null;
 				if (this.classMap.containsKey(device.getClassName())) {
 					devices = this.classMap.get(device.getClassName());
@@ -811,23 +817,4 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 			}
 		}
 	}
-
-//	/**
-//	 * {@inheritDoc}
-//	 */
-//	@Override
-//	public Map<String, MotorAxis> getMotorAxes() {
-//
-//		final List<String> motorAxis = new ArrayList<String>();
-//
-//		System.out.println("______________________________________________________________________________________________");
-//		System.out.println("\nvorhandene MotorAxis:");
-//		for (String elem : this.motorAxisMap.keySet()) {
-//           MotorAxis s = this.motorAxisMap.get(elem);
-//            System.out.println(elem + " - " + s + " Name: " + s.getName());
-//            motorAxis.add(s.getName());
-//		} 
-//		return motorAxisMap;
-//	}
-
 }
