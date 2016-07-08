@@ -33,15 +33,14 @@ import de.ptb.epics.eve.viewer.views.messagesview.ViewerMessage;
  * @since 0.4.1
  */
 public class Start extends AbstractHandler {
-
-	private static Logger logger = Logger.getLogger(Start.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(Start.class.getName());
+	// private static final Logger ENGINE_LOGGER = Logger.getLogger()
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		
 		String engineHost = Activator.getDefault().getPreferenceStore().
 				getString(PreferenceConstants.P_DEFAULT_ENGINE_ADDRESS);
 		
@@ -54,13 +53,13 @@ public class Start extends AbstractHandler {
 		String engineParameters = Activator.getDefault().getPreferenceStore()
 				.getString(PreferenceConstants.P_DEFAULT_ENGINE_PARAMETERS);
 
-		logger.debug("EngineParameters (before substitution): " + engineParameters);
+		LOGGER.debug("EngineParameters (before substitution): " + engineParameters);
 		for (EngineExecMacros macro : EngineExecMacros.values()) {
 			engineParameters = engineParameters.replaceAll(
 					java.util.regex.Pattern.quote(macro.toString()),
 					EngineExecMacros.substituteMacro(macro));
 		}
-		logger.debug("EngineParameters (after substitution): " + engineParameters);
+		LOGGER.debug("EngineParameters (after substitution): " + engineParameters);
 		
 		List<String> parameters = new ArrayList<String>();
 		parameters.add(engineLocation.trim());
@@ -74,36 +73,36 @@ public class Start extends AbstractHandler {
 			if(engineLocation.isEmpty()) {
 				String message = 
 					"Engine not started due to empty preferences entry!";
-				logger.error(message);
+				LOGGER.error(message);
 				Activator.getDefault().getMessageList().add(
 						new ViewerMessage(Levels.ERROR, message));
 			} else {
 				ProcessBuilder pb = new ProcessBuilder(parameters);
 				pb.redirectErrorStream(true);
-				pb.environment().put("LD_LIBRARY_PATH",
-						"/soft/epics/base-3.14.12.1/lib/linux-x86:/messung/eve/lib/linux-x86");
-				/*Process p = */pb.start();
+				/*File testLog = new File("/home/mmichals/eve/evEngine-" + Calendar.getInstance().getTime().getTime() + ".txt");
+				pb.redirectOutput(testLog);*/ // does not work cause bash script and engine process redirects output
+				/*Process p = */ pb.start();
 				/*BufferedReader br = new BufferedReader(
 						new InputStreamReader(p.getInputStream()));
 				String line;
 				while ((line = br.readLine()) != null) {
-					logger.debug("[Engine]" + line);
+					LOGGER.debug("[Engine]" + line);
 				}
 				br.close();
-				br = null;*/
+				br = null;*/ // does not work because it terminates immediately if no data in stream
 				
-				if (logger.isDebugEnabled()) {
+				if (LOGGER.isDebugEnabled()) {
 					StringBuffer buff = new StringBuffer();
 					buff.append(" ");
 					for (String s : parameters) {
 						buff.append(s);
 						buff.append(" ");
 					}
-					logger.debug("executed " + buff.toString());
+					LOGGER.debug("executed " + buff.toString());
 				}
 				String message = "started engine process at: " + engineHost +
 				"(Port: " + enginePort + ")";
-				logger.info(message);
+				LOGGER.info(message);
 				Activator.getDefault().getMessageList().add(
 						new ViewerMessage(Levels.INFO, message));
 			}
@@ -115,15 +114,15 @@ public class Start extends AbstractHandler {
 			handlerService.executeCommand(
 					"de.ptb.epics.eve.viewer.connectCommand", null);
 		} catch (IOException e) {
-			logger.error(e.getMessage(), e);
+			LOGGER.error(e.getMessage(), e);
 		} catch (InterruptedException e) {
-			logger.error(e.getMessage(), e);
+			LOGGER.error(e.getMessage(), e);
 		} catch (NotDefinedException e) {
-			logger.error(e.getMessage(), e);
+			LOGGER.error(e.getMessage(), e);
 		} catch (NotEnabledException e) {
-			logger.error(e.getMessage(), e);
+			LOGGER.error(e.getMessage(), e);
 		} catch (NotHandledException e) {
-			logger.error(e.getMessage(), e);
+			LOGGER.error(e.getMessage(), e);
 		}
 		return null;
 	}

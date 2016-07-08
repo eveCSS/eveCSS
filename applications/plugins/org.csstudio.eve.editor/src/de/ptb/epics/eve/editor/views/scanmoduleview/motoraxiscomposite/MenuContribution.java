@@ -274,6 +274,8 @@ public class MenuContribution extends CompoundContributionItem {
 		}
 		
 		result.add(motorsAndAxesMenu);
+		measuringStation.setScanModule(null);
+		measuringStation.setSource(null);
 		return result.toArray(new IContributionItem[0]);
 	}
 
