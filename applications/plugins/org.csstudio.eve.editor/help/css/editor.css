@@ -6,6 +6,12 @@ p {
 	text-align: justify;
 }
 
+pre {
+	padding: 5px 20px;
+	border: 1px dashed black;
+	margin: 5px auto;
+}
+
 /* ********* classes ********** */
 .eveTopic {
 	margin-bottom: 10px;
