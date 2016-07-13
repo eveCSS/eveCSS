@@ -43,6 +43,17 @@
 		</layout>
 	</appender>
 
+	<appender name="ResourcesDailyAppender" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="threshold" value="WARN" />
+		<param name="datePattern" value="'.'yyyy-MM-dd" />
+		<param name="file"
+			value="${eve.logdir}/${eve.version}/${user.name}/de.ptb.epics.eve.resources.log" />
+		<param name="Append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %-5p [%t] %c{2}#%M: %m%n" />
+		</layout>
+	</appender>
+
 	<appender name="SelectionDailyAppender" class="org.apache.log4j.DailyRollingFileAppender">
 		<param name="threshold" value="WARN" />
 		<param name="datePattern" value="'.'yyyy-MM-dd" />
@@ -147,6 +158,11 @@
 	<logger name="de.ptb.epics.eve.editor.logging">
 		<level value="WARN" />
 		<appender-ref ref="eclipseDailyAppender" />
+	</logger>
+
+	<logger name="de.ptb.epics.eve.resources">
+		<level value="WARN" />
+		<appender-ref ref="ResourcesDailyAppender" />
 	</logger>
 
 	<logger name="de.ptb.epics.eve.editor.SelectionTracker">
