@@ -343,6 +343,7 @@ public class PVWrapper {
 				}
 			}
 			if (pvReaderEvent.isConnectionChanged()) {
+				try {
 				Display.getDefault().asyncExec(new Runnable() {
 					@Override
 					public void run() {
@@ -351,6 +352,12 @@ public class PVWrapper {
 								isConnected = pvReader.isConnected());
 					}
 				});
+				} catch(NullPointerException e) {
+					LOGGER.error(
+						"NullPointerException in PVWrapper$ReadListener$1.run: " 
+						+ pvName);
+				}
+				try {
 				Display.getDefault().asyncExec(new Runnable() {
 					@Override
 					public void run() {
@@ -359,9 +366,15 @@ public class PVWrapper {
 								isReadOnly = !pv.isWriteConnected());
 					}
 				});
+				} catch(NullPointerException e) {
+					LOGGER.error(
+						"NullPointerException in PVWrapper$ReadListener$2.run: " 
+						+ pvName);
+				}
 			}
 			
 			if (pvReaderEvent.isValueChanged()) {
+				try {
 				Display.getDefault().asyncExec(new Runnable() {
 					@Override
 					public void run() {
@@ -370,9 +383,15 @@ public class PVWrapper {
 								pvValue = valueFormat.format(value));
 					}
 				});
+				} catch(NullPointerException e) {
+					LOGGER.error(
+						"NullPointerException in PVWrapper$ReadListener$3.run: " 
+						+ pvName);
+				}
 				if (value == null) {
 					return;
 				}
+				try {
 				Display.getDefault().asyncExec(new Runnable() {
 					@Override
 					public void run() {
@@ -382,6 +401,11 @@ public class PVWrapper {
 										.getAlarmSeverity());
 					}
 				});
+				} catch(NullPointerException e) {
+					LOGGER.error(
+						"NullPointerException in PVWrapper$ReadListener$4.run: " 
+						+ pvName);
+				}
 
 				if (LOGGER.isDebugEnabled()) {
 					LOGGER.debug("new value for '"
@@ -412,6 +436,7 @@ public class PVWrapper {
 					}
 				}
 				if (value instanceof VEnum) {
+					try {
 					Display.getDefault().asyncExec(new Runnable() {
 						@Override
 						public void run() {
@@ -420,6 +445,11 @@ public class PVWrapper {
 									discreteValues);
 						}
 					});
+					} catch(NullPointerException e) {
+						LOGGER.error(
+							"NullPointerException in PVWrapper$ReadListener$5.run: " 
+							+ pvName);
+					}
 				}
 			}
 		}
