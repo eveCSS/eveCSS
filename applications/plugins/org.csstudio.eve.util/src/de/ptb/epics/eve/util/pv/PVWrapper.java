@@ -82,13 +82,19 @@ public class PVWrapper {
 	private int pvUpdateInterval;
 	
 	// helper to format process variable objects
-	private ValueFormat valueFormat;
+	private static ValueFormat valueFormat = initializeValueFormat();
 	
 	// listener for process variable updates
 	private PVReaderListener<Object> readListener;
 	
 	// Delegated Observable
 	private PropertyChangeSupport propertyChangeSupport;
+	
+	private static ValueFormat initializeValueFormat() {
+		ValueFormat format =  new SimpleValueFormat(1);
+		format.setNumberFormat(new PVNumberFormat("##0.00000E00"));
+		return format;
+	}
 	
 	/**
 	 * Constructs a <code>PVWrapper</code>.
@@ -113,13 +119,6 @@ public class PVWrapper {
 		// fetch the preference entry for the update interval
 		this.pvUpdateInterval = Activator.getDefault().getPreferenceStore().
 							getInt(PreferenceConstants.P_PV_UPDATE_INTERVAL);
-		
-		this.valueFormat = new SimpleValueFormat(1);
-		// Engineering Notation (next 2 lines and the DecimalFormat Argument)
-				// Locale locale = new Locale("en");
-		// DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
-		this.valueFormat.setNumberFormat(new PVNumberFormat("##0.00000E00"));
-				//new DecimalFormat("##0.00000E00", symbols));
 		
 		this.readListener = new ReadListener();
 		
