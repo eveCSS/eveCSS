@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?NLS TYPE="org.eclipse.help.toc"?>
 
-<toc label="EVE Editor" link_to="PLUGINS_ROOT/org.csstudio.ui.help/tocApps.xml#editors">
-   <topic label="EVE Editor">
+<toc label="EVE Viewer" link_to="../org.csstudio.ui.help/tocApps.xml#display">
+   <topic label="EVE Viewer">
       <topic href="help/content/overview.html" label="Overview">
       </topic>
       <topic href="help/content/gettingstarted.html" label="Getting Started">
@@ -16,11 +16,7 @@
       <topic label="Reference">
          <link toc="help/content/reference/toc_reference.xml"/>
       </topic>
-      <topic label="Samples">
-      </topic>
       <topic href="help/content/whatsnew.html" label="What&apos;s New">
-      </topic>
-      <topic label="Legal">
       </topic>
       <topic href="help/content/knownbugs.html" label="Known Bugs">
       </topic>
