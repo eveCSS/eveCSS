@@ -271,6 +271,8 @@ public class MenuContribution extends CompoundContributionItem {
 		}
 		
 		result.add(detectorsAndChannelsMenu);
+		measuringStation.setScanModule(null);
+		measuringStation.setSource(null);
 		return result.toArray(new IContributionItem[0]);
 	}
 

@@ -565,6 +565,8 @@ public class MenuContribution extends CompoundContributionItem {
 		// * end of: Menu Entries for Devices without Class Names *
 		// ********************************************************
 		
+		measuringStation.setScanModule(null);
+		measuringStation.setSource(null);
 		return result.toArray(new IContributionItem[0]);
 	}
 }
