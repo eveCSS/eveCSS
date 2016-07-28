@@ -1,5 +1,12 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.26
+
+* [Feature] added help internationalization (if localized help for current Locale exists it has priority)
+* [Feature] threads (used for engine communication) now register exception handlers to report errors
+
+* [Bug Fix] The GTK 2 workaround parameter is now integrated in the launch configuration
+
 h2(eveTopic). Version 1.23
 
 * [Feature] incremented XML schema version to 4.0

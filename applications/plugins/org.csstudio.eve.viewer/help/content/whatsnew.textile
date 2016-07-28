@@ -1,5 +1,16 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.26
+
+* [Feature] introduced Global Device Inspector (Device Inspector which is visible in each Perspective)
+* [Feature] The Device Inspector now allows to select and remove multiple entries at once
+* [Feature] set default value of PV Update Interval to one second
+
+* [Bug Fix] fixed a bug where the motor status color did not change if in limit position
+* [Bug Fix] fixed a bug where the GUI stopped refreshing due to a device of type short used in a plot window
+* [Bug Fix] fixed a bug where the order of the scan modules in the Engine View table did not match the order they were executed
+* [Bug Fix] fixed a bug where the progress bar accidently reported the start of a measurement instead of its completion
+
 h2(eveTopic). Version 1.24
 
 * [Feature] SCML validation errors are now shown in the Messages View

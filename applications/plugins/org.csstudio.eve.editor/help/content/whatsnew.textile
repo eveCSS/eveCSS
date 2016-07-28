@@ -1,5 +1,20 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.26
+
+* [Feature] added two digit year macro for file names
+* [Feature] File Save as now has a default preset (folder of currently open file)
+* [Feature] Warning/Error messages of CSV import can now be enabled/disabled in the preferences
+* [Feature] the position count of motor axes is now shown in the axes table of the ScanModuleView
+* [Feature] permanently disabled SM storage combo box (the place where certain data is written is now fixed)
+* [Feature] the position list of a motor axes can now saved into a text file
+
+* [Bug Fix] fixed a bug where File save as did not warn if file already exists
+* [Bug Fix] fixed a bug where a detector stop was not properly saved (and thus was not usable in scans)
+* [Bug Fix] fixed a bug where axes were accidently removed from plot windows due to CSV import
+* [Bug Fix] fixed a bug where the values of a discrete motor imported via CSV import were overwritten due to channel access read
+* [Bug Fix] removed a memory leak where the context menu of motor axes selection was not garbage collected due to a still exisiting reference (listener)
+
 h2(eveTopic). Version 1.25
 
 * [Feature] Motor Axis and Detector Channel Order are now changeable via Drag n Drop in the ScanModuleView
