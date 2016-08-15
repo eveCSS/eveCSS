@@ -342,69 +342,71 @@ public class PVWrapper {
 				}
 			}
 			if (pvReaderEvent.isConnectionChanged()) {
-				try {
 				Display.getDefault().asyncExec(new Runnable() {
 					@Override
 					public void run() {
+						try {
 						propertyChangeSupport.firePropertyChange(
 								PVWrapper.CONNECTION_STATUS, isConnected,
 								isConnected = pvReader.isConnected());
+						} catch (NullPointerException e) {
+							LOGGER.error(
+									"NullPointerException in PVWrapper$ReadListener$1.run: " 
+									+ pvName);
+						}
 					}
 				});
-				} catch(NullPointerException e) {
-					LOGGER.error(
-						"NullPointerException in PVWrapper$ReadListener$1.run: " 
-						+ pvName);
-				}
-				try {
+				
 				Display.getDefault().asyncExec(new Runnable() {
 					@Override
 					public void run() {
+						try {
 						propertyChangeSupport.firePropertyChange(
 								PVWrapper.WRITE_STATUS, isReadOnly,
 								isReadOnly = !pv.isWriteConnected());
+						} catch(NullPointerException e) {
+							LOGGER.error(
+								"NullPointerException in PVWrapper$ReadListener$2.run: " 
+								+ pvName);
+						}
 					}
 				});
-				} catch(NullPointerException e) {
-					LOGGER.error(
-						"NullPointerException in PVWrapper$ReadListener$2.run: " 
-						+ pvName);
-				}
 			}
 			
 			if (pvReaderEvent.isValueChanged()) {
-				try {
 				Display.getDefault().asyncExec(new Runnable() {
 					@Override
 					public void run() {
+						try {
 						propertyChangeSupport.firePropertyChange(
 								PVWrapper.VALUE, pvValue,
 								pvValue = valueFormat.format(value));
+						} catch(NullPointerException e) {
+							LOGGER.error(
+								"NullPointerException in PVWrapper$ReadListener$3.run: " 
+								+ pvName);
+						}
 					}
 				});
-				} catch(NullPointerException e) {
-					LOGGER.error(
-						"NullPointerException in PVWrapper$ReadListener$3.run: " 
-						+ pvName);
-				}
 				if (value == null) {
 					return;
 				}
-				try {
+				
 				Display.getDefault().asyncExec(new Runnable() {
 					@Override
 					public void run() {
+						try {
 						propertyChangeSupport.firePropertyChange(
 								PVWrapper.SEVERITY, severity,
 								severity = ValueUtil.alarmOf(value)
 										.getAlarmSeverity());
+						} catch(NullPointerException e) {
+							LOGGER.error(
+								"NullPointerException in PVWrapper$ReadListener$4.run: " 
+								+ pvName);
+						}
 					}
 				});
-				} catch(NullPointerException e) {
-					LOGGER.error(
-						"NullPointerException in PVWrapper$ReadListener$4.run: " 
-						+ pvName);
-				}
 
 				if (LOGGER.isDebugEnabled()) {
 					LOGGER.debug("new value for '"
@@ -435,20 +437,20 @@ public class PVWrapper {
 					}
 				}
 				if (value instanceof VEnum) {
-					try {
 					Display.getDefault().asyncExec(new Runnable() {
 						@Override
 						public void run() {
+							try {
 							propertyChangeSupport.firePropertyChange(
 									PVWrapper.DISCRETE_VALUES, null,
 									discreteValues);
+							} catch(NullPointerException e) {
+								LOGGER.error(
+									"NullPointerException in PVWrapper$ReadListener$5.run: " 
+									+ pvName);
+							}
 						}
 					});
-					} catch(NullPointerException e) {
-						LOGGER.error(
-							"NullPointerException in PVWrapper$ReadListener$5.run: " 
-							+ pvName);
-					}
 				}
 			}
 		}
