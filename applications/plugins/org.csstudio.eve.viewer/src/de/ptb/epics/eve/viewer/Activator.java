@@ -430,6 +430,8 @@ public class Activator extends AbstractUIPlugin {
 				PLUGIN_ID, "icons/prev_nav.gif").createImage());
 		imagereg.put("MOVEDOWN", imageDescriptorFromPlugin(
 				PLUGIN_ID, "icons/next_nav.gif").createImage());
+		imagereg.put("ADDFILE", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/new_untitled_text_file.gif").createImage());
 		
 		imagereg.put("RESTOREVIEW", imageDescriptorFromPlugin(
 				PLUGIN_ID, "icons/thin_restore_view.gif").createImage());

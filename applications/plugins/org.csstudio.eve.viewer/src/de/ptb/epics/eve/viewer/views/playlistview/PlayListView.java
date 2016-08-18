@@ -124,8 +124,11 @@ public final class PlayListView extends ViewPart
 		// Add
 		this.addAction = new AddFileToPlayListAction();
 		this.addAction.setText("Add a file to the play list.");
-		this.addAction.setImageDescriptor(PlatformUI.getWorkbench().
-			getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJ_FILE));
+		this.addAction.setImageDescriptor(new ImageDescriptor() {
+			@Override public ImageData getImageData() {
+				return Activator.getDefault().getImageRegistry().get("ADDFILE").getImageData();
+			}
+		});
 		this.getViewSite().getActionBars().getToolBarManager().add(
 				this.addAction);
 		
