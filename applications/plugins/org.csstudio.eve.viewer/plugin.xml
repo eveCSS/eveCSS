@@ -358,6 +358,15 @@
                id="org.eclipse.ui.commands.toggleState">
          </state>
       </command>
+      <category
+            id="de.ptb.epics.eve.viewer.views.playlistview"
+            name="PlaylistView">
+      </category>
+      <command
+            categoryId="de.ptb.epics.eve.viewer.views.playlistview"
+            id="de.ptb.epics.eve.viewer.views.playlistview.savetotextfile"
+            name="Save Playlist to Text File">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -398,6 +407,15 @@
       <handler
             class="de.ptb.epics.eve.viewer.handler.engine.Start"
             commandId="de.ptb.epics.eve.viewer.startCommand">
+      </handler>
+      <handler
+            class="de.ptb.epics.eve.viewer.handler.playlist.SaveToTextFile"
+            commandId="de.ptb.epics.eve.viewer.views.playlistview.savetotextfile">
+         <enabledWhen>
+            <test
+                  property="viewer.playlist.engineConnected">
+            </test>
+         </enabledWhen>
       </handler>
    </extension>
    <extension
@@ -791,6 +809,14 @@
             </command>
          </toolbar>
       </menuContribution>
+      <menuContribution
+            locationURI="toolbar:PlayListView?after=additions">
+         <command
+               commandId="de.ptb.epics.eve.viewer.views.playlistview.savetotextfile"
+               icon="icons/save_edit.gif"
+               style="push">
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.core.expressions.definitions">
@@ -880,6 +906,16 @@
       <client
             class="de.ptb.epics.eve.viewer.ScanDescriptionReceiver">
       </client>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="de.ptb.epics.eve.viewer.propertytester.EngineConnected"
+            id="de.ptb.epics.eve.viewer.propertytester.engineconnected"
+            namespace="viewer.playlist"
+            properties="engineConnected"
+            type="java.lang.Object">
+      </propertyTester>
    </extension>
 
 </plugin>

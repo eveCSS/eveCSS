@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -13,8 +14,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.services.IEvaluationService;
 
 import de.ptb.epics.eve.ecp1.client.interfaces.IConnectionStateListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IPlayListController;
@@ -26,6 +29,7 @@ import de.ptb.epics.eve.viewer.actions.AddFileToPlayListAction;
 import de.ptb.epics.eve.viewer.actions.MoveFileDownInPlayListAction;
 import de.ptb.epics.eve.viewer.actions.MoveFileUpInPlayListAction;
 import de.ptb.epics.eve.viewer.actions.RemoveFileFromPlayListAction;
+import de.ptb.epics.eve.viewer.propertytester.EngineConnected;
 import de.ptb.epics.eve.viewer.views.messagesview.Levels;
 import de.ptb.epics.eve.viewer.views.messagesview.ViewerMessage;
 
@@ -153,8 +157,7 @@ public final class PlayListView extends ViewPart
 						getImageData();
 			}
 		});
-		this.getViewSite().getActionBars().getToolBarManager().add(
-				this.moveDownAction);
+		this.getViewSite().getActionBars().getToolBarManager().add(this.moveDownAction);
 
 		// Remove
 		this.removeAction = new RemoveFileFromPlayListAction(this);
@@ -163,6 +166,8 @@ public final class PlayListView extends ViewPart
 			getSharedImages().getImageDescriptor(ISharedImages.IMG_TOOL_DELETE));
 		this.getViewSite().getActionBars().getToolBarManager().add(
 				this.removeAction);
+		
+		this.getViewSite().getActionBars().getToolBarManager().add(new Separator("additions"));
 	}
 	
 	/*
@@ -201,6 +206,7 @@ public final class PlayListView extends ViewPart
 		this.tableViewer.getTable().getDisplay().syncExec(new Runnable() {
 			@Override public void run() {
 				tableViewer.getTable().setEnabled(true);
+				evaluateProperties();
 			}
 		});
 	}
@@ -215,10 +221,20 @@ public final class PlayListView extends ViewPart
 			@Override public void run() {
 				tableViewer.setInput(null);
 				tableViewer.getTable().setEnabled(false);
+				evaluateProperties();
 			}
 		});
 	}
 
+	private void evaluateProperties() {
+		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		IEvaluationService evaluationService = (IEvaluationService)window.getService(IEvaluationService.class);
+		if (evaluationService != null) {
+			evaluationService.requestEvaluation(EngineConnected.PROPERTY_NAMESPACE + "." 
+					+ EngineConnected.PROPERTY_ENGINE_CONNECTED);
+		}
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
