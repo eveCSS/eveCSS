@@ -5,3 +5,4 @@ Bundle-SymbolicName: de.ptb.epics.eve.help; singleton:=true
 Bundle-Version: 1.0.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Vendor: PTB
+Require-Bundle: org.eclipse.help;bundle-version="3.5.100"
