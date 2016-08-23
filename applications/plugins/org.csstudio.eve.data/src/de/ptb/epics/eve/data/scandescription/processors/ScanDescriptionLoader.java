@@ -15,6 +15,7 @@ import javax.xml.validation.SchemaFactory;
 import org.xml.sax.SAXException;
 
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
+import de.ptb.epics.eve.data.measuringstation.util.NameProvider;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 
 /**
@@ -24,7 +25,7 @@ import de.ptb.epics.eve.data.scandescription.ScanDescription;
  * @author Hartmut Scherr
  */
 public class ScanDescriptionLoader {
-
+	
 	// the file to load.
 	private File fileToLoad;
 
@@ -113,8 +114,10 @@ public class ScanDescriptionLoader {
 		factory.setSchema(schema);
 		final SAXParser saxParser = factory.newSAXParser();
 
+		NameProvider nameProvider = new NameProvider(null, schemaFile);
+		
 		final ScanDescriptionLoaderHandler handler = new ScanDescriptionLoaderHandler(
-				this.measuringStation);
+				this.measuringStation, nameProvider);
 		saxParser.parse(new ByteArrayInputStream(xmlData), handler);
 
 		this.scanDescription = handler.getScanDescription();
@@ -145,8 +148,10 @@ public class ScanDescriptionLoader {
 		factory.setSchema(schema);
 		final SAXParser saxParser = factory.newSAXParser();
 		
+		NameProvider nameProvider = new NameProvider(fileToLoad, schemaFile);
+		
 		final ScanDescriptionLoaderHandler handler = new ScanDescriptionLoaderHandler(
-				this.measuringStation);
+				this.measuringStation, nameProvider);
 		saxParser.parse(this.fileToLoad, handler);
 
 		this.scanDescription = handler.getScanDescription();

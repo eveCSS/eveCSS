@@ -41,6 +41,7 @@ import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.data.measuringstation.PlugIn;
 import de.ptb.epics.eve.data.measuringstation.event.Event;
 import de.ptb.epics.eve.data.measuringstation.event.ScheduleTime;
+import de.ptb.epics.eve.data.measuringstation.util.NameProvider;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Channel;
@@ -81,6 +82,9 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 	// The measuring station that contains the devices
 	private final IMeasuringStation measuringStation;
 
+	// a name provider translating ids into names
+	private final NameProvider nameProvider;
+	
 	// The loaded scan description
 	private ScanDescription scanDescription;
 
@@ -167,12 +171,13 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 	 * @param measuringStation
 	 *            The measuring station description that contains the devices.
 	 */
-	public ScanDescriptionLoaderHandler(final IMeasuringStation measuringStation) {
+	public ScanDescriptionLoaderHandler(final IMeasuringStation measuringStation, final NameProvider nameProvider) {
 		if (measuringStation == null) {
 			throw new IllegalArgumentException(
 					"The parameter 'measuringStation' must not be null!");
 		}
 		this.measuringStation = measuringStation;
+		this.nameProvider = nameProvider;
 	}
 
 	/**
@@ -808,7 +813,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.lostDevices.add(new ScanDescriptionLoaderLostDeviceMessage(
 						ScanDescriptionLoaderLostDeviceType.
 						PRE_POST_SCAN_DEVICE_ID_NOT_FOUND, 
-						"Prescan-Device '" + textBuffer.toString() + 
+						"Prescan-Device '" + nameProvider.translatePrePostScanDeviceId(textBuffer.toString()) + 
 						"' has been removed."));
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PRESCAN_ID_READ;
@@ -828,7 +833,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.lostDevices.add(new ScanDescriptionLoaderLostDeviceMessage(
 						ScanDescriptionLoaderLostDeviceType.
 						PRE_POST_SCAN_DEVICE_ID_NOT_FOUND, 
-						"Postscan-Device '" + textBuffer.toString() + 
+						"Postscan-Device '" + nameProvider.translatePrePostScanDeviceId(textBuffer.toString()) + 
 						"' has been removed."));
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSTSCAN_ID_READ;
@@ -855,7 +860,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			} else {
 				this.lostDevices.add(new ScanDescriptionLoaderLostDeviceMessage(
 						ScanDescriptionLoaderLostDeviceType.MOTOR_AXIS_ID_NOT_FOUND,
-						"Axis '" + textBuffer.toString() + "' has been removed."));
+						"Axis '" + nameProvider.translateMotorAxisId(textBuffer.toString()) + "' has been removed."));
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_AXISID_READ;
 			break;
@@ -1024,8 +1029,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 						.getDetectorChannelById(textBuffer.toString()));
 			} else {
 				this.lostDevices.add(new ScanDescriptionLoaderLostDeviceMessage(
-						ScanDescriptionLoaderLostDeviceType.DETECTOR_CHANNEL_ID_NOT_FOUND,
-						"Channel '" + textBuffer.toString() + "' has been removed!"));
+					ScanDescriptionLoaderLostDeviceType.DETECTOR_CHANNEL_ID_NOT_FOUND,
+					"Channel '" + nameProvider.translateDetectorChannelId(textBuffer.toString()) + "' has been removed."));
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_CHANNELID_READ;
 			break;
@@ -1414,7 +1419,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 						new ScanDescriptionLoaderLostDeviceMessage(
 							ScanDescriptionLoaderLostDeviceType.
 							MONITOR_OPTION_ID_NOT_FOUND, 
-							"Monitor-Device '" + textBuffer.toString() + 
+							"Monitor-Device '" + nameProvider.translatePrePostScanDeviceId(textBuffer.toString()) + 
 							"' has been removed."));
 				}
 			}
