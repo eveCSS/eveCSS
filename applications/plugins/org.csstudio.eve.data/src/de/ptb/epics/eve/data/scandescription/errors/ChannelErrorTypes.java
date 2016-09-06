@@ -24,5 +24,10 @@ public enum ChannelErrorTypes {
 	/**
 	 * In the plugin is an error.
 	 */
-	PLUGIN_ERROR
+	PLUGIN_ERROR,
+	
+	/**
+	 * the detector whose ready event stops the measurement is not set
+	 */
+	INTERVAL_STOPPED_BY_NOT_SET
 }

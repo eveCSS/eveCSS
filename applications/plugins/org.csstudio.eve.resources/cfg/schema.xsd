@@ -2,7 +2,7 @@
 <schema xmlns="http://www.w3.org/2001/XMLSchema" 
   targetNamespace="http://www.ptb.de/epics/SCML"
   xmlns:tns="http://www.ptb.de/epics/SCML" 
-  version="4.0">
+  version="5.0">
 
   <!-- please increase version number on every modification
        If the corresponding XML-file of the previous schema version is still
@@ -375,14 +375,30 @@
   <complexType name="smchannel">
     <sequence>
       <element name="channelid" type="tns:identifier"></element>
+      <element name="normalize_id" type="tns:identifier" minOccurs="0"></element>
+      <choice>
+        <element name="standard" type="tns:standardchannel"></element>
+        <element name="interval" type="tns:intervalchannel"></element>
+      </choice>
+    </sequence>
+  </complexType>
+
+  <complexType name="standardchannel">
+    <sequence>
       <element name="averagecount" type="nonNegativeInteger" minOccurs="0"></element>
       <element name="maxdeviation" type="double" minOccurs="0"></element>
       <element name="minimum" type="double" minOccurs="0"></element>
       <element name="maxattempts" type="nonNegativeInteger" minOccurs="0"></element>
-      <element name="normalize_id" type="tns:identifier" minOccurs="0"></element>
       <element name="sendreadyevent" type="boolean" minOccurs="0"></element>
       <element name="redoevent" type="tns:smevent" minOccurs="0" maxOccurs="unbounded"></element>
       <element name="deferredtrigger" type="boolean" minOccurs="0"></element>
+    </sequence>
+  </complexType>
+  
+  <complexType name="intervalchannel">
+    <sequence>
+      <element name="triggerinterval" type="tns:positiveDouble"></element>
+      <element name="stoppedby" type="tns:identifier"></element>
     </sequence>
   </complexType>
 
@@ -624,6 +640,12 @@
   <simpleType name="color">
     <restriction base="string">
       <pattern value="[a-fA-F0-9]{6}"/>
+    </restriction>
+  </simpleType>
+  
+  <simpleType name="positiveDouble">
+    <restriction base="double">
+      <minInclusive value="0"></minInclusive>
     </restriction>
   </simpleType>
 </schema>

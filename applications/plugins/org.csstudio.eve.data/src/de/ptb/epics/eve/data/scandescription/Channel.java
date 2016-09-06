@@ -3,26 +3,24 @@ package de.ptb.epics.eve.data.scandescription;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.log4j.Logger;
 
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
-import de.ptb.epics.eve.data.measuringstation.event.DetectorEvent;
-import de.ptb.epics.eve.data.measuringstation.event.ScanEvent;
-import de.ptb.epics.eve.data.measuringstation.event.ScheduleEvent;
-import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
-import de.ptb.epics.eve.data.scandescription.errors.ChannelErrorTypes;
+import de.ptb.epics.eve.data.scandescription.channelmode.ChannelMode;
+import de.ptb.epics.eve.data.scandescription.channelmode.IntervalMode;
+import de.ptb.epics.eve.data.scandescription.channelmode.StandardMode;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager;
-import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventTypes;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 
 /**
  * This class describes the behavior of a detector during the main phase.
+ * 
+ * Context of state pattern.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @author Hartmut Scherr
@@ -37,45 +35,11 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	
 	// delegated observable
 	private PropertyChangeSupport propertyChangeSupport;
-	
-	/*
-	 * This attribute controls how often the detector should be read to make
-	 * an average value. default value is 1.
-	 * If input is invalid, set 0
-	 */
-	private int averageCount;
 
-	/*
-	 * The maximum attempts for reading the channel.
-	 * -1 = value is invalid
-	 * Integer.MIN_VALUE = value is empty
-	 */
-	private int maxAttempts;
-
-	/*
-	 * The max deviation of this channel.
-	 * Double.NaN = value is invalid
-	 * Double.NEGATIVE_INFINITY = value is empty
-	 */
-	private double maxDeviation;
-	
-	/*
-	 * The minimum for this channel.
-	 * Double.NaN = value is invalid
-	 * Double.NEGATIVE_INFINITY = value is empty
-	 */
-	private double minimum;
-	
-	/*
-	 * A flag for repeat on redo.
-	 */
-	private boolean repeatOnRedo;
-
-	// 
 	private DetectorChannel normalizeChannel;
 
-	private boolean deferred;
-
+	private ChannelMode channelMode;
+	
 	/*
 	 * Indicates when the channel was loaded into the scan module.
 	 * Should be used during Loading to preserve the order in 
@@ -84,12 +48,7 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	 * normalization dependencies. Afterwards the original order can 
 	 * be reestablished.
 	 */
-	private int loadTime; 
-	
-	/*
-	 * This control event manager controls the redo events.
-	 */
-	private ControlEventManager redoControlEventManager;
+	private int loadTime;
 	
 	/**
 	 * Constructs a <code>Channel</code>.
@@ -101,20 +60,11 @@ public class Channel extends AbstractMainPhaseBehavior implements
 		if(scanModule == null) {
 			throw new IllegalArgumentException(
 					"The parameter 'scanModule' must not be null!");
-
 		}
 		this.scanModule = scanModule;
-		this.averageCount = 1;
-		this.maxAttempts = Integer.MIN_VALUE;
-		this.maxDeviation = Double.NEGATIVE_INFINITY;
-		this.minimum = Double.NEGATIVE_INFINITY;
-		this.repeatOnRedo = false;
-		this.deferred = false;
+		this.channelMode = new StandardMode(this);
 		this.normalizeChannel = null;
 		this.loadTime = 0;
-		this.redoControlEventManager = new ControlEventManager(
-				ControlEventTypes.CONTROL_EVENT);
-		this.redoControlEventManager.addModelUpdateListener(this);
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
 	}
 	
@@ -153,136 +103,163 @@ public class Channel extends AbstractMainPhaseBehavior implements
 		}
 		return newChannel;
 	}
-	
+
 	/**
-	 * Returns how often the detector should be read to make an average
-	 * result for the measuring.
+	 * Sets the Channel Mode. Available modes are defined by 
+	 * {@link de.ptb.epics.eve.data.scandescription.channelmode.ChannelMode}.
+	 * 
+	 * @param channelMode the channelMode to set
+	 */
+	public void setChannelMode(int channelMode) {
+		switch (channelMode) {
+		case ChannelMode.STANDARD:
+			this.channelMode = new StandardMode(this);
+			break;
+		case ChannelMode.INTERVAL:
+			this.channelMode = new IntervalMode(this);
+			break;
+		}
+	}
+
+	/**
+	 * Returns the average count (how often the detector should be read to make an average
+	 * result for the measuring).
 	 * 
 	 * @return the average count
+	 * @throws IllegalStateException if the channel is not in standard mode
 	 */
 	public int getAverageCount() {
-		return this.averageCount;
+		return this.channelMode.getAverageCount();
 	}
 
 	/**
-	 * Sets how often the detector should be read to make an average result
-	 * for the measuring.
+	 * Sets the average count (how often the detector should be read to make an average result
+	 * for the measuring).
 	 * 
 	 * @param averageCount How often the detector should be read.
-	 * @throws IllegalArgumentException if <code>averageCount</code> 
-	 * 		   is less than zero
+	 * @throws IllegalStateException if the channel is not in standard mode
 	 */
 	public void setAverageCount(final int averageCount) {
-		if(averageCount < 0) {
-			throw new IllegalArgumentException(
-					"The average must be larger than 0.");
-		}
-		LOGGER.debug("average count set");
-		this.propertyChangeSupport.firePropertyChange("averageCount",
-				this.averageCount, this.averageCount = averageCount);
-		updateListeners();
+		this.channelMode.setAverageCount(averageCount);
 	}
 
 	/**
-	 * Returns the maximum attempts to read the detector.
+	 * Returns the maximum attempts to read the detector or <code>null</code> if none.
 	 * 
-	 * @return the maximum attempts to read the detector
+	 * @return the maximum attempts to read the detector or <code>null</code> if none
+	 * @throws IllegalStateException if the channel is not in standard mode
 	 */
-	public int getMaxAttempts() {
-		return maxAttempts;
+	public Integer getMaxAttempts() {
+		return this.channelMode.getMaxAttempts();
 	}
 
 	/**
 	 * Sets the maximum attempts to read the detector.
 	 * 
-	 * @param maxAttempts the maximum attempts to read the detector.
+	 * @param maxAttempts the maximum attempts to read the detector or <code>null</code> to reset
+	 * @throws IllegalStateException if the channel is not in standard mode
 	 */
-	public void setMaxAttempts(final int maxAttempts) {
-		this.propertyChangeSupport.firePropertyChange("maxAttempts",
-				this.maxAttempts, this.maxAttempts = maxAttempts);
-		updateListeners();
+	public void setMaxAttempts(final Integer maxAttempts) {
+		this.channelMode.setMaxAttempts(maxAttempts);
 	}
 
 	/**
-	 * Returns the maximum deviation between the taken values.
+	 * Returns the maximum deviation between the taken values or <code>null</code> if none,
 	 *  
 	 * @return The maximum deviation.
 	 */
-	public double getMaxDeviation() {
-		return this.maxDeviation;
+	public Double getMaxDeviation() {
+		return this.channelMode.getMaxDeviation();
 	}
 
 	/**
 	 * Sets the maximum deviation.
 	 * 
-	 * @param maxDeviation the new maximum deviation.
+	 * @param maxDeviation the new maximum deviation or <code>null</code> to reset
+	 * @throws IllegalStateException if the channel is not in standard mode
 	 */
-	public void setMaxDeviation(final double maxDeviation) {
-		this.propertyChangeSupport.firePropertyChange("maxDeviation",
-				this.maxDeviation, this.maxDeviation = maxDeviation);
-		updateListeners();
+	public void setMaxDeviation(final Double maxDeviation) {
+		this.channelMode.setMaxDeviation(maxDeviation);
 	}
 
 	/**
-	 * Returns the minimum.
+	 * Returns the minimum or <code>null<code> if none
 	 * 
-	 * @return the minimum for this channel.
+	 * @return the minimum
 	 */
-	public double getMinimum() {
-		return this.minimum;
+	public Double getMinimum() {
+		return this.channelMode.getMinimum();
 	}
 
 	/**
 	 * Sets the minimum for this channel.
 	 * 
-	 * @param minimum the new minimum for this channel.
+	 * @param minimum the new minimum or <code>null</code> to reset
+	 * @throws IllegalStateException if the channel is not in standard mdoe
 	 */
-	public void setMinimum(final double minimum) {
-		this.propertyChangeSupport.firePropertyChange("minimum", this.minimum,
-				this.minimum = minimum);
-		updateListeners();
+	public void setMinimum(final Double minimum) {
+		this.channelMode.setMinimum(minimum);
 	}
 
 	/**
-	 * Returns whether the channel should repeat on redo.
+	 * Returns whether the channel should be triggered in the second trigger phase 
+	 * (after channels which are not deferred).
 	 * 
-	 * @return <code>true</code> if the channel repeats reading on a redo event.
-	 * @deprecated Attribute no longer used
-	 */
-	public boolean isRepeatOnRedo() {
-		return repeatOnRedo;
-	}
-
-	/**
-	 * Sets whether the read of the detector should be repeated on a 
-	 * redo event.
-	 * 
-	 * @param repeatOnRedo <code>true</code> if the detector read should be 
-	 * 		repeated, <code>false</code> otherwise
-	 * @deprecated Attribute no longer used
-	 */
-	public void setRepeatOnRedo(final boolean repeatOnRedo) {
-		this.propertyChangeSupport.firePropertyChange("repeatOnRedo",
-				this.repeatOnRedo, this.repeatOnRedo = repeatOnRedo);
-		updateListeners();
-	}
-
-	/**
-	 * @return the deferred
+	 * @return <code>true</code> if the channel should be triggered in the second trigger phase, 
+	 * 		<code>false</code> otherwise
+	 * @throws IllegalStateException if the channel is not in standard mode
 	 */
 	public boolean isDeferred() {
-		return deferred;
+		return this.channelMode.isDeferred();
 	}
 
 	/**
-	 * @param deferred the deferred to set
+	 * Sets whether the channel should be triggered in the second trigger phase
+	 * 
+	 * @param deferred <code>true</code> if the channel should be triggered in the second trigger phase, 
+	 * 		<code>false</code> otherwise
+	 * @throws IllegalStateException if the channel is not in standard mode
 	 */
 	public void setDeferred(boolean deferred) {
-		this.propertyChangeSupport.firePropertyChange("deferred", 
-				this.deferred, this.deferred = deferred);
-		updateListeners();
+		this.channelMode.setDeferred(deferred);
 	}
 
+	/**
+	 * Returns the trigger interval
+	 * @return the trigger interval
+	 * @throws IllegalStateException if the channel is not in interval mode
+	 */
+	public double getTriggerInterval() {
+		return this.channelMode.getTriggerInterval();
+	}
+	
+	/**
+	 * Sets the trigger interval
+	 * @param triggerInterval the trigger delay to set
+	 * @throws IllegalStateException if the channel is not in interval mode
+	 */
+	public void setTriggerInterval(double triggerInterval) {
+		this.channelMode.setTriggerInterval(triggerInterval);
+	}
+	
+	/**
+	 * Returns the channel that should stop the interval measure or <code>null</code> if none
+	 * @return the channel that should stop the interval measure ir <code>null</code> if none
+	 * @throws IllegalStateException if the channel is not in interval mode
+	 */
+	public DetectorChannel getStoppedBy() {
+		return this.channelMode.getStoppedBy();
+	}
+	
+	/**
+	 * Sets the channel that should stop the interval measure.
+	 * @param stoppedBy the channel that should stop the interval measure
+	 * @throws IllegalStateException if the channel is not in interval mode
+	 */
+	public void setStoppedBy(DetectorChannel stoppedBy) {
+		this.channelMode.setStoppedBy(stoppedBy);
+	}
+	
 	/**
 	 * @return the normalizeChannel
 	 */
@@ -325,11 +302,13 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	 * Returns a list of redo events (original List).
 	 * 
 	 * @return a list of redo events (original list)
+	 * @throws IllegalStateException if the channel is not in standard mode
 	 * @author Marcus Michalsky
 	 * @since 1.19
+	 * @since 1.27 delegation to channel mode
 	 */
 	public List<ControlEvent> getRedoEvents() {
-		return this.redoControlEventManager.getEvents();
+		return this.channelMode.getRedoControlEventManager().getEvents();
 	}
 	
 	/**
@@ -338,17 +317,10 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	 * @param redoEvent the redo event that should be added
 	 * @return <code>true</code> if the event has been added, 
 	 * 			<code>false</code> otherwise
-	 * @author Marcus Michalsky
-	 * @since 1.19
+	 * @throws IllegalStateException if the channel is not in standard mode
 	 */
 	public boolean addRedoEvent(final ControlEvent redoEvent) {
-		if (this.redoControlEventManager.addControlEvent(redoEvent)) {
-			this.registerEventValidProperty(redoEvent);
-			this.propertyChangeSupport.firePropertyChange(
-					Channel.REDO_EVENT_PROP, null, redoEvent);
-			return true;
-		}
-		return false;
+		return this.channelMode.addRedoEvent(redoEvent);
 	}
 
 	/**
@@ -357,17 +329,10 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	 * @param redoEvent the redo event that should be removed
 	 * @return <code>true</code> if the event has been removed, 
 	 * 			<code>false</code> otherwise
-	 * @author Marcus Michalsky
-	 * @since 1.19
+	 * @throws IllegalStateException if the channel is not in standard mode
 	 */
 	public boolean removeRedoEvent(final ControlEvent redoEvent) {
-		if (this.redoControlEventManager.removeEvent(redoEvent)) {
-			this.unregisterEventValidProperty(redoEvent);
-			this.propertyChangeSupport.firePropertyChange(
-					Channel.REDO_EVENT_PROP, redoEvent, null);
-			return true;
-		}
-		return false;
+		return this.channelMode.removeRedoEvent(redoEvent);
 	}
 	
 	/**
@@ -377,18 +342,18 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	 * @since 1.19
 	 */
 	public void removeRedoEvents() {
-		this.redoControlEventManager.removeAllEvents();
-		this.propertyChangeSupport.firePropertyChange(Channel.REDO_EVENT_PROP,
-				this.redoControlEventManager.getEvents(), null);
+		this.channelMode.removeRedoEvents();
 	}
 
 	/**
-	 * This method returns 
+	 * Present for backward compatibility.
+	 * TODO Collection should not be exposed
 	 * 
-	 * @return
+	 * @return the control event manager
+	 * @throws IllegalStateException if channel is not in standard mode
 	 */
 	public ControlEventManager getRedoControlEventManager() {
-		return redoControlEventManager;
+		return this.channelMode.getRedoControlEventManager();
 	}
 	
 	/**
@@ -429,14 +394,10 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	 * Resets the channel to its default values.
 	 */
 	public void reset() {
-		this.averageCount = 1;
-		this.maxAttempts = Integer.MIN_VALUE;
-		this.maxDeviation = Double.NEGATIVE_INFINITY;
-		this.minimum = Double.NEGATIVE_INFINITY;
-		this.repeatOnRedo = false;
 		this.normalizeChannel = null;
-		this.deferred = this.getDetectorChannel().isDeferred();
-		this.redoControlEventManager.removeAllEvents();
+		if(this.channelMode != null) {
+			this.channelMode.reset();
+		}
 		LOGGER.debug("Channel " + this.getDetectorChannel().getName()
 				+ " has been reset");
 	}
@@ -446,22 +407,7 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	 */
 	@Override
 	public List<IModelError> getModelErrors() {
-		final List<IModelError> modelErrors = new ArrayList<IModelError>();
-
-		if(Double.compare(this.maxDeviation, Double.NaN) == 0) {
-			modelErrors.add(new ChannelError(this, 
-					ChannelErrorTypes.MAX_DEVIATION_NOT_POSSIBLE));
-		}
-		if(Double.compare(this.minimum, Double.NaN) == 0) {
-			modelErrors.add(new ChannelError(this, 
-					ChannelErrorTypes.MINIMUM_NOT_POSSIBLE));
-		}
-		if(this.redoControlEventManager.getModelErrors().size() > 0) {
-			modelErrors.addAll(this.redoControlEventManager.getModelErrors());
-			modelErrors.add(new ChannelError(this, 
-					ChannelErrorTypes.PLUGIN_ERROR));
-		}
-		return modelErrors;
+		return this.channelMode.getModelErrors();
 	}
 	
 	/*
@@ -481,14 +427,6 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	@SuppressWarnings("unchecked")
 	@Override
 	public void propertyChange(PropertyChangeEvent e) {
-		if (e.getPropertyName().equals(ScanEvent.VALID_PROP) &&
-				e.getNewValue().equals(Boolean.FALSE)) {
-			LOGGER.debug(((ScanEvent)e.getSource()).getName() +
-					" (Det: " + this.getDetectorChannel().getName() + ") " +
-					" got invalid -> start removal");
-			this.removeInvalidScanEvents();
-		}
-		
 		if (this.normalizeChannel == null) {
 			return;
 		}
@@ -534,22 +472,6 @@ public class Channel extends AbstractMainPhaseBehavior implements
 				listener);
 	}
 	
-	private void registerEventValidProperty(ControlEvent controlEvent) {
-		if (controlEvent.getEvent() instanceof ScheduleEvent || 
-				controlEvent.getEvent() instanceof DetectorEvent) {
-			((ScanEvent) controlEvent.getEvent()).addPropertyChangeListener(
-					ScanEvent.VALID_PROP, this);
-		}
-	}
-	
-	private void unregisterEventValidProperty(ControlEvent controlEvent) {
-		if (controlEvent.getEvent() instanceof ScheduleEvent || 
-				controlEvent.getEvent() instanceof DetectorEvent) {
-			((ScanEvent) controlEvent.getEvent()).removePropertyChangeListener(
-					ScanEvent.VALID_PROP, this);
-		}
-	}
-	
 	/**
 	 * Due to the late registration of ScanEvents (due to mutability) during 
 	 * scan description loading the control events don't register themselves 
@@ -558,29 +480,14 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	 * Usage of this function is therefore only necessary during scan description 
 	 * loading.
 	 * 
+	 * @throws IllegalStateException if the channel is not in standard mode
 	 * @author Marcus Michalsky
 	 * @since 1.19
+	 * @since 1.27 delegated to standard mode
 	 * @see Redmine #1401 Comments #16,#17
 	 */
 	public void registerEventValidProperties() {
-		for (ControlEvent controlEvent : this.getRedoEvents()) {
-			this.registerEventValidProperty(controlEvent);
-		}
-	}
-	
-	private void removeInvalidScanEvents() {
-		for (ControlEvent controlEvent : new CopyOnWriteArrayList<ControlEvent>(
-				this.getRedoEvents())) {
-			if (controlEvent.getEvent() instanceof ScanEvent &&
-					!((ScanEvent)controlEvent.getEvent()).isValid()) {
-				this.removeRedoEvent(controlEvent);
-				LOGGER.debug("Redo Event " + controlEvent.getEvent().getName()
-						+ " removed from channel "
-						+ this.getDetectorChannel().getName() + 
-						"(Chain  " + this.getScanModule().getChain().getId() + 
-						", SM " + this.getScanModule().getId() + ")");
-			}
-		}
+		this.channelMode.registerEventValidProperties();
 	}
 	
 	/**

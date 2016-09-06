@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<class-diagram version="1.1.4" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
-  associations="true" dependencies="false" nesting-relationships="true">  
+<class-diagram version="1.1.10" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
   <class id="1" language="java" name="de.ptb.epics.eve.data.scandescription.Axis" project="de.ptb.epics.eve.data" 
     file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/Axis.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1246" y="520"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
-      visibility="true">      
+    <position height="-1" width="-1" x="1316" y="824"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+      <operations public="true" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
   <class id="2" language="java" name="de.ptb.epics.eve.data.scandescription.axismode.AxisMode" 
     project="de.ptb.epics.eve.data" 
     file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/axismode/AxisMode.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="570" y="152"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
-      visibility="true">      
+    <position height="-1" width="-1" x="541" y="152"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
@@ -26,9 +26,9 @@
     project="de.ptb.epics.eve.data" 
     file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/axismode/AddMultiplyMode.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="689" width="232" x="293" y="298"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
-      visibility="true">      
+    <position height="-1" width="-1" x="413" y="680"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
@@ -37,9 +37,9 @@
     project="de.ptb.epics.eve.data" 
     file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/axismode/FileMode.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="185" width="212" x="41" y="298"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
-      visibility="true">      
+    <position height="-1" width="-1" x="151" y="428"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
@@ -48,9 +48,9 @@
     project="de.ptb.epics.eve.data" 
     file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/axismode/PluginMode.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="185" width="220" x="565" y="298"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
-      visibility="true">      
+    <position height="-1" width="-1" x="681" y="446"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
@@ -59,9 +59,9 @@
     project="de.ptb.epics.eve.data" 
     file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/axismode/PositionlistMode.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="185" width="212" x="825" y="298"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
-      visibility="true">      
+    <position height="-1" width="-1" x="935" y="428"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
@@ -70,9 +70,9 @@
     project="de.ptb.epics.eve.data" 
     file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/axismode/AddMultiplyModeDate.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="113" width="212" x="545" y="1027"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
-      visibility="true">      
+    <position height="-1" width="-1" x="680" y="1188"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
@@ -81,9 +81,9 @@
     project="de.ptb.epics.eve.data" 
     file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/axismode/AddMultiplyModeDouble.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="113" width="212" x="293" y="1027"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
-      visibility="true">      
+    <position height="-1" width="-1" x="428" y="1188"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
@@ -92,9 +92,9 @@
     project="de.ptb.epics.eve.data" 
     file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/axismode/AddMultiplyModeInt.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="113" width="212" x="41" y="1027"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
-      visibility="true">      
+    <position height="-1" width="-1" x="176" y="1188"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
@@ -103,9 +103,9 @@
     project="de.ptb.epics.eve.data" 
     file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/axismode/AddMultiplyModeDuration.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="113" width="212" x="797" y="1027"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
-      visibility="true">      
+    <position height="-1" width="-1" x="932" y="1188"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
@@ -114,9 +114,9 @@
     project="de.ptb.epics.eve.data" 
     file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/Stepfunctions.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1251" y="675"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
-      visibility="true">      
+    <position height="-1" width="-1" x="931" y="634"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
@@ -125,9 +125,9 @@
     project="de.ptb.epics.eve.data" 
     file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/AbstractMainPhaseBehavior.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1240" y="363"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
-      visibility="true">      
+    <position height="-1" width="-1" x="1310" y="339"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
@@ -136,90 +136,106 @@
     project="de.ptb.epics.eve.data" 
     file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/AbstractBehavior.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1234" y="158"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
-      visibility="true">      
+    <position height="-1" width="-1" x="1306" y="151"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
   <generalization id="14">    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="3"/>  
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="13"/>  
   </generalization>  
   <generalization id="15">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="3"/>  
-  </generalization>  
-  <association id="16">    
-    <bendpoint x="1033" y="287"/>    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="17" name="axis"/>      
-      <multiplicity id="18" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="19">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="2"/>  
-  </generalization>  
-  <generalization id="20">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="2"/>  
-  </generalization>  
-  <generalization id="21">    
     <end type="SOURCE" refId="6"/>    
     <end type="TARGET" refId="2"/>  
   </generalization>  
-  <association id="22">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="23" name="referenceAxis"/>      
-      <multiplicity id="24" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="25">    
-    <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="3"/>  
-  </generalization>  
-  <generalization id="26">    
+  <generalization id="16">    
     <bendpoint x="309" y="275"/>    
     <end type="SOURCE" refId="4"/>    
     <end type="TARGET" refId="2"/>  
   </generalization>  
-  <association id="27">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="28" name="stepfunction"/>      
-      <multiplicity id="29" minimum="0" maximum="1"/>    
+  <generalization id="17">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="3"/>  
+  </generalization>  
+  <generalization id="18">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="3"/>  
+  </generalization>  
+  <association id="19">    
+    <bendpoint x="1033" y="287"/>    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="20" name="axis">        
+        <position height="0" width="0" x="70" y="304"/>      
+      </attribute>      
+      <multiplicity id="21" minimum="0" maximum="1">        
+        <position height="0" width="0" x="70" y="304"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="22">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="3"/>  
+  </generalization>  
+  <association id="23">    
+    <bendpoint x="993" y="221"/>    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="24" name="mode">        
+        <position height="0" width="0" x="-29" y="0"/>      
+      </attribute>      
+      <multiplicity id="25" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-29" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="26">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="12"/>  
+  </generalization>  
+  <association id="27">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="28" name="referenceAxis">        
+        <position height="0" width="0" x="70" y="304"/>      
+      </attribute>      
+      <multiplicity id="29" minimum="0" maximum="1">        
+        <position height="0" width="0" x="70" y="304"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <generalization id="30">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="12"/>  
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="2"/>  
   </generalization>  
   <generalization id="31">    
     <end type="SOURCE" refId="9"/>    
     <end type="TARGET" refId="3"/>  
   </generalization>  
   <association id="32">    
-    <bendpoint x="993" y="221"/>    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="33" name="mode"/>      
-      <multiplicity id="34" minimum="0" maximum="1"/>    
+      <attribute id="33" name="stepfunction">        
+        <position height="0" width="0" x="-320" y="-41"/>      
+      </attribute>      
+      <multiplicity id="34" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-320" y="-41"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
+    <end type="TARGET" refId="11" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <generalization id="35">    
-    <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="13"/>  
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="2"/>  
   </generalization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-    accessors="true" visibility="true">    
+    sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    
     <operations public="true" package="true" protected="true" private="true" static="true"/>  
   </classifier-display>  

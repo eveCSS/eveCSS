@@ -114,7 +114,7 @@ public class AxisTest implements PropertyChangeListener {
 	public void propertyChange(PropertyChangeEvent evt) {
 		switch (evt.getPropertyName()) {
 		case AddMultiplyMode.START_PROP:
-			this.start = true;;
+			this.start = true;
 			break;
 		case AddMultiplyMode.STOP_PROP:
 			this.stop = true;
