@@ -33,7 +33,7 @@ public class StandardMode extends ChannelMode implements IModelUpdateListener, P
 	public static final String DEFERRED_PROP = "deferred";
 	public static final String REDO_EVENT_PROP = "redoEvent";
 	
-	private static final int AVERAGE_COUNT_DEFAULT_VALUE = 1;
+	public static final int AVERAGE_COUNT_DEFAULT_VALUE = 1;
 	
 	private int averageCount;
 	private Integer maxAttempts;

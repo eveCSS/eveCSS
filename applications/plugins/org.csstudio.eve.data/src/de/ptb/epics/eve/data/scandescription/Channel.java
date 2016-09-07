@@ -28,10 +28,9 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  */
 public class Channel extends AbstractMainPhaseBehavior implements
 		PropertyChangeListener {
-
-	private static final Logger LOGGER = Logger.getLogger(Channel.class.getName());
+	public static final String NORMALIZE_CHANNEL_PROP = "normalizeChannel";
 	
-	public static final String REDO_EVENT_PROP = "redoEvent";
+	private static final Logger LOGGER = Logger.getLogger(Channel.class.getName());
 	
 	// delegated observable
 	private PropertyChangeSupport propertyChangeSupport;
@@ -63,6 +62,7 @@ public class Channel extends AbstractMainPhaseBehavior implements
 		}
 		this.scanModule = scanModule;
 		this.channelMode = new StandardMode(this);
+		this.channelMode.addPropertyChangeListener(this);
 		this.normalizeChannel = null;
 		this.loadTime = 0;
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
@@ -111,6 +111,7 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	 * @param channelMode the channelMode to set
 	 */
 	public void setChannelMode(int channelMode) {
+		this.channelMode.removePropertyChangeListener(this);
 		switch (channelMode) {
 		case ChannelMode.STANDARD:
 			this.channelMode = new StandardMode(this);
@@ -119,6 +120,7 @@ public class Channel extends AbstractMainPhaseBehavior implements
 			this.channelMode = new IntervalMode(this);
 			break;
 		}
+		this.channelMode.addPropertyChangeListener(this);
 	}
 
 	/**
@@ -293,7 +295,7 @@ public class Channel extends AbstractMainPhaseBehavior implements
 					+ this.getDetectorChannel().getName());
 			return;
 		}
-		this.propertyChangeSupport.firePropertyChange("normalizeChannel", 
+		this.propertyChangeSupport.firePropertyChange(Channel.NORMALIZE_CHANNEL_PROP, 
 				this.normalizeChannel, this.normalizeChannel = normalizeChannel);
 		updateListeners();
 	}
@@ -427,10 +429,6 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	@SuppressWarnings("unchecked")
 	@Override
 	public void propertyChange(PropertyChangeEvent e) {
-		if (this.normalizeChannel == null) {
-			return;
-		}
-
 		if (this.getScanModule().smLoading) {
 			// Scan is loading
 			return;
@@ -444,6 +442,8 @@ public class Channel extends AbstractMainPhaseBehavior implements
 			}
 			this.setNormalizeChannel(null);
 		}
+		
+		this.propertyChangeSupport.firePropertyChange(e.getPropertyName(), e.getOldValue(), e.getNewValue());
 	}
 
 	/**

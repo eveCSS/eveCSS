@@ -11,8 +11,13 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.scandescription.Channel;
-import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.channelmode.ChannelMode;
+import de.ptb.epics.eve.data.scandescription.channelmode.IntervalMode;
+import de.ptb.epics.eve.data.scandescription.channelmode.StandardMode;
+import de.ptb.epics.eve.data.tests.mothers.measuringstation.DetectorChannelMother;
+import de.ptb.epics.eve.data.tests.mothers.scandescription.ChannelMother;
 
 /**
  * @author Marcus Michalsky
@@ -28,11 +33,151 @@ public class ChannelTest implements PropertyChangeListener {
 	private boolean minimum;
 	private boolean normalizeChannel;
 	
+	private boolean triggerInterval;
+	private boolean stoppedBy;
+	
+	@Test(expected = IllegalStateException.class)
+	public void testStandardModeSetTriggerInterval() {
+		this.channel.setTriggerInterval(2.0);
+	}
+	
+	@Test(expected = IllegalStateException.class)
+	public void testStandardModeSetStoppedBy() {
+		this.channel.setStoppedBy(null);
+	}
+	
+	@Test(expected = IllegalStateException.class)
+	public void testIntervalModeSetAverageCount() {
+		this.channel.setChannelMode(ChannelMode.INTERVAL);
+		this.channel.setAverageCount(1);
+	}
+	
+	@Test(expected = IllegalStateException.class)
+	public void testIntervalModeSetMaxAttempts() {
+		this.channel.setChannelMode(ChannelMode.INTERVAL);
+		this.channel.setMaxAttempts(1);
+	}
+	
+	@Test(expected = IllegalStateException.class)
+	public void testIntervalModeSetMaxDeviation() {
+		this.channel.setChannelMode(ChannelMode.INTERVAL);
+		this.channel.setMaxDeviation(2.0);
+	}
+	
+	@Test(expected = IllegalStateException.class)
+	public void testIntervalModeSetMinimum() {
+		this.channel.setChannelMode(ChannelMode.INTERVAL);
+		this.channel.setMinimum(2.0);
+	}
+	
+	@Test(expected = IllegalStateException.class)
+	public void testIntervalModeSetDeferred() {
+		this.channel.setChannelMode(ChannelMode.INTERVAL);
+		this.channel.setDeferred(true);
+	}
+	
+	@Test
+	public void testNormalize() {
+		assertEquals(null, this.channel.getNormalizeChannel());
+		DetectorChannel detectorChannel = DetectorChannelMother.createNewDetectorChannel();
+		this.channel.setNormalizeChannel(detectorChannel);
+		assertEquals(detectorChannel, this.channel.getDetectorChannel());
+	}
+
+	@Test
+	public void testAverageCount() {
+		assertEquals(StandardMode.AVERAGE_COUNT_DEFAULT_VALUE, this.channel.getAverageCount());
+		this.channel.setAverageCount(5);
+		assertEquals(5, this.channel.getAverageCount());
+	}
+	
+	@Test
+	public void testMaxAttempts() {
+		assertEquals(null, this.channel.getMaxAttempts());
+		this.channel.setMaxAttempts(1);
+		assertEquals(1, this.channel.getMaxAttempts().intValue());
+		this.channel.setMaxAttempts(null);
+		assertEquals(null, this.channel.getMaxAttempts());
+	}
+	
+	@Test
+	public void testMaxDeviation() {
+		assertEquals(null, this.channel.getMaxDeviation());
+		this.channel.setMaxDeviation(2.0);
+		assertEquals(2.0, this.channel.getMaxDeviation(), 0);
+		this.channel.setMaxDeviation(null);
+		assertEquals(null, this.channel.getMaxDeviation());
+	}
+	
+	@Test
+	public void testMinimum() {
+		assertEquals(null, this.channel.getMinimum());
+		this.channel.setMinimum(2.0);
+		assertEquals(2.0, this.channel.getMinimum(), 0);
+		this.channel.setMinimum(null);
+		assertEquals(null, this.channel.getMinimum());
+	}
+	
+	@Test
+	public void testDeferred() {
+		assertEquals(false, this.channel.isDeferred());
+		this.channel.setDeferred(true);
+		assertEquals(true, this.channel.isDeferred());
+	}
+	
+	@Test
+	public void testTriggerInterval() {
+		this.channel.setChannelMode(ChannelMode.INTERVAL);
+		assertEquals(IntervalMode.TRIGGER_INTERVAL_DEFAULT_VALUE, this.channel.getTriggerInterval(), 0);
+		this.channel.setTriggerInterval(2.0);
+		assertEquals(2.0, this.channel.getTriggerInterval(), 0);
+	}
+	
+	@Test
+	public void testStoppedBy() {
+		this.channel.setChannelMode(ChannelMode.INTERVAL);
+		assertEquals(null, this.channel.getStoppedBy());
+		DetectorChannel detectorChannel = DetectorChannelMother.createNewDetectorChannel();
+		this.channel.setStoppedBy(detectorChannel);
+		assertEquals(detectorChannel, this.channel.getStoppedBy());
+	}
+	
+	@Test
+	public void testResetStandard() {
+		this.channel.setAverageCount(2);
+		this.channel.setMaxAttempts(2);
+		this.channel.setMaxDeviation(2.0);
+		this.channel.setMinimum(2.0);
+		this.channel.setDeferred(true);
+		this.channel.setNormalizeChannel(DetectorChannelMother.createNewDetectorChannel());
+		// TODO set RedoEvent (ObjectMother ?)
+		this.channel.reset();
+		assertEquals(1, this.channel.getAverageCount());
+		assertEquals(null, this.channel.getMaxAttempts());
+		assertEquals(null, this.channel.getMaxDeviation());
+		assertEquals(null, this.channel.getMinimum());
+		assertEquals(false, this.channel.isDeferred());
+		assertEquals(null, this.channel.getNormalizeChannel());
+		// TODO check redo events
+	}
+	
+	@Test
+	public void testResetInterval() {
+		this.channel.setChannelMode(ChannelMode.INTERVAL);
+		this.channel.setTriggerInterval(2.0);
+		this.channel.setStoppedBy(DetectorChannelMother.createNewDetectorChannel());
+		this.channel.setNormalizeChannel(DetectorChannelMother.createNewDetectorChannel());
+		this.channel.reset();
+		assertEquals(IntervalMode.TRIGGER_INTERVAL_DEFAULT_VALUE, this.channel.getTriggerInterval(), 0);
+		assertEquals(null, this.channel.getStoppedBy());
+		assertEquals(null, this.channel.getNormalizeChannel());
+	}
+	
 	/**
-	 * 
+	 * @since 1.3
 	 */
 	@Test
-	public void testPropertyChangeSupport() {
+	public void testStandardPropertyChangeSupport() {
 		// initialize indicators
 		this.averageCount = false;
 		this.maxAttempts = false;
@@ -41,12 +186,11 @@ public class ChannelTest implements PropertyChangeListener {
 		this.normalizeChannel = false;
 		
 		// listen to properties
-		this.channel.addPropertyChangeListener("averageCount", this);
-		this.channel.addPropertyChangeListener("confirmTrigger", this);
-		this.channel.addPropertyChangeListener("maxAttempts", this);
-		this.channel.addPropertyChangeListener("maxDeviation", this);
-		this.channel.addPropertyChangeListener("minimum", this);
-		this.channel.addPropertyChangeListener("normalizeChannel", this);
+		this.channel.addPropertyChangeListener(StandardMode.AVERAGE_COUNT_PROP, this);
+		this.channel.addPropertyChangeListener(StandardMode.MAX_ATTEMPTS_PROP, this);
+		this.channel.addPropertyChangeListener(StandardMode.MAX_DEVIATION_PROP, this);
+		this.channel.addPropertyChangeListener(StandardMode.MINIMUM_PROP, this);
+		this.channel.addPropertyChangeListener(Channel.NORMALIZE_CHANNEL_PROP, this);
 		
 		// manipulate properties
 		this.channel.setAverageCount(0);
@@ -62,22 +206,46 @@ public class ChannelTest implements PropertyChangeListener {
 		assertTrue(this.minimum);
 		assertTrue(this.normalizeChannel);
 	}
+	
+	/**
+	 * @since 1.27
+	 */
+	@Test
+	public void testIntervalPropertyChangeSupport() {
+		this.triggerInterval = false;
+		this.stoppedBy = false;
+		
+		this.channel.setChannelMode(ChannelMode.INTERVAL);
+		
+		this.channel.addPropertyChangeListener(IntervalMode.STOPPED_BY_PROP, this);
+		this.channel.addPropertyChangeListener(IntervalMode.TRIGGER_INTERVAL_PROP, this);
+		
+		this.channel.setTriggerInterval(2.0);
+		this.channel.setStoppedBy(DetectorChannelMother.createNewDetectorChannel());
+		
+		assertTrue(this.triggerInterval);
+		assertTrue(this.stoppedBy);
+	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		if(evt.getPropertyName().equals("averageCount")) {
+		if(evt.getPropertyName().equals(StandardMode.AVERAGE_COUNT_PROP)) {
 			this.averageCount = true;
-		} else if(evt.getPropertyName().equals("maxAttempts")) {
+		} else if(evt.getPropertyName().equals(StandardMode.MAX_ATTEMPTS_PROP)) {
 			this.maxAttempts = true;
-		} else if(evt.getPropertyName().equals("maxDeviation")) {
+		} else if(evt.getPropertyName().equals(StandardMode.MAX_DEVIATION_PROP)) {
 			this.maxDeviation = true;
-		} else if(evt.getPropertyName().equals("minimum")) {
+		} else if(evt.getPropertyName().equals(StandardMode.MINIMUM_PROP)) {
 			this.minimum = true;
-		} else if(evt.getPropertyName().equals("normalizeChannel")) {
+		} else if(evt.getPropertyName().equals(Channel.NORMALIZE_CHANNEL_PROP)) {
 			this.normalizeChannel = true;
+		} else if(evt.getPropertyName().equals(IntervalMode.TRIGGER_INTERVAL_PROP)) {
+			this.triggerInterval = true;
+		} else if(evt.getPropertyName().equals(IntervalMode.STOPPED_BY_PROP)) {
+			this.stoppedBy = true;
 		}
 	}
 	
@@ -95,8 +263,7 @@ public class ChannelTest implements PropertyChangeListener {
 	 */
 	@Before
 	public void beforeEveryTest() {
-		ScanModule scanModule = new ScanModule(1);
-		this.channel = new Channel(scanModule);
+		this.channel = ChannelMother.createNewChannel();
 	}
 
 	/**

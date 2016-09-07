@@ -14,7 +14,7 @@ import de.ptb.epics.eve.data.scandescription.errors.IModelError;
  * @since 1.27
  */
 public class IntervalMode extends ChannelMode {
-	private static final double TRIGGER_INTERVAL_DEFAULT_VALUE = 1.0;
+	public static final double TRIGGER_INTERVAL_DEFAULT_VALUE = 1.0;
 	
 	public static final String TRIGGER_INTERVAL_PROP = "triggerInterval";
 	public static final String STOPPED_BY_PROP = "stoppedBy";
