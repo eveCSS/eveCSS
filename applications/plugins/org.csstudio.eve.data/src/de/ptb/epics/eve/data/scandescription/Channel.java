@@ -105,6 +105,22 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	}
 
 	/**
+	 * Returns the current channel mode. Available modes are defined by 
+	 * {@link de.ptb.epics.eve.data.scandescription.channelmode.ChannelMode}.
+	 * 
+	 * @return the current channel mode
+	 * @throws IllegalStateException if no channel mode is set
+	 */
+	public int getChannelMode() {
+		if (this.channelMode instanceof StandardMode) {
+			return ChannelMode.STANDARD;
+		} else if (this.channelMode instanceof IntervalMode) {
+			return ChannelMode.INTERVAL;
+		}
+		throw new IllegalStateException("no channel mode set!");
+	}
+	
+	/**
 	 * Sets the Channel Mode. Available modes are defined by 
 	 * {@link de.ptb.epics.eve.data.scandescription.channelmode.ChannelMode}.
 	 * 

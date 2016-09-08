@@ -7,6 +7,8 @@ package de.ptb.epics.eve.data.scandescription.processors;
 public class Literals {
 	public static final String CHARACTER_DATA = "CDATA";
 	
+	public static final String EMPTY_STRING = "";
+	
 	public static final String XML_ATTRIBUTE_NAME_NAME = "name";
 	public static final String XML_ATTRIBUTE_NAME_TYPE = "type";
 	
@@ -71,6 +73,11 @@ public class Literals {
 	public static final String XML_ELEMENT_NAME_SETTLETIME = "settletime";
 	public static final String XML_ELEMENT_NAME_SMAXIS = "smaxis";
 	public static final String XML_ELEMENT_NAME_SMCHANNEL = "smchannel";
+	public static final String XML_ELEMENT_NAME_SMCHANNELID = "channelid";
+	public static final String XML_ELEMENT_NAME_SMCHANNEL_INTERVAL = "intervalchannel";
+	public static final String XML_ELEMENT_NAME_SMCHANNEL_STANDARD = "standardchannel";
+	public static final String XML_ELEMENT_NAME_SMCHANNEL_STOPPEDBY = "stoppedby";
+	public static final String XML_ELEMENT_NAME_SMCHANNEL_TRIGGERINTERVAL = "triggerinterval";
 	public static final String XML_ELEMENT_NAME_SMID = "smid";
 	public static final String XML_ELEMENT_NAME_SMSELECTION = "smselection";
 	public static final String XML_ELEMENT_NAME_SMTYPE = "smtype";

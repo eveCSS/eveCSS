@@ -52,6 +52,8 @@ import de.ptb.epics.eve.data.scandescription.Prescan;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.YAxis;
+import de.ptb.epics.eve.data.scandescription.channelmode.ChannelMode;
+import de.ptb.epics.eve.data.scandescription.channelmode.StandardMode;
 import de.ptb.epics.eve.data.scandescription.PositionMode;
 
 /**
@@ -1601,96 +1603,136 @@ public class ScanDescriptionSaver implements
 	private boolean writeChannel(final Channel channel) {
 		try {
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_SMCHANNEL, Literals.XML_ELEMENT_NAME_SMCHANNEL,
-					this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SMCHANNEL, 
+					Literals.XML_ELEMENT_NAME_SMCHANNEL, this.atts);
+			
 			this.atts.clear();
-			this.contentHandler.startElement("", "channelid", "channelid",
-					this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_CHANNELID, 
+					Literals.XML_ELEMENT_NAME_CHANNELID, this.atts);
 			this.contentHandler.characters(channel.getAbstractDevice().getID()
 					.toCharArray(), 0, channel.getAbstractDevice().getID()
 					.length());
-			this.contentHandler.endElement("", "channelid", "channelid");
-
-			if (channel.getAverageCount() > 1) {
-				this.atts.clear();
-				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_AVERAGECOUNT,
-						Literals.XML_ELEMENT_NAME_AVERAGECOUNT, this.atts);
-				this.contentHandler.characters(
-						("" + channel.getAverageCount()).toCharArray(), 0,
-						("" + channel.getAverageCount()).length());
-				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_AVERAGECOUNT,
-						Literals.XML_ELEMENT_NAME_AVERAGECOUNT);
-			}
-
-			if (channel.getMaxDeviation() != Double.NEGATIVE_INFINITY) {
-				this.atts.clear();
-				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_MAXDEVIATION,
-						Literals.XML_ELEMENT_NAME_MAXDEVIATION, this.atts);
-				this.contentHandler.characters(
-						("" + channel.getMaxDeviation()).toCharArray(), 0,
-						("" + channel.getMaxDeviation()).length());
-				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_MAXDEVIATION,
-						Literals.XML_ELEMENT_NAME_MAXDEVIATION);
-			}
-			if (channel.getMinimum() != Double.NEGATIVE_INFINITY) {
-				this.atts.clear();
-				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_MINIMUM, Literals.XML_ELEMENT_NAME_MINIMUM,
-						this.atts);
-				this.contentHandler.characters(
-						("" + channel.getMinimum()).toCharArray(), 0,
-						("" + channel.getMinimum()).length());
-				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_MINIMUM, Literals.XML_ELEMENT_NAME_MINIMUM);
-			}
-
-			if (channel.getMaxAttempts() != Integer.MIN_VALUE) {
-				this.atts.clear();
-				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_MAXATTEMPTS,
-						Literals.XML_ELEMENT_NAME_MAXATTEMPTS, this.atts);
-				this.contentHandler.characters(
-						("" + channel.getMaxAttempts()).toCharArray(), 0,
-						("" + channel.getMaxAttempts()).length());
-				this.contentHandler
-						.endElement("", Literals.XML_ELEMENT_NAME_MAXATTEMPTS, Literals.XML_ELEMENT_NAME_MAXATTEMPTS);
-			}
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_CHANNELID, 
+					Literals.XML_ELEMENT_NAME_CHANNELID);
 
 			if (channel.getNormalizeChannel() != null) {
 				this.atts.clear();
-				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_NORMALIZEID, 
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_NORMALIZEID, 
 						Literals.XML_ELEMENT_NAME_NORMALIZEID, this.atts);
 				this.contentHandler.characters(
 						channel.getNormalizeChannel().getID().toCharArray(), 
 						0, 
 						channel.getNormalizeChannel().getID().length());
-				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_NORMALIZEID, 
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_NORMALIZEID, 
 						Literals.XML_ELEMENT_NAME_NORMALIZEID);
 			}
-
-			if (scanDescription.isUsedAsEvent(channel)) {
-				this.atts.clear();
-				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_SENDREADYEVENT,
-						Literals.XML_ELEMENT_NAME_SENDREADYEVENT, this.atts);
-				String trueString = Boolean.TRUE.toString();
-				this.contentHandler.characters(trueString.toCharArray(), 0,
-						trueString.length());
-				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_SENDREADYEVENT,
-						Literals.XML_ELEMENT_NAME_SENDREADYEVENT);
-			}
-
-			for (ControlEvent event : channel.getRedoEvents()) {
-				this.writeControlEvent(event, "redoevent");
-			}
-
-			if (channel.isDeferred()) {
-				this.atts.clear();
-				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_DEFERREDTRIGGER, 
-						Literals.XML_ELEMENT_NAME_DEFERREDTRIGGER, this.atts);
-				this.contentHandler.characters("true".toCharArray(), 0,
-						"true".length());
-				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_DEFERREDTRIGGER,
-						Literals.XML_ELEMENT_NAME_DEFERREDTRIGGER);
-			}
 			
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_SMCHANNEL, Literals.XML_ELEMENT_NAME_SMCHANNEL);
+			switch (channel.getChannelMode()) {
+			case ChannelMode.STANDARD:
+				this.atts.clear();
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SMCHANNEL_STANDARD, 
+						Literals.XML_ELEMENT_NAME_SMCHANNEL_STANDARD, this.atts);
+				
+				if (channel.getAverageCount() != StandardMode.AVERAGE_COUNT_DEFAULT_VALUE) {
+					this.atts.clear();
+					this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_AVERAGECOUNT,
+							Literals.XML_ELEMENT_NAME_AVERAGECOUNT, this.atts);
+					this.contentHandler.characters(
+							(Integer.toString(channel.getAverageCount())).toCharArray(), 0,
+							(Integer.toString(channel.getAverageCount())).length());
+					this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_AVERAGECOUNT,
+							Literals.XML_ELEMENT_NAME_AVERAGECOUNT);
+				}
+				
+				if (channel.getMaxDeviation() != null) {
+					this.atts.clear();
+					this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_MAXDEVIATION,
+							Literals.XML_ELEMENT_NAME_MAXDEVIATION, this.atts);
+					this.contentHandler.characters(
+							(Double.toString(channel.getMaxDeviation())).toCharArray(), 0,
+							(Double.toString(channel.getMaxDeviation())).length());
+					this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_MAXDEVIATION,
+							Literals.XML_ELEMENT_NAME_MAXDEVIATION);
+				}
+				
+				if (channel.getMinimum() != null) {
+					this.atts.clear();
+					this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_MINIMUM, 
+							Literals.XML_ELEMENT_NAME_MINIMUM, this.atts);
+					this.contentHandler.characters(
+							(Double.toString(channel.getMinimum())).toCharArray(), 0,
+							(Double.toString(channel.getMinimum())).length());
+					this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_MINIMUM, 
+							Literals.XML_ELEMENT_NAME_MINIMUM);
+				}
+				
+				if (channel.getMaxAttempts() != null) {
+					this.atts.clear();
+					this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_MAXATTEMPTS,
+							Literals.XML_ELEMENT_NAME_MAXATTEMPTS, this.atts);
+					this.contentHandler.characters(
+							(Integer.toString(channel.getMaxAttempts())).toCharArray(), 0,
+							(Integer.toString(channel.getMaxAttempts())).length());
+					this.contentHandler
+							.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_MAXATTEMPTS, 
+									Literals.XML_ELEMENT_NAME_MAXATTEMPTS);
+				}
+				
+				if (scanDescription.isUsedAsEvent(channel)) {
+					this.atts.clear();
+					this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SENDREADYEVENT,
+							Literals.XML_ELEMENT_NAME_SENDREADYEVENT, this.atts);
+					String trueString = Boolean.TRUE.toString();
+					this.contentHandler.characters(trueString.toCharArray(), 0,
+							trueString.length());
+					this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SENDREADYEVENT,
+							Literals.XML_ELEMENT_NAME_SENDREADYEVENT);
+				}
+				
+				for (ControlEvent event : channel.getRedoEvents()) {
+					this.writeControlEvent(event, "redoevent");
+				}
+				
+				if (channel.isDeferred()) {
+					this.atts.clear();
+					this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_DEFERREDTRIGGER, 
+							Literals.XML_ELEMENT_NAME_DEFERREDTRIGGER, this.atts);
+					this.contentHandler.characters(Boolean.TRUE.toString().toCharArray(), 0,
+							Boolean.TRUE.toString().length());
+					this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_DEFERREDTRIGGER,
+							Literals.XML_ELEMENT_NAME_DEFERREDTRIGGER);
+				}
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SMCHANNEL_STANDARD, 
+						Literals.XML_ELEMENT_NAME_SMCHANNEL_STANDARD);
+				break;
+			case ChannelMode.INTERVAL:
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SMCHANNEL_INTERVAL, 
+						Literals.XML_ELEMENT_NAME_SMCHANNEL_INTERVAL, this.atts);
+				
+				this.atts.clear();
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SMCHANNEL_TRIGGERINTERVAL, 
+						Literals.XML_ELEMENT_NAME_SMCHANNEL_TRIGGERINTERVAL, this.atts);
+				this.contentHandler.characters(Double.toString(channel.getTriggerInterval()).toCharArray(), 0, 
+						Double.toString(channel.getTriggerInterval()).length());
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SMCHANNEL_TRIGGERINTERVAL, 
+						Literals.XML_ELEMENT_NAME_SMCHANNEL_TRIGGERINTERVAL);
+				
+				if (channel.getStoppedBy() != null) {
+					this.atts.clear();
+					this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SMCHANNEL_STOPPEDBY, 
+							Literals.XML_ELEMENT_NAME_SMCHANNEL_STOPPEDBY, this.atts);
+					this.contentHandler.characters(channel.getStoppedBy().getID().toCharArray(), 0, 
+							channel.getStoppedBy().getID().length());
+					this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SMCHANNEL_STOPPEDBY, 
+							Literals.XML_ELEMENT_NAME_SMCHANNEL_STOPPEDBY);
+				}
+				
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SMCHANNEL_INTERVAL, 
+						Literals.XML_ELEMENT_NAME_SMCHANNEL_INTERVAL);
+				break;
+			}
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SMCHANNEL, 
+					Literals.XML_ELEMENT_NAME_SMCHANNEL);
 		} catch (SAXException e) {
 			logger.error(e.getMessage(), e);
 			return false;
