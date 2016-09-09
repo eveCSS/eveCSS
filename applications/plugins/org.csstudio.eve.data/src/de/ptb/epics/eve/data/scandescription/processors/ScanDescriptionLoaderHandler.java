@@ -62,6 +62,8 @@ import de.ptb.epics.eve.data.scandescription.StartEvent;
 import de.ptb.epics.eve.data.scandescription.Stepfunctions;
 import de.ptb.epics.eve.data.scandescription.Storage;
 import de.ptb.epics.eve.data.scandescription.YAxis;
+import de.ptb.epics.eve.data.scandescription.channelmode.ChannelMode;
+import de.ptb.epics.eve.data.scandescription.channelmode.StandardMode;
 import de.ptb.epics.eve.data.scandescription.processors.adaptees.DetectorEventAdaptee;
 import de.ptb.epics.eve.data.scandescription.processors.adaptees.DetectorEventAdapter;
 import de.ptb.epics.eve.data.scandescription.processors.adaptees.ScheduleEventAdaptee;
@@ -482,29 +484,45 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case CHAIN_SCANMODULE_DETECTOR_LOADING:
-			if (qName.equals("channelid")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_SMCHANNELID)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_CHANNELID_NEXT;
-			} else if (qName.equals("averagecount")) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_AVERAGECOUNT_NEXT;
-			} else if (qName.equals("maxdeviation")) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_MAX_DEVIATION_NEXT;
-			} else if (qName.equals("minimum")) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_MINIMUM_NEXT;
-			} else if (qName.equals("maxattempts")) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_MAX_ATTEMPTS_NEXT;
-			} else if (qName.equals("normalize_id")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_NORMALIZEID)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_NORMALIZECHANNEL_NEXT;
-			} else if (qName.equals("repeatonredo")) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_REPEATONREDO_NEXT;
-			} else if (qName.equals("sendreadyevent")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_SMCHANNEL_STANDARD)) {
+				this.currentChannel.setChannelMode(ChannelMode.STANDARD);
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_STANDARD_LOADING;
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_SMCHANNEL_INTERVAL)) {
+				this.currentChannel.setChannelMode(ChannelMode.INTERVAL);
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_INTERVAL_LOADING;
+			} 
+			break;
+
+		case CHAIN_SCANMODULE_DETECTOR_STANDARD_LOADING:
+			if (qName.equals(Literals.XML_ELEMENT_NAME_AVERAGECOUNT)) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_AVERAGECOUNT_NEXT;
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_MAXDEVIATION)) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_MAX_DEVIATION_NEXT;
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_MINIMUM)) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_MINIMUM_NEXT;
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_MAXATTEMPTS)) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_MAX_ATTEMPTS_NEXT;
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_SENDREADYEVENT)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_DETECTORREADYEVENT_NEXT;
-			} else if (qName.equals(Literals.XML_ELEMENT_NAME_REDOEVENT)) {
+			}  else if (qName.equals(Literals.XML_ELEMENT_NAME_REDOEVENT)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_REDOEVENT_LOADING;
-			} else if (qName.equals("deferredtrigger")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_DEFERREDTRIGGER)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_DEFERRED_NEXT;
 			}
 			break;
-
+			
+		case CHAIN_SCANMODULE_DETECTOR_INTERVAL_LOADING:
+			if (qName.equals(Literals.XML_ELEMENT_NAME_SMCHANNEL_TRIGGERINTERVAL)) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_TRIGGERINTERVAL_NEXT;
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_SMCHANNEL_STOPPEDBY)) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_STOPPEDBY_NEXT;
+			}
+			break;
+		
 		case CHAIN_STARTEVENT_LOADING:
 		case CHAIN_REDOEVENT_LOADING:
 		case CHAIN_BREAKEVENT_LOADING:
@@ -1036,7 +1054,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case CHAIN_SCANMODULE_DETECTOR_AVERAGECOUNT_NEXT:
-			int averageCount = 1;
+			int averageCount = StandardMode.AVERAGE_COUNT_DEFAULT_VALUE;
 			try {
 				averageCount = Integer.parseInt(textBuffer.toString());
 			} catch (NumberFormatException e) {
@@ -1085,14 +1103,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_NORMALIZECHANNEL_READ;
 			break;
 
-		case CHAIN_SCANMODULE_DETECTOR_REPEATONREDO_NEXT:
-			if (this.currentChannel.getAbstractDevice() != null) {
-				this.currentChannel.setRepeatOnRedo(Boolean
-						.parseBoolean(textBuffer.toString()));
-			}
-			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_REPEATONREDO_READ;
-			break;
-
 		case CHAIN_SCANMODULE_DETECTOR_DETECTORREADYEVENT_NEXT:
 			if (this.currentChannel.getAbstractDevice() != null) {
 				// this.createEventPair(); ??
@@ -1107,6 +1117,29 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				}
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_DEFERRED_READ;
+			break;
+			
+		case CHAIN_SCANMODULE_DETECTOR_TRIGGERINTERVAL_NEXT:
+			try  {
+				this.currentChannel.setTriggerInterval(Double.parseDouble(textBuffer.toString()));
+			} catch (NumberFormatException e) {
+				LOGGER.error(e.getMessage(), e);
+			}
+			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_TRIGGERINTERVAL_READ;
+			break;
+			
+		case CHAIN_SCANMODULE_DETECTOR_STOPPEDBY_NEXT:
+			if (this.measuringStation.getDetectorChannelById(textBuffer
+					.toString()) != null) {
+				this.currentChannel.setStoppedBy(this.measuringStation
+						.getDetectorChannelById(textBuffer.toString()));
+			} else {
+				this.lostDevices.add(new ScanDescriptionLoaderLostDeviceMessage(
+					ScanDescriptionLoaderLostDeviceType.DETECTOR_CHANNEL_ID_NOT_FOUND,
+					"Channel '" + nameProvider.translateDetectorChannelId(textBuffer.toString()) + "' has been removed."));
+			}
+			// TODO analogy to normalize channel map (to check whether stopped by channel is present in scan module) 
+			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_STOPPEDBY_READ;
 			break;
 			
 		case CHAIN_SCANMODULE_PLOT_NAME_NEXT:
@@ -1798,11 +1831,23 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			}
 			break;
 
+		case CHAIN_SCANMODULE_DETECTOR_STANDARD_LOADING:
+			if (qName.equals(Literals.XML_ELEMENT_NAME_SMCHANNEL_STANDARD)) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_LOADING;
+			}
+			break;
+			
+		case CHAIN_SCANMODULE_DETECTOR_INTERVAL_LOADING:
+			if (qName.equals(Literals.XML_ELEMENT_NAME_SMCHANNEL_INTERVAL)) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_LOADING;
+			}
+			break;
+		
 		case CHAIN_SCANMODULE_DETECTOR_REDOEVENT_LOADING:
 			if (qName.equals(Literals.XML_ELEMENT_NAME_REDOEVENT)) {
 				this.currentChannel.addRedoEvent(this.currentControlEvent);
 				this.createEventPair();
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_LOADING;
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_STANDARD_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 			}
 			break;
@@ -1884,26 +1929,26 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case CHAIN_SCANMODULE_DETECTOR_AVERAGECOUNT_READ:
-			if (qName.equals("averagecount")) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_LOADING;
+			if (qName.equals(Literals.XML_ELEMENT_NAME_AVERAGECOUNT)) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_STANDARD_LOADING;
 			}
 			break;
 
 		case CHAIN_SCANMODULE_DETECTOR_MAX_DEVIATION_READ:
-			if (qName.equals("maxdeviation")) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_LOADING;
+			if (qName.equals(Literals.XML_ELEMENT_NAME_MAXDEVIATION)) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_STANDARD_LOADING;
 			}
 			break;
 
 		case CHAIN_SCANMODULE_DETECTOR_MINIMUM_READ:
-			if (qName.equals("minimum")) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_LOADING;
+			if (qName.equals(Literals.XML_ELEMENT_NAME_MINIMUM)) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_STANDARD_LOADING;
 			}
 			break;
 
 		case CHAIN_SCANMODULE_DETECTOR_MAX_ATTEMPTS_READ:
-			if (qName.equals("maxattempts")) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_LOADING;
+			if (qName.equals(Literals.XML_ELEMENT_NAME_MAXATTEMPTS)) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_STANDARD_LOADING;
 			}
 			break;
 
@@ -1913,22 +1958,29 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			}
 			break;
 
-		case CHAIN_SCANMODULE_DETECTOR_REPEATONREDO_READ:
-			if (qName.equals("repeatonredo")) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_LOADING;
-			}
-			break;
-
 		case CHAIN_SCANMODULE_DETECTOR_DETECTORREADYEVENT_READ:
-			if (qName.equals("sendreadyevent")) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_LOADING;
+			if (qName.equals(Literals.XML_ELEMENT_NAME_SENDREADYEVENT)) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_STANDARD_LOADING;
 			}
 			break;
 
 		case CHAIN_SCANMODULE_DETECTOR_DEFERRED_READ:
-			if (qName.equals("deferredtrigger")) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_LOADING;
+			if (qName.equals(Literals.XML_ELEMENT_NAME_DEFERREDTRIGGER)) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_STANDARD_LOADING;
 			}
+			break;
+			
+		case CHAIN_SCANMODULE_DETECTOR_TRIGGERINTERVAL_READ:
+			if (qName.equals(Literals.XML_ELEMENT_NAME_SMCHANNEL_TRIGGERINTERVAL)) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_INTERVAL_LOADING;
+			}
+			break;
+			
+		case CHAIN_SCANMODULE_DETECTOR_STOPPEDBY_READ:
+			if (qName.equals(Literals.XML_ELEMENT_NAME_SMCHANNEL_STOPPEDBY)) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_INTERVAL_LOADING;
+			}
+			break;
 			
 		case CHAIN_SCANMODULE_PLOT_LOADING:
 			if (qName.equals("plot")) {
@@ -2357,6 +2409,9 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			for (ScanModule sm : chain.getScanModules()) {
 				sm.registerEventValidProperties();
 				for (Channel channel : sm.getChannels()) {
+					if (channel.getChannelMode() != ChannelMode.STANDARD) {
+						continue;
+					}
 					channel.registerEventValidProperties();
 				}
 			}
@@ -2455,6 +2510,9 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 					}
 				}
 				for (Channel channel : sm.getChannels()) {
+					if (channel.getChannelMode() != ChannelMode.STANDARD) {
+						continue;
+					}
 					for (ControlEvent controlEvent : new CopyOnWriteArrayList<ControlEvent>(
 							channel.getRedoEvents())) {
 						if (controlEvent.getEvent() == null) {

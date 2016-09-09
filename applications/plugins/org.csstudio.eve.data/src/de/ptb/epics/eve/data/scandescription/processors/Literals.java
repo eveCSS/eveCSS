@@ -74,8 +74,8 @@ public class Literals {
 	public static final String XML_ELEMENT_NAME_SMAXIS = "smaxis";
 	public static final String XML_ELEMENT_NAME_SMCHANNEL = "smchannel";
 	public static final String XML_ELEMENT_NAME_SMCHANNELID = "channelid";
-	public static final String XML_ELEMENT_NAME_SMCHANNEL_INTERVAL = "intervalchannel";
-	public static final String XML_ELEMENT_NAME_SMCHANNEL_STANDARD = "standardchannel";
+	public static final String XML_ELEMENT_NAME_SMCHANNEL_INTERVAL = "interval";
+	public static final String XML_ELEMENT_NAME_SMCHANNEL_STANDARD = "standard";
 	public static final String XML_ELEMENT_NAME_SMCHANNEL_STOPPEDBY = "stoppedby";
 	public static final String XML_ELEMENT_NAME_SMCHANNEL_TRIGGERINTERVAL = "triggerinterval";
 	public static final String XML_ELEMENT_NAME_SMID = "smid";

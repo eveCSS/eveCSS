@@ -36,7 +36,7 @@ public abstract class ChannelMode {
 		this.channel = channel;
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
 	}
-	
+
 	/**
 	 * @return the channel
 	 */

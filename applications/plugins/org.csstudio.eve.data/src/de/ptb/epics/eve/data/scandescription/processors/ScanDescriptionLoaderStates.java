@@ -505,6 +505,18 @@ public enum ScanDescriptionLoaderStates {
 	CHAIN_SCANMODULE_DETECTOR_CHANNELID_READ,
 
 	/**
+	 * 
+	 * @since 1.27
+	 */
+	CHAIN_SCANMODULE_DETECTOR_STANDARD_LOADING,
+	
+	/**
+	 * 
+	 * @since 1.27
+	 */
+	CHAIN_SCANMODULE_DETECTOR_INTERVAL_LOADING,
+	
+	/**
 	 * The begin tag of the average count of the detector channel has been read.
 	 */
 	CHAIN_SCANMODULE_DETECTOR_AVERAGECOUNT_NEXT,
@@ -561,17 +573,6 @@ public enum ScanDescriptionLoaderStates {
 	CHAIN_SCANMODULE_DETECTOR_NORMALIZECHANNEL_READ,
 
 	/**
-	 * The begin tag of repeat on redo of the detector channel has been read.
-	 */
-	CHAIN_SCANMODULE_DETECTOR_REPEATONREDO_NEXT,
-
-	/**
-	 * The repeat on redo of the detector channel has been read and the handler
-	 * waits for the closing tag.
-	 */
-	CHAIN_SCANMODULE_DETECTOR_REPEATONREDO_READ,
-
-	/**
 	 * The begin tag of detector ready event of the detector channel has been
 	 * read.
 	 */
@@ -591,6 +592,14 @@ public enum ScanDescriptionLoaderStates {
 	CHAIN_SCANMODULE_DETECTOR_DEFERRED_NEXT,
 	
 	CHAIN_SCANMODULE_DETECTOR_DEFERRED_READ,
+	
+	CHAIN_SCANMODULE_DETECTOR_TRIGGERINTERVAL_NEXT,
+	
+	CHAIN_SCANMODULE_DETECTOR_TRIGGERINTERVAL_READ,
+	
+	CHAIN_SCANMODULE_DETECTOR_STOPPEDBY_NEXT,
+	
+	CHAIN_SCANMODULE_DETECTOR_STOPPEDBY_READ,
 	
 	/**
 	 * A plot window is loading.

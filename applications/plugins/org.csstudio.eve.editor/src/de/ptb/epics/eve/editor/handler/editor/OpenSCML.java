@@ -39,12 +39,13 @@ public class OpenSCML extends AbstractHandler {
 		}
 		boolean workingDirectoryUsed = false;
 		FileDialog fileDialog = new FileDialog(shell, SWT.OPEN);
-		File workingDirectory = de.ptb.epics.eve.editor.Activator.getDefault()
+		// TODO reenable
+		/*File workingDirectory = de.ptb.epics.eve.editor.Activator.getDefault()
 				.getDefaults().getWorkingDirectory();
 		if (workingDirectory.isDirectory()) {
 			fileDialog.setFilterPath(workingDirectory.getAbsolutePath());
 			workingDirectoryUsed = true;
-		} else {
+		} else {*/
 			File file = new File(Startup.readStartupParameters()
 					.getRootDir() + "eve/");
 			File scmlDir = new File(file.getAbsolutePath() + "scml");
@@ -54,7 +55,7 @@ public class OpenSCML extends AbstractHandler {
 			} else {
 				fileDialog.setFilterPath(file.getAbsolutePath());
 			}
-		}
+		//}
 		fileDialog.setFilterExtensions(new String[] {"*.scml"});
 		fileDialog.setFilterNames(new String[] {"Scan Description (*.scml)"});
 		String scmlPath = fileDialog.open();

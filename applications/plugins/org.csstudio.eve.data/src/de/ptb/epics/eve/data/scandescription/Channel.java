@@ -91,16 +91,31 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	public static Channel newInstance(Channel channel, ScanModule scanModule) {
 		Channel newChannel = new Channel(scanModule, 
 				(DetectorChannel)channel.getAbstractDevice());
-		newChannel.setAverageCount(channel.getAverageCount());
-		newChannel.setMaxAttempts(channel.getMaxAttempts());
-		newChannel.setMaxDeviation(channel.getMaxDeviation());
-		newChannel.setMinimum(channel.getMinimum());
-		newChannel.setDeferred(channel.isDeferred());
 		newChannel.setNormalizeChannel(channel.getNormalizeChannel());
 		newChannel.setLoadTime(channel.getLoadTime());
-		for (ControlEvent event : channel.getRedoEvents()) {
-			newChannel.addRedoEvent(ControlEvent.newInstance(event));
+		
+		switch (channel.getChannelMode()) {
+		case ChannelMode.STANDARD:
+			newChannel.setChannelMode(ChannelMode.STANDARD);
+			newChannel.setAverageCount(channel.getAverageCount());
+			newChannel.setMaxAttempts(channel.getMaxAttempts());
+			newChannel.setMaxDeviation(channel.getMaxDeviation());
+			newChannel.setMinimum(channel.getMinimum());
+			newChannel.setDeferred(channel.isDeferred());
+			for (ControlEvent event : channel.getRedoEvents()) {
+				newChannel.addRedoEvent(ControlEvent.newInstance(event));
+			}
+			break;
+		case ChannelMode.INTERVAL:
+			newChannel.setChannelMode(ChannelMode.INTERVAL);
+			newChannel.setTriggerInterval(channel.getTriggerInterval());
+			newChannel.setStoppedBy(channel.getStoppedBy());
+			break;
 		}
+		
+		newChannel.setChannelMode(channel.getChannelMode());
+		// TODO
+		
 		return newChannel;
 	}
 

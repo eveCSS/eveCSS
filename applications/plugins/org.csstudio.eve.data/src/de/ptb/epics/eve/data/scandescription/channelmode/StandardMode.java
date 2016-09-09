@@ -55,7 +55,7 @@ public class StandardMode extends ChannelMode implements IModelUpdateListener, P
 				ControlEventTypes.CONTROL_EVENT);
 		this.redoControlEventManager.addModelUpdateListener(this);
 	}
-
+	
 	/**
 	 * @return the averageCount
 	 */
