@@ -10,6 +10,11 @@ import de.ptb.epics.eve.data.tests.mothers.measuringstation.DetectorChannelMothe
  * @since 1.27
  */
 public class ChannelMother {
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public static Channel createNewChannel() {
 		Channel channel = new Channel(ScanModuleMother.createNewScanModule(), 
 				DetectorChannelMother.createNewDetectorChannel());

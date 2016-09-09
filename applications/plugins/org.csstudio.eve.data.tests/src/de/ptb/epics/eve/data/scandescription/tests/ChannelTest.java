@@ -9,6 +9,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
@@ -77,6 +78,7 @@ public class ChannelTest implements PropertyChangeListener {
 	}
 	
 	@Test
+	@Ignore("not possible due to normalize channel is not in scanmodule of channel")
 	public void testNormalize() {
 		assertEquals(null, this.channel.getNormalizeChannel());
 		DetectorChannel detectorChannel = DetectorChannelMother.createNewDetectorChannel();
@@ -249,7 +251,36 @@ public class ChannelTest implements PropertyChangeListener {
 		}
 	}
 	
-	// ***********************************************************************
+	@Test
+	public void testStandardChannelNewInstance() {
+		Channel channel = ChannelMother.createNewChannel();
+		channel.setChannelMode(ChannelMode.STANDARD);
+		channel.setAverageCount(2);
+		channel.setMaxAttempts(1);
+		channel.setMaxDeviation(4.0);
+		channel.setMinimum(3.0);
+		channel.setDeferred(true);
+		
+		Channel newChannel = Channel.newInstance(channel, channel.getScanModule());
+		assertEquals(2, newChannel.getAverageCount());
+		assertEquals(Integer.valueOf(1), newChannel.getMaxAttempts());
+		assertEquals(4.0, newChannel.getMaxDeviation(), 0);
+		assertEquals(3.0, newChannel.getMinimum(), 0);
+		assertEquals(true, newChannel.isDeferred());
+	}
+	
+	@Test
+	public void testIntervalChannelNewInstance() {
+		Channel channel = ChannelMother.createNewChannel();
+		channel.setChannelMode(ChannelMode.INTERVAL);
+		channel.setTriggerInterval(2.0);
+		DetectorChannel detectorChannel = DetectorChannelMother.createNewDetectorChannel();
+		channel.setStoppedBy(detectorChannel);
+		
+		Channel newChannel = Channel.newInstance(channel, channel.getScanModule());
+		assertEquals(2.0, newChannel.getTriggerInterval(), 0);
+		assertEquals(detectorChannel, newChannel.getStoppedBy());
+	}
 
 	/**
 	 * Class wide setup method of the test

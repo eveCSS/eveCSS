@@ -112,10 +112,6 @@ public class Channel extends AbstractMainPhaseBehavior implements
 			newChannel.setStoppedBy(channel.getStoppedBy());
 			break;
 		}
-		
-		newChannel.setChannelMode(channel.getChannelMode());
-		// TODO
-		
 		return newChannel;
 	}
 

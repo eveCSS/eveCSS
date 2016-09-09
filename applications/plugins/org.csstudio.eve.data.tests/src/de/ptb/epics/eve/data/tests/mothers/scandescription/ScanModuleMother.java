@@ -11,6 +11,10 @@ import de.ptb.epics.eve.data.scandescription.ScanModule;
 public class ScanModuleMother {
 	private static int counter = 0;
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public static ScanModule createNewScanModule() {
 		ScanModule scanModule = new ScanModule(++counter);
 		scanModule.setName("SM " + counter);
