@@ -39,7 +39,7 @@ public class UpdaterTest {
 	 * Tests whether all included Updates are applied successfully by validating
 	 * the result with the XML schema.
 	 */
-	@Ignore
+	//@Ignore
 	@Test
 	public void testUpdate() {
 		try {

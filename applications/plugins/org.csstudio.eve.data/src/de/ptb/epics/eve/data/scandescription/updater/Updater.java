@@ -81,6 +81,7 @@ public class Updater {
 			if (patch.getSourceVersion().compareTo(source) < 0) {
 				continue;
 			} else {
+				LOGGER.info("applying " + patch.toString());
 				patch.execute(document);
 				changes.add(patch);
 			}

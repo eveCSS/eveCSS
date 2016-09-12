@@ -61,4 +61,9 @@ public class Patch {
 	public List<Modification> getModifications() {
 		return this.modifications;
 	}
+	
+	@Override
+	public String toString() {
+		return "Patch " + this.sourceVersion + " -> " + this.targetVersion;
+	}
 }
