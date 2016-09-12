@@ -20,7 +20,116 @@ import de.ptb.epics.eve.util.data.Version;
 import static de.ptb.epics.eve.util.xml.XMLUtil.*;
 
 /**
- * TODO
+ * Patches SCML v4.0 to v5.0 doing the following:
+ * 
+ * <ul>
+ * <li>increment version to 5.0-</li>
+ * <li>introduces a standard tag (channel mode) and moves specific elements to it as follows:
+ * <ul>
+ * <li>schema definition changes from:
+ * 
+ * <pre>
+ *  &lt;complexType name=&quot;smchannel&quot;&gt;
+ *    &lt;sequence&gt;
+ *      &lt;element name=&quot;channelid&quot; type=&quot;tns:identifier&quot;&gt;&lt;/element&gt;
+ *      &lt;element name=&quot;averagecount&quot; type=&quot;nonNegativeInteger&quot; minOccurs=&quot;0&quot;&gt;&lt;/element&gt;
+ *      &lt;element name=&quot;maxdeviation&quot; type=&quot;double&quot; minOccurs=&quot;0&quot;&gt;&lt;/element&gt;
+ *      &lt;element name=&quot;minimum&quot; type=&quot;double&quot; minOccurs=&quot;0&quot;&gt;&lt;/element&gt;
+ *      &lt;element name=&quot;maxattempts&quot; type=&quot;nonNegativeInteger&quot; minOccurs=&quot;0&quot;&gt;&lt;/element&gt;
+ *      &lt;element name=&quot;normalize_id&quot; type=&quot;tns:identifier&quot; minOccurs=&quot;0&quot;&gt;&lt;/element&gt;
+ *      &lt;element name=&quot;sendreadyevent&quot; type=&quot;boolean&quot; minOccurs=&quot;0&quot;&gt;&lt;/element&gt;
+ *      &lt;element name=&quot;redoevent&quot; type=&quot;tns:smevent&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;&lt;/element&gt;
+ *      &lt;element name=&quot;deferredtrigger&quot; type=&quot;boolean&quot; minOccurs=&quot;0&quot;&gt;&lt;/element&gt;
+ *    &lt;/sequence&gt;
+ *  &lt;/complexType&gt;
+ * </pre>
+ * 
+ * to:
+ * 
+ * <pre>
+ *  &lt;complexType name=&quot;smchannel&quot;&gt;
+ *    &lt;sequence&gt;
+ *      &lt;element name=&quot;channelid&quot; type=&quot;tns:identifier&quot;&gt;&lt;/element&gt;
+ *      &lt;element name=&quot;normalize_id&quot; type=&quot;tns:identifier&quot; minOccurs=&quot;0&quot;&gt;&lt;/element&gt;
+ *      &lt;choice&gt;
+ *        &lt;element name=&quot;standard&quot; type=&quot;tns:standardchannel&quot;&gt;&lt;/element&gt;
+ *        &lt;element name=&quot;interval&quot; type=&quot;tns:intervalchannel&quot;&gt;&lt;/element&gt;
+ *      &lt;/choice&gt;
+ *    &lt;/sequence&gt;
+ *  &lt;/complexType&gt;
+
+ *  &lt;complexType name=&quot;standardchannel&quot;&gt;
+ *    &lt;sequence&gt;
+ *      &lt;element name=&quot;averagecount&quot; type=&quot;nonNegativeInteger&quot; minOccurs=&quot;0&quot;&gt;&lt;/element&gt;
+ *      &lt;element name=&quot;maxdeviation&quot; type=&quot;double&quot; minOccurs=&quot;0&quot;&gt;&lt;/element&gt;
+ *      &lt;element name=&quot;minimum&quot; type=&quot;double&quot; minOccurs=&quot;0&quot;&gt;&lt;/element&gt;
+ *      &lt;element name=&quot;maxattempts&quot; type=&quot;nonNegativeInteger&quot; minOccurs=&quot;0&quot;&gt;&lt;/element&gt;
+ *      &lt;element name=&quot;sendreadyevent&quot; type=&quot;boolean&quot; minOccurs=&quot;0&quot;&gt;&lt;/element&gt;
+ *      &lt;element name=&quot;redoevent&quot; type=&quot;tns:smevent&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;&lt;/element&gt;
+ *      &lt;element name=&quot;deferredtrigger&quot; type=&quot;boolean&quot; minOccurs=&quot;0&quot;&gt;&lt;/element&gt;
+ *    &lt;/sequence&gt;
+ *  &lt;/complexType&gt;
+  
+ *  &lt;complexType name=&quot;intervalchannel&quot;&gt;
+ *    &lt;sequence&gt;
+ *      &lt;element name=&quot;triggerinterval&quot; type=&quot;tns:positiveDouble&quot;&gt;&lt;/element&gt;
+ *      &lt;element name=&quot;stoppedby&quot; type=&quot;tns:identifier&quot;&gt;&lt;/element&gt;
+ *    &lt;/sequence&gt;
+ *  &lt;/complexType&gt;
+ *  
+ *  &lt;simpleType name=&quot;positiveDouble&quot;&gt;
+ *    &lt;restriction base=&quot;double&quot;&gt;
+ *      &lt;minInclusive value=&quot;0&quot;&gt;&lt;/minInclusive&gt;
+ *    &lt;/restriction&gt;
+ *  &lt;/simpleType&gt;
+ * </pre>
+ * 
+ * </li>
+ * <li>
+ * A detector channel defined in SCML v4.0:
+ * 
+ * <pre>
+ *  &lt;smchannel&gt;
+ *    &lt;channelid&gt;bIICurrent:Mnt1chan1&lt;/channelid&gt;
+ *    &lt;averagecount&gt;10&lt;/averagecount&gt;
+ *    &lt;maxdeviation&gt;2.0&lt;/maxdeviation&gt;
+ *    &lt;minimum&gt;3.0&lt;/minimum&gt;
+ *    &lt;maxattempts&gt;4&lt;/maxattempts&gt;
+ *    &lt;normalize_id&gt;bIICurrent:Mnt1lifeTimechan1&lt;/normalize_id&gt;
+ *    &lt;redoevent&gt;
+ *      &lt;monitorevent&gt;
+ *        &lt;id&gt;DiscPosPPSMC:gw23715000&lt;/id&gt;
+ *        &lt;limit type=&quot;string&quot; comparison=&quot;eq&quot;&gt;Position1&lt;/limit&gt;
+ *      &lt;/monitorevent&gt;
+ *    &lt;/redoevent&gt;
+ *  &lt;/smchannel&gt;
+ * </pre>
+ * 
+ * is defined in SCML v5.0 as follows:
+ * 
+ * <pre>
+ *  &lt;smchannel&gt;
+ *    &lt;channelid&gt;bIICurrent:Mnt1chan1&lt;/channelid&gt;
+ *    &lt;normalize_id&gt;bIICurrent:Mnt1lifeTimechan1&lt;/normalize_id&gt;
+ *    &lt;standard&gt;
+ *      &lt;averagecount&gt;10&lt;/averagecount&gt;
+ *      &lt;maxdeviation&gt;2.0&lt;/maxdeviation&gt;
+ *      &lt;minimum&gt;3.0&lt;/minimum&gt;
+ *      &lt;maxattempts&gt;4&lt;/maxattempts&gt;
+ *      &lt;redoevent&gt;
+ *        &lt;monitorevent&gt;
+ *          &lt;id&gt;DiscPosPPSMC:gw23715000&lt;/id&gt;
+ *          &lt;limit type=&quot;string&quot; comparison=&quot;eq&quot;&gt;Position1&lt;/limit&gt;
+ *        &lt;/monitorevent&gt;
+ *      &lt;/redoevent&gt;
+ *    &lt;/standard&gt;
+ *  &lt;/smchannel&gt;
+ * </pre>
+ * 
+ * </li>
+ * </ul>
+ * </li>
+ * </ul>
  * 
  * @author Marcus Michalsky
  * @since 1.27
