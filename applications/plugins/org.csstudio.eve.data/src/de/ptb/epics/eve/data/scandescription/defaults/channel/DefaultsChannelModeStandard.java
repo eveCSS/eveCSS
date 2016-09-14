@@ -1,53 +1,32 @@
-package de.ptb.epics.eve.data.scandescription.defaults;
+package de.ptb.epics.eve.data.scandescription.defaults.channel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  * @author Marcus Michalsky
- * @since 1.8
+ * @since 1.27
  */
-@XmlType(propOrder = { "id", "averageCount", "maxDeviation", "minimum",
-		"maxAttempts", "normalizeId", "redoEvents", "deferred" })
-public class DefaultsChannel implements Comparable<DefaultsChannel> {
-	private String id;
+@XmlType(propOrder = {"averageCount", "maxDeviation", "minimum",
+		"maxAttempts", "redoEvents", "deferred"})
+public class DefaultsChannelModeStandard extends DefaultsChannelMode {
 	private Integer averageCount;
 	private Double maxDeviation;
 	private Double minimum;
 	private Integer maxAttempts;
-	private String normalizeId;
 	private List<DefaultsRedoEvent> redoEvents;
 	private Boolean deferred;
 	
-	/**
-	 * 
-	 */
-	public DefaultsChannel() {
-		this.id = null;
+	public DefaultsChannelModeStandard() {
 		this.averageCount = null;
 		this.maxDeviation = null;
 		this.minimum = null;
 		this.maxAttempts = null;
-		this.normalizeId = null;
 		this.deferred = false;
 		this.redoEvents = new ArrayList<DefaultsRedoEvent>();
-	}
-	
-	/**
-	 * @return the id
-	 */
-	public String getId() {
-		return id;
-	}
-	
-	/**
-	 * @param id the id to set
-	 */
-	@XmlElement(name="channelid")
-	public void setId(String id) {
-		this.id = id;
 	}
 	
 	/**
@@ -110,21 +89,6 @@ public class DefaultsChannel implements Comparable<DefaultsChannel> {
 	public void setMaxAttempts(Integer maxAttempts) {
 		this.maxAttempts = maxAttempts;
 	}
-
-	/**
-	 * @return the normalizeId
-	 */
-	public String getNormalizeId() {
-		return normalizeId;
-	}
-
-	/**
-	 * @param normalizeId the normalizeId to set
-	 */
-	@XmlElement(name="normalize_id")
-	public void setNormalizeId(String normalizeId) {
-		this.normalizeId = normalizeId;
-	}
 	
 	/**
 	 * @return the redoEvents
@@ -154,21 +118,5 @@ public class DefaultsChannel implements Comparable<DefaultsChannel> {
 	@XmlElement(name="deferredtrigger")
 	public void setDeferred(boolean deferred) {
 		this.deferred = deferred;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String toString() {
-		return "[Channel:" + this.id + "]";
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int compareTo(DefaultsChannel other) {
-		return this.getId().compareTo(other.getId());
 	}
 }

@@ -7,7 +7,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.ptb.epics.eve.data.scandescription.Stepfunctions;
-import de.ptb.epics.eve.data.scandescription.defaults.DefaultsAxis;
+import de.ptb.epics.eve.data.scandescription.defaults.axis.DefaultsAxis;
 
 
 /**

@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.data.scandescription.defaults;
+package de.ptb.epics.eve.data.scandescription.defaults.axis;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;

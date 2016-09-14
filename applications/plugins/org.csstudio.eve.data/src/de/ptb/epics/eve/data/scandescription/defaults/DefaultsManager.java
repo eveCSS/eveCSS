@@ -3,6 +3,7 @@ package de.ptb.epics.eve.data.scandescription.defaults;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
@@ -10,10 +11,15 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.datatype.Duration;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
 import org.apache.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import de.ptb.epics.eve.data.DataTypes;
@@ -31,6 +37,21 @@ import de.ptb.epics.eve.data.scandescription.PositionMode;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
+import de.ptb.epics.eve.data.scandescription.channelmode.ChannelMode;
+import de.ptb.epics.eve.data.scandescription.defaults.axis.DefaultsAxis;
+import de.ptb.epics.eve.data.scandescription.defaults.channel.DefaultsChannel;
+import de.ptb.epics.eve.data.scandescription.defaults.channel.DefaultsChannelModeInterval;
+import de.ptb.epics.eve.data.scandescription.defaults.channel.DefaultsChannelModeStandard;
+import de.ptb.epics.eve.data.scandescription.defaults.channel.DefaultsControlEvent;
+import de.ptb.epics.eve.data.scandescription.defaults.channel.DefaultsDetectorEvent;
+import de.ptb.epics.eve.data.scandescription.defaults.channel.DefaultsMonitorEvent;
+import de.ptb.epics.eve.data.scandescription.defaults.channel.DefaultsRedoEvent;
+import de.ptb.epics.eve.data.scandescription.defaults.channel.DefaultsScheduleEvent;
+import de.ptb.epics.eve.data.scandescription.defaults.updater.DefaultsUpdater;
+import de.ptb.epics.eve.data.scandescription.updater.Modification;
+import de.ptb.epics.eve.data.scandescription.updater.Patch;
+import de.ptb.epics.eve.data.scandescription.updater.VersionTooOldException;
+import de.ptb.epics.eve.util.data.Version;
 import de.ptb.epics.eve.util.io.*;
 
 /**
@@ -65,6 +86,11 @@ public class DefaultsManager {
 			defaults = new Defaults();
 			return;
 		}
+		
+		this.backup(pathToDefaults);
+		
+		Document updated = this.update(pathToDefaults, schema);
+		
 		SchemaFactory schemaFactory = SchemaFactory.newInstance(
 				XMLConstants.W3C_XML_SCHEMA_NS_URI);
 		try {
@@ -73,18 +99,89 @@ public class DefaultsManager {
 			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 			jaxbUnmarshaller.setSchema(schemaFile);
 			this.defaults = (Defaults) jaxbUnmarshaller
-					.unmarshal(pathToDefaults);
+					.unmarshal(updated);
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("found defaults: \n" + this.defaults.toString());
 			} else {
 				LOGGER.info("found defaults");
 			}
 			this.initialized = true;
+			// TODO save if update was necessary
 		} catch(JAXBException e) {
 			LOGGER.error(e.getMessage(), e);
 		} catch (SAXException e) {
 			LOGGER.error(e.getMessage(), e);
 		}
+	}
+	
+	private void backup (File file) {
+		File backup = new File(file.getParent() + "/"
+				+ file.getName() + ".old");
+		try {
+			if (LOGGER.isInfoEnabled()) {
+				LOGGER.info("save copy before updating defaults");
+			}
+			FileUtil.copyFile(file, backup);
+		} catch (IOException e) {
+			LOGGER.error(e.getMessage(), e);
+		}
+	}
+	
+	private Document update(File file, File schema) {
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		factory.setNamespaceAware(true);
+		DocumentBuilder builder;
+		try {
+			builder = factory.newDocumentBuilder();
+			Document document = builder.parse(file);
+			List<Patch> patches = new DefaultsUpdater().update(document, 
+					getCurrentDefaultsSchemaVersion(schema));
+			if (LOGGER.isInfoEnabled()) {
+				if (patches.isEmpty()) {
+					LOGGER.info("defaults up to date, no patches applied.");
+				} else {
+					for (Patch patch : patches) {
+						LOGGER.info("applied " + patch.toString());
+						for (Modification modification : patch.getModifications()) {
+							LOGGER.info(modification.getChangeLog());
+						}
+					}
+				}
+			}
+			return document;
+		} catch (IOException e) {
+			LOGGER.error(e.getMessage(), e);
+		} catch (SAXException e) {
+			LOGGER.error(e.getMessage(), e);
+		} catch (ParserConfigurationException e) {
+			LOGGER.error(e.getMessage(), e);
+		} catch (VersionTooOldException e) {
+			LOGGER.error(e.getMessage(), e);
+		}
+		return null;
+	}
+	
+	private Version getCurrentDefaultsSchemaVersion(File schema) {
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder;
+		try {
+			builder = factory.newDocumentBuilder();
+			Document document = builder.parse(schema);
+			
+			Node node = document.getElementsByTagName("xsd:schema").item(0);
+			String versionString = node.getAttributes().getNamedItem("version")
+					.getNodeValue();
+			return new Version(
+					Integer.parseInt(versionString.split("\\.")[0]), 
+					Integer.parseInt(versionString.split("\\.")[1]));
+		} catch (SAXException e) {
+			LOGGER.error(e.getMessage(), e);
+		} catch (IOException e) {
+			LOGGER.error(e.getMessage(), e);
+		} catch (ParserConfigurationException e) {
+			LOGGER.error(e.getMessage(), e);
+		}
+		return null;
 	}
 	
 	/**
@@ -219,16 +316,7 @@ public class DefaultsManager {
 			LOGGER.debug("transfering defaults for "
 					+ to.getAbstractDevice().getID());
 		}
-		to.setAverageCount(from.getAverageCount());
-		if (from.getMaxAttempts() != null) {
-			to.setMaxAttempts(from.getMaxAttempts());
-		}
-		if (from.getMaxDeviation() != null) {
-			to.setMaxDeviation(from.getMaxDeviation());
-		}
-		if (from.getMinimum() != null) {
-			to.setMinimum(from.getMinimum());
-		}
+		
 		if (from.getNormalizeId() != null) {
 			DetectorChannel normalizeChannel = to.getScanModule().getChain().
 					getScanDescription().getMeasuringStation().
@@ -253,72 +341,98 @@ public class DefaultsManager {
 					"' saved in defaults not found in current device definition.");
 			}
 		}
-		for (DefaultsRedoEvent redoEvent : from.getRedoEvents()) {
-			DefaultsControlEvent defaultsControlEvent = redoEvent
-					.getControlEvent();
-			if (defaultsControlEvent instanceof DefaultsDetectorEvent) {
-				DefaultsDetectorEvent detectorEvent = 
-						((DefaultsDetectorEvent) defaultsControlEvent);
-				ScanModule sm;
-				try {
-					sm = to.getScanModule().getChain().getScanDescription()
-							.getChain(detectorEvent.getChainId())
-							.getScanModuleById(detectorEvent.getScanModuleId());
-				} catch (NullPointerException e) {
-					LOGGER.error("corresponding chain oder sm of detector event "
-							+ detectorEvent.getId() + " could not be found.");
-					continue;
-				}
-				Channel eventChannel = null;
-				for (Channel channel : sm.getChannels()) {
-					if (channel.getAbstractDevice().getID().equals(detectorEvent.getDetectorId())) {
-						eventChannel = channel;
+		if (from.getMode() instanceof DefaultsChannelModeStandard) {
+			DefaultsChannelModeStandard mode = (DefaultsChannelModeStandard)from.getMode();
+			to.setAverageCount(mode.getAverageCount());
+			if (mode.getMaxAttempts() != null) {
+				to.setMaxAttempts(mode.getMaxAttempts());
+			}
+			if (mode.getMaxDeviation() != null) {
+				to.setMaxDeviation(mode.getMaxDeviation());
+			}
+			if (mode.getMinimum() != null) {
+				to.setMinimum(mode.getMinimum());
+			}
+			for (DefaultsRedoEvent redoEvent : mode.getRedoEvents()) {
+				DefaultsControlEvent defaultsControlEvent = redoEvent
+						.getControlEvent();
+				if (defaultsControlEvent instanceof DefaultsDetectorEvent) {
+					DefaultsDetectorEvent detectorEvent = 
+							((DefaultsDetectorEvent) defaultsControlEvent);
+					ScanModule sm;
+					try {
+						sm = to.getScanModule().getChain().getScanDescription()
+								.getChain(detectorEvent.getChainId())
+								.getScanModuleById(detectorEvent.getScanModuleId());
+					} catch (NullPointerException e) {
+						LOGGER.error("corresponding chain oder sm of detector event "
+								+ detectorEvent.getId() + " could not be found.");
+						continue;
 					}
+					Channel eventChannel = null;
+					for (Channel channel : sm.getChannels()) {
+						if (channel.getAbstractDevice().getID().equals(detectorEvent.getDetectorId())) {
+							eventChannel = channel;
+						}
+					}
+					if (eventChannel != null) {
+						to.addRedoEvent(new ControlEvent(EventTypes.DETECTOR,
+								new DetectorEvent(eventChannel), detectorEvent
+										.getId()));
+					} else {
+						LOGGER.error("channel of detector event "
+								+ detectorEvent.getId() + " could not be found.");
+					}
+				} else if (defaultsControlEvent instanceof DefaultsMonitorEvent) {
+					DefaultsMonitorEvent monitorEvent = 
+							(DefaultsMonitorEvent) defaultsControlEvent;
+					Event event = to.getScanModule().getChain().getScanDescription()
+							.getMeasuringStation()
+							.getEventById(monitorEvent.getId());
+					if (event == null) {
+						LOGGER.error("device of monitor event "
+								+ monitorEvent.getId() + " could not be found.");
+						continue;
+					}
+					ControlEvent controlEvent = new ControlEvent(
+							EventTypes.MONITOR, event, event.getId());
+					controlEvent.getLimit().setComparison(
+							monitorEvent.getLimit().getComparison());
+					controlEvent.getLimit().setValue(
+							monitorEvent.getLimit().getValue());
+					to.addRedoEvent(controlEvent);
+				} else if (defaultsControlEvent instanceof DefaultsScheduleEvent) {
+					DefaultsScheduleEvent scheduleEvent = 
+							(DefaultsScheduleEvent) defaultsControlEvent;
+					ScanModule sm = null;
+					try {
+						sm = to.getScanModule().getChain().getScanDescription()
+								.getChain(scheduleEvent.getChainId())
+								.getScanModuleById(scheduleEvent.getScanModuleId());
+					} catch (NullPointerException e) {
+						LOGGER.error("scan module of schedule event "
+								+ scheduleEvent.toString() + " could not be found.");
+						continue;
+					}
+					to.addRedoEvent(new ControlEvent(EventTypes.SCHEDULE,
+							new ScheduleEvent(sm), scheduleEvent.getEventId()));
 				}
-				if (eventChannel != null) {
-					to.addRedoEvent(new ControlEvent(EventTypes.DETECTOR,
-							new DetectorEvent(eventChannel), detectorEvent
-									.getId()));
+			}
+			to.setDeferred(mode.isDeferred());
+		} else if (from.getMode() instanceof DefaultsChannelModeInterval) {
+			DefaultsChannelModeInterval mode = (DefaultsChannelModeInterval)from.getMode();
+			to.setTriggerInterval(mode.getTriggerInterval());
+			if (mode.getStoppedBy() != null) {
+				DetectorChannel detectorChannel = to.getScanModule().getChain().getScanDescription().
+						getMeasuringStation().getDetectorChannelById(mode.getStoppedBy());
+				if (detectorChannel != null) {
+					to.setStoppedBy(detectorChannel);
 				} else {
-					LOGGER.error("channel of detector event "
-							+ detectorEvent.getId() + " could not be found.");
+					LOGGER.error("channel used as stoppedby could not be found.");
 				}
-			} else if (defaultsControlEvent instanceof DefaultsMonitorEvent) {
-				DefaultsMonitorEvent monitorEvent = 
-						(DefaultsMonitorEvent) defaultsControlEvent;
-				Event event = to.getScanModule().getChain().getScanDescription()
-						.getMeasuringStation()
-						.getEventById(monitorEvent.getId());
-				if (event == null) {
-					LOGGER.error("device of monitor event "
-							+ monitorEvent.getId() + " could not be found.");
-					continue;
-				}
-				ControlEvent controlEvent = new ControlEvent(
-						EventTypes.MONITOR, event, event.getId());
-				controlEvent.getLimit().setComparison(
-						monitorEvent.getLimit().getComparison());
-				controlEvent.getLimit().setValue(
-						monitorEvent.getLimit().getValue());
-				to.addRedoEvent(controlEvent);
-			} else if (defaultsControlEvent instanceof DefaultsScheduleEvent) {
-				DefaultsScheduleEvent scheduleEvent = 
-						(DefaultsScheduleEvent) defaultsControlEvent;
-				ScanModule sm = null;
-				try {
-					sm = to.getScanModule().getChain().getScanDescription()
-							.getChain(scheduleEvent.getChainId())
-							.getScanModuleById(scheduleEvent.getScanModuleId());
-				} catch (NullPointerException e) {
-					LOGGER.error("scan module of schedule event "
-							+ scheduleEvent.toString() + " could not be found.");
-					continue;
-				}
-				to.addRedoEvent(new ControlEvent(EventTypes.SCHEDULE,
-						new ScheduleEvent(sm), scheduleEvent.getEventId()));
 			}
 		}
-		to.setDeferred(from.isDeferred());
+		
 	}
 	
 	/**
@@ -386,7 +500,7 @@ public class DefaultsManager {
 	
 	/**
 	 * Returns a 
-	 * {@link de.ptb.epics.eve.data.scandescription.defaults.DefaultsAxis} for 
+	 * {@link de.ptb.epics.eve.data.scandescription.defaults.axis.DefaultsAxis} for 
 	 * the given {@link de.ptb.epics.eve.data.scandescription.Axis}.
 	 * 
 	 * @param axis the axis to convert
@@ -446,7 +560,7 @@ public class DefaultsManager {
 	
 	/**
 	 * Returns a 
-	 * {@link de.ptb.epics.eve.data.scandescription.defaults.DefaultsChannel} 
+	 * {@link de.ptb.epics.eve.data.scandescription.defaults.channel.DefaultsChannel} 
 	 * for the given 
 	 * {@link de.ptb.epics.eve.data.scandescription.Channel}.
 	 * 
@@ -456,59 +570,75 @@ public class DefaultsManager {
 	public static DefaultsChannel getDefaultsChannel(Channel channel) {
 		DefaultsChannel defaultsChannel = new DefaultsChannel();
 		defaultsChannel.setId(channel.getDetectorChannel().getID());
-		if (channel.getAverageCount() != 0) {
-			defaultsChannel.setAverageCount(channel.getAverageCount());
-		}
-		if (channel.getMaxAttempts() != -1
-				&& channel.getMaxAttempts() != Integer.MIN_VALUE) {
-			defaultsChannel.setMaxAttempts(channel.getMaxAttempts());
-		}
-		if (channel.getMinimum() != Double.NaN
-				&& channel.getMinimum() != Double.NEGATIVE_INFINITY) {
-			defaultsChannel.setMinimum(channel.getMinimum());
-		}
-		if (channel.getMaxDeviation() != Double.NaN
-				&& channel.getMaxDeviation() != Double.NEGATIVE_INFINITY) {
-			defaultsChannel.setMaxDeviation(channel.getMaxDeviation());
-		}
-		for (ControlEvent event : channel.getRedoEvents()) {
-			switch (event.getEventType()) {
-			case DETECTOR:
-				DefaultsDetectorEvent defaultsDetectorEvent = 
-						new DefaultsDetectorEvent();
-				defaultsDetectorEvent.setId(((DetectorEvent) (event.getEvent()))
-						.getId());
-				defaultsChannel.getRedoEvents().add(
-						new DefaultsRedoEvent(defaultsDetectorEvent));
-				break;
-			case MONITOR:
-				DefaultsMonitorEvent defaultsMonitorEvent = 
-						new DefaultsMonitorEvent();
-				MonitorEvent monitorEvent = (MonitorEvent) event.getEvent();
-				defaultsMonitorEvent.setId(monitorEvent.getId());
-				defaultsMonitorEvent.setLimit(event.getLimit());
-				defaultsChannel.getRedoEvents().add(
-						new DefaultsRedoEvent(defaultsMonitorEvent));
-				break;
-			case SCHEDULE:
-				DefaultsScheduleEvent defaultsScheduleEvent = 
-						new DefaultsScheduleEvent();
-				ScheduleEvent scheduleEvent = (ScheduleEvent) event.getEvent();
-				defaultsScheduleEvent.setChainId(scheduleEvent.getScanModule()
-						.getChain().getId());
-				defaultsScheduleEvent.setScanModuleId(scheduleEvent
-						.getScanModule().getId());
-				defaultsScheduleEvent.setScheduleTime(scheduleEvent
-						.getScheduleTime());
-				defaultsChannel.getRedoEvents().add(
-						new DefaultsRedoEvent(defaultsScheduleEvent));
-				break;
-			}
-		}
-		defaultsChannel.setDeferred(channel.isDeferred());
 		if (channel.getNormalizeChannel() != null) {
 			defaultsChannel.setNormalizeId(channel.getNormalizeChannel().getID());
 		}
+		switch (channel.getChannelMode()) {
+		case ChannelMode.STANDARD:
+			DefaultsChannelModeStandard standardMode = new DefaultsChannelModeStandard();
+			if (channel.getAverageCount() != 0) {
+				standardMode.setAverageCount(channel.getAverageCount());
+			}
+			if (channel.getMaxAttempts() != -1
+					&& channel.getMaxAttempts() != Integer.MIN_VALUE) {
+				standardMode.setMaxAttempts(channel.getMaxAttempts());
+			}
+			if (channel.getMinimum() != Double.NaN
+					&& channel.getMinimum() != Double.NEGATIVE_INFINITY) {
+				standardMode.setMinimum(channel.getMinimum());
+			}
+			if (channel.getMaxDeviation() != Double.NaN
+					&& channel.getMaxDeviation() != Double.NEGATIVE_INFINITY) {
+				standardMode.setMaxDeviation(channel.getMaxDeviation());
+			}
+			for (ControlEvent event : channel.getRedoEvents()) {
+				switch (event.getEventType()) {
+				case DETECTOR:
+					DefaultsDetectorEvent defaultsDetectorEvent = 
+							new DefaultsDetectorEvent();
+					defaultsDetectorEvent.setId(((DetectorEvent) (event.getEvent()))
+							.getId());
+					standardMode.getRedoEvents().add(
+							new DefaultsRedoEvent(defaultsDetectorEvent));
+					break;
+				case MONITOR:
+					DefaultsMonitorEvent defaultsMonitorEvent = 
+							new DefaultsMonitorEvent();
+					MonitorEvent monitorEvent = (MonitorEvent) event.getEvent();
+					defaultsMonitorEvent.setId(monitorEvent.getId());
+					defaultsMonitorEvent.setLimit(event.getLimit());
+					standardMode.getRedoEvents().add(
+							new DefaultsRedoEvent(defaultsMonitorEvent));
+					break;
+				case SCHEDULE:
+					DefaultsScheduleEvent defaultsScheduleEvent = 
+							new DefaultsScheduleEvent();
+					ScheduleEvent scheduleEvent = (ScheduleEvent) event.getEvent();
+					defaultsScheduleEvent.setChainId(scheduleEvent.getScanModule()
+							.getChain().getId());
+					defaultsScheduleEvent.setScanModuleId(scheduleEvent
+							.getScanModule().getId());
+					defaultsScheduleEvent.setScheduleTime(scheduleEvent
+							.getScheduleTime());
+					standardMode.getRedoEvents().add(
+							new DefaultsRedoEvent(defaultsScheduleEvent));
+					break;
+				}
+			}
+			standardMode.setDeferred(channel.isDeferred());
+			defaultsChannel.setMode(standardMode);
+			break;
+		case ChannelMode.INTERVAL:
+			DefaultsChannelModeInterval intervalMode = new DefaultsChannelModeInterval();
+			intervalMode.setTriggerInterval(channel.getTriggerInterval());
+			if (channel.getStoppedBy() != null) {
+				intervalMode.setStoppedBy(channel.getStoppedBy().getID());
+			}
+			defaultsChannel.setMode(intervalMode);
+			break;
+		}
+		
+		
 		return defaultsChannel;
 	}
 	

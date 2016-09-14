@@ -17,8 +17,8 @@ import static org.junit.Assert.*;
 
 import de.ptb.epics.eve.data.scandescription.PositionMode;
 import de.ptb.epics.eve.data.scandescription.Stepfunctions;
-import de.ptb.epics.eve.data.scandescription.defaults.DefaultsAxis;
 import de.ptb.epics.eve.data.scandescription.defaults.DefaultsManager;
+import de.ptb.epics.eve.data.scandescription.defaults.axis.DefaultsAxis;
 
 /**
  * @author Marcus Michalsky

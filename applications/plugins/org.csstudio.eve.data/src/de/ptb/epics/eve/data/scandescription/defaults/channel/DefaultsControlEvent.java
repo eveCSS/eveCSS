@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.data.scandescription.defaults;
+package de.ptb.epics.eve.data.scandescription.defaults.channel;
 
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;

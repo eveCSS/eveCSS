@@ -18,6 +18,7 @@ public class DefaultsUpdater extends Updater {
 	 */
 	public DefaultsUpdater() {
 		super();
-		// add patches here
+		this.addPatch(Patch1o0T1o1.getInstance());
+		this.addPatch(Patch1o1T2o0.getInstance());
 	}
 }

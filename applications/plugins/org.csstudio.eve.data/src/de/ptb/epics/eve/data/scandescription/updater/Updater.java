@@ -67,8 +67,6 @@ public class Updater {
 		} else if (source.compareTo(target) > 0) {
 			LOGGER.info("back to the future");
 			return null;
-		} else if (source.compareTo(new Version(2,2)) < 0) {
-			throw new VersionTooOldException();
 		} else if (source.compareTo(target) < 0) {
 			if (LOGGER.isInfoEnabled()) { 
 				LOGGER.info("file version (" + source
@@ -91,6 +89,9 @@ public class Updater {
 	
 	private Version getDocumentVersion(Document document) {
 		Node node = document.getElementsByTagName("version").item(0);
+		if (node == null) {
+			return new Version(1, 0);
+		}
 		String versionString = node.getChildNodes().item(0).getNodeValue();
 		return new Version(
 				Integer.parseInt(versionString.split("\\.")[0]), 

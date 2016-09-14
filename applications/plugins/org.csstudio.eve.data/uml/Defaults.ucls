@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<class-diagram version="1.1.8" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
-  associations="true" dependencies="false" nesting-relationships="true">  
+<class-diagram version="1.1.10" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
   <class id="1" language="java" name="de.ptb.epics.eve.data.scandescription.defaults.Defaults" 
     project="de.ptb.epics.eve.data" 
     file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/defaults/Defaults.java" binary="false" 
@@ -12,10 +12,10 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="2" language="java" name="de.ptb.epics.eve.data.scandescription.defaults.DefaultsAxis" 
+  <class id="2" language="java" name="de.ptb.epics.eve.data.scandescription.defaults.axis.DefaultsAxis" 
     project="de.ptb.epics.eve.data" 
-    file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/defaults/DefaultsAxis.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
+    file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/defaults/axis/DefaultsAxis.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="708" y="728"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -23,10 +23,10 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="de.ptb.epics.eve.data.scandescription.defaults.DefaultsChannel" 
+  <class id="3" language="java" name="de.ptb.epics.eve.data.scandescription.defaults.channel.DefaultsChannel" 
     project="de.ptb.epics.eve.data" 
-    file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/defaults/DefaultsChannel.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
+    file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/defaults/channel/DefaultsChannel.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="962" y="691"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -45,9 +45,9 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="5" language="java" name="de.ptb.epics.eve.data.scandescription.defaults.DefaultsAxisAdapter" 
+  <class id="5" language="java" name="de.ptb.epics.eve.data.scandescription.defaults.axis.DefaultsAxisAdapter" 
     project="de.ptb.epics.eve.data" 
-    file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/defaults/DefaultsAxisAdapter.java" 
+    file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/defaults/axis/DefaultsAxisAdapter.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="402" y="257"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -56,9 +56,9 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="6" language="java" name="de.ptb.epics.eve.data.scandescription.defaults.DefaultsAxisAdaptee" 
+  <class id="6" language="java" name="de.ptb.epics.eve.data.scandescription.defaults.axis.DefaultsAxisAdaptee" 
     project="de.ptb.epics.eve.data" 
-    file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/defaults/DefaultsAxisAdaptee.java" 
+    file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/defaults/axis/DefaultsAxisAdaptee.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="389" y="500"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -67,9 +67,9 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="7" language="java" name="de.ptb.epics.eve.data.scandescription.defaults.DefaultsAxisModeAdaptee" 
+  <class id="7" language="java" name="de.ptb.epics.eve.data.scandescription.defaults.axis.DefaultsAxisModeAdaptee" 
     project="de.ptb.epics.eve.data" 
-    file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/defaults/DefaultsAxisModeAdaptee.java" 
+    file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/defaults/axis/DefaultsAxisModeAdaptee.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="120" y="505"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -79,7 +79,7 @@
     </display>  
   </class>  
   <class id="8" language="java" name="javax.xml.bind.annotation.adapters.XmlAdapter" project="de.ptb.epics.eve.data" 
-    file="/home/mmichals/Development/jdk1.8.0_40/jre/lib/rt.jar" binary="true" corner="BOTTOM_RIGHT">    
+    file="/home/mmichals/Development/jdk1.8.0_91/jre/lib/rt.jar" binary="true" corner="BOTTOM_RIGHT">    
     <position height="113" width="233" x="287" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -87,9 +87,9 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="9" language="java" name="de.ptb.epics.eve.data.scandescription.defaults.DefaultsAxisMode" 
+  <class id="9" language="java" name="de.ptb.epics.eve.data.scandescription.defaults.axis.DefaultsAxisMode" 
     project="de.ptb.epics.eve.data" 
-    file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/defaults/DefaultsAxisMode.java" 
+    file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/defaults/axis/DefaultsAxisMode.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="440" y="1021"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -98,9 +98,9 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="10" language="java" name="de.ptb.epics.eve.data.scandescription.defaults.DefaultsAxisAddMultiply" 
+  <class id="10" language="java" name="de.ptb.epics.eve.data.scandescription.defaults.axis.DefaultsAxisAddMultiply" 
     project="de.ptb.epics.eve.data" 
-    file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/defaults/DefaultsAxisAddMultiply.java" 
+    file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/defaults/axis/DefaultsAxisAddMultiply.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="107" y="1146"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -109,9 +109,9 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="11" language="java" name="de.ptb.epics.eve.data.scandescription.defaults.DefaultsAxisList" 
+  <class id="11" language="java" name="de.ptb.epics.eve.data.scandescription.defaults.axis.DefaultsAxisList" 
     project="de.ptb.epics.eve.data" 
-    file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/defaults/DefaultsAxisList.java" 
+    file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/defaults/axis/DefaultsAxisList.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="343" y="1222"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -120,9 +120,9 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="12" language="java" name="de.ptb.epics.eve.data.scandescription.defaults.DefaultsAxisFile" 
+  <class id="12" language="java" name="de.ptb.epics.eve.data.scandescription.defaults.axis.DefaultsAxisFile" 
     project="de.ptb.epics.eve.data" 
-    file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/defaults/DefaultsAxisFile.java" 
+    file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/defaults/axis/DefaultsAxisFile.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="579" y="1224"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -131,9 +131,9 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="13" language="java" name="de.ptb.epics.eve.data.scandescription.defaults.DefaultsAxisPlugin" 
+  <class id="13" language="java" name="de.ptb.epics.eve.data.scandescription.defaults.axis.DefaultsAxisPlugin" 
     project="de.ptb.epics.eve.data" 
-    file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/defaults/DefaultsAxisPlugin.java" 
+    file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/defaults/axis/DefaultsAxisPlugin.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="873" y="1206"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -142,9 +142,9 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="14" language="java" name="de.ptb.epics.eve.data.scandescription.defaults.DefaultsAxisPluginParameter" 
+  <class id="14" language="java" name="de.ptb.epics.eve.data.scandescription.defaults.axis.DefaultsAxisPluginParameter" 
     project="de.ptb.epics.eve.data" 
-    file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/defaults/DefaultsAxisPluginParameter.java" 
+    file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/defaults/axis/DefaultsAxisPluginParameter.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1238" y="1198"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -153,9 +153,9 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="15" language="java" name="de.ptb.epics.eve.data.scandescription.defaults.DefaultsAxisTypeValue" 
+  <class id="15" language="java" name="de.ptb.epics.eve.data.scandescription.defaults.axis.DefaultsAxisTypeValue" 
     project="de.ptb.epics.eve.data" 
-    file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/defaults/DefaultsAxisTypeValue.java" 
+    file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/defaults/axis/DefaultsAxisTypeValue.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="125" y="171"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -164,9 +164,9 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="16" language="java" name="de.ptb.epics.eve.data.scandescription.defaults.DefaultsRedoEvent" 
+  <class id="16" language="java" name="de.ptb.epics.eve.data.scandescription.defaults.channel.DefaultsRedoEvent" 
     project="de.ptb.epics.eve.data" 
-    file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/defaults/DefaultsRedoEvent.java" 
+    file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/defaults/channel/DefaultsRedoEvent.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1249" y="493"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -175,9 +175,9 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="17" language="java" name="de.ptb.epics.eve.data.scandescription.defaults.DefaultsControlEvent" 
+  <class id="17" language="java" name="de.ptb.epics.eve.data.scandescription.defaults.channel.DefaultsControlEvent" 
     project="de.ptb.epics.eve.data" 
-    file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/defaults/DefaultsControlEvent.java" 
+    file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/defaults/channel/DefaultsControlEvent.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1249" y="665"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -186,9 +186,9 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="18" language="java" name="de.ptb.epics.eve.data.scandescription.defaults.DefaultsDetectorEvent" 
+  <class id="18" language="java" name="de.ptb.epics.eve.data.scandescription.defaults.channel.DefaultsDetectorEvent" 
     project="de.ptb.epics.eve.data" 
-    file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/defaults/DefaultsDetectorEvent.java" 
+    file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/defaults/channel/DefaultsDetectorEvent.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1214" y="867"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -197,9 +197,9 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="19" language="java" name="de.ptb.epics.eve.data.scandescription.defaults.DefaultsMonitorEvent" 
+  <class id="19" language="java" name="de.ptb.epics.eve.data.scandescription.defaults.channel.DefaultsMonitorEvent" 
     project="de.ptb.epics.eve.data" 
-    file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/defaults/DefaultsMonitorEvent.java" 
+    file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/defaults/channel/DefaultsMonitorEvent.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1495" y="882"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -208,9 +208,9 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="20" language="java" name="de.ptb.epics.eve.data.scandescription.defaults.DefaultsScheduleEvent" 
+  <class id="20" language="java" name="de.ptb.epics.eve.data.scandescription.defaults.channel.DefaultsScheduleEvent" 
     project="de.ptb.epics.eve.data" 
-    file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/defaults/DefaultsScheduleEvent.java" 
+    file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/defaults/channel/DefaultsScheduleEvent.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1494" y="643"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -219,166 +219,174 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <association id="21">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="22" name="mode">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="23" minimum="0" maximum="1">        
-        <position height="14" width="23" x="500" y="960"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="24">    
+  <generalization id="21">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="8"/>  
+  </generalization>  
+  <association id="22">    
     <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="25" name="start">        
+      <attribute id="23" name="stepwidth">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="26" minimum="0" maximum="1">        
+      <multiplicity id="24" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="15" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="27">    
-    <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="28" name="stepwidth">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="29" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="15" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="30">    
-    <end type="SOURCE" refId="11"/>    
+  <generalization id="25">    
+    <end type="SOURCE" refId="13"/>    
     <end type="TARGET" refId="9"/>  
   </generalization>  
-  <dependency id="31">    
+  <generalization id="26">    
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="17"/>  
+  </generalization>  
+  <generalization id="27">    
+    <end type="SOURCE" refId="20"/>    
+    <end type="TARGET" refId="17"/>  
+  </generalization>  
+  <dependency id="28">    
     <bendpoint x="224" y="324"/>    
     <end type="SOURCE" refId="5"/>    
     <end type="TARGET" refId="7"/>  
   </dependency>  
-  <generalization id="32">    
-    <end type="SOURCE" refId="13"/>    
-    <end type="TARGET" refId="9"/>  
-  </generalization>  
-  <generalization id="33">    
-    <end type="SOURCE" refId="18"/>    
-    <end type="TARGET" refId="17"/>  
-  </generalization>  
-  <generalization id="34">    
-    <end type="SOURCE" refId="19"/>    
-    <end type="TARGET" refId="17"/>  
-  </generalization>  
-  <generalization id="35">    
-    <end type="SOURCE" refId="20"/>    
-    <end type="TARGET" refId="17"/>  
-  </generalization>  
-  <association id="36">    
-    <end type="SOURCE" refId="16" navigable="false">      
-      <attribute id="37" name="controlEvent"/>      
-      <multiplicity id="38" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="17" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="39">    
-    <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="40" name="parameters">        
+  <association id="29">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="30" name="start">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="41" minimum="0" maximum="2147483647">        
+      <multiplicity id="31" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="32">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="33" name="parameters">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="34" minimum="0" maximum="2147483647">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="14" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="42">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="43" name="defaults">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="44" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="45">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="9"/>  
+  <generalization id="35">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="17"/>  
   </generalization>  
-  <association id="46">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="47" name="redoEvents"/>      
-      <multiplicity id="48" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="16" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="49">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="8"/>  
-  </generalization>  
-  <association id="50">    
-    <bendpoint x="869" y="324"/>    
+  <association id="36">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="51" name="channels">        
-        <position height="16" width="52" x="882" y="322"/>      
-      </attribute>      
-      <multiplicity id="52" minimum="0" maximum="2147483647">        
-        <position height="14" width="21" x="843" y="327"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="53">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="54" name="axes">        
+      <attribute id="37" name="axes">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="55" minimum="0" maximum="2147483647">        
+      <multiplicity id="38" minimum="0" maximum="2147483647">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <dependency id="56">    
-    <bendpoint x="632" y="322"/>    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="2"/>  
-  </dependency>  
-  <dependency id="57">    
+  <generalization id="39">    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="9"/>  
+  </generalization>  
+  <association id="40">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="41" name="mode">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="42" minimum="0" maximum="1">        
+        <position height="14" width="23" x="500" y="960"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="43">    
     <bendpoint x="523" y="332"/>    
     <end type="SOURCE" refId="5"/>    
     <end type="TARGET" refId="6"/>  
   </dependency>  
-  <association id="58">    
+  <generalization id="44">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="9"/>  
+  </generalization>  
+  <association id="45">    
+    <bendpoint x="869" y="324"/>    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="46" name="channels">        
+        <position height="16" width="52" x="882" y="322"/>      
+      </attribute>      
+      <multiplicity id="47" minimum="0" maximum="2147483647">        
+        <position height="14" width="21" x="843" y="327"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="48">    
     <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="59" name="stop">        
+      <attribute id="49" name="stop">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="60" minimum="0" maximum="1">        
+      <multiplicity id="50" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="15" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="61">    
-    <end type="SOURCE" refId="12"/>    
+  <generalization id="51">    
+    <end type="SOURCE" refId="10"/>    
     <end type="TARGET" refId="9"/>  
   </generalization>  
+  <association id="52">    
+    <end type="SOURCE" refId="16" navigable="false">      
+      <attribute id="53" name="controlEvent">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="54" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="17" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="55">    
+    <bendpoint x="632" y="322"/>    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="2"/>  
+  </dependency>  
+  <association id="56">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="57" name="defaults">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="58" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="59">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="60" name="redoEvents">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="61" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="16" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    

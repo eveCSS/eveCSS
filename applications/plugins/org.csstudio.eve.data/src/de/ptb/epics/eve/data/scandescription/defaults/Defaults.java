@@ -12,6 +12,8 @@ import javax.xml.bind.annotation.XmlType;
 import org.apache.log4j.Logger;
 
 import de.ptb.epics.eve.data.scandescription.Stepfunctions;
+import de.ptb.epics.eve.data.scandescription.defaults.axis.DefaultsAxis;
+import de.ptb.epics.eve.data.scandescription.defaults.channel.DefaultsChannel;
 
 /**
  * Collection of default values containing a list of axes and channel defaults.
@@ -20,22 +22,39 @@ import de.ptb.epics.eve.data.scandescription.Stepfunctions;
  * @since 1.8
  */
 @XmlRootElement(name="defaults", namespace="http://www.ptb.de/epics/SCML")
-@XmlType(propOrder={"workingDirectory", "axes", "channels"})
+@XmlType(propOrder={"version", "workingDirectory", "axes", "channels"})
 public class Defaults {
 	private static final Logger LOGGER = Logger.getLogger(Defaults.class
 			.getName());
 	
+	private String version;
 	private String workingDirectory;
 	private List<DefaultsAxis> axes;
 	private List<DefaultsChannel> channels;
 	
 	/** */
 	public Defaults() {
+		this.version = "";
 		this.workingDirectory = "";
 		this.axes = new ArrayList<DefaultsAxis>();
 		this.channels = new ArrayList<DefaultsChannel>();
 	}
 	
+	/**
+	 * @return the version
+	 */
+	public String getVersion() {
+		return version;
+	}
+
+	/**
+	 * @param version the version to set
+	 */
+	@XmlElement(name = "version")
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
 	/**
 	 * @return the workingDirectory
 	 */

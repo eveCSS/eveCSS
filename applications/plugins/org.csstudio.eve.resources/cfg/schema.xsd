@@ -648,4 +648,10 @@
       <minInclusive value="0"></minInclusive>
     </restriction>
   </simpleType>
+  
+  <simpleType name="version">
+    <restriction base="string">
+      <pattern value="\d+\.\d+"></pattern>
+    </restriction>
+  </simpleType>
 </schema>

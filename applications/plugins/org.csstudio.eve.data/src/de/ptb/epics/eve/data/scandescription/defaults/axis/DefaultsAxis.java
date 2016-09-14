@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.data.scandescription.defaults;
+package de.ptb.epics.eve.data.scandescription.defaults.axis;
 
 import java.io.File;
 import java.util.Date;
