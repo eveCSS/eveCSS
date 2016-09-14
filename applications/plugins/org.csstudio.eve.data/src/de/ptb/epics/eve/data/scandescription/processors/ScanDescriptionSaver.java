@@ -1607,13 +1607,13 @@ public class ScanDescriptionSaver implements
 					Literals.XML_ELEMENT_NAME_SMCHANNEL, this.atts);
 			
 			this.atts.clear();
-			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_CHANNELID, 
-					Literals.XML_ELEMENT_NAME_CHANNELID, this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SMCHANNELID, 
+					Literals.XML_ELEMENT_NAME_SMCHANNELID, this.atts);
 			this.contentHandler.characters(channel.getAbstractDevice().getID()
 					.toCharArray(), 0, channel.getAbstractDevice().getID()
 					.length());
-			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_CHANNELID, 
-					Literals.XML_ELEMENT_NAME_CHANNELID);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SMCHANNELID, 
+					Literals.XML_ELEMENT_NAME_SMCHANNELID);
 
 			if (channel.getNormalizeChannel() != null) {
 				this.atts.clear();
