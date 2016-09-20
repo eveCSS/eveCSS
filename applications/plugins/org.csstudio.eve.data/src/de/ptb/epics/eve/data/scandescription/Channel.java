@@ -460,7 +460,7 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	/*public void propertyChange(PropertyChangeEvent e) {
+	public void propertyChange(PropertyChangeEvent e) {
 		if (this.getScanModule().smLoading) {
 			// Scan is loading
 			return;
@@ -476,7 +476,7 @@ public class Channel extends AbstractMainPhaseBehavior implements
 				}
 				if (this.getChannelMode().equals(ChannelModes.INTERVAL) 
 						&& this.getStoppedBy() != null
-						&& this.getStoppedBy().equals(channel.getStoppedBy())) {
+						&& this.getStoppedBy().equals(channel.getAbstractDevice())) {
 					stoppedByChannelFound = true;
 				}
 			}
@@ -491,25 +491,6 @@ public class Channel extends AbstractMainPhaseBehavior implements
 			if (!changes) {
 				return;
 			}
-		}
-		
-		this.propertyChangeSupport.firePropertyChange(e.getPropertyName(), e.getOldValue(), e.getNewValue());
-		this.updateListeners();
-	}*/
-	
-	public void propertyChange(PropertyChangeEvent e) {
-		if (this.getScanModule().smLoading) {
-			// Scan is loading
-			return;
-		}
-
-		if (e.getPropertyName().equals(ScanModule.CHANNELS_PROP)) {
-			for (Channel channel : ((List<Channel>)e.getNewValue())) {
-				if (channel.getDetectorChannel().equals(this.normalizeChannel)) {
-					return;
-				}
-			}
-			this.setNormalizeChannel(null);
 		}
 		
 		this.propertyChangeSupport.firePropertyChange(e.getPropertyName(), e.getOldValue(), e.getNewValue());
