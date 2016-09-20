@@ -428,6 +428,17 @@ public class DefaultsManager {
 				DetectorChannel detectorChannel = to.getScanModule().getChain().getScanDescription().
 						getMeasuringStation().getDetectorChannelById(mode.getStoppedBy());
 				if (detectorChannel != null) {
+					boolean found = false;
+					for (Channel channel : to.getScanModule().getChannels()) {
+						if (detectorChannel.getID().equals(
+								channel.getDetectorChannel().getID())) {
+							found = true;
+						}
+					}
+					if (!found) {
+						to.getScanModule().add(
+								new Channel(to.getScanModule(), detectorChannel));
+					}
 					to.setStoppedBy(detectorChannel);
 				} else {
 					LOGGER.error("channel used as stoppedby could not be found.");
