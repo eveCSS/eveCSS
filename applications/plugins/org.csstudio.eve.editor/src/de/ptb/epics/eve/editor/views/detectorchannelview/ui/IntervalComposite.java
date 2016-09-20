@@ -1,5 +1,7 @@
 package de.ptb.epics.eve.editor.views.detectorchannelview.ui;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.Locale;
 
@@ -11,6 +13,8 @@ import org.eclipse.core.databinding.conversion.NumberToStringConverter;
 import org.eclipse.core.databinding.conversion.StringToNumberConverter;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.fieldassist.ControlDecoration;
+import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -18,6 +22,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -35,7 +40,8 @@ import de.ptb.epics.eve.data.scandescription.channelmode.IntervalMode;
  * @author Marcus Michalsky
  * @since 1.27
  */
-public class IntervalComposite extends DetectorChannelViewComposite {
+public class IntervalComposite extends DetectorChannelViewComposite 
+		implements PropertyChangeListener {
 	private static final Logger LOGGER = Logger.getLogger(
 			IntervalComposite.class.getName());
 	
@@ -43,6 +49,8 @@ public class IntervalComposite extends DetectorChannelViewComposite {
 	private Text triggerIntervalText;
 	private Label stoppedByLabel;
 	private ComboViewer stoppedByComboViewer;
+	private ControlDecoration stoppedByComboControlDecoration;
+	private Image errorImage;
 	
 	private IObservableValue triggerIntervalTargetObservable;
 	private IObservableValue triggerIntervalModelObservable;
@@ -100,6 +108,14 @@ public class IntervalComposite extends DetectorChannelViewComposite {
 				}
 			}
 		});
+		
+		this.errorImage = FieldDecorationRegistry.getDefault().getFieldDecoration(
+				FieldDecorationRegistry.DEC_ERROR).getImage();
+		this.stoppedByComboControlDecoration = new ControlDecoration(
+				this.stoppedByComboViewer.getCombo(), SWT.LEFT);
+		this.stoppedByComboControlDecoration.setDescriptionText("stopped by is mandatory");
+		this.stoppedByComboControlDecoration.setImage(errorImage);
+		this.stoppedByComboControlDecoration.hide();
 	}
 
 	/**
@@ -117,6 +133,7 @@ public class IntervalComposite extends DetectorChannelViewComposite {
 		}
 		this.currentChannel = channel;
 		this.createBinding();
+		this.currentChannel.addPropertyChangeListener(IntervalMode.STOPPED_BY_PROP, this);
 		List<Channel> entries = this.currentChannel.
 				getScanModule().getValidStoppedByChannels(currentChannel);
 		this.stoppedByComboViewer.setInput(entries);
@@ -126,8 +143,10 @@ public class IntervalComposite extends DetectorChannelViewComposite {
 		if (this.currentChannel.getStoppedBy() != null) {
 			this.stoppedByComboViewer.getCombo().setText(
 					this.currentChannel.getStoppedBy().getName());
+			this.stoppedByComboControlDecoration.hide();
+		} else {
+			this.stoppedByComboControlDecoration.show();
 		}
-		// TODO Add prop listeners
 	}
 
 	/**
@@ -160,12 +179,29 @@ public class IntervalComposite extends DetectorChannelViewComposite {
 			this.triggerIntervalBinding.dispose();
 			this.triggerIntervalModelObservable.dispose();
 			this.triggerIntervalTargetObservable.dispose();
+			
+			this.currentChannel.removePropertyChangeListener(IntervalMode.STOPPED_BY_PROP, this);
 		}
 		this.currentChannel = null;
 		
 		this.triggerIntervalText.setText("");
 		this.stoppedByComboViewer.getCombo().clearSelection();
+		this.stoppedByComboControlDecoration.hide();
 		
 		this.redraw();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void propertyChange(PropertyChangeEvent e) {
+		if (e.getPropertyName().equals(IntervalMode.STOPPED_BY_PROP)) {
+			if (this.currentChannel.getStoppedBy() == null) {
+				this.stoppedByComboControlDecoration.show();
+			} else {
+				this.stoppedByComboControlDecoration.hide();
+			}
+		}
 	}
 }
