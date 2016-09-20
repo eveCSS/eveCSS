@@ -17,6 +17,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.channelmode.ChannelModes;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
 import de.ptb.epics.eve.util.io.StringUtil;
 
@@ -46,6 +47,7 @@ public class RemoveChannel implements IHandler {
 				final Object o = ((IStructuredSelection)selection).getFirstElement();
 				if(o instanceof Channel) {
 					final List<Channel> normalizationChannels = new ArrayList<>();
+					final List<Channel> stoppedByChannels = new ArrayList<>();
 					for (Channel channel : sm.getChannels()) {
 						if (channel.equals((Channel)o)) {
 							continue;
@@ -53,6 +55,11 @@ public class RemoveChannel implements IHandler {
 						if (channel.getNormalizeChannel() != null &&
 								channel.getNormalizeChannel().equals(((Channel)o).getDetectorChannel())) {
 							normalizationChannels.add(channel);
+						}
+						if (channel.getChannelMode().equals(ChannelModes.INTERVAL)
+								&& channel.getStoppedBy() != null
+								&& channel.getStoppedBy().equals(((Channel)o).getDetectorChannel())) {
+							stoppedByChannels.add(channel);
 						}
 					}
 					sm.remove((Channel)o);
@@ -81,6 +88,29 @@ public class RemoveChannel implements IHandler {
 										"Normalization Removed",
 										message);
 							}
+						});
+					}
+					if (!stoppedByChannels.isEmpty()) {
+						final String message;
+						if (stoppedByChannels.size() > 1) {
+							message = "Channel " + ((Channel) o)
+									.getDetectorChannel().getName()
+									+ " was also removed as Stopped By Channel from Channels "
+									+ StringUtil.buildCommaSeparatedString(stoppedByChannels) + ".";
+						} else {
+								message = "Channel " + ((Channel) o)
+									.getDetectorChannel().getName()
+									+ " was also removed as Stopped By Channel from Channel "
+									+ StringUtil.buildCommaSeparatedString(stoppedByChannels) + ".";
+						}
+						Display.getDefault().asyncExec(new Runnable() {
+							@Override
+							public void run() {
+								MessageDialog.openInformation(Display
+									.getDefault().getActiveShell(),
+									"Stopped By Removed",
+									message);
+								}
 						});
 					}
 				}
