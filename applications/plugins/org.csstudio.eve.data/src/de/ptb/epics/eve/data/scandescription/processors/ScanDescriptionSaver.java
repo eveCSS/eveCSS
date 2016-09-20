@@ -1628,7 +1628,7 @@ public class ScanDescriptionSaver implements
 			}
 			
 			switch (channel.getChannelMode()) {
-			case ChannelMode.STANDARD:
+			case STANDARD:
 				this.atts.clear();
 				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SMCHANNEL_STANDARD, 
 						Literals.XML_ELEMENT_NAME_SMCHANNEL_STANDARD, this.atts);
@@ -1705,7 +1705,7 @@ public class ScanDescriptionSaver implements
 				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SMCHANNEL_STANDARD, 
 						Literals.XML_ELEMENT_NAME_SMCHANNEL_STANDARD);
 				break;
-			case ChannelMode.INTERVAL:
+			case INTERVAL:
 				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SMCHANNEL_INTERVAL, 
 						Literals.XML_ELEMENT_NAME_SMCHANNEL_INTERVAL, this.atts);
 				

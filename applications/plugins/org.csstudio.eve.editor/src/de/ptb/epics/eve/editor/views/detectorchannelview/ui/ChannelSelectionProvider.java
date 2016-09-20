@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.editor.views.detectorchannelview;
+package de.ptb.epics.eve.editor.views.detectorchannelview.ui;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.ISelection;

@@ -37,7 +37,7 @@ import de.ptb.epics.eve.data.scandescription.PositionMode;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
-import de.ptb.epics.eve.data.scandescription.channelmode.ChannelMode;
+import de.ptb.epics.eve.data.scandescription.channelmode.ChannelModes;
 import de.ptb.epics.eve.data.scandescription.defaults.axis.DefaultsAxis;
 import de.ptb.epics.eve.data.scandescription.defaults.channel.DefaultsChannel;
 import de.ptb.epics.eve.data.scandescription.defaults.channel.DefaultsChannelModeInterval;
@@ -343,6 +343,7 @@ public class DefaultsManager {
 		}
 		if (from.getMode() instanceof DefaultsChannelModeStandard) {
 			DefaultsChannelModeStandard mode = (DefaultsChannelModeStandard)from.getMode();
+			to.setChannelMode(ChannelModes.STANDARD);
 			to.setAverageCount(mode.getAverageCount());
 			if (mode.getMaxAttempts() != null) {
 				to.setMaxAttempts(mode.getMaxAttempts());
@@ -421,6 +422,7 @@ public class DefaultsManager {
 			to.setDeferred(mode.isDeferred());
 		} else if (from.getMode() instanceof DefaultsChannelModeInterval) {
 			DefaultsChannelModeInterval mode = (DefaultsChannelModeInterval)from.getMode();
+			to.setChannelMode(ChannelModes.INTERVAL);
 			to.setTriggerInterval(mode.getTriggerInterval());
 			if (mode.getStoppedBy() != null) {
 				DetectorChannel detectorChannel = to.getScanModule().getChain().getScanDescription().
@@ -574,21 +576,18 @@ public class DefaultsManager {
 			defaultsChannel.setNormalizeId(channel.getNormalizeChannel().getID());
 		}
 		switch (channel.getChannelMode()) {
-		case ChannelMode.STANDARD:
+		case STANDARD:
 			DefaultsChannelModeStandard standardMode = new DefaultsChannelModeStandard();
 			if (channel.getAverageCount() != 0) {
 				standardMode.setAverageCount(channel.getAverageCount());
 			}
-			if (channel.getMaxAttempts() != -1
-					&& channel.getMaxAttempts() != Integer.MIN_VALUE) {
+			if (channel.getMaxAttempts() != null) {
 				standardMode.setMaxAttempts(channel.getMaxAttempts());
 			}
-			if (channel.getMinimum() != Double.NaN
-					&& channel.getMinimum() != Double.NEGATIVE_INFINITY) {
+			if (channel.getMinimum() != null) {
 				standardMode.setMinimum(channel.getMinimum());
 			}
-			if (channel.getMaxDeviation() != Double.NaN
-					&& channel.getMaxDeviation() != Double.NEGATIVE_INFINITY) {
+			if (channel.getMaxDeviation() != null) {
 				standardMode.setMaxDeviation(channel.getMaxDeviation());
 			}
 			for (ControlEvent event : channel.getRedoEvents()) {
@@ -628,7 +627,7 @@ public class DefaultsManager {
 			standardMode.setDeferred(channel.isDeferred());
 			defaultsChannel.setMode(standardMode);
 			break;
-		case ChannelMode.INTERVAL:
+		case INTERVAL:
 			DefaultsChannelModeInterval intervalMode = new DefaultsChannelModeInterval();
 			intervalMode.setTriggerInterval(channel.getTriggerInterval());
 			if (channel.getStoppedBy() != null) {

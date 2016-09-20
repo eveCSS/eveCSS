@@ -40,6 +40,10 @@ public class IntervalMode extends ChannelMode {
 	 */
 	@Override
 	public void setTriggerInterval(double triggerInterval) {
+		if (triggerInterval < 0) {
+			throw new IllegalArgumentException(
+					"The trigger interval must be larger than 0.");
+		}
 		double oldValue = this.triggerInterval;
 		this.triggerInterval = triggerInterval;
 		this.getPropertyChangeSupport().firePropertyChange(IntervalMode.TRIGGER_INTERVAL_PROP, 

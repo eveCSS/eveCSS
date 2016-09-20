@@ -94,6 +94,8 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	/** */
 	public static final String TYPE_PROP = "type";
 	
+	public static final String REMOVE_CHANNEL_PROP = "removeChannel";
+	
 	/**
 	 * @since 1.19
 	 */
@@ -353,7 +355,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * 
 	 * @param excludeChannel
 	 *            if set the given channel will not be part of the result even
-	 *            if is valid.
+	 *            if it is valid.
 	 * @return a list of channels valid for normalization (given channel excluded)
 	 * @since 1.22
 	 */
@@ -371,6 +373,30 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 			validNormalizationChannels.add(ch);
 		}
 		return validNormalizationChannels;
+	}
+	
+	/**
+	 * Returns all channels valid as stop. A given channel can be 
+	 * excluded from the result.
+	 * 
+	 * Currently all present channels are valid as stop.
+	 * @param excludeChannel
+	 * 		if set the given channel will not be part of the result even 
+	 * 		if it is valid.
+	 * @return a list of channels valid as stop (given channel excluded)
+	 * @since 1.27
+	 */
+	public List<Channel> getValidStoppedByChannels(Channel excludeChannel) {
+		List<Channel> validStoppedByChannels = new ArrayList<>();
+		for (Channel ch : this.getChannels()) {
+			if (excludeChannel != null 
+					&& ch.getDetectorChannel().getID().equals(
+							excludeChannel.getDetectorChannel().getID())) {
+				continue;
+			}
+			validStoppedByChannels.add(ch);
+		}
+		return validStoppedByChannels;
 	}
 	
 	/**
@@ -600,7 +626,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		// 3. tell that channel was removed
 		this.propertyChangeSupport.firePropertyChange(ScanModule.CHANNELS_PROP,
 				null, this.channels);
-		propertyChangeSupport.firePropertyChange("removeChannel", channel, null);
+		propertyChangeSupport.firePropertyChange(ScanModule.REMOVE_CHANNEL_PROP, channel, null);
 		propertyChangeSupport.firePropertyChange("removePosChannel", channel, null);
 		updateListeners();
 	}
@@ -639,7 +665,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	public void remove(final PlotWindow plotWindow) {
 		// remove property Listener of plotWindow
 		this.removePropertyChangeListener("removeAxis", plotWindow);
-		this.removePropertyChangeListener("removeChannel", plotWindow);
+		this.removePropertyChangeListener(ScanModule.REMOVE_CHANNEL_PROP, plotWindow);
 		this.removePropertyChangeListener("addAxis", plotWindow);
 		
 		propertyChangeSupport.firePropertyChange("removePlot", plotWindow, null);

@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.scandescription.channelmode.ChannelMode;
+import de.ptb.epics.eve.data.scandescription.channelmode.ChannelModes;
 import de.ptb.epics.eve.data.scandescription.channelmode.IntervalMode;
 import de.ptb.epics.eve.data.scandescription.channelmode.StandardMode;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
@@ -29,6 +30,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
 public class Channel extends AbstractMainPhaseBehavior implements
 		PropertyChangeListener {
 	public static final String NORMALIZE_CHANNEL_PROP = "normalizeChannel";
+	public static final String CHANNEL_MODE_PROP = "channelMode";
 	
 	private static final Logger LOGGER = Logger.getLogger(Channel.class.getName());
 	
@@ -95,8 +97,8 @@ public class Channel extends AbstractMainPhaseBehavior implements
 		newChannel.setLoadTime(channel.getLoadTime());
 		
 		switch (channel.getChannelMode()) {
-		case ChannelMode.STANDARD:
-			newChannel.setChannelMode(ChannelMode.STANDARD);
+		case STANDARD:
+			newChannel.setChannelMode(ChannelModes.STANDARD);
 			newChannel.setAverageCount(channel.getAverageCount());
 			newChannel.setMaxAttempts(new Integer(channel.getMaxAttempts().intValue()));
 			newChannel.setMaxDeviation(new Double(channel.getMaxDeviation().doubleValue()));
@@ -106,8 +108,8 @@ public class Channel extends AbstractMainPhaseBehavior implements
 				newChannel.addRedoEvent(ControlEvent.newInstance(event));
 			}
 			break;
-		case ChannelMode.INTERVAL:
-			newChannel.setChannelMode(ChannelMode.INTERVAL);
+		case INTERVAL:
+			newChannel.setChannelMode(ChannelModes.INTERVAL);
 			newChannel.setTriggerInterval(channel.getTriggerInterval());
 			newChannel.setStoppedBy(channel.getStoppedBy());
 			break;
@@ -117,16 +119,16 @@ public class Channel extends AbstractMainPhaseBehavior implements
 
 	/**
 	 * Returns the current channel mode. Available modes are defined by 
-	 * {@link de.ptb.epics.eve.data.scandescription.channelmode.ChannelMode}.
+	 * {@link de.ptb.epics.eve.data.scandescription.channelmode.ChannelModes}.
 	 * 
 	 * @return the current channel mode
 	 * @throws IllegalStateException if no channel mode is set
 	 */
-	public int getChannelMode() {
+	public ChannelModes getChannelMode() {
 		if (this.channelMode instanceof StandardMode) {
-			return ChannelMode.STANDARD;
+			return ChannelModes.STANDARD;
 		} else if (this.channelMode instanceof IntervalMode) {
-			return ChannelMode.INTERVAL;
+			return ChannelModes.INTERVAL;
 		}
 		throw new IllegalStateException("no channel mode set!");
 	}
@@ -137,17 +139,20 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	 * 
 	 * @param channelMode the channelMode to set
 	 */
-	public void setChannelMode(int channelMode) {
+	public void setChannelMode(ChannelModes channelMode) {
+		ChannelModes oldValue = this.getChannelMode();
 		this.channelMode.removePropertyChangeListener(this);
 		switch (channelMode) {
-		case ChannelMode.STANDARD:
+		case STANDARD:
 			this.channelMode = new StandardMode(this);
 			break;
-		case ChannelMode.INTERVAL:
+		case INTERVAL:
 			this.channelMode = new IntervalMode(this);
 			break;
 		}
 		this.channelMode.addPropertyChangeListener(this);
+		this.propertyChangeSupport.firePropertyChange(Channel.CHANNEL_MODE_PROP, oldValue, channelMode);
+		this.updateListeners();
 	}
 
 	/**
@@ -455,6 +460,43 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	/*public void propertyChange(PropertyChangeEvent e) {
+		if (this.getScanModule().smLoading) {
+			// Scan is loading
+			return;
+		}
+
+		if (e.getPropertyName().equals(ScanModule.CHANNELS_PROP)) {
+			boolean changes = false;
+			boolean normalizeChannelFound = false;
+			boolean stoppedByChannelFound = false;
+			for (Channel channel : ((List<Channel>)e.getNewValue())) {
+				if (channel.getDetectorChannel().equals(this.normalizeChannel)) {
+					normalizeChannelFound = true;
+				}
+				if (this.getChannelMode().equals(ChannelModes.INTERVAL) 
+						&& this.getStoppedBy() != null
+						&& this.getStoppedBy().equals(channel.getStoppedBy())) {
+					stoppedByChannelFound = true;
+				}
+			}
+			if (!normalizeChannelFound) {
+				this.setNormalizeChannel(null);
+				changes = true;
+			}
+			if (this.getChannelMode().equals(ChannelModes.INTERVAL) && !stoppedByChannelFound) {
+				this.setStoppedBy(null);
+				changes = true;
+			}
+			if (!changes) {
+				return;
+			}
+		}
+		
+		this.propertyChangeSupport.firePropertyChange(e.getPropertyName(), e.getOldValue(), e.getNewValue());
+		this.updateListeners();
+	}*/
+	
 	public void propertyChange(PropertyChangeEvent e) {
 		if (this.getScanModule().smLoading) {
 			// Scan is loading
@@ -471,6 +513,7 @@ public class Channel extends AbstractMainPhaseBehavior implements
 		}
 		
 		this.propertyChangeSupport.firePropertyChange(e.getPropertyName(), e.getOldValue(), e.getNewValue());
+		this.updateListeners();
 	}
 
 	/**

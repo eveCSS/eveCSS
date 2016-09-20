@@ -6,7 +6,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import de.ptb.epics.eve.data.EventImpacts;
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.views.chainview.ChainView;
-import de.ptb.epics.eve.editor.views.detectorchannelview.DetectorChannelView;
+import de.ptb.epics.eve.editor.views.detectorchannelview.ui.DetectorChannelView;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
 
 /**

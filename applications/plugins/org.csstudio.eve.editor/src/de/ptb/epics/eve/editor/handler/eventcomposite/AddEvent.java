@@ -22,7 +22,7 @@ import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.gef.ScanDescriptionEditor;
 import de.ptb.epics.eve.editor.views.chainview.ChainView;
-import de.ptb.epics.eve.editor.views.detectorchannelview.DetectorChannelView;
+import de.ptb.epics.eve.editor.views.detectorchannelview.ui.DetectorChannelView;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
 
 /**

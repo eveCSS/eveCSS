@@ -15,6 +15,7 @@ import org.junit.Test;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.channelmode.ChannelMode;
+import de.ptb.epics.eve.data.scandescription.channelmode.ChannelModes;
 import de.ptb.epics.eve.data.scandescription.channelmode.IntervalMode;
 import de.ptb.epics.eve.data.scandescription.channelmode.StandardMode;
 import de.ptb.epics.eve.data.tests.mothers.measuringstation.DetectorChannelMother;
@@ -49,31 +50,31 @@ public class ChannelTest implements PropertyChangeListener {
 	
 	@Test(expected = IllegalStateException.class)
 	public void testIntervalModeSetAverageCount() {
-		this.channel.setChannelMode(ChannelMode.INTERVAL);
+		this.channel.setChannelMode(ChannelModes.INTERVAL);
 		this.channel.setAverageCount(1);
 	}
 	
 	@Test(expected = IllegalStateException.class)
 	public void testIntervalModeSetMaxAttempts() {
-		this.channel.setChannelMode(ChannelMode.INTERVAL);
+		this.channel.setChannelMode(ChannelModes.INTERVAL);
 		this.channel.setMaxAttempts(1);
 	}
 	
 	@Test(expected = IllegalStateException.class)
 	public void testIntervalModeSetMaxDeviation() {
-		this.channel.setChannelMode(ChannelMode.INTERVAL);
+		this.channel.setChannelMode(ChannelModes.INTERVAL);
 		this.channel.setMaxDeviation(2.0);
 	}
 	
 	@Test(expected = IllegalStateException.class)
 	public void testIntervalModeSetMinimum() {
-		this.channel.setChannelMode(ChannelMode.INTERVAL);
+		this.channel.setChannelMode(ChannelModes.INTERVAL);
 		this.channel.setMinimum(2.0);
 	}
 	
 	@Test(expected = IllegalStateException.class)
 	public void testIntervalModeSetDeferred() {
-		this.channel.setChannelMode(ChannelMode.INTERVAL);
+		this.channel.setChannelMode(ChannelModes.INTERVAL);
 		this.channel.setDeferred(true);
 	}
 	
@@ -129,7 +130,7 @@ public class ChannelTest implements PropertyChangeListener {
 	
 	@Test
 	public void testTriggerInterval() {
-		this.channel.setChannelMode(ChannelMode.INTERVAL);
+		this.channel.setChannelMode(ChannelModes.INTERVAL);
 		assertEquals(IntervalMode.TRIGGER_INTERVAL_DEFAULT_VALUE, this.channel.getTriggerInterval(), 0);
 		this.channel.setTriggerInterval(2.0);
 		assertEquals(2.0, this.channel.getTriggerInterval(), 0);
@@ -137,7 +138,7 @@ public class ChannelTest implements PropertyChangeListener {
 	
 	@Test
 	public void testStoppedBy() {
-		this.channel.setChannelMode(ChannelMode.INTERVAL);
+		this.channel.setChannelMode(ChannelModes.INTERVAL);
 		assertEquals(null, this.channel.getStoppedBy());
 		DetectorChannel detectorChannel = DetectorChannelMother.createNewDetectorChannel();
 		this.channel.setStoppedBy(detectorChannel);
@@ -165,7 +166,7 @@ public class ChannelTest implements PropertyChangeListener {
 	
 	@Test
 	public void testResetInterval() {
-		this.channel.setChannelMode(ChannelMode.INTERVAL);
+		this.channel.setChannelMode(ChannelModes.INTERVAL);
 		this.channel.setTriggerInterval(2.0);
 		this.channel.setStoppedBy(DetectorChannelMother.createNewDetectorChannel());
 		this.channel.setNormalizeChannel(DetectorChannelMother.createNewDetectorChannel());
@@ -217,7 +218,7 @@ public class ChannelTest implements PropertyChangeListener {
 		this.triggerInterval = false;
 		this.stoppedBy = false;
 		
-		this.channel.setChannelMode(ChannelMode.INTERVAL);
+		this.channel.setChannelMode(ChannelModes.INTERVAL);
 		
 		this.channel.addPropertyChangeListener(IntervalMode.STOPPED_BY_PROP, this);
 		this.channel.addPropertyChangeListener(IntervalMode.TRIGGER_INTERVAL_PROP, this);
@@ -254,7 +255,7 @@ public class ChannelTest implements PropertyChangeListener {
 	@Test
 	public void testStandardChannelNewInstance() {
 		Channel channel = ChannelMother.createNewChannel();
-		channel.setChannelMode(ChannelMode.STANDARD);
+		channel.setChannelMode(ChannelModes.STANDARD);
 		channel.setAverageCount(2);
 		channel.setMaxAttempts(1);
 		channel.setMaxDeviation(4.0);
@@ -272,7 +273,7 @@ public class ChannelTest implements PropertyChangeListener {
 	@Test
 	public void testIntervalChannelNewInstance() {
 		Channel channel = ChannelMother.createNewChannel();
-		channel.setChannelMode(ChannelMode.INTERVAL);
+		channel.setChannelMode(ChannelModes.INTERVAL);
 		channel.setTriggerInterval(2.0);
 		DetectorChannel detectorChannel = DetectorChannelMother.createNewDetectorChannel();
 		channel.setStoppedBy(detectorChannel);

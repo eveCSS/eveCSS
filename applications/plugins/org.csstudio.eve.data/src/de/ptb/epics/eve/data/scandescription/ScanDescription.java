@@ -19,6 +19,7 @@ import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.data.measuringstation.event.DetectorEvent;
 import de.ptb.epics.eve.data.measuringstation.event.Event;
 import de.ptb.epics.eve.data.measuringstation.event.ScheduleEvent;
+import de.ptb.epics.eve.data.scandescription.channelmode.ChannelModes;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
@@ -372,6 +373,9 @@ public class ScanDescription implements IModelUpdateProvider,
 					return true;
 				}
 				for (Channel smChannel : sm.getChannels()) {
+					if (!smChannel.getChannelMode().equals(ChannelModes.STANDARD)) {
+						continue;
+					}
 					if (isEventOfList(channel, smChannel.getRedoEvents())) {
 						return true;
 					}

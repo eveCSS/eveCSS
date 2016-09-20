@@ -21,6 +21,7 @@ import de.ptb.epics.eve.data.EventImpacts;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.channelmode.StandardMode;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventTypes;
 import de.ptb.epics.eve.editor.views.DelColumnEditingSupport;
 import de.ptb.epics.eve.editor.views.chainview.ChainView;
@@ -259,7 +260,7 @@ public class EventComposite extends Composite implements PropertyChangeListener 
 			if (this.channel == null) {
 				return;
 			}
-			this.channel.removePropertyChangeListener(Channel.REDO_EVENT_PROP, this);
+			this.channel.removePropertyChangeListener(StandardMode.REDO_EVENT_PROP, this);
 			this.tableViewer.setInput(null);
 			this.channel = null;
 			return;
@@ -268,7 +269,7 @@ public class EventComposite extends Composite implements PropertyChangeListener 
 		switch(type) {
 		case REDO:
 			this.tableViewer.setInput(channel.getRedoEvents());
-			channel.addPropertyChangeListener(Channel.REDO_EVENT_PROP, this);
+			channel.addPropertyChangeListener(StandardMode.REDO_EVENT_PROP, this);
 			break;
 		default:
 			break;

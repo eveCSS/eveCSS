@@ -63,6 +63,7 @@ import de.ptb.epics.eve.data.scandescription.Stepfunctions;
 import de.ptb.epics.eve.data.scandescription.Storage;
 import de.ptb.epics.eve.data.scandescription.YAxis;
 import de.ptb.epics.eve.data.scandescription.channelmode.ChannelMode;
+import de.ptb.epics.eve.data.scandescription.channelmode.ChannelModes;
 import de.ptb.epics.eve.data.scandescription.channelmode.StandardMode;
 import de.ptb.epics.eve.data.scandescription.processors.adaptees.DetectorEventAdaptee;
 import de.ptb.epics.eve.data.scandescription.processors.adaptees.DetectorEventAdapter;
@@ -489,10 +490,10 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			} else if (qName.equals(Literals.XML_ELEMENT_NAME_NORMALIZEID)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_NORMALIZECHANNEL_NEXT;
 			} else if (qName.equals(Literals.XML_ELEMENT_NAME_SMCHANNEL_STANDARD)) {
-				this.currentChannel.setChannelMode(ChannelMode.STANDARD);
+				this.currentChannel.setChannelMode(ChannelModes.STANDARD);
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_STANDARD_LOADING;
 			} else if (qName.equals(Literals.XML_ELEMENT_NAME_SMCHANNEL_INTERVAL)) {
-				this.currentChannel.setChannelMode(ChannelMode.INTERVAL);
+				this.currentChannel.setChannelMode(ChannelModes.INTERVAL);
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_INTERVAL_LOADING;
 			} 
 			break;
@@ -2409,7 +2410,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			for (ScanModule sm : chain.getScanModules()) {
 				sm.registerEventValidProperties();
 				for (Channel channel : sm.getChannels()) {
-					if (channel.getChannelMode() != ChannelMode.STANDARD) {
+					if (!channel.getChannelMode().equals(ChannelModes.STANDARD)) {
 						continue;
 					}
 					channel.registerEventValidProperties();
@@ -2510,7 +2511,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 					}
 				}
 				for (Channel channel : sm.getChannels()) {
-					if (channel.getChannelMode() != ChannelMode.STANDARD) {
+					if (!channel.getChannelMode().equals(ChannelModes.STANDARD)) {
 						continue;
 					}
 					for (ControlEvent controlEvent : new CopyOnWriteArrayList<ControlEvent>(

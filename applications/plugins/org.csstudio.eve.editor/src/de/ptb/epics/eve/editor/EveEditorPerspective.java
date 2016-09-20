@@ -5,7 +5,7 @@ import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
 import de.ptb.epics.eve.editor.views.chainview.ChainView;
-import de.ptb.epics.eve.editor.views.detectorchannelview.DetectorChannelView;
+import de.ptb.epics.eve.editor.views.detectorchannelview.ui.DetectorChannelView;
 import de.ptb.epics.eve.editor.views.errorview.ErrorView;
 import de.ptb.epics.eve.editor.views.motoraxisview.MotorAxisView;
 import de.ptb.epics.eve.editor.views.plotwindowview.PlotWindowView;

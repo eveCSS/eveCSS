@@ -20,15 +20,6 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventMana
  * @since 1.27
  */
 public abstract class ChannelMode {
-	/**
-	 * Standard channel mode: triggers average times
-	 */
-	public static final int STANDARD = 1;
-	/**
-	 * Interval channel mode: triggers with given interval until stop event
-	 */
-	public static final int INTERVAL = 2;
-	
 	private PropertyChangeSupport propertyChangeSupport;
 	private Channel channel;
 	

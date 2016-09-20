@@ -7,6 +7,7 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
 import de.ptb.epics.eve.data.scandescription.Channel;
+import de.ptb.epics.eve.data.scandescription.channelmode.ChannelModes;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
 
@@ -50,9 +51,17 @@ public class LabelProvider implements ITableLabelProvider {
 		case 1:
 			return ((Channel) channel).getAbstractDevice().getName();
 		case 2:
-			return Integer.toString(((Channel) channel).getAverageCount());
+			if (((Channel) channel).getChannelMode().equals(ChannelModes.STANDARD)) {
+				return Integer.toString(((Channel) channel).getAverageCount());
+			} else {
+				return "-";
+			}
 		case 3:
-			return Boolean.toString(((Channel)channel).isDeferred());
+			if (((Channel) channel).getChannelMode().equals(ChannelModes.STANDARD)) {
+				return Boolean.toString(((Channel)channel).isDeferred());
+			} else {
+				return "-";
+			}
 		}
 		return null;
 	}

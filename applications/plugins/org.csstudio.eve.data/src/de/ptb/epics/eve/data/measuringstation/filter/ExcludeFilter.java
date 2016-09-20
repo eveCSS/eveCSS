@@ -30,6 +30,7 @@ import de.ptb.epics.eve.data.scandescription.Postscan;
 import de.ptb.epics.eve.data.scandescription.Prescan;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.channelmode.ChannelModes;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 
@@ -971,6 +972,10 @@ public class ExcludeFilter extends MeasuringStationFilter {
 				// iterate channels
 				for(Channel ch : sm.getChannels()) {
 					usedDetectorChannels.add(ch.getDetectorChannel());
+					
+					if (!ch.getChannelMode().equals(ChannelModes.STANDARD)) {
+						continue;
+					}
 					
 					List<ControlEvent> chEvents = new ArrayList<ControlEvent>();
 					chEvents.addAll(ch.getRedoEvents());
