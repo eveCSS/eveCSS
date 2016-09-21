@@ -58,6 +58,7 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 	private Composite top;
 	private SashForm sashForm;
 	private Composite emptyComposite;
+	private NormalizeComposite normalizeComposite;
 	private DetectorChannelViewComposite standardComposite;
 	private DetectorChannelViewComposite intervalComposite;
 	
@@ -153,6 +154,7 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 		gridData.verticalAlignment = GridData.FILL;
 		this.sashForm.setLayoutData(gridData);
 		this.emptyComposite = new Composite(sashForm, SWT.NONE);
+		this.normalizeComposite = new NormalizeComposite(sashForm, SWT.NONE);
 		this.standardComposite = new StandardComposite(sashForm, SWT.BORDER, this);
 		this.intervalComposite = new IntervalComposite(sashForm, SWT.BORDER, this);
 		this.sashForm.setMaximizedControl(this.emptyComposite);
@@ -230,6 +232,23 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 	}
 	
 	private void setComposite() {
+		for (Channel ch : this.currentChannel.getScanModule().getChannels()) {
+			if (ch.getNormalizeChannel() == null) {
+				continue;
+			}
+			if (ch.getNormalizeChannel().getID().equals(this.currentChannel.
+					getDetectorChannel().getID())) {
+				this.sashForm.setMaximizedControl(this.normalizeComposite);
+				this.normalizeComposite.setChannel(ch);
+				this.acquisitionTypeComboViewer.getCombo().deselectAll();;
+				this.acquisitionTypeComboViewer.getCombo().setEnabled(false);
+				this.normalizeChannelComboViewer.getCombo().deselectAll();;
+				this.normalizeChannelComboViewer.getCombo().setEnabled(false);
+				return;
+			}
+		}
+		this.acquisitionTypeComboViewer.getCombo().setEnabled(true);
+		this.normalizeChannelComboViewer.getCombo().setEnabled(true);
 		switch (this.currentChannel.getChannelMode()) {
 		case INTERVAL:
 			this.sashForm.setMaximizedControl(intervalComposite);

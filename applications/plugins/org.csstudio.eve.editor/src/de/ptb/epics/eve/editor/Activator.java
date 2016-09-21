@@ -287,5 +287,8 @@ public class Activator extends AbstractUIPlugin {
 				PLUGIN_ID, "icons/devices/chain.gif").createImage());
 		imagereg.put("SCANMODULE", imageDescriptorFromPlugin(
 				PLUGIN_ID, "icons/devices/scanmodule.gif"));
+		
+		imagereg.put("INFO", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/information.gif"));
 	}
 }
