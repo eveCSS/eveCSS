@@ -54,13 +54,19 @@ public class LabelProvider implements ITableLabelProvider {
 			if (((Channel) channel).getChannelMode().equals(ChannelModes.STANDARD)) {
 				return Integer.toString(((Channel) channel).getAverageCount());
 			} else {
-				return "-";
+				return Character.toString('\u2014');
 			}
 		case 3:
+			if (((Channel) channel).getChannelMode().equals(ChannelModes.INTERVAL)) {
+				return Double.toString(((Channel) channel).getTriggerInterval());
+			} else {
+				return Character.toString('\u2014');
+			}
+		case 4:
 			if (((Channel) channel).getChannelMode().equals(ChannelModes.STANDARD)) {
 				return Boolean.toString(((Channel)channel).isDeferred());
 			} else {
-				return "-";
+				return Character.toString('\u2014');
 			}
 		}
 		return null;
