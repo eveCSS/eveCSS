@@ -100,9 +100,9 @@ public class Channel extends AbstractMainPhaseBehavior implements
 		case STANDARD:
 			newChannel.setChannelMode(ChannelModes.STANDARD);
 			newChannel.setAverageCount(channel.getAverageCount());
-			newChannel.setMaxAttempts(new Integer(channel.getMaxAttempts().intValue()));
-			newChannel.setMaxDeviation(new Double(channel.getMaxDeviation().doubleValue()));
-			newChannel.setMinimum(new Double(channel.getMinimum().doubleValue()));
+			newChannel.setMaxAttempts(channel.getMaxAttempts());
+			newChannel.setMaxDeviation(channel.getMaxDeviation());
+			newChannel.setMinimum(channel.getMinimum());
 			newChannel.setDeferred(channel.isDeferred());
 			for (ControlEvent event : channel.getRedoEvents()) {
 				newChannel.addRedoEvent(ControlEvent.newInstance(event));
