@@ -23,11 +23,14 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.layout.GridData;
 
 import de.ptb.epics.eve.data.scandescription.Channel;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.channelmode.ChannelModes;
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.gef.editparts.ChainEditPart;
@@ -82,8 +85,7 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 		}
 
 		this.sc = new ScrolledComposite(parent, SWT.H_SCROLL | 
-				SWT.V_SCROLL | SWT.BORDER);
-		
+				SWT.V_SCROLL);
 		
 		this.top = new Composite(sc, SWT.NONE);
 		GridLayout gridLayout = new GridLayout();
@@ -92,6 +94,12 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 		this.sc.setContent(this.top);
 		this.sc.setExpandHorizontal(true);
 		this.sc.setExpandVertical(true);
+		this.sc.addControlListener(new ControlAdapter() {
+			@Override
+			public void controlResized(ControlEvent e) {
+				sc.setMinSize(top.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+			}
+		});
 		
 		Label acquisitonType = new Label(top, SWT.NONE);
 		acquisitonType.setText("Acquisition Type:");
@@ -155,13 +163,13 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 		this.sashForm.setLayoutData(gridData);
 		this.emptyComposite = new Composite(sashForm, SWT.NONE);
 		this.normalizeComposite = new NormalizeComposite(sashForm, SWT.NONE);
-		this.standardComposite = new StandardComposite(sashForm, SWT.BORDER, this);
-		this.intervalComposite = new IntervalComposite(sashForm, SWT.BORDER, this);
+		this.standardComposite = new StandardComposite(sashForm, SWT.NONE, this);
+		this.intervalComposite = new IntervalComposite(sashForm, SWT.NONE, this);
 		this.sashForm.setMaximizedControl(this.emptyComposite);
 		
 		this.currentChannel = null;
 		
-		this.top.setVisible(false);
+		this.sc.setVisible(false);
 		
 		// listen to selection changes (if a detector channel is selected, its
 		// attributes are made available for editing)
@@ -178,7 +186,7 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 	@Override
 	public void setFocus() {
 		LOGGER.debug("got focus -> forward to top composite");
-		this.top.setFocus();
+		this.sc.setFocus();
 	}
 
 	/**
@@ -199,7 +207,8 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 			LOGGER.debug("set channel (null)");
 		}
 		if (this.currentChannel != null) {
-			this.currentChannel.getScanModule().removePropertyChangeListener("removeChannel", this);
+			this.currentChannel.getScanModule().removePropertyChangeListener(
+					ScanModule.REMOVE_CHANNEL_PROP, this);
 			this.standardComposite.setChannel(null);
 			this.intervalComposite.setChannel(null);
 		}
@@ -207,8 +216,9 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 		this.currentChannel = channel;
 
 		if (this.currentChannel != null) {
-			this.top.setVisible(true);
-			this.currentChannel.getScanModule().addPropertyChangeListener("removeChannel", this);
+			this.sc.setVisible(true);
+			this.currentChannel.getScanModule().addPropertyChangeListener(
+					ScanModule.REMOVE_CHANNEL_PROP, this);
 			this.setPartName(currentChannel.getAbstractDevice().getName());
 			this.acquisitionTypeComboViewer.getCombo().setText(
 					this.currentChannel.getChannelMode().toString());
@@ -223,11 +233,9 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 						currentChannel.getNormalizeChannel().getName());
 			}
 			this.setComposite();
-			this.sc.setMinSize(new Point(SWT.DEFAULT, SWT.DEFAULT));
-			this.top.layout();
 		} else {
 			this.setPartName("No Channel selected.");
-			top.setVisible(false);
+			this.sc.setVisible(false);
 		}
 	}
 	
@@ -262,6 +270,8 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 			this.sashForm.setMaximizedControl(emptyComposite);
 			break;
 		}
+		this.sc.setMinSize(this.top.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+		this.sc.layout();
 	}
 
 	/**
@@ -326,7 +336,9 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		// TODO Auto-generated method stub
-		
+		if (evt.getPropertyName().equals(ScanModule.REMOVE_CHANNEL_PROP)
+				&& evt.getOldValue().equals(this.currentChannel)) {
+			this.setChannel(null);
+		}
 	}
 }

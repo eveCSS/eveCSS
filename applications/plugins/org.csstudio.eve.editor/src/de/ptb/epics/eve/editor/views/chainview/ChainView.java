@@ -408,8 +408,10 @@ public class ChainView extends ViewPart implements IEditorView,
 				.addSelectionListener(new EventsTabFolderSelectionListener());
 
 		gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
 		gridData.minimumHeight = 150;
+		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
 		this.eventsTabFolder.setLayoutData(gridData);
 		

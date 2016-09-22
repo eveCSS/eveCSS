@@ -19,6 +19,7 @@ import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -180,8 +181,10 @@ public class StandardComposite extends DetectorChannelViewComposite
 		this.eventsTabFolder.setBorderVisible(true);
 		gridData = new GridData();
 		gridData.grabExcessVerticalSpace = true;
+		gridData.grabExcessHorizontalSpace = true;
 		gridData.minimumHeight = 150;
 		gridData.verticalAlignment = GridData.FILL;
+		gridData.horizontalAlignment = GridData.FILL;
 		eventsTabFolder.setLayoutData(gridData);
 
 		this.redoEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, ControlEventTypes.CONTROL_EVENT, 
@@ -366,6 +369,12 @@ public class StandardComposite extends DetectorChannelViewComposite
 		}
 	}
 
+	@Override
+	public Point computeSize(int wHint, int hHint) {
+		// TODO Auto-generated method stub
+		return super.computeSize(wHint, hHint);
+	}
+	
 	/**
 	 * @author Marcus Michalsky
 	 * @since 1.8
