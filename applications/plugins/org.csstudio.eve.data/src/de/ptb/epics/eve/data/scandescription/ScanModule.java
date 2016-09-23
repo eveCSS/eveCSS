@@ -1367,6 +1367,21 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	
 	/**
 	 * {@inheritDoc}
+	 * @since 1.27
+	 */
+	public boolean isUsedAsNormalizeChannel(Channel channel) {
+		for (Channel chan : this.channels) {
+			if (chan.getNormalizeChannel() != null 
+					&& chan.getNormalizeChannel().getID().equals(
+							channel.getAbstractDevice().getID())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {

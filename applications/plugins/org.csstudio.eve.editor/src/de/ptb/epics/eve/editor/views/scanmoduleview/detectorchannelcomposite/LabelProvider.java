@@ -47,24 +47,28 @@ public class LabelProvider implements ITableLabelProvider {
 	 */
 	@Override
 	public String getColumnText(final Object channel, final int colIndex) {
+		Channel chan = (Channel) channel;
+		if ( colIndex > 1 && chan.getScanModule().isUsedAsNormalizeChannel(chan)) {
+			return Character.toString('\u2014');
+		}
 		switch (colIndex) {
 		case 1:
-			return ((Channel) channel).getAbstractDevice().getName();
+			return chan.getAbstractDevice().getName();
 		case 2:
-			if (((Channel) channel).getChannelMode().equals(ChannelModes.STANDARD)) {
-				return Integer.toString(((Channel) channel).getAverageCount());
+			if (chan.getChannelMode().equals(ChannelModes.STANDARD)) {
+				return Integer.toString(chan.getAverageCount());
 			} else {
 				return Character.toString('\u2014');
 			}
 		case 3:
-			if (((Channel) channel).getChannelMode().equals(ChannelModes.INTERVAL)) {
-				return Double.toString(((Channel) channel).getTriggerInterval());
+			if (chan.getChannelMode().equals(ChannelModes.INTERVAL)) {
+				return Double.toString(chan.getTriggerInterval());
 			} else {
 				return Character.toString('\u2014');
 			}
 		case 4:
-			if (((Channel) channel).getChannelMode().equals(ChannelModes.STANDARD)) {
-				return Boolean.toString(((Channel)channel).isDeferred());
+			if (chan.getChannelMode().equals(ChannelModes.STANDARD)) {
+				return Boolean.toString(chan.isDeferred());
 			} else {
 				return Character.toString('\u2014');
 			}

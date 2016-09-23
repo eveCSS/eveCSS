@@ -2,7 +2,7 @@ package de.ptb.epics.eve.editor.views.detectorchannelview.ui;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -25,7 +25,6 @@ import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.layout.GridData;
 
@@ -240,20 +239,24 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 	}
 	
 	private void setComposite() {
+		List<Channel> normalizeChannels = new ArrayList<>();
 		for (Channel ch : this.currentChannel.getScanModule().getChannels()) {
 			if (ch.getNormalizeChannel() == null) {
 				continue;
 			}
 			if (ch.getNormalizeChannel().getID().equals(this.currentChannel.
 					getDetectorChannel().getID())) {
-				this.sashForm.setMaximizedControl(this.normalizeComposite);
-				this.normalizeComposite.setChannel(ch);
-				this.acquisitionTypeComboViewer.getCombo().deselectAll();;
-				this.acquisitionTypeComboViewer.getCombo().setEnabled(false);
-				this.normalizeChannelComboViewer.getCombo().deselectAll();;
-				this.normalizeChannelComboViewer.getCombo().setEnabled(false);
-				return;
+				normalizeChannels.add(ch);
 			}
+		}
+		if (!normalizeChannels.isEmpty()) {
+			this.sashForm.setMaximizedControl(this.normalizeComposite);
+			this.acquisitionTypeComboViewer.getCombo().deselectAll();;
+			this.acquisitionTypeComboViewer.getCombo().setEnabled(false);
+			this.normalizeChannelComboViewer.getCombo().deselectAll();;
+			this.normalizeChannelComboViewer.getCombo().setEnabled(false);
+			this.normalizeComposite.setChannels(normalizeChannels);
+			return;
 		}
 		this.acquisitionTypeComboViewer.getCombo().setEnabled(true);
 		this.normalizeChannelComboViewer.getCombo().setEnabled(true);
