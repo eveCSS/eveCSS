@@ -105,7 +105,7 @@ import static de.ptb.epics.eve.util.xml.XMLUtil.*;
  *  &lt;/smchannel&gt;
  * </pre>
  * 
- * is defined in SCML v5.0 as follows:
+ * is defined in SCML v5.0 as a standard channel as follows:
  * 
  * <pre>
  *  &lt;smchannel&gt;
@@ -126,6 +126,25 @@ import static de.ptb.epics.eve.util.xml.XMLUtil.*;
  *  &lt;/smchannel&gt;
  * </pre>
  * 
+ * </li>
+ * </ul>
+ * </li>
+ * <li>
+ * introduces an interval tag
+ * <ul>
+ * <li>
+ * an example of an interval channel in SCML v5.0:
+ * 
+ * <pre>
+ *   &lt;smchannel&gt;
+ *    &lt;channelid&gt;MDIZ3T5G:currentchan1&lt;/channelid&gt;
+ *    &lt;normalize_id&gt;bIICurrent:Mnt1chan1&lt;/normalize_id&gt;
+ *    &lt;interval&gt;
+ *      &lt;triggerinterval&gt;2.0&lt;/triggerinterval&gt;
+ *      &lt;stoppedby&gt;bIICurrent:Mnt1lifeTimechan1&lt;/stoppedby&gt;
+ *    &lt;/interval&gt;
+ *  &lt;/smchannel&gt;
+ * </pre>
  * </li>
  * </ul>
  * </li>
