@@ -26,6 +26,7 @@ import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
+import de.ptb.epics.eve.data.scandescription.channelmode.ChannelModes;
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.gef.ScanDescriptionEditor;
 import static de.ptb.epics.eve.editor.views.eventcomposite.EventMenuContributionHelper.*;
@@ -51,6 +52,7 @@ public class EventMenuContributionDetector extends CompoundContributionItem {
 		// - the channel as key (comparable)
 		// - a list of events (one entry for each occurrence of the detector)
 		// only modules of type classic will be considered
+		// only channels of type standard will be considered
 		Map<Channel, List<Event>> detectorEventsMap = 
 				new TreeMap<Channel, List<Event>>();
 		ScanDescription sd = ((ScanDescriptionEditor) Activator.getDefault()
@@ -62,6 +64,9 @@ public class EventMenuContributionDetector extends CompoundContributionItem {
 					continue;
 				}
 				for (Channel channel : sm.getChannels()) {
+					if (channel.getChannelMode() != ChannelModes.STANDARD) {
+						continue;
+					}
 					List<Event> channelEvents = detectorEventsMap.get(
 							channel);
 					if (channelEvents == null) {

@@ -368,7 +368,7 @@
          </separator>
          <command
                commandId="org.eclipse.ui.help.displayHelp"
-               icon="icons/conditional_ovr.gif"
+               icon="icons/help_contents.gif"
                label="Click to learn more about Events"
                style="push">
             <parameter
