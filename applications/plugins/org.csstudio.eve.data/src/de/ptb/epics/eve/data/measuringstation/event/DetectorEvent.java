@@ -1,9 +1,13 @@
 package de.ptb.epics.eve.data.measuringstation.event;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import org.apache.log4j.Logger;
 
 import javafx.collections.ListChangeListener;
 import de.ptb.epics.eve.data.scandescription.Channel;
+import de.ptb.epics.eve.data.scandescription.channelmode.ChannelModes;
 
 /**
  * A detector event is triggered when a detector read has finished.
@@ -12,7 +16,7 @@ import de.ptb.epics.eve.data.scandescription.Channel;
  * @since 1.19
  */
 public class DetectorEvent extends ScanEvent implements 
-		ListChangeListener<Channel> {
+		ListChangeListener<Channel>, PropertyChangeListener {
 	private static final Logger LOGGER = Logger.getLogger(DetectorEvent.class
 			.getName());
 	
@@ -33,6 +37,7 @@ public class DetectorEvent extends ScanEvent implements
 				"-" + this.channel.getScanModule().getId() + " )";
 		this.channel.getScanModule().addChannelChangeListener(this);
 		//this.channel.getScanModule().getChain().addScanModuleChangeListener(this);
+		this.channel.addPropertyChangeListener(Channel.CHANNEL_MODE_PROP, this);
 	}
 
 	/**
@@ -74,6 +79,16 @@ public class DetectorEvent extends ScanEvent implements
 		return this.channel.getScanModule().getId();
 	}
 	
+	private void invalidate() {
+		LOGGER.debug(this.channel.getDetectorChannel().getName() + 
+				" was deleted -> event is invalid");
+		this.channel.removePropertyChangeListener(Channel.CHANNEL_MODE_PROP, this);
+		this.channel.getScanModule().removeChannelChangeListener(this);
+		this.propertyChangeSupport.firePropertyChange(
+				ScanEvent.VALID_PROP, this.valid,
+				this.valid = false);
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -84,16 +99,22 @@ public class DetectorEvent extends ScanEvent implements
 			if (change.wasRemoved()) {
 				for (Channel ch : change.getRemoved()) {
 					if (ch == this.getChannel()) {
-						LOGGER.debug(ch.getDetectorChannel().getName() + 
-								" was deleted -> event is invalid");
-						ch.getScanModule().removeChannelChangeListener(this);
-						this.propertyChangeSupport.firePropertyChange(
-								ScanEvent.VALID_PROP, this.valid,
-								this.valid = false);
+						this.invalidate();
 					}
 				}
 			}
 		}
 		// TODO notify when the scan module the detector is in is being removed
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void propertyChange(PropertyChangeEvent e) {
+		if (e.getPropertyName().equals(Channel.CHANNEL_MODE_PROP) 
+				&& !e.getNewValue().equals(ChannelModes.STANDARD)) {
+			this.invalidate();
+		}
 	}
 }
