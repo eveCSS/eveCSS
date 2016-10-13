@@ -3,6 +3,8 @@ package de.ptb.epics.eve.viewer.views.engineview.statustable;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+import org.apache.log4j.Logger;
+
 import de.ptb.epics.eve.ecp1.client.interfaces.IChainProgressListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IChainStatusListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IConnectionStateListener;
@@ -19,15 +21,18 @@ import de.ptb.epics.eve.ecp1.types.EngineStatus;
  */
 public class StatusTracker implements IConnectionStateListener, 
 		IEngineStatusListener, IChainProgressListener, IChainStatusListener {
+	private static final Logger LOGGER = Logger.getLogger(
+			StatusTracker.class.getName());
+	
 	public static final String SCAN_INFO_PROPERTY = "scanInfo";
 	public static final String CHAIN_INFO_PROPERTY = "chainInfo";
-	private PropertyChangeSupport propertyChangeSupprt;
+	private PropertyChangeSupport propertyChangeSupport;
 	
 	private ScanInfo scanInfo;
 	
 	public StatusTracker() {
 		this.scanInfo = new ScanInfo();
-		this.propertyChangeSupprt = new PropertyChangeSupport(this);
+		this.propertyChangeSupport = new PropertyChangeSupport(this);
 	}
 
 	/**
@@ -44,9 +49,22 @@ public class StatusTracker implements IConnectionStateListener,
 	public void chainProgressChanged(ChainProgressCommand chainProgressCommand) {
 		ChainInfo chainInfo = this.scanInfo.getChainInfo(
 				chainProgressCommand.getChainId());
+		if (chainInfo == null) {
+			LOGGER.error("requested chain with id " + chainProgressCommand.getChainId() 
+				+ " not found."
+				+ "Remaining Time could not be updated!");
+			return;
+		}
 		chainInfo.setRemainingTime(chainProgressCommand.getRemainingTime());
-		this.propertyChangeSupprt.firePropertyChange(
+		this.propertyChangeSupport.firePropertyChange(
 				StatusTracker.CHAIN_INFO_PROPERTY, null, scanInfo);
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("ChainProgress (Id: " 
+					+ chainProgressCommand.getChainId() + ", " + "PositionCounter: "
+					+ chainProgressCommand.getPositionCounter() + ", " + "Remaining Time: "
+					+ chainProgressCommand.getRemainingTime() + ", " + "TimeStamp: "
+					+ chainProgressCommand.getTimeStamp() + ")");
+		}
 	}
 
 	/**
@@ -62,8 +80,11 @@ public class StatusTracker implements IConnectionStateListener,
 			this.scanInfo.getChainInfo(chainStatusCommand.getChainId()).
 				setScanModuleReason(i, chainStatusCommand.getScanModuleReason(i));
 		}
-		this.propertyChangeSupprt.firePropertyChange(
+		this.propertyChangeSupport.firePropertyChange(
 				StatusTracker.CHAIN_INFO_PROPERTY, null, scanInfo);
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug(this.scanInfo.toString());
+		}
 	}
 
 	/**
@@ -74,7 +95,7 @@ public class StatusTracker implements IConnectionStateListener,
 		if (EngineStatus.LOADING_XML.equals(engineStatus)) {
 			ScanInfo oldValue = this.scanInfo;
 			this.scanInfo = new ScanInfo();
-			this.propertyChangeSupprt.firePropertyChange(
+			this.propertyChangeSupport.firePropertyChange(
 					StatusTracker.SCAN_INFO_PROPERTY, oldValue, this.scanInfo);
 		}
 	}
@@ -93,7 +114,7 @@ public class StatusTracker implements IConnectionStateListener,
 	public void stackDisconnected() {
 		ScanInfo oldValue = this.scanInfo;
 		this.scanInfo = null;
-		this.propertyChangeSupprt.firePropertyChange(
+		this.propertyChangeSupport.firePropertyChange(
 				StatusTracker.SCAN_INFO_PROPERTY, oldValue, this.scanInfo);
 	}
 	
@@ -103,7 +124,7 @@ public class StatusTracker implements IConnectionStateListener,
 	 * @param listener the listener
 	 */
 	public void addPropertyChangeListener(String property, PropertyChangeListener listener) {
-		this.propertyChangeSupprt.addPropertyChangeListener(property, listener);
+		this.propertyChangeSupport.addPropertyChangeListener(property, listener);
 	}
 
 	/**
@@ -112,6 +133,6 @@ public class StatusTracker implements IConnectionStateListener,
 	 * @param listener the listener
 	 */
 	public void removePropertyChangeListener(String property, PropertyChangeListener listener) {
-		this.propertyChangeSupprt.removePropertyChangeListener(property, listener);
+		this.propertyChangeSupport.removePropertyChangeListener(property, listener);
 	}
 }

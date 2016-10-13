@@ -108,4 +108,17 @@ public class ChainInfo {
 	public ScanModuleInfo getScanModuleInfo(int scanModuleId) {
 		return this.scanModuleInfos.get(scanModuleId);
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		StringBuffer s = new StringBuffer();
+		s.append("Chain " + this.id + "\n");
+		for (ScanModuleInfo smInfo : this.scanModuleInfos.values()) {
+			s.append("    |- " + smInfo.toString());
+		}
+		return s.toString();
+	}
 }
