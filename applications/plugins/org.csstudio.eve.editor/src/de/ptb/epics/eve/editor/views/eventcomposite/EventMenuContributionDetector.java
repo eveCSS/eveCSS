@@ -29,6 +29,8 @@ import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
 import de.ptb.epics.eve.data.scandescription.channelmode.ChannelModes;
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.gef.ScanDescriptionEditor;
+import de.ptb.epics.eve.editor.views.detectorchannelview.ui.DetectorChannelView;
+
 import static de.ptb.epics.eve.editor.views.eventcomposite.EventMenuContributionHelper.*;
 
 /**
@@ -58,13 +60,21 @@ public class EventMenuContributionDetector extends CompoundContributionItem {
 		ScanDescription sd = ((ScanDescriptionEditor) Activator.getDefault()
 				.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 				.getActiveEditor()).getContent();
+		Channel viewChannel = null;
+		if (Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().
+				getActivePage().getActivePart() instanceof DetectorChannelView) {
+			viewChannel = ((DetectorChannelView)Activator.getDefault().getWorkbench().
+					getActiveWorkbenchWindow().getActivePage().getActivePart()).
+					getCurrentChannel();
+		}
 		for (Chain chain : sd.getChains()) {
 			for (ScanModule sm : chain.getScanModules()) {
 				if (sm.getType() != ScanModuleTypes.CLASSIC) {
 					continue;
 				}
 				for (Channel channel : sm.getChannels()) {
-					if (channel.getChannelMode() != ChannelModes.STANDARD) {
+					if (channel.getChannelMode() != ChannelModes.STANDARD 
+							|| (viewChannel != null && viewChannel.equals(channel))) {
 						continue;
 					}
 					List<Event> channelEvents = detectorEventsMap.get(
