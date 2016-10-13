@@ -21,6 +21,8 @@ import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.gef.ScanDescriptionEditor;
+import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
+
 import static de.ptb.epics.eve.editor.views.eventcomposite.EventMenuContributionHelper.*;
 
 /**
@@ -42,6 +44,13 @@ public class EventMenuContributionSchedule extends CompoundContributionItem {
 		ScanDescription sd = ((ScanDescriptionEditor) Activator.getDefault()
 				.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 				.getActiveEditor()).getContent();
+		ScanModule viewModule  = null;
+		if (Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().
+				getActivePage().getActivePart() instanceof ScanModuleView) {
+			viewModule = ((ScanModuleView)Activator.getDefault().getWorkbench().
+					getActiveWorkbenchWindow().getActivePage().getActivePart()).
+					getCurrentScanModule();
+		}
 		
 		{
 			Event startEvent = sd.getDefaultStartEvent();
@@ -77,6 +86,9 @@ public class EventMenuContributionSchedule extends CompoundContributionItem {
 		
 		for (Chain chain : sd.getChains()) {
 			for (ScanModule sm : chain.getScanModules()) {
+				if (viewModule != null && viewModule.equals(sm)) {
+					continue;
+				}
 				String eventId = "S-" + chain.getId() + "-" + sm.getId() + "-"
 						+ "E";
 				Map<String, String> params = new HashMap<String, String>();
