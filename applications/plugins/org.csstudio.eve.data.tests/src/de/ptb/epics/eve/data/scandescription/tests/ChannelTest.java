@@ -9,17 +9,17 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.scandescription.Channel;
-import de.ptb.epics.eve.data.scandescription.channelmode.ChannelMode;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.channelmode.ChannelModes;
 import de.ptb.epics.eve.data.scandescription.channelmode.IntervalMode;
 import de.ptb.epics.eve.data.scandescription.channelmode.StandardMode;
 import de.ptb.epics.eve.data.tests.mothers.measuringstation.DetectorChannelMother;
 import de.ptb.epics.eve.data.tests.mothers.scandescription.ChannelMother;
+import de.ptb.epics.eve.data.tests.mothers.scandescription.ScanModuleMother;
 
 /**
  * @author Marcus Michalsky
@@ -79,12 +79,18 @@ public class ChannelTest implements PropertyChangeListener {
 	}
 	
 	@Test
-	@Ignore("not possible due to normalize channel is not in scanmodule of channel")
 	public void testNormalize() {
 		assertEquals(null, this.channel.getNormalizeChannel());
-		DetectorChannel detectorChannel = DetectorChannelMother.createNewDetectorChannel();
-		this.channel.setNormalizeChannel(detectorChannel);
-		assertEquals(detectorChannel, this.channel.getDetectorChannel());
+		ScanModule scanModule = ScanModuleMother.createNewScanModule();
+		Channel normalizeChannel = ChannelMother.createNewChannel();
+		scanModule.add(normalizeChannel);
+		scanModule.add(this.channel);
+		
+		this.channel.setNormalizeChannel(normalizeChannel.getDetectorChannel());
+		assertEquals(normalizeChannel.getDetectorChannel(), this.channel.getDetectorChannel());
+		
+		scanModule.remove(normalizeChannel);
+		assertEquals(null, this.channel.getNormalizeChannel());
 	}
 
 	@Test
