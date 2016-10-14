@@ -81,17 +81,17 @@ public class ChannelTest implements PropertyChangeListener {
 	@Test
 	public void testNormalize() {
 		ScanModule scanModule = ScanModuleMother.createNewScanModule();
-		Channel channel = ChannelMother.createNewChannel(scanModule);
-		scanModule.add(channel);
+		Channel smChannel = ChannelMother.createNewChannel(scanModule);
+		scanModule.add(smChannel);
 		Channel normalizeChannel = ChannelMother.createNewChannel(scanModule);
 		scanModule.add(normalizeChannel);
-		assertEquals(null, channel.getNormalizeChannel());
+		assertEquals(null, smChannel.getNormalizeChannel());
 		
-		channel.setNormalizeChannel(normalizeChannel.getDetectorChannel());
-		assertEquals(normalizeChannel.getDetectorChannel(), channel.getNormalizeChannel());
+		smChannel.setNormalizeChannel(normalizeChannel.getDetectorChannel());
+		assertEquals(normalizeChannel.getDetectorChannel(), smChannel.getNormalizeChannel());
 		
 		scanModule.remove(normalizeChannel);
-		assertEquals(null, channel.getNormalizeChannel());
+		assertEquals(null, smChannel.getNormalizeChannel());
 	}
 
 	@Test
