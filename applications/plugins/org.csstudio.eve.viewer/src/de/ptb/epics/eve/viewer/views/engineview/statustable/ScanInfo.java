@@ -49,4 +49,17 @@ public class ScanInfo {
 		}
 		chainInfo.setStatus(chainStatus);
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		StringBuffer s = new StringBuffer();
+		s.append("Scan\n");
+		for (ChainInfo chainInfo : this.chainInfos.values()) {
+			s.append(" |- " + chainInfo.toString());
+		}
+		return s.toString();
+	}
 }

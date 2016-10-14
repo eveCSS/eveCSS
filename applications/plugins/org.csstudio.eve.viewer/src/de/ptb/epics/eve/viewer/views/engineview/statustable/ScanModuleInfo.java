@@ -70,4 +70,13 @@ public class ScanModuleInfo {
 	public void setReason(ScanModuleReason reason) {
 		this.reason = reason;
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return this.name + " (id: " + this.id + ", status: " 
+			+ this.status + ", reason: " + this.reason + ")";
+	}
 }

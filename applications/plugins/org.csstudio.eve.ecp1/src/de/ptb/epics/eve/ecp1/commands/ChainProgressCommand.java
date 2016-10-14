@@ -12,7 +12,6 @@ import de.ptb.epics.eve.ecp1.intern.exceptions.WrongLengthException;
 import de.ptb.epics.eve.ecp1.intern.exceptions.WrongStartTagException;
 import de.ptb.epics.eve.ecp1.intern.exceptions.WrongTypeIdException;
 import de.ptb.epics.eve.ecp1.intern.exceptions.WrongVersionException;
-import de.ptb.epics.eve.ecp1.types.ChainStatus;
 
 public class ChainProgressCommand implements IECP1Command {
 
