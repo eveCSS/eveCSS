@@ -28,6 +28,8 @@ public class DetectorChannelMother {
 		channel.setStop(FunctionMother.createNewFunction());
 		channel.setRead(FunctionMother.createNewFunction());
 		
+		DetectorMother.createNewDetector().add(channel);
+		
 		return channel;
 	}
 	
