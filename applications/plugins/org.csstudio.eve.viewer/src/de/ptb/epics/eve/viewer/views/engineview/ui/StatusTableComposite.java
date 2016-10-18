@@ -79,7 +79,7 @@ public class StatusTableComposite extends Composite implements IConnectionStateL
 		});
 		
 		TableViewerColumn idColumn = new TableViewerColumn(viewer, SWT.NONE);
-		idColumn.getColumn().setWidth(50);
+		idColumn.getColumn().setWidth(55);
 		idColumn.getColumn().setText("SM ID");
 		idColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -102,7 +102,7 @@ public class StatusTableComposite extends Composite implements IConnectionStateL
 		});
 		
 		TableViewerColumn statusColumn = new TableViewerColumn(viewer, SWT.NONE);
-		statusColumn.getColumn().setWidth(80);
+		statusColumn.getColumn().setWidth(100);
 		statusColumn.getColumn().setText("Status");
 		statusColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -112,7 +112,7 @@ public class StatusTableComposite extends Composite implements IConnectionStateL
 		});
 		
 		TableViewerColumn reasonColumn = new TableViewerColumn(viewer, SWT.NONE);
-		reasonColumn.getColumn().setWidth(80);
+		reasonColumn.getColumn().setWidth(100);
 		reasonColumn.getColumn().setText("Reason");
 		reasonColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override

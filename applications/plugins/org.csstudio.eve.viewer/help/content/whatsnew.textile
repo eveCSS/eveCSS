@@ -11,6 +11,10 @@ h2(eveTopic). Version 1.26
 * [Bug Fix] fixed a bug where the order of the scan modules in the Engine View table did not match the order they were executed
 * [Bug Fix] fixed a bug where the progress bar accidently reported the start of a measurement instead of its completion
 
+h3(eveTopic). Version 1.26.1
+
+* [Bug Fix] fixed a bug where engine view (status table, plot) was not refreshed anymore due to improper initialization after a reconnect
+
 h2(eveTopic). Version 1.24
 
 * [Feature] SCML validation errors are now shown in the Messages View

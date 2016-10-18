@@ -105,6 +105,9 @@ public class StatusTracker implements IConnectionStateListener,
 	 */
 	@Override
 	public void stackConnected() {
+		this.scanInfo = new ScanInfo();
+		this.propertyChangeSupport.firePropertyChange(
+				StatusTracker.SCAN_INFO_PROPERTY, null, this.scanInfo);
 	}
 
 	/**
