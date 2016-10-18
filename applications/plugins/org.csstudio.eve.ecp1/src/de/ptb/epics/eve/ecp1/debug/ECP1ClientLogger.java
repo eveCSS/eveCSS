@@ -100,7 +100,8 @@ public class ECP1ClientLogger implements IEngineStatusListener, IEngineVersionLi
 	@Override
 	public void chainProgressChanged(ChainProgressCommand chainProgressCommand) {
 		LOGGER.debug( "Chain: " + chainProgressCommand.getChainId() +
-				" | PosCnt: " + chainProgressCommand.getPositionCounter()
+				" | PosCnt: " + chainProgressCommand.getPositionCounter() + 
+				" | Remaining Time: " + chainProgressCommand.getRemainingTime()
 				);
 	}
 
