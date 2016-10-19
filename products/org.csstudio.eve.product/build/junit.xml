@@ -81,6 +81,7 @@
 				</fileset>
 			</batchtest>
 		</junit>
+		<echo>${toString:classpath}</echo>
 		<fail message="TEST FAILURE" if="failed" />
 	</target>
 </project>
