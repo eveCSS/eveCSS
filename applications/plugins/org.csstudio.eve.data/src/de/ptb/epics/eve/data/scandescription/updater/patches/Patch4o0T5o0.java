@@ -148,6 +148,9 @@ import static de.ptb.epics.eve.util.xml.XMLUtil.*;
  * </li>
  * </ul>
  * </li>
+ * <li>
+ * removed storage tag from scan module
+ * </li>
  * </ul>
  * 
  * @author Marcus Michalsky
@@ -162,6 +165,7 @@ public class Patch4o0T5o0 extends Patch {
 		super(source, target, modifications);
 		modifications.add(new Mod0(this));
 		modifications.add(new Mod1(this));
+		modifications.add(new Mod2(this));
 	}
 	
 	public static Patch4o0T5o0 getInstance() {
@@ -233,6 +237,48 @@ public class Patch4o0T5o0 extends Patch {
 						LOGGER.debug("moved " + node.getNodeName());
 					} catch (DOMException e) {
 						LOGGER.error(e.getMessage(), e);
+					}
+				}
+			}
+		}
+	}
+	
+	private class Mod2 extends AbstractModification {
+		public Mod2(Patch patch) {
+			super(patch, "remove scan module storage tag (#2671)");
+		}
+	
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void modify(Document document) {
+			NodeList scanModules = document.getElementsByTagName("scanmodule");
+			for (Node sm : asList(scanModules)) {
+				Node toRemove = null;
+				String name = null;
+				
+				for (Node child : asList(sm.getChildNodes())) {
+					if (child.getNodeType() != Node.ELEMENT_NODE) {
+						continue;
+					}
+					if (child.getNodeName().equals("name")) {
+						name = child.getFirstChild().getNodeValue();
+					}
+					if (child.getNodeName().equals("storage")) {
+						toRemove = child;
+					}
+				}
+				if (toRemove != null) {
+					try {
+						sm.removeChild(toRemove);
+						LOGGER.debug("removed storage tag from scan module " + name);
+					} catch (DOMException e) {
+						if (e.code == DOMException.NOT_FOUND_ERR) {
+							LOGGER.error("'storage' tag not found. It could not be removed!");
+						} else if (e.code == DOMException.NOT_SUPPORTED_ERR) {
+							LOGGER.error(e.getMessage());
+						}
 					}
 				}
 			}

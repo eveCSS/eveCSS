@@ -89,7 +89,7 @@ public class ChangeLogDialog extends TitleAreaDialog {
 	 */
 	@Override
 	protected Point getInitialSize() {
-		return new Point(600, 350); 
+		return new Point(720, 480); 
 	}
 	
 	/**
@@ -116,7 +116,7 @@ public class ChangeLogDialog extends TitleAreaDialog {
 		
 		TableViewerColumn fromColumn = new TableViewerColumn(viewer, SWT.LEFT);
 		fromColumn.getColumn().setText("From");
-		fromColumn.getColumn().setWidth(45);
+		fromColumn.getColumn().setWidth(50);
 		fromColumn.setLabelProvider(new FromColumnLabelProvider());
 		
 		TableViewerColumn toColumn = new TableViewerColumn(viewer, SWT.LEFT);

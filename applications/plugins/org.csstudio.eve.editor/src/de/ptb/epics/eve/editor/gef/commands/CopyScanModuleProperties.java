@@ -4,7 +4,6 @@ import org.eclipse.gef.commands.Command;
 
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
-import de.ptb.epics.eve.data.scandescription.Storage;
 
 /**
  * Copies general properties of a scan module to another.
@@ -18,7 +17,6 @@ public class CopyScanModuleProperties extends Command {
 	
 	// old values
 	private ScanModuleTypes type;
-	private Storage storage;
 	private String name;
 	private int valueCount;
 	private double settleTime;
@@ -37,7 +35,6 @@ public class CopyScanModuleProperties extends Command {
 		this.to = to;
 		
 		this.type = to.getType();
-		this.storage = to.getStorage();
 		this.name = to.getName();
 		this.valueCount = to.getValueCount();
 		this.settleTime = to.getSettleTime();
@@ -52,7 +49,6 @@ public class CopyScanModuleProperties extends Command {
 	@Override
 	public void execute() {
 		this.to.setType(this.from.getType());
-		this.to.setStorage(this.from.getStorage());
 		this.to.setName(this.from.getName() + " copy");
 		this.to.setValueCount(this.from.getValueCount());
 		this.to.setSettleTime(this.from.getSettleTime());
@@ -67,7 +63,6 @@ public class CopyScanModuleProperties extends Command {
 	@Override
 	public void undo() {
 		this.to.setType(this.type);
-		this.to.setStorage(this.storage);
 		this.to.setName(this.name);
 		this.to.setValueCount(this.valueCount);
 		this.to.setSettleTime(this.settleTime);

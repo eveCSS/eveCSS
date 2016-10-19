@@ -87,7 +87,6 @@ public class Literals {
 	public static final String XML_ELEMENT_NAME_STEPFUNCTION = "stepfunction";
 	public static final String XML_ELEMENT_NAME_STEPWIDTH = "stepwidth";
 	public static final String XML_ELEMENT_NAME_STOP = "stop";
-	public static final String XML_ELEMENT_NAME_STORAGE = "storage";
 	public static final String XML_ELEMENT_NAME_TRIGGERCONFIRMAXIS = "triggerconfirmaxis";
 	public static final String XML_ELEMENT_NAME_TRIGGERCONFIRMCHANNEL = "triggerconfirmchannel";
 	public static final String XML_ELEMENT_NAME_TRIGGERDELAY = "triggerdelay";

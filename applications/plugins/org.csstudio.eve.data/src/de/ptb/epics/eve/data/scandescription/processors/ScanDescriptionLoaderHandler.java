@@ -60,9 +60,7 @@ import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
 import de.ptb.epics.eve.data.scandescription.StartEvent;
 import de.ptb.epics.eve.data.scandescription.Stepfunctions;
-import de.ptb.epics.eve.data.scandescription.Storage;
 import de.ptb.epics.eve.data.scandescription.YAxis;
-import de.ptb.epics.eve.data.scandescription.channelmode.ChannelMode;
 import de.ptb.epics.eve.data.scandescription.channelmode.ChannelModes;
 import de.ptb.epics.eve.data.scandescription.channelmode.StandardMode;
 import de.ptb.epics.eve.data.scandescription.processors.adaptees.DetectorEventAdaptee;
@@ -354,8 +352,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_NESTED_NEXT;
 			} else if (qName.equals("appended")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_APPENDED_NEXT;
-			} else if (qName.equals("storage")) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_STORAGE_NEXT;
 			} else if (qName.equals("valuecount")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_VALUECOUNT_NEXT;
 			} else if (qName.equals("settletime")) {
@@ -778,11 +774,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_NESTED_READ;
 			break;
 
-		case CHAIN_SCANMODULE_STORAGE_NEXT:
-			this.currentScanModule.setStorage(Enum.valueOf(Storage.class, textBuffer.toString().toUpperCase()));
-			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_STORAGE_READ;
-			break;
-			
 		case CHAIN_SCANMODULE_VALUECOUNT_NEXT:
 			this.currentScanModule.setValueCount(Integer.parseInt(textBuffer.toString()));
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_VALUECOUNT_READ;
@@ -1668,13 +1659,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 			}
 			break;
-
-		case CHAIN_SCANMODULE_STORAGE_READ:
-			if (qName.equals("storage")) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
-			}
-			break;
-			
+	
 		case CHAIN_SCANMODULE_VALUECOUNT_READ:
 			if (qName.equals("valuecount")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;

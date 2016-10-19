@@ -52,7 +52,6 @@ import de.ptb.epics.eve.data.scandescription.Prescan;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.YAxis;
-import de.ptb.epics.eve.data.scandescription.channelmode.ChannelMode;
 import de.ptb.epics.eve.data.scandescription.channelmode.StandardMode;
 import de.ptb.epics.eve.data.scandescription.PositionMode;
 
@@ -1159,14 +1158,6 @@ public class ScanDescriptionSaver implements
 				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_APPENDED, Literals.XML_ELEMENT_NAME_APPENDED);
 			}
 
-			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_STORAGE, Literals.XML_ELEMENT_NAME_STORAGE,
-					this.atts);
-			this.contentHandler.characters(scanModule.getStorage().toString()
-					.toCharArray(), 0, scanModule.getStorage().toString()
-					.length());
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_STORAGE, Literals.XML_ELEMENT_NAME_STORAGE);
-			
 			this.atts.clear();
 			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_VALUECOUNT, Literals.XML_ELEMENT_NAME_VALUECOUNT,
 					this.atts);

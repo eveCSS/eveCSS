@@ -113,17 +113,6 @@ public class StatusTableSelectionListener extends SelectionAdapter implements
 			gridData.horizontalAlignment = GridData.FILL;
 			numOfMeasurementsText.setLayoutData(gridData);
 
-			Label storageLabel = new Label(chainShell, SWT.NONE);
-			storageLabel.setText("Storage:");
-			gridData = new GridData();
-			gridData.horizontalAlignment = GridData.FILL;
-			storageLabel.setLayoutData(gridData);
-			Label storageText = new Label(chainShell, SWT.NONE);
-			storageText.setText("" + displayChain.getScanModuleById(aktSM).getStorage());
-			gridData = new GridData();
-			gridData.horizontalAlignment = GridData.FILL;
-			storageText.setLayoutData(gridData);
-
 			// 2. Zeile wird gefüllt
 			Label smLabel = new Label(chainShell, SWT.NONE);
 			smLabel.setText("Scan Module ID:");

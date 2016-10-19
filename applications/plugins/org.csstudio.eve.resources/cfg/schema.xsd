@@ -182,7 +182,6 @@
       <element name="parent" type="integer"></element>
       <element name="nested" type="positiveInteger"  minOccurs="0"></element>
       <element name="appended" type="positiveInteger" minOccurs="0"></element>
-      <element name="storage" type="tns:smstorage" default="default"></element>
       <element name="valuecount" type="positiveInteger" default="1"></element>
       <element name="settletime" type="double" minOccurs="0"></element>
       <element name="triggerdelay" type="double" minOccurs="0"></element>

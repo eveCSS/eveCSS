@@ -202,16 +202,6 @@ public enum ScanDescriptionLoaderStates {
 	CHAIN_SCANMODULE_APPENDED_READ,
 
 	/**
-	 * 
-	 */
-	CHAIN_SCANMODULE_STORAGE_NEXT,
-	
-	/**
-	 * 
-	 */
-	CHAIN_SCANMODULE_STORAGE_READ,
-	
-	/**
 	 * The begin tag of the value count has been read.
 	 */
 	CHAIN_SCANMODULE_VALUECOUNT_NEXT,

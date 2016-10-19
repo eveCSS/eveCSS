@@ -25,7 +25,6 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Button;
@@ -45,7 +44,6 @@ import org.eclipse.swt.graphics.Image;
 import de.ptb.epics.eve.data.EventImpacts;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
-import de.ptb.epics.eve.data.scandescription.Storage;
 import de.ptb.epics.eve.data.scandescription.errors.AxisError;
 import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
@@ -113,9 +111,6 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 
 	private Label settleTimeLabel;
 	private Text settleTimeText;
-
-	private Label storageLabel;
-	private Combo storageCombo;
 	
 	private Button triggerConfirmAxisCheckBox;
 
@@ -174,10 +169,6 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	private IObservableValue settleTimeTargetObservable;
 	private IObservableValue settleTimeModelObservable;
 	private Binding settleTimeBinding;
-	
-	private IObservableValue storageTargetObservable;
-	private IObservableValue storageModelObservable;
-	private Binding storageBinding;
 	
 	private IObservableValue axisTriggerTargetObservable;
 	private IObservableValue axisTriggerModelObservable;
@@ -337,19 +328,6 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 				this.settleTimeText));
 		this.settleTimeText.addMouseListener(new TextSelectAllMouseListener(
 				this.settleTimeText));
-
-		// Storage
-		this.storageLabel = new Label(this.generalComposite, SWT.NONE);
-		this.storageLabel.setText("Storage:");
-		this.storageLabel.setToolTipText("the position the data is written to");
-		this.storageCombo = new Combo(this.generalComposite, SWT.READ_ONLY);
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.BEGINNING;
-		gridData.verticalAlignment = GridData.CENTER;
-		gridData.horizontalIndent = 7;
-		this.storageCombo.setLayoutData(gridData);
-		this.storageCombo.setItems(Storage.stringValues());
-		this.storageCombo.setEnabled(false);
 		
 		// Manual Trigger
 		Label triggerLabel = new Label(this.generalComposite, SWT.NONE);
@@ -571,24 +549,6 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		ControlDecorationSupport.create(this.settleTimeBinding, SWT.LEFT);
 		this.settleTimeText.addFocusListener(new TextFocusListener(
 				this.settleTimeText));
-		
-		this.storageTargetObservable = SWTObservables
-				.observeSelection(this.storageCombo);
-		this.storageModelObservable = BeansObservables.observeDetailValue(
-				selectionObservable, ScanModule.class, ScanModule.STORAGE_PROP,
-				Storage.class);
-		UpdateValueStrategy storageTargetToModelStrategy = 
-				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE);
-		UpdateValueStrategy storageModelToTargetStrategy = 
-				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE);
-		storageTargetToModelStrategy
-				.setConverter(new StorageTargetToModelConverter());
-		storageModelToTargetStrategy
-				.setConverter(new StorageModelToTargetConverter());
-		this.storageBinding = context.bindValue(storageTargetObservable,
-				storageModelObservable, storageTargetToModelStrategy,
-				storageModelToTargetStrategy);
-		this.storageBinding.getClass();
 		
 		this.axisTriggerTargetObservable = SWTObservables
 				.observeSelection(this.triggerConfirmAxisCheckBox);

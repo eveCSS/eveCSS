@@ -104,11 +104,6 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	public static final String REDO_EVENT_PROP = "redoEvent";
 	public static final String PAUSE_EVENT_PROP = "pauseEvent";
 	
-	/**
-	 * @since 1.18
-	 */
-	public static final String STORAGE_PROP = "storage";
-	
 	/** */
 	public static final int DEFAULT_WIDTH = 70;
 	/** */
@@ -119,8 +114,6 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	
 	// the type of the scan module
 	private ScanModuleTypes type;
-	
-	private Storage storage;
 	
 	// the name of the scan module
 	private String name;
@@ -224,8 +217,6 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		this.triggerDelay = 0.0;
 		this.type = ScanModuleTypes.CLASSIC;
 		this.name = "";
-
-		this.storage = Storage.DEFAULT;
 		
 		this.triggerConfirmAxis = false;
 		this.triggerConfirmChannel = false;
@@ -915,30 +906,8 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * @param type The type of the scan modul.
 	 */
 	public void setType(final ScanModuleTypes type) {
-		if (type.equals(ScanModuleTypes.SAVE_AXIS_POSITIONS) ||
-				type.equals(ScanModuleTypes.SAVE_CHANNEL_VALUES)) {
-			this.setStorage(Storage.ALTERNATE);
-		} else if (type.equals(ScanModuleTypes.CLASSIC)) {
-			this.setStorage(Storage.DEFAULT);
-		}
 		this.propertyChangeSupport.firePropertyChange(ScanModule.TYPE_PROP,
 				this.type, this.type = type);
-		updateListeners();
-	}
-	
-	/**
-	 * @return the storage
-	 */
-	public Storage getStorage() {
-		return storage;
-	}
-
-	/**
-	 * @param storage the storage to set
-	 */
-	public void setStorage(Storage storage) {
-		this.propertyChangeSupport.firePropertyChange(ScanModule.STORAGE_PROP,
-				this.storage, this.storage = storage);
 		updateListeners();
 	}
 
