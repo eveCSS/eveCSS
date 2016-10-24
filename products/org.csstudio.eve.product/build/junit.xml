@@ -71,7 +71,7 @@
 				<pathelement
 					path="${env.WORKSPACE}/repo/applications/plugins/org.csstudio.eve.data.tests/lib/objenesis-2.1.jar" />
 				<pathelement
-					path="${env.WORKSPACE}/repo/applications/plugins/org.csstudio.eve.product/build/log4j/" />
+					path="${env.WORKSPACE}/repo/products/org.csstudio.eve.product/build/log4j/" />
 			</classpath>
 
 			<formatter type="brief" usefile="false" />
