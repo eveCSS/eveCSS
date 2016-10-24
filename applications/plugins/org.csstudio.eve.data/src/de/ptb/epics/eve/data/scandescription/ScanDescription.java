@@ -373,11 +373,19 @@ public class ScanDescription implements IModelUpdateProvider,
 					return true;
 				}
 				for (Channel smChannel : sm.getChannels()) {
-					if (!smChannel.getChannelMode().equals(ChannelModes.STANDARD)) {
-						continue;
-					}
-					if (isEventOfList(channel, smChannel.getRedoEvents())) {
-						return true;
+					switch (smChannel.getChannelMode()) {
+					case INTERVAL:
+						if (channel.getDetectorChannel().equals(smChannel.getStoppedBy())) {
+							return true;
+						}
+						break;
+					case STANDARD:
+						if (isEventOfList(channel, smChannel.getRedoEvents())) {
+							return true;
+						}
+						break;
+					default:
+						break;
 					}
 				}
 			}
