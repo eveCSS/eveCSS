@@ -1718,6 +1718,29 @@ public class ScanDescriptionSaver implements
 							Literals.XML_ELEMENT_NAME_SMCHANNEL_STOPPEDBY);
 				}
 				
+				Channel stoppedByChannel = null;
+				for (Channel smChannel : channel.getScanModule().getChannels()) {
+					if (smChannel.getDetectorChannel().getID().equals(channel.getStoppedBy().getID())) {
+						stoppedByChannel = smChannel;
+					}
+				}
+				if (stoppedByChannel != null) {
+					for (ControlEvent event : stoppedByChannel.getRedoEvents()) {
+						this.writeControlEvent(event, "redoevent");
+					}
+					if (stoppedByChannel.isDeferred()) {
+						this.atts.clear();
+						this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_DEFERREDTRIGGER, 
+								Literals.XML_ELEMENT_NAME_DEFERREDTRIGGER, this.atts);
+						this.contentHandler.characters(Boolean.TRUE.toString().toCharArray(), 0,
+								Boolean.TRUE.toString().length());
+						this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_DEFERREDTRIGGER,
+								Literals.XML_ELEMENT_NAME_DEFERREDTRIGGER);
+					}
+				} else {
+					logger.error("Could not find stopped by channel in current scan module.");
+				}
+				
 				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SMCHANNEL_INTERVAL, 
 						Literals.XML_ELEMENT_NAME_SMCHANNEL_INTERVAL);
 				break;

@@ -398,6 +398,8 @@
     <sequence>
       <element name="triggerinterval" type="tns:positiveDouble"></element>
       <element name="stoppedby" type="tns:identifier"></element>
+      <element name="redoevent" type="tns:smevent" minOccurs="0" maxOccurs="unbounded"></element>
+      <element name="deferredtrigger" type="boolean" minOccurs="0"></element>
     </sequence>
   </complexType>
 

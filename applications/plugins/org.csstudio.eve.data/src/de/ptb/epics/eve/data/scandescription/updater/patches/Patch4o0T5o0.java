@@ -74,6 +74,8 @@ import static de.ptb.epics.eve.util.xml.XMLUtil.*;
  *    &lt;sequence&gt;
  *      &lt;element name=&quot;triggerinterval&quot; type=&quot;tns:positiveDouble&quot;&gt;&lt;/element&gt;
  *      &lt;element name=&quot;stoppedby&quot; type=&quot;tns:identifier&quot;&gt;&lt;/element&gt;
+ *      &lt;element name=&quot;redoevent&quot; type=&quot;tns:smevent&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;&lt;/element&gt;
+ *      &lt;element name=&quot;deferredtrigger&quot; type=&quot;boolean&quot; minOccurs=&quot;0&quot;&gt;&lt;/element&gt;
  *    &lt;/sequence&gt;
  *  &lt;/complexType&gt;
  *  
@@ -83,6 +85,13 @@ import static de.ptb.epics.eve.util.xml.XMLUtil.*;
  *    &lt;/restriction&gt;
  *  &lt;/simpleType&gt;
  * </pre>
+ * 
+ * <p>Note that the <code>redoevent</code> and <code>deferredtrigger</code> entries in the interval channel are only 
+ * "copies" of the <code>stoppedby</code> channel equivalents. Thus it is easier for the engine to evaluate. There is 
+ * no representation (attribute) for them in the object model. During the SCML save process (and eventually for GUI 
+ * presentation) they are obtained directly from the stopped by channel.</p>
+ * <br/>
+ * <p>Note also that using a channel as stopped by causes its <code>sendreadyevent</code> element to be set to true.</p>
  * 
  * </li>
  * <li>
@@ -133,7 +142,7 @@ import static de.ptb.epics.eve.util.xml.XMLUtil.*;
  * introduces an interval tag
  * <ul>
  * <li>
- * an example of an interval channel in SCML v5.0:
+ * An example of an interval channel in SCML v5.0:
  * 
  * <pre>
  *   &lt;smchannel&gt;
@@ -145,6 +154,50 @@ import static de.ptb.epics.eve.util.xml.XMLUtil.*;
  *    &lt;/interval&gt;
  *  &lt;/smchannel&gt;
  * </pre>
+ * 
+ * If the referenced stopped by channel defines redo event(s), deferredtrigger or both they are repeated (copied) to the 
+ * interval channel definition as follows:
+ * <ul>
+ * <li>
+ * If the following standard channel is defined
+ * <pre>
+ *  &lt;smchannel&gt;
+ *    &lt;channelid&gt;bIICurrent:Mnt1lifeTimechan1&lt;/channelid&gt;
+ *    &lt;standard&gt;
+ *      &lt;averagecount&gt;2&lt;/averagecount&gt;
+ *      &lt;sendreadyevent&gt;true&lt;/sendreadyevent&gt;
+ *      &lt;redoevent&gt;
+ *        &lt;monitorevent&gt;
+ *          &lt;id&gt;DiscPosPPSMC:gw23715000&lt;/id&gt;
+ *          &lt;limit type=&quot;string&quot; comparison=&quot;eq&quot;&gt;Position1&lt;/limit&gt;
+ *        &lt;/monitorevent&gt;
+ *      &lt;/redoevent&gt;
+ *      &lt;deferredtrigger&gt;&lt;true/deferredtrigger&gt;
+ *    &lt;/standard&gt;
+ *  &lt;/smchannel&gt;
+ * </pre>
+ * 
+ * an interval channel which references it as stopped by would look like
+ * 
+ *   <pre>
+ *   &lt;smchannel&gt;
+ *    &lt;channelid&gt;MDIZ3T5G:currentchan1&lt;/channelid&gt;
+ *    &lt;interval&gt;
+ *      &lt;triggerinterval&gt;2.0&lt;/triggerinterval&gt;
+ *      &lt;stoppedby&gt;bIICurrent:Mnt1lifeTimechan1&lt;/stoppedby&gt;
+ *      &lt;redoevent&gt;
+ *        &lt;monitorevent&gt;
+ *          &lt;id&gt;DiscPosPPSMC:gw23715000&lt;/id&gt;
+ *          &lt;limit type=&quot;string&quot; comparison=&quot;eq&quot;&gt;Position1&lt;/limit&gt;
+ *        &lt;/monitorevent&gt;
+ *      &lt;/redoevent&gt;
+ *      &lt;deferredtrigger&gt;&lt;true/deferredtrigger&gt;
+ *    &lt;/interval&gt;
+ *  &lt;/smchannel&gt;
+ * </pre>
+ * 
+ * </li>
+ * </ul>
  * </li>
  * </ul>
  * </li>
