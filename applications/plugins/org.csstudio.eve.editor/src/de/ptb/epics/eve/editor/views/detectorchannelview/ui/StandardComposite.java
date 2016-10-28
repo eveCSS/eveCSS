@@ -19,7 +19,6 @@ import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -59,7 +58,6 @@ public class StandardComposite extends DetectorChannelViewComposite
 	private Label maxAttemptsLabel;
 	private Text maxAttemptsText;
 	private Button deferredCheckBox;
-	private Composite eventComposite;
 	private CTabFolder eventsTabFolder;
 	private EventComposite redoEventComposite;
 	
@@ -167,19 +165,11 @@ public class StandardComposite extends DetectorChannelViewComposite
 		gridData.grabExcessHorizontalSpace = true;
 		this.deferredCheckBox.setLayoutData(gridData);
 		
-		this.eventComposite = new Composite(this, SWT.NONE);
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.horizontalSpan = 2;
-		gridData.grabExcessHorizontalSpace = true;
-		this.eventComposite.setLayoutData(gridData);
-		gridLayout = new GridLayout();
-		this.eventComposite.setLayout(gridLayout);
-
-		this.eventsTabFolder = new CTabFolder(this.eventComposite, SWT.FLAT);
+		this.eventsTabFolder = new CTabFolder(this, SWT.FLAT);
 		this.eventsTabFolder.setSimple(true);
 		this.eventsTabFolder.setBorderVisible(true);
 		gridData = new GridData();
+		gridData.horizontalSpan = 2;
 		gridData.grabExcessVerticalSpace = true;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.minimumHeight = 150;
@@ -367,12 +357,6 @@ public class StandardComposite extends DetectorChannelViewComposite
 			this.redoEventComposite.setEvents(
 					this.currentChannel, null);
 		}
-	}
-
-	@Override
-	public Point computeSize(int wHint, int hHint) {
-		// TODO Auto-generated method stub
-		return super.computeSize(wHint, hHint);
 	}
 	
 	/**

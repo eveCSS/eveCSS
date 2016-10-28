@@ -25,6 +25,7 @@ import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.layout.GridData;
 
@@ -65,6 +66,7 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 	private DetectorChannelViewComposite intervalComposite;
 	
 	private Channel currentChannel;
+	private ActiveComposite activeComposite;
 
 	private ComboViewer acquisitionTypeComboViewer;
 	private ComboViewer normalizeChannelComboViewer;
@@ -86,7 +88,23 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 		this.sc = new ScrolledComposite(parent, SWT.H_SCROLL | 
 				SWT.V_SCROLL);
 		
-		this.top = new Composite(sc, SWT.NONE);
+		this.top = new Composite(sc, SWT.NONE) {
+			@Override
+			public Point computeSize(int wHint, int hHint, boolean changed) {
+				switch (activeComposite) {
+				case EMPTY:
+					return super.computeSize(wHint, hHint, changed);
+				case INTERVAL:
+					return intervalComposite.computeSize(wHint, hHint, changed);
+				case NORMALIZED:
+					return normalizeComposite.computeSize(wHint, hHint, changed);
+				case STANDARD:
+					return standardComposite.computeSize(wHint, hHint, changed);
+				default:
+					return super.computeSize(wHint, hHint, changed);
+				}
+			}
+		};
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
 		this.top.setLayout(gridLayout);
@@ -165,6 +183,7 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 		this.standardComposite = new StandardComposite(sashForm, SWT.NONE, this);
 		this.intervalComposite = new IntervalComposite(sashForm, SWT.NONE, this);
 		this.sashForm.setMaximizedControl(this.emptyComposite);
+		this.activeComposite = ActiveComposite.EMPTY;
 		
 		this.currentChannel = null;
 		
@@ -236,6 +255,7 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 			this.setPartName("No Channel selected.");
 			this.sc.setVisible(false);
 		}
+		this.sc.layout();
 	}
 	
 	private void setComposite() {
@@ -251,11 +271,13 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 		}
 		if (!normalizeChannels.isEmpty()) {
 			this.sashForm.setMaximizedControl(this.normalizeComposite);
+			this.activeComposite = ActiveComposite.NORMALIZED;
 			this.acquisitionTypeComboViewer.getCombo().deselectAll();;
 			this.acquisitionTypeComboViewer.getCombo().setEnabled(false);
 			this.normalizeChannelComboViewer.getCombo().deselectAll();;
 			this.normalizeChannelComboViewer.getCombo().setEnabled(false);
 			this.normalizeComposite.setChannels(normalizeChannels);
+			this.sc.setMinSize(this.top.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 			return;
 		}
 		this.acquisitionTypeComboViewer.getCombo().setEnabled(true);
@@ -263,18 +285,20 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 		switch (this.currentChannel.getChannelMode()) {
 		case INTERVAL:
 			this.sashForm.setMaximizedControl(intervalComposite);
+			this.activeComposite = ActiveComposite.INTERVAL;
 			this.intervalComposite.setChannel(this.currentChannel);
 			break;
 		case STANDARD:
 			this.sashForm.setMaximizedControl(standardComposite);
+			this.activeComposite = ActiveComposite.STANDARD;
 			this.standardComposite.setChannel(this.currentChannel);
 			break;
 		default:
 			this.sashForm.setMaximizedControl(emptyComposite);
+			this.activeComposite = ActiveComposite.EMPTY;
 			break;
 		}
 		this.sc.setMinSize(this.top.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-		this.sc.layout();
 	}
 
 	/**
@@ -343,5 +367,12 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 				&& evt.getOldValue().equals(this.currentChannel)) {
 			this.setChannel(null);
 		}
+	}
+	
+	private enum ActiveComposite {
+		EMPTY,
+		INTERVAL,
+		NORMALIZED,
+		STANDARD
 	}
 }

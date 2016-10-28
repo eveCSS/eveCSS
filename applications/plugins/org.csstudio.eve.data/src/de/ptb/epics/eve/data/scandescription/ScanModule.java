@@ -320,6 +320,21 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	}
 	
 	/**
+	 * Returns the channel behavior of the given channel or <code>null</code> if none
+	 * @param detectorChannel the detector channel of the channel behavior that should be returned
+	 * @return the channel behavior of the given channel or <code>null</code> if none
+	 * @since 1.27
+	 */
+	public Channel getChannel(DetectorChannel detectorChannel) {
+		for (Channel channel : this.channels) {
+			if (channel.getDetectorChannel().getID().equals(detectorChannel.getID())) {
+				return channel;
+			}
+		}
+		return null;
+	}
+	
+	/**
 	 * Gives back an Array that contains all channel behaviors.
 	 * 
 	 * @return An Array, that contains all channel behaviors.

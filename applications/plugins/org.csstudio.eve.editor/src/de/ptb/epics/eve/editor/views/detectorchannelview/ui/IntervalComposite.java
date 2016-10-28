@@ -25,6 +25,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -35,6 +36,7 @@ import com.ibm.icu.text.NumberFormat;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.channelmode.ChannelModes;
 import de.ptb.epics.eve.data.scandescription.channelmode.IntervalMode;
+import de.ptb.epics.eve.editor.Activator;
 
 /**
  * @author Marcus Michalsky
@@ -51,12 +53,20 @@ public class IntervalComposite extends DetectorChannelViewComposite
 	private ComboViewer stoppedByComboViewer;
 	private ControlDecoration stoppedByComboControlDecoration;
 	private Image errorImage;
+	private Label triggerInfoImage;
+	private Label triggerInfoText;
+	private Label redoInfoImage;
+	private Label redoInfoText;
 	
 	private IObservableValue triggerIntervalTargetObservable;
 	private IObservableValue triggerIntervalModelObservable;
 	private Binding triggerIntervalBinding;
 	
 	private Channel currentChannel;
+
+	private Composite redoInfoComposite;
+
+	private Composite triggerInfoComposite;
 	
 	public IntervalComposite(Composite parent, int style, IViewPart parentView) {
 		super(parent, style, parentView);
@@ -106,6 +116,7 @@ public class IntervalComposite extends DetectorChannelViewComposite
 					currentChannel.setStoppedBy(((Channel)((IStructuredSelection)
 						event.getSelection()).getFirstElement()).getDetectorChannel());
 				}
+				setInfos();
 			}
 		});
 		
@@ -116,6 +127,46 @@ public class IntervalComposite extends DetectorChannelViewComposite
 		this.stoppedByComboControlDecoration.setDescriptionText("stopped by is mandatory");
 		this.stoppedByComboControlDecoration.setImage(errorImage);
 		this.stoppedByComboControlDecoration.hide();
+		
+		triggerInfoComposite = new Composite(this, SWT.NONE);
+		gridData = new GridData();
+		gridData.horizontalSpan = 2;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalAlignment = SWT.LEFT;
+		gridData.verticalAlignment = SWT.TOP;
+		triggerInfoComposite.setLayoutData(gridData);
+		
+		triggerInfoComposite.setLayout(new RowLayout());
+		
+		this.triggerInfoImage = new Label(triggerInfoComposite, SWT.NONE);
+		this.triggerInfoImage.setImage(Activator.getDefault().getImageRegistry().get("INFO"));
+		gridData = new GridData();
+		gridData.verticalAlignment = SWT.TOP;
+		this.triggerInfoImage.setVisible(false);
+		
+		this.triggerInfoText = new Label(triggerInfoComposite, SWT.WRAP);
+		this.triggerInfoText.setText("deferred trigger");
+		this.triggerInfoText.setVisible(false);
+		
+		redoInfoComposite = new Composite(this, SWT.NONE);
+		gridData = new GridData();
+		gridData.horizontalSpan = 2;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalAlignment = SWT.LEFT;
+		gridData.verticalAlignment = SWT.TOP;
+		redoInfoComposite.setLayoutData(gridData);
+		
+		redoInfoComposite.setLayout(new RowLayout());
+		
+		this.redoInfoImage = new Label(redoInfoComposite, SWT.NONE);
+		this.redoInfoImage.setImage(Activator.getDefault().getImageRegistry().get("INFO"));
+		gridData = new GridData();
+		gridData.verticalAlignment = SWT.TOP;
+		this.redoInfoImage.setVisible(false);
+		
+		this.redoInfoText = new Label(redoInfoComposite, SWT.WRAP);
+		this.redoInfoText.setText("redo events");
+		this.redoInfoText.setVisible(false);
 	}
 
 	/**
@@ -147,6 +198,48 @@ public class IntervalComposite extends DetectorChannelViewComposite
 		} else {
 			this.stoppedByComboControlDecoration.show();
 		}
+		this.setInfos();
+	}
+	
+	private void setInfos() {
+		if (this.currentChannel.getStoppedBy() != null) {
+			Channel meanChannel = this.currentChannel.getScanModule().
+					getChannel(this.currentChannel.getStoppedBy());
+			if (meanChannel != null && meanChannel.isDeferred()) {
+				this.triggerInfoText.setText("Trigger is deferred (since " + 
+						meanChannel.getDetectorChannel().getName() + " also is).");
+				this.triggerInfoImage.setVisible(true);
+				this.triggerInfoText.setVisible(true);
+				((GridData)this.triggerInfoComposite.getLayoutData()).exclude = false;
+			} else {
+				this.triggerInfoImage.setVisible(false);
+				this.triggerInfoText.setVisible(false);
+				((GridData)this.triggerInfoComposite.getLayoutData()).exclude = true;
+				this.triggerInfoComposite.moveBelow(redoInfoComposite);
+			}
+			if (meanChannel != null && !meanChannel.getRedoEvents().isEmpty()) {
+				this.redoInfoText.setText("Occuring redo events of " + 
+						meanChannel.getDetectorChannel().getName() + 
+							" will restart the mean calculation.");
+				this.redoInfoImage.setVisible(true);
+				this.redoInfoText.setVisible(true);
+				((GridData)this.redoInfoComposite.getLayoutData()).exclude = false;
+			} else {
+				this.redoInfoImage.setVisible(false);
+				this.redoInfoText.setVisible(false);
+				((GridData)this.redoInfoComposite.getLayoutData()).exclude = true;
+				this.redoInfoComposite.moveBelow(triggerInfoComposite);
+			}
+		} else {
+			this.triggerInfoImage.setVisible(false);
+			this.triggerInfoText.setVisible(false);
+			this.redoInfoImage.setVisible(false);
+			this.redoInfoText.setVisible(false);
+			((GridData)this.triggerInfoComposite.getLayoutData()).exclude = true;
+			((GridData)this.redoInfoComposite.getLayoutData()).exclude = true;
+		}
+		this.pack();
+		this.getParent().layout();
 	}
 
 	/**
