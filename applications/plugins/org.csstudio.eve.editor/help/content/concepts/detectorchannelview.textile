@@ -1,0 +1,142 @@
+h1(eveTopic). Detector Channel View
+
+p. The Detector Channel View displays (and allows to modify) properties of a channel. The channel being shown is the one selected in the "Scan Module View":scanmodule.html. 
+
+p. Generally a channel has one of three modes which determines its behavior. Depending on the channel mode the Detector Channel View will show different properties. These properties are described in detail for each mode in the following subsections.
+
+h2(eveTopic). Standard (Mode) Channel
+
+p. The standard mode as the name suggests is the one most commonly used. Several properties can be set. The image below shows an example of a channel in standard mode followed by a short description of each property.
+
+p=. !(eveImage)../../img/concepts/DetectorChannelView/standardchannel.png(detector channel view example of a standard mode channel)!
+
+p. *Average :* Determines how many channel readings are taken to calculate the average. 
+
+p. *Max Deviation  (%):* The deviation of the first two measured values must be less or equal then the given value in percent to be valid. If that constraint ist not fulfilled, the first measured value is discarded and a new value is taken until the condition is met.
+
+p. *Minimum:* If the first measured value is greater than or equal the given value a tolerance check is conducted. 
+
+p. *Max. Attempts:* If the tolerance check failed the given value amount of times, the check is stopped an the next values are used for the average calculation.
+
+p. *Normalize Channel:* The channel is normalized by the given channel. The calculation of the deviation is based on the normalized value.
+
+p. *Deferred Trigger:* If set, this channel is triggered after all other channels in the same scan module (which are not deferred) are read.
+
+p. *Redo:* Events which when occurring restart the channel calculation are defined here. A more detailed description about events can be found "here":events.html.
+
+p. The following subsections illustrate the standard mode behavior by examples.
+
+h3(eveTopic). Example 1 - trivial standard mode
+
+p. __Average__ = ==&empty;==, __Max. Deviation (%)__ = ==&empty;==, __Minimum__ = ==&empty;==, __Max. Attempts__ = ==&empty;==
+
+p. __Average__ omitted ==&rArr;== no average is calculated.
+
+h3(eveTopic). Example 2 - standard mode and average
+
+p. __Average__ = 3, __Max. Deviation (%)__ = ==&empty;==, __Minimum__ = ==&empty;==, __Max. Attempts__ = ==&empty;==
+
+p. __Minimum__ omitted ==&rArr;== __Average__ is calculated from three subsequent measurements.
+
+p. measured values: {%(green)0.00197%, %(green)0.00199%, %(green)0.00153%} ==&rArr;== __Average__ = 0.00183
+
+h3(eveTopic). Example 3 - average and minimum
+
+p. __Average__ = 3, __Max. Deviation (%)__ = ==&empty;==, __Minimum__ = 1.0, __Max. Attempts__ = ==&empty;==
+
+p. measured value: -0.898492 ==&rArr;== value is less than __Minimum__ ==&rArr;== __Average__ is calculated from three subsequent measurements.
+
+p. measured values: {%(green)-0.898492%, %(green)-0.900868%, %(green)-0.906199%} ==&rArr;== __Average__ = -0.901853
+
+p. %(red)Achtung, bisher (Version 1.7) wird hier nur 1 Messwert aufgenommen%
+
+h3(eveTopic). Example 4 - average and minimum
+
+p. __Average__ = 3, __Max. Deviation (%)__ = ==&empty;==, __Minimum__ = 0.0001, __Max. Attempts__ = ==&empty;==
+
+p. measured values: {%(green)0.00197%, %(green)0.00199%, %(green)0.00153%} ==&rArr;== __Average__ = 0.00183
+
+h3(eveTopic). Example 5 - max deviation
+
+p. __Average__ = 3, __Max. Deviation (%)__ = 5, __Minimum__ = 0.3, __Max. Attempts__ = 10
+
+p. measured values: {%(red)4.231%, %(green)4.787%, %(green)4.687%, %(green)4.732%}
+__Max. Deviation (%)__ from 1 and 2: 13.14 => discard first value 
+__Max. Deviation (%)__ from 2 and 3:  2.09 => Deviation is OK 
+
+p. ==&rArr;== value of the channel is the __Average__ from 2., 3. and 4. point: = 4.735
+
+h3(eveTopic). Example 6 - max deviation and max attempts
+
+p. __Average__ = 3, __Max. Deviation (%)__ = 0.5, __Minimum__ = 1e-8, __Max. Attempts__ = 5
+
+p. measured values: {%(red)4.231%, %(red)4.787%, %(red)4.687%, %(red)4.732%, %(red)4.894%, %(green)4.738%, %(green)4.834%, %(green)4.963%)
+
+__Max. Deviation (%)__ from 1 and 2: 13.14 => discard first value 
+__Max. Deviation (%)__ from 2 and 3:  2.09 => discard second value 
+__Max. Deviation (%)__ from 3 and 4:  0.96 => discard third value 
+__Max. Deviation (%)__ from 4 and 5:  2.09 => discard fourth value 
+__Max. Deviation (%)__ from 5 and 6:  3.42 => discard fifth value 
+
+p. __Max. Attempts__ reached ==&rArr;== value of the channel is the __Average__ from 6., 7. and 8. point: = 4.845
+
+p. %(red)Achtung, bisher (Version 1.7) wird hier nur 1 Messwert aufgenommen (der 6. Wert)%
+
+h2(eveTopic). Interval (Mode) Channel
+
+p. The interval mode calculates a mean of values measured on a given interval until another channel is done. The resulting data file contains only one measurement, the mean (aside of some additional information such as the standard deviation). The image below shows an example of a channel in interval mode followed by a short description of each property.
+
+p=. !(eveImage)../../img/concepts/DetectorChannelView/intervalchannel.png(detector channel view example of a interval mode channel)!
+
+p. *Normalize Channel:* The channel is normalized by the given channel. The calculation of the mean is based on the normalized value.
+
+p. *Trigger Interval:* The interval/rate measurements are taken.
+
+p. *Stopped By:* The channel which when finished stops the mean calculation.
+
+h3(eveTopic). Example 1 - trivial interval mode
+
+p. Let y ~i~ be the i-th measurement, x ~i~ the timer in seconds, the trigger interval two seconds and the stop event trigger at eleven seconds.
+
+p. Then the measurements taken are (0, y ~1~), (2, y ~2~), (4, y ~3~), (6, y ~4~), (8, y ~5~), (10, y ~6~) and the mean is 
+
+p. !(eveImage)../../img/concepts/DetectorChannelView/interval-sum.png(interval sum formula: sum from 1 to 6 of y index i)!
+
+h3(eveTopic). Example 2 - interval mode and normalization
+
+p. Reconsider example 1 extended by a normalization channel z. 
+
+p. Then the measurements taken are (0, y ~1~/z ~1~), (2, y ~2~/z ~2~), (4, y ~3~/z ~3~), (6, y ~4~/z ~4~), (8, y ~5~/z ~5~), (10, y ~6~/z ~6~) and the mean is
+
+p. !(eveImage)../../img/concepts/DetectorChannelView/interval-sum-normalized.png(interval sum formula: sum from 1 to 6 of y index i divided by z index i)!
+
+p. Take into account that in interval mode only the mean value (alongside the number of measurements and the standard deviation) is written to the data file. 
+
+h2(eveTopic). Normalize (Mode) Channel
+
+p. the normalize mode is a special mode. It does not have any properties at all. It just indicates that the selected channel is used for normalization by another channel (or channels). The properties are derived from the channel it normalizes. The image below shows an example of a channel in normalize mode.
+
+p=. !(eveImage)../../img/concepts/DetectorChannelView/normalizedchannel.png(detector channel view example of a normalize mode channel)!
+
+h3(eveTopic). Example 1 - trivial normalization mode
+
+p. Consider the following Situation. "Channel A" is defined in standard mode with average set to 1 and normalized by another channel called "Channel B". Additionally a motor M with three positions (m ~i~ being the i-th position) is declared.
+
+p. When selecting Channel B in the Scan Module View the Detector Channel View would show only disabled controls with the hint that Channel B is used as normalize channel by Channel A.
+
+p. The measurements taken are (m ~1~, A ~1~/B ~1~), (m ~2~, A ~2~/B ~2~), (m ~3~, A ~3~/B ~3~).
+
+h3(eveTopic). Example 2 - normalization and average
+
+p. Consider example 1 but with average set to 3.
+
+p. The measurements taken are (m ~1~, A ~1~/B ~1~), (m ~2~, A ~2~/B ~2~), (m ~3~, A ~3~/B ~3~) at which each A ~i~/B ~i~ is the average calculated by three measurements.
+
+h3(eveTopic). Example 3 - normalization channel used by more than one channel
+
+p. Consider "Channel A" (standard mode with average set to 1) and "Channel B" (standard mode with average set to 2), both normalized by "Channel C". Additionally a motor M with three positions (m ~i~ being the i-th position) is declared.
+
+p. The measurements taken are 
+
+* (m ~1~, A ~1~/C ~1~), (m ~2~, A ~2~/C ~2~), (m ~3~, A ~3~/C ~3~) and
+* (m ~1~, B ~1~/C ~1~), (m ~2~, B ~2~/C ~2~), (m ~3~, B ~3~/C ~3~) at which each B ~i~/C ~i~ is the average calculated by two measurements.

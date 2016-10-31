@@ -1,4 +1,4 @@
-h1(eveTopic). Scan Module
+h1(eveTopic). Scan Module View
 
 p. In the Scan Module view you set the properties for a scan module.
 

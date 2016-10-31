@@ -8,7 +8,7 @@
    </topic>
    <topic href="help/content/concepts/events.html" label="Events">
    </topic>
-   <topic href="help/content/concepts/detectorchannels.html" label="Detector Channel">
+   <topic href="help/content/concepts/detectorchannelview.html" label="Detector Channel View">
    </topic>
    <topic href="help/content/concepts/motoraxis.html" label="Motor Axis">
    </topic>
@@ -16,7 +16,7 @@
    </topic>
    <topic href="help/content/concepts/scandescription.html" label="Scan Description">
    </topic>
-   <topic href="help/content/concepts/scanmodule.html" label="Scan Module">
+   <topic href="help/content/concepts/scanmoduleview.html" label="Scan Module View">
    </topic>
    <topic href="help/content/concepts/editor.html" label="Scan Description Editor">
    </topic>
