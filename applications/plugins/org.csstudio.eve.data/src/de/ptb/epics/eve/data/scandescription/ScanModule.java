@@ -385,7 +385,8 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * Returns all channels valid as stop. A given channel can be 
 	 * excluded from the result.
 	 * 
-	 * Currently all present channels are valid as stop.
+	 * All present channels except that used as normalize channel are valid.
+	 * 
 	 * @param excludeChannel
 	 * 		if set the given channel will not be part of the result even 
 	 * 		if it is valid.
@@ -398,6 +399,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 			if (excludeChannel != null 
 					&& ch.getDetectorChannel().getID().equals(
 							excludeChannel.getDetectorChannel().getID())) {
+				continue;
+			}
+			if (ch.getScanModule().isUsedAsNormalizeChannel(ch)) {
 				continue;
 			}
 			validStoppedByChannels.add(ch);
