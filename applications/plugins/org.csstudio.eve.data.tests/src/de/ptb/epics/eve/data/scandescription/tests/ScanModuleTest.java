@@ -17,10 +17,14 @@ import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.measuringstation.Function;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.scandescription.Axis;
+import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.Stepfunctions;
 import de.ptb.epics.eve.data.scandescription.axismode.AddMultiplyMode;
 import de.ptb.epics.eve.data.scandescription.axismode.AdjustParameter;
+import de.ptb.epics.eve.data.scandescription.channelmode.ChannelModes;
+import de.ptb.epics.eve.data.tests.mothers.scandescription.ChannelMother;
+import de.ptb.epics.eve.data.tests.mothers.scandescription.ScanModuleMother;
 
 /**
  * ScanModule related Unit Testing.
@@ -261,7 +265,46 @@ public class ScanModuleTest implements PropertyChangeListener {
 		axis2.setMotorAxis(mockAxis);
 	}
 	
-	// ***********************************************************************
+	@Test
+	public void testIsUsedAsNormalizeChannel() {
+		ScanModule scanModule = ScanModuleMother.createNewScanModule();
+		Channel channel1 = ChannelMother.createNewChannel(scanModule);
+		scanModule.add(channel1);
+		Channel channel2 = ChannelMother.createNewChannel(scanModule);
+		scanModule.add(channel2);
+		
+		assertFalse(scanModule.isUsedAsNormalizeChannel(channel1));
+		assertFalse(scanModule.isUsedAsNormalizeChannel(channel2));
+		
+		channel1.setNormalizeChannel(channel2.getDetectorChannel());
+		assertTrue(scanModule.isUsedAsNormalizeChannel(channel2));
+		
+		channel1.setNormalizeChannel(null);
+		assertFalse(scanModule.isUsedAsNormalizeChannel(channel2));
+	}
+	
+	@Test
+	public void testIsUsedAsStoppedByChannel() {
+		ScanModule scanModule = ScanModuleMother.createNewScanModule();
+		Channel channel1 = ChannelMother.createNewChannel(scanModule);
+		scanModule.add(channel1);
+		try {
+			Thread.sleep(10);
+		} catch (InterruptedException e) {
+		}
+		Channel channel2 = ChannelMother.createNewChannel(scanModule);
+		scanModule.add(channel2);
+		
+		assertFalse(scanModule.isUsedAsStoppedByChannel(channel1));
+		assertFalse(scanModule.isUsedAsStoppedByChannel(channel2));
+		
+		channel1.setChannelMode(ChannelModes.INTERVAL);
+		channel1.setStoppedBy(channel2.getDetectorChannel());
+		assertTrue(scanModule.isUsedAsStoppedByChannel(channel2));
+		
+		channel1.setStoppedBy(null);
+		assertFalse(scanModule.isUsedAsStoppedByChannel(channel2));
+	}
 	
 	/**
 	 * Class wide setup method of the test

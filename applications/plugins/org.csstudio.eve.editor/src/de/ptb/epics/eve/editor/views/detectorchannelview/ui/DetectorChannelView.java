@@ -269,7 +269,7 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 				normalizeChannels.add(ch);
 			}
 		}
-		if (!normalizeChannels.isEmpty()) {
+		if (this.currentChannel.getScanModule().isUsedAsNormalizeChannel(currentChannel)) {
 			this.sashForm.setMaximizedControl(this.normalizeComposite);
 			this.activeComposite = ActiveComposite.NORMALIZED;
 			this.acquisitionTypeComboViewer.getCombo().deselectAll();;
@@ -280,8 +280,13 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 			this.sc.setMinSize(this.top.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 			return;
 		}
-		this.acquisitionTypeComboViewer.getCombo().setEnabled(true);
-		this.normalizeChannelComboViewer.getCombo().setEnabled(true);
+		if (this.currentChannel.getScanModule().isUsedAsStoppedByChannel(currentChannel)) {
+			this.acquisitionTypeComboViewer.getCombo().setEnabled(false);
+			this.normalizeChannelComboViewer.getCombo().setEnabled(false);
+		} else {
+			this.acquisitionTypeComboViewer.getCombo().setEnabled(true);
+			this.normalizeChannelComboViewer.getCombo().setEnabled(true);
+		}
 		switch (this.currentChannel.getChannelMode()) {
 		case INTERVAL:
 			this.sashForm.setMaximizedControl(intervalComposite);

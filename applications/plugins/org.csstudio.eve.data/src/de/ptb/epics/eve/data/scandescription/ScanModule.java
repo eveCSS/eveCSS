@@ -30,6 +30,7 @@ import de.ptb.epics.eve.data.measuringstation.event.DetectorEvent;
 import de.ptb.epics.eve.data.measuringstation.event.ScanEvent;
 import de.ptb.epics.eve.data.measuringstation.event.ScheduleEvent;
 import de.ptb.epics.eve.data.scandescription.axismode.AddMultiplyMode;
+import de.ptb.epics.eve.data.scandescription.channelmode.ChannelModes;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider;
 import de.ptb.epics.eve.data.scandescription.errors.ScanModuleError;
@@ -356,8 +357,11 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * Returns all channels valid for normalization. A given channel can be
 	 * excluded from the result.
 	 * 
-	 * (A channel is not valid as normalization channel if itself is
-	 * normalized.)
+	 * A channel is <b>not</b> valid as normalization channel if at least one of the following is true:
+	 * <ul>
+	 * <li>it is normalized</li>
+	 * <li>not in standard mode</li>
+	 * </ul>
 	 * 
 	 * @param excludeChannel
 	 *            if set the given channel will not be part of the result even
@@ -369,6 +373,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		List<Channel> validNormalizationChannels = new ArrayList<>();
 		for (Channel ch : this.getChannels()) {
 			if (ch.getNormalizeChannel() != null) {
+				continue;
+			}
+			if (ch.getChannelMode().equals(ChannelModes.INTERVAL)) {
 				continue;
 			}
 			if (excludeChannel != null
@@ -402,6 +409,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 				continue;
 			}
 			if (ch.getScanModule().isUsedAsNormalizeChannel(ch)) {
+				continue;
+			}
+			if (ch.getChannelMode().equals(ChannelModes.INTERVAL)) {
 				continue;
 			}
 			validStoppedByChannels.add(ch);
@@ -1354,14 +1364,44 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	}
 	
 	/**
-	 * {@inheritDoc}
+	 * Checks whether the given channel is used for normalization by another channel.
+	 * @param channel the channel to search for
+	 * @return <code>true</code> if the given channel is used as stopped by by another channel, 
+	 * 		<code>false</code> otherwise
 	 * @since 1.27
 	 */
 	public boolean isUsedAsNormalizeChannel(Channel channel) {
 		for (Channel chan : this.channels) {
+			if (chan.getDetectorChannel().getID().equals(channel.getDetectorChannel().getID())) {
+				continue;
+			}
 			if (chan.getNormalizeChannel() != null 
 					&& chan.getNormalizeChannel().getID().equals(
 							channel.getAbstractDevice().getID())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Checks whether the given channel is used as stopped by by another channel.
+	 * @param channel the channel to search for
+	 * @return <code>true</code> if the given channel is used as stopped by by another channel, 
+	 * 		<code>false</code> otherwise
+	 * @since 1.27
+	 */
+	public boolean isUsedAsStoppedByChannel(Channel channel) {
+		for (Channel chan : this.channels) {
+			if (chan.getDetectorChannel().getID().equals(channel.getDetectorChannel().getID())) {
+				continue;
+			}
+			if (!chan.getChannelMode().equals(ChannelModes.INTERVAL)) {
+				continue;
+			}
+			if (chan.getStoppedBy() != null &&
+					chan.getStoppedBy().getID().equals(
+					channel.getDetectorChannel().getID())) {
 				return true;
 			}
 		}
