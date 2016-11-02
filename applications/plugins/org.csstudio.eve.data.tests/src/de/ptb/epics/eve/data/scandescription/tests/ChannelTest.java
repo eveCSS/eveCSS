@@ -9,7 +9,6 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
@@ -80,11 +79,14 @@ public class ChannelTest implements PropertyChangeListener {
 	}
 	
 	@Test
-	@Ignore("fails in jenkins, works in eclipse")
 	public void testNormalize() {
 		ScanModule scanModule = ScanModuleMother.createNewScanModule();
 		Channel smChannel = ChannelMother.createNewChannel(scanModule);
 		scanModule.add(smChannel);
+		try {
+			Thread.sleep(10);
+		} catch (InterruptedException e) {
+		}
 		Channel normalizeChannel = ChannelMother.createNewChannel(scanModule);
 		scanModule.add(normalizeChannel);
 		assertNull(smChannel.getNormalizeChannel());
