@@ -2,15 +2,11 @@ package de.ptb.epics.eve.editor.views.detectorchannelview.ui;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import com.ibm.icu.text.*;
-import java.util.Locale;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeanProperties;
-import org.eclipse.core.databinding.conversion.NumberToStringConverter;
-import org.eclipse.core.databinding.conversion.StringToNumberConverter;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
@@ -36,6 +32,15 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventMana
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventTypes;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
+import de.ptb.epics.eve.editor.views.detectorchannelview.AverageTargetToModelConverter;
+import de.ptb.epics.eve.editor.views.detectorchannelview.AverageTargetToModelValidator;
+import de.ptb.epics.eve.editor.views.detectorchannelview.DoubleModelToTargetConverter;
+import de.ptb.epics.eve.editor.views.detectorchannelview.DoubleTargetToModelConverter;
+import de.ptb.epics.eve.editor.views.detectorchannelview.MaxAttemptsModelToTargetConverter;
+import de.ptb.epics.eve.editor.views.detectorchannelview.MaxAttemptsTargetToModelConverter;
+import de.ptb.epics.eve.editor.views.detectorchannelview.MaxAttemptsTargetToModelValidator;
+import de.ptb.epics.eve.editor.views.detectorchannelview.MaxDeviationTargetToModelValidator;
+import de.ptb.epics.eve.editor.views.detectorchannelview.MinimumTargetToModelValidator;
 import de.ptb.epics.eve.editor.views.eventcomposite.EventComposite;
 import de.ptb.epics.eve.util.swt.TextSelectAllFocusListener;
 import de.ptb.epics.eve.util.swt.TextSelectAllMouseListener;
@@ -233,11 +238,9 @@ public class StandardComposite extends DetectorChannelViewComposite
 		this.averageBinding = this.getContext().bindValue(
 				averageTargetObservable, averageModelObservable,
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).
-					setConverter(StringToNumberConverter.toInteger(
-						NumberFormat.getInstance(Locale.US), true)),
-				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).
-					setConverter(NumberToStringConverter.fromInteger(
-						NumberFormat.getInstance(Locale.US), true)));
+					setConverter(new AverageTargetToModelConverter()).
+					setAfterGetValidator(new AverageTargetToModelValidator()),
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
 		ControlDecorationSupport.create(this.averageBinding, SWT.LEFT);
 		
 		this.maxDeviationTargetObservable = WidgetProperties.text(SWT.Modify).
@@ -248,11 +251,10 @@ public class StandardComposite extends DetectorChannelViewComposite
 		this.maxDeviationBinding = this.getContext().bindValue(
 				maxDeviationTargetObservable, maxDeviationModelObservable, 
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).
-					setConverter(StringToNumberConverter.toDouble(
-							NumberFormat.getScientificInstance(Locale.US), false)),
+					setConverter(new DoubleTargetToModelConverter()).
+					setAfterGetValidator(new MaxDeviationTargetToModelValidator()),
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).
-					setConverter(NumberToStringConverter.fromDouble(
-							NumberFormat.getScientificInstance(Locale.US), false)));
+					setConverter(new DoubleModelToTargetConverter()));
 		ControlDecorationSupport.create(this.maxDeviationBinding, SWT.LEFT);
 		
 		this.minimumTargetObservable = WidgetProperties.text(SWT.Modify).
@@ -263,11 +265,10 @@ public class StandardComposite extends DetectorChannelViewComposite
 		this.minimumBinding = this.getContext().bindValue(
 				minimumTargetObservable, minimumModelObservable,
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).
-				setConverter(StringToNumberConverter.toDouble(
-						NumberFormat.getScientificInstance(Locale.US), false)),
+				setConverter(new DoubleTargetToModelConverter()).
+				setAfterGetValidator(new MinimumTargetToModelValidator()),
 			new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).
-				setConverter(NumberToStringConverter.fromDouble(
-						NumberFormat.getScientificInstance(Locale.US), false)));
+				setConverter(new DoubleModelToTargetConverter()));
 		ControlDecorationSupport.create(this.minimumBinding, SWT.LEFT);
 		
 		this.maxAttemptsTargetObservable = WidgetProperties.text(SWT.Modify).
@@ -278,11 +279,10 @@ public class StandardComposite extends DetectorChannelViewComposite
 		this.maxAttemptsBinding = this.getContext().bindValue(
 				maxAttemptsTargetObservable, maxAttemptsModelObservable,
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).
-					setConverter(StringToNumberConverter.toInteger(
-						NumberFormat.getInstance(Locale.US), false)),
+					setConverter(new MaxAttemptsTargetToModelConverter()).
+					setAfterGetValidator(new MaxAttemptsTargetToModelValidator()),
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).
-					setConverter(NumberToStringConverter.fromInteger(
-						NumberFormat.getInstance(Locale.US), false)));
+					setConverter(new MaxAttemptsModelToTargetConverter()));
 		ControlDecorationSupport.create(this.maxAttemptsBinding, SWT.LEFT);
 		
 		this.deferredTriggerTargetObservable = WidgetProperties.selection().
