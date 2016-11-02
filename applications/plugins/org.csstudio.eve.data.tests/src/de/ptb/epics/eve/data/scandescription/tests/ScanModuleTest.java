@@ -270,6 +270,10 @@ public class ScanModuleTest implements PropertyChangeListener {
 		ScanModule scanModule = ScanModuleMother.createNewScanModule();
 		Channel channel1 = ChannelMother.createNewChannel(scanModule);
 		scanModule.add(channel1);
+		try {
+			Thread.sleep(10);
+		} catch (InterruptedException e) {
+		}
 		Channel channel2 = ChannelMother.createNewChannel(scanModule);
 		scanModule.add(channel2);
 		
