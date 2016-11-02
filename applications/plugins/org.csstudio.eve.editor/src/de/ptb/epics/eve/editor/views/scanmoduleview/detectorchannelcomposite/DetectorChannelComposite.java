@@ -90,7 +90,7 @@ public class DetectorChannelComposite extends ActionComposite {
 		TableViewerColumn channelColumn = new TableViewerColumn(
 				this.tableViewer, SWT.LEFT);
 		channelColumn.getColumn().setText("Name");
-		channelColumn.getColumn().setWidth(250);
+		channelColumn.getColumn().setWidth(220);
 		channelColumn.getColumn().addSelectionListener(
 				new ColumnSelectionListener(channelColumn));
 		this.sortColumn = channelColumn;
@@ -98,17 +98,27 @@ public class DetectorChannelComposite extends ActionComposite {
 		TableViewerColumn avgColumn = new TableViewerColumn(
 				this.tableViewer, SWT.LEFT);
 		avgColumn.getColumn().setText("Average");
-		avgColumn.getColumn().setWidth(80);
+		avgColumn.getColumn().setWidth(75);
 		
 		TableViewerColumn intervalColumn = new TableViewerColumn(
 				this.tableViewer, SWT.LEFT);
 		intervalColumn.getColumn().setText("Interval");
-		intervalColumn.getColumn().setWidth(90);
+		intervalColumn.getColumn().setWidth(75);
 		
 		TableViewerColumn deferredColumn = new TableViewerColumn(
 				this.tableViewer, SWT.LEFT);
 		deferredColumn.getColumn().setText("Deferred");
-		deferredColumn.getColumn().setWidth(100);
+		deferredColumn.getColumn().setWidth(75);
+		
+		TableViewerColumn normalizedColumn = new TableViewerColumn(
+				this.tableViewer, SWT.LEFT);
+		normalizedColumn.getColumn().setText("Normalized By");
+		normalizedColumn.getColumn().setWidth(220);
+		
+		TableViewerColumn stoppedByColumn = new TableViewerColumn(
+				this.tableViewer, SWT.LEFT);
+		stoppedByColumn.getColumn().setText("Stopped By");
+		stoppedByColumn.getColumn().setWidth(220);
 	}
 	
 	/**

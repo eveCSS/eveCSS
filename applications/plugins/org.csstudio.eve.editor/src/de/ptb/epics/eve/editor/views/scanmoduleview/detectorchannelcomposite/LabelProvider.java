@@ -21,7 +21,7 @@ import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
  * @author Marcus Michalsky
  */
 public class LabelProvider implements ITableLabelProvider {
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -47,9 +47,10 @@ public class LabelProvider implements ITableLabelProvider {
 	 */
 	@Override
 	public String getColumnText(final Object channel, final int colIndex) {
+		String dash = Character.toString('\u2014');
 		Channel chan = (Channel) channel;
-		if ( colIndex > 1 && chan.getScanModule().isUsedAsNormalizeChannel(chan)) {
-			return Character.toString('\u2014');
+		if ( colIndex > 1 && colIndex < 5 && chan.getScanModule().isUsedAsNormalizeChannel(chan)) {
+			return dash;
 		}
 		switch (colIndex) {
 		case 1:
@@ -58,19 +59,36 @@ public class LabelProvider implements ITableLabelProvider {
 			if (chan.getChannelMode().equals(ChannelModes.STANDARD)) {
 				return Integer.toString(chan.getAverageCount());
 			} else {
-				return Character.toString('\u2014');
+				return dash;
 			}
 		case 3:
 			if (chan.getChannelMode().equals(ChannelModes.INTERVAL)) {
 				return Double.toString(chan.getTriggerInterval());
 			} else {
-				return Character.toString('\u2014');
+				return dash;
 			}
 		case 4:
 			if (chan.getChannelMode().equals(ChannelModes.STANDARD)) {
 				return Boolean.toString(chan.isDeferred());
+			} else if (chan.getChannelMode().equals(ChannelModes.INTERVAL) && 
+					chan.getStoppedBy() != null) {
+				return Boolean.toString(chan.getScanModule().getChannel(
+						chan.getStoppedBy()).isDeferred());
 			} else {
-				return Character.toString('\u2014');
+				return dash;
+			}
+		case 5:
+			if (chan.getNormalizeChannel() != null) {
+				return chan.getNormalizeChannel().getName();
+			} else {
+				return dash;
+			}
+		case 6:
+			if (chan.getChannelMode().equals(ChannelModes.INTERVAL) && 
+					chan.getStoppedBy() != null) {
+				return chan.getStoppedBy().getName();
+			} else {
+				return dash;
 			}
 		}
 		return null;
