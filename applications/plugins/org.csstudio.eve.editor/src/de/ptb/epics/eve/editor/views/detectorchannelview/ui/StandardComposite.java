@@ -249,10 +249,10 @@ public class StandardComposite extends DetectorChannelViewComposite
 				maxDeviationTargetObservable, maxDeviationModelObservable, 
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).
 					setConverter(StringToNumberConverter.toDouble(
-							NumberFormat.getInstance(Locale.US), false)),
+							NumberFormat.getScientificInstance(Locale.US), false)),
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).
 					setConverter(NumberToStringConverter.fromDouble(
-							NumberFormat.getInstance(Locale.US), false)));
+							NumberFormat.getScientificInstance(Locale.US), false)));
 		ControlDecorationSupport.create(this.maxDeviationBinding, SWT.LEFT);
 		
 		this.minimumTargetObservable = WidgetProperties.text(SWT.Modify).
@@ -264,10 +264,10 @@ public class StandardComposite extends DetectorChannelViewComposite
 				minimumTargetObservable, minimumModelObservable,
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).
 				setConverter(StringToNumberConverter.toDouble(
-						NumberFormat.getInstance(Locale.US), false)),
+						NumberFormat.getScientificInstance(Locale.US), false)),
 			new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).
 				setConverter(NumberToStringConverter.fromDouble(
-						NumberFormat.getInstance(Locale.US), false)));
+						NumberFormat.getScientificInstance(Locale.US), false)));
 		ControlDecorationSupport.create(this.minimumBinding, SWT.LEFT);
 		
 		this.maxAttemptsTargetObservable = WidgetProperties.text(SWT.Modify).
