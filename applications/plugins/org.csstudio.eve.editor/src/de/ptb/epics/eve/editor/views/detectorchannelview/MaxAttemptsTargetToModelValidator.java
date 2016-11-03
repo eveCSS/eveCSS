@@ -25,9 +25,6 @@ public class MaxAttemptsTargetToModelValidator implements IValidator {
 			if (i < 0) {
 				return ValidationStatus.error("Max Attempts must not be negative!");
 			}
-			if (i == 0) {
-				return ValidationStatus.error("Max Attempts  must not be zero!");
-			}
 			return ValidationStatus.ok();
 		} catch (NumberFormatException e) {
 			return ValidationStatus.error("cannot parse integer.");
