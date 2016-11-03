@@ -78,9 +78,9 @@ __Max. Deviation (%)__ from 5 and 6:  3.42 => discard fifth value
 
 p. __Max. Attempts__ reached ==&rArr;== value of the channel is the __Average__ from 6., 7. and 8. measured value: = 4.845
 
-h3(eveTopic). Example 7 - max deviation and no max attempts
+h3(eveTopic). Example 7 - max deviation and max attempts = 0
 
-p. __Average__ = 3, __Max. Deviation (%)__ = 0.5, __Minimum__ = 1e-8, __Max. Attempts__ = ==&empty;==
+p. __Average__ = 3, __Max. Deviation (%)__ = 0.5, __Minimum__ = 1e-8, __Max. Attempts__ = 0
 
 p. max. Attempts = 0 ==&rArr;== __Average__ is calculated from three subsequent measurements.
 
@@ -89,7 +89,8 @@ p. measured values: {%(green)4.231%, %(green)4.787%, %(green)4.687%} ==&rArr;== 
 
 h2(eveTopic). Interval (Mode) Channel
 
-p. The interval mode calculates a mean of values measured on a given interval until another channel is done. The resulting data file contains only one measurement, the mean (aside of some additional information such as the standard deviation). The image below shows an example of a channel in interval mode followed by a short description of each property.
+p. The interval mode calculates a mean of values measured on a given interval until another channel is done. The resulting data file contains only one measurement, the mean (aside of
+some additional information such as the count of measurements and their standard deviation). The image below shows an example of a channel in interval mode followed by a short description of each property.
 
 p=. !(eveImage)../../img/concepts/DetectorChannelView/intervalchannel.png(detector channel view example of a interval mode channel)!
 

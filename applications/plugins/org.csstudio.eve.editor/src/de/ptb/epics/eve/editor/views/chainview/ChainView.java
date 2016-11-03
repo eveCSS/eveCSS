@@ -281,7 +281,7 @@ public class ChainView extends ViewPart implements IEditorView,
 				+ "${MONTH} : month as MM\n" 
 				+ "${MONTHSTR} : month as MMM (e.g., Jul)\n"
 				+ "${DAY} : day as dd\n"
-				+ "${DAYSTR} : day as EEE (e.g., Mon)\n"
+				+ "${DAYSTR} : day as ddd (e.g., Mon)\n"
 				+ "${DATE} : date as yyyyMMdd (e.g., 20111231)\n"
 				+ "${DATE-} : date as yyyy-MM-dd (e.g., 2011-12-31)\n"
 				+ "${TIME} : time as HHmmss\n"

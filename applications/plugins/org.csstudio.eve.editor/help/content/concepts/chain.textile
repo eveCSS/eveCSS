@@ -10,7 +10,7 @@ h3(eveTopic). File Format
 
 p. The __File Format__ is a given format of the data file. You can choose between __ASCII__, __HDF5__ and __Do not save__.
 
-h3(eveTopic). Filename
+h3(eveTopic). Format
 
 p. The __Filename__ defines the name of the data file. You can use the macros shown in the table to build the filename.
 
@@ -18,14 +18,20 @@ table(eveRefTable).
 |_. Macro |_. Description|
 | ${WEEK} | calendar week|
 | ${YEAR} | year as yyyy|
+| ${YR} | year as yy|
 | ${MONTH} | month as MM|
+| ${MONTHSTR} | month as MMM (e.g., Jul)|
 | ${DAY} | day as dd|
+| ${DAYSTR} | day as ddd (e.g., Mon)|
 | ${DATE} | date as yyyyMMdd (e.g., 20111231)|
 | ${DATE-} | date as yyyy-MM-dd (e.g., 2011-12-31)|
 | ${TIME} | time as HHmmss|
 | ${TIME-} | time as HH-mm-ss|
 | ${PV:&lt;pvname&gt;} | replace with value of pvname|
 
+h3(eveTopic). Filename
+
+p. This is the resulting __Filename__ from the input above.
 
 h3(eveTopic). Save Scan-Description
 
@@ -38,10 +44,6 @@ p. With __Confirm Save__ you define, whether saving should be confirmed.
 h3(eveTopic). Add Autoincrementing Number to Filename
 
 p. If __Add Autoincrementing Number to Filename__ is true, a five digit number is appended to the filename. Starting at __x + 1__ where __x__ is the largest number found with the same filename prefix.
-
-h3(eveTopic). Repeat Count
-
-p. The __Repeat Count__ sets how often the scan should be executed in addition to the first execution. For Example a __Repeat Count__ of 1 starts the scan twice. The possible values are from 0 up to 999999.
 
 h2(eveTopic). Comment
 
