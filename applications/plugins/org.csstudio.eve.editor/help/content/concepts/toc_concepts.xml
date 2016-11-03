@@ -4,6 +4,8 @@
 <toc label="Concepts">
    <topic href="help/content/concepts/eveeditorperspective.html" label="EveEditor Perspective">
    </topic>
+   <topic href="help/content/concepts/scan.html" label="Scan">
+   </topic>
    <topic href="help/content/concepts/chain.html" label="Chain">
    </topic>
    <topic href="help/content/concepts/events.html" label="Events">

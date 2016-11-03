@@ -1,0 +1,8 @@
+h1(eveTopic). Scan View
+
+p. In the Scan View you set the following scan properties.
+
+
+h2(eveTopic). Repeat Count
+
+p. The __Repeat Count__ sets how often the scan should be executed in addition to the first execution. For Example a __Repeat Count__ of 1 starts the scan twice. The possible values are from 0 up to 999999.

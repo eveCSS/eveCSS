@@ -755,7 +755,7 @@
                style="push">
             <parameter
                   name="href"
-                  value="/de.ptb.epics.eve.editor/help/content/concepts/detectorchannels.html">
+                  value="/de.ptb.epics.eve.editor/help/content/concepts/detectorchannelview.html">
             </parameter>
          </command>
       </menuContribution>
@@ -787,6 +787,19 @@
       </menuContribution>
       <menuContribution
             locationURI="toolbar:de.ptb.epics.eve.editor.views.ScanView">
+         <command
+               commandId="org.eclipse.ui.help.displayHelp"
+               icon="icons/help_contents.gif"
+               label="Click to learn more about the Scan View"
+               style="push">
+            <parameter
+                  name="href"
+                  value="/de.ptb.epics.eve.editor/help/content/concepts/scan.html">
+            </parameter>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:de.ptb.epics.eve.editor.views.ChainView">
          <command
                commandId="org.eclipse.ui.help.displayHelp"
                icon="icons/help_contents.gif"
