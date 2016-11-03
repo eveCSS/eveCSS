@@ -69,7 +69,7 @@ public final class ScanDescriptionEditorPaletteFactory {
 		PaletteDrawer componentsDrawer = new PaletteDrawer("Create Tools");
 		
 		CombinedTemplateCreationEntry componentCreateSM2 = new CombinedTemplateCreationEntry(
-				"Scan Module", "Create a Scan Module", new CreationFactory() {
+				"Scan Module", "Empty Scan Module", new CreationFactory() {
 					@Override
 					public Object getObjectType() {
 						return ScanModuleTypes.CLASSIC;
@@ -86,7 +86,7 @@ public final class ScanDescriptionEditorPaletteFactory {
 		componentsDrawer.add(componentCreateSM2);
 
 		CombinedTemplateCreationEntry componentSaveAxisPosSM = new CombinedTemplateCreationEntry(
-				"Scan Module", "Save Axis Positions", new CreationFactory() {
+				"Scan Module", "Axis Snapshot", new CreationFactory() {
 					@Override
 					public Object getObjectType() {
 						return ScanModuleTypes.SAVE_AXIS_POSITIONS;
@@ -103,7 +103,7 @@ public final class ScanDescriptionEditorPaletteFactory {
 		componentsDrawer.add(componentSaveAxisPosSM);
 
 		CombinedTemplateCreationEntry componentSaveChannelValSM = new CombinedTemplateCreationEntry(
-				"Scan Module", "Save Channel Values", new CreationFactory() {
+				"Scan Module", "Channel Snapshot", new CreationFactory() {
 					@Override
 					public Object getObjectType() {
 						return ScanModuleTypes.SAVE_CHANNEL_VALUES;

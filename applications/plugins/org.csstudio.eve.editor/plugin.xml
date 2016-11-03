@@ -678,13 +678,13 @@
             <command
                   commandId="de.ptb.epics.eve.editor.command.saveallaxispositions"
                   icon="icons/devices/axis.gif"
-                  label="Save Axis Positions"
+                  label="Axis Snapshot"
                   style="push">
             </command>
             <command
                   commandId="de.ptb.epics.eve.editor.command.saveallchannelvalues"
                   icon="icons/devices/channel.gif"
-                  label="Save Channel Values"
+                  label="Channel Snapshot"
                   style="push">
             </command>
             <command
