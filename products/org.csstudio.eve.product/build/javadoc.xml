@@ -22,7 +22,7 @@
 			linksource="no">
 
 			<doctitle>
-				<![CDATA[<h1>eveCSS 1.26</h1>]]></doctitle>
+				<![CDATA[<h1>eveCSS 1.27</h1>]]></doctitle>
 		<bottom>
 			<![CDATA[<i>2016-Physikalisch-Technische Bundesanstalt.</i>]]>
 		</bottom>
@@ -74,14 +74,12 @@
 	<group title="apache" packages="org.apache.*" />
 	<group title="SWT" packages="org.eclipse.swt.*" />
 
-	<link offline="true" href="http://download.oracle.com/javase/6/docs/api" 
-		packagelistLoc="${platform}/doc/api/jdk-6u30/api/" />
+	<link offline="true" href="http://download.oracle.com/javase/7/docs/api" 
+		packagelistLoc="${platform}/Java/jdk-1.7.0_79/docs/api/" />
 	<link offline="true" href="http://logging.apache.org/log4j/1.2/apidocs/index.html" 
-		packagelistLoc="${platform}/doc/api/apache-log4j-1.2.16/site/apidocs/" />
-	<link offline="true" href="http://commons.apache.org/proper/commons-math//apidocs/index.html" 
-		packagelistLoc="${platform}/doc/api/commons-math3-3.1.1/apidocs/" />
+		packagelistLoc="${platform}/Java/apache-log4j-1.2.17/docs/api/" />
 	<link offline="true" href="http://junit.sourceforge.net/javadoc/" 
-		packagelistLoc="${platform}/doc/api/junit-4.8.2/javadoc/" />
+		packagelistLoc="${platform}/Java/JUnit-4.12/docs/api/" />
 </javadoc>
 </target>
 </project>
