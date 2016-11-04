@@ -1,5 +1,9 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.27
+
+* [Feature] EPICS DBE_PROPERTY is now enabled by default
+
 h2(eveTopic). Version 1.26
 
 * [Feature] added help internationalization (if localized help for current Locale exists it has priority)

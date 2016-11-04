@@ -1,5 +1,11 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.27
+
+* [Feature] the playlist can now be saved to a file
+
+* [Bug Fix] fixed a bug where subsequent connects to the engine failed (GUI stopped refreshing) if a scan was already loaded
+
 h2(eveTopic). Version 1.26
 
 * [Feature] introduced Global Device Inspector (Device Inspector which is visible in each Perspective)
