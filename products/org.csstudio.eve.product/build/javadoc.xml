@@ -75,7 +75,7 @@
 	<group title="SWT" packages="org.eclipse.swt.*" />
 
 	<link offline="true" href="http://download.oracle.com/javase/7/docs/api" 
-		packagelistLoc="${platform}/Java/jdk-1.7.0_79/docs/api/" />
+		packagelistLoc="${platform}/Java/jdk1.7.0_79/docs/api/" />
 	<link offline="true" href="http://logging.apache.org/log4j/1.2/apidocs/index.html" 
 		packagelistLoc="${platform}/Java/apache-log4j-1.2.17/docs/api/" />
 	<link offline="true" href="http://junit.sourceforge.net/javadoc/" 
