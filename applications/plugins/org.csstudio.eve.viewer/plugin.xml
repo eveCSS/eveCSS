@@ -484,7 +484,49 @@
          </command>
       </menuContribution>
       <menuContribution
+            locationURI="menu:addAllDevicesGlobal">
+         <command
+               commandId="de.ptb.epics.eve.viewer.addAxes"
+               icon="icons/axis_add.gif"
+               label="add all motor axes"
+               style="push">
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.viewer.addChannels"
+               icon="icons/channel_add.gif"
+               label="add all detector channels"
+               style="push">
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.viewer.addDevices"
+               icon="icons/device_add.gif"
+               label="add all (pre-/postscan) devices"
+               style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
             locationURI="menu:clearAllTables">
+         <command
+               commandId="de.ptb.epics.eve.viewer.clearAxes"
+               icon="icons/axis_clear.gif"
+               label="clear motor axes"
+               style="pulldown">
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.viewer.clearChannels"
+               icon="icons/channel_clear.gif"
+               label="clear detector channels"
+               style="pulldown">
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.viewer.clearDevices"
+               icon="icons/device_clear.gif"
+               label="clear devices"
+               style="pulldown">
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="menu:clearAllTablesGlobal">
          <command
                commandId="de.ptb.epics.eve.viewer.clearAxes"
                icon="icons/axis_clear.gif"
@@ -530,6 +572,20 @@
                label="resetDeviceInspector"
                style="push"
                tooltip="Reset Layout">
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.viewer.addAllDevices"
+               icon="icons/add.gif"
+               id="addAllDevicesGlobal"
+               label="add all devices"
+               style="pulldown">
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.viewer.clearAllTables"
+               icon="icons/clear_co.gif"
+               id="clearAllTablesGlobal"
+               label="clear all tables"
+               style="pulldown">
          </command>
       </menuContribution>
       <menuContribution
