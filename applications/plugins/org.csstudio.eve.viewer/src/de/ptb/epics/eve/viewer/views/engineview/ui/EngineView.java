@@ -378,14 +378,6 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 				ButtonManager.ENGINE_STATE_PROP, this);
 		this.refreshButtons(EngineDisconnected.getInstance());
 		
-		Activator.getDefault().getEcp1Client()
-				.addEngineStatusListener(progressBarComposite);
-		Activator.getDefault().getEcp1Client()
-				.addErrorListener(progressBarComposite);
-		Activator.getDefault().getEcp1Client()
-				.addConnectionStateListener(progressBarComposite);
-		Activator.getDefault().getEcp1Client()
-				.addChainProgressListener(progressBarComposite);
 		Activator.getDefault().getEcp1Client().addEngineVersionListener(this);
 		
 		Activator.getDefault().getEcp1Client().addEngineStatusListener(this);

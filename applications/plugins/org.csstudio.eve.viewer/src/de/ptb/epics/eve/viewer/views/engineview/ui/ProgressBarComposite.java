@@ -1,5 +1,8 @@
 package de.ptb.epics.eve.viewer.views.engineview.ui;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
@@ -14,34 +17,28 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ProgressBar;
 
-import de.ptb.epics.eve.ecp1.client.interfaces.IChainProgressListener;
-import de.ptb.epics.eve.ecp1.client.interfaces.IConnectionStateListener;
-import de.ptb.epics.eve.ecp1.client.interfaces.IEngineStatusListener;
-import de.ptb.epics.eve.ecp1.client.interfaces.IErrorListener;
-import de.ptb.epics.eve.ecp1.client.model.Error;
-import de.ptb.epics.eve.ecp1.commands.ChainProgressCommand;
-import de.ptb.epics.eve.ecp1.types.EngineStatus;
-import de.ptb.epics.eve.ecp1.types.ErrorType;
+import de.ptb.epics.eve.ecp1.helper.progresstracker.EngineProgressTracker;
+import de.ptb.epics.eve.ecp1.helper.progresstracker.Progress;
+import de.ptb.epics.eve.ecp1.helper.statustracker.EngineStatusTracker;
+import de.ptb.epics.eve.viewer.Activator;
 
 /**
  * @author Marcus Michalsky
  * @since 1.10
  */
-public class ProgressBarComposite extends Composite implements
-		IConnectionStateListener, IEngineStatusListener, IErrorListener,
-		IChainProgressListener {
+public class ProgressBarComposite extends Composite implements PropertyChangeListener {
 	private static final Logger LOGGER = Logger
 			.getLogger(ProgressBarComposite.class.getName());
 	
 	private ProgressBar progressBar;
 	private ProgressBarPaintListener progressBarPaintListener;
-	private int maxPositions = 100;
-	private int currentPosition = 0;
-	
-	private boolean connected;
-	private EngineStatus engineStatus;
+
+	private Progress progress;
 	
 	private Font font;
+	
+	private EngineStatusTracker engineStatusTracker;
+	private EngineProgressTracker engineProgressTracker;
 	
 	/**
 	 * @param parent the parent
@@ -56,123 +53,20 @@ public class ProgressBarComposite extends Composite implements
 		this.setLayout(fillLayout);
 		this.progressBar = new ProgressBar(this, SWT.HORIZONTAL);
 		this.progressBar.setState(SWT.NORMAL);
-		this.progressBar.setMinimum(0);
-		this.progressBar.setMaximum(this.maxPositions);
-		this.progressBar.setSelection(this.currentPosition);
+		this.progress = null;
 		this.progressBar.setEnabled(false);
 		this.progressBarPaintListener = new ProgressBarPaintListener(
 				this.progressBar);
 		this.progressBar.addPaintListener(this.progressBarPaintListener);
 		
-		this.connected = connected;
-		this.engineStatus = null;
+		this.engineStatusTracker = new EngineStatusTracker(
+				Activator.getDefault().getEcp1Client(), this);
+		this.engineProgressTracker = new EngineProgressTracker(
+				Activator.getDefault().getEcp1Client(), this);
 		
 		FontData fdata = Display.getCurrent().getSystemFont().getFontData()[0];
 		fdata.setStyle(SWT.BOLD);
 		this.font = new Font(Display.getCurrent(), fdata);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void chainProgressChanged(ChainProgressCommand chainProgressCommand) {
-		final ChainProgressCommand finalCommand = chainProgressCommand;
-		this.progressBar.getDisplay().syncExec(new Runnable() {
-			@Override public void run() {
-				if (finalCommand.getPositionCounter() >= 0) {
-					// current position is not measured yet -> progress = cPos-1
-					currentPosition = finalCommand.getPositionCounter() - 1;
-					progressBar.setSelection(currentPosition);
-					LOGGER.debug("Current Position: " + currentPosition);
-				}
-				progressBar.redraw();
-			}
-		});
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void errorOccured(Error error) {
-		if (error.getErrorType() == null) {
-			return;
-		}
-		if (error.getErrorType().equals(ErrorType.MAX_POS_COUNT)) {
-			final Error finalError = error;
-			LOGGER.debug("Max Poscount for new Scan: "
-					+ Integer.parseInt(finalError.getText()));
-			this.progressBar.getDisplay().syncExec(new Runnable() {
-				@Override public void run() {
-					maxPositions = Integer.parseInt(finalError.getText());
-					progressBar.setMaximum(maxPositions);
-					progressBar.redraw();
-				}
-			});
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void engineStatusChanged(EngineStatus engineStatus, String xmlName,
-			int repeatCount) {
-		if (engineStatus.equals(EngineStatus.IDLE_XML_LOADED)) {
-			this.engineStatus = engineStatus;
-			this.refreshStatus();
-		} else if (engineStatus.equals(EngineStatus.IDLE_NO_XML_LOADED)) {
-			this.progressBar.getDisplay().syncExec(new Runnable() {
-				@Override public void run() {
-					currentPosition = maxPositions;
-					progressBar.setSelection(maxPositions);
-					progressBar.redraw();
-				}
-			});
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void stackConnected() {
-		LOGGER.debug("Engine connected");
-		this.connected = true;
-		this.refreshStatus();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void stackDisconnected() {
-		LOGGER.debug("Engine disconnected");
-		this.connected = false;
-		this.engineStatus = EngineStatus.IDLE_NO_XML_LOADED;
-		this.refreshStatus();
-	}
-	
-	private void refreshStatus() {
-		this.progressBar.getDisplay().syncExec(new Runnable() {
-			@Override public void run() {
-				if (connected) {
-					if (EngineStatus.IDLE_XML_LOADED.equals(engineStatus)) {
-						progressBar.setEnabled(true);
-						currentPosition = 0;
-						LOGGER.debug("new Scan -> enable ProgressBar");
-					} else if (EngineStatus.IDLE_NO_XML_LOADED.equals(engineStatus)) {
-						progressBar.setEnabled(false);
-						LOGGER.debug("no Scan -> disable ProgressBar");
-					}
-				} else {
-					progressBar.setEnabled(false);
-				}
-				progressBar.setSelection(currentPosition);
-				progressBar.redraw();
-			}
-		});
 	}
 	
 	/**
@@ -194,7 +88,7 @@ public class ProgressBarComposite extends Composite implements
 		 */
 		@Override
 		public void paintControl(PaintEvent e) {
-			if (!progressBar.getEnabled()) {
+			if (progress == null) {
 				return;
 			}
 
@@ -205,20 +99,10 @@ public class ProgressBarComposite extends Composite implements
 			 */
 			Point point = progressBar.getSize();
 
-			StringBuffer percentage = new StringBuffer();
-			
-			if (maxPositions != 0) {
-				percentage.append(" (");
-				percentage.append((int)Math.ceil((float) currentPosition
-						/ (float) maxPositions * 100));
-				percentage.append(" %)");
-			}
-			String position = Integer.toString(currentPosition) + " / " + 
-					Integer.toString(maxPositions) + " positions" + 
-					percentage.toString();
+			String progressBarText = getProgressBarText(progress);
 			
 			FontMetrics fontMetrics = e.gc.getFontMetrics();
-			int width = fontMetrics.getAverageCharWidth() * position.length();
+			int width = fontMetrics.getAverageCharWidth() * progressBarText.length();
 			int height = fontMetrics.getHeight();
 			e.gc.setClipping(e.gc.getClipping());
 			e.gc.setAntialias(SWT.ON);
@@ -226,17 +110,84 @@ public class ProgressBarComposite extends Composite implements
 			e.gc.setFont(font);
 			e.gc.setForeground(Display.getCurrent().getSystemColor(
 					SWT.COLOR_BLACK));
-			e.gc.drawString(position, (point.x - width) / 2,
+			e.gc.drawString(progressBarText, (point.x - width) / 2,
 					(point.y - height) / 2, true); // transparency boolean
 
 			Rectangle all = e.gc.getClipping();//progressBar.getBounds();
 			Rectangle clip = new Rectangle(all.x, all.y, all.width
-					* progressBar.getSelection() / maxPositions, all.height);
+					* progressBar.getSelection() / progress.getMaximum(), all.height);
 			e.gc.setClipping(clip);
 			e.gc.setForeground(Display.getCurrent().getSystemColor(
 					SWT.COLOR_WHITE));
-			e.gc.drawString(position, (point.x - width) / 2,
+			e.gc.drawString(progressBarText, (point.x - width) / 2,
 					(point.y - height) / 2, true); // transparency boolean
 		}
+	}
+
+	private String getProgressBarText(Progress progress) {
+		if (progress.getCurrent() == null) {
+			return "no progress data available";
+		} else {
+			StringBuffer percentage = new StringBuffer();
+
+			percentage.append(" (");
+			percentage.append((int) Math.ceil((float) progress.getCurrent() 
+					/ (float) progress.getMaximum() * 100));
+			percentage.append(" %)");
+
+			String position = Integer.toString(progress.getCurrent()) + 
+					" / " + Integer.toString(progress.getMaximum())
+					+ " positions" + percentage.toString();
+
+			return position;
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void propertyChange(final PropertyChangeEvent e) {
+		switch (e.getPropertyName()) {
+		case EngineStatusTracker.ENGINE_STATUS_PROP:
+			LOGGER.debug("Engine status has changed, enable/disable widget");
+			this.progressBar.getDisplay().syncExec(new Runnable() {
+				@Override
+				public void run() {
+					if (engineStatusTracker.isConnected()) {
+						progressBar.setEnabled(true);
+					} else {
+						progressBar.setEnabled(false);
+					}
+				}
+			});
+			break;
+		case EngineProgressTracker.PROGRESS_PROP:
+			LOGGER.debug("progress has changed, updating text label");
+			this.progressBar.getDisplay().syncExec(new Runnable() {
+				@Override
+				public void run() {
+					if (engineProgressTracker.getProgress() == null) {
+						progress = null;
+						progressBar.setSelection(0);
+						progressBar.setEnabled(false);
+					} else {
+						progress = engineProgressTracker.getProgress();
+						progressBar.setMaximum(progress.getMaximum());
+						if (progress.getCurrent() != null) {
+							progressBar.setSelection(progress.getCurrent());
+						}
+						progressBar.setEnabled(true);
+					}
+				}
+			});
+			break;
+		}
+		this.progressBar.getDisplay().syncExec(new Runnable() {
+			@Override
+			public void run() {
+				progressBar.redraw();
+			}
+		});
 	}
 }
