@@ -4,7 +4,7 @@ package de.ptb.epics.eve.ecp1.helper.statustracker;
  * @author Marcus Michalsky
  * @since 1.28
  */
-public class Halted extends AbstractEngineState {
+final class Halted extends AbstractEngineState {
 	private static EngineState instance;
 	
 	private Halted() {

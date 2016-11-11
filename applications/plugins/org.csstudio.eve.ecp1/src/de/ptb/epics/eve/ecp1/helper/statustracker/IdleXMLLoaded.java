@@ -4,7 +4,7 @@ package de.ptb.epics.eve.ecp1.helper.statustracker;
  * @author Marcus Michalsky
  * @since 1.28
  */
-public class IdleXMLLoaded extends AbstractEngineState {
+final class IdleXMLLoaded extends AbstractEngineState {
 	private static EngineState instance;
 	
 	private IdleXMLLoaded() {
