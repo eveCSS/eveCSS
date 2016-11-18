@@ -1,11 +1,15 @@
 package de.ptb.epics.eve.editor.handler.editor;
 
+import java.util.Iterator;
+import java.util.List;
+
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
@@ -37,6 +41,8 @@ public class FillChannelValues extends AbstractHandler {
 					"Save all Channel Values", 
 					((ScanModuleEditPart)element).getModel());
 			saveAllChannelValues.setUser(true);
+			HandlerUtil.getActiveSite(event).getSelectionProvider().
+					setSelection(StructuredSelection.EMPTY);
 			saveAllChannelValues.schedule();
 		} else {
 			throw new ExecutionException("no scan module selected.");
