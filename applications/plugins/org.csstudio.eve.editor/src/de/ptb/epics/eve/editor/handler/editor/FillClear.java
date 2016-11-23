@@ -5,6 +5,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.progress.UIJob;
 
@@ -37,6 +38,8 @@ public class FillClear extends AbstractHandler {
 					"Remove present Devices", 
 					((ScanModuleEditPart)element).getModel());
 			removeAllDevices.setUser(true);
+			HandlerUtil.getActiveSite(event).getSelectionProvider().
+					setSelection(StructuredSelection.EMPTY);
 			removeAllDevices.schedule();
 		} else {
 			throw new ExecutionException("no scan module selected.");
