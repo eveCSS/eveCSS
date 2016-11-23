@@ -6,6 +6,7 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
@@ -37,6 +38,8 @@ public class FillAxisPositions extends AbstractHandler {
 					"Save all Axis Positions", 
 					((ScanModuleEditPart)element).getModel());
 			saveAllAxisPositions.setUser(true);
+			HandlerUtil.getActiveSite(event).getSelectionProvider().
+					setSelection(StructuredSelection.EMPTY);
 			saveAllAxisPositions.schedule();
 		} else {
 			throw new ExecutionException("no scan module selected.");

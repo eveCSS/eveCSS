@@ -1,8 +1,5 @@
 package de.ptb.epics.eve.editor.handler.editor;
 
-import java.util.Iterator;
-import java.util.List;
-
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
