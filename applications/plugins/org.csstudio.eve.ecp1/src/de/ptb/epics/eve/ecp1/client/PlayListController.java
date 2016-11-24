@@ -81,7 +81,7 @@ public class PlayListController implements IPlayListController {
 
 	}
 
-	public synchronized void addPlayListListener(final IPlayListListener playListListener) {
+	public void addPlayListListener(final IPlayListListener playListListener) {
 		this.playListListener.add(playListListener);
 	}
 
@@ -119,7 +119,7 @@ public class PlayListController implements IPlayListController {
 				playListEntry.getId()));
 	}
 
-	public synchronized void removePlayListListener(final IPlayListListener playListListener) {
+	public void removePlayListListener(final IPlayListListener playListListener) {
 		this.playListListener.remove(playListListener);
 	}
 
@@ -162,11 +162,10 @@ public class PlayListController implements IPlayListController {
 		while (it.hasNext()) {
 			this.playListEntries.add(new PlayListEntry(it.next()));
 		}
-		
-		synchronized (this) {
-			for (IPlayListListener listener : this.playListListener) {
-				listener.playListHasChanged(this);
-			}
+		final Iterator<IPlayListListener> it2 = this.playListListener
+				.iterator();
+		while (it2.hasNext()) {
+			it2.next().playListHasChanged(this);
 		}
 	}
 }
