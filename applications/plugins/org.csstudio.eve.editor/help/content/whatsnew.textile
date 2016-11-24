@@ -12,6 +12,10 @@ h2(eveTopic). Version 1.27
 * [Bug Fix] The Detector Ready Event menu no longer shows the channel itself
 * [Bug Fix] The Schedule Event menu no longer shows the module itself
 
+h3(eveTopic). Version 1.27.2
+
+* [Bug Fix] Fill Actions (Axis Snapshot, Channel Snapshot and Empty) are now executing as fast as the preconstructed Editor Tool equivalents.
+
 h2(eveTopic). Version 1.26
 
 * [Feature] added two digit year macro for file names
