@@ -27,6 +27,9 @@ public class Defaults {
 	private static final Logger LOGGER = Logger.getLogger(Defaults.class
 			.getName());
 	
+	private static final int MAJOR_VERSION = 2;
+	private static final int MINOR_VERSION = 0;
+	
 	private String version;
 	private String workingDirectory;
 	private List<DefaultsAxis> axes;
@@ -34,7 +37,7 @@ public class Defaults {
 	
 	/** */
 	public Defaults() {
-		this.version = "";
+		this.version = Defaults.MAJOR_VERSION + "." + Defaults.MINOR_VERSION;
 		this.workingDirectory = "";
 		this.axes = new ArrayList<DefaultsAxis>();
 		this.channels = new ArrayList<DefaultsChannel>();
