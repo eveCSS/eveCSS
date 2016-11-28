@@ -17,7 +17,7 @@ import de.ptb.epics.eve.editor.IScanDescriptionReceiver;
  */
 public class ScanDescriptionReceiver implements IScanDescriptionReceiver {
 	
-	private static Logger logger = Logger.getLogger(
+	private static Logger LOGGER = Logger.getLogger(
 			ScanDescriptionReceiver.class.getName());
 	
 	/**
@@ -25,7 +25,24 @@ public class ScanDescriptionReceiver implements IScanDescriptionReceiver {
 	 */
 	@Override
 	public void scanDescriptionReceived(File location, boolean switchPerspective) {
+		if (switchPerspective) {
+			try {
+				PlatformUI.getWorkbench().showPerspective(
+						"EveEnginePerspective", Activator.getDefault().
+						getWorkbench().getActiveWorkbenchWindow());
+			} catch (WorkbenchException e) {
+				LOGGER.error(e.getMessage(), e);
+			}
+		}
+		
+		try {
+			Thread.sleep(200);
+		} catch (InterruptedException e1) {
+			LOGGER.warn("Thread sleep interrupted: " + e1.getMessage());
+		}
+		
 		Activator.getDefault().connectEngine();
+		
 		// either we were connected before or have done it above, we are 
 		// connected now and can add the scan description to the play list.
 		if (Activator.getDefault().getEcp1Client().isRunning()) {
@@ -33,19 +50,10 @@ public class ScanDescriptionReceiver implements IScanDescriptionReceiver {
 				Activator.getDefault().getEcp1Client().getPlayListController().
 					addLocalFile(location);
 			} catch(final IOException e) {
-				logger.error(e.getMessage(), e);
+				LOGGER.error(e.getMessage(), e);
 			}
 		}
 		
-		if (switchPerspective) {
-			try {
-				PlatformUI.getWorkbench().showPerspective(
-						"EveEnginePerspective", Activator.getDefault().
-						getWorkbench().getActiveWorkbenchWindow());
-			} catch (WorkbenchException e) {
-				logger.error(e.getMessage(), e);
-			}
-		}
-		logger.debug("scan description received.");
+		LOGGER.debug("scan description received.");
 	}
 }

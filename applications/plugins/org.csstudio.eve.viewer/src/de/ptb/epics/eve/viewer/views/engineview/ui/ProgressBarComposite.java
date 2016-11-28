@@ -168,13 +168,16 @@ public class ProgressBarComposite extends Composite implements PropertyChangeLis
 				@Override
 				public void run() {
 					if (engineProgressTracker.getProgress() == null) {
+						LOGGER.debug("Progress is null -> reset and disable");
 						progress = null;
 						progressBar.setSelection(0);
 						progressBar.setEnabled(false);
 					} else {
+						LOGGER.debug("setting maximum");
 						progress = engineProgressTracker.getProgress();
 						progressBar.setMaximum(progress.getMaximum());
 						if (progress.getCurrent() != null) {
+							LOGGER.debug("setting current progress");
 							progressBar.setSelection(progress.getCurrent());
 						}
 						progressBar.setEnabled(true);

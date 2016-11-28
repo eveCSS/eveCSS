@@ -3,6 +3,8 @@ package de.ptb.epics.eve.ecp1.helper.statustracker;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+import org.apache.log4j.Logger;
+
 import de.ptb.epics.eve.ecp1.client.ECP1Client;
 import de.ptb.epics.eve.ecp1.client.interfaces.IConnectionStateListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IEngineStatusListener;
@@ -23,6 +25,8 @@ import de.ptb.epics.eve.ecp1.types.EngineStatus;
  * @since 1.28
  */
 public class EngineStatusTracker implements IConnectionStateListener, IEngineStatusListener {
+	private static final Logger LOGGER = Logger.getLogger(EngineStatusTracker.class.getName());
+	
 	public static final String ENGINE_STATUS_PROP = "currentState";
 	
 	private final EngineState connected;
@@ -59,6 +63,8 @@ public class EngineStatusTracker implements IConnectionStateListener, IEngineSta
 		this.propertyChangeSupport.addPropertyChangeListener(listener);
 		engineClient.addConnectionStateListener(this);
 		engineClient.addEngineStatusListener(this);
+		
+		LOGGER.debug("EngineStatusTracker constructed.");
 	}
 	
 	/**
@@ -66,6 +72,9 @@ public class EngineStatusTracker implements IConnectionStateListener, IEngineSta
 	 */
 	@Override
 	public void engineStatusChanged(EngineStatus engineStatus, String xmlName, int repeatCount) {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Engine Status changed: " + engineStatus.toString());
+		}
 		EngineState oldState = this.currentState;
 		switch (engineStatus) {
 		case EXECUTING:
@@ -105,6 +114,7 @@ public class EngineStatusTracker implements IConnectionStateListener, IEngineSta
 	 */
 	@Override
 	public void stackConnected() {
+		LOGGER.debug("Engine connected");
 		EngineState oldState = this.currentState;
 		this.currentState = this.connected;
 		this.propertyChangeSupport.firePropertyChange(
@@ -117,6 +127,7 @@ public class EngineStatusTracker implements IConnectionStateListener, IEngineSta
 	 */
 	@Override
 	public void stackDisconnected() {
+		LOGGER.debug("Engine disconnected");
 		EngineState oldState = this.currentState;
 		this.currentState = this.disconnected;
 		this.propertyChangeSupport.firePropertyChange(
