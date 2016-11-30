@@ -467,6 +467,9 @@ public class Channel extends AbstractMainPhaseBehavior implements
 		}
 
 		if (e.getPropertyName().equals(ScanModule.CHANNELS_PROP)) {
+			if (!this.getScanModule().getType().equals(ScanModuleTypes.CLASSIC)) {
+				return;
+			}
 			boolean changes = false;
 			boolean normalizeChannelFound = false;
 			boolean stoppedByChannelFound = false;
