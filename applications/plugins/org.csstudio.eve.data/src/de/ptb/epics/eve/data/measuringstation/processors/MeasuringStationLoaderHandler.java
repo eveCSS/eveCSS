@@ -115,7 +115,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 		case PLUGINS_LOADING:
 			if (qName.equals("plugin")) {
 
-				final String pluginType = atts.getValue("type");
+				final String pluginType = atts.getValue(Literals.XML_ATTRIBUTE_NAME_TYPE);
 				PluginTypes type = null;
 				if (pluginType.equals("position")) {
 					type = PluginTypes.POSITION;
@@ -132,14 +132,15 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			break;
 
 		case PLUGIN_LOADING:
-			if (qName.equals("name")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_NAME)) {
 				this.state = MeasuringStationLoaderStates.PLUGIN_NAME_NEXT;
 			} else if (qName.equals("location")) {
 				this.state = MeasuringStationLoaderStates.PLUGIN_LOCATION_NEXT;
 			} else if (qName.equals("parameter")) {
 				this.state = MeasuringStationLoaderStates.PLUGIN_PARAMETER_NEXT;
 				this.currentPluginParameter = new PluginParameter(this.currentPlugin,
-						atts.getValue("name"), PluginDataType.stringToType(atts
+						atts.getValue(Literals.XML_ATTRIBUTE_NAME_NAME), 
+							PluginDataType.stringToType(atts
 								.getValue("datatype")),
 						atts.getValue("default"), Boolean.parseBoolean(atts
 								.getValue("mandatory")));
@@ -154,34 +155,34 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			break;
 
 		case DETECTOR_LOADING:
-			if (qName.equals("class")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_CLASS)) {
 				this.state = MeasuringStationLoaderStates.DETECTOR_CLASSNAME_NEXT;
 			} else if (qName.equals("id")) {
 				this.state = MeasuringStationLoaderStates.DETECTOR_ID_NEXT;
-			} else if (qName.equals("name")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_NAME)) {
 				this.state = MeasuringStationLoaderStates.DETECTOR_NAME_NEXT;
-			} else if (qName.equals("option")) {
-				if (atts.getValue("monitor") != null) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_OPTION)) {
+				if (atts.getValue(Literals.XML_ATTRIBUTE_NAME_MONITOR) != null) {
 					this.currentOption = new Option(Boolean.parseBoolean(atts
-							.getValue("monitor")));
+							.getValue(Literals.XML_ATTRIBUTE_NAME_MONITOR)));
 				} else {
 					this.currentOption = new Option();
 				}
 				this.state = MeasuringStationLoaderStates.DETECTOR_OPTION;
 				this.subState = MeasuringStationLoaderSubStates.OPTION_LOADING;
-			} else if (qName.equals("unit")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_UNIT)) {
 				this.currentUnit = new Unit();
 				this.state = MeasuringStationLoaderStates.DETECTOR_UNIT;
 				this.subState = MeasuringStationLoaderSubStates.UNIT_LOADING;
-			} else if (qName.equals("trigger")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_TRIGGER)) {
 				this.currentFunction = new Function();
 				this.state = MeasuringStationLoaderStates.DETECTOR_TRIGGER_LOADING;
 				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
-			} else if (qName.equals("stop")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_STOP)) {
 				this.currentFunction = new Function();
 				this.state = MeasuringStationLoaderStates.DETECTOR_STOP_LOADING;
 				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
-			} else if (qName.equals("status")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_STATUS)) {
 				this.currentFunction = new Function();
 				this.state = MeasuringStationLoaderStates.DETECTOR_STATUS_LOADING;
 				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
@@ -200,9 +201,9 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			break;
 
 		case DETECTOR_CHANNEL_LOADING:
-			if (qName.equals("class")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_CLASS)) {
 				this.state = MeasuringStationLoaderStates.DETECTOR_CHANNEL_CLASSNAME_NEXT;
-			} else if (qName.equals("name")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_NAME)) {
 				this.state = MeasuringStationLoaderStates.DETECTOR_CHANNEL_NAME_NEXT;
 			} else if (qName.equals("id")) {
 				this.state = MeasuringStationLoaderStates.DETECTOR_CHANNEL_ID_NEXT;
@@ -210,28 +211,28 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				this.currentFunction = new Function();
 				this.state = MeasuringStationLoaderStates.DETECTOR_CHANNEL_READ_LOADING;
 				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
-			} else if (qName.equals("option")) {
-				if (atts.getValue("monitor") != null) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_OPTION)) {
+				if (atts.getValue(Literals.XML_ATTRIBUTE_NAME_MONITOR) != null) {
 					this.currentOption = new Option(Boolean.parseBoolean(atts
-							.getValue("monitor")));
+							.getValue(Literals.XML_ATTRIBUTE_NAME_MONITOR)));
 				} else {
 					this.currentOption = new Option();
 				}
 				this.state = MeasuringStationLoaderStates.DETECTOR_CHANNEL_OPTION;
 				this.subState = MeasuringStationLoaderSubStates.OPTION_LOADING;
-			} else if (qName.equals("unit")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_UNIT)) {
 				this.currentUnit = new Unit();
 				this.state = MeasuringStationLoaderStates.DETECTOR_CHANNEL_UNIT;
 				this.subState = MeasuringStationLoaderSubStates.UNIT_LOADING;
-			} else if (qName.equals("trigger")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_TRIGGER)) {
 				this.currentFunction = new Function();
 				this.state = MeasuringStationLoaderStates.DETECTOR_CHANNEL_TRIGGER_LOADING;
 				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
-			} else if (qName.equals("stop")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_STOP)) {
 				this.currentFunction = new Function();
 				this.state = MeasuringStationLoaderStates.DETECTOR_CHANNEL_STOP_LOADING;
 				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
-			} else if (qName.equals("status")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_STATUS)) {
 				this.currentFunction = new Function();
 				this.state = MeasuringStationLoaderStates.DETECTOR_CHANNEL_STATUS_LOADING;
 				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
@@ -247,26 +248,26 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			break;
 
 		case MOTOR_LOADING:
-			if (qName.equals("name")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_NAME)) {
 				this.state = MeasuringStationLoaderStates.MOTOR_NAME_NEXT;
 			} else if (qName.equals("id")) {
 				this.state = MeasuringStationLoaderStates.MOTOR_ID_NEXT;
-			} else if (qName.equals("class")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_CLASS)) {
 				this.state = MeasuringStationLoaderStates.MOTOR_CLASSNAME_NEXT;
-			} else if (qName.equals("unit")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_UNIT)) {
 				this.currentUnit = new Unit();
 				this.state = MeasuringStationLoaderStates.MOTOR_UNIT;
 				this.subState = MeasuringStationLoaderSubStates.UNIT_LOADING;
-			} else if (qName.equals("option")) {
-				if (atts.getValue("monitor") != null) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_OPTION)) {
+				if (atts.getValue(Literals.XML_ATTRIBUTE_NAME_MONITOR) != null) {
 					this.currentOption = new Option(Boolean.parseBoolean(atts
-							.getValue("monitor")));
+							.getValue(Literals.XML_ATTRIBUTE_NAME_MONITOR)));
 				} else {
 					this.currentOption = new Option();
 				}
 				this.state = MeasuringStationLoaderStates.MOTOR_OPTION;
 				this.subState = MeasuringStationLoaderSubStates.OPTION_LOADING;
-			} else if (qName.equals("trigger")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_TRIGGER)) {
 				this.currentFunction = new Function();
 				this.state = MeasuringStationLoaderStates.MOTOR_TRIGGER_LOADING;
 				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
@@ -277,9 +278,9 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			break;
 
 		case MOTOR_AXIS_LOADING:
-			if (qName.equals("class")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_CLASS)) {
 				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_CLASSNAME_NEXT;
-			} else if (qName.equals("name")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_NAME)) {
 				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_NAME_NEXT;
 			} else if (qName.equals("id")) {
 				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_ID_NEXT;
@@ -291,7 +292,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				this.currentFunction = new Function();
 				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_POSITION_LOADING;
 				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
-			} else if (qName.equals("stop")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_STOP)) {
 				this.currentFunction = new Function();
 				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_STOP_LOADING;
 				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
@@ -307,24 +308,24 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				this.currentFunction = new Function();
 				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_LIMITVIOLATION_LOADING;
 				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
-			} else if (qName.equals("trigger")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_TRIGGER)) {
 				this.currentFunction = new Function();
 				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_TRIGGER_LOADING;
 				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
-			} else if (qName.equals("option")) {
-				if (atts.getValue("monitor") != null) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_OPTION)) {
+				if (atts.getValue(Literals.XML_ATTRIBUTE_NAME_MONITOR) != null) {
 					this.currentOption = new Option(Boolean.parseBoolean(atts
-							.getValue("monitor")));
+							.getValue(Literals.XML_ATTRIBUTE_NAME_MONITOR)));
 				} else {
 					this.currentOption = new Option();
 				}
 				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_OPTION;
 				this.subState = MeasuringStationLoaderSubStates.OPTION_LOADING;
-			} else if (qName.equals("unit")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_UNIT)) {
 				this.currentUnit = new Unit();
 				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_UNIT;
 				this.subState = MeasuringStationLoaderSubStates.UNIT_LOADING;
-			} else if (qName.equals("status")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_STATUS)) {
 				this.currentFunction = new Function();
 				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_STATUS_LOADING;
 				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
@@ -363,27 +364,27 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			break;
 
 		case DEVICE_LOADING:
-			if (qName.equals("name")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_NAME)) {
 				this.state = MeasuringStationLoaderStates.DEVICE_NAME_NEXT;
 			} else if (qName.equals("id")) {
 				this.state = MeasuringStationLoaderStates.DEVICE_ID_NEXT;
-			} else if (qName.equals("class")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_CLASS)) {
 				this.state = MeasuringStationLoaderStates.DEVICE_CLASSNAME_NEXT;
-			} else if (qName.equals("value")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_VALUE)) {
 				this.currentFunction = new Function();
 				this.state = MeasuringStationLoaderStates.DEVICE_VALUE_LOADING;
 				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
 				return;
-			} else if (qName.equals("displaygroup")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_DISPLAYGROUP)) {
 				this.state = MeasuringStationLoaderStates.DEVICE_DISPLAYGROUP_NEXT;
-			} else if (qName.equals("unit")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_UNIT)) {
 				this.currentUnit = new Unit();
 				this.subState = MeasuringStationLoaderSubStates.UNIT_LOADING;
 				this.state = MeasuringStationLoaderStates.DEVICE_UNIT;
-			} else if (qName.equals("option")) {
-				if (atts.getValue("monitor") != null) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_OPTION)) {
+				if (atts.getValue(Literals.XML_ATTRIBUTE_NAME_MONITOR) != null) {
 					this.currentOption = new Option(Boolean.parseBoolean(atts
-							.getValue("monitor")));
+							.getValue(Literals.XML_ATTRIBUTE_NAME_MONITOR)));
 				} else {
 					this.currentOption = new Option();
 				}
@@ -405,14 +406,14 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 		switch (this.subState) {
 
 		case OPTION_LOADING:
-			if (qName.equals("name")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_NAME)) {
 				this.subState = MeasuringStationLoaderSubStates.OPTION_NAME_NEXT;
 			} else if (qName.equals("id")) {
 				this.subState = MeasuringStationLoaderSubStates.OPTION_ID_NEXT;
-			} else if (qName.equals("value")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_VALUE)) {
 				this.currentFunction = new Function();
 				this.subState = MeasuringStationLoaderSubStates.OPTION_VALUE_LOADING;
-			} else if (qName.equals("displaygroup")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_DISPLAYGROUP)) {
 				this.subState = MeasuringStationLoaderSubStates.OPTION_DISPLAYGROUP_NEXT;
 			}
 			break;
@@ -420,95 +421,106 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 		case UNIT_LOADING:
 			if (qName.equals("unitstring")) {
 				this.subState = MeasuringStationLoaderSubStates.UNIT_VALUE_NEXT;
-			} else if (qName.equals("access")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_ACCESS)) {
 				String methodType = atts.getValue("method");
 				this.currentUnit.setAccess(new Access(MethodTypes
 						.stringToType(methodType)));
-				if (atts.getValue("type") != null) {
+				if (atts.getValue(Literals.XML_ATTRIBUTE_NAME_TYPE) != null) {
 					this.currentUnit.getAccess().setType(
-							DataTypes.stringToType(atts.getValue("type")));
+							DataTypes.stringToType(atts.getValue(
+									Literals.XML_ATTRIBUTE_NAME_TYPE)));
 				}
-				if (atts.getValue("count") != null) {
+				if (atts.getValue(Literals.XML_ATTRIBUTE_NAME_COUNT) != null) {
 					this.currentUnit.getAccess().setCount(
-							Integer.parseInt(atts.getValue("count")));
+							Integer.parseInt(atts.getValue(
+									Literals.XML_ATTRIBUTE_NAME_COUNT)));
 				}
-				if (atts.getValue("transport") != null) {
+				if (atts.getValue(Literals.XML_ATTRIBUTE_NAME_TRANSPORT) != null) {
 					this.currentUnit.getAccess().setTransport(
 							TransportTypes.stringToType(atts
-									.getValue("transport")));
+									.getValue(Literals.XML_ATTRIBUTE_NAME_TRANSPORT)));
 				}
-				if (atts.getValue("timeout") != null) {
+				if (atts.getValue(Literals.XML_ATTRIBUTE_NAME_TIMEOUT) != null) {
 					this.currentUnit.getAccess().setTimeout(
-							Double.parseDouble(atts.getValue("timeout")));
+							Double.parseDouble(atts.getValue(
+									Literals.XML_ATTRIBUTE_NAME_TIMEOUT)));
 				}
 				this.subState = MeasuringStationLoaderSubStates.UNIT_ACCESS_NEXT;
 			}
 			break;
 
 		case FUNCTION_LOADING:
-			if (qName.equals("value")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_VALUE)) {
 				this.currentFunction.setValue(new TypeValue(DataTypes
-						.stringToType(atts.getValue("type"))));
+						.stringToType(atts.getValue(Literals.XML_ATTRIBUTE_NAME_TYPE))));
 
 				this.subState = MeasuringStationLoaderSubStates.FUNCTION_VALUE_NEXT;
-			} else if (qName.equals("access")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_ACCESS)) {
 				String methodType = atts.getValue("method");
 				this.currentFunction.setAccess(new Access(MethodTypes
 						.stringToType(methodType)));
-				if (atts.getValue("type") != null) {
+				if (atts.getValue(Literals.XML_ATTRIBUTE_NAME_TYPE) != null) {
 					this.currentFunction.getAccess().setType(
-							DataTypes.stringToType(atts.getValue("type")));
+							DataTypes.stringToType(atts.getValue(
+									Literals.XML_ATTRIBUTE_NAME_TYPE)));
 				}
-				if (atts.getValue("count") != null) {
+				if (atts.getValue(Literals.XML_ATTRIBUTE_NAME_COUNT) != null) {
 					this.currentFunction.getAccess().setCount(
-							Integer.parseInt(atts.getValue("count")));
+							Integer.parseInt(atts.getValue(
+									Literals.XML_ATTRIBUTE_NAME_COUNT)));
 				}
-				if (atts.getValue("transport") != null) {
+				if (atts.getValue(Literals.XML_ATTRIBUTE_NAME_TRANSPORT) != null) {
 					this.currentFunction.getAccess().setTransport(
 							TransportTypes.stringToType(atts
-									.getValue("transport")));
+									.getValue(Literals.XML_ATTRIBUTE_NAME_TRANSPORT)));
 				}
-				if (atts.getValue("timeout") != null) {
+				if (atts.getValue(Literals.XML_ATTRIBUTE_NAME_TIMEOUT) != null) {
 					this.currentFunction.getAccess().setTimeout(
-							Double.parseDouble(atts.getValue("timeout")));
+							Double.parseDouble(atts.getValue(
+									Literals.XML_ATTRIBUTE_NAME_TIMEOUT)));
 				}
-				if (atts.getValue("monitor") != null) {
+				if (atts.getValue(Literals.XML_ATTRIBUTE_NAME_MONITOR) != null) {
 					this.currentFunction.getAccess().setMonitor(
-							Boolean.parseBoolean(atts.getValue("monitor")));
+							Boolean.parseBoolean(atts.getValue(
+									Literals.XML_ATTRIBUTE_NAME_MONITOR)));
 				}
 				this.subState = MeasuringStationLoaderSubStates.FUNCTION_ACCESS_NEXT;
 			}
 			break;
 
 		case OPTION_VALUE_LOADING:
-			if (qName.equals("value")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_VALUE)) {
 				this.currentFunction.setValue(new TypeValue(DataTypes
-						.stringToType(atts.getValue("type"))));
+						.stringToType(atts.getValue(Literals.XML_ATTRIBUTE_NAME_TYPE))));
 				this.subState = MeasuringStationLoaderSubStates.OPTION_VALUE_VALUE_NEXT;
-			} else if (qName.equals("access")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_ACCESS)) {
 				String methodType = atts.getValue("method");
 				this.currentFunction.setAccess(new Access(MethodTypes
 						.stringToType(methodType)));
-				if (atts.getValue("type") != null) {
+				if (atts.getValue(Literals.XML_ATTRIBUTE_NAME_TYPE) != null) {
 					this.currentFunction.getAccess().setType(
-							DataTypes.stringToType(atts.getValue("type")));
+							DataTypes.stringToType(atts.getValue(
+									Literals.XML_ATTRIBUTE_NAME_TYPE)));
 				}
-				if (atts.getValue("count") != null) {
+				if (atts.getValue(Literals.XML_ATTRIBUTE_NAME_COUNT) != null) {
 					this.currentFunction.getAccess().setCount(
-							Integer.parseInt(atts.getValue("count")));
+							Integer.parseInt(atts.getValue(
+									Literals.XML_ATTRIBUTE_NAME_COUNT)));
 				}
-				if (atts.getValue("transport") != null) {
+				if (atts.getValue(Literals.XML_ATTRIBUTE_NAME_TRANSPORT) != null) {
 					this.currentFunction.getAccess().setTransport(
 							TransportTypes.stringToType(atts
-									.getValue("transport")));
+									.getValue(Literals.XML_ATTRIBUTE_NAME_TRANSPORT)));
 				}
-				if (atts.getValue("timeout") != null) {
+				if (atts.getValue(Literals.XML_ATTRIBUTE_NAME_TIMEOUT) != null) {
 					this.currentFunction.getAccess().setTimeout(
-							Double.parseDouble(atts.getValue("timeout")));
+							Double.parseDouble(atts.getValue(
+									Literals.XML_ATTRIBUTE_NAME_TIMEOUT)));
 				}
-				if (atts.getValue("monitor") != null) {
+				if (atts.getValue(Literals.XML_ATTRIBUTE_NAME_MONITOR) != null) {
 					this.currentFunction.getAccess().setMonitor(
-							Boolean.parseBoolean(atts.getValue("monitor")));
+							Boolean.parseBoolean(atts.getValue(
+									Literals.XML_ATTRIBUTE_NAME_MONITOR)));
 				}
 				this.subState = MeasuringStationLoaderSubStates.OPTION_VALUE_ACCESS_NEXT;
 			}
@@ -741,7 +753,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			break;
 
 		case PLUGIN_NAME_READ:
-			if (qName.equals("name")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_NAME)) {
 				this.state = MeasuringStationLoaderStates.PLUGIN_LOADING;
 			}
 			break;
@@ -774,7 +786,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 
 		case DETECTOR_CLASSNAME_NEXT:
 		case DETECTOR_CLASSNAME_READ:
-			if (qName.equals("class")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_CLASS)) {
 				this.state = MeasuringStationLoaderStates.DETECTOR_LOADING;
 			}
 			break;
@@ -785,13 +797,13 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			break;
 		case DETECTOR_NAME_NEXT:
 		case DETECTOR_NAME_READ:
-			if (qName.equals("name")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_NAME)) {
 				this.state = MeasuringStationLoaderStates.DETECTOR_LOADING;
 			}
 			break;
 
 		case DETECTOR_OPTION:
-			if (qName.equals("option")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_OPTION)) {
 				this.currentDetector.add(this.currentOption);
 				this.measuringStation.registerOption(this.currentOption);
 				this.subState = MeasuringStationLoaderSubStates.NONE;
@@ -800,7 +812,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			break;
 
 		case DETECTOR_UNIT:
-			if (qName.equals("unit")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_UNIT)) {
 				this.currentDetector.setUnit(this.currentUnit);
 				this.subState = MeasuringStationLoaderSubStates.NONE;
 				this.state = MeasuringStationLoaderStates.DETECTOR_LOADING;
@@ -808,7 +820,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			break;
 
 		case DETECTOR_TRIGGER_LOADING:
-			if (qName.equals("trigger")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_TRIGGER)) {
 				this.currentDetector.setTrigger(this.currentFunction);
 				this.subState = MeasuringStationLoaderSubStates.NONE;
 				this.state = MeasuringStationLoaderStates.DETECTOR_LOADING;
@@ -816,7 +828,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			break;
 
 		case DETECTOR_STOP_LOADING:
-			if (qName.equals("stop")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_STOP)) {
 				this.currentDetector.setStop(this.currentFunction);
 				this.subState = MeasuringStationLoaderSubStates.NONE;
 				this.state = MeasuringStationLoaderStates.DETECTOR_LOADING;
@@ -824,7 +836,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			break;
 		
 		case DETECTOR_STATUS_LOADING:
-			if (qName.equals("status")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_STATUS)) {
 				this.currentDetector.setStatus(this.currentFunction);
 				this.subState = MeasuringStationLoaderSubStates.NONE;
 				this.state = MeasuringStationLoaderStates.DETECTOR_LOADING;
@@ -842,7 +854,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 
 		case DETECTOR_CHANNEL_CLASSNAME_NEXT:
 		case DETECTOR_CHANNEL_CLASSNAME_READ:
-			if (qName.equals("class")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_CLASS)) {
 				this.state = MeasuringStationLoaderStates.DETECTOR_CHANNEL_LOADING;
 			}
 			break;
@@ -861,7 +873,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			break;
 
 		case DETECTOR_CHANNEL_OPTION:
-			if (qName.equals("option")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_OPTION)) {
 				this.currentDetectorChannel.add(this.currentOption);
 				this.measuringStation.registerOption(this.currentOption);
 				this.subState = MeasuringStationLoaderSubStates.NONE;
@@ -870,7 +882,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			break;
 			
 		case DETECTOR_CHANNEL_UNIT:
-			if (qName.equals("unit")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_UNIT)) {
 				this.currentDetectorChannel.setUnit(this.currentUnit);
 				this.subState = MeasuringStationLoaderSubStates.NONE;
 				this.state = MeasuringStationLoaderStates.DETECTOR_CHANNEL_LOADING;
@@ -878,7 +890,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			break;
 			
 		case DETECTOR_CHANNEL_TRIGGER_LOADING:
-			if (qName.equals("trigger")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_TRIGGER)) {
 				this.currentDetectorChannel.setTrigger(this.currentFunction);
 				this.subState = MeasuringStationLoaderSubStates.NONE;
 				this.state = MeasuringStationLoaderStates.DETECTOR_CHANNEL_LOADING;
@@ -886,7 +898,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			break;
 		
 		case DETECTOR_CHANNEL_STOP_LOADING:
-			if (qName.equals("stop")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_STOP)) {
 				this.currentDetectorChannel.setStop(this.currentFunction);
 				this.subState = MeasuringStationLoaderSubStates.NONE;
 				this.state = MeasuringStationLoaderStates.DETECTOR_CHANNEL_LOADING;
@@ -894,7 +906,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			break;
 		
 		case DETECTOR_CHANNEL_STATUS_LOADING:
-			if (qName.equals("status")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_STATUS)) {
 				this.currentDetectorChannel.setStatus(this.currentFunction);
 				this.subState = MeasuringStationLoaderSubStates.NONE;
 				this.state = MeasuringStationLoaderStates.DETECTOR_CHANNEL_LOADING;
@@ -920,20 +932,20 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			break;
 		case MOTOR_CLASSNAME_NEXT:
 		case MOTOR_CLASSNAME_READ:
-			if (qName.equals("class")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_CLASS)) {
 				this.state = MeasuringStationLoaderStates.MOTOR_LOADING;
 			}
 			break;
 
 		case MOTOR_UNIT:
-			if (qName.equals("unit")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_UNIT)) {
 				this.currentMotor.setUnit(this.currentUnit);
 				this.subState = MeasuringStationLoaderSubStates.NONE;
 				this.state = MeasuringStationLoaderStates.MOTOR_LOADING;
 			}
 			break;
 		case MOTOR_OPTION:
-			if (qName.equals("option")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_OPTION)) {
 				this.currentMotor.add(this.currentOption);
 				this.measuringStation.registerOption(this.currentOption);
 				this.subState = MeasuringStationLoaderSubStates.NONE;
@@ -941,7 +953,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			}
 			break;
 		case MOTOR_TRIGGER_LOADING:
-			if (qName.equals("trigger")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_TRIGGER)) {
 				this.currentMotor.setTrigger(this.currentFunction);
 				this.subState = MeasuringStationLoaderSubStates.NONE;
 				this.state = MeasuringStationLoaderStates.MOTOR_LOADING;
@@ -963,7 +975,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			break;
 
 		case MOTOR_AXIS_STOP_LOADING:
-			if (qName.equals("stop")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_STOP)) {
 				this.currentMotorAxis.setStop(this.currentFunction);
 				this.subState = MeasuringStationLoaderSubStates.NONE;
 				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_LOADING;
@@ -971,7 +983,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			break;
 
 		case MOTOR_AXIS_TRIGGER_LOADING:
-			if (qName.equals("trigger")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_TRIGGER)) {
 				this.currentMotorAxis.setTrigger(this.currentFunction);
 				this.subState = MeasuringStationLoaderSubStates.NONE;
 				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_LOADING;
@@ -979,7 +991,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			break;
 
 		case MOTOR_AXIS_OPTION:
-			if (qName.equals("option")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_OPTION)) {
 				this.currentMotorAxis.add(this.currentOption);
 				this.measuringStation.registerOption(this.currentOption);
 				this.subState = MeasuringStationLoaderSubStates.NONE;
@@ -988,7 +1000,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			break;
 
 		case MOTOR_AXIS_UNIT:
-			if (qName.equals("unit")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_UNIT)) {
 				this.currentMotorAxis.setUnit(this.currentUnit);
 				this.subState = MeasuringStationLoaderSubStates.NONE;
 				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_LOADING;
@@ -996,7 +1008,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			break;
 
 		case MOTOR_AXIS_STATUS_LOADING:
-			if (qName.equals("status")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_STATUS)) {
 				this.currentMotorAxis.setStatus(this.currentFunction);
 				this.subState = MeasuringStationLoaderSubStates.NONE;
 				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_LOADING;
@@ -1112,13 +1124,13 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 
 		case DEVICE_CLASSNAME_NEXT:
 		case DEVICE_CLASSNAME_READ:
-			if (qName.equals("class")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_CLASS)) {
 				this.state = MeasuringStationLoaderStates.DEVICE_LOADING;
 			}
 			break;
 
 		case DEVICE_VALUE_LOADING:
-			if (qName.equals("value")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_VALUE)) {
 				this.currentDevice.setValue(this.currentFunction);
 				this.subState = MeasuringStationLoaderSubStates.NONE;
 				this.state = MeasuringStationLoaderStates.DEVICE_LOADING;
@@ -1126,13 +1138,13 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			break;
 
 		case DEVICE_DISPLAYGROUP_READ:
-			if (qName.equals("displaygroup")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_DISPLAYGROUP)) {
 				this.state = MeasuringStationLoaderStates.DEVICE_LOADING;
 			}
 			break;
 
 		case DEVICE_UNIT:
-			if (qName.equals("unit")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_UNIT)) {
 				this.currentDevice.setUnit(this.currentUnit);
 				this.subState = MeasuringStationLoaderSubStates.NONE;
 				this.state = MeasuringStationLoaderStates.DEVICE_LOADING;
@@ -1140,7 +1152,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			break;
 
 		case DEVICE_OPTION:
-			if (qName.equals("option")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_OPTION)) {
 				this.currentDevice.add(this.currentOption);
 				this.measuringStation.registerOption(this.currentOption);
 				this.subState = MeasuringStationLoaderSubStates.NONE;
@@ -1171,7 +1183,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 		switch (this.subState) {
 		case OPTION_NAME_NEXT:
 		case OPTION_NAME_READ:
-			if (qName.equals("name")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_NAME)) {
 				this.subState = MeasuringStationLoaderSubStates.OPTION_LOADING;
 			}
 			break;
@@ -1182,13 +1194,13 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			break;
 
 		case OPTION_VALUE_LOADING:
-			if (qName.equals("value")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_VALUE)) {
 				this.currentOption.setValue(this.currentFunction);
 				this.subState = MeasuringStationLoaderSubStates.OPTION_LOADING;
 			}
 			break;
 		case OPTION_DISPLAYGROUP_READ:
-			if (qName.equals("displaygroup")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_DISPLAYGROUP)) {
 				this.subState = MeasuringStationLoaderSubStates.OPTION_LOADING;
 			}
 			break;
@@ -1199,29 +1211,29 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			}
 			break;
 		case UNIT_ACCESS_READ:
-			if (qName.equals("access")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_ACCESS)) {
 				this.subState = MeasuringStationLoaderSubStates.UNIT_LOADING;
 			}
 			break;
 
 		case FUNCTION_VALUE_READ:
-			if (qName.equals("value")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_VALUE)) {
 				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
 			}
 			break;
 		case FUNCTION_ACCESS_READ:
-			if (qName.equals("access")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_ACCESS)) {
 				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
 			}
 			break;
 
 		case OPTION_VALUE_VALUE_READ:
-			if (qName.equals("value")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_VALUE)) {
 				this.subState = MeasuringStationLoaderSubStates.OPTION_VALUE_LOADING;
 			}
 			break;
 		case OPTION_VALUE_ACCESS_READ:
-			if (qName.equals("access")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_ACCESS)) {
 				this.subState = MeasuringStationLoaderSubStates.OPTION_VALUE_LOADING;
 			}
 			break;

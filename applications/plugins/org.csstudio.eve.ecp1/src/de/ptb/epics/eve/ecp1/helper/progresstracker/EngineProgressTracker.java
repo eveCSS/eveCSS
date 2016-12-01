@@ -42,10 +42,12 @@ public class EngineProgressTracker implements IErrorListener, IChainProgressList
 		// listener must be registered before listening to the engine, to avoid missed messages
 		this.propertyChangeSupport.addPropertyChangeListener(listener);
 		
+		engineClient.addConnectionStateListener(this);
+		engineClient.addEngineStatusListener(this);
 		engineClient.addErrorListener(this);
 		engineClient.addChainProgressListener(this);
-		engineClient.addEngineStatusListener(this);
-		engineClient.addConnectionStateListener(this);
+		
+		LOGGER.debug("EngineProgressTracker constructed.");
 	}
 	
 	/**
@@ -53,6 +55,8 @@ public class EngineProgressTracker implements IErrorListener, IChainProgressList
 	 */
 	@Override
 	public void chainProgressChanged(ChainProgressCommand chainProgressCommand) {
+		LOGGER.debug("Chain Progress changed, Progress: " + 
+				(chainProgressCommand.getPositionCounter() - 1));
 		// current position is not measured yet -> progress = cPos-1
 		this.progress.setCurrent(chainProgressCommand.getPositionCounter() - 1);
 		this.propertyChangeSupport.firePropertyChange(
@@ -87,14 +91,17 @@ public class EngineProgressTracker implements IErrorListener, IChainProgressList
 	 */
 	@Override
 	public void engineStatusChanged(EngineStatus engineStatus, String xmlName, int repeatCount) {
+		LOGGER.debug("Engine Status changed: " + engineStatus.toString());
 		this.engineStatus = engineStatus;
 		if (EngineStatus.IDLE_XML_LOADED.equals(engineStatus) && this.progress != null) {
+			LOGGER.debug("setting progress to 0.");
 			this.progress.setCurrent(0);
 			this.propertyChangeSupport.firePropertyChange(
 					EngineProgressTracker.PROGRESS_PROP, 
 					null, this.progress);
 		}
 		if (EngineStatus.IDLE_NO_XML_LOADED.equals(engineStatus) && this.progress != null) {
+			LOGGER.debug("setting progress to maximum (" + this.progress.getMaximum() + ").");
 			this.progress.setCurrent(this.progress.getMaximum());
 			this.propertyChangeSupport.firePropertyChange(
 					EngineProgressTracker.PROGRESS_PROP, 
@@ -107,6 +114,7 @@ public class EngineProgressTracker implements IErrorListener, IChainProgressList
 	 */
 	@Override
 	public void stackConnected() {
+		LOGGER.debug("Engine connected.");
 	}
 	
 	/**
@@ -114,6 +122,7 @@ public class EngineProgressTracker implements IErrorListener, IChainProgressList
 	 */
 	@Override
 	public void stackDisconnected() {
+		LOGGER.debug("Engine disconnected.");
 		this.progress = null;
 		this.propertyChangeSupport.firePropertyChange(
 				EngineProgressTracker.PROGRESS_PROP, 

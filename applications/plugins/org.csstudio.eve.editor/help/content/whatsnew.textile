@@ -16,6 +16,10 @@ h3(eveTopic). Version 1.27.2
 
 * [Bug Fix] Fill Actions (Axis Snapshot, Channel Snapshot and Empty) are now executing as fast as the preconstructed Editor Tool equivalents.
 
+h3(eveTopic). Version 1.27.3
+
+* [Bug Fix] adding channel snapshot scan modules (or converting them via fill options) and removing a channel (from a channel snapshot module) does now take a reasonable time (again, and does not scale with the number of devices)
+
 h2(eveTopic). Version 1.26
 
 * [Feature] added two digit year macro for file names
