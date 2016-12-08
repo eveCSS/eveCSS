@@ -2,7 +2,7 @@
 <tns:scml xsi:schemaLocation="http://www.ptb.de/epics/SCML scml.xsd"
 	xmlns:tns="http://www.ptb.de/epics/SCML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<location>DEFAULT</location>
-	<version>4.0</version>
+	<version>5.0</version>
 	<plugins>
 		<plugin type="save">
 			<name>ASCII</name>
