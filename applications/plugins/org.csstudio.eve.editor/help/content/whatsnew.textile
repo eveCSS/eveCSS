@@ -18,7 +18,7 @@ h3(eveTopic). Version 1.27.2
 
 h3(eveTopic). Version 1.27.3
 
-* [Bug Fix] adding channel snapshot scan modules (or converting them via fill options) and removing a channel (from a channel snapshot module) does now take a reasonable time (again, and does not scale with the number of devices)
+* [Bug Fix] adding channel snapshot scan modules (or converting them via fill options) and removing a channel (from a channel snapshot module) does now take a reasonable time (again, and does not scale non-linearly with the number of devices)
 
 h2(eveTopic). Version 1.26
 
