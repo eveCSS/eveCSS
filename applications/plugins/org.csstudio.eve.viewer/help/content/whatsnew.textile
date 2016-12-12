@@ -10,6 +10,11 @@ h3(eveTopic). Version 1.27.1
 
 * [Bug Fix] fixed a bug where the progress bar did not show any progress when connecting to an engine already running a scan (until a new scan was loaded)
 
+h3(eveTopic). Version 1.27.3
+
+* [Bug Fix] fixed a bug where a concurrent modification could occur due to missing synchronization of the playlist controller
+* [Bug Fix] fixed a bug where the Engine View did not behave properly due to bad listener registration timing when auto connecting to the engine after a scan description was received
+
 h2(eveTopic). Version 1.26
 
 * [Feature] introduced Global Device Inspector (Device Inspector which is visible in each Perspective)
