@@ -94,6 +94,8 @@ public class ChannelTest implements PropertyChangeListener {
 		smChannel.setNormalizeChannel(normalizeChannel.getDetectorChannel());
 		assertEquals(normalizeChannel.getDetectorChannel(), smChannel.getNormalizeChannel());
 		
+		// normalize reference should be reset automatically if the corresponding
+		// channel is removed
 		scanModule.remove(normalizeChannel);
 		assertNull(smChannel.getNormalizeChannel());
 	}
@@ -149,11 +151,27 @@ public class ChannelTest implements PropertyChangeListener {
 	
 	@Test
 	public void testStoppedBy() {
-		this.channel.setChannelMode(ChannelModes.INTERVAL);
-		assertEquals(null, this.channel.getStoppedBy());
-		DetectorChannel detectorChannel = DetectorChannelMother.createNewDetectorChannel();
-		this.channel.setStoppedBy(detectorChannel);
-		assertEquals(detectorChannel, this.channel.getStoppedBy());
+		ScanModule scanModule = ScanModuleMother.createNewScanModule();
+		Channel smChannel = ChannelMother.createNewChannel(scanModule);
+		smChannel.setChannelMode(ChannelModes.INTERVAL);
+		assertEquals(null, smChannel.getStoppedBy());
+		scanModule.add(smChannel);
+		try {
+			Thread.sleep(10);
+		} catch (InterruptedException e) {
+		}
+		Channel stoppedByChannel = ChannelMother.createNewChannel(scanModule);
+		scanModule.add(stoppedByChannel);
+		
+		assertNull(smChannel.getStoppedBy());
+		
+		smChannel.setStoppedBy(stoppedByChannel.getDetectorChannel());
+		assertEquals(stoppedByChannel.getDetectorChannel(), smChannel.getStoppedBy());
+		
+		// stopped by reference should be removed automatically if the corresponding 
+		// channel is removed
+		scanModule.remove(stoppedByChannel);
+		assertEquals(null, smChannel.getStoppedBy());
 	}
 	
 	@Test
