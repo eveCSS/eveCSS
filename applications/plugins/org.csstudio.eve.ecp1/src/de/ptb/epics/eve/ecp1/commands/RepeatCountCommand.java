@@ -25,6 +25,10 @@ public class RepeatCountCommand implements IECP1Command {
 		this.repeatCount = repeatCount;
 	}
 	
+	public RepeatCountCommand(final byte[] byteArray) throws IOException {
+		
+	}
+	
 	/**
 	 * {@inherit-doc}
 	 */
