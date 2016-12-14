@@ -216,21 +216,19 @@ public class MonitorOptionsDialog extends Dialog {
 		selColumn.getColumn().addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				List<Option> allOptions = new ArrayList<>();
 				for (AbstractDevice device : tableDevices) {
 					for (Option o : device.getOptions()) {
-						switch (selectState) {
-						case NONE:
-							if (!scanDescription.getMonitors().contains(o)) {
-								scanDescription.addMonitor(o);
-							}
-							break;
-						case ALL:
-							if (scanDescription.getMonitors().contains(o)) {
-								scanDescription.removeMonitor(o);
-							}
-							break;
-						}
+						allOptions.add(o);
 					}
+				}
+				switch (selectState) {
+				case ALL:
+					scanDescription.removeMonitors(allOptions);
+					break;
+				case NONE:
+					scanDescription.addMonitors(allOptions);
+					break;
 				}
 				selectState = SelectState.values()[(selectState.ordinal() + 1) % 2];
 				LOGGER.debug("Select State: " + selectState.toString());

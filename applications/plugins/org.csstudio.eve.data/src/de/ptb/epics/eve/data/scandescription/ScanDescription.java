@@ -318,7 +318,26 @@ public class ScanDescription implements IModelUpdateProvider,
 	}
 	
 	/**
-	 * Removes an option to the list of monitors
+	 * Adds all given options to the list of monitors
+	 * @param options the list of options to be added as monitors
+	 * @since 1.27
+	 */
+	public void addMonitors(List<Option> options) {
+		try {
+			for (Option o : options) {
+				if (!this.monitors.getMonitors().contains(o)) {
+					this.monitors.add(o);
+				}
+			}
+			this.propertyChangeSupport.firePropertyChange(
+					ScanDescription.MONITOR_OPTIONS_LIST_PROP, null, monitors);
+		} catch (UnsupportedOperationException e) {
+			logger.error("Monitors could not be added: " + e.getMessage());
+		}
+	}
+	
+	/**
+	 * Removes an option from the list of monitors
 	 * @param option the option to remove
 	 * @since 1.12
 	 */
@@ -328,7 +347,24 @@ public class ScanDescription implements IModelUpdateProvider,
 			this.propertyChangeSupport.firePropertyChange(
 					ScanDescription.MONITOR_OPTIONS_LIST_PROP, null, monitors);
 		} catch (UnsupportedOperationException e) {
-			logger.error("Monitor could not be added: " + e.getMessage());
+			logger.error("Monitor could not be removed: " + e.getMessage());
+		}
+	}
+	
+	/**
+	 * Removes all given options from the list of monitors
+	 * @param options the options to be removed
+	 * @since 1.27
+	 */
+	public void removeMonitors(List<Option> options) {
+		try {
+			for (Option o : options) {
+				this.monitors.remove(o);
+			}
+			this.propertyChangeSupport.firePropertyChange(
+					ScanDescription.MONITOR_OPTIONS_LIST_PROP, null, monitors);
+		} catch (UnsupportedOperationException e) {
+			logger.error("Monitors could not be removed: " + e.getMessage());
 		}
 	}
 
