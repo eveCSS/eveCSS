@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.TableItem;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Channel;
+import de.ptb.epics.eve.data.scandescription.channelmode.ChannelModes;
 import de.ptb.epics.eve.ecp1.client.interfaces.IEngineStatusListener;
 import de.ptb.epics.eve.ecp1.types.EngineStatus;
 import de.ptb.epics.eve.viewer.Activator;
@@ -299,24 +300,36 @@ public class StatusTableSelectionListener extends SelectionAdapter implements
 
 			Channel[] channels = displayChain.getScanModuleById(aktSM).getChannels();
 			for (int i = 0; i < channels.length; i++) {
+				if (!channels[i].getChannelMode().equals(ChannelModes.STANDARD)) {
+					continue;
+				}
+				String dash = Character.toString('\u2014');
 				// Neuer Tabelleneintrag muß gemacht werden
 				TableItem tableItem = new TableItem(detTable, 0);
 				tableItem.setText(0, channels[i].getAbstractDevice().getName());
-				tableItem.setText(1, "" + channels[i].getAverageCount());
-				tableItem.setText(2, "" + channels[i].isDeferred());
+				tableItem.setText(1, Integer.toString(channels[i].getAverageCount()));
+				tableItem.setText(2, Boolean.toString(channels[i].isDeferred()));
 				Double d = channels[i].getMaxDeviation();
-				if (!d.isInfinite()) {
-					tableItem.setText(3, "" + d);
+				if (d != null) {
+					tableItem.setText(3, Double.toString(d));
+				} else {
+					tableItem.setText(3, dash);
 				}
 				d = channels[i].getMinimum();
-				if (!d.isInfinite()) {
-					tableItem.setText(4, "" + d);
+				if (d != null) {
+					tableItem.setText(4, Double.toString(d));
+				} else {
+					tableItem.setText(4, dash);
 				}
-				if (channels[i].getMaxAttempts() != Integer.MIN_VALUE) {
-					tableItem.setText(5, "" + channels[i].getMaxAttempts());
+				if (channels[i].getMaxAttempts() != null) {
+					tableItem.setText(5, Integer.toString(channels[i].getMaxAttempts()));
+				} else {
+					tableItem.setText(5, dash);
 				}
 				if (channels[i].getNormalizeChannel() != null) {
-					tableItem.setText(6, "" + channels[i].getNormalizeChannel().getName());
+					tableItem.setText(6, channels[i].getNormalizeChannel().getName());
+				} else {
+					tableItem.setText(6, dash);
 				}
 			}
 
