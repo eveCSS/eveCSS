@@ -82,7 +82,7 @@ public class StatusTableSelectionListener extends SelectionAdapter implements
 
 			Display display = Activator.getDefault().getWorkbench().getDisplay();
 			Shell chainShell = new Shell(display);
-			chainShell.setSize(650, 400);
+			chainShell.setSize(800, 600);
 			chainShell.setText("Scan Module Info");
 
 			GridLayout gridLayout = new GridLayout();
@@ -217,16 +217,10 @@ public class StatusTableSelectionListener extends SelectionAdapter implements
 			motColumn.setText("Motor Axis");
 			TableColumn motColumn1 = new TableColumn(motTable, SWT.NONE);
 			motColumn1.setWidth(100);
-			motColumn1.setText("Function");
+			motColumn1.setText("Stepfunction");
 			TableColumn motColumn2 = new TableColumn(motTable, SWT.NONE);
-			motColumn2.setWidth(160);
-			motColumn2.setText("Start, Plugin, File");
-			TableColumn motColumn3 = new TableColumn(motTable, SWT.NONE);
-			motColumn3.setWidth(80);
-			motColumn3.setText("Stop");
-			TableColumn motColumn4 = new TableColumn(motTable, SWT.NONE);
-			motColumn4.setWidth(80);
-			motColumn4.setText("Stepwidth");
+			motColumn2.setWidth(500);
+			motColumn2.setText("Positions");
 
 			Axis[] axis = displayChain.getScanModuleById(aktSM).getAxes();
 			for (int i = 0; i < axis.length; i++) {
@@ -237,9 +231,11 @@ public class StatusTableSelectionListener extends SelectionAdapter implements
 					TableItem tableItem = new TableItem(motTable, 0);
 					tableItem.setText(0, axis[i].getAbstractDevice().getName());
 					tableItem.setText(1, axis[i].getStepfunction().toString());
-					tableItem.setText(2, axis[i].getStart().toString());
-					tableItem.setText(3, axis[i].getStop().toString());
-					tableItem.setText(4, axis[i].getStepwidth().toString());
+					tableItem.setText(2, axis[i].getStart().toString()
+							+ " \u2192 " 
+							+ axis[i].getStop().toString()
+							+ ", "
+							+ axis[i].getStepwidth().toString());
 					break;
 				case FILE:
 					TableItem tableItemFile = new TableItem(motTable, 0);
@@ -277,33 +273,34 @@ public class StatusTableSelectionListener extends SelectionAdapter implements
 			detTable.setLinesVisible(true);
 			detTable.setLayoutData(gridData);
 			TableColumn detColumn = new TableColumn(detTable, SWT.NONE);
-			detColumn.setWidth(130);
+			detColumn.setWidth(140);
 			detColumn.setText("Detector Channel");
 			TableColumn detColumn1 = new TableColumn(detTable, SWT.NONE);
 			detColumn1.setWidth(70);
 			detColumn1.setText("Average");
 			TableColumn detColumn2 = new TableColumn(detTable, SWT.NONE);
-			detColumn2.setWidth(70);
+			detColumn2.setWidth(75);
 			detColumn2.setText("Deferred");
 			TableColumn detColumn3 = new TableColumn(detTable, SWT.NONE);
-			detColumn3.setWidth(70);
+			detColumn3.setWidth(85);
 			detColumn3.setText("Max. Dev.");
 			TableColumn detColumn4 = new TableColumn(detTable, SWT.NONE);
-			detColumn4.setWidth(70);
+			detColumn4.setWidth(78);
 			detColumn4.setText("Minimum");
 			TableColumn detColumn5 = new TableColumn(detTable, SWT.NONE);
-			detColumn5.setWidth(100);
+			detColumn5.setWidth(120);
 			detColumn5.setText("Max. Attempts");
 			TableColumn detColumn6 = new TableColumn(detTable, SWT.NONE);
 			detColumn6.setWidth(100);
 			detColumn6.setText("Norm. Channel");
 
+			String dash = Character.toString('\u2014');
+			
 			Channel[] channels = displayChain.getScanModuleById(aktSM).getChannels();
 			for (int i = 0; i < channels.length; i++) {
 				if (!channels[i].getChannelMode().equals(ChannelModes.STANDARD)) {
 					continue;
 				}
-				String dash = Character.toString('\u2014');
 				// Neuer Tabelleneintrag muß gemacht werden
 				TableItem tableItem = new TableItem(detTable, 0);
 				tableItem.setText(0, channels[i].getAbstractDevice().getName());
@@ -332,7 +329,40 @@ public class StatusTableSelectionListener extends SelectionAdapter implements
 					tableItem.setText(6, dash);
 				}
 			}
+			
+			Table meanTable = new Table(sashForm, SWT.NONE);
+			meanTable.setHeaderVisible(true);
+			meanTable.setLinesVisible(true);
+			meanTable.setLayoutData(gridData);
+			TableColumn nameColumn = new TableColumn(meanTable, SWT.NONE);
+			nameColumn.setWidth(140);
+			nameColumn.setText("Detector Channel");
+			TableColumn intervalColumn = new TableColumn(meanTable, SWT.NONE);
+			intervalColumn.setWidth(140);
+			intervalColumn.setText("Trigger Interval");
+			TableColumn normColumn = new TableColumn(meanTable, SWT.NONE);
+			normColumn.setWidth(140);
+			normColumn.setText("Norm. Channel");
+			TableColumn stoppedByColumn = new TableColumn(meanTable, SWT.NONE);
+			stoppedByColumn.setWidth(140);
+			stoppedByColumn.setText("Stopped By");
 
+			for (Channel channel : channels) {
+				if (!channel.getChannelMode().equals(ChannelModes.INTERVAL)) {
+					continue;
+				}
+				
+				TableItem tableItem = new TableItem(meanTable, SWT.NONE);
+				tableItem.setText(0, channel.getAbstractDevice().getName());
+				tableItem.setText(1, Double.toString(channel.getTriggerInterval()));
+				if (channel.getNormalizeChannel() != null) {
+					tableItem.setText(2, channel.getNormalizeChannel().getName());
+				} else {
+					tableItem.setText(2, dash);
+				}
+				tableItem.setText(3, channel.getStoppedBy().getName());
+			}
+			
 			chainShell.open();
 			shellTable[selection] = chainShell;
 		} else {
