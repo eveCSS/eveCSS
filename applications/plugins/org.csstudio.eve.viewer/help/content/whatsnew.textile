@@ -15,6 +15,10 @@ h3(eveTopic). Version 1.27.3
 * [Bug Fix] fixed a bug where a concurrent modification could occur due to missing synchronization of the playlist controller
 * [Bug Fix] fixed a bug where the Engine View did not behave properly due to bad listener registration timing when auto connecting to the engine after a scan description was received
 
+h3(eveTopic). Version 1.27.4
+
+* [Bug Fix] fixed a bug where the scan module info dialog did not open if the scan module contained interval channels (interval channels are now shown in a separate table instead)
+
 h2(eveTopic). Version 1.26
 
 * [Feature] introduced Global Device Inspector (Device Inspector which is visible in each Perspective)

@@ -20,6 +20,10 @@ h3(eveTopic). Version 1.27.3
 
 * [Bug Fix] adding channel snapshot scan modules (or converting them via fill options) and removing a channel (from a channel snapshot module) does now take a reasonable time (again, and does not scale non-linearly with the number of devices)
 
+h3(eveTopic). Version 1.27.4
+
+* [Bug Fix] fixed a bug where the (de)selection of monitor options table columns caused a program freeze
+
 h2(eveTopic). Version 1.26
 
 * [Feature] added two digit year macro for file names
