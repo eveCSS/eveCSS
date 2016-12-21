@@ -216,7 +216,7 @@ public class StatusTableSelectionListener extends SelectionAdapter implements
 			motColumn.setWidth(130);
 			motColumn.setText("Motor Axis");
 			TableColumn motColumn1 = new TableColumn(motTable, SWT.NONE);
-			motColumn1.setWidth(100);
+			motColumn1.setWidth(110);
 			motColumn1.setText("Stepfunction");
 			TableColumn motColumn2 = new TableColumn(motTable, SWT.NONE);
 			motColumn2.setWidth(500);
