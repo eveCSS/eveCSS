@@ -13,6 +13,7 @@ import org.csstudio.swt.xygraph.dataprovider.IDataProviderListener;
 import org.csstudio.swt.xygraph.dataprovider.ISample;
 import org.csstudio.swt.xygraph.linearscale.Range;
 
+import de.ptb.epics.eve.data.scandescription.YAxisModifier;
 import de.ptb.epics.eve.ecp1.client.interfaces.IMeasurementDataListener;
 import de.ptb.epics.eve.ecp1.client.model.MeasurementData;
 import de.ptb.epics.eve.ecp1.types.DataModifier;
@@ -169,8 +170,10 @@ public class TraceDataCollector implements IDataProvider,
 							? this.traceInfo.getNormalizeId() 
 							: this.traceInfo.getDetectorId())
 						+ ": Pos: "
-						+ this.motorPosCount + " (" + sample.getXValue() + ", "
-						+ sample.getYValue() + ")");
+						+ this.motorPosCount + sample.getInfo());
+			}
+			if (this.traceInfo.getModifier().equals(YAxisModifier.INVERSE)) {
+				sample.invertYValue();
 			}
 			this.data.add(sample);
 			
@@ -226,6 +229,7 @@ public class TraceDataCollector implements IDataProvider,
 	 */
 	@Override
 	public ISample getSample(int i) {
+		LOGGER.debug("get sample called (sample #" + (i+1) + ")");
 		return this.data.get(i);
 	}
 
@@ -234,6 +238,7 @@ public class TraceDataCollector implements IDataProvider,
 	 */
 	@Override
 	public int getSize() {
+		LOGGER.debug("get size called (size is " + this.data.size() + ")");
 		return this.data.size();
 	}
 
@@ -242,6 +247,7 @@ public class TraceDataCollector implements IDataProvider,
 	 */
 	@Override
 	public Range getXDataMinMax() {
+		LOGGER.debug("get x min max called ([" + this.xMin + ", " + this.xMax + "]");
 		return new Range(this.xMin, this.xMax);
 	}
 
@@ -250,6 +256,7 @@ public class TraceDataCollector implements IDataProvider,
 	 */
 	@Override
 	public Range getYDataMinMax() {
+		LOGGER.debug("get y min max called ([" + this.yMin + ", " + this.yMax + "]");
 		return new Range(this.yMin, this.yMax);
 	}
 
@@ -258,6 +265,7 @@ public class TraceDataCollector implements IDataProvider,
 	 */
 	@Override
 	public boolean isChronological() {
+		LOGGER.debug("is chronological called (always true)");
 		return true;
 	}
 

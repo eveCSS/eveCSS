@@ -36,6 +36,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
@@ -49,6 +50,7 @@ import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.YAxis;
+import de.ptb.epics.eve.data.scandescription.YAxisModifier;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.data.PlotModes;
@@ -109,24 +111,13 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 	// ******************* end of: underlying model **********************
 	// *******************************************************************
 	
-	// the contents of this view
 	private Composite top;
 	
-	// the configurations for the three axis will be expandable
 	private ExpandBar bar;
 	
-	// "General" configurations, concerning the x axis
 	private Composite xAxisComposite;
-	
-	// configurations for the first y axis are in here
 	private Composite yAxis1Composite;
-	
-	// configurations for the second y axis are in here
 	private Composite yAxis2Composite;
-	
-	// *********************************************
-	// elements for the "general" composite (x axis)
-	// *********************************************
 	
 	private ExpandItem itemGeneral;
 	
@@ -148,14 +139,7 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 	private Combo scaleTypeComboBox;
 	private ScaleTypeComboBoxSelectionListener 
 			scaleTypeComboBoxSelectionListener;
-	// *********************************************
-	// end of: elements for the "general composite (x axis)
-	// *********************************************
-	
-	// *********************************************
-	// elements for the first y axis composite
-	// *********************************************
-	
+
 	private ExpandItem itemYAxis1;
 	
 	// GUI: Detector Channel: "Select-Box":<detector-channels> x
@@ -177,6 +161,9 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 	private YAxis1ScaleTypeComboBoxSelectionListener
 			yAxis1ScaleTypeComboBoxSelectionListener;
 	
+	private Label yAxis1ModifierLabel;
+	private Combo yAxis1ModifierCombo;
+	
 	private ColorFieldEditor yAxis1ColorFieldEditor;
 	private YAxis1ColorFieldEditorPropertyChangeListener
 			yAxis1ColorFieldEditorPropertyChangeListener;
@@ -193,13 +180,7 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 	private Combo yAxis1MarkstyleComboBox;
 	private YAxis1MarkStyleComboBoxSelectionListener
 			yAxis1MarkStyleComboBoxSelectionListener;
-	// *********************************************
-	// end of: elements for the first y axis composite
-	// *********************************************
-	
-	// *********************************************
-	// elements for the second y axis composite
-	// *********************************************
+
 	private ExpandItem itemYAxis2;
 	
 	// GUI: Detector Channel: "Select-Box":<detector-channels> x
@@ -221,6 +202,9 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 	private YAxis2ScaleTypeComboBoxSelectionListener
 			yAxis2ScaleTypeComboBoxSelectionListener;
 	
+	private Label yAxis2ModifierLabel;
+	private Combo yAxis2ModifierCombo;
+	
 	private ColorFieldEditor yAxis2ColorFieldEditor;
 	private YAxis2ColorFieldEditorPropertyChangeListener
 			yAxis2ColorFieldEditorPropertyChangeListener;
@@ -237,10 +221,6 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 	private Combo yAxis2MarkstyleComboBox;
 	private YAxis2MarkStyleComboBoxSelectionListener
 			yAxis2MarkStyleComboBoxSelectionListener;
-	
-	// *********************************************
-	// end of: elements for the second y axis composite	
-	// *********************************************
 	
 	private DataBindingContext context;
 	
@@ -567,6 +547,25 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 				new YAxis1ScaleTypeComboBoxSelectionListener();
 		this.yAxis1ScaletypeComboBox.addSelectionListener( 
 				yAxis1ScaleTypeComboBoxSelectionListener);
+		
+		this.yAxis1ModifierLabel = new Label(this.yAxis1Composite, SWT.NONE);
+		this.yAxis1ModifierLabel.setText("Modifier:");
+		
+		this.yAxis1ModifierCombo = new Combo(this.yAxis1Composite, SWT.READ_ONLY);
+		gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.horizontalIndent = 7;
+		this.yAxis1ModifierCombo.setLayoutData(gridData);
+		this.yAxis1ModifierCombo.setItems(YAxisModifier.valuesAsString());
+		this.yAxis1ModifierCombo.addSelectionListener(new SelectionAdapter() {
+			@Override public void widgetSelected(SelectionEvent e) {
+				if (yAxis1 != null && yAxis1ModifierCombo.getSelectionIndex() != -1) {
+					yAxis1.setModifier(YAxisModifier.values()
+							[yAxis1ModifierCombo.getSelectionIndex()]);
+				}
+			}
+		});
 	}
 	
 	/*
@@ -718,6 +717,25 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 				new YAxis2ScaleTypeComboBoxSelectionListener();
 		this.yAxis2ScaletypeComboBox.addSelectionListener( 
 				yAxis2ScaleTypeComboBoxSelectionListener);
+		
+		this.yAxis2ModifierLabel = new Label(this.yAxis2Composite, SWT.NONE);
+		this.yAxis2ModifierLabel.setText("Modifier:");
+		
+		this.yAxis2ModifierCombo = new Combo(this.yAxis2Composite, SWT.READ_ONLY);
+		gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.horizontalIndent = 7;
+		this.yAxis2ModifierCombo.setLayoutData(gridData);
+		this.yAxis2ModifierCombo.setItems(YAxisModifier.valuesAsString());
+		this.yAxis2ModifierCombo.addSelectionListener(new SelectionAdapter() {
+			@Override public void widgetSelected(SelectionEvent e) {
+				if (yAxis2 != null && yAxis2ModifierCombo.getSelectionIndex() != -1) {
+					yAxis2.setModifier(YAxisModifier.values()
+							[yAxis2ModifierCombo.getSelectionIndex()]);
+				}
+			}
+		});
 	}
 	
 	/*
@@ -749,10 +767,6 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 						UpdateValueStrategy.POLICY_UPDATE),
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
 	}
-	
-	// ************************************************************************
-	// ********************** end of createPartControl ************************
-	// ************************************************************************
 
 	/*
 	 * restore memento
@@ -1251,6 +1265,8 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 				this.yAxis1ScaletypeComboBox.setText(PlotModes
 						.modeToString(yAxis1.getMode()));
 				this.yAxis1ScaletypeComboBox.setEnabled(true);
+				this.yAxis1ModifierCombo.setText(yAxis1.getModifier().toString());
+				this.yAxis1ModifierCombo.setEnabled(true);
 			} else {
 				// no y axis 1 -> disable fields
 				this.yAxis1DetectorChannelComboBox.deselectAll();
@@ -1265,6 +1281,8 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 				this.yAxis1MarkstyleComboBox.setEnabled(false);
 				this.yAxis1ScaletypeComboBox.deselectAll();
 				this.yAxis1ScaletypeComboBox.setEnabled(false);
+				this.yAxis1ModifierCombo.deselectAll();
+				this.yAxis1ModifierCombo.setEnabled(false);
 			}
 			// ***************************************************************
 			// *********************** end of: yAxis1 ************************
@@ -1302,6 +1320,8 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 				this.yAxis2ScaletypeComboBox.setText(PlotModes
 						.modeToString(yAxis2.getMode()));
 				this.yAxis2ScaletypeComboBox.setEnabled(true);
+				this.yAxis2ModifierCombo.setText(yAxis2.getModifier().toString());
+				this.yAxis2ModifierCombo.setEnabled(true);
 			} else {
 				// no y axis 2 -> disable fields
 				this.yAxis2DetectorChannelComboBox.deselectAll();
@@ -1316,6 +1336,8 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 				this.yAxis2MarkstyleComboBox.setEnabled(false);
 				this.yAxis2ScaletypeComboBox.deselectAll();
 				this.yAxis2ScaletypeComboBox.setEnabled(false);
+				this.yAxis2ModifierCombo.deselectAll();
+				this.yAxis2ModifierCombo.setEnabled(false);
 			}
 			// ***************************************************************
 			// *********************** end of: yAxis2 ************************
@@ -1362,10 +1384,6 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 		memento.putBoolean("itemYAxis1", this.itemYAxis1.getExpanded());
 		memento.putBoolean("itemYAxis2", this.itemYAxis2.getExpanded());
 	}
-	
-	// ************************************************************************
-	// ******************************* listeners ******************************
-	// ************************************************************************
 	
 	/**
 	 * {@link org.eclipse.swt.events.SelectionListener} of 

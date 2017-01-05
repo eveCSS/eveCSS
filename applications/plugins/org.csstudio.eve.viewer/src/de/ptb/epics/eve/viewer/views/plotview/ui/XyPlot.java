@@ -127,6 +127,7 @@ public class XyPlot extends Figure implements PlotViewComponent, IStateListener 
 							: ""));
 			traceInfo.setModifier((normalized ? DataModifier.NORMALIZED
 					: DataModifier.UNMODIFIED));
+			traceInfo.setyAxisModifier(yAxis.getModifier());
 			
 			if (i == 0) {
 				axis = this.xyGraph.primaryYAxis;

@@ -1453,6 +1453,7 @@ public class ScanDescriptionSaver implements
 						.getID().toCharArray(), 0, yaxis.getDetectorChannel()
 						.getID().length());
 				this.contentHandler.endElement("", "id", "id");
+				
 				this.atts.clear();
 				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_MODE, Literals.XML_ELEMENT_NAME_MODE, this.atts);
 				this.contentHandler
@@ -1461,6 +1462,14 @@ public class ScanDescriptionSaver implements
 								.modeToString(yaxis.getMode())).length());
 				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_MODE, Literals.XML_ELEMENT_NAME_MODE);
 
+				this.atts.clear();
+				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_MODIFIER, 
+						Literals.XML_ELEMENT_NAME_MODIFIER, this.atts);
+				this.contentHandler.characters(yaxis.getModifier().name().toCharArray(), 
+							0, yaxis.getModifier().name().length());
+				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_MODIFIER, 
+						Literals.XML_ELEMENT_NAME_MODIFIER);
+				
 				if (yaxis.getNormalizeChannel() != null) {
 					this.atts.clear();
 					this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_NORMALIZEID,

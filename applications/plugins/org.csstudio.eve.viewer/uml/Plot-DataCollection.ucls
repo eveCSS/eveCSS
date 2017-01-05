@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<class-diagram version="1.1.10" icons="true" automaticImage="PNG" always-add-relationships="false" 
+<class-diagram version="1.1.11" icons="true" automaticImage="PNG" always-add-relationships="false" 
   generalizations="true" realizations="true" associations="true" dependencies="false" nesting-relationships="true" 
   router="FAN">  
   <class id="1" language="java" name="de.ptb.epics.eve.viewer.views.plotview.ui.XyPlot" 
@@ -28,7 +28,7 @@
     project="de.ptb.epics.eve.viewer" 
     file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/plotview/plot/TraceInfo.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="982" y="522"/>    
+    <position height="-1" width="-1" x="983" y="536"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -100,42 +100,49 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <association id="10">    
+  <interface id="10" language="java" name="org.csstudio.swt.xygraph.dataprovider.ISample" 
+    project="de.ptb.epics.eve.viewer" 
+    file="/messung/eve/java/CSS/3.3.9/plugins/org.csstudio.swt.xygraph_2.0.3.201406112024.jar" binary="true" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1230" y="258"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <association id="11">    
     <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="11" name="listeners">        
+      <attribute id="12" name="listeners">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="12" minimum="0" maximum="2147483647">        
+      <multiplicity id="13" minimum="0" maximum="2147483647">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="13">    
+  <association id="14">    
     <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="14" name="traceInfo">        
-        <position height="0" width="0" x="61" y="-3"/>      
+      <attribute id="15" name="traceInfo">        
+        <position height="0" width="0" x="62" y="11"/>      
       </attribute>      
-      <multiplicity id="15" minimum="0" maximum="1">        
-        <position height="0" width="0" x="61" y="-3"/>      
+      <multiplicity id="16" minimum="0" maximum="1">        
+        <position height="0" width="0" x="62" y="11"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="16">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="17" name="updateStrategy">        
-        <position height="0" width="0" x="29" y="13"/>      
-      </attribute>      
-      <multiplicity id="18" minimum="0" maximum="1">        
-        <position height="0" width="0" x="29" y="13"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
+  <realization id="17">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="10"/>  
+  </realization>  
+  <realization id="18">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="8"/>  
+  </realization>  
   <association id="19">    
     <end type="SOURCE" refId="1" navigable="false">      
       <attribute id="20" name="collectors">        
@@ -166,20 +173,28 @@
   </association>  
   <association id="26">    
     <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="27" name="data">        
+      <attribute id="27" name="updateStrategy">        
+        <position height="0" width="0" x="29" y="13"/>      
+      </attribute>      
+      <multiplicity id="28" minimum="0" maximum="1">        
+        <position height="0" width="0" x="29" y="13"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="29">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="30" name="data">        
         <position height="0" width="0" x="59" y="-11"/>      
       </attribute>      
-      <multiplicity id="28" minimum="0" maximum="2147483647">        
+      <multiplicity id="31" minimum="0" maximum="2147483647">        
         <position height="0" width="0" x="59" y="-11"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <realization id="29">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="8"/>  
-  </realization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    

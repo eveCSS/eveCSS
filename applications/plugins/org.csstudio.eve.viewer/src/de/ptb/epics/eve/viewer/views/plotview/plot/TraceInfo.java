@@ -1,5 +1,6 @@
 package de.ptb.epics.eve.viewer.views.plotview.plot;
 
+import de.ptb.epics.eve.data.scandescription.YAxisModifier;
 import de.ptb.epics.eve.ecp1.types.DataModifier;
 
 /**
@@ -13,6 +14,7 @@ public class TraceInfo {
 	private String detectorId;
 	private String normalizeId;
 	private DataModifier modifier;
+	private YAxisModifier yAxisModifier;
 	
 	/**
 	 * 
@@ -24,6 +26,7 @@ public class TraceInfo {
 		this.detectorId = "";
 		this.normalizeId = "";
 		this.modifier = DataModifier.UNMODIFIED;
+		this.yAxisModifier = YAxisModifier.NONE;
 	}
 	
 	/**
@@ -108,5 +111,19 @@ public class TraceInfo {
 	 */
 	public void setModifier(DataModifier modifier) {
 		this.modifier = modifier;
+	}
+
+	/**
+	 * @return the yAxisModifier
+	 */
+	public YAxisModifier getyAxisModifier() {
+		return yAxisModifier;
+	}
+
+	/**
+	 * @param yAxisModifier the yAxisModifier to set
+	 */
+	public void setyAxisModifier(YAxisModifier yAxisModifier) {
+		this.yAxisModifier = yAxisModifier;
 	}
 }

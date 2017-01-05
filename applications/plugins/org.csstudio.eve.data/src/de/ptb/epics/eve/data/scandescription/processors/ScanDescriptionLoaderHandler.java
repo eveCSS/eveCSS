@@ -61,6 +61,7 @@ import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
 import de.ptb.epics.eve.data.scandescription.StartEvent;
 import de.ptb.epics.eve.data.scandescription.Stepfunctions;
 import de.ptb.epics.eve.data.scandescription.YAxis;
+import de.ptb.epics.eve.data.scandescription.YAxisModifier;
 import de.ptb.epics.eve.data.scandescription.channelmode.ChannelModes;
 import de.ptb.epics.eve.data.scandescription.channelmode.StandardMode;
 import de.ptb.epics.eve.data.scandescription.processors.adaptees.DetectorEventAdaptee;
@@ -651,6 +652,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.subState = ScanDescriptionLoaderSubStates.YAXIS_ID_NEXT;
 			} else if (qName.equals("mode")) {
 				this.subState = ScanDescriptionLoaderSubStates.YAXIS_MODE_NEXT;
+			} else if (qName.equals("modifier")) {
+				this.subState = ScanDescriptionLoaderSubStates.YAXIS_MODIFIER_NEXT;
 			} else if (qName.equals("normalize_id")) {
 				this.subState = ScanDescriptionLoaderSubStates.YAXIS_NORMALIZE_ID_NEXT;
 			} else if (qName.equals("linestyle")) {
@@ -1319,6 +1322,12 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			this.subState = ScanDescriptionLoaderSubStates.YAXIS_MODE_READ;
 			break;
 
+		case YAXIS_MODIFIER_NEXT:
+			this.currentYAxis.setModifier(YAxisModifier.valueOf(
+					textBuffer.toString().trim().toUpperCase()));
+			this.subState = ScanDescriptionLoaderSubStates.YAXIS_MODIFIER_READ;
+			break;
+			
 		case YAXIS_NORMALIZE_ID_NEXT:
 			if (this.measuringStation.getDetectorChannelById(textBuffer
 					.toString()) != null) {
@@ -2139,6 +2148,12 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			}
 			break;
 
+		case YAXIS_MODIFIER_READ:
+			if (qName.equals("modifier")) {
+				this.subState = ScanDescriptionLoaderSubStates.YAXIS_LOADING;
+			}
+			break;
+			
 		case YAXIS_NORMALIZE_ID_READ:
 			if (qName.equals("normalize_id")) {
 				this.subState = ScanDescriptionLoaderSubStates.YAXIS_LOADING;
