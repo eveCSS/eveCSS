@@ -128,6 +128,8 @@ public class XyPlot extends Figure implements PlotViewComponent, IStateListener 
 			traceInfo.setModifier((normalized ? DataModifier.NORMALIZED
 					: DataModifier.UNMODIFIED));
 			traceInfo.setyAxisModifier(yAxis.getModifier());
+			traceInfo.setyAxisNumeric(!yAxis.getDetectorChannel().getRead().
+					getType().equals(DataTypes.DATETIME));
 			
 			if (i == 0) {
 				axis = this.xyGraph.primaryYAxis;

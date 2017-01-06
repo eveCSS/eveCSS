@@ -172,7 +172,8 @@ public class TraceDataCollector implements IDataProvider,
 						+ ": Pos: "
 						+ this.motorPosCount + sample.getInfo());
 			}
-			if (this.traceInfo.getModifier().equals(YAxisModifier.INVERSE)) {
+			if (this.traceInfo.isyAxisNumeric() && this.traceInfo.getModifier().
+					equals(YAxisModifier.INVERSE)) {
 				sample.invertYValue();
 			}
 			this.data.add(sample);
@@ -193,6 +194,9 @@ public class TraceDataCollector implements IDataProvider,
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("New Sample: (" + sample.getXValue() + ", " 
 						+ sample.getYValue() + ")");
+				if (this.traceInfo.getModifier().equals(YAxisModifier.INVERSE)) {
+					LOGGER.debug("y value of sample is inverted");
+				}
 				LOGGER.debug("Current x-Range: (" + this.xMin + ", "
 						+ this.xMax + ")");
 				LOGGER.debug("Current y-Range: (" + this.yMin + ", "
@@ -269,6 +273,19 @@ public class TraceDataCollector implements IDataProvider,
 		return true;
 	}
 
+	/**
+	 * 
+	 * @param modifier the modifier to set
+	 * @since 1.28
+	 */
+	public void setYAxisModifier(YAxisModifier modifier) {
+		// TODO synchronize with new incoming
+		// TODO adjust all present samples
+		// TODO set new modifier in trace info (-> new samples apply it then)
+		// TODO adjust min and max
+		// TODO publish changes
+	}
+	
 	/**
 	 * 
 	 * @param strategy

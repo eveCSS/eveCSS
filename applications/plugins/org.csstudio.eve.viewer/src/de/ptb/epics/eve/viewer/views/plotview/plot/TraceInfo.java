@@ -15,6 +15,7 @@ public class TraceInfo {
 	private String normalizeId;
 	private DataModifier modifier;
 	private YAxisModifier yAxisModifier;
+	private boolean yAxisNumeric;
 	
 	/**
 	 * 
@@ -27,6 +28,7 @@ public class TraceInfo {
 		this.normalizeId = "";
 		this.modifier = DataModifier.UNMODIFIED;
 		this.yAxisModifier = YAxisModifier.NONE;
+		this.yAxisNumeric = true;
 	}
 	
 	/**
@@ -125,5 +127,19 @@ public class TraceInfo {
 	 */
 	public void setyAxisModifier(YAxisModifier yAxisModifier) {
 		this.yAxisModifier = yAxisModifier;
+	}
+
+	/**
+	 * @return the yAxisNumeric
+	 */
+	public boolean isyAxisNumeric() {
+		return yAxisNumeric;
+	}
+
+	/**
+	 * @param yAxisNumeric the yAxisNumeric to set
+	 */
+	public void setyAxisNumeric(boolean yAxisNumeric) {
+		this.yAxisNumeric = yAxisNumeric;
 	}
 }
