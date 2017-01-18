@@ -37,25 +37,25 @@ public class OpenSCML extends AbstractHandler {
 			throw new ExecutionException(
 					"Could not get Shell of Workbench Window!");
 		}
-		boolean workingDirectoryUsed = false;
+		String setFilterPath = "";
 		FileDialog fileDialog = new FileDialog(shell, SWT.OPEN);
-		// TODO reenable
-		/*File workingDirectory = de.ptb.epics.eve.editor.Activator.getDefault()
+		File currentWorkingDirectory = de.ptb.epics.eve.editor.Activator.getDefault()
 				.getDefaults().getWorkingDirectory();
-		if (workingDirectory.isDirectory()) {
-			fileDialog.setFilterPath(workingDirectory.getAbsolutePath());
-			workingDirectoryUsed = true;
-		} else {*/
+		if (currentWorkingDirectory.isDirectory()) {
+			fileDialog.setFilterPath(currentWorkingDirectory.getAbsolutePath());
+			setFilterPath = currentWorkingDirectory.getAbsolutePath();
+		} else {
 			File file = new File(Startup.readStartupParameters()
 					.getRootDir() + "eve/");
-			File scmlDir = new File(file.getAbsolutePath() + "scml");
+			File scmlDir = new File(file.getAbsolutePath() + "/scml/");
 			if (scmlDir.isDirectory()) {
 				fileDialog.setFilterPath(scmlDir.getAbsolutePath());
-				workingDirectoryUsed = true;
+				setFilterPath = scmlDir.getAbsolutePath();
 			} else {
 				fileDialog.setFilterPath(file.getAbsolutePath());
+				setFilterPath = file.getAbsolutePath();
 			}
-		//}
+		}
 		fileDialog.setFilterExtensions(new String[] {"*.scml"});
 		fileDialog.setFilterNames(new String[] {"Scan Description (*.scml)"});
 		String scmlPath = fileDialog.open();
@@ -71,13 +71,13 @@ public class OpenSCML extends AbstractHandler {
 				.getActiveWorkbenchWindow().getActivePage();
 		try {
 			IDE.openEditorOnFileStore(page, fileStore);
-			if (workingDirectoryUsed) {
+		File chosenPath = new File(scmlPath.substring(0,
+				scmlPath.lastIndexOf(File.separator)));
+		if (!chosenPath.getAbsolutePath().equals(setFilterPath)) {
 				de.ptb.epics.eve.editor.Activator
 						.getDefault()
 						.getDefaults()
-						.setWorkingDirectory(
-								new File(scmlPath.substring(0,
-										scmlPath.lastIndexOf(File.separator))));
+						.setWorkingDirectory(chosenPath);
 			}
 		} catch (PartInitException e) {
 			LOGGER.error(e.getMessage(), e);
