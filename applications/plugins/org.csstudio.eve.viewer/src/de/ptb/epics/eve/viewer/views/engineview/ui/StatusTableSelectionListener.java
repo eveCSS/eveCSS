@@ -5,6 +5,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
@@ -75,14 +76,19 @@ public class StatusTableSelectionListener extends SelectionAdapter implements
 			aktSM = Integer.parseInt(rows[selection].getText(1).trim());
 		}
 
+		Rectangle workbenchBounds = Activator.getDefault().getWorkbench().
+				getActiveWorkbenchWindow().getShell().getBounds();
+		
 		Chain displayChain = Activator.getDefault().getCurrentScanDescription().getChain(aktChain);
-
+		
 		if (aktSM > 0) {
 			// ScanModule Zeile wurde ausgewählt, ScanModule Infos anzeigen
 
 			Display display = Activator.getDefault().getWorkbench().getDisplay();
 			Shell chainShell = new Shell(display);
 			chainShell.setSize(800, 600);
+			chainShell.setLocation(workbenchBounds.x + workbenchBounds.width/2 - 400, 
+					workbenchBounds.y + workbenchBounds.height/2 - 300);
 			chainShell.setText("Scan Module Info");
 
 			GridLayout gridLayout = new GridLayout();
@@ -370,6 +376,8 @@ public class StatusTableSelectionListener extends SelectionAdapter implements
 			Display display = Activator.getDefault().getWorkbench().getDisplay();
 			Shell chainShell = new Shell(display);
 			chainShell.setSize(500, 200);
+			chainShell.setLocation(workbenchBounds.x + workbenchBounds.width/2 - 250, 
+					workbenchBounds.y + workbenchBounds.height/2 - 100);
 			chainShell.setText("Chain Info");
 
 			GridLayout gridLayout = new GridLayout();
