@@ -12,6 +12,15 @@ pre {
 	margin: 5px auto;
 }
 
+.eveUL {
+	margin: 0 0 0 1em;
+	padding-left: 0;
+}
+
+.eveUL li {
+	margin-bottom: 3px;
+}
+
 /* ********* classes ********** */
 .eveTopic {
 	margin-bottom: 10px;

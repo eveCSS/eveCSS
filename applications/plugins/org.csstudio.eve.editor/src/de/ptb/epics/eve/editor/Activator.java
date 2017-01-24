@@ -118,7 +118,7 @@ public class Activator extends AbstractUIPlugin {
 			
 			@Override
 			public void log(IStatus status) {
-				logger.debug(status.getMessage());
+				logger.error(status.getMessage());
 			}
 		});
 		
