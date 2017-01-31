@@ -17,9 +17,11 @@ import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.commands.ICommandService;
+import org.eclipse.ui.handlers.RegistryToggleState;
 import org.eclipse.ui.part.ViewPart;
 
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
+import de.ptb.epics.eve.data.scandescription.YAxisModifier;
 import de.ptb.epics.eve.ecp1.client.interfaces.IChainStatusListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IEngineStatusListener;
 import de.ptb.epics.eve.ecp1.commands.ChainStatusCommand;
@@ -27,6 +29,7 @@ import de.ptb.epics.eve.ecp1.types.ChainStatus;
 import de.ptb.epics.eve.ecp1.types.EngineStatus;
 import de.ptb.epics.eve.util.pdf.PlotStats;
 import de.ptb.epics.eve.viewer.Activator;
+import de.ptb.epics.eve.viewer.views.plotview.plot.TraceDataCollector;
 import de.ptb.epics.eve.viewer.views.plotview.table.Data;
 
 /**
@@ -92,7 +95,8 @@ public class PlotView extends ViewPart implements IChainStatusListener,
 		Activator.getDefault().getEcp1Client().addChainStatusListener(this);
 		
 		this.restoreState();
-		this.refreshToggleButton();
+		this.refreshStatisticsToggleButton();
+		this.refreshInverseToggleButtons();
 		
 		this.initAutoScale();
 	}
@@ -138,6 +142,7 @@ public class PlotView extends ViewPart implements IChainStatusListener,
 		// delegate to XyPlot
 		this.xyPlot.setPlotWindow(plotWindow);
 		this.tableComposite.setPlotWindow(plotWindow);
+		this.refreshInverseToggleButtons();
 		LOGGER.debug("initializing plot window with id " + plotWindow.getId());
 	}
 	
@@ -242,7 +247,7 @@ public class PlotView extends ViewPart implements IChainStatusListener,
 	/*
 	 * 
 	 */
-	private void refreshToggleButton() {
+	private void refreshStatisticsToggleButton() {
 		ICommandService commandService = (ICommandService) PlatformUI
 				.getWorkbench().getService(ICommandService.class);
 		Command toggleCommand = commandService
@@ -257,13 +262,47 @@ public class PlotView extends ViewPart implements IChainStatusListener,
 				"de.ptb.epics.eve.viewer.views.plotview.togglestats", null);
 	}
 	
+	private void refreshInverseToggleButtons() {
+		ICommandService commandService = (ICommandService) PlatformUI
+				.getWorkbench().getService(ICommandService.class);
+		Command inverseCommand1 = commandService.getCommand(
+				"de.ptb.epics.eve.viewer.views.plotview.modifier.inverty1");
+		Command inverseCommand2 = commandService.getCommand(
+				"de.ptb.epics.eve.viewer.views.plotview.modifier.inverty2");
+		State inverseState1 = inverseCommand1.getState(RegistryToggleState.STATE_ID);
+		State inverseState2 = inverseCommand2.getState(RegistryToggleState.STATE_ID);
+		
+		List<TraceDataCollector> traces = this.xyPlot.getCollectors();
+		if (!traces.isEmpty()) {
+			boolean inverse1 = traces.get(0).getYAxisModifier().equals(YAxisModifier.INVERSE);
+			LOGGER.debug("YAxis 1 Inverse Modifier: " + inverse1);
+			inverseState1.setValue(inverse1);
+		} else {
+			inverseState1.setValue(Boolean.FALSE);
+			inverseState2.setValue(Boolean.FALSE);
+		}
+		if(traces.size() > 1) {
+			boolean inverse2 = traces.get(1).getYAxisModifier().equals(YAxisModifier.INVERSE);
+			LOGGER.debug("YAxis 2 Inverse Modifier: " + inverse2);
+			inverseState2.setValue(inverse2);
+		} else {
+			inverseState2.setValue(Boolean.FALSE);
+		}
+		
+		commandService.refreshElements(
+				"de.ptb.epics.eve.viewer.views.plotview.modifier.inverty1", null);
+		commandService.refreshElements(
+				"de.ptb.epics.eve.viewer.views.plotview.modifier.inverty2", null);
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void setFocus() {
 		this.sashForm.setFocus();
-		this.refreshToggleButton();
+		this.refreshStatisticsToggleButton();
+		this.refreshInverseToggleButtons();
 	}
 
 	/**

@@ -358,6 +358,24 @@
                id="org.eclipse.ui.commands.toggleState">
          </state>
       </command>
+      <command
+            categoryId="de.ptb.epics.eve.viewer.views.plotview"
+            id="de.ptb.epics.eve.viewer.views.plotview.modifier.inverty1"
+            name="Axes Modifier Invert y1">
+         <state
+               class="org.eclipse.ui.handlers.RegistryToggleState:true"
+               id="org.eclipse.ui.commands.toggleState">
+         </state>
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.viewer.views.plotview"
+            id="de.ptb.epics.eve.viewer.views.plotview.modifier.inverty2"
+            name="Axes Modifier Invert y2">
+         <state
+               class="org.eclipse.ui.handlers.RegistryToggleState:true"
+               id="org.eclipse.ui.commands.toggleState">
+         </state>
+      </command>
       <category
             id="de.ptb.epics.eve.viewer.views.playlistview"
             name="PlaylistView">
@@ -415,6 +433,34 @@
             <test
                   property="viewer.playlist.engineConnected">
             </test>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="de.ptb.epics.eve.viewer.handler.plot.AxesModifierInvertY2"
+            commandId="de.ptb.epics.eve.viewer.views.plotview.modifier.inverty2">
+         <enabledWhen>
+            <and>
+               <test
+                     property="viewer.plot.trace2present">
+               </test>
+               <test
+                     property="viewer.plot.trace2numeric">
+               </test>
+            </and>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="de.ptb.epics.eve.viewer.handler.plot.AxesModifierInvertY1"
+            commandId="de.ptb.epics.eve.viewer.views.plotview.modifier.inverty1">
+         <enabledWhen>
+            <and>
+               <test
+                     property="viewer.plot.trace1present">
+               </test>
+               <test
+                     property="viewer.plot.trace1numeric">
+               </test>
+            </and>
          </enabledWhen>
       </handler>
    </extension>
@@ -802,6 +848,18 @@
       <menuContribution
             locationURI="toolbar:PlotView">
          <command
+               commandId="de.ptb.epics.eve.viewer.views.plotview.modifier.inverty1"
+               icon="icons/action1.gif"
+               label="y1-Axis Invert"
+               style="toggle">
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.viewer.views.plotview.modifier.inverty2"
+               icon="icons/action2.gif"
+               label="y2-Axis Invert"
+               style="toggle">
+         </command>
+         <command
                commandId="de.ptb.epics.eve.viewer.views.plotview.autoscale"
                icon="icons/AutoScale.png"
                id="autoScale"
@@ -811,7 +869,7 @@
          <command
                commandId="de.ptb.epics.eve.viewer.views.plotview.togglestats"
                icon="icons/datasheet.gif"
-               label="toggle statistics"
+               label="show statistics"
                style="toggle">
          </command>
          <command
@@ -970,6 +1028,20 @@
             id="de.ptb.epics.eve.viewer.propertytester.engineconnected"
             namespace="viewer.playlist"
             properties="engineConnected"
+            type="java.lang.Object">
+      </propertyTester>
+      <propertyTester
+            class="de.ptb.epics.eve.viewer.propertytester.PlotTraceCount"
+            id="de.ptb.epics.eve.viewer.propertyTester.PlotTraceCount"
+            namespace="viewer.plot"
+            properties="trace1present, trace2present"
+            type="java.lang.Object">
+      </propertyTester>
+      <propertyTester
+            class="de.ptb.epics.eve.viewer.propertytester.PlotNumeric"
+            id="de.ptb.epics.eve.viewer.propertyTester.PlotNumeric"
+            namespace="viewer.plot"
+            properties="trace1numeric, trace2numeric"
             type="java.lang.Object">
       </propertyTester>
    </extension>

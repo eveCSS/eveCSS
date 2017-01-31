@@ -78,6 +78,6 @@ public class Sample implements ISample {
 	}
 	
 	protected void invertYValue() {
-		this.y = Math.copySign(this.y, -1.0);
+		this.y = -this.y;//Math.copySign(this.y, -1.0);
 	}
 }

@@ -77,7 +77,7 @@ public class TraceDataCollector implements IDataProvider,
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void measurementDataTransmitted(MeasurementData measurementData) {
+	public synchronized void measurementDataTransmitted(MeasurementData measurementData) {
 		if (measurementData.getName().equals(traceInfo.getMotorId())) {
 			this.motorPosCount = measurementData.getPositionCounter();
 			switch (measurementData.getDataType()) {
@@ -229,10 +229,19 @@ public class TraceDataCollector implements IDataProvider,
 	}
 	
 	/**
+	 * 
+	 * @return
+	 * @since 1.28
+	 */
+	public synchronized TraceInfo getTraceInfo() {
+		return this.traceInfo;
+	}
+	
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ISample getSample(int i) {
+	public synchronized ISample getSample(int i) {
 		LOGGER.debug("get sample called (sample #" + (i+1) + ")");
 		return this.data.get(i);
 	}
@@ -250,7 +259,7 @@ public class TraceDataCollector implements IDataProvider,
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Range getXDataMinMax() {
+	public synchronized Range getXDataMinMax() {
 		LOGGER.debug("get x min max called ([" + this.xMin + ", " + this.xMax + "]");
 		return new Range(this.xMin, this.xMax);
 	}
@@ -259,7 +268,7 @@ public class TraceDataCollector implements IDataProvider,
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Range getYDataMinMax() {
+	public synchronized Range getYDataMinMax() {
 		LOGGER.debug("get y min max called ([" + this.yMin + ", " + this.yMax + "]");
 		return new Range(this.yMin, this.yMax);
 	}
@@ -275,15 +284,41 @@ public class TraceDataCollector implements IDataProvider,
 
 	/**
 	 * 
+	 * @return
+	 * @since 1.28
+	 */
+	public synchronized YAxisModifier getYAxisModifier() {
+		return this.traceInfo.getyAxisModifier();
+	}
+	
+	/**
+	 * 
 	 * @param modifier the modifier to set
 	 * @since 1.28
 	 */
-	public void setYAxisModifier(YAxisModifier modifier) {
+	public synchronized void setYAxisModifier(YAxisModifier modifier) {
 		// TODO synchronize with new incoming
 		// TODO adjust all present samples
+				// TODO adjust min and max --> in invertSamples
+		this.invertSamples();
 		// TODO set new modifier in trace info (-> new samples apply it then)
-		// TODO adjust min and max
+		this.traceInfo.setyAxisModifier(modifier);
 		// TODO publish changes
+		this.publish();
+	}
+	
+	private void invertSamples() {
+		this.xMin = this.yMin = Double.POSITIVE_INFINITY;
+		this.xMax = this.yMax = Double.NEGATIVE_INFINITY;
+		for (Sample sample : this.data) {
+			sample.invertYValue();
+			if (sample.getYValue() < this.yMin) {
+				this.yMin = sample.getYValue();
+			}
+			if (sample.getYValue() > this.yMax) {
+				this.yMax = sample.getYValue();
+			}
+		}
 	}
 	
 	/**
