@@ -1,10 +1,14 @@
 package de.ptb.epics.eve.viewer.views.plotview.ui;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.csstudio.swt.xygraph.dataprovider.IDataProvider;
+import org.csstudio.swt.xygraph.dataprovider.IDataProviderListener;
+import org.csstudio.swt.xygraph.dataprovider.ISample;
 import org.csstudio.swt.xygraph.figures.Axis;
 import org.csstudio.swt.xygraph.figures.ToolbarArmedXYGraph;
 import org.csstudio.swt.xygraph.figures.Trace;
@@ -18,6 +22,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.commands.ICommandService;
+import org.eclipse.ui.services.IEvaluationService;
 
 import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
@@ -25,6 +30,7 @@ import de.ptb.epics.eve.data.scandescription.YAxis;
 import de.ptb.epics.eve.ecp1.types.DataModifier;
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.preferences.PreferenceConstants;
+import de.ptb.epics.eve.viewer.views.plotview.plot.Sample;
 import de.ptb.epics.eve.viewer.views.plotview.plot.TraceDataCollector;
 import de.ptb.epics.eve.viewer.views.plotview.plot.TraceInfo;
 
@@ -127,6 +133,9 @@ public class XyPlot extends Figure implements PlotViewComponent, IStateListener 
 							: ""));
 			traceInfo.setModifier((normalized ? DataModifier.NORMALIZED
 					: DataModifier.UNMODIFIED));
+			traceInfo.setyAxisModifier(yAxis.getModifier());
+			traceInfo.setyAxisNumeric(!yAxis.getDetectorChannel().getRead().
+					getType().equals(DataTypes.DATETIME));
 			
 			if (i == 0) {
 				axis = this.xyGraph.primaryYAxis;
@@ -190,6 +199,14 @@ public class XyPlot extends Figure implements PlotViewComponent, IStateListener 
 		trace.setPointStyle(model.getMarkstyle());
 		trace.setTraceType(model.getLinestyle());
 		this.xyGraph.addTrace(trace);
+		this.reevaluateToolbarButtons();
+	}
+	
+	private void reevaluateToolbarButtons() {
+		IEvaluationService service = (IEvaluationService) parent.getSite().
+				getService(IEvaluationService.class);
+		service.requestEvaluation("viewer.plot.trace1present");
+		service.requestEvaluation("viewer.plot.trace2present");
 	}
 	
 	/*
@@ -386,5 +403,9 @@ public class XyPlot extends Figure implements PlotViewComponent, IStateListener 
 			this.xyGraph.getYAxisList().get(1).setAutoScale(autoScale);
 		}
 		LOGGER.debug(currentPlotWindow.getName() + " auto scale y2 : " + autoScale);
+	}
+	
+	public List<TraceDataCollector> getCollectors() {
+		return new ArrayList<TraceDataCollector>(this.collectors);
 	}
 }

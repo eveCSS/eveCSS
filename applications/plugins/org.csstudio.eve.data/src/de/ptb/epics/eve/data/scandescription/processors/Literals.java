@@ -44,6 +44,7 @@ public class Literals {
 	public static final String XML_ELEMENT_NAME_MAXDEVIATION = "maxdeviation";
 	public static final String XML_ELEMENT_NAME_MINIMUM = "minimum";
 	public static final String XML_ELEMENT_NAME_MODE = "mode";
+	public static final String XML_ELEMENT_NAME_MODIFIER = "modifier";
 	public static final String XML_ELEMENT_NAME_MONITOREVENT = "monitorevent";
 	public static final String XML_ELEMENT_NAME_MOTORS = "motors";
 	public static final String XML_ELEMENT_NAME_MOTOR = "motor";

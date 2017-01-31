@@ -13,6 +13,7 @@ import org.csstudio.swt.xygraph.dataprovider.IDataProviderListener;
 import org.csstudio.swt.xygraph.dataprovider.ISample;
 import org.csstudio.swt.xygraph.linearscale.Range;
 
+import de.ptb.epics.eve.data.scandescription.YAxisModifier;
 import de.ptb.epics.eve.ecp1.client.interfaces.IMeasurementDataListener;
 import de.ptb.epics.eve.ecp1.client.model.MeasurementData;
 import de.ptb.epics.eve.ecp1.types.DataModifier;
@@ -76,7 +77,7 @@ public class TraceDataCollector implements IDataProvider,
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void measurementDataTransmitted(MeasurementData measurementData) {
+	public synchronized void measurementDataTransmitted(MeasurementData measurementData) {
 		if (measurementData.getName().equals(traceInfo.getMotorId())) {
 			this.motorPosCount = measurementData.getPositionCounter();
 			switch (measurementData.getDataType()) {
@@ -169,8 +170,11 @@ public class TraceDataCollector implements IDataProvider,
 							? this.traceInfo.getNormalizeId() 
 							: this.traceInfo.getDetectorId())
 						+ ": Pos: "
-						+ this.motorPosCount + " (" + sample.getXValue() + ", "
-						+ sample.getYValue() + ")");
+						+ this.motorPosCount + sample.getInfo());
+			}
+			if (this.traceInfo.isyAxisNumeric() && this.traceInfo.getModifier().
+					equals(YAxisModifier.INVERSE)) {
+				sample.invertYValue();
 			}
 			this.data.add(sample);
 			
@@ -190,6 +194,9 @@ public class TraceDataCollector implements IDataProvider,
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("New Sample: (" + sample.getXValue() + ", " 
 						+ sample.getYValue() + ")");
+				if (this.traceInfo.getModifier().equals(YAxisModifier.INVERSE)) {
+					LOGGER.debug("y value of sample is inverted");
+				}
 				LOGGER.debug("Current x-Range: (" + this.xMin + ", "
 						+ this.xMax + ")");
 				LOGGER.debug("Current y-Range: (" + this.yMin + ", "
@@ -222,10 +229,20 @@ public class TraceDataCollector implements IDataProvider,
 	}
 	
 	/**
+	 * 
+	 * @return
+	 * @since 1.28
+	 */
+	public synchronized TraceInfo getTraceInfo() {
+		return this.traceInfo;
+	}
+	
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ISample getSample(int i) {
+	public synchronized ISample getSample(int i) {
+		LOGGER.debug("get sample called (sample #" + (i+1) + ")");
 		return this.data.get(i);
 	}
 
@@ -234,6 +251,7 @@ public class TraceDataCollector implements IDataProvider,
 	 */
 	@Override
 	public int getSize() {
+		LOGGER.debug("get size called (size is " + this.data.size() + ")");
 		return this.data.size();
 	}
 
@@ -241,7 +259,8 @@ public class TraceDataCollector implements IDataProvider,
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Range getXDataMinMax() {
+	public synchronized Range getXDataMinMax() {
+		LOGGER.debug("get x min max called ([" + this.xMin + ", " + this.xMax + "]");
 		return new Range(this.xMin, this.xMax);
 	}
 
@@ -249,7 +268,8 @@ public class TraceDataCollector implements IDataProvider,
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Range getYDataMinMax() {
+	public synchronized Range getYDataMinMax() {
+		LOGGER.debug("get y min max called ([" + this.yMin + ", " + this.yMax + "]");
 		return new Range(this.yMin, this.yMax);
 	}
 
@@ -258,9 +278,49 @@ public class TraceDataCollector implements IDataProvider,
 	 */
 	@Override
 	public boolean isChronological() {
+		LOGGER.debug("is chronological called (always true)");
 		return true;
 	}
 
+	/**
+	 * 
+	 * @return
+	 * @since 1.28
+	 */
+	public synchronized YAxisModifier getYAxisModifier() {
+		return this.traceInfo.getyAxisModifier();
+	}
+	
+	/**
+	 * 
+	 * @param modifier the modifier to set
+	 * @since 1.28
+	 */
+	public synchronized void setYAxisModifier(YAxisModifier modifier) {
+		// TODO synchronize with new incoming
+		// TODO adjust all present samples
+				// TODO adjust min and max --> in invertSamples
+		this.invertSamples();
+		// TODO set new modifier in trace info (-> new samples apply it then)
+		this.traceInfo.setyAxisModifier(modifier);
+		// TODO publish changes
+		this.publish();
+	}
+	
+	private void invertSamples() {
+		this.xMin = this.yMin = Double.POSITIVE_INFINITY;
+		this.xMax = this.yMax = Double.NEGATIVE_INFINITY;
+		for (Sample sample : this.data) {
+			sample.invertYValue();
+			if (sample.getYValue() < this.yMin) {
+				this.yMin = sample.getYValue();
+			}
+			if (sample.getYValue() > this.yMax) {
+				this.yMax = sample.getYValue();
+			}
+		}
+	}
+	
 	/**
 	 * 
 	 * @param strategy

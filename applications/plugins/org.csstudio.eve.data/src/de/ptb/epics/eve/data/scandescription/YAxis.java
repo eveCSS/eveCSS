@@ -28,6 +28,8 @@ public class YAxis implements IModelUpdateListener, IModelUpdateProvider {
 	// the plot mode of the y axis. (initialized with linear)
 	private PlotModes mode = PlotModes.LINEAR;
 	
+	private YAxisModifier modifier;
+	
 	// the detector channel used to normalize the axis
 	private DetectorChannel normalizeChannel;
 	
@@ -51,6 +53,7 @@ public class YAxis implements IModelUpdateListener, IModelUpdateProvider {
 	 */
 	public YAxis() {
 		this.detectorChannel = null;
+		this.modifier = YAxisModifier.NONE;
 		this.normalizeChannel = null;
 		this.linestyle = null;
 		this.markstyle = null;
@@ -92,6 +95,25 @@ public class YAxis implements IModelUpdateListener, IModelUpdateProvider {
 		return newYAxis;
 	}
 	
+	/**
+	 * @return the modifier
+	 * 
+	 * @since 1.28
+	 */
+	public YAxisModifier getModifier() {
+		return modifier;
+	}
+
+	/**
+	 * @param modifier the modifier to set
+	 * 
+	 * @since 1.28
+	 */
+	public void setModifier(YAxisModifier modifier) {
+		this.modifier = modifier;
+		updateListeners();
+	}
+
 	/**
 	 * Returns the color of the line and mark points of the axis.
 	 * 
@@ -314,6 +336,9 @@ public class YAxis implements IModelUpdateListener, IModelUpdateProvider {
 			return false;
 		}
 		if (!this.mode.equals(yAxis.getMode())) {
+			return false;
+		}
+		if (!this.modifier.equals(yAxis.getModifier())) {
 			return false;
 		}
 		return true;
