@@ -135,9 +135,9 @@
 		<param name="locationInfo" value="true" />
 	</appender>
 
-	<appender name="lf5" class="org.apache.log4j.lf5.LF5Appender">
+	<!--<appender name="lf5" class="org.apache.log4j.lf5.LF5Appender">
 		<param name="MaxNumberOfRecords" value="1000" />
-	</appender>
+	</appender>-->
 
 	<logger name="de.ptb.epics.eve.data">
 		<level value="DEBUG" />
@@ -189,10 +189,10 @@
 		<appender-ref ref="PlotDailyAppender" />
 	</logger>
 
-	<logger name="de.ptb.epics.eve">
+	<!--<logger name="de.ptb.epics.eve">
 		<level value="DEBUG" />
 		<appender-ref ref="lf5" />
-	</logger>
+	</logger>-->
 
 	<logger name="de.ptb.epics.eve.viewer.views.messagesview.MessageList">
 		<level value="DEBUG" />
