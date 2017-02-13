@@ -454,6 +454,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_STEPFILENAME_NEXT;
 			} else if (qName.equals("positionlist")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_POSITIONLIST_NEXT;
+			} else if (qName.equals("range")) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_RANGE_NEXT;
 			} else if (qName.equals("ismainaxis")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_ISMAINAXIS_NEXT;
 			} else if (qName.equals("plugin")) {
@@ -1028,6 +1030,13 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_POSITIONLIST_READ;
 			break;
 
+		case CHAIN_SCANMODULE_SMMOTOR_RANGE_NEXT:
+			if (this.currentAxis.getAbstractDevice() != null) {
+				this.currentAxis.setRange(textBuffer.toString());
+			}
+			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_RANGE_READ;
+			break;
+			
 		case CHAIN_SCANMODULE_SMMOTOR_ISMAINAXIS_NEXT:
 			if (this.currentAxis.getAbstractDevice() != null) {
 				this.currentAxis.setMainAxis(Boolean.parseBoolean(textBuffer.toString()));
@@ -1909,6 +1918,11 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			}
 			break;
 
+		case CHAIN_SCANMODULE_SMMOTOR_RANGE_READ:
+			if (qName.equals("range")) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_LOADING;
+			}
+			
 		case CHAIN_SCANMODULE_SMMOTOR_CONTROLLER_LOADING:
 			if (qName.equals("plugin")) {
 				this.currentAxis.setPluginController(this.currentPluginController);

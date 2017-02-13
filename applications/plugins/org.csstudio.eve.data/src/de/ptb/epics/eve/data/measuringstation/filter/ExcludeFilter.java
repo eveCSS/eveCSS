@@ -19,7 +19,6 @@ import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.data.measuringstation.PlugIn;
-import de.ptb.epics.eve.data.measuringstation.Selections;
 import de.ptb.epics.eve.data.measuringstation.event.Event;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Chain;
@@ -62,9 +61,6 @@ public class ExcludeFilter extends MeasuringStationFilter {
 	// available plug ins
 	private final List<PlugIn> plugins;
 	
-	// available selections
-	private final Selections selections;
-	
 	// available devices
 	private final List<Device> devices;
 	
@@ -106,7 +102,6 @@ public class ExcludeFilter extends MeasuringStationFilter {
 		this.devices = new ArrayList<Device>();
 		this.motors = new ArrayList<Motor>();
 		this.detectors = new ArrayList<Detector>();
-		this.selections = new Selections();
 		this.pluginsMap = new HashMap<String, PlugIn>();
 		this.motorAxisMap = new HashMap<String, MotorAxis>();
 		this.detectorChannelsMap = new HashMap<String, DetectorChannel>();
@@ -152,13 +147,6 @@ public class ExcludeFilter extends MeasuringStationFilter {
 	 */
 	public List<PlugIn> getPlugins() {
 		return new ArrayList<PlugIn>(this.plugins);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public Selections getSelections() {
-		return this.selections;
 	}
 
 	/**
@@ -650,8 +638,6 @@ public class ExcludeFilter extends MeasuringStationFilter {
 		this.devices.clear();
 		this.motors.clear();
 		this.detectors.clear();
-		this.selections.setSmtypes(new String[0]);
-		this.selections.setStepfunctions(new String[0]);
 		this.pluginsMap.clear();
 		this.motorAxisMap.clear();
 		this.detectorChannelsMap.clear();
@@ -746,14 +732,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 					this.devices.add(d);
 				}
 			}
-			
-			// include all sm types (no filtering)
-			this.selections.setSmtypes(
-					this.getSource().getSelections().getSmtypes());
-			// include all step functions (no filtering)
-			this.selections.setStepfunctions(
-					this.getSource().getSelections().getStepfunctions());
-			
+
 			// *******************
 			// *** build  maps ***
 			// *******************

@@ -61,14 +61,6 @@ public interface IMeasuringStation extends IModelUpdateProvider {
 	List<PlugIn> getPlugins();
 
 	/**
-	 * Returns the {@link de.ptb.epics.eve.data.measuringstation.Selections} of 
-	 * the measuring station.
-	 * 
-	 * @return the {@link de.ptb.epics.eve.data.measuringstation.Selections}
-	 */
-	Selections getSelections();
-
-	/**
 	 * Returns the version of the measuring station description.
 	 * 
 	 * @return the version of the measuring station or <code>null</code> if 

@@ -77,7 +77,8 @@ public class DefaultsAxisAdaptee {
 		@XmlElement(name = "startstopstep", type = DefaultsAxisModeAdaptee.class),
 		@XmlElement(name = "stepfilename", type = String.class),
 		@XmlElement(name = "plugin", type = DefaultsAxisPlugin.class),
-		@XmlElement(name = "positionlist", type = String.class) 
+		@XmlElement(name = "positionlist", type = String.class),
+		@XmlElement(name = "range", type = String.class)
 	})
 	public void setMode(Object mode) {
 		this.mode = mode;

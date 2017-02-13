@@ -30,7 +30,6 @@
             </sequence>
           </complexType>
         </element>
-        <element name="smselection" type="tns:selection" minOccurs="0"></element>
       </sequence>
     </complexType>
   </element>
@@ -277,6 +276,7 @@
         <element name="stepfilename" type="string"></element>
         <element name="plugin" type="tns:controller"></element>
         <element name="positionlist" type="string"></element>
+        <element name="range" type="string"></element>
       </choice>
     </sequence>
   </complexType>
@@ -579,19 +579,6 @@
       <enumeration value="none"></enumeration>
     </restriction>
   </simpleType>
-  
-  <complexType name="selection">
-    <sequence>
-      <element name="stepfunction" type="tns:stepfunctionlist"></element>
-      <element name="smtype" type="string"></element>
-    </sequence>
-  </complexType>
-
-  <simpleType name="stepfunctionlist">
-    <restriction base="string">
-      <pattern value="Add,Multiply,File,Plugin,Positionlist"/>
-    </restriction>
-  </simpleType>
 
   <simpleType name="stepfunction">
     <restriction base="string">
@@ -600,6 +587,7 @@
       <enumeration value="File"></enumeration>
       <enumeration value="Plugin"></enumeration>
       <enumeration value="Positionlist"></enumeration>
+      <enumeration value="Range"></enumeration>
     </restriction>
   </simpleType>
 

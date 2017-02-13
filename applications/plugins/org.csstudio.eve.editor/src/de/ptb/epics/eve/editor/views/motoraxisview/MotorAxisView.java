@@ -2,8 +2,6 @@ package de.ptb.epics.eve.editor.views.motoraxisview;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.LinkedList;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.ISelection;
@@ -40,6 +38,8 @@ import de.ptb.epics.eve.editor.views.motoraxisview.addmultiplycomposite.AddMulti
 import de.ptb.epics.eve.editor.views.motoraxisview.filecomposite.FileComposite;
 import de.ptb.epics.eve.editor.views.motoraxisview.plugincomposite.PluginComposite;
 import de.ptb.epics.eve.editor.views.motoraxisview.positionlistcomposite.PositionlistComposite;
+import de.ptb.epics.eve.editor.views.motoraxisview.rangecomposite.RangeComposite;
+import de.ptb.epics.eve.util.io.StringUtil;
 
 /**
  * <code>MotorAxisView</code> shows the attributes of a 
@@ -91,11 +91,9 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 	private FileComposite fileComposite;
 	private PluginComposite pluginComposite;
 	private PositionlistComposite positionlistComposite;
+	private RangeComposite rangeComposite;
 	
 	private SashForm sashForm;
-	
-	private String[] stepfunctions;
-	private List<String> discreteStepfunctions;
 	
 	private EditorViewPerspectiveListener editorViewPerspectiveListener;
 	
@@ -104,7 +102,6 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 	 */
 	@Override
 	public void createPartControl(final Composite parent) {
-		// simple fill layout
 		parent.setLayout(new FillLayout());
 		
 		// if no measuring station loaded -> show error, do nothing
@@ -115,7 +112,6 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 			return;
 		}
 		
-		// layout, scrolling and top composite
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
 		GridData gridData;
@@ -146,16 +142,6 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 		gridData.horizontalSpan = 2;
 		separator.setLayoutData(gridData);
 		
-		// step function elements
-		this.stepfunctions = Activator.getDefault().getMeasuringStation().
-				getSelections().getStepfunctions();
-		
-		this.discreteStepfunctions = new LinkedList<String>();
-		for(String s : this.stepfunctions) {
-			if(!(s.equals("Add") || s.equals("Multiply"))) {
-				this.discreteStepfunctions.add(s);
-			}
-		}
 		this.stepfunctionLabel = new Label(this.top, SWT.NONE);
 		this.stepfunctionLabel.setText("Step Function: ");
 		gridData = new GridData();
@@ -164,7 +150,6 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 		this.stepfunctionLabel.setLayoutData(gridData);
 		
 		this.stepFunctionCombo = new Combo(this.top, SWT.READ_ONLY);
-		this.stepFunctionCombo.setItems(this.stepfunctions);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
@@ -174,9 +159,7 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 				new StepFunctionComboSelectionListener();
 		this.stepFunctionCombo.addSelectionListener(
 				stepFunctionComboSelectionListener);
-		// end of: step function elements
 		
-		// position mode elements
 		this.positionModeLabel = new Label(this.top, SWT.NONE);
 		this.positionModeLabel.setText("Position Mode: ");
 		gridData = new GridData();
@@ -193,7 +176,6 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 				new PositionModeComboSelectionListener();
 		this.positionModeCombo.addSelectionListener(
 				positionModeComboSelectionListener);
-		// end of: position mode elements
 		
 		sashForm = new SashForm(top, SWT.VERTICAL);
 		gridData = new GridData();
@@ -213,10 +195,11 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 				new PluginComposite(sashForm, SWT.NONE);
 		this.positionlistComposite = 
 				new PositionlistComposite(sashForm, SWT.NONE);
+		this.rangeComposite = 
+				new RangeComposite(sashForm, SWT.NONE);
 		
 		sashForm.setMaximizedControl(this.emptyComposite);
 		
-		// content not visible after creation of the view
 		top.setVisible(false);
 		
 		// listen to selection changes (the selected axis' properties are 
@@ -230,9 +213,6 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 				.addPerspectiveListener(this.editorViewPerspectiveListener);
 	}
-	// ************************************************************************
-	// ********************** end of createPartControl ************************
-	// ************************************************************************
 	
 	/**
 	 * {@inheritDoc}
@@ -280,21 +260,21 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 			this.positionModeCombo.setText(PositionMode.typeToString(
 					this.currentAxis.getPositionMode()));
 			if(this.currentAxis.getMotorAxis().getGoto().isDiscrete()) {
-				this.stepFunctionCombo.setItems(
-						this.discreteStepfunctions.toArray(new String[0]));
 				this.positionModeLabel.setVisible(false);
 				this.positionModeCombo.setVisible(false);
 			} else {
-				this.stepFunctionCombo.setItems(stepfunctions);
 				this.positionModeLabel.setVisible(true);
 				this.positionModeCombo.setVisible(true);
 			}
+			this.stepFunctionCombo.setItems(StringUtil.getStringList(
+					this.currentAxis.getStepfunctions()).toArray(new String[0]));
 			this.stepFunctionCombo.setText(
 					this.currentAxis.getStepfunction().toString());
 			this.addMultipyComposite.setAxis(null);
 			this.fileComposite.setAxis(null);
 			this.pluginComposite.setAxis(null);
 			this.positionlistComposite.setAxis(null);
+			this.rangeComposite.setAxis(null);
 			
 			this.currentAxis.getMotorAxis().connect();
 			
@@ -350,11 +330,20 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 			targetHeight = positionlistComposite.getTargetHeight() 
 							+ sashY;
 			break;
+		case RANGE:
+			this.sashForm.setMaximizedControl(rangeComposite);
+			this.rangeComposite.setAxis(currentAxis);
+			targetWidth = rangeComposite.getBounds().width + sashX;
+			targetHeight = rangeComposite.getBounds().height + sashY;
+			break;
 		default:
 			this.sashForm.setMaximizedControl(emptyComposite);
 			break;
 		}
-		sc.setMinSize(targetWidth, targetHeight);
+		sc.setMinSize(this.sashForm.getMaximizedControl().getBounds().width + 
+				sashForm.getBounds().x, 
+				this.sashForm.getMaximizedControl().getBounds().height + 
+				sashForm.getBounds().y);
 	}
 
 	/**
@@ -442,10 +431,6 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 				positionModeComboSelectionListener);
 	}	
 	
-	// ************************************************************************
-	// **************************** Listeners *********************************
-	// ************************************************************************
-
 	/**
 	 * {@link org.eclipse.swt.events.SelectionListener} of StepFunctionCombo.
 	 */

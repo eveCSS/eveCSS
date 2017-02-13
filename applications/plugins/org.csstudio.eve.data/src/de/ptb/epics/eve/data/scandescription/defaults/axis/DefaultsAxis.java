@@ -78,6 +78,9 @@ public class DefaultsAxis implements Comparable<DefaultsAxis> {
 		case POSITIONLIST:
 			this.mode = new DefaultsAxisList();
 			break;
+		case RANGE:
+			this.mode = new DefaultsAxisRange();
+			break;
 		default: 
 			this.mode = null;
 			break;
@@ -171,6 +174,30 @@ public class DefaultsAxis implements Comparable<DefaultsAxis> {
 					+ Stepfunctions.POSITIONLIST);
 		}
 		((DefaultsAxisList)this.mode).setPositionList(list);
+	}
+	
+	/**
+	 * @return the range
+	 * @since 1.28
+	 */
+	public String getRange() {
+		if (!(this.mode instanceof DefaultsAxisRange)) {
+			throw new IllegalStateException("Axis step function is not "
+					+ Stepfunctions.RANGE);
+		}
+		return ((DefaultsAxisRange)this.mode).getRange();
+	}
+	
+	/**
+	 * @param range the range to set
+	 * @since 1.28
+	 */
+	public void setRange(String range) {
+		if (!(this.mode instanceof DefaultsAxisRange)) {
+			throw new IllegalStateException("Axis step function is not "
+					+ Stepfunctions.RANGE);
+		}
+		((DefaultsAxisRange)this.mode).setRange(range);
 	}
 	
 	/**

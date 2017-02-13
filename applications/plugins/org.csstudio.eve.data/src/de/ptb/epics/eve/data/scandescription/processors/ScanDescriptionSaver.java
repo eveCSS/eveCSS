@@ -36,7 +36,6 @@ import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.data.measuringstation.PlugIn;
 import de.ptb.epics.eve.data.measuringstation.PluginParameter;
 import de.ptb.epics.eve.data.measuringstation.Access;
-import de.ptb.epics.eve.data.measuringstation.Selections;
 import de.ptb.epics.eve.data.measuringstation.Unit;
 import de.ptb.epics.eve.data.measuringstation.event.ScheduleEvent;
 import de.ptb.epics.eve.data.scandescription.Axis;
@@ -241,7 +240,6 @@ public class ScanDescriptionSaver implements
 			successful = this.writeDetectors();
 			successful = this.writeMotors();
 			successful = this.writeDevices();
-			successful = this.writeSelections(this.measuringStation.getSelections());
 
 			this.contentHandler.endElement("tns", "scml", "tns:scml");
 			this.contentHandler.endDocument();
@@ -1934,6 +1932,17 @@ public class ScanDescriptionSaver implements
 							Literals.XML_ELEMENT_NAME_POSITIONLIST);
 				}
 				break;
+			case RANGE:
+				if (axis.getRange() != null) {
+					this.atts.clear();
+					this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_RANGE, 
+							Literals.XML_ELEMENT_NAME_RANGE, this.atts);
+					this.contentHandler.characters(axis.getRange().toCharArray(), 
+							0, axis.getRange().length());
+					this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_RANGE, 
+							Literals.XML_ELEMENT_NAME_RANGE);
+				}
+				break;
 			default: 
 				break;
 			}
@@ -2104,59 +2113,6 @@ public class ScanDescriptionSaver implements
 			}
 			this.atts.clear();
 			this.contentHandler.endElement("", name, name);
-		} catch (SAXException e) {
-			logger.error(e.getMessage(), e);
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * This method writes the selections.
-	 * 
-	 * @param selections
-	 *            The selections that should be written.
-	 * @return Returns if the write process was successful.
-	 */
-	private boolean writeSelections(final Selections selections) {
-		this.atts.clear();
-		try {
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_SMSELECTION, Literals.XML_ELEMENT_NAME_SMSELECTION,
-					this.atts);
-			this.atts.clear();
-			final StringBuffer stringBuffer = new StringBuffer();
-			String[] stringArray = selections.getStepfunctions();
-			for (int i = 0; i < stringArray.length; ++i) {
-				stringBuffer.append(stringArray[i]);
-				if (i != stringArray.length - 1) {
-					stringBuffer.append(',');
-				}
-			}
-			stringBuffer.toString().toCharArray();
-			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_STEPFUNCTION,
-					Literals.XML_ELEMENT_NAME_STEPFUNCTION, this.atts);
-			this.contentHandler.characters(stringBuffer.toString()
-					.toCharArray(), 0, stringBuffer.toString().length());
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_STEPFUNCTION, Literals.XML_ELEMENT_NAME_STEPFUNCTION);
-
-			stringBuffer.delete(0, stringBuffer.length());
-			stringArray = selections.getSmtypes();
-			for (int i = 0; i < stringArray.length; ++i) {
-				stringBuffer.append(stringArray[i]);
-				if (i != stringArray.length - 1) {
-					stringBuffer.append(',');
-				}
-			}
-			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_SMTYPE, Literals.XML_ELEMENT_NAME_SMTYPE, this.atts);
-			this.contentHandler.characters(stringBuffer.toString()
-					.toCharArray(), 0, stringBuffer.toString().length());
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_SMTYPE, Literals.XML_ELEMENT_NAME_SMTYPE);
-
-			stringBuffer.delete(0, stringBuffer.length());
-
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_SMSELECTION, Literals.XML_ELEMENT_NAME_SMSELECTION);
 		} catch (SAXException e) {
 			logger.error(e.getMessage(), e);
 			return false;

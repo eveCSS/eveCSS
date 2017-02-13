@@ -508,6 +508,9 @@ public class DefaultsManager {
 		case POSITIONLIST:
 			to.setPositionlist(from.getPositionList());
 			break;
+		case RANGE:
+			to.setRange(from.getRange());
+			break;
 		}
 	}
 	
@@ -566,6 +569,9 @@ public class DefaultsManager {
 			break;
 		case POSITIONLIST:
 			defaultsAxis.setPositionList(axis.getPositionlist());
+			break;
+		case RANGE:
+			defaultsAxis.setRange(axis.getRange());
 			break;
 		}
 		return defaultsAxis;

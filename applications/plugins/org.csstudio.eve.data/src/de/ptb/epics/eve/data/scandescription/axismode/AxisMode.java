@@ -58,6 +58,8 @@ public abstract class AxisMode implements IModelErrorProvider {
 			return new PluginMode(axis);
 		case POSITIONLIST: 
 			return new PositionlistMode(axis);
+		case RANGE:
+			return new RangeMode(axis);
 		default: 
 			throw new IllegalArgumentException("Incorrect Stepfunction code");
 		}
@@ -134,6 +136,10 @@ public abstract class AxisMode implements IModelErrorProvider {
 			PositionlistMode newPositionlistMode = (PositionlistMode) newMode;
 			newPositionlistMode.setPositionList(axisPositionlistMode
 					.getPositionList());
+		} else if (axisMode instanceof RangeMode) {
+			RangeMode axisRangeMode = (RangeMode) axisMode;
+			RangeMode newRangeMode = (RangeMode) newMode;
+			newRangeMode.setRange(axisRangeMode.getRange());
 		}
 		
 		return newMode;

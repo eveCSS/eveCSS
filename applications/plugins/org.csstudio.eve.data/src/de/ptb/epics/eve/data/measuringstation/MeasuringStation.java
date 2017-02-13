@@ -53,12 +53,6 @@ public class MeasuringStation extends AbstractMeasuringStation{
 	// a List, that is holding all detectors
 	private final List<Detector> detectors;
 	
-	/*
-	 * A Selection object, that describes all selections, that are available 
-	 * at the measuring station.
-	 */
-	private final Selections selections;
-	
 	// a Map, that makes all PlugIns available by their names
 	private final Map<String, PlugIn> pluginsMap;
 	
@@ -85,7 +79,6 @@ public class MeasuringStation extends AbstractMeasuringStation{
 		this.devices = new ArrayList<Device>();
 		this.motors = new ArrayList<Motor>();
 		this.detectors = new ArrayList<Detector>();
-		this.selections = new Selections();
 		this.pluginsMap = new HashMap< String, PlugIn>();
 		this.motorAxisMap = new HashMap<String, MotorAxis>();
 		this.detectorChannelsMap = new HashMap<String, DetectorChannel>();
@@ -367,14 +360,6 @@ public class MeasuringStation extends AbstractMeasuringStation{
 	@Override
 	public List<PlugIn> getPlugins() {
 		return new ArrayList<PlugIn>(this.plugins);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Selections getSelections() {
-		return this.selections;
 	}
 
 	/**

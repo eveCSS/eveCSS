@@ -17,7 +17,6 @@ import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.data.measuringstation.PlugIn;
-import de.ptb.epics.eve.data.measuringstation.Selections;
 import de.ptb.epics.eve.data.measuringstation.event.Event;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Channel;
@@ -73,12 +72,6 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 	// a List, that is holding all detectors
 	private final List<Detector> detectors;
 	
-	/*
-	 * A Selection object, that describes all selections, that are available 
-	 * at the measuring station.
-	 */
-	private final Selections selections;
-	
 	// a Map, that makes all PlugIns available by their names
 	private final Map<String, PlugIn> pluginsMap;
 	
@@ -133,7 +126,6 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 		this.devices = new ArrayList<Device>();
 		this.motors = new ArrayList<Motor>();
 		this.detectors = new ArrayList<Detector>();
-		this.selections = new Selections();
 		this.pluginsMap = new HashMap<String, PlugIn>();
 		this.motorAxisMap = new HashMap<String, MotorAxis>();
 		this.detectorChannelsMap = new HashMap<String, DetectorChannel>();
@@ -187,14 +179,6 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 	@Override
 	public List<PlugIn> getPlugins() {
 		return new ArrayList<PlugIn>(this.plugins);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Selections getSelections() {
-		return this.selections;
 	}
 
 	/**
@@ -571,8 +555,6 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 		this.devices.clear();
 		this.motors.clear();
 		this.detectors.clear();
-		this.selections.setSmtypes(new String[0]);
-		this.selections.setStepfunctions(new String[0]);
 		this.pluginsMap.clear();
 		this.motorAxisMap.clear();
 		this.detectorChannelsMap.clear();
@@ -640,11 +622,6 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 					this.detectors.add(m);
 				}
 			}
-
-			this.selections.setSmtypes(this.getSource().getSelections()
-					.getSmtypes());
-			this.selections.setStepfunctions(this.getSource().getSelections()
-					.getStepfunctions());
 
 			for (final PlugIn plugIn : this.plugins) {
 				this.pluginsMap.put(plugIn.getName(), plugIn);

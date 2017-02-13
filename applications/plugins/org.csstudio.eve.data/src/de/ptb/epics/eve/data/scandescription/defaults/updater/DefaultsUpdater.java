@@ -20,5 +20,6 @@ public class DefaultsUpdater extends Updater {
 		super();
 		this.addPatch(Patch1o0T1o1.getInstance());
 		this.addPatch(Patch1o1T2o0.getInstance());
+		this.addPatch(Patch2o0T3o0.getInstance());
 	}
 }

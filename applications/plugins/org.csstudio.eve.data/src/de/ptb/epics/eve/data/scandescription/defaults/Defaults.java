@@ -27,7 +27,7 @@ public class Defaults {
 	private static final Logger LOGGER = Logger.getLogger(Defaults.class
 			.getName());
 	
-	private static final int MAJOR_VERSION = 2;
+	private static final int MAJOR_VERSION = 3;
 	private static final int MINOR_VERSION = 0;
 	
 	private String version;
