@@ -1,0 +1,218 @@
+h1(eveTopic|#top). Motor Axis View
+
+{toc:style=circle|maxLevel=2}
+
+p. The Motor Axis View displays (and allows to modify) properties of an axis. The axis being shown is the one selected in the "Scan Module View":scanmoduleview.html. Additionally (if available) the current position and limits of the axis are displayed at the top.
+
+p. A motor axis has different modes (called __step functions__) which in combination with its __position mode__ define its behavior. Available position modes are __absolute__ (given positions are actuated as is) and __relative__ (given positions are actuated relative to the position the axis had at the start of the scan module). The step functions are described in detail in the following subsections.
+
+h2(eveTopic). Add (numerical)
+
+p. "back to top":#top
+
+p. The __Add__ step function is used to screen an area, i.e. go from a defined start position to a target position with an amount of sub steps each of equal width.
+
+p=. !(eveImage)../../img/concepts/MotorAxisView/add.png(motor axis view example of an add step function)!
+
+p. Within the Add step function the positions of the motor axis are defined by a quadruple consisting of __start__, __stop__, __stepwidth__ and __stepcount__. The fourth value (indicated by the radio box selection) is calculated via the following relationship:
+
+p=. !(eveImage)../../img/concepts/MotorAxisView/add-relationship.png(relationship of start, stop, stepwidth and stepcount)!
+
+p. In absolute position mode the i-th position is calculated as follows:
+
+p=. !(eveImage)../../img/concepts/MotorAxisView/xi.png(formula for calculating the i-th position with absolute positiong)!
+
+p. Regardless if (__stop__ - __start__) mod __stepwidth__ &#8800; 0 (i.e. the distance between __stop__ and the __i-1__-th position is less than __stepwidth__) __stop__ is incorporated.
+
+p. For relative positioning the __i__-th position is calculated relative to the motor position __mPos__ at the beginning of the scan module as follows:
+
+p=. !(eveImage)../../img/concepts/MotorAxisView/xi-rel.png(formula for calculating the i-th position with relative positioning)!
+
+p. As in absolute position mode __stop__ is always incorporated.
+
+h3(eveTopic). Example 1
+
+p. Given: __Start__=1, __Stop__=10, __Stepwidth__=1 (absolute) ==&rArr;== __Stepcount__=9 (calculated)
+
+p. Motor positions: (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+
+h3(eveTopic). Example 2
+
+p. Given: __Start__=1, __Stop__=10, __Stepwidth__=2 (absolute) ==&rArr;== __Stepcount__=5 (calculated)
+
+p. Motor positions: (1, 3, 5, 7, 9, 10)
+
+p. __Note:__ The last position (__Stop__) is always actuated (disregarding the shorter stepwidth).
+
+h3(eveTopic). Example 3
+
+p. Given: __Start__=1, __Stop__=10, __Stepwidth__=1, __mPos__=5 (relative) ==&rArr;== __Stepcount__=9 (calculated)
+
+p. Motor positions: (6, 7, 8, 9, 10, 11, 12, 13, 14, 15)
+
+h3(eveTopic). Example 4
+
+p. Given: __Start__=0, __Stop__=20, __Stepcount__=50 (absolute) ==&rArr;== __Stepwidth__=0.4 (calculated)
+
+p. Motor positions: (0, 0.4, 0.8, ..., 49.2, 49.6, 50)
+
+p. __Note:__ In this example the step count is given and the step width is calculated.
+
+h2(eveTopic). Add (msec Timer)
+
+p. "back to top":#top
+
+p. There are two specific (pseudo-)motors called "Timer" and "msec Timer" allowing to define points in time imitating motor positions. In these cases __position mode__ has the following effects:
+
+* absolute: the scan starts the timer, the beginning of a scan module resets it
+* relative: the scan starts the timer (then it increments til the end of the scan)
+
+p. The unit of the values is __s__ (seconds) for "Timer" and __ms__ (milliseconds) for "msec Timer".
+
+h2(eveTopic). Add (date Timer)
+
+p. "back to top":#top
+
+p. There's a specific (pseudo-)motor called "date Timer" allowing to define a time span with discrete points in time imitating motor positions.
+
+p. Instead of entering dates and times manually a tooltip offers a more comfortable way:
+
+p=. !(eveImage)../../img/concepts/MotorAxisView/datetimer-tooltip.png(date timer axis tooltip help)!
+
+p. A click on the icon shows a dialog where a date and time could be selected in a calendar:
+
+p=. !(eveImage)../../img/concepts/MotorAxisView/datetimer-dialog.png(date timer axis date selection dialog)!
+
+p. Date and time axes with relative positioning are defined via __durations__:
+
+p=. !(eveImage)../../img/concepts/MotorAxisView/datetimer-relative.png(date timer relative mode)!
+
+p. Similar to absolute positioning there is a dialog offering a more comfortable way of input:
+
+p=. !(eveImage)../../img/concepts/MotorAxisView/datetimer-relative-dialog.png(date timer relative mode dialog input)!
+
+h2(eveTopic). Multiply
+
+p. "back to top":#top
+
+p. The __Multiply__ mode is also controlled by a given quadruple (__start__, __stop__, __stepwidth__, __stepcount__) but it differs in the way positions are calculated. The motor positions result by taking the sequence generated by the quadruple as multiplication factors of the initial motor position.
+Since its calculation is based on the current motor position the __Multiply__ mode is always __relative__.
+
+h3(eveTopic). Example 1
+
+p. Given: __Start__=1, __Stop__=5, __Stepwidth__=1, __mPos__=2 (relative) ==&rArr;== __Stepcount__=4
+
+p. Motor positions: (2 ==&middot;== 1, 2 ==&middot;== 2, 2 ==&middot;== 3, 2 ==&middot;== 4, 2 ==&middot;== 5) = (2, 4, 6, 8, 10)
+
+h3(eveTopic). Example 2
+
+p. Given: __Start__=1, __Stop__=10, __Stepwidth__=2, __mPos__=2 (relative) ==&rArr;== __Stepcount__=5
+
+p. Motor positions: (2 ==&middot;== 1, 2 ==&middot;== 3, 2 ==&middot;== 5, 2 ==&middot;== 7, 2 ==&middot;== 9, 2 ==&middot;== 10) = (2, 6, 10, 14, 18, 20)
+
+h2(eveTopic). File
+
+p. "back to top":#top
+
+p. The file step function expects a file containing the positions (one per line). If the file is found and parsed correctly some summary statistics are shown:
+
+p=. !(eveImage)../../img/concepts/MotorAxisView/file.png(motor axis view with step function file)!
+
+p. As in the add step function the positions can be used as absolute or relative.
+
+p. In contrast to the add step function a position file allows sharing of the positions between different scans (scml files). Furthermore non equidistant positions or even gaps can be modeled.
+
+h2(eveTopic). Positionlist
+
+p. "back to top":#top
+
+p. In addition to a file a position list can also be defined directly in the application. The input list is entered in a text field, values are delimited by commata.
+
+p=. !(eveImage)../../img/concepts/MotorAxisView/positionlist.png(motor axis view with step function positionlist)!
+
+p. If the list is parsed correctly the number of positions is displayed at the bottom.
+
+p. Position lists can be used as absolute or relative.
+
+h2(eveTopic). Range
+
+p. "back to top":#top
+
+p. The range step function is like the add step function but it is more powerful. The following syntax is used to define a range:
+
+table(eveDataTable).
+|_. syntax |_. description |
+| @j:k@ | generates a positionlist from @j@ to @k@ with stepwidth @1@ |
+| @j:i:k@ | generates a positionlist from @j@ to @k@ with stepwidth @i@ |
+| @j:k/n@ | generates a positionlist from @j@ to @k@ with @n@ steps of equal width |
+
+p. The above range definitions can be aligned by separating them with comma. A preview shows the resulting position list as well as the number of positions.
+
+p. Ranges can be used as absolute and relative.
+
+h3(eveTopic). Example 1 - a range from 1 to 5 (with auto stepwidth 1)
+
+p=. !(eveImage)../../img/concepts/MotorAxisView/range-jk.png(range example with from, to and auto stepwidth)!
+
+h3(eveTopic). Example 2 - a range from 1 to 10 with stepwidth 2
+
+p=. !(eveImage)../../img/concepts/MotorAxisView/range-jik.png(range example with from, then, to)!
+
+p. __Note__: The stop value is incorporated although its distance is lower than stepwidth to the previous position.
+
+h3(eveTopic). Example 3 - a range from 1 to 20 with 5 steps of equal width
+
+p=. !(eveImage)../../img/concepts/MotorAxisView/range-equalwidth.png(range example with from, to and number of steps with equal stepwidth)!
+
+h3(eveTopic). Example 4 - a gap defined by two aligned j:k ranges
+
+p=. !(eveImage)../../img/concepts/MotorAxisView/range-gap.png(range example with multiple ranges, defining a gap)!
+
+h3(eveTopic). Example 5 - multiple aligned ranges of different kinds
+
+p=. !(eveImage)../../img/concepts/MotorAxisView/range-complex.png(complex range example with multiple ranges of different kinds)!
+
+h2(eveTopic). Plugin 
+
+p. "back to top":#top
+
+p. The behavior in the plug-in step function is defined by the chosen plug-in. Depending on the plug-in a number of parameters have to be set.
+
+table(eveDataTable).
+|_. Plug-In |_. absolute |_. relative |_. Parameters |
+| __MotionDisabled__ | !(eveImage)../../img/misc/signed_yes.gif! | !(eveImage)../../img/misc/signed_no.gif! |  |
+| __ReferenceAdd__ | !(eveImage)../../img/misc/signed_yes.gif! | !(eveImage)../../img/misc/signed_no.gif! | summand, referenceaxis |
+| __ReferenceMultiply__ | !(eveImage)../../img/misc/signed_yes.gif! | !(eveImage)../../img/misc/signed_no.gif! | factor, referenceaxis |
+
+
+h3(eveTopic). MotionDisabled
+
+p. If this plugin is set, only the position of this axis will be read without positioning
+
+h3(eveTopic). ReferenceAdd
+
+p. If this plugin is set, the positions of the axis, are the positions of the reference axis with adding a summand.
+
+h4(eveTopic). Example 1
+
+p. Given: 
+Axis 1: __Start__=1, __Stop__=5, __Stepwidth__=1 (absolute) ==&rArr;== __Stepcount__ = 9
+Axis 2: __summand__=4.8, __referenceaxis__=Axis2, (absolute) 
+
+p. Motor positions:
+Axis 1: (1, 2, 3, 4, 5)
+Axis 2: (5.8, 6.8, 7.8, 8.8, 9.8)
+
+h3(eveTopic). ReferenceMultiply
+
+p. If this plugin is set, the positions of the axis, are the position of the reference axis multiplied by a factor.
+
+h4(eveTopic). Example 1
+
+p. Given: 
+Axis 1: __Start__=1, __Stop__=5, __Stepwidth__=1 (absolute) ==&rArr;== __Stepcount__ = 9
+Axis 2: __factor__=1.5, __referenceaxis__=Axis2, (absolute) 
+
+p. Motor positions:
+Axis 1: (1, 2, 3, 4, 5)
+Axis 2: (1.5, 3, 4.5, 6, 7.5) 
