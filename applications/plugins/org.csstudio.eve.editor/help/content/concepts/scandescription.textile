@@ -20,9 +20,12 @@ p=. !(eveImage)../../img/concepts/scanmodule.png(the four phases of a scan modul
 
 h3. Appended Scan Module
 
-An appended scan module is executed after the preceding module is completed.
+p. An appended scan module is executed after the preceding module is completed.
 
 h3. Nested Scan Module
 
-A nested scan module is processed at each motor position of its parent scan module. If multiple axes are moved the positions of the axis defined as "main axis" are used.
-*Note* that a scan modules prescan, postscan and positioning phases are only processed once (not at each iteration of the nested module(s)).
+p. A nested scan module is processed at each motor position of its parent scan module. If multiple axes are moved the positions of the axis defined as "main axis" are used.
+
+p. __Note__ that a scan modules prescan, postscan and positioning phases are only processed once (not at each iteration of its nested module(s)).
+
+p. __Note__ that axes in the parent and nested scan modules are actuated one after another (to reach their starting positions).
