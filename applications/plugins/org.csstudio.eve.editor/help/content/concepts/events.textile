@@ -16,11 +16,11 @@ table(eveDataTable).
 
 p. Monitor conditions are evaluated at the start of a chain/scan module.
 
-h2. Outcomes
+h2(eveTopic). Outcomes
 
 p. The effect an event has depends on its outcome which is one of _pause_, _redo_, _break_, _stop_, _trigger_. 
 
-h3. Pause Event
+h3(eveTopic). Pause Event
 
 p. The scan has a state which is either _running_ or _pause_. A detector or schedule event (trigger events) can manipulate that state by its action attribute as follows:
 
@@ -54,15 +54,23 @@ p. If the specified condition is not met nothing happens at all (even rows). Row
 
 p. +Note+: Each event can continue the scan (stop the pause) regardless of which event paused it. "Read more":#combine on combining events.
 
-h3. Redo Event
+h3(eveTopic). Redo Event
 
-If caused by trigger events (detector or schedule) the detector is read again or the scan module is executed again respectively. Monitor events behave the same way (redo if condition is @true@) except that they will pause the scan before reading/executing again until the event sends @false@.
+p. If caused by trigger events (detector or schedule) the detector is read again or the scan module is executed again respectively. Monitor events behave the same way (redo if condition is @true@) except that they will pause the scan before reading/executing again until the event sends @false@.
 
-h3. Break/Stop/Trigger Event
+h3(eveTopic). Break Event
+
+p. Skips the current chain or scan module. Post scan actions of the scan module are still executed.
+
+h3(eveTopic). Stop Event
+
+p. Stops the current chain. Post scan actions of the currently active scan module are still executed.
+
+h3(eveTopic). Trigger Event
 
 Caused by a trigger event (detector or schedule) and monitor event sending @true@.
 
-h3. Monitor Event in a Scan Module
+h3(eveTopic). Monitor Event in a Scan Module
 
 table(eveDataTable).
 |_.Event|_.during initialization|_.at start|_.in the Scan Module|
@@ -70,7 +78,7 @@ table(eveDataTable).
 |<. Redo |no action| no scan point reading| no scan point reading|
 |<. Skip |no action |%(red)no action%| skip to next ScanModule |
 
-h3. Monitor Event in the Chain
+h3(eveTopic). Monitor Event in the Chain
 
 table(eveDataTable).
 |_.Event|_.during initialization|_.at start|_.in the Scan Module|
@@ -80,7 +88,7 @@ table(eveDataTable).
 |<. Stop |%(red)exit scan% |%(red)not possible% | Stop the Scan |
 
 
-h2(#combine). Combining _Chain_ and _ScanModule_ Events
+h2(eveTopic|#combine). Combining _Chain_ and _ScanModule_ Events
 
 p. Chains and scan modules have _independent_ pause states, i.e. both scan module and chain states must be _running_ in order to continue a scan.
 
