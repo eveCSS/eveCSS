@@ -1,5 +1,8 @@
 package de.ptb.epics.eve.viewer.views.playlistview;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Image;
@@ -26,12 +29,20 @@ public class PlayListTableLabelProvider implements ITableLabelProvider {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String getColumnText( final Object element, final int columnIndex) {
+	public String getColumnText(final Object element, final int columnIndex) {
 		PlayListEntry entry = (PlayListEntry)element;
-		if( columnIndex == 0 ) {
+		if(columnIndex == 0) {
 			return entry.getName();
+		} else if (columnIndex == 1) {
+			return entry.getAuthor();
+		} else if (columnIndex == 2) {
+			Date date = entry.getTimeStamp();
+			if (date == null) {
+				return "";
+			}
+			return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
 		}
-		return entry.getAuthor();
+		return "";
 	}
 
 	/**

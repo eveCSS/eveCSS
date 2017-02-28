@@ -108,17 +108,20 @@ public final class PlayListView extends ViewPart
 	 * 
 	 */
 	private void createColumns() {
-		// file column
 		TableViewerColumn fileColumn = new TableViewerColumn(
 				this.tableViewer, SWT.LEFT);
 		fileColumn.getColumn().setText("File");
 		fileColumn.getColumn().setWidth(200);
 		
-		// author column
 		TableViewerColumn authorColumn = new TableViewerColumn(
 				this.tableViewer, SWT.LEFT);
 		authorColumn.getColumn().setText("Author");
 		authorColumn.getColumn().setWidth(60);
+		
+		TableViewerColumn dateColumn = new TableViewerColumn(
+				this.tableViewer, SWT.LEFT);
+		dateColumn.getColumn().setText("added on");
+		dateColumn.getColumn().setWidth(120);
 	}
 	
 	/*
