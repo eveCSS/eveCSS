@@ -71,6 +71,13 @@ pre {
 	background: url(../img/misc/unknown_obj.gif) no-repeat;
 }
 
+.backToTop {
+	font-style: underline;
+	display: inline;
+	padding-left: 20px;
+	background: url(../img/misc/prev_nav.gif) no-repeat;
+}
+
 .red {
 	color: red;
 }

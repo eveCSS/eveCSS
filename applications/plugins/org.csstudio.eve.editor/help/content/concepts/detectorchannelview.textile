@@ -8,7 +8,7 @@ p. Generally a channel has one of three modes which determines its behavior. Dep
 
 h2(eveTopic). Standard (Mode) Channel
 
-p. "back to top":#top
+p(backToTop). "back to top":#top
 
 p. The standard mode as the name suggests is the one most commonly used. Several properties can be set. The image below shows an example of a channel in standard mode followed by a short description of each property.
 
@@ -93,7 +93,7 @@ p. measured values: {%(green)4.231%, %(green)4.787%, %(green)4.687%} ==&rArr;== 
 
 h2(eveTopic). Interval (Mode) Channel
 
-p. "back to top":#top
+p(backToTop). "back to top":#top
 
 p. The interval mode calculates a mean of values measured on a given interval until another channel is done. The resulting data file contains only one measurement, the mean (aside of
 some additional information such as the count of measurements and their standard deviation). The image below shows an example of a channel in interval mode followed by a short description of each property.
@@ -126,7 +126,7 @@ p. Take into account that in interval mode only the mean value (alongside the nu
 
 h2(eveTopic). Normalize (Mode) Channel
 
-p. "back to top":#top
+p(backToTop). "back to top":#top
 
 p. the normalize mode is a special mode. It does not have any properties at all. It just indicates that the selected channel is used for normalization by another channel (or channels). The properties are derived from the channel it normalizes. The image below shows an example of a channel in normalize mode.
 
