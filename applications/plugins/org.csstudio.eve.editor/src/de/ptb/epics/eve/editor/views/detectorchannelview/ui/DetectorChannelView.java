@@ -32,6 +32,8 @@ import org.eclipse.swt.layout.GridData;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.channelmode.ChannelModes;
+import de.ptb.epics.eve.data.scandescription.defaults.DefaultsManager;
+import de.ptb.epics.eve.data.scandescription.defaults.channel.DefaultsChannel;
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.gef.editparts.ChainEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.ScanDescriptionEditPart;
@@ -136,8 +138,18 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 		acquisitionTypeComboViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
+				if (currentChannel.getChannelMode().equals(ChannelModes.getEnum(
+						acquisitionTypeComboViewer.getCombo().getText()))) {
+					return;
+				}
 				currentChannel.setChannelMode(ChannelModes.getEnum(
 						acquisitionTypeComboViewer.getCombo().getText()));
+				DefaultsChannel defChannel = Activator.getDefault().getDefaults()
+						.getChannel(currentChannel.getDetectorChannel().getID());
+				if (defChannel != null && defChannel.getMode().getType().equals(
+						currentChannel.getChannelMode())) {
+					DefaultsManager.transferDefaults(defChannel, currentChannel);
+				}
 				setComposite();
 			}
 		});

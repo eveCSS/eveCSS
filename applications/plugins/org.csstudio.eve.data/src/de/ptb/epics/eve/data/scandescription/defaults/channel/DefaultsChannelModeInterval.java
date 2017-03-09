@@ -3,6 +3,8 @@ package de.ptb.epics.eve.data.scandescription.defaults.channel;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
+import de.ptb.epics.eve.data.scandescription.channelmode.ChannelModes;
+
 /**
  * @author Marcus Michalsky
  * @since 1.27
@@ -11,6 +13,14 @@ import javax.xml.bind.annotation.XmlType;
 public class DefaultsChannelModeInterval extends DefaultsChannelMode {
 	private double triggerInterval;
 	private String stoppedBy;
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ChannelModes getType() {
+		return ChannelModes.INTERVAL;
+	}
 	
 	/**
 	 * @return the triggerInterval
