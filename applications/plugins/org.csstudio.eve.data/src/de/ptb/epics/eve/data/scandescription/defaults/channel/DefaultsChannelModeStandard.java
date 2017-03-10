@@ -6,6 +6,8 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
+import de.ptb.epics.eve.data.scandescription.channelmode.ChannelModes;
+
 /**
  * @author Marcus Michalsky
  * @since 1.27
@@ -27,6 +29,14 @@ public class DefaultsChannelModeStandard extends DefaultsChannelMode {
 		this.maxAttempts = null;
 		this.deferred = false;
 		this.redoEvents = new ArrayList<DefaultsRedoEvent>();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ChannelModes getType() {
+		return ChannelModes.STANDARD;
 	}
 	
 	/**
