@@ -7,8 +7,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.util.zip.DataFormatException;
 
 import org.apache.log4j.Logger;
+
+import de.ptb.epics.eve.util.zip.ZipUtil;
 
 /**
  * @author Marcus Michalsky
@@ -25,6 +30,8 @@ public class HDF5Util {
 	 * Eight byte signature an EveSCML file begins with.
 	 */
 	public static final byte[] EVESCML_SIGNATURE = {69, 86, 69, 99, 83, 67, 77, 76};
+	
+	private static final int INTEGER_NUMBER_OF_BYTES = 4;
 	
 	private static final Logger LOGGER = 
 			Logger.getLogger(HDF5Util.class.getName());
@@ -72,10 +79,57 @@ public class HDF5Util {
 				}
 			}
 		} catch (EOFException e) {
-			LOGGER.error(e.getMessage(), e);
+			return false;
 		} catch (IOException e) {
 			LOGGER.error(e.getMessage(), e);
 		}
 		return true;
+	}
+	
+	/**
+	 * Returns the SCML data embedded in the given file
+	 * @param file the file the scml data should be extracted from
+	 * @return a byte array containing the scml data
+	 * @throws IllegalArgumentException if the file does not contain SCML data
+	 * @throws IOException if file not found or an I/O error occurs
+	 * @throws DataFormatException if the compressed data format is invalid
+	 */
+	public byte[] getSCML(File file) throws IllegalArgumentException, IOException, 
+			DataFormatException {
+		if (!HDF5Util.isEveSCML(file)) {
+			throw new IllegalArgumentException("No Embedded SCML data found!");
+		}
+		DataInputStream inputStream = new DataInputStream(
+				new BufferedInputStream(
+						new FileInputStream(file)));
+		
+		// skip signature part
+		for (int i = 0; i < HDF5Util.EVESCML_SIGNATURE.length; i++) {
+			inputStream.readByte();
+		}
+		
+		ByteBuffer buffer = ByteBuffer.allocate(HDF5Util.INTEGER_NUMBER_OF_BYTES);
+		buffer.order(ByteOrder.BIG_ENDIAN);
+		buffer.putInt(inputStream.readInt());
+		long lengthCompressed = Integer.toUnsignedLong(buffer.getInt(0));
+		
+		buffer.clear();
+		buffer.putInt(inputStream.readInt());
+		long lengthUncompressed = Integer.toUnsignedLong(buffer.getInt(0));
+		
+		byte[] compressedSCML = new byte[(int)lengthCompressed];
+		for (int i = 0; i < lengthCompressed; i++) {
+			compressedSCML[i] = inputStream.readByte();
+		}
+		
+		byte[] uncompressedSCML = ZipUtil.decompress(compressedSCML);
+		
+		if (uncompressedSCML.length != lengthUncompressed) {
+			LOGGER.error("uncompressed length field differs from actual size");
+		}
+		
+		inputStream.close();
+		
+		return uncompressedSCML;
 	}
 }
