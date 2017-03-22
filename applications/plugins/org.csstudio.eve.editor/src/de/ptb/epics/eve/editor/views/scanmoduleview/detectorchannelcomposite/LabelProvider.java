@@ -72,8 +72,12 @@ public class LabelProvider implements ITableLabelProvider {
 				return Boolean.toString(chan.isDeferred());
 			} else if (chan.getChannelMode().equals(ChannelModes.INTERVAL) && 
 					chan.getStoppedBy() != null) {
-				return Boolean.toString(chan.getScanModule().getChannel(
-						chan.getStoppedBy()).isDeferred());
+				if (chan.getScanModule().getChannel(
+						chan.getStoppedBy()) != null) {
+					return Boolean.toString(chan.getScanModule().getChannel(
+							chan.getStoppedBy()).isDeferred());
+				}
+				return dash;
 			} else {
 				return dash;
 			}
