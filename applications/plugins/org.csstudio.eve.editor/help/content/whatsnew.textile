@@ -24,6 +24,20 @@ h3(eveTopic). Version 1.27.4
 
 * [Bug Fix] fixed a bug where the (de)selection of monitor options table columns caused a program freeze
 
+h3(eveTopic). Version 1.27.5
+
+* [Bug Fix] fixed orpahned help link in the scanmodule view
+* [Bug Fix] fixed a bug where the working directory path was not set in the file dialog of Open SCML
+
+h3(eveTopic). Version 1.27.6
+
+* [Bug Fix] fixed a bug where a channel does not get defaults after its acquisition mode was (re)set
+* [Bug Fix] fixed a bug where an eror occurred when deleting a channel used as a stopped by channel
+
+h3(eveTopic). Version 1.27.7
+
+* [Bug Fix] fixed a bug where a plot window of a copied scan module did not have the same id as the original
+
 h2(eveTopic). Version 1.26
 
 * [Feature] added two digit year macro for file names
