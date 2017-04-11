@@ -1,17 +1,13 @@
 package de.ptb.epics.eve.data.measuringstation.filter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
-import de.ptb.epics.eve.data.measuringstation.AbstractPrePostscanDevice;
 import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.Device;
@@ -19,7 +15,6 @@ import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.data.measuringstation.PlugIn;
-import de.ptb.epics.eve.data.measuringstation.Selections;
 import de.ptb.epics.eve.data.measuringstation.event.Event;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Chain;
@@ -51,184 +46,16 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * @author Hartmut Scherr
  */
 public class ExcludeFilter extends MeasuringStationFilter {
-
-	// logging
 	private static Logger logger = 
 			Logger.getLogger(ExcludeFilter.class.getName());
-	
-	// available events
-	private List<Event> events;
-	
-	// available plug ins
-	private final List<PlugIn> plugins;
-	
-	// available selections
-	private final Selections selections;
-	
-	// available devices
-	private final List<Device> devices;
-	
-	// available motors
-	private final List<Motor> motors;
-	
-	// available detectors
-	private final List<Detector> detectors;
-	
-	// a map of available plug ins (key = plug in name)
-	private final Map<String, PlugIn> pluginsMap;
-	
-	// a map of available detector channels (key = id)
-	private final Map<String, DetectorChannel> detectorChannelsMap;
-	
-	// a map of available events (key = id)
-	private final Map<String, Event> eventsMap;
-	
-	// a map of abstract pre post scan devices (key = id)
-	private final Map<String, AbstractPrePostscanDevice> prePostscanDeviceMap;
-
-	// a map if ???
-	private Map<String, List<AbstractDevice>> classMap;
-	
-	// parties interested in changes
-	private final List<IModelUpdateListener> modelUpdateListener;
-	
-	// excluded devices
-	private final List<AbstractDevice> excludeList;
-	
 	private boolean filterInProgress;
 	
 	/**
 	 * Constructs an <code>ExcludeFilter</code>.
 	 */
 	public ExcludeFilter() {
-		this.events = new ArrayList<Event>();
-		this.plugins = new ArrayList<PlugIn>();
-		this.devices = new ArrayList<Device>();
-		this.motors = new ArrayList<Motor>();
-		this.detectors = new ArrayList<Detector>();
-		this.selections = new Selections();
-		this.pluginsMap = new HashMap<String, PlugIn>();
-		this.motorAxisMap = new HashMap<String, MotorAxis>();
-		this.detectorChannelsMap = new HashMap<String, DetectorChannel>();
-		this.prePostscanDeviceMap = new HashMap<String, AbstractPrePostscanDevice>();
-		this.classMap = new HashMap<String, List<AbstractDevice>>();
-		this.eventsMap = new HashMap<String, Event>();
-		this.modelUpdateListener = new ArrayList<IModelUpdateListener>();
-		this.excludeList = new ArrayList<AbstractDevice>();
-		
+		super();
 		filterInProgress = false;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public List<Detector> getDetectors() {
-		return new ArrayList<Detector>(this.detectors);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public List<Device> getDevices() {
-		return new ArrayList<Device>(this.devices);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public List<Event> getEvents() {
-		return new ArrayList<Event>(this.events);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public List<Motor> getMotors() {
-		return new ArrayList<Motor>(this.motors);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public List<PlugIn> getPlugins() {
-		return new ArrayList<PlugIn>(this.plugins);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public Selections getSelections() {
-		return this.selections;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public String getVersion() {
-		return this.getSource() != null
-				? this.getSource().getVersion()
-				: "";
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public String getLoadedFileName(){
-		return this.getSource() != null
-				? this.getSource().getLoadedFileName()
-				: "";
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public String getSchemaFileName(){
-		return this.getSource() != null
-				? this.getSource().getSchemaFileName()
-				: "";
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getName() {
-		return this.getSource().getName();
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public PlugIn getPluginByName(final String name) {
-		return this.pluginsMap.get(name);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public AbstractPrePostscanDevice getPrePostscanDeviceById(final String id) {
-		return this.prePostscanDeviceMap.get(id);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public MotorAxis getMotorAxisById(final String id) {
-		return this.motorAxisMap.get(id);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public DetectorChannel getDetectorChannelById(final String id) {
-		return this.detectorChannelsMap.get(id);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public Event getEventById(final String id) {
-		return this.eventsMap.get(id);
 	}
 	
 	/**
@@ -253,11 +80,9 @@ public class ExcludeFilter extends MeasuringStationFilter {
 					continue;
 				}
 				int i = 0;
-				for (Iterator<String> iterator = identifier.iterator(); iterator
-						.hasNext();) {
+				for (Iterator<String> iterator = identifier.iterator(); iterator.hasNext();) {
 					final String test = iterator.next();
-					if (currentAxis.getFullIdentifyer().compareToIgnoreCase(
-							test) > 0) {
+					if (currentAxis.getFullIdentifyer().compareToIgnoreCase(test) > 0) {
 						i++;
 					} else {
 						break;
@@ -445,198 +270,12 @@ public class ExcludeFilter extends MeasuringStationFilter {
 
 	/**
 	 * {@inheritDoc}
-	 * @throws IllegalArgumentException if the argument is <code>null</code> or 
-	 * 		   an empty {@link java.lang.String}
-	 */
-	public AbstractDevice getAbstractDeviceByFullIdentifyer(
-			final String identifier) {
-		if (identifier == null) {
-			throw new IllegalArgumentException(
-					"The parameter 'identifier' must not be null!");
-		} else if (identifier.equals("")) {
-			throw new IllegalArgumentException(
-					"The parameter 'identifier' must not be a empty string!");
-		}
-
-		Iterator<Motor> motorIterator = this.motors.iterator();
-		while (motorIterator.hasNext()) {
-			final Motor currentMotor = motorIterator.next();
-			if (currentMotor.getFullIdentifyer().equals(identifier)) {
-				return currentMotor;
-			} else {
-				Iterator<Option> optionIterator = currentMotor.optionIterator();
-				while (optionIterator.hasNext()) {
-					final Option currentOption = optionIterator.next();
-					if (currentOption.getFullIdentifyer().equals(identifier)) {
-						return currentOption;
-					}
-				}
-				Iterator<MotorAxis> motorAxisIterator = currentMotor
-						.axisIterator();
-				while (motorAxisIterator.hasNext()) {
-					final MotorAxis currentMotorAxis = motorAxisIterator.next();
-					if (currentMotorAxis.getFullIdentifyer().equals(identifier)) {
-						return currentMotorAxis;
-					}
-					Iterator<Option> optionIterator2 = currentMotorAxis
-							.getOptions().iterator();
-					while (optionIterator2.hasNext()) {
-						final Option currentOption = optionIterator2.next();
-						if (currentOption.getFullIdentifyer()
-								.equals(identifier)) {
-							return currentOption;
-						}
-					}
-				}
-			}
-		}
-
-		Iterator<Detector> detectorIterator = this.detectors.iterator();
-		while (detectorIterator.hasNext()) {
-			final Detector currentDetector = detectorIterator.next();
-			if (currentDetector.getFullIdentifyer().equals(identifier)) {
-				return currentDetector;
-			} else {
-				Iterator<Option> optionIterator = currentDetector.getOptions()
-						.iterator();
-				while (optionIterator.hasNext()) {
-					final Option currentOption = optionIterator.next();
-					if (currentOption.getFullIdentifyer().equals(identifier)) {
-						return currentOption;
-					}
-				}
-				Iterator<DetectorChannel> detectorChannelIterator = currentDetector
-						.channelIterator();
-				while (detectorChannelIterator.hasNext()) {
-					final DetectorChannel currentDetectorChannel = detectorChannelIterator
-							.next();
-					if (currentDetectorChannel.getFullIdentifyer().equals(
-							identifier)) {
-						return currentDetectorChannel;
-					}
-					Iterator<Option> optionIterator2 = currentDetectorChannel
-							.getOptions().iterator();
-					while (optionIterator2.hasNext()) {
-						final Option currentOption = optionIterator2.next();
-						if (currentOption.getFullIdentifyer()
-								.equals(identifier)) {
-							return currentOption;
-						}
-					}
-				}
-			}
-		}
-
-		Iterator<Device> deviceIterator = this.devices.iterator();
-		while (deviceIterator.hasNext()) {
-			final Device currentDevice = deviceIterator.next();
-			if (currentDevice.getFullIdentifyer().equals(identifier)) {
-				return currentDevice;
-			}
-		}
-		return null;
-	}
-	
-	/**
-	 * Returns the {@link de.ptb.epics.eve.data.measuringstation.AbstractDevice}
-	 * with the given <code>id</code> or <code>null</code> if none.
-	 * 
-	 * @param id the id of the device
-	 * @return the device with the given id
-	 */
-	public AbstractDevice getAbstractDeviceById(String id) {
-		// XXX ExcludeFilter should extend MeasuringStation and 
-		// this method should be in the superclass...
-		
-		for(Motor m : this.motors) {
-			if (m.getID().equals(id)) {
-				return m;
-			}
-			for(Option o : m.getOptions()) {
-				if (o.getID().equals(id)) {
-					return o;
-				}
-			}
-			for(MotorAxis ma : m.getAxes()) {
-				if (ma.getID().equals(id)) {
-					return ma;
-				}
-				for (Option o : ma.getOptions()) {
-					if (o.getID().equals(id)) {
-						return o;
-					}
-				}
-			}
-		}
-		
-		for(Detector d : this.detectors) {
-			if (d.getID().equals(id)) {
-				return d;
-			}
-			for(Option o : d.getOptions()) {
-				if (o.getID().equals(id)) {
-					return o;
-				}
-			}
-			for(DetectorChannel ch : d.getChannels()) {
-				if (ch.getID().equals(id)) {
-					return ch;
-				}
-				for(Option o : ch.getOptions()) {
-					if (o.getID().equals(id)) {
-						return o;
-					}
-				}
-			}
-		}
-		
-		for(Device dev : this.devices) {
-			if (dev.getID().equals(id)) {
-				return dev;
-			}
-			for(Option o : dev.getOptions()) {
-				if (o.getID().equals(id)) {
-					return o;
-				}
-			}
-		}
-		
-		return null;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public Set<String> getClassNameList(){
-		return classMap.keySet();
-	}
-
-	/**
-	 * {@inheritDoc}
 	 */
 	public List<AbstractDevice> getDeviceList(String classname){
 		if (classMap.containsKey(classname)) {
 			return classMap.get(classname);
 		}
 		return null;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean addModelUpdateListener(
-			final IModelUpdateListener modelUpdateListener) {
-		return this.modelUpdateListener.add(modelUpdateListener);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean removeModelUpdateListener(
-			final IModelUpdateListener modelUpdateListener) {
-		return this.modelUpdateListener.remove(modelUpdateListener);
 	}
 	
 	/**

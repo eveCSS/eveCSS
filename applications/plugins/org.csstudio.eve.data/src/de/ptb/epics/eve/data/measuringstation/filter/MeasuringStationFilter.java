@@ -1,5 +1,9 @@
 package de.ptb.epics.eve.data.measuringstation.filter;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.AbstractMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
@@ -22,14 +26,17 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  */
 public abstract class MeasuringStationFilter extends AbstractMeasuringStation implements 
 									IMeasuringStation, IModelUpdateListener {
-
-	// the measuring station the filter is based on
 	private IMeasuringStation source;
+	protected final List<AbstractDevice> excludeList;
+	protected final List<IModelUpdateListener> modelUpdateListener;
 	
 	/**
 	 * default constructor
 	 */
 	public MeasuringStationFilter() {
+		super();
+		this.excludeList = new ArrayList<AbstractDevice>();
+		this.modelUpdateListener = new ArrayList<IModelUpdateListener>();
 	}
 	
 	/**
@@ -38,6 +45,7 @@ public abstract class MeasuringStationFilter extends AbstractMeasuringStation im
 	 * @param source the measuring station the filter is based on
 	 */
 	public MeasuringStationFilter(final IMeasuringStation source) {
+		this();
 		this.source = source;
 		if(source != null) {
 			this.source.addModelUpdateListener(this);
@@ -70,5 +78,58 @@ public abstract class MeasuringStationFilter extends AbstractMeasuringStation im
 			this.source.addModelUpdateListener(this);
 		}
 		this.updateEvent(new ModelUpdateEvent(this, null));
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public String getVersion() {
+		return this.getSource() != null
+				? this.getSource().getVersion()
+				: "";
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public String getLoadedFileName(){
+		return this.getSource() != null
+				? this.getSource().getLoadedFileName()
+				: "";
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public String getSchemaFileName(){
+		return this.getSource() != null
+				? this.getSource().getSchemaFileName()
+				: "";
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String getName() {
+		return this.getSource().getName();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean addModelUpdateListener(
+			final IModelUpdateListener modelUpdateListener) {
+		return this.modelUpdateListener.add(modelUpdateListener);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean removeModelUpdateListener(
+			final IModelUpdateListener modelUpdateListener) {
+		return this.modelUpdateListener.remove(modelUpdateListener);
 	}
 }
