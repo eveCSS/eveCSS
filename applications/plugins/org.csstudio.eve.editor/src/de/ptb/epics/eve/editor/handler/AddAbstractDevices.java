@@ -19,7 +19,6 @@ import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
-import de.ptb.epics.eve.data.measuringstation.filter.ExcludeFilter;
 import de.ptb.epics.eve.editor.Activator;
 
 /**
@@ -38,10 +37,6 @@ public class AddAbstractDevices implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IMeasuringStation measuringStation = Activator.getDefault()
 				.getMeasuringStation();
-		// workaround here. only the filter class supports item search by id.
-		// until supported a filter has to be created
-		ExcludeFilter excludeFilter = new ExcludeFilter();
-		excludeFilter.setSource(measuringStation);
 		
 		ICommandService commandService = (ICommandService) PlatformUI
 				.getWorkbench().getService(ICommandService.class);
@@ -49,7 +44,7 @@ public class AddAbstractDevices implements IHandler {
 		String deviceList = event.getParameter(
 			"de.ptb.epics.eve.editor.command.addabstractdevices.devicelist");
 		for(String s : deviceList.split("!")) {
-			AbstractDevice device = excludeFilter.getAbstractDeviceById(s);
+			AbstractDevice device = measuringStation.getAbstractDeviceById(s); 
 			if (device != null) {
 				if (device instanceof MotorAxis) {
 					Map<String, String> parameters= new HashMap<String, String>();

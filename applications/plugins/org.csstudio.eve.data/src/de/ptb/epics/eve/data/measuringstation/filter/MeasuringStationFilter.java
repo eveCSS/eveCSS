@@ -25,7 +25,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * @author Hartmut Scherr
  */
 public abstract class MeasuringStationFilter extends AbstractMeasuringStation implements 
-									IMeasuringStation, IModelUpdateListener {
+									IModelUpdateListener {
 	private IMeasuringStation source;
 	protected final List<AbstractDevice> excludeList;
 	protected final List<IModelUpdateListener> modelUpdateListener;
