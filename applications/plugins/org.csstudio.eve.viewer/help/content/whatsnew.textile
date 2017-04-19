@@ -24,6 +24,10 @@ h3(eveTopic). Version 1.27.5
 * [Bug Fix] added known bugs entry (and workaround) for: although a scan description in the editor is unsaved the File -> Save menu entries are not enabled
 * [Bug Fix] fixed the shell position for the info dialogs of the engine view
 
+h3(eveTopic). Version 1.27.10
+
+* [Bug Fix] fixed a bug that lead to a potential memory leak in the Devices View.
+
 h2(eveTopic). Version 1.26
 
 * [Feature] introduced Global Device Inspector (Device Inspector which is visible in each Perspective)
