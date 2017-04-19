@@ -1,14 +1,11 @@
 package de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite;
 
-import org.eclipse.jface.viewers.ILabelProviderListener;
-import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.PlatformUI;
 
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.channelmode.ChannelModes;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
+import de.ptb.epics.eve.editor.views.scanmoduleview.ActionCompositeLabelProvider;
 import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
 
 /**
@@ -20,7 +17,7 @@ import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
  * @author ?
  * @author Marcus Michalsky
  */
-public class LabelProvider implements ITableLabelProvider {
+public class LabelProvider extends ActionCompositeLabelProvider {
 	
 	/**
 	 * {@inheritDoc}
@@ -28,14 +25,11 @@ public class LabelProvider implements ITableLabelProvider {
 	@Override
 	public Image getColumnImage(final Object channel, final int colIndex) {
 		if (colIndex == 0) {
-			return PlatformUI.getWorkbench().getSharedImages()
-					.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE)
-					.createImage();
+			return getDeleteImage();
 		} else if (colIndex == 1) {
 			for (IModelError error : ((Channel) channel).getModelErrors()) {
 				if (error instanceof ChannelError) {
-					return PlatformUI.getWorkbench().getSharedImages()
-							.getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
+					return getErrorImage();
 				}
 			}
 		}
@@ -96,34 +90,5 @@ public class LabelProvider implements ITableLabelProvider {
 			}
 		}
 		return null;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void addListener(final ILabelProviderListener arg0) {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void dispose() {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean isLabelProperty(final Object arg0, String arg1) {
-		return false;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void removeListener(final ILabelProviderListener arg0) {
 	}
 }

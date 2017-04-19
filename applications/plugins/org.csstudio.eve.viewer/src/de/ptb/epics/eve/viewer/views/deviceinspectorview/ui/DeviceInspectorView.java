@@ -214,36 +214,32 @@ public class DeviceInspectorView extends ViewPart {
 	 */
 	@Override
 	public void createPartControl(final Composite parent) {
-		// icons
-		deleteIcon = PlatformUI.getWorkbench().getSharedImages().
-			getImageDescriptor(ISharedImages.IMG_TOOL_DELETE).createImage();
-		leftArrowIcon = PlatformUI.getWorkbench().getSharedImages().
-			getImageDescriptor(ISharedImages.IMG_TOOL_BACK).createImage();
-		leftArrowIconDisabled = PlatformUI.getWorkbench().getSharedImages().
-			getImageDescriptor(ISharedImages.IMG_TOOL_BACK_DISABLED).createImage();
-		rightArrowIcon = PlatformUI.getWorkbench().
-				getSharedImages().getImageDescriptor(
-				ISharedImages.IMG_TOOL_FORWARD).createImage();
-		rightArrowIconDisabled = PlatformUI.getWorkbench().getSharedImages().
-			getImageDescriptor(ISharedImages.IMG_TOOL_FORWARD_DISABLED).createImage();
+		deleteIcon = PlatformUI.getWorkbench().getSharedImages()
+				.getImage(ISharedImages.IMG_TOOL_DELETE);
+		leftArrowIcon = PlatformUI.getWorkbench().getSharedImages()
+				.getImage(ISharedImages.IMG_TOOL_BACK);
+		leftArrowIconDisabled = PlatformUI.getWorkbench().getSharedImages()
+				.getImage(ISharedImages.IMG_TOOL_BACK_DISABLED);
+		rightArrowIcon = PlatformUI.getWorkbench().getSharedImages()
+				.getImage(ISharedImages.IMG_TOOL_FORWARD);
+		rightArrowIconDisabled = PlatformUI.getWorkbench().getSharedImages()
+				.getImage(ISharedImages.IMG_TOOL_FORWARD_DISABLED);
 		playIcon = Activator.getDefault().getImageRegistry().get("PLAY16");
-		playIconDisabled = 
-			Activator.getDefault().getImageRegistry().get("PLAY16_DISABLED");
+		playIconDisabled = Activator.getDefault().getImageRegistry()
+				.get("PLAY16_DISABLED");
 		stopIcon = Activator.getDefault().getImageRegistry().get("STOP16");
-		stopIconDisabled = 
-			Activator.getDefault().getImageRegistry().get("STOP16_DISABLED");
-		restoreIcon = 
-				Activator.getDefault().getImageRegistry().get("RESTOREVIEW");
-		maximizeIcon = 
-				Activator.getDefault().getImageRegistry().get("MAXIMIZE");
-		axisImage = 
-				Activator.getDefault().getImageRegistry().get("AXIS");
-		channelImage = 
-				Activator.getDefault().getImageRegistry().get("CHANNEL");
-		deviceImage = PlatformUI.getWorkbench().getSharedImages().
-			getImageDescriptor(ISharedImages.IMG_ELCL_SYNCED).createImage();
-		ascending =	 Activator.getDefault().getImageRegistry().get("ASCENDING");
-		descending = Activator.getDefault().getImageRegistry().get("DESCENDING");
+		stopIconDisabled = Activator.getDefault().getImageRegistry()
+				.get("STOP16_DISABLED");
+		restoreIcon = Activator.getDefault().getImageRegistry()
+				.get("RESTOREVIEW");
+		maximizeIcon = Activator.getDefault().getImageRegistry()
+				.get("MAXIMIZE");
+		axisImage = Activator.getDefault().getImageRegistry().get("AXIS");
+		channelImage = Activator.getDefault().getImageRegistry().get("CHANNEL");
+		deviceImage = Activator.getDefault().getImageRegistry().get("DEVICE");
+		ascending = Activator.getDefault().getImageRegistry().get("ASCENDING");
+		descending = Activator.getDefault().getImageRegistry()
+				.get("DESCENDING");
 		
 		parent.setLayout(new FillLayout());
 		

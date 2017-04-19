@@ -45,7 +45,6 @@ import de.ptb.epics.eve.util.jface.ViewerComparator;
  */
 public abstract class ActionComposite extends Composite implements
 		IModelUpdateListener {
-
 	private static Logger logger = 
 			Logger.getLogger(ActionComposite.class.getName());
 	

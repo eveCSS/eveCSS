@@ -38,6 +38,16 @@ h3(eveTopic). Version 1.27.7
 
 * [Bug Fix] fixed a bug where a plot window of a copied scan module did not have the same id as the original
 
+h3(eveTopic). Version 1.27.9
+
+* [Bug Fix] fixed a bug where adding multiple devices via "Add All" caused a memory leak
+* [Bug Fix] fixed a bug where saving a file caused a memory leak
+
+h3(eveTopic). Version 1.27.10
+
+* [Bug Fix] fixed a bug where adding devices (axes, channels, prescans, postscans, positionings or plots) to a scan module caused a memory leak
+* [Bug Fix} fixed a bug where opening the monitor selection dialog caused a memory leak
+
 h2(eveTopic). Version 1.26
 
 * [Feature] added two digit year macro for file names
