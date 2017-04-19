@@ -1,12 +1,9 @@
 package de.ptb.epics.eve.editor.views.scanmoduleview.plotcomposite;
 
-import org.eclipse.jface.viewers.ILabelProviderListener;
-import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.PlatformUI;
 
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
+import de.ptb.epics.eve.editor.views.scanmoduleview.ActionCompositeLabelProvider;
 
 /**
  * <code>PlotLabelProvider</code> is the label provider of the table 
@@ -16,35 +13,29 @@ import de.ptb.epics.eve.data.scandescription.PlotWindow;
  * @author Hartmut Scherr
  * @author Marcus Michalsky
  */
-public class LabelProvider implements ITableLabelProvider {
+public class LabelProvider extends ActionCompositeLabelProvider {
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public Image getColumnImage(final Object plotWindow, final int colIndex) {
-		
-		Image error = PlatformUI.getWorkbench().getSharedImages().
-				getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
-		
 		final PlotWindow pw = (PlotWindow)plotWindow;
 		boolean noYaxes = pw.getYAxes().size() == 0;
 		switch(colIndex) {
-			case 0: return PlatformUI.getWorkbench().getSharedImages()
-					.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE)
-					.createImage();
+			case 0: return getDeleteImage();
 			case 1: break;
 			case 2: break;
 			case 3: if(pw.getXAxis() == null) {
-						return error; 
+						return getErrorImage(); 
 					}
 					break;
 			case 4: if(noYaxes) {
-						return error;
+						return getErrorImage();
 					}
 					break;
 			case 5: if(noYaxes) {
-						return error;
+						return getErrorImage();
 					}
 					break;
 		}
@@ -82,34 +73,5 @@ public class LabelProvider implements ITableLabelProvider {
 					break;
 		}
 		return null;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void dispose() {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean isLabelProperty(final Object arg0, String arg1) {
-		return false;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void addListener(final ILabelProviderListener arg0) {
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void removeListener(final ILabelProviderListener arg0) {
 	}
 }
