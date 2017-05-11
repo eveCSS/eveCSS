@@ -118,9 +118,16 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 	 */
 	@Override
 	protected IFigure createFigure() {
-		return new ScanModuleFigure(this.getModel().getName(), this.getModel()
-				.getType(), this.getModel().getX(), this.getModel().getY(),
-				this.getModel().getWidth(), this.getModel().getHeight());
+		ScanModuleFigure smFigure = new ScanModuleFigure(
+				this.getModel().getName(), 
+				this.getModel().getType(),
+				this.getModel().getX(), 
+				this.getModel().getY(),
+				this.getModel().getWidth(), 
+				this.getModel().getHeight());
+		smFigure.setContainsErrors(
+				!this.getModel().getModelErrors().isEmpty());
+		return smFigure;
 	}
 	
 	/**
