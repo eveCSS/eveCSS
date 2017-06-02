@@ -316,7 +316,11 @@ public class Patch4o0T5o0 extends Patch {
 						continue;
 					}
 					if (child.getNodeName().equals("name")) {
-						name = child.getFirstChild().getNodeValue();
+						if (child.getFirstChild() == null) {
+							name = "NONAME";
+						} else {
+							name = child.getFirstChild().getNodeValue();
+						}
 					}
 					if (child.getNodeName().equals("storage")) {
 						toRemove = child;
