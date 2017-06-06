@@ -5,8 +5,6 @@ import java.util.List;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.PlatformUI;
 
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.Detector;
@@ -34,6 +32,8 @@ public class TreeViewerLabelProvider implements ILabelProvider {
 			Activator.getDefault().getImageRegistry().get("DETECTOR");
 	private final Image channelImage = 
 			Activator.getDefault().getImageRegistry().get("CHANNEL");
+	private final Image deviceImage = 
+			Activator.getDefault().getImageRegistry().get("DEVICE");
 	private final Image classImage = 
 			Activator.getDefault().getImageRegistry().get("CLASS");
 	private final Image devicesImage = 
@@ -57,8 +57,7 @@ public class TreeViewerLabelProvider implements ILabelProvider {
 		} else if(element instanceof DetectorChannel) {
 			return this.channelImage;
 		} else if(element instanceof Device) {
-			return PlatformUI.getWorkbench().getSharedImages().
-				getImageDescriptor(ISharedImages.IMG_ELCL_SYNCED).createImage();
+			return this.deviceImage;
 		} else if(element instanceof String) {
 			return this.classImage;
 		} else if(element instanceof List<?>) {

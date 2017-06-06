@@ -1,11 +1,8 @@
 package de.ptb.epics.eve.data.measuringstation;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import de.ptb.epics.eve.data.measuringstation.event.Event;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
@@ -32,66 +29,12 @@ public class MeasuringStation extends AbstractMeasuringStation{
 	
 	// the name of the measuring station (e.g., sx700, qnim, ...)
 	private String name;
-	
-	// TODO
-	// we have a List and a Map for events, plug ins, channels, axes
-	// they are not necessarily equal, (maps are unique) 
-	// remove lists and use only maps
-	
-	// a List containing available events
-	private List<Event> events;
-	
-	// a List containing available plug ins
-	private final List<PlugIn> plugins;
-	
-	// a List, that is holding all devices
-	private final List<Device> devices;
-	
-	// a List, that is holding all motors
-	private final List<Motor> motors;
-
-	// a List, that is holding all detectors
-	private final List<Detector> detectors;
-	
-	/*
-	 * A Selection object, that describes all selections, that are available 
-	 * at the measuring station.
-	 */
-	private final Selections selections;
-	
-	// a Map, that makes all PlugIns available by their names
-	private final Map<String, PlugIn> pluginsMap;
-	
-	// a Map. that makes all detector channels available by their ids
-	private final Map<String, DetectorChannel> detectorChannelsMap;
-	
-	// a Map, that makes all events available by their ids
-	private final Map<String, Event> eventsMap;
-	
-	// a Map, that makes all AbstractPrePostscanDevices available by their ids
-	private final Map<String, AbstractPrePostscanDevice> prePostscanDeviceMap;
-
-	/* 
-	 * ???
-	 */
-	private Map<String, List<AbstractDevice>> classMap;
 
 	/**
 	 * Constructs an empty <code>MeasuringStation</code>.
 	 */
 	public MeasuringStation() {
-		this.events = new ArrayList<Event>();
-		this.plugins = new ArrayList<PlugIn>();
-		this.devices = new ArrayList<Device>();
-		this.motors = new ArrayList<Motor>();
-		this.detectors = new ArrayList<Detector>();
-		this.selections = new Selections();
-		this.pluginsMap = new HashMap< String, PlugIn>();
-		this.motorAxisMap = new HashMap<String, MotorAxis>();
-		this.detectorChannelsMap = new HashMap<String, DetectorChannel>();
-		this.prePostscanDeviceMap = new HashMap<String, AbstractPrePostscanDevice>();
-		this.classMap = new HashMap<String, List<AbstractDevice>>();
-		this.eventsMap = new HashMap<String, Event>();	
+		super();
 	}
 	
 	/**
@@ -297,7 +240,6 @@ public class MeasuringStation extends AbstractMeasuringStation{
 	 * 		should be added
 	 */
 	private void classMapAdd(String className, AbstractDevice absdevice) {
-		
 		if(absdevice instanceof Motor) {
 			final List<MotorAxis> axis = ((Motor)absdevice).getAxes();
 			for(final MotorAxis a : axis) {
@@ -323,58 +265,6 @@ public class MeasuringStation extends AbstractMeasuringStation{
 		}
 		adlist.add(absdevice);
 		classMap.put(className, adlist);
-	}
-	
-	// ************************************************************************
-	// *********** methods inherited from IMeasuringStation *******************
-	// ************************************************************************
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public List<Detector> getDetectors() {
-		return new ArrayList<Detector>(this.detectors);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public List<Device> getDevices() {
-		return new ArrayList<Device>(this.devices);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public List<Event> getEvents() {
-		return new ArrayList<Event>(this.events);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public List<Motor> getMotors() {
-		return new ArrayList<Motor>(this.motors);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public List<PlugIn> getPlugins() {
-		return new ArrayList<PlugIn>(this.plugins);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Selections getSelections() {
-		return this.selections;
 	}
 
 	/**
@@ -405,30 +295,6 @@ public class MeasuringStation extends AbstractMeasuringStation{
 	 * {@inheritDoc}
 	 */
 	@Override
-	public PlugIn getPluginByName(final String name) {
-		return this.pluginsMap.get(name);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public AbstractPrePostscanDevice getPrePostscanDeviceById(final String id) {
-		return this.prePostscanDeviceMap.get(id);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public MotorAxis getMotorAxisById(final String id) {
-		return this.motorAxisMap.get(id);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public MotorAxis getMotorAxisByName(String name) {
 		for (MotorAxis axis : this.getMotorAxes().values()) {
 			if (axis.getName().equals(name)) {
@@ -442,27 +308,10 @@ public class MeasuringStation extends AbstractMeasuringStation{
 	 * {@inheritDoc}
 	 */
 	@Override
-	public DetectorChannel getDetectorChannelById(final String id) {
-		return this.detectorChannelsMap.get(id);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Event getEventById(final String id) {
-		return this.eventsMap.get(id);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public List<String> getAxisFullIdentifyer() {
-		
 		final List<String> identifier = new ArrayList<String>();
 		final Iterator<Motor> motorIterator = this.motors.iterator();
-		
+
 		Motor currentMotor = null;
 		MotorAxis currentAxis = null;
 		Iterator<MotorAxis> axisIterator = null;
@@ -472,11 +321,9 @@ public class MeasuringStation extends AbstractMeasuringStation{
 			while (axisIterator.hasNext()) {
 				currentAxis = axisIterator.next();
 				int i = 0;
-				for (Iterator<String> iterator = identifier.iterator(); 
-					 iterator.hasNext();) {
+				for (Iterator<String> iterator = identifier.iterator(); iterator.hasNext();) {
 					final String test = iterator.next();
-					if (currentAxis.getFullIdentifyer().
-							compareToIgnoreCase(test) > 0) {
+					if (currentAxis.getFullIdentifyer().compareToIgnoreCase(test) > 0) {
 						i++;
 					} else {
 						break;
@@ -636,106 +483,6 @@ public class MeasuringStation extends AbstractMeasuringStation{
 		return identifier;
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 * @throws IllegalArgumentException if the argument is <code>null</code>
-	 * @throws IllegalArgumentException if identifier is an empty string
-	 */
-	@Override
-	public AbstractDevice getAbstractDeviceByFullIdentifyer(
-												final String identifier) {
-		if(identifier == null) {
-			throw new IllegalArgumentException(
-					"The parameter 'identifier' must not be null!");
-		} else if(identifier.equals("")) {
-			throw new IllegalArgumentException(
-					"The parameter 'identifier' must not be an empty string!");
-		}
-		
-		Iterator<Motor> motorIterator = this.motors.iterator();
-		while(motorIterator.hasNext()) {
-			final Motor currentMotor = motorIterator.next();
-			if(currentMotor.getFullIdentifyer().equals(identifier)) {
-				return currentMotor;
-			} else {
-				Iterator<Option> optionIterator = currentMotor.optionIterator();
-				while(optionIterator.hasNext()) {
-					final Option currentOption = optionIterator.next();
-					if(currentOption.getFullIdentifyer().equals(identifier)) {
-						return currentOption;
-					}
-				}
-				Iterator<MotorAxis> motorAxisIterator = 
-						currentMotor.axisIterator();
-				while(motorAxisIterator.hasNext()) {
-					final MotorAxis currentMotorAxis = motorAxisIterator.next();
-					if(currentMotorAxis.getFullIdentifyer().equals(identifier)) {
-						return currentMotorAxis;
-					}
-					Iterator<Option> optionIterator2 = 
-						currentMotorAxis.getOptions().iterator();
-					while(optionIterator2.hasNext()) {
-						final Option currentOption = optionIterator2.next();
-						if(currentOption.getFullIdentifyer().equals(identifier)) {
-							return currentOption;
-						}
-					}
-				}
-			}
-		}
-		
-		Iterator<Detector> detectorIterator = this.detectors.iterator();
-		while(detectorIterator.hasNext()) {
-			final Detector currentDetector = detectorIterator.next();
-			if(currentDetector.getFullIdentifyer().equals(identifier)) {
-				return currentDetector;
-			} else {
-				Iterator<Option> optionIterator = 
-					currentDetector.getOptions().iterator();
-				while(optionIterator.hasNext()) {
-					final Option currentOption = optionIterator.next();
-					if(currentOption.getFullIdentifyer().equals(identifier)) {
-						return currentOption;
-					}
-				}
-				Iterator<DetectorChannel> detectorChannelIterator = 
-					currentDetector.channelIterator();
-				while(detectorChannelIterator.hasNext()) {
-					final DetectorChannel currentDetectorChannel = 
-						detectorChannelIterator.next();
-					if(currentDetectorChannel.getFullIdentifyer().equals(identifier)) {
-						return currentDetectorChannel;
-					}
-					Iterator<Option> optionIterator2 = 
-						currentDetectorChannel.getOptions().iterator();
-					while(optionIterator2.hasNext()) {
-						final Option currentOption = optionIterator2.next();
-						if(currentOption.getFullIdentifyer().equals(identifier)) {
-							return currentOption;
-						}
-					}
-				}
-			}
-		}
-		
-		Iterator<Device> deviceIterator = this.devices.iterator();
-		while(deviceIterator.hasNext()) {
-			final Device currentDevice = deviceIterator.next();
-			if(currentDevice.getFullIdentifyer().equals(identifier)) {
-				return currentDevice;
-			}
-		}
-		return null;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Set<String> getClassNameList(){
-		return classMap.keySet();
-	}
-
 	/**
 	 * {@inheritDoc}
 	 */

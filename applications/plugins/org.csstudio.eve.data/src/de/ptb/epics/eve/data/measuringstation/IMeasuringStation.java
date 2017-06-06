@@ -127,6 +127,15 @@ public interface IMeasuringStation extends IModelUpdateProvider {
 			final String id);
 
 	/**
+	 * Returns the {@link de.ptb.epics.eve.data.measuringstation.AbstractDevice}
+	 * with the given <code>id</code> or <code>null</code> if none.
+	 * 
+	 * @param id the id of the device
+	 * @return the device with the given id
+	 */
+	public AbstractDevice getAbstractDeviceById(String id);
+	
+	/**
 	 * Returns the {@link de.ptb.epics.eve.data.measuringstation.MotorAxis} with 
 	 * the given id.
 	 * 
