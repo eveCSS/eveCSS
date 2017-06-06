@@ -111,11 +111,13 @@ public class HDF5Util {
 		ByteBuffer buffer = ByteBuffer.allocate(HDF5Util.INTEGER_NUMBER_OF_BYTES);
 		buffer.order(ByteOrder.BIG_ENDIAN);
 		buffer.putInt(inputStream.readInt());
-		long lengthCompressed = Integer.toUnsignedLong(buffer.getInt(0));
+		long lengthCompressed = this.intToUnsignedLong(buffer.getInt(0)); 
+				// Integer.toUnsignedLong(buffer.getInt(0));
 		
 		buffer.clear();
 		buffer.putInt(inputStream.readInt());
-		long lengthUncompressed = Integer.toUnsignedLong(buffer.getInt(0));
+		long lengthUncompressed = this.intToUnsignedLong(buffer.getInt(0));
+				// Integer.toUnsignedLong(buffer.getInt(0));
 		
 		byte[] compressedSCML = new byte[(int)lengthCompressed];
 		for (int i = 0; i < lengthCompressed; i++) {
@@ -131,5 +133,13 @@ public class HDF5Util {
 		inputStream.close();
 		
 		return uncompressedSCML;
+	}
+	
+	/*
+	 * helper method for as long as java 7 is used.
+	 * In java 8 use Integer.toUnsignedLong instead!
+	 */
+	private long intToUnsignedLong(int i) {
+		return i & 0x00000000ffffffffL;
 	}
 }
