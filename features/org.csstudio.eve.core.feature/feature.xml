@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.csstudio.eve.applications.feature"
+      id="org.csstudio.eve.core.feature"
       label="Feature"
-      version="1.0.0"
-      provider-name="PTB">
+      version="1.0.0.qualifier">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
@@ -17,77 +16,123 @@
       [Enter License Description here.]
    </license>
 
-   <plugin
-         id="de.ptb.epics.eve.data"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+   <includes
+         id="org.csstudio.libs.feature"
+         version="0.0.0"/>
 
-   <plugin
-         id="de.ptb.epics.eve.ecp1"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+   <includes
+         id="org.csstudio.pvmanager.feature"
+         version="0.0.0"/>
 
-   <plugin
-         id="de.ptb.epics.eve.editor"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+   <includes
+         id="org.csstudio.pvmanager.ca.feature"
+         version="0.0.0"/>
 
-   <plugin
-         id="de.ptb.epics.eve.help"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+   <includes
+         id="org.csstudio.pvmanager.autocomplete.feature"
+         version="0.0.0"/>
 
-   <plugin
-         id="de.ptb.epics.eve.preferences"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+   <includes
+         id="org.csstudio.pvmanager.exec.feature"
+         version="0.0.0"/>
 
-   <plugin
-         id="de.ptb.epics.eve.viewer"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.csstudio.diag.pvmanager.probe"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="de.ptb.epics.eve.resources"
-         download-size="0"
-         install-size="0"
+   <includes
+         id="org.csstudio.pvmanager.extra.feature"
          version="0.0.0"/>
 
    <plugin
-         id="de.ptb.epics.eve.util"
+         id="org.csstudio.csdata"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.apache.log4j"
+         id="org.csstudio.data"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.slf4j"
+         id="org.csstudio.java"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.csstudio.logging"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.csstudio.logging.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.csstudio.platform.libs.jms"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.csstudio.ui.help"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.csstudio.ui.menu"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.csstudio.ui.preferences"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.csstudio.ui.util"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.csstudio.utility.pvmanager.widgets"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.csstudio.workspace"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.epics.util"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.epics.vtype"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -101,39 +146,32 @@
          unpack="false"/>
 
    <plugin
-         id="org.csstudio.csdata.clipboard"
+         id="org.csstudio.platform.libs.jdbc"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.csstudio.swt.xygraph"
+         id="org.csstudio.platform.utility.rdb"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.csstudio.swt.xygraph.rcp"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="org.csstudio.ui.menu.app"
+         id="org.csstudio.startup"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.csstudio.eve.product"
+         id="org.csstudio.openfile"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="org.csstudio.apputil"
@@ -144,20 +182,6 @@
 
    <plugin
          id="org.csstudio.apputil.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.csstudio.logbook"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.google.common"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -178,6 +202,27 @@
          unpack="false"/>
 
    <plugin
+         id="org.csstudio.autocomplete.ui.rcp"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.csstudio.csdata.clipboard"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.csstudio.ui.menu.app"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.csstudio.utility.singlesource"
          download-size="0"
          install-size="0"
@@ -192,28 +237,35 @@
          unpack="false"/>
 
    <plugin
-         id="org.csstudio.diag.pvfields"
+         id="org.csstudio.autocomplete.pvmanager.formula"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.csstudio.email"
+         id="org.csstudio.autocomplete.pvmanager.loc"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.csstudio.email.ui"
+         id="org.csstudio.autocomplete.pvmanager.sim"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.csstudio.utility.screenshot"
+         id="org.csstudio.autocomplete.pvmanager.sys"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.python.jython"
          download-size="0"
          install-size="0"
          version="0.0.0"
