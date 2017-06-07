@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>de.ptb.epics.eve</groupId>
+    <artifactId>de.ptb.epics.eve.releng</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <parent>
+        <groupId>de.ptb.epics.eve</groupId>
+        <artifactId>de.ptb.epics.eve.root</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <modules>
+        <!-- <module>de.ptb.epics.eve.update</module>-->
+        <module>de.ptb.epics.eve.target</module>
+        <module>org.csstudio.eve.product</module>
+    </modules>
+</project>
