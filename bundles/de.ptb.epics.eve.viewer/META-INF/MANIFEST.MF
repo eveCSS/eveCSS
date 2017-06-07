@@ -7,7 +7,7 @@ Bundle-Activator: de.ptb.epics.eve.viewer.Activator
 Bundle-Vendor: PTB
 Bundle-Localization: plugin
 Require-Bundle: de.ptb.epics.eve.data;bundle-version="1.0.0",
- de.ptb.epics.eve.ecp1,
+ de.ptb.epics.eve.ecp1;bundle-version="1.0.0",
  org.csstudio.swt.xygraph;bundle-version="1.0.1",
  org.eclipse.core.resources;bundle-version="3.5.1",
  org.eclipse.help.ui;bundle-version="3.4.1",

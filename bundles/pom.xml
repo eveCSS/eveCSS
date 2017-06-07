@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>de.ptb.epics.eve</groupId>
+    <artifactId>de.ptb.epics.eve.bundles</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <parent>
+        <groupId>de.ptb.epics.eve</groupId>
+        <artifactId>de.ptb.epics.eve.root</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <modules>
+        <module>de.ptb.epics.eve.data</module>
+        <module>de.ptb.epics.eve.ecp1</module>
+        <module>de.ptb.epics.eve.editor</module>
+        <module>de.ptb.epics.eve.help</module>
+        <module>de.ptb.epics.eve.preferences</module>
+        <module>de.ptb.epics.eve.rcp</module>
+        <module>de.ptb.epics.eve.resources</module>
+        <module>de.ptb.epics.eve.util</module>
+        <module>de.ptb.epics.eve.viewer</module>
+    </modules>
+</project>
