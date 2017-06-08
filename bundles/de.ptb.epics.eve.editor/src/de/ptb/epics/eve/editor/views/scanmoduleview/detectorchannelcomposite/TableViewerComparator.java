@@ -3,7 +3,7 @@ package de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite;
 import org.eclipse.jface.viewers.Viewer;
 
 import de.ptb.epics.eve.data.scandescription.Channel;
-import de.ptb.epics.eve.util.jface.ViewerComparator;
+import de.ptb.epics.eve.util.ui.jface.ViewerComparator;
 
 /**
  * @author Marcus Michalsky

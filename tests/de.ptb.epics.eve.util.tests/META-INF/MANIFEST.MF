@@ -6,7 +6,7 @@ Bundle-Version: 1.0.0
 Bundle-Vendor: PTB
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: de.ptb.epics.eve.util,
- org.junit
+ org.junit;bundle-version="4.8.0"
 Import-Package: org.junit
 Bundle-ClassPath: files/,
  .

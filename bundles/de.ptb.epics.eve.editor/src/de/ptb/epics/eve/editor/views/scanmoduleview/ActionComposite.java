@@ -22,8 +22,8 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateList
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.views.scanmoduleview.dnd.ActionCompositeDragSourceListener;
 import de.ptb.epics.eve.editor.views.scanmoduleview.dnd.ActionCompositeDropTargetListener;
-import de.ptb.epics.eve.util.Activator;
-import de.ptb.epics.eve.util.jface.ViewerComparator;
+import de.ptb.epics.eve.util.ui.Activator;
+import de.ptb.epics.eve.util.ui.jface.ViewerComparator;
 
 /**
  * Prototype for Composites used in the actions tab.
@@ -33,7 +33,7 @@ import de.ptb.epics.eve.util.jface.ViewerComparator;
  * should add the contained {@link TableViewerFocusListener} to the viewer 
  * after initialization.
  * <p>
- * For sorting {@link de.ptb.epics.eve.util.jface.ViewerComparator} should be 
+ * For sorting {@link de.ptb.epics.eve.util.ui.jface.ViewerComparator} should be 
  * extended and a newly created instance assigned to 
  * {@link #tableViewerComparator}. Afterwards an instance of 
  * {@link ColumnSelectionListener} can be set as 

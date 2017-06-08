@@ -9,7 +9,7 @@ import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPart;
 
 import de.ptb.epics.eve.data.scandescription.Channel;
-import de.ptb.epics.eve.util.rcp.SingleSelectionProvider;
+import de.ptb.epics.eve.util.ui.rcp.SingleSelectionProvider;
 
 /**
  * @author Marcus Michalsky

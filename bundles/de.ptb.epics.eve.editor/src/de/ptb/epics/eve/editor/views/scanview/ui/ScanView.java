@@ -56,9 +56,9 @@ import de.ptb.epics.eve.editor.views.IEditorView;
 import de.ptb.epics.eve.editor.views.scanview.DeviceColumnComparator;
 import de.ptb.epics.eve.editor.views.scanview.OptionColumnComparator;
 import de.ptb.epics.eve.editor.views.scanview.RepeatCountValidator;
-import de.ptb.epics.eve.util.swt.FontHelper;
-import de.ptb.epics.eve.util.swt.TextSelectAllFocusListener;
-import de.ptb.epics.eve.util.swt.TextSelectAllMouseListener;
+import de.ptb.epics.eve.util.ui.swt.FontHelper;
+import de.ptb.epics.eve.util.ui.swt.TextSelectAllFocusListener;
+import de.ptb.epics.eve.util.ui.swt.TextSelectAllMouseListener;
 
 /**
  * @author ?
@@ -174,9 +174,9 @@ public class ScanView extends ViewPart implements IEditorView,
 		editButtonSelectionListener = new EditButtonSelectionListener();
 		this.editButton.addSelectionListener(editButtonSelectionListener);
 
-		ascending = de.ptb.epics.eve.util.Activator.getDefault()
+		ascending = de.ptb.epics.eve.util.ui.Activator.getDefault()
 				.getImageRegistry().get("SORT_ASCENDING");
-		descending = de.ptb.epics.eve.util.Activator.getDefault()
+		descending = de.ptb.epics.eve.util.ui.Activator.getDefault()
 				.getImageRegistry().get("SORT_DESCENDING");
 		
 		this.createTable(this.top);

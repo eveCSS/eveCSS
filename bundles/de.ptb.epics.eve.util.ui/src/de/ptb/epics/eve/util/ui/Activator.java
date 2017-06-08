@@ -1,26 +1,42 @@
-package de.ptb.epics.eve.util;
+package de.ptb.epics.eve.util.ui;
 
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.osgi.framework.BundleContext;
 
 /**
- * @author Marcus Michalsky
- * @since 1.5
+ * The activator class controls the plug-in life cycle
  */
 public class Activator extends AbstractUIPlugin {
 
-	/** the unique identifier of the plugin */
-	public static final String PLUGIN_ID = "de.ptb.epics.eve.util";
-	
+	// The plug-in ID
+	public static final String PLUGIN_ID = "de.ptb.epics.eve.util.ui"; //$NON-NLS-1$
+
 	// The shared instance
 	private static Activator plugin;
-
+	
 	/**
-	 * 
+	 * The constructor
 	 */
 	public Activator() {
 		this.loadColorsAndFonts();
 		plugin = this;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void start(BundleContext context) throws Exception {
+		super.start(context);
+		plugin = this;
+	}
+
+	/**
+	 * {@inheritDoc} 
+	 */
+	public void stop(BundleContext context) throws Exception {
+		plugin = null;
+		super.stop(context);
 	}
 
 	/**

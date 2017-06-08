@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.util.jface;
+package de.ptb.epics.eve.util.ui.jface;
 
 import java.util.ArrayList;
 import java.util.List;

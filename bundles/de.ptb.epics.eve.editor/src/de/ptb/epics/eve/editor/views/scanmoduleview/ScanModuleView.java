@@ -68,9 +68,9 @@ import de.ptb.epics.eve.editor.views.scanmoduleview.plotcomposite.PlotComposite;
 import de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite.PositioningComposite;
 import de.ptb.epics.eve.editor.views.scanmoduleview.postscancomposite.PostscanComposite;
 import de.ptb.epics.eve.editor.views.scanmoduleview.prescancomposite.PrescanComposite;
-import de.ptb.epics.eve.util.jface.SelectionProviderWrapper;
-import de.ptb.epics.eve.util.swt.TextSelectAllFocusListener;
-import de.ptb.epics.eve.util.swt.TextSelectAllMouseListener;
+import de.ptb.epics.eve.util.ui.jface.SelectionProviderWrapper;
+import de.ptb.epics.eve.util.ui.swt.TextSelectAllFocusListener;
+import de.ptb.epics.eve.util.ui.swt.TextSelectAllMouseListener;
 
 /**
  * <code>ScanModulView</code> shows the currently selected scan module.

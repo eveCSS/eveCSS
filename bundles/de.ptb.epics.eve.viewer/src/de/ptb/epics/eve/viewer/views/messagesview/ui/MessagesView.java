@@ -22,7 +22,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.part.ViewPart;
 
-import de.ptb.epics.eve.util.swt.FontHelper;
+import de.ptb.epics.eve.util.ui.swt.FontHelper;
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.views.messagesview.FilterSettings;
 import de.ptb.epics.eve.viewer.views.messagesview.IMessageList;

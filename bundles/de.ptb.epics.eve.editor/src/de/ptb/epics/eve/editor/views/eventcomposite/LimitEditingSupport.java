@@ -14,7 +14,7 @@ import de.ptb.epics.eve.data.measuringstation.event.Event;
 import de.ptb.epics.eve.data.measuringstation.event.MonitorEvent;
 import de.ptb.epics.eve.data.measuringstation.event.ScheduleEvent;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
-import de.ptb.epics.eve.util.jface.MyComboBoxCellEditor;
+import de.ptb.epics.eve.util.ui.jface.MyComboBoxCellEditor;
 
 /**
  * {@link org.eclipse.jface.viewers.EditingSupport} for the limit column.

@@ -12,7 +12,7 @@ import org.eclipse.jface.viewers.TableViewer;
 import de.ptb.epics.eve.data.EventActions;
 import de.ptb.epics.eve.data.EventTypes;
 import de.ptb.epics.eve.data.scandescription.PauseEvent;
-import de.ptb.epics.eve.util.jface.MyComboBoxCellEditor;
+import de.ptb.epics.eve.util.ui.jface.MyComboBoxCellEditor;
 
 /**
  * {@link org.eclipse.jface.viewers.EditingSupport} for the pause column.

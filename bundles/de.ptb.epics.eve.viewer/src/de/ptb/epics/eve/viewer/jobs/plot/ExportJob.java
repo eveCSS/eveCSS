@@ -13,7 +13,7 @@ import org.eclipse.swt.widgets.Display;
 
 import de.ptb.epics.eve.util.pdf.PDFCreator;
 import de.ptb.epics.eve.util.pdf.PlotStats;
-import de.ptb.epics.eve.util.swt.AWTBridge;
+import de.ptb.epics.eve.util.ui.swt.AWTBridge;
 
 /**
  * @author Marcus Michalsky

@@ -3,7 +3,7 @@ package de.ptb.epics.eve.viewer.views.messagesview;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.Viewer;
 
-import de.ptb.epics.eve.util.jface.ViewerComparator;
+import de.ptb.epics.eve.util.ui.jface.ViewerComparator;
 
 /**
  * @author Marcus Michalsky

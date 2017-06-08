@@ -12,7 +12,7 @@ import de.ptb.epics.eve.data.PluginTypes;
 import de.ptb.epics.eve.data.measuringstation.PlugIn;
 import de.ptb.epics.eve.data.scandescription.Positioning;
 import de.ptb.epics.eve.editor.Activator;
-import de.ptb.epics.eve.util.jface.MyComboBoxCellEditor;
+import de.ptb.epics.eve.util.ui.jface.MyComboBoxCellEditor;
 
 /**
  * {@link org.eclipse.jface.viewers.EditingSupport} for the plugin column.

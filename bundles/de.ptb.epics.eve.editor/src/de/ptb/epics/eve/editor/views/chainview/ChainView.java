@@ -71,7 +71,7 @@ import de.ptb.epics.eve.editor.gef.editparts.tree.ScanModuleTreeEditPart;
 import de.ptb.epics.eve.editor.views.EditorViewPerspectiveListener;
 import de.ptb.epics.eve.editor.views.IEditorView;
 import de.ptb.epics.eve.editor.views.eventcomposite.EventComposite;
-import de.ptb.epics.eve.util.jface.SelectionProviderWrapper;
+import de.ptb.epics.eve.util.ui.jface.SelectionProviderWrapper;
 
 /**
  * @author Marcus Michalsky

@@ -10,7 +10,7 @@ import org.eclipse.jface.viewers.TextCellEditor;
 
 import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.scandescription.Postscan;
-import de.ptb.epics.eve.util.jface.MyComboBoxCellEditor;
+import de.ptb.epics.eve.util.ui.jface.MyComboBoxCellEditor;
 
 /**
  * {@link org.eclipse.jface.viewers.EditingSupport} for the value column.

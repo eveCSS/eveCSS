@@ -129,6 +129,22 @@ public class PVWrapper {
 	}
 	
 	/**
+	 * Constructs a <code>PVWrapper</code>.
+	 * <p>
+	 * Automatically connects the pv with the given name (if possible).
+	 * Notice that it is not connected immediately (due to threading). 
+	 * Its connection status is indicated by {@link #isConnected()}.
+	 * 
+	 * @param pvname the name (id) of the process variable
+	 * @param updateInterval the max amount in seconds new values are reported
+	 * @since 1.29
+	 */
+	public PVWrapper(String pvname, int updateInterval) {
+		this(pvname);
+		this.pvUpdateInterval = updateInterval;
+	}
+	
+	/**
 	 * Constructor that calls {@link #PVWrapper(String)}. 
 	 * <p>
 	 * Pass a non-<code>null</code> value for <code>triggerName</code> to append 

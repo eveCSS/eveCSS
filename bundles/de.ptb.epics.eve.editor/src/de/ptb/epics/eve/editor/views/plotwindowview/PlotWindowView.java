@@ -60,8 +60,8 @@ import de.ptb.epics.eve.editor.gef.editparts.ScanDescriptionEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
 import de.ptb.epics.eve.editor.views.EditorViewPerspectiveListener;
 import de.ptb.epics.eve.editor.views.IEditorView;
-import de.ptb.epics.eve.util.swt.TextSelectAllFocusListener;
-import de.ptb.epics.eve.util.swt.TextSelectAllMouseListener;
+import de.ptb.epics.eve.util.ui.swt.TextSelectAllFocusListener;
+import de.ptb.epics.eve.util.ui.swt.TextSelectAllMouseListener;
 
 /**
  * <code>PlotWindowView</code> contains all configuration parts, corresponding 

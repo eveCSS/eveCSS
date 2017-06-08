@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package de.ptb.epics.eve.util.swt;
+package de.ptb.epics.eve.util.ui.swt;
 
 /*
  * Snippet156

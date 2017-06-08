@@ -8,7 +8,7 @@ import org.eclipse.jface.viewers.ISelectionProvider;
  * The currently active {@link org.eclipse.jface.viewers.ISelectionProvider} 
  * should be set via {@link #setSelectionProvider(ISelectionProvider)} by 
  * delegating it to a contained 
- * {@link de.ptb.epics.eve.util.jface.SelectionProviderWrapper} instance.
+ * {@link de.ptb.epics.eve.util.ui.jface.SelectionProviderWrapper} instance.
  * See <a href="http://www.eclipsezone.com/eclipse/forums/t74510.html">
  * 		Multiple Selection Providers (EclipseZone)</a> for more information.
  * @author Marcus Michalsky
@@ -21,7 +21,7 @@ public interface ISelectionProviderWrapperView {
 	 * {@link org.eclipse.jface.viewers.ISelectionProvider} of the implementing 
 	 * view.
 	 * Should be done by delegation to a contained 
-	 * {@link de.ptb.epics.eve.util.jface.SelectionProviderWrapper}.
+	 * {@link de.ptb.epics.eve.util.ui.jface.SelectionProviderWrapper}.
 	 * 
 	 * @param selectionProvider the selection provider that should be the 
 	 * 		active one

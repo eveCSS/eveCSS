@@ -2,7 +2,7 @@ package de.ptb.epics.eve.viewer.views.deviceoptionsview;
 
 import org.eclipse.jface.viewers.Viewer;
 
-import de.ptb.epics.eve.util.jface.ViewerComparator;
+import de.ptb.epics.eve.util.ui.jface.ViewerComparator;
 
 /**
  * <code>TableViewerComparator</code> is the comparator used by the table 

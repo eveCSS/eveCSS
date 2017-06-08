@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.util.rcp;
+package de.ptb.epics.eve.util.ui.rcp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.ui.ISelectionListener;
 
-import de.ptb.epics.eve.util.Activator;
+import de.ptb.epics.eve.util.ui.Activator;
 
 /**
  * Use as Selection Provider for Views that implement the master slave binding.

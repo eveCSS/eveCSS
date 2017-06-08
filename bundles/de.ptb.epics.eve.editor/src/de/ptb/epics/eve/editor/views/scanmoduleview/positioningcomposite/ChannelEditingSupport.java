@@ -12,7 +12,7 @@ import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.Positioning;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
-import de.ptb.epics.eve.util.jface.MyComboBoxCellEditor;
+import de.ptb.epics.eve.util.ui.jface.MyComboBoxCellEditor;
 
 /**
  * {@link org.eclipse.jface.viewers.EditingSupport} for the channel column.

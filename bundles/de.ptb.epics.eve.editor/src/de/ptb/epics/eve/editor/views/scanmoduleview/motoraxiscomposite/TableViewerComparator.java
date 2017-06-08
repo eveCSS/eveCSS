@@ -3,7 +3,7 @@ package de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite;
 import org.eclipse.jface.viewers.Viewer;
 
 import de.ptb.epics.eve.data.scandescription.Axis;
-import de.ptb.epics.eve.util.jface.ViewerComparator;
+import de.ptb.epics.eve.util.ui.jface.ViewerComparator;
 
 /**
  * @author Marcus Michalsky

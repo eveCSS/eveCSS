@@ -5,8 +5,8 @@ Bundle-SymbolicName: de.ptb.epics.eve.data.tests
 Bundle-Version: 1.0.0.qualifier
 Fragment-Host: de.ptb.epics.eve.data;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Require-Bundle: org.junit4;bundle-version="4.5.0",
- org.mockito;bundle-version="1.9.5"
+Require-Bundle: org.mockito;bundle-version="1.9.5",
+ org.junit;bundle-version="4.8.0"
 Import-Package: de.ptb.epics.eve.data.measuringstation,
  de.ptb.epics.eve.data.measuringstation.event,
  de.ptb.epics.eve.data.scandescription

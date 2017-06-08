@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.util.swt;
+package de.ptb.epics.eve.util.ui.swt;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.VerifyEvent;
@@ -6,13 +6,10 @@ import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * {@link org.eclipse.swt.events.VerifyListener} accepting only positive 
- * integer values.
- * 
  * @author Marcus Michalsky
- * @since 1.5
+ * @since 1.7
  */
-public class PositiveIntegerVerifyListener implements VerifyListener {
+public class IntegerVerifyListener implements VerifyListener {
 	
 	/**
 	 * {@inheritDoc}
@@ -32,18 +29,12 @@ public class PositiveIntegerVerifyListener implements VerifyListener {
 		case SWT.ARROW_RIGHT: 	// Right arrow
 			return;
 		}
+
 		try {
 			Integer.parseInt(((Text) e.widget).getText() + 
 					String.valueOf(e.character));
 		} catch (NumberFormatException e1) {
 			// result is no Integer
-			e.doit = false;
-			return;
-		}
-		
-		if (Integer.parseInt(((Text) e.widget).getText() + 
-				String.valueOf(e.character)) < 1) {
-			// result is not positive
 			e.doit = false;
 		}
 	}

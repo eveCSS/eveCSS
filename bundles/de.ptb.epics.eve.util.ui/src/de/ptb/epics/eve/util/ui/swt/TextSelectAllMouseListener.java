@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.util.swt;
+package de.ptb.epics.eve.util.ui.swt;
 
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;

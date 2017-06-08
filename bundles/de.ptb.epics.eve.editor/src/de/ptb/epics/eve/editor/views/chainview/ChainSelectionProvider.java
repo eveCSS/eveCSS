@@ -10,7 +10,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
 
 import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
-import de.ptb.epics.eve.util.rcp.SingleSelectionProvider;
+import de.ptb.epics.eve.util.ui.rcp.SingleSelectionProvider;
 
 /**
  * @author Hartmut Scherr

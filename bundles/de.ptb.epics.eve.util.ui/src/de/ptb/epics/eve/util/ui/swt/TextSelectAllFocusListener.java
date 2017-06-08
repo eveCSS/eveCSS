@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.util.swt;
+package de.ptb.epics.eve.util.ui.swt;
 
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;

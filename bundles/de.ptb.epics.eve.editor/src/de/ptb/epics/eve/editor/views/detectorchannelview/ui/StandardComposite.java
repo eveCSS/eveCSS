@@ -42,8 +42,8 @@ import de.ptb.epics.eve.editor.views.detectorchannelview.MaxAttemptsTargetToMode
 import de.ptb.epics.eve.editor.views.detectorchannelview.MaxDeviationTargetToModelValidator;
 import de.ptb.epics.eve.editor.views.detectorchannelview.MinimumTargetToModelValidator;
 import de.ptb.epics.eve.editor.views.eventcomposite.EventComposite;
-import de.ptb.epics.eve.util.swt.TextSelectAllFocusListener;
-import de.ptb.epics.eve.util.swt.TextSelectAllMouseListener;
+import de.ptb.epics.eve.util.ui.swt.TextSelectAllFocusListener;
+import de.ptb.epics.eve.util.ui.swt.TextSelectAllMouseListener;
 
 /**
  * @author Marcus Michalsky

@@ -11,7 +11,7 @@ import org.eclipse.swt.widgets.Table;
 
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.Option;
-import de.ptb.epics.eve.util.swt.FontHelper;
+import de.ptb.epics.eve.util.ui.swt.FontHelper;
 
 /**
  * @author Marcus Michalsky

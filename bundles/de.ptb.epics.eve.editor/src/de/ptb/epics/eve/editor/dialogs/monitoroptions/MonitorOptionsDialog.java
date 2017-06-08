@@ -169,9 +169,9 @@ public class MonitorOptionsDialog extends Dialog {
 		this.optionsTable.setInput(this.tableDevices);
 		
 		// for sorting
-		ascending = de.ptb.epics.eve.util.Activator.getDefault()
+		ascending = de.ptb.epics.eve.util.ui.Activator.getDefault()
 				.getImageRegistry().get("SORT_ASCENDING");
-		descending = de.ptb.epics.eve.util.Activator.getDefault()
+		descending = de.ptb.epics.eve.util.ui.Activator.getDefault()
 				.getImageRegistry().get("SORT_DESCENDING");
 		optionsTableSortState = 0;
 		deviceTableSortState = 0;
