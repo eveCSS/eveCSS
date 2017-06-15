@@ -17,7 +17,7 @@
          id="product"
          point="org.eclipse.core.runtime.products">
       <product
-            application="org.csstudio.eve.product.application"
+            application="de.ptb.epics.eve.rcp.application"
             name="Css">
          <property
                name="appName"

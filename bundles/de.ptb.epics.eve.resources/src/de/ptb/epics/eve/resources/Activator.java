@@ -11,6 +11,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.jobs.Job;
@@ -44,6 +45,7 @@ public class Activator implements BundleActivator {
 	private static Version schemaVersion;
 	
 	private DefaultsManager defaultsManager = null;
+	private IWorkspace workspace;
 	
 	/**
 	 * Constructor
@@ -106,6 +108,7 @@ public class Activator implements BundleActivator {
 	 */
 	public void start(BundleContext bundleContext) throws Exception {
 		Activator.context = bundleContext;
+		this.workspace = ResourcesPlugin.getWorkspace();
 	}
 
 	/**
@@ -113,11 +116,11 @@ public class Activator implements BundleActivator {
 	 */
 	public void stop(BundleContext bundleContext) throws Exception {
 		// saving defaults
-		File defaultsFile = ResourcesPlugin.getWorkspace().getRoot()
+		File defaultsFile = this.workspace.getRoot()
 				.getLocation().append("/defaults.xml").toFile();
 		File schemaFile = de.ptb.epics.eve.resources.Activator
 				.getDefaultsSchema();
-		Job job = new SaveDefaults("Saving Defaults", this.defaultsManager,
+		Job job = new SaveDefaults("Saving Defaults", this.getDefaultsManager(),
 				null, defaultsFile, schemaFile);
 		job.schedule();
 		job.join();
