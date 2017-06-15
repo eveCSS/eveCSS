@@ -51,6 +51,9 @@ public class MacroResolver {
 	 * @return the resolved string
 	 */
 	public String resolve(String macroString) {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("resolving macros in '" + macroString + "'");
+		}
 		// extract pv names
 		Pattern p = Pattern.compile("\\$\\{PV\\:[^\\}\\$]*\\}");
 		Matcher m = p.matcher(macroString);
@@ -103,7 +106,11 @@ public class MacroResolver {
 			replacementList.add(macroPV.resolve());
 		}
 		
-		return StringUtil.replaceEach(macroString, searchList, replacementList);
+		String resolvedString = StringUtil.replaceEach(macroString, searchList, replacementList);
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("resolved string is: '" + resolvedString + "'");
+		}
+		return resolvedString;
 	}
 	
 	/*
