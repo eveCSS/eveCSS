@@ -21,6 +21,7 @@
         <module>de.ptb.epics.eve.rcp</module>
         <module>de.ptb.epics.eve.resources</module>
         <module>de.ptb.epics.eve.util</module>
+        <module>de.ptb.epics.eve.util.ui</module>
         <module>de.ptb.epics.eve.viewer</module>
     </modules>
 </project>

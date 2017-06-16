@@ -3,6 +3,10 @@ package de.ptb.epics.eve.viewer.views.deviceinspectorview;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import org.eclipse.swt.widgets.Display;
+
+import de.ptb.epics.eve.preferences.Activator;
+import de.ptb.epics.eve.preferences.PreferenceConstants;
 import de.ptb.epics.eve.util.pv.PVWrapper;
 
 /**
@@ -28,7 +32,8 @@ public class CommonTableElementPV extends PVWrapper implements PropertyChangeLis
 	 * 		(row) the process variable corresponds to
 	 */
 	public CommonTableElementPV(String pvname, CommonTableElement tableElement) {
-		super(pvname);
+		super(pvname, Activator.getDefault().getPreferenceStore().
+				getInt(PreferenceConstants.P_PV_UPDATE_INTERVAL));
 		this.commonTableElement = tableElement;
 		
 		this.addPropertyChangeListener(PVWrapper.VALUE, this);
@@ -45,7 +50,8 @@ public class CommonTableElementPV extends PVWrapper implements PropertyChangeLis
 	 * 		(row) the process variable corresponds to
 	 */
 	public CommonTableElementPV(String pvname, String triggerPv, CommonTableElement tableElement) {
-		super(pvname, triggerPv);
+		super(pvname, Activator.getDefault().getPreferenceStore().
+				getInt(PreferenceConstants.P_PV_UPDATE_INTERVAL), triggerPv);
 		this.commonTableElement = tableElement;
 		
 		this.addPropertyChangeListener(PVWrapper.VALUE, this);

@@ -14,11 +14,8 @@ import org.epics.vtype.VEnum;
 import org.epics.vtype.ValueFormat;
 import org.epics.vtype.ValueUtil;
 
-import de.ptb.epics.eve.preferences.Activator;
-import de.ptb.epics.eve.preferences.PreferenceConstants;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.util.time.TimeDuration.*;
-
 
 /**
  * <code>PVWrapper</code> wraps a {@link org.epics.pvmanager.PV}. During object 
@@ -44,6 +41,8 @@ public class PVWrapper {
 	
 	/** the pv discrete values bean property */
 	public static final String DISCRETE_VALUES = "discreteValues";
+	
+	private static final int PV_UPDATE_INTERVAL = 1;
 	
 	// logging
 	private static final Logger LOGGER = Logger.getLogger(
@@ -103,6 +102,9 @@ public class PVWrapper {
 	 * Notice that it is not connected immediately (due to threading). 
 	 * Its connection status is indicated by {@link #isConnected()}.
 	 * 
+	 * The update interval (the max amount in seconds new values are reported) 
+	 * is set to 1 second.
+	 * 
 	 * @param pvname the name (id) of the process variable
 	 */
 	public PVWrapper(String pvname) {
@@ -116,9 +118,7 @@ public class PVWrapper {
 		
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
 		
-		// fetch the preference entry for the update interval
-		this.pvUpdateInterval = Activator.getDefault().getPreferenceStore().
-							getInt(PreferenceConstants.P_PV_UPDATE_INTERVAL);
+		this.pvUpdateInterval = PVWrapper.PV_UPDATE_INTERVAL;
 		
 		this.readListener = new ReadListener();
 		
@@ -167,6 +167,23 @@ public class PVWrapper {
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 		}
+	}
+	
+	/**
+	 * Constructor that calls {@link #PVWrapper(String, String)}. 
+	 * <p>
+	 * Pass a non-<code>null</code> value for <code>triggerName</code> to append 
+	 * a trigger after {@link #setValue(Object)}.
+	 * 
+	 * @param pvName the pv string
+	 * @param updateInterval the max amount in seconds new values are reported
+	 * @param triggerName the pv string of the trigger pv or <code>null</code> 
+	 * 						if none
+	 * @since 1.29
+	 */
+	public PVWrapper(String pvName, int updateInterval, String triggerName) {
+		this(pvName, triggerName);
+		this.pvUpdateInterval = updateInterval;
 	}
 	
 	/**

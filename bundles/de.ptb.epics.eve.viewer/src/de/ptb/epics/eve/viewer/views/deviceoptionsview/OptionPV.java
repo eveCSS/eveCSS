@@ -1,6 +1,8 @@
 package de.ptb.epics.eve.viewer.views.deviceoptionsview;
 
 import de.ptb.epics.eve.data.measuringstation.Option;
+import de.ptb.epics.eve.preferences.Activator;
+import de.ptb.epics.eve.preferences.PreferenceConstants;
 import de.ptb.epics.eve.util.pv.PVWrapper;
 
 /**
@@ -19,7 +21,9 @@ public class OptionPV extends PVWrapper {
 	 * @param option the option the PV is related to
 	 */
 	public OptionPV(final Option option) {
-		super(option.getValue().getAccess().getVariableID());
+		super(option.getValue().getAccess().getVariableID(), 
+				Activator.getDefault().getPreferenceStore().
+				getInt(PreferenceConstants.P_PV_UPDATE_INTERVAL));
 		this.option = option;
 	}
 	
