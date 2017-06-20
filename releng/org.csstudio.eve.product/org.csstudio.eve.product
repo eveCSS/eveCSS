@@ -50,11 +50,11 @@ See http://ics-web.sns.ornl.gov/css
       startupMessageRect="7,190,445,20"
       startupForegroundColor="0000FF" />
    <launcher name="css">
-      <linux icon="/de.ptb.epics.eve.rcp/icons/css48.xpm"/>
-      <macosx icon="/de.ptb.epics.eve.rcp/icons/css.icns"/>
+      <linux icon="../../bundles/de.ptb.epics.eve.rcp/icons/css48.xpm"/>
+      <macosx icon="../../bundles/de.ptb.epics.eve.rcp/icons/css.icns"/>
       <solaris/>
       <win useIco="true">
-         <ico path="/de.ptb.epics.eve.rcp/icons/css.ico"/>
+         <ico path="../../bundles/de.ptb.epics.eve.rcp/icons/css.ico"/>
          <bmp/>
       </win>
    </launcher>
@@ -63,7 +63,6 @@ See http://ics-web.sns.ornl.gov/css
 
    <vm>
    </vm>
-
 
    <plugins>
    </plugins>
