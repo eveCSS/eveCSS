@@ -306,8 +306,8 @@ public class TraceDataCollector implements IDataProvider,
 	}
 	
 	private void invertSamples() {
-		this.xMin = this.yMin = Double.POSITIVE_INFINITY;
-		this.xMax = this.yMax = Double.NEGATIVE_INFINITY;
+		this.yMin = Double.POSITIVE_INFINITY;
+		this.yMax = Double.NEGATIVE_INFINITY;
 		for (Sample sample : this.data) {
 			sample.invertYValue();
 			if (sample.getYValue() < this.yMin) {
