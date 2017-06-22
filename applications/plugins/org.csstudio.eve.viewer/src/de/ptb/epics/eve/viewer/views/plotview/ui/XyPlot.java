@@ -1,14 +1,10 @@
 package de.ptb.epics.eve.viewer.views.plotview.ui;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.csstudio.swt.xygraph.dataprovider.IDataProvider;
-import org.csstudio.swt.xygraph.dataprovider.IDataProviderListener;
-import org.csstudio.swt.xygraph.dataprovider.ISample;
 import org.csstudio.swt.xygraph.figures.Axis;
 import org.csstudio.swt.xygraph.figures.ToolbarArmedXYGraph;
 import org.csstudio.swt.xygraph.figures.Trace;
@@ -30,7 +26,6 @@ import de.ptb.epics.eve.data.scandescription.YAxis;
 import de.ptb.epics.eve.ecp1.types.DataModifier;
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.preferences.PreferenceConstants;
-import de.ptb.epics.eve.viewer.views.plotview.plot.Sample;
 import de.ptb.epics.eve.viewer.views.plotview.plot.TraceDataCollector;
 import de.ptb.epics.eve.viewer.views.plotview.plot.TraceInfo;
 
