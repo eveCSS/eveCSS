@@ -180,17 +180,17 @@ public class TraceDataCollector implements IDataProvider,
 			LOGGER.debug("adding sample " + sample.toString());
 			this.data.add(sample);
 			
-			if (this.motorValue < this.xMin) {
-				this.xMin = this.motorValue;
+			if (sample.getXValue() < this.xMin) {
+				this.xMin = sample.getXValue();
 			} 
-			if (this.motorValue > this.xMax) {
-				this.xMax = this.motorValue;
+			if (sample.getXValue() > this.xMax) {
+				this.xMax = sample.getXValue();
 			}
-			if (this.detectorValue < this.yMin) {
-				this.yMin = this.detectorValue;
+			if (sample.getYValue() < this.yMin) {
+				this.yMin = sample.getYValue();
 			}
-			if (this.detectorValue > this.yMax) {
-				this.yMax = this.detectorValue;
+			if (sample.getYValue() > this.yMax) {
+				this.yMax = sample.getYValue();
 			}
 		
 			if (LOGGER.isDebugEnabled()) {
