@@ -885,7 +885,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 						// option not used -> exclude
 						exclude(o);
 						logger.debug("Option " + device.getName() + ":" + 
-								o.getName() + " not used -> exclude = weg damit");
+								o.getName() + " not used -> exclude");
 					}
 				}
 				
