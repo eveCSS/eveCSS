@@ -52,27 +52,32 @@ public class PlayListCommand implements IECP1Command {
 					PlayListCommand.COMMAND_TYPE_ID);
 		}
 
-		// TODO: Length is never read, but the readInt() is necessary !!!!
-		// for unknown reason
 		final int length = dataInputStream.readInt();
 		final int amount = dataInputStream.readInt();
 		for (int i = 0; i < amount; ++i) {
 			final int id = dataInputStream.readInt();
+			String timeStamp = null;
+			final int timeStampLength = dataInputStream.readInt();
+			if (timeStampLength != 0xffffffff) {
+				final byte[] bytes = new byte[timeStampLength];
+				dataInputStream.readFully(bytes);
+				timeStamp = new String(bytes, IECP1Command.STRING_ENCODING);
+			}
 			String name = "";
-			String author = "";
 			final int namelength = dataInputStream.readInt();
 			if (namelength != 0xffffffff) {
 				final byte[] bytes = new byte[namelength];
 				dataInputStream.readFully(bytes);
 				name = new String(bytes, IECP1Command.STRING_ENCODING);
 			}
+			String author = "";
 			final int authorlength = dataInputStream.readInt();
 			if (authorlength != 0xffffffff) {
 				final byte[] bytes = new byte[authorlength];
 				dataInputStream.readFully(bytes);
 				author = new String(bytes, IECP1Command.STRING_ENCODING);
 			}
-			this.entries.add(new PlayListEntry(id, name, author));
+			this.entries.add(new PlayListEntry(id, timeStamp, name, author));
 		}
 
 	}

@@ -80,4 +80,12 @@ public class Sample implements ISample {
 	protected void invertYValue() {
 		this.y = -this.y;//Math.copySign(this.y, -1.0);
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return "(" + this.x + ", " + this.y + ")";
+	}
 }
