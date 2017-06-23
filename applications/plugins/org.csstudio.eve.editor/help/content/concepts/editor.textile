@@ -1,11 +1,77 @@
 h1(eveTopic). Scan Description Editor
 
+p. The Scan Description Editor shows the graphical representation of a scan. Each chain of s scan is pictured as a start event and scan modules connected by arrows. Below is an example of a scan description editor showing a scan with a chain containing three scan modules:
 
+p=. !(eveImage)../../img/concepts/ScanDescriptionEditor/scandescriptioneditor.png(Scan Description Editor-Graphical Representation as a tree of Chains and Scanmodules)!
 
-h2(eveTopic). Cut, Copy and Paste
+p. Appended scan modules are always connected from the right of a scan module. Arrows to nested scan modules always start from the bottom. To learn more about scan modules and their types click "here":scandescription.html.
 
-h3(eveTopic). Cut
+p. As could be seen in the image multiple scan descriptions can be opened. They are arranged in tabs at the top.
 
-h3(eveTopic). Copy
+h2(eveTopic). Palette and Tools
 
-h3(eveTopic). Paste
+p. On the right a palette with different tools is shown (it must be expanded on the very first start of the application). Depending on the active tool different interactions with the graphical objects are possible.
+
+table(eveDataTable).
+| !../../img/concepts/ScanDescriptionEditor/tool-select.png(selection tool-arrow)! | **Selection Tool** | select and move scan modules |
+| !../../img/concepts/ScanDescriptionEditor/tool-marquee.png(marquee tool-rectangle)! | **Marquee Tool** | draw a bounding box (multi select) |
+| !../../img/concepts/ScanDescriptionEditor/tool-connection.png(connection tool-directed arrow)! | **Connection Tool** | connect scan modues |
+| !../../img/concepts/ScanDescriptionEditor/tool-create.png(create tools-preset scan modules)! | **Create Tools** | create scan modules (with different content) |
+
+h3(eveTopic). Selection Tool
+
+p. Most of the Views in the EveEditor Perspective are context sensitive, i.e. depending on the current selection different content is shown. In the Scan Description Editor scan modules can be selected with the Selection Tool. The selection is represented by a frame border and a color change. The "ScanModuleView":scanmoduleview.html then shows the properties of this selected module. 
+
+p. With a "shift click" scan modules could be added to the selection. When multiple scan modules are selected one of them is the __primary selection__ (used for context sensitive views).
+
+p. The selection tool is also used to move scan modules. When holding the left mouse button the selected modules can be moved by dragging.
+
+p. Connections can also be moved to other anchor points of scan modules by dragging them.
+
+h3(eveTopic). Marquee Tool
+
+p. With the Marquee tool a rectangle is created selecting everything inside of it. Afterwards the selection tool is enabled automatically.
+
+h3(eveTopic). Connection Tool
+
+p. With the Connection tool connections between scan modules (which do not already have appended, nested or parent connections) can be created. When hovering scan modules possible connection points are highlighted. The first click creates the starting point of a connection, the second click finished it.
+
+h3(eveTopic). Create Tools
+
+p. Create Tools create scan modules already containing certain devices or preset configuration. Therefore they save some work for common use cases. There is no magic behind them. They can also be created manually. 
+
+p. The snapshot modules for example create an empty scan module and in the axis case they add each axis of the current device definition to it (setting its step function to Motion Disabled). For the channel case each detector channel is added and its number of measurements is set to one.
+
+h2(eveTopic). Additional Commands
+
+p. Alongside domain specific commands the Scan Description Editor also contains tools common to most editors. They are available in different locations: the main menu and toolbar:
+
+p=. !(eveImage)../../img/concepts/ScanDescriptionEditor/scandescriptioneditor-coolbar.png(ScanDescription Editor-Coolbar Icons)!
+
+p. and context menu:
+
+p=. !(eveImage)../../img/concepts/ScanDescriptionEditor/contextmenu.png(ScanDescription Editor Context Menu Tools)!
+
+h3(eveTopic). File Commands
+
+* Create a new scan description
+* Open an existing scan description
+* Save the current scan description
+* Save all scan descriptions (currently open in the editor)
+* Save the current scan description as another name
+
+h3(eveTopic). Cut, Copy and Paste
+
+* Selections can be cut or copied and pasted (even to another scan)
+
+h3(eveTopic). Undo and Redo
+
+* Cut, Copy, Paste and Move can be undone or redone
+
+h3(eveTopic). Zoom Tools
+
+* the graphical representation can be zoomed in or out
+
+h3(eveTopic). Add to Playlist
+
+* scans can be send to a connected engine (with or without switching perspective)
