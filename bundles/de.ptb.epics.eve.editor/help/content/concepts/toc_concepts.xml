@@ -4,11 +4,15 @@
 <toc label="Concepts">
    <topic href="help/content/concepts/eveeditorperspective.html" label="EveEditor Perspective">
    </topic>
-   <topic href="help/content/concepts/scan.html" label="Scan">
+   <topic href="help/content/concepts/editor.html" label="Scan Description Editor">
+   </topic>
+   <topic href="help/content/concepts/scanview.html" label="Scan View">
    </topic>
    <topic href="help/content/concepts/chain.html" label="Chain">
    </topic>
    <topic href="help/content/concepts/events.html" label="Events">
+   </topic>
+   <topic href="help/content/concepts/scanmoduleview.html" label="Scan Module View">
    </topic>
    <topic href="help/content/concepts/detectorchannelview.html" label="Detector Channel View">
    </topic>
@@ -17,10 +21,6 @@
    <topic href="help/content/concepts/plotwindow.html" label="Plot Window">
    </topic>
    <topic href="help/content/concepts/scandescription.html" label="Scan Description">
-   </topic>
-   <topic href="help/content/concepts/scanmoduleview.html" label="Scan Module View">
-   </topic>
-   <topic href="help/content/concepts/editor.html" label="Scan Description Editor">
    </topic>
 
 </toc>

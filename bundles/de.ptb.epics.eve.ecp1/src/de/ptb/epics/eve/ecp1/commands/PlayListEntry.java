@@ -99,7 +99,7 @@ public class PlayListEntry {
 	 * @return the timestamp or <code>null</code> if none
 	 */
 	public Date getTimeStamp() {
-		return timeStamp;
+		return new Date(this.timeStamp.getTime());
 	}
 
 	public String getName() {
