@@ -82,6 +82,7 @@ public class Save extends Job {
 			monitor.worked(1);
 			
 			if(monitor.isCanceled()) {
+				measuringStation.setSource(null);
 				return Status.CANCEL_STATUS;
 			}
 			if(logger.isDebugEnabled()) {
@@ -101,6 +102,7 @@ public class Save extends Job {
 				logger.info("Save was successful.");
 			} else {
 				logger.error("Save Error!");
+				measuringStation.setSource(null);
 				return Status.CANCEL_STATUS;
 			}
 			monitor.worked(1);
@@ -109,6 +111,7 @@ public class Save extends Job {
 				Thread.sleep(500);
 				calculateSavings();
 			}
+			measuringStation.setSource(null);
 		} catch(FileNotFoundException fnfe) {
 			logger.error(fnfe.getMessage(), fnfe);
 			UIJob reportError = new ReportError(fnfe.getMessage(), this.editor);

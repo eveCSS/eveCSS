@@ -1,66 +1,57 @@
 h1(eveTopic). Engine View
 
-p. The Engine View is the view to run the scans.
+p. The Engine View allows monitoring and control of scans running in an engine process.
 
-h2(eveTopic). ENGINE
+p=. !(eveImage)../../img/concepts/engineview.png(engine view overview)!
 
-p. In the __ENGINE__ area you see the state of the engine.
+p. The first button row (ENGINE) controls the engine process itself while the second row (SCAN) controls the scan currently loaded. Below them several other informations are shown. The following subsections contain a detailed description of them.
 
-h3(eveTopic). start
+h2(eveTopic). ENGINE section
 
-p. With __start__ button you start the engine with that name and port which is set in preferences. The preferences are to find a Edit -> Preferences... -> CSS Applications -> Display -> EVE Viewer. The status of the engine is shown in a line.
-
-h3(eveTopic). kill
-
-p. The __kill__ button kills the engine.
-
-h3(eveTopic). connect
-
-p. The __connect__ button connect the program to a running engine.
-
-
-h3(eveTopic). disconnect
-
-p. The __disconnect__ button disconnect the programm from the engine. The engine is still running.
-
-h2(eveTopic). SCAN
-
-p. In the __SCAN__ area are buttons to play the scan.
+p. There are four buttons whose function is described in the following table. Below them is a status label showing the host and port of the engine the Engine View is connected to.
 
 table(eveRefTable).
 |_. Button |_. Description|
-|_. Play | The __Play__ Button is starting or continuing then scan|
-|_. Pause | The __Pause__ Button paused the scan|
-|_. Stop | The __Stop__ Button exiting the scan when the actual scan point is finished|
-|_. Skip | The __Skip__ Button staring the next scan module when the actual scan point is finished|
-|_. Halt | The __Halt__ Button terminate the scan. |
-|_. AutoPlay | __AutoPlay__ is a toggle Button and in state on the scans starting automatically|
+|_. start | Creates an engine process with the parameters (e.g. the port) specified in the preferences and connects to it. |
+|_. kill | Sends a request to the engine to terminate itself. |
+|_. connect | Connects to an existing engine process at __host__:__port__ as specified in the preferences |
+|_. disconnect | Disconnects from the currently connected engine process. |
+
+h2(eveTopic). SCAN section
+
+p. Several buttons are available to influence the execution of a scan. Their function is described in the following table.
+
+table(eveRefTable).
+|_. Button |_. Description|
+|_. Play | Starts (or continues a paused) scan. |
+|_. Pause | Pauses the scan. |
+|_. Stop | stops the scan after finishing the current scan point. while pending positionings are ignored, post scan actions of the current scan module (and the parents if nested) are still executed. |
+|_. Skip | finishes the current scan point, skips the remaining scan points of the current scan module, executes post scan actions and continues with the next scan module (if any) |
+|_. Halt | Stops the scan and immediately stops all motor axes. |
+|_. AutoPlay | if activated (toggle button) loaded scans (and iterations if repeat count > 0) start automatically |
+
+p. Besides the available buttons there are some status fields as well as an option to repeat scans and to comment described below.
 
 h3(eveTopic). repeat count
 
-p. The __Repeat Count__ sets how often the scan should be executed in addition to the first execution. For Example a __repeat count__ of 1 starts the scan twice. The possible values are from 0 up to 999999.
+p. The __Repeat Count__ displays the number of times the scan should be repeated. As long as the scan is not finished the repeat count is editable.
 
 h3(eveTopic). loaded File
 
-p. The __loaded File__ is the actual scan file in the engine.
+p. Shows the path and name of the scan file currently loaded/executing.
 
 h3(eveTopic). Filename
 
-p. The shown __Filename__ is the name of the actual datafile.
+p. Shows the path and name of the file the measuring data is written to.
 
 h3(eveTopic). live Comment
 
-p. The __live Comment__ field is to write comment while the scan is running.
+p. Allows writing (multiple) comments to current data file. When pressing the button "Send to File" the entered text is send to the engine (which saves it in the file).
 
-h3(eveTopic). Send to File
+h2(eveTopic). Progress Bar
 
-p. With the __Send to File__ Button the live Comment is writing into the datafile. It is only possible if the scan is running.
-
-
-h2(eveTopic). Comment
-
-p. In the __Comment__ Box you can write additional comments.
+p. Shows the progress of the current scan by showing the absolute and relative ratio of finished positions to the number of total positions. The background color fill also represents the relative ratio.
 
 h2(eveTopic). Status Table
 
-p. In der Status Tabelle sieht man alle chain und scan Module des geladenen Scan aufgelistet und deren Zustand. Remaining Time ist außerdem eine Abschätzung darüber wie lange der Scan noch dauert.
+p. Shows the chains, scan modules and their states of the currently loaded scan. A remaining time as well as additional event infos (if any) are also shown.

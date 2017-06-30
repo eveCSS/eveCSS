@@ -1,15 +1,12 @@
 package de.ptb.epics.eve.editor.views.scanmoduleview.prescancomposite;
 
-import org.eclipse.jface.viewers.ILabelProviderListener;
-import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.PlatformUI;
 
 import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.scandescription.Prescan;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.errors.PrescanError;
+import de.ptb.epics.eve.editor.views.scanmoduleview.ActionCompositeLabelProvider;
 
 /**
  * <code>PrescanLabelProvider</code> is the label provider of the table viewer
@@ -20,7 +17,7 @@ import de.ptb.epics.eve.data.scandescription.errors.PrescanError;
  * @author ?
  * @author Marcus Michalsky
  */
-public class LabelProvider implements ITableLabelProvider {
+public class LabelProvider extends ActionCompositeLabelProvider {
 
 	/**
 	 * {@inheritDoc}
@@ -28,14 +25,11 @@ public class LabelProvider implements ITableLabelProvider {
 	@Override
 	public Image getColumnImage(final Object prescan, final int colIndex) {
 		if (colIndex == 0) {
-			return PlatformUI.getWorkbench().getSharedImages()
-					.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE)
-					.createImage();
+			return getDeleteImage();
 		} else if (colIndex == 1) {
 			for (IModelError error : ((Prescan) prescan).getModelErrors()) {
 				if (error instanceof PrescanError) {
-					return PlatformUI.getWorkbench().getSharedImages()
-							.getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
+					return getErrorImage();
 				}
 			}
 		}
@@ -92,34 +86,5 @@ public class LabelProvider implements ITableLabelProvider {
 			}
 		}
 		return null;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void dispose() {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean isLabelProperty(final Object arg0, String arg1) {
-		return false;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void addListener(final ILabelProviderListener arg0) {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void removeListener(final ILabelProviderListener arg0) {
 	}
 }

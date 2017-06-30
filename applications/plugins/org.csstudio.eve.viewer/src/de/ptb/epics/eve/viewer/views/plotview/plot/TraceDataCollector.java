@@ -172,23 +172,25 @@ public class TraceDataCollector implements IDataProvider,
 						+ ": Pos: "
 						+ this.motorPosCount + sample.getInfo());
 			}
-			if (this.traceInfo.isyAxisNumeric() && this.traceInfo.getModifier().
+			if (this.traceInfo.isyAxisNumeric() && this.traceInfo.getyAxisModifier().
 					equals(YAxisModifier.INVERSE)) {
+				LOGGER.debug("Inverse modifier is set -> inverting sample");
 				sample.invertYValue();
 			}
+			LOGGER.debug("adding sample " + sample.toString());
 			this.data.add(sample);
 			
-			if (this.motorValue < this.xMin) {
-				this.xMin = this.motorValue;
+			if (sample.getXValue() < this.xMin) {
+				this.xMin = sample.getXValue();
 			} 
-			if (this.motorValue > this.xMax) {
-				this.xMax = this.motorValue;
+			if (sample.getXValue() > this.xMax) {
+				this.xMax = sample.getXValue();
 			}
-			if (this.detectorValue < this.yMin) {
-				this.yMin = this.detectorValue;
+			if (sample.getYValue() < this.yMin) {
+				this.yMin = sample.getYValue();
 			}
-			if (this.detectorValue > this.yMax) {
-				this.yMax = this.detectorValue;
+			if (sample.getYValue() > this.yMax) {
+				this.yMax = sample.getYValue();
 			}
 		
 			if (LOGGER.isDebugEnabled()) {
@@ -242,7 +244,7 @@ public class TraceDataCollector implements IDataProvider,
 	 */
 	@Override
 	public synchronized ISample getSample(int i) {
-		LOGGER.debug("get sample called (sample #" + (i+1) + ")");
+		LOGGER.trace("get sample called (sample #" + (i+1) + ")");
 		return this.data.get(i);
 	}
 
@@ -251,7 +253,7 @@ public class TraceDataCollector implements IDataProvider,
 	 */
 	@Override
 	public int getSize() {
-		LOGGER.debug("get size called (size is " + this.data.size() + ")");
+		LOGGER.trace("get size called (size is " + this.data.size() + ")");
 		return this.data.size();
 	}
 
@@ -260,7 +262,7 @@ public class TraceDataCollector implements IDataProvider,
 	 */
 	@Override
 	public synchronized Range getXDataMinMax() {
-		LOGGER.debug("get x min max called ([" + this.xMin + ", " + this.xMax + "]");
+		LOGGER.trace("get x min max called ([" + this.xMin + ", " + this.xMax + "]");
 		return new Range(this.xMin, this.xMax);
 	}
 
@@ -269,7 +271,7 @@ public class TraceDataCollector implements IDataProvider,
 	 */
 	@Override
 	public synchronized Range getYDataMinMax() {
-		LOGGER.debug("get y min max called ([" + this.yMin + ", " + this.yMax + "]");
+		LOGGER.trace("get y min max called ([" + this.yMin + ", " + this.yMax + "]");
 		return new Range(this.yMin, this.yMax);
 	}
 
@@ -278,7 +280,7 @@ public class TraceDataCollector implements IDataProvider,
 	 */
 	@Override
 	public boolean isChronological() {
-		LOGGER.debug("is chronological called (always true)");
+		LOGGER.trace("is chronological called (always true)");
 		return true;
 	}
 
@@ -297,19 +299,15 @@ public class TraceDataCollector implements IDataProvider,
 	 * @since 1.28
 	 */
 	public synchronized void setYAxisModifier(YAxisModifier modifier) {
-		// TODO synchronize with new incoming
-		// TODO adjust all present samples
-				// TODO adjust min and max --> in invertSamples
+		LOGGER.info("set modifier to " + modifier);
 		this.invertSamples();
-		// TODO set new modifier in trace info (-> new samples apply it then)
 		this.traceInfo.setyAxisModifier(modifier);
-		// TODO publish changes
 		this.publish();
 	}
 	
 	private void invertSamples() {
-		this.xMin = this.yMin = Double.POSITIVE_INFINITY;
-		this.xMax = this.yMax = Double.NEGATIVE_INFINITY;
+		this.yMin = Double.POSITIVE_INFINITY;
+		this.yMax = Double.NEGATIVE_INFINITY;
 		for (Sample sample : this.data) {
 			sample.invertYValue();
 			if (sample.getYValue() < this.yMin) {

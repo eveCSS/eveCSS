@@ -112,7 +112,7 @@ p. Let y ~i~ be the i-th measurement, x ~i~ the timer in seconds, the trigger in
 
 p. Then the measurements taken are (0, y ~1~), (2, y ~2~), (4, y ~3~), (6, y ~4~), (8, y ~5~), (10, y ~6~) and the mean is 
 
-p. !(eveImage)../../img/concepts/DetectorChannelView/interval-sum.png(interval sum formula: sum from 1 to 6 of y index i)!
+p=. !(eveImage)../../img/concepts/DetectorChannelView/interval-sum.png(interval sum formula: sum from 1 to 6 of y index i)!
 
 h3(eveTopic). Example 2 - interval mode and normalization
 
@@ -120,7 +120,7 @@ p. Reconsider example 1 extended by a normalization channel z.
 
 p. Then the measurements taken are (0, y ~1~/z ~1~), (2, y ~2~/z ~2~), (4, y ~3~/z ~3~), (6, y ~4~/z ~4~), (8, y ~5~/z ~5~), (10, y ~6~/z ~6~) and the mean is
 
-p. !(eveImage)../../img/concepts/DetectorChannelView/interval-sum-normalized.png(interval sum formula: sum from 1 to 6 of y index i divided by z index i)!
+p=. !(eveImage)../../img/concepts/DetectorChannelView/interval-sum-normalized.png(interval sum formula: sum from 1 to 6 of y index i divided by z index i)!
 
 p. Take into account that in interval mode only the mean value (alongside the number of measurements and the standard deviation) is written to the data file. 
 

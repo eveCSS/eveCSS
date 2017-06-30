@@ -18,6 +18,10 @@ import de.ptb.epics.eve.data.scandescription.PauseEvent;
  * @author Marcus Michalsky
  */
 public class LabelProvider implements ITableLabelProvider {
+	private static Image DELETE_IMG = PlatformUI.getWorkbench().getSharedImages().
+			getImage(ISharedImages.IMG_TOOL_DELETE);
+	private static Image ERROR_IMG = PlatformUI.getWorkbench().getSharedImages().
+			getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
 	
 	/**
 	 * {@inheritDoc}
@@ -25,14 +29,11 @@ public class LabelProvider implements ITableLabelProvider {
 	@Override
 	public Image getColumnImage(Object controlEvent, int colIndex) {
 		switch (colIndex) {
-		case 0: return PlatformUI.getWorkbench().getSharedImages()
-				.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE)
-				.createImage();
+		case 0: return LabelProvider.DELETE_IMG;
 		case 3: // limit column
 			if (((ControlEvent) controlEvent).getModelErrors().size() > 0) {
 				// errors present -> return error image
-				return PlatformUI.getWorkbench().getSharedImages()
-						.getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
+				return LabelProvider.ERROR_IMG;
 			}
 			break;
 		}

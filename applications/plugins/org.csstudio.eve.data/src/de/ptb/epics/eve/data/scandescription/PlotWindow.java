@@ -141,8 +141,7 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 	public static PlotWindow newInstance(PlotWindow plotWindow,
 			ScanModule scanModule) {
 		PlotWindow newWindow = new PlotWindow(scanModule);
-		newWindow.setId(scanModule.getChain().getScanDescription()
-				.getAvailablePlotId());
+		newWindow.setId(plotWindow.getId());
 		newWindow.setName(plotWindow.getName());
 		newWindow.setMode(plotWindow.getMode());
 		newWindow.setInit(plotWindow.isInit());
