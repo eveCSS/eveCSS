@@ -154,6 +154,7 @@ public class DefaultsAxisAdapter extends
 			if (from.getMode() instanceof DefaultsAxisRange) {
 				DefaultsAxisRange axisRange = (DefaultsAxisRange)from.getMode();
 				to.setExpression(axisRange.getExpression());
+				to.setPositionList(axisRange.getPositionList());
 			}
 			break;
 		}
