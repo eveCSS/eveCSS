@@ -74,6 +74,12 @@ public class DefaultsAxisAdapter extends
 		case POSITIONLIST:
 			to.setMode(from.getPositionList());
 			break;
+		case RANGE:
+			DefaultsAxisRange rangeMode = new DefaultsAxisRange();
+			rangeMode.setExpression(from.getExpression());
+			rangeMode.setPositionList(from.getPositionList());
+			to.setMode(rangeMode);
+			break;
 		}
 		return to;
 	}
@@ -143,6 +149,12 @@ public class DefaultsAxisAdapter extends
 			break;
 		case POSITIONLIST:
 			to.setPositionList(from.getMode().toString());
+			break;
+		case RANGE:
+			if (from.getMode() instanceof DefaultsAxisRange) {
+				DefaultsAxisRange axisRange = (DefaultsAxisRange)from.getMode();
+				to.setExpression(axisRange.getExpression());
+			}
 			break;
 		}
 		return to;

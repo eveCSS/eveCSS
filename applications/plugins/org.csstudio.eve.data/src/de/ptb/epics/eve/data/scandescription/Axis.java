@@ -20,6 +20,7 @@ import de.ptb.epics.eve.data.scandescription.axismode.AxisMode;
 import de.ptb.epics.eve.data.scandescription.axismode.FileMode;
 import de.ptb.epics.eve.data.scandescription.axismode.PluginMode;
 import de.ptb.epics.eve.data.scandescription.axismode.PositionlistMode;
+import de.ptb.epics.eve.data.scandescription.axismode.RangeMode;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
@@ -129,6 +130,31 @@ public class Axis extends AbstractMainPhaseBehavior implements
 		return stepfunction;
 	}
 
+	/**
+	 * Returns all stepfunctions valid for this axis. 
+	 * Stepfunction validity depends on data type and whether 
+	 * the axis is discrete.
+	 * 
+	 * @return all stepfunctions valid for this axis
+	 * @since 1.28
+	 */
+	public List<Stepfunctions> getStepfunctions() {
+		List<Stepfunctions> stepfunctions = new ArrayList<>();
+		if (!this.getMotorAxis().getGoto().isDiscrete()) {
+			stepfunctions.add(Stepfunctions.ADD);
+			stepfunctions.add(Stepfunctions.MULTIPLY);
+		}
+		stepfunctions.add(Stepfunctions.FILE);
+		stepfunctions.add(Stepfunctions.POSITIONLIST);
+		stepfunctions.add(Stepfunctions.PLUGIN);
+		if (!this.getMotorAxis().getGoto().isDiscrete() && 
+				(this.getType().equals(DataTypes.INT) || 
+				this.getType().equals(DataTypes.DOUBLE))) {
+			stepfunctions.add(Stepfunctions.RANGE);
+		}
+		return stepfunctions;
+	}
+	
 	/**
 	 * @param stepfunction the step function to set
 	 */
@@ -279,6 +305,31 @@ public class Axis extends AbstractMainPhaseBehavior implements
 			this.setStepfunction(Stepfunctions.POSITIONLIST);
 		}
 		((PositionlistMode)this.mode).setPositionList(list);
+	}
+	
+	/**
+	 * 
+	 * @return
+	 * @since 1.28
+	 */
+	public String getRange() {
+		if (this.getStepfunction().equals(Stepfunctions.RANGE)) {
+			return ((RangeMode)this.mode).getRange();
+		}
+		return null;
+	}
+	
+	/**
+	 * 
+	 * @param expression
+	 * @since 1.28
+	 */
+	public void setRange(String expression) {
+		// TODO check int or double else exception
+		if (!this.getStepfunction().equals(Stepfunctions.RANGE)) {
+			this.setStepfunction(Stepfunctions.RANGE);
+		}
+		((RangeMode)this.mode).setRange(expression);
 	}
 	
 	/**

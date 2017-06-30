@@ -501,31 +501,5 @@ public enum MeasuringStationLoaderStates {
 	/**
 	 * The value of an event is loading. Processing is done in sub states.
 	 */
-	EVENT_VALUE_LOADING,
-
-	/**
-	 * The begin tag of the selections section has been read.
-	 */
-	SELECTIONS_LOADING,
-	
-	/**
-	 * The begin tag of the step functions has been read.
-	 */
-	SELECTIONS_STEPFUNCTION_NEXT,
-	
-	/**
-	 * The step functions has been read and the handler is waiting for the 
-	 * close tag.
-	 */
-	SELECTIONS_STEPFUNCTION_READ,
-	
-	/**
-	 * The begin tag of the sm types has been read.
-	 */
-	SELECTIONS_SMTYPE_NEXT,
-	
-	/**
-	 * The sm types has been read and the handler is waiting for the close tag.
-	 */
-	SELECTIONS_SMTYPE_READ,
+	EVENT_VALUE_LOADING
 }

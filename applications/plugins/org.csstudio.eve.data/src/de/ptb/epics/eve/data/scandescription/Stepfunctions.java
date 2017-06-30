@@ -38,7 +38,13 @@ public enum Stepfunctions {
 	 * axis positions are defined as a list of positions.
 	 */
 	@XmlEnumValue("Positionlist")
-	POSITIONLIST {@Override public String toString() {return "Positionlist";}};
+	POSITIONLIST {@Override public String toString() {return "Positionlist";}},
+	
+	/**
+	 * axis positions are defined by a range (from, to and optional step width).
+	 */
+	@XmlEnumValue("Range")
+	RANGE {@Override public String toString() {return "Range";}};
 	
 	/**
 	 * @param value the value
@@ -55,6 +61,8 @@ public enum Stepfunctions {
 			return Stepfunctions.PLUGIN;
 		} else if (value.equals("Positionlist")) {
 			return Stepfunctions.POSITIONLIST;
+		} else if (value.equals("Range")) {
+			return Stepfunctions.RANGE;
 		}
 		throw new IllegalArgumentException("no match");
 	}

@@ -267,8 +267,6 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 		this.devices.clear();
 		this.motors.clear();
 		this.detectors.clear();
-		this.selections.setSmtypes(new String[0]);
-		this.selections.setStepfunctions(new String[0]);
 		this.pluginsMap.clear();
 		this.motorAxisMap.clear();
 		this.detectorChannelsMap.clear();
@@ -336,11 +334,6 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 					this.detectors.add(m);
 				}
 			}
-
-			this.selections.setSmtypes(this.getSource().getSelections()
-					.getSmtypes());
-			this.selections.setStepfunctions(this.getSource().getSelections()
-					.getStepfunctions());
 
 			for (final PlugIn plugIn : this.plugins) {
 				this.pluginsMap.put(plugIn.getName(), plugIn);

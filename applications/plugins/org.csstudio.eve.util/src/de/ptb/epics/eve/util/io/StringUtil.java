@@ -125,4 +125,18 @@ public final class StringUtil {
 		return StringUtils.replaceEach(text, searchList.toArray(new String[0]),
 				replacementList.toArray(new String[0]));
 	}
+	
+	/**
+	 * Returns a list containing the string representations of the elements of the given list
+	 * @param list the list where each element should be converted to a string
+	 * @return a list containing the string representations of the elments of the given list
+	 * @since 1.28
+	 */
+	public static List<String> getStringList(List<? extends Object> list) {
+		List<String> stringList = new ArrayList<>();
+		for (Object o : list) {
+			stringList.add(o.toString());
+		}
+		return stringList;
+	}
 }

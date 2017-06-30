@@ -78,6 +78,9 @@ public class DefaultsAxis implements Comparable<DefaultsAxis> {
 		case POSITIONLIST:
 			this.mode = new DefaultsAxisList();
 			break;
+		case RANGE:
+			this.mode = new DefaultsAxisRange();
+			break;
 		default: 
 			this.mode = null;
 			break;
@@ -155,22 +158,54 @@ public class DefaultsAxis implements Comparable<DefaultsAxis> {
 	 * @return the list
 	 */
 	public String getPositionList() {
-		if (!(this.mode instanceof DefaultsAxisList)) {
-			throw new IllegalStateException("Axis step function is not "
-					+ Stepfunctions.POSITIONLIST);
+		if (this.mode instanceof DefaultsAxisList) {
+			return ((DefaultsAxisList)this.mode).getPositionList();
+		} else if (this.mode instanceof DefaultsAxisRange) {
+			return ((DefaultsAxisRange)this.mode).getPositionList();
+		} else {
+			throw new IllegalStateException("Axis step function is neither "
+					+ Stepfunctions.POSITIONLIST + " nor "
+					+ Stepfunctions.RANGE);
 		}
-		return ((DefaultsAxisList)this.mode).getPositionList();
 	}
 	
 	/**
 	 * @param list the list to set
 	 */
 	public void setPositionList(String list) {
-		if (!(this.mode instanceof DefaultsAxisList)) {
-			throw new IllegalStateException("Axis step function is not "
-					+ Stepfunctions.POSITIONLIST);
+		if (this.mode instanceof DefaultsAxisList) {
+			((DefaultsAxisList)this.mode).setPositionList(list);
+		} else if (this.mode instanceof DefaultsAxisRange) {
+			((DefaultsAxisRange)this.mode).setPositionList(list);
+		} else {
+			throw new IllegalStateException("Axis step function is neither "
+					+ Stepfunctions.POSITIONLIST + " nor "
+					+ Stepfunctions.RANGE);
 		}
-		((DefaultsAxisList)this.mode).setPositionList(list);
+	}
+	
+	/**
+	 * @return the expression
+	 * @since 1.28
+	 */
+	public String getExpression() {
+		if (!(this.mode instanceof DefaultsAxisRange)) {
+			throw new IllegalStateException("Axis step function is not "
+					+ Stepfunctions.RANGE);
+		}
+		return ((DefaultsAxisRange)this.mode).getExpression();
+	}
+	
+	/**
+	 * @param expression the expression to set
+	 * @since 1.28
+	 */
+	public void setExpression(String expression) {
+		if (!(this.mode instanceof DefaultsAxisRange)) {
+			throw new IllegalStateException("Axis step function is not "
+					+ Stepfunctions.RANGE);
+		}
+		((DefaultsAxisRange)this.mode).setExpression(expression);
 	}
 	
 	/**

@@ -57,5 +57,10 @@ public enum AxisErrorTypes {
 	/**
 	 * the plug in contains an error.
 	 */
-	PLUGIN_ERROR
+	PLUGIN_ERROR,
+	
+	/**
+	 * @since 1.28
+	 */
+	RANGE_NOT_SET
 }

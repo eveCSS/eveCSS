@@ -33,6 +33,7 @@ public class Literals {
 	public static final String XML_ELEMENT_NAME_DEVICE = "device";
 	public static final String XML_ELEMENT_NAME_DEVICES = "devices";
 	public static final String XML_ELEMENT_NAME_DISPLAYGROUP = "displaygroup";
+	public static final String XML_ELEMENT_NAME_EXPRESSION = "expression";
 	public static final String XML_ELEMENT_NAME_INCIDENT = "incident";
 	public static final String XML_ELEMENT_NAME_INIT = "init";
 	public static final String XML_ELEMENT_NAME_ISMAINAXIS = "ismainaxis";
@@ -63,6 +64,7 @@ public class Literals {
 	public static final String XML_ELEMENT_NAME_POSITIONMODE = "positionmode";
 	public static final String XML_ELEMENT_NAME_POSTSCAN = "postscan";
 	public static final String XML_ELEMENT_NAME_PRESCAN = "prescan";
+	public static final String XML_ELEMENT_NAME_RANGE = "range";
 	public static final String XML_ELEMENT_NAME_REDOEVENT = "redoevent";
 	public static final String XML_ELEMENT_NAME_RESETORIGINALVALUE = "reset_originalvalue";
 	public static final String XML_ELEMENT_NAME_SAVEFILENAME = "savefilename";
