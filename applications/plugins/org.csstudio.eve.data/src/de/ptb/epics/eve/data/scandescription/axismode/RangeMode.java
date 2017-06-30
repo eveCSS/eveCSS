@@ -105,6 +105,7 @@ public class RangeMode extends AxisMode {
 				decimalRanges.add(new BigDecimalRange(s.trim()));
 			}
 			NumberFormat numberFormat = DecimalFormat.getInstance(Locale.US);
+			numberFormat.setGroupingUsed(false);
 			StringBuffer buffer = new StringBuffer();
 			for (BigDecimalRange range : decimalRanges) {
 				for (BigDecimal decimal : range.getValues()) {
