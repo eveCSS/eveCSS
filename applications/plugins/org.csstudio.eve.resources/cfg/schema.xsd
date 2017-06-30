@@ -276,7 +276,7 @@
         <element name="stepfilename" type="string"></element>
         <element name="plugin" type="tns:controller"></element>
         <element name="positionlist" type="string"></element>
-        <element name="range" type="string"></element>
+        <element name="range" type="tns:stepfunctionrange"></element>
       </choice>
     </sequence>
   </complexType>
@@ -287,6 +287,13 @@
       <element name="stop" type="tns:typevalue"></element>
       <element name="stepwidth" type="tns:typevalue"></element>
       <element name="ismainaxis" type="boolean" minOccurs="0"></element>
+    </sequence>
+  </complexType>
+
+  <complexType name="stepfunctionrange">
+    <sequence>
+      <element name="expression" type="string"></element>
+      <element name="positionlist" type="string"></element>
     </sequence>
   </complexType>
 

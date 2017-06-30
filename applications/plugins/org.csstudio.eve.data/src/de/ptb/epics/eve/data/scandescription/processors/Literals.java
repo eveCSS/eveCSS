@@ -33,6 +33,7 @@ public class Literals {
 	public static final String XML_ELEMENT_NAME_DEVICE = "device";
 	public static final String XML_ELEMENT_NAME_DEVICES = "devices";
 	public static final String XML_ELEMENT_NAME_DISPLAYGROUP = "displaygroup";
+	public static final String XML_ELEMENT_NAME_EXPRESSION = "expression";
 	public static final String XML_ELEMENT_NAME_INCIDENT = "incident";
 	public static final String XML_ELEMENT_NAME_INIT = "init";
 	public static final String XML_ELEMENT_NAME_ISMAINAXIS = "ismainaxis";

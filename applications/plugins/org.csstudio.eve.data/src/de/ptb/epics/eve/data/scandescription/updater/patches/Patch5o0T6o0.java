@@ -122,8 +122,15 @@ import de.ptb.epics.eve.util.data.Version;
                &lt;element name="stepfilename" type="string"&gt;&lt;/element&gt;
                &lt;element name="plugin" type="tns:controller"&gt;&lt;/element&gt;
                &lt;element name="positionlist" type="string"&gt;&lt;/element&gt;
-               &lt;element name="range" type="string"&gt;&lt;/element&gt;
+               &lt;element name="range" type="tns:stepfunctionrange"&gt;&lt;/element&gt;
              &lt;/choice&gt;
+           &lt;/sequence&gt;
+         &lt;/complexType&gt;
+
+         &lt;complexType name="stepfunctionrange"&gt;
+           &lt;sequence&gt;
+             &lt;element name="expression" type="string"&gt;&lt;/element&gt;
+             &lt;element name="positionlist" type="string"&gt;&lt;/element&gt;
            &lt;/sequence&gt;
          &lt;/complexType&gt;
 
@@ -138,6 +145,20 @@ import de.ptb.epics.eve.util.data.Version;
            &lt;/restriction&gt;
          &lt;/simpleType&gt;
  *       </pre>
+ *       
+ *       An example of an axis with stepfunction range is given below:
+ *       
+ *       <pre>
+ *       &lt;axis&gt;
+            &lt;axisid&gt;PPSMC:gw23715001&lt;/axisid&gt;
+            &lt;stepfunction&gt;Range&lt;/stepfunction&gt;
+            &lt;positionmode&gt;absolute&lt;/positionmode&gt;
+            &lt;range&gt;
+                &lt;expression&gt;1:5,20:100/10&lt;/expression&gt;
+                &lt;positionlist&gt;1, 2, 3, 4, 5, 20, 28, 36, 44, 52, 60, 68, 76, 84, 92, 100&lt;/positionlist&gt;
+            &lt;/range&gt;
+        &lt;/axis&gt;
+        </pre>
  *     </li>
  *   </ul>
  * </li>

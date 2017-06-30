@@ -51,6 +51,7 @@ import de.ptb.epics.eve.data.scandescription.Prescan;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.YAxis;
+import de.ptb.epics.eve.data.scandescription.axismode.RangeMode;
 import de.ptb.epics.eve.data.scandescription.channelmode.StandardMode;
 import de.ptb.epics.eve.data.scandescription.PositionMode;
 
@@ -1937,8 +1938,23 @@ public class ScanDescriptionSaver implements
 					this.atts.clear();
 					this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_RANGE, 
 							Literals.XML_ELEMENT_NAME_RANGE, this.atts);
+					
+					this.atts.clear();
+					this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_EXPRESSION, 
+							Literals.XML_ELEMENT_NAME_EXPRESSION, this.atts);
 					this.contentHandler.characters(axis.getRange().toCharArray(), 
 							0, axis.getRange().length());
+					this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_EXPRESSION, 
+							Literals.XML_ELEMENT_NAME_EXPRESSION);
+					
+					this.atts.clear();
+					this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_POSITIONLIST, 
+							Literals.XML_ELEMENT_NAME_POSITIONLIST, this.atts);
+					String posList = ((RangeMode)axis.getMode()).getPositions();
+					this.contentHandler.characters(posList.toCharArray(), 0, posList.length());
+					this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_POSITIONLIST, 
+							Literals.XML_ELEMENT_NAME_POSITIONLIST);
+					
 					this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_RANGE, 
 							Literals.XML_ELEMENT_NAME_RANGE);
 				}

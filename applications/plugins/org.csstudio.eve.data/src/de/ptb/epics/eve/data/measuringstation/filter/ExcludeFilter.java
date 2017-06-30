@@ -1220,12 +1220,12 @@ public class ExcludeFilter extends MeasuringStationFilter {
 						// option is used, set flag
 						optionUsed = true;
 						logger.debug("Option " + device.getName() + ":" + 
-								o.getName() + " is used -> nicht wegnehmen");
+								o.getName() + " is used");
 					} else {
 						// option not used -> exclude
 						exclude(o);
 						logger.debug("Option " + device.getName() + ":" + 
-								o.getName() + " not used -> exclude = weg damit");
+								o.getName() + " not used -> exclude");
 					}
 				}
 				
@@ -1237,7 +1237,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 							device.getName() + ") not used -> exclude");
 				}
 			} else {
-				logger.debug("Device " + device.getName() + " is used -> Optionen kontrollieren");
+				logger.debug("Device " + device.getName() + " is used");
 				// device is used -> exclude unused options
 				for(Option o : device.getOptions()) {
 					if(!usedOptions.contains(o)) {
