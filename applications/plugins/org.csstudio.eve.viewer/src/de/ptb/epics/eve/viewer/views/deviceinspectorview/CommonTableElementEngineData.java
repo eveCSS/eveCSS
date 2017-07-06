@@ -69,7 +69,7 @@ public class CommonTableElementEngineData implements IMeasurementDataListener {
 				formatter.close();
 			} else if 
 				(measurementData.getDataType() == DataType.FLOAT) {
-					Float value = (float) measurementData.getValues().get(0);
+					Float value = (Float) measurementData.getValues().get(0);
 					Formatter formatter = new Formatter(
 							new Locale(Locale.ENGLISH.getCountry()));
 					textvalue = formatter.format("%12.4g", value).out().
