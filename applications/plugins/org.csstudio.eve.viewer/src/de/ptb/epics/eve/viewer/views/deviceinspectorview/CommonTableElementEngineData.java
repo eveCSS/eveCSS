@@ -60,9 +60,16 @@ public class CommonTableElementEngineData implements IMeasurementDataListener {
 		
 		if (this.dataId.equals(measurementData.getName()) && 
 			(measurementData.getDataModifier() == datamodifier)) {
-			if ((measurementData.getDataType() == DataType.DOUBLE) || 
-				(measurementData.getDataType() == DataType.FLOAT)) {
-					Double value = (Double) measurementData.getValues().get(0);
+			if (measurementData.getDataType() == DataType.DOUBLE) {
+				Double value = (Double) measurementData.getValues().get(0);
+				Formatter formatter = new Formatter(
+						new Locale(Locale.ENGLISH.getCountry()));
+				textvalue = formatter.format("%12.4g", value).out().
+						toString();
+				formatter.close();
+			} else if 
+				(measurementData.getDataType() == DataType.FLOAT) {
+					Float value = (float) measurementData.getValues().get(0);
 					Formatter formatter = new Formatter(
 							new Locale(Locale.ENGLISH.getCountry()));
 					textvalue = formatter.format("%12.4g", value).out().
