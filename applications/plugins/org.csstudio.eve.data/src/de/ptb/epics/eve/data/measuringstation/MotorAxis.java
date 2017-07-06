@@ -15,7 +15,12 @@ import de.ptb.epics.eve.data.measuringstation.exceptions.ParentNotAllowedExcepti
  * @author Hartmut Scherr
  */
 public class MotorAxis extends AbstractMainPhaseDevice implements Cloneable {
-
+	public static final String POSITION_PROP = "position";
+	public static final String DISCRETE_VALUES_PROP = "discreteValues";
+	public static final String OFFSET_PROP = "offset";
+	public static final String HIGH_LIMIT_PROP = "highlimit";
+	public static final String LOW_LIMIT_PROP = "lowlimit";
+	
 	private static Logger logger = Logger.getLogger(MotorAxis.class.getName());
 	
 	// the position (read back value)
