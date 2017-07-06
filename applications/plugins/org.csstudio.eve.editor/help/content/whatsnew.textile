@@ -48,6 +48,12 @@ h3(eveTopic). Version 1.27.10
 * [Bug Fix] fixed a bug where adding devices (axes, channels, prescans, postscans, positionings or plots) to a scan module caused a memory leak
 * [Bug Fix} fixed a bug where opening the monitor selection dialog caused a memory leak
 
+h3(eveTopic). Version 1.27.13
+
+* [Bug Fix] fixed a bug where errors in a scan module were not reflected in the editor (as a red bar) after loading a scan (a scan could contain errors after loading if devices not present anymore are removed automatically)
+* [Bug Fix] fixed a bug where unnamed scan modules in a SCML file of oder versions could not be updated (and therefore not loaded)
+* [Bug Fix] fixed a bug where defaults motor values of discrete motors were overridden by channel access
+
 h2(eveTopic). Version 1.26
 
 * [Feature] added two digit year macro for file names

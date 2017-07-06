@@ -35,10 +35,8 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  */
 public class Axis extends AbstractMainPhaseBehavior implements
 		PropertyChangeListener {
-	// logging
 	private static Logger logger = Logger.getLogger(Axis.class.getName());
 
-	// delegated observable
 	private PropertyChangeSupport propertyChangeSupport;
 	
 	private Stepfunctions stepfunction;
@@ -85,7 +83,7 @@ public class Axis extends AbstractMainPhaseBehavior implements
 			if (connect) {
 				axis.connect();
 			}
-			axis.addPropertyChangeListener("discreteValues", this);
+			axis.addPropertyChangeListener(MotorAxis.DISCRETE_VALUES_PROP, this);
 		} else {
 			this.setStepfunction(Stepfunctions.ADD);
 		}
@@ -681,7 +679,7 @@ public class Axis extends AbstractMainPhaseBehavior implements
 	@SuppressWarnings("unchecked")
 	@Override
 	public void propertyChange(PropertyChangeEvent e) {
-		if (e.getPropertyName().equals("discreteValues")) {
+		if (e.getPropertyName().equals(MotorAxis.DISCRETE_VALUES_PROP)) {
 			String values = "";
 			if (this.getMotorAxis().getGoto().getType().equals(DataTypes.STRING)) {
 				for (String s : (List<String>) e.getNewValue()) {
@@ -704,8 +702,8 @@ public class Axis extends AbstractMainPhaseBehavior implements
 					logger.debug(this.getMotorAxis().getChannelAccess().getDiscretePositions().toString());
 				}
 			}
-			this.getMotorAxis().removePropertyChangeListener("discreteValues",
-					this);
+			this.getMotorAxis().removePropertyChangeListener(
+					MotorAxis.DISCRETE_VALUES_PROP, this);
 			this.getMotorAxis().disconnect();
 		}
 		if (e.getSource() instanceof AddMultiplyMode<?>) {
