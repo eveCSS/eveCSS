@@ -429,6 +429,9 @@ public enum ScanDescriptionLoaderStates {
 	 */
 	CHAIN_SCANMODULE_SMMOTOR_POSITIONLIST_READ,
 
+	CHAIN_SCANMODULE_SMMOTOR_EXPRESSION_NEXT,
+	CHAIN_SCANMODULE_SMMOTOR_EXPRESSION_READ,
+	
 	/**
 	 * The plug in controller of the motor axis is loading.
 	 */

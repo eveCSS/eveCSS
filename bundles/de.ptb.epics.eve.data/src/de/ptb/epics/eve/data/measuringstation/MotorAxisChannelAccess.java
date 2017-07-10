@@ -16,7 +16,6 @@ import de.ptb.epics.eve.util.pv.PVWrapper;
  * @since 1.5
  */
 public class MotorAxisChannelAccess implements PropertyChangeListener {
-	
 	private static Logger logger = Logger
 			.getLogger(MotorAxisChannelAccess.class.getName());
 	
@@ -57,24 +56,24 @@ public class MotorAxisChannelAccess implements PropertyChangeListener {
 		}
 		this.position = new PVWrapper(this.motorAxis.getPosition().getAccess().
 				getVariableID());
-		this.position.addPropertyChangeListener("value", this);
+		this.position.addPropertyChangeListener(PVWrapper.VALUE, this);
 		this.goTo = new PVWrapper(this.motorAxis.getGoto().getAccess()
 				.getVariableID());
-		this.goTo.addPropertyChangeListener("discreteValues", this);
+		this.goTo.addPropertyChangeListener(PVWrapper.DISCRETE_VALUES, this);
 		if (this.motorAxis.getOffset() != null) {
 			this.offset = new PVWrapper(this.motorAxis.getOffset().getAccess()
 					.getVariableID());
-			this.offset.addPropertyChangeListener("value", this);
+			this.offset.addPropertyChangeListener(PVWrapper.VALUE, this);
 		}
 		if (this.motorAxis.getSoftHighLimit() != null) {
 			this.highLimit = new PVWrapper(this.motorAxis.getSoftHighLimit()
 					.getAccess().getVariableID());
-			this.highLimit.addPropertyChangeListener("value", this);
+			this.highLimit.addPropertyChangeListener(PVWrapper.VALUE, this);
 		}
 		if (this.motorAxis.getSoftLowLimit() != null) {
 			this.lowLimit = new PVWrapper(this.motorAxis.getSoftLowLimit()
 					.getAccess().getVariableID());
-			this.lowLimit.addPropertyChangeListener("value", this);
+			this.lowLimit.addPropertyChangeListener(PVWrapper.VALUE, this);
 		}
 		this.isConnected = true;
 	}
@@ -118,19 +117,24 @@ public class MotorAxisChannelAccess implements PropertyChangeListener {
 					+ e.getOldValue() + " -> " + e.getNewValue());
 		}
 		if (e.getSource() == this.position) {
-			this.propertyChangeSupport.firePropertyChange("position",
+			this.propertyChangeSupport.firePropertyChange(
+					MotorAxis.POSITION_PROP,
 					e.getOldValue(), e.getNewValue());
 		} else if (e.getSource() == this.goTo) {
-			this.propertyChangeSupport.firePropertyChange("discreteValues",
+			this.propertyChangeSupport.firePropertyChange(
+					MotorAxis.DISCRETE_VALUES_PROP,
 					null, e.getNewValue());
 		} else if (e.getSource() == this.offset) {
-			this.propertyChangeSupport.firePropertyChange("offset",
+			this.propertyChangeSupport.firePropertyChange(
+					MotorAxis.OFFSET_PROP,
 					e.getOldValue(), e.getNewValue());
 		} else if (e.getSource() == this.highLimit) {
-			this.propertyChangeSupport.firePropertyChange("highlimit",
+			this.propertyChangeSupport.firePropertyChange(
+					MotorAxis.HIGH_LIMIT_PROP,
 					e.getOldValue(), e.getNewValue());
 		} else if (e.getSource() == this.lowLimit) {
-			this.propertyChangeSupport.firePropertyChange("lowlimit",
+			this.propertyChangeSupport.firePropertyChange(
+					MotorAxis.LOW_LIMIT_PROP,
 					e.getOldValue(), e.getNewValue());
 		}
 	}

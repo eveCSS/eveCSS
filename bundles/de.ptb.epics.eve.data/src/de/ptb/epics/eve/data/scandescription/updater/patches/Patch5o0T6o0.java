@@ -62,7 +62,130 @@ import de.ptb.epics.eve.util.data.Version;
  *    &lt;/sequence&gt;
  *  &lt;/complexType&gt;
  * </pre>
- * 
+ * </li>
+ * </ul>
+ * </li>
+ * <li>
+ *   introduces a new stepfunction called range
+ *   <ul>
+ *     <li>
+ *       schema definition changes from:
+ *       
+ *       <pre>
+ *       &lt;complexType name="smaxis"&gt;
+           &lt;sequence&gt;
+             &lt;element name="axisid" type="tns:identifier"&gt;&lt;/element&gt;
+             &lt;element name="stepfunction" type="tns:stepfunction"&gt;&lt;/element&gt;
+             &lt;element name="positionmode"&gt;
+               &lt;simpleType&gt;
+                 &lt;restriction base="string"&gt;
+                   &lt;enumeration value="relative"&gt;&lt;/enumeration&gt;
+                   &lt;enumeration value="absolute"&gt;&lt;/enumeration&gt;
+                 &lt;/restriction&gt;
+               &lt;/simpleType&gt;
+             &lt;/element&gt;
+             &lt;choice&gt;
+               &lt;element name="startstopstep" type="tns:startstopstep"&gt;&lt;/element&gt;
+               &lt;element name="stepfilename" type="string"&gt;&lt;/element&gt;
+               &lt;element name="plugin" type="tns:controller"&gt;&lt;/element&gt;
+               &lt;element name="positionlist" type="string"&gt;&lt;/element&gt;
+             &lt;/choice&gt;
+           &lt;/sequence&gt;
+         &lt;/complexType&gt;
+
+         &lt;simpleType name="stepfunction"&gt;
+           &lt;restriction base="string"&gt;
+             &lt;enumeration value="Add"&gt;&lt;/enumeration&gt;
+             &lt;enumeration value="Multiply"&gt;&lt;/enumeration&gt;
+             &lt;enumeration value="File"&gt;&lt;/enumeration&gt;
+             &lt;enumeration value="Plugin"&gt;&lt;/enumeration&gt;
+             &lt;enumeration value="Positionlist"&gt;&lt;/enumeration&gt;
+           &lt;/restriction&gt;
+         &lt;/simpleType&gt;
+ *       </pre>
+ *       to
+ *       <pre>
+ *       &lt;complexType name="smaxis"&gt;
+           &lt;sequence&gt;
+             &lt;element name="axisid" type="tns:identifier"&gt;&lt;/element&gt;
+             &lt;element name="stepfunction" type="tns:stepfunction"&gt;&lt;/element&gt;
+             &lt;element name="positionmode"&gt;
+               &lt;simpleType&gt;
+                 &lt;restriction base="string"&gt;
+                   &lt;enumeration value="relative"&gt;&lt;/enumeration&gt;
+                   &lt;enumeration value="absolute"&gt;&lt;/enumeration&gt;
+                 &lt;/restriction&gt;
+               &lt;/simpleType&gt;
+             &lt;/element&gt;
+             &lt;choice&gt;
+               &lt;element name="startstopstep" type="tns:startstopstep"&gt;&lt;/element&gt;
+               &lt;element name="stepfilename" type="string"&gt;&lt;/element&gt;
+               &lt;element name="plugin" type="tns:controller"&gt;&lt;/element&gt;
+               &lt;element name="positionlist" type="string"&gt;&lt;/element&gt;
+               &lt;element name="range" type="tns:stepfunctionrange"&gt;&lt;/element&gt;
+             &lt;/choice&gt;
+           &lt;/sequence&gt;
+         &lt;/complexType&gt;
+
+         &lt;complexType name="stepfunctionrange"&gt;
+           &lt;sequence&gt;
+             &lt;element name="expression" type="string"&gt;&lt;/element&gt;
+             &lt;element name="positionlist" type="string"&gt;&lt;/element&gt;
+           &lt;/sequence&gt;
+         &lt;/complexType&gt;
+
+         &lt;simpleType name="stepfunction"&gt;
+           &lt;restriction base="string"&gt;
+             &lt;enumeration value="Add"&gt;&lt;/enumeration&gt;
+             &lt;enumeration value="Multiply"&gt;&lt;/enumeration&gt;
+             &lt;enumeration value="File"&gt;&lt;/enumeration&gt;
+             &lt;enumeration value="Plugin"&gt;&lt;/enumeration&gt;
+             &lt;enumeration value="Positionlist"&gt;&lt;/enumeration&gt;
+             &lt;enumeration value="Range"&gt;&lt;/enumeration&gt;
+           &lt;/restriction&gt;
+         &lt;/simpleType&gt;
+ *       </pre>
+ *       
+ *       An example of an axis with stepfunction range is given below:
+ *       
+ *       <pre>
+ *       &lt;axis&gt;
+            &lt;axisid&gt;PPSMC:gw23715001&lt;/axisid&gt;
+            &lt;stepfunction&gt;Range&lt;/stepfunction&gt;
+            &lt;positionmode&gt;absolute&lt;/positionmode&gt;
+            &lt;range&gt;
+                &lt;expression&gt;1:5,20:100/10&lt;/expression&gt;
+                &lt;positionlist&gt;1, 2, 3, 4, 5, 20, 28, 36, 44, 52, 60, 68, 76, 84, 92, 100&lt;/positionlist&gt;
+            &lt;/range&gt;
+        &lt;/axis&gt;
+        </pre>
+ *     </li>
+ *   </ul>
+ * </li>
+ * <li>removed smselections
+ * <ul>
+ * <li>removed the following definitions
+ * <pre>
+ *   &lt;complexType name="selection"&gt;
+     &lt;sequence&gt;
+       &lt;element name="stepfunction" type="tns:stepfunctionlist"&gt;&lt;/element&gt;
+       &lt;element name="smtype" type="string"&gt;&lt;/element&gt;
+     &lt;/sequence&gt;
+   &lt;/complexType&gt;
+
+   &lt;simpleType name="stepfunctionlist"&gt;
+     &lt;restriction base="string"&gt;
+       &lt;pattern value="Add,Multiply,File,Plugin,Positionlist"/&gt;
+     &lt;/restriction&gt;
+   &lt;/simpleType&gt;
+ * </pre>
+ * </li>
+ * <li>removed the following element from the "scml" element:
+ * <pre>
+ *  &lt;element name="smselection" type="tns:selection" minOccurs="0"&gt;&lt;/element&gt;
+ * </pre>
+ * </li>
+ * </ul>
  * </li>
  * </ul>
  * 
@@ -77,6 +200,7 @@ public class Patch5o0T6o0 extends Patch {
 		super(source, target, modifications);
 		modifications.add(new Mod0(this));
 		modifications.add(new Mod1(this));
+		modifications.add(new Mod2(this));
 	}
 	
 	public static Patch5o0T6o0 getInstance() {
@@ -134,6 +258,21 @@ public class Patch5o0T6o0 extends Patch {
 					yAxis.insertBefore(modifierElement, previousSibling.getNextSibling());
 				}
 			}
+		}
+	}
+	
+	private class Mod2 extends AbstractModification {
+		public Mod2(Patch patch) {
+			super(patch, "remove smselection element from scml element");
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void modify(Document document) {
+			Node selection = document.getElementsByTagName("smselection").item(0);
+			selection.getParentNode().removeChild(selection);
 		}
 	}
 }

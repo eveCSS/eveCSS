@@ -37,6 +37,7 @@ import de.ptb.epics.eve.data.scandescription.PositionMode;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
+import de.ptb.epics.eve.data.scandescription.axismode.RangeMode;
 import de.ptb.epics.eve.data.scandescription.channelmode.ChannelModes;
 import de.ptb.epics.eve.data.scandescription.defaults.axis.DefaultsAxis;
 import de.ptb.epics.eve.data.scandescription.defaults.channel.DefaultsChannel;
@@ -508,6 +509,9 @@ public class DefaultsManager {
 		case POSITIONLIST:
 			to.setPositionlist(from.getPositionList());
 			break;
+		case RANGE:
+			to.setRange(from.getExpression());
+			break;
 		}
 	}
 	
@@ -566,6 +570,10 @@ public class DefaultsManager {
 			break;
 		case POSITIONLIST:
 			defaultsAxis.setPositionList(axis.getPositionlist());
+			break;
+		case RANGE:
+			defaultsAxis.setExpression(axis.getRange());
+			defaultsAxis.setPositionList(((RangeMode)axis.getMode()).getPositions());
 			break;
 		}
 		return defaultsAxis;

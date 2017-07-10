@@ -239,7 +239,7 @@ public class MeasuringStation extends AbstractMeasuringStation{
 	 * 		{@link de.ptb.epics.eve.data.measuringstation.AbstractDevice} that 
 	 * 		should be added
 	 */
-	private void classMapAdd(String className, AbstractDevice absdevice) {
+	private void classMapAdd(String className, AbstractDevice absdevice) {		
 		if(absdevice instanceof Motor) {
 			final List<MotorAxis> axis = ((Motor)absdevice).getAxes();
 			for(final MotorAxis a : axis) {
@@ -266,7 +266,7 @@ public class MeasuringStation extends AbstractMeasuringStation{
 		adlist.add(absdevice);
 		classMap.put(className, adlist);
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -290,7 +290,7 @@ public class MeasuringStation extends AbstractMeasuringStation{
 	public String getSchemaFileName() {
 		return schemaFileName;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -311,7 +311,7 @@ public class MeasuringStation extends AbstractMeasuringStation{
 	public List<String> getAxisFullIdentifyer() {
 		final List<String> identifier = new ArrayList<String>();
 		final Iterator<Motor> motorIterator = this.motors.iterator();
-
+	
 		Motor currentMotor = null;
 		MotorAxis currentAxis = null;
 		Iterator<MotorAxis> axisIterator = null;
@@ -321,9 +321,11 @@ public class MeasuringStation extends AbstractMeasuringStation{
 			while (axisIterator.hasNext()) {
 				currentAxis = axisIterator.next();
 				int i = 0;
-				for (Iterator<String> iterator = identifier.iterator(); iterator.hasNext();) {
+				for (Iterator<String> iterator = identifier.iterator(); 
+					 iterator.hasNext();) {
 					final String test = iterator.next();
-					if (currentAxis.getFullIdentifyer().compareToIgnoreCase(test) > 0) {
+					if (currentAxis.getFullIdentifyer().
+							compareToIgnoreCase(test) > 0) {
 						i++;
 					} else {
 						break;
@@ -482,7 +484,7 @@ public class MeasuringStation extends AbstractMeasuringStation{
 		}
 		return identifier;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */

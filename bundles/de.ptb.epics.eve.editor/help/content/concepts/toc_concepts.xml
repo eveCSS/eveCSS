@@ -14,9 +14,9 @@
    </topic>
    <topic href="help/content/concepts/scanmoduleview.html" label="Scan Module View">
    </topic>
-   <topic href="help/content/concepts/detectorchannelview.html" label="Detector Channel View">
+   <topic href="help/content/concepts/motoraxisview.html" label="Motor Axis View">
    </topic>
-   <topic href="help/content/concepts/motoraxis.html" label="Motor Axis">
+   <topic href="help/content/concepts/detectorchannelview.html" label="Detector Channel View">
    </topic>
    <topic href="help/content/concepts/plotwindow.html" label="Plot Window">
    </topic>

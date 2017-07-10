@@ -1,10 +1,9 @@
 package de.ptb.epics.eve.editor.handler.motoraxiscomposite;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.IHandler;
-import org.eclipse.core.commands.IHandlerListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
@@ -26,8 +25,7 @@ import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
  * @author Marcus Michalsky
  * @since 1.2
  */
-public class AddAxis implements IHandler {
-
+public class AddAxis extends AbstractHandler {
 	private static Logger logger = Logger.getLogger(AddAxis.class.getName());
 	
 	/**
@@ -55,6 +53,8 @@ public class AddAxis implements IHandler {
 				DefaultsAxis defMa = Activator.getDefault().getDefaults()
 						.getAxis(motorAxis.getID());
 				if (defMa != null) {
+					axis.getMotorAxis().removePropertyChangeListener(
+							MotorAxis.DISCRETE_VALUES_PROP, axis);
 					axis.getMotorAxis().disconnect();
 					DefaultsManager.transferDefaults(defMa, axis);
 				}
@@ -68,42 +68,5 @@ public class AddAxis implements IHandler {
 			throw new ExecutionException("ScanModulView is not the active part!");
 		}
 		return null;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean isEnabled() {
-		return true;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean isHandled() {
-		return true;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void dispose() {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void addHandlerListener(IHandlerListener handlerListener) {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void removeHandlerListener(IHandlerListener handlerListener) {
 	}
 }

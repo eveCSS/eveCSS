@@ -22,8 +22,6 @@ public abstract class AbstractMeasuringStation implements IMeasuringStation {
 	protected final List<Motor> motors;
 	protected final List<Detector> detectors;
 	
-	protected final Selections selections;
-	
 	protected final Map<String, Event> eventsMap;
 	protected final Map<String, PlugIn> pluginsMap;
 	protected Map<String, MotorAxis> motorAxisMap;
@@ -38,7 +36,6 @@ public abstract class AbstractMeasuringStation implements IMeasuringStation {
 		this.devices = new ArrayList<Device>();
 		this.motors = new ArrayList<Motor>();
 		this.detectors = new ArrayList<Detector>();
-		this.selections = new Selections();
 		this.eventsMap = new HashMap<String, Event>();
 		this.pluginsMap = new HashMap< String, PlugIn>();
 		this.motorAxisMap = new HashMap<String, MotorAxis>();
@@ -219,14 +216,6 @@ public abstract class AbstractMeasuringStation implements IMeasuringStation {
 	@Override
 	public List<Detector> getDetectors() {
 		return new ArrayList<Detector>(this.detectors);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Selections getSelections() {
-		return this.selections;
 	}
 	
 	/**

@@ -107,8 +107,6 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				this.state = MeasuringStationLoaderStates.MOTORS_LOADING;
 			} else if (qName.equals("devices")) {
 				this.state = MeasuringStationLoaderStates.DEVICES_LOADING;
-			} else if (qName.equals("smselection")) {
-				this.state = MeasuringStationLoaderStates.SELECTIONS_LOADING;
 			}
 			break;
 
@@ -392,15 +390,6 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				this.state = MeasuringStationLoaderStates.DEVICE_OPTION;
 			}
 			break;
-
-		case SELECTIONS_LOADING:
-			if (qName.equals("stepfunction")) {
-				this.state = MeasuringStationLoaderStates.SELECTIONS_STEPFUNCTION_NEXT;
-			} else if (qName.equals("smtype")) {
-				this.state = MeasuringStationLoaderStates.SELECTIONS_SMTYPE_NEXT;
-			}
-			break;
-
 		}
 
 		switch (this.subState) {
@@ -657,19 +646,6 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 					.toString().toUpperCase()));
 			this.state = MeasuringStationLoaderStates.DEVICE_DISPLAYGROUP_READ;
 			break;
-
-		case SELECTIONS_STEPFUNCTION_NEXT:
-			this.measuringStation.getSelections().setStepfunctions(
-					textBuffer.toString().split(","));
-			this.state = MeasuringStationLoaderStates.SELECTIONS_STEPFUNCTION_READ;
-			break;
-
-		case SELECTIONS_SMTYPE_NEXT:
-			this.measuringStation.getSelections().setSmtypes(
-					textBuffer.toString().split(","));
-			this.state = MeasuringStationLoaderStates.SELECTIONS_SMTYPE_READ;
-			break;
-
 		}
 
 		switch (this.subState) {
@@ -1159,25 +1135,6 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				this.state = MeasuringStationLoaderStates.DEVICE_LOADING;
 			}
 			break;
-
-		case SELECTIONS_LOADING:
-			if (qName.equals("smselection")) {
-				this.state = MeasuringStationLoaderStates.ROOT;
-			}
-			break;
-
-		case SELECTIONS_STEPFUNCTION_READ:
-			if (qName.equals("stepfunction")) {
-				this.state = MeasuringStationLoaderStates.SELECTIONS_LOADING;
-			}
-			break;
-
-		case SELECTIONS_SMTYPE_READ:
-			if (qName.equals("smtype")) {
-				this.state = MeasuringStationLoaderStates.SELECTIONS_LOADING;
-			}
-			break;
-
 		}
 
 		switch (this.subState) {

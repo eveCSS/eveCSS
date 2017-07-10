@@ -48,6 +48,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
 public class ExcludeFilter extends MeasuringStationFilter {
 	private static Logger logger = 
 			Logger.getLogger(ExcludeFilter.class.getName());
+
 	private boolean filterInProgress;
 	
 	/**
@@ -80,9 +81,11 @@ public class ExcludeFilter extends MeasuringStationFilter {
 					continue;
 				}
 				int i = 0;
-				for (Iterator<String> iterator = identifier.iterator(); iterator.hasNext();) {
+				for (Iterator<String> iterator = identifier.iterator(); iterator
+						.hasNext();) {
 					final String test = iterator.next();
-					if (currentAxis.getFullIdentifyer().compareToIgnoreCase(test) > 0) {
+					if (currentAxis.getFullIdentifyer().compareToIgnoreCase(
+							test) > 0) {
 						i++;
 					} else {
 						break;
@@ -277,7 +280,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -289,8 +292,6 @@ public class ExcludeFilter extends MeasuringStationFilter {
 		this.devices.clear();
 		this.motors.clear();
 		this.detectors.clear();
-		this.selections.setSmtypes(new String[0]);
-		this.selections.setStepfunctions(new String[0]);
 		this.pluginsMap.clear();
 		this.motorAxisMap.clear();
 		this.detectorChannelsMap.clear();
@@ -385,14 +386,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 					this.devices.add(d);
 				}
 			}
-			
-			// include all sm types (no filtering)
-			this.selections.setSmtypes(
-					this.getSource().getSelections().getSmtypes());
-			// include all step functions (no filtering)
-			this.selections.setStepfunctions(
-					this.getSource().getSelections().getStepfunctions());
-			
+
 			// *******************
 			// *** build  maps ***
 			// *******************
@@ -880,7 +874,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 						// option is used, set flag
 						optionUsed = true;
 						logger.debug("Option " + device.getName() + ":" + 
-								o.getName() + " is used -> nicht wegnehmen");
+								o.getName() + " is used");
 					} else {
 						// option not used -> exclude
 						exclude(o);
@@ -897,7 +891,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 							device.getName() + ") not used -> exclude");
 				}
 			} else {
-				logger.debug("Device " + device.getName() + " is used -> Optionen kontrollieren");
+				logger.debug("Device " + device.getName() + " is used");
 				// device is used -> exclude unused options
 				for(Option o : device.getOptions()) {
 					if(!usedOptions.contains(o)) {
