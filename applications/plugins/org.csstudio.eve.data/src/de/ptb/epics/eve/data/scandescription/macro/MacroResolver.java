@@ -17,6 +17,11 @@ public class MacroResolver {
 	private static final Logger LOGGER = Logger.getLogger(MacroResolver.class
 			.getName());
 	
+	private static final String REGEX_PREFIX = "\\$\\{PV\\:";
+	private static final String REGEX_VALID_PV_CHARS = "[a-zA-Z0-9_\\-:\\.\\[\\]<>;]*";
+	private static final String REGEX_LONG_STRING_PV = "(\\s\\{\"longString\":true\\})?";
+	private static final String REGEX_SUFFIX = "\\}";
+	
 	private static MacroResolver INSTANCE;
 	
 	private List<Macro> macros;
@@ -51,8 +56,12 @@ public class MacroResolver {
 	 * @return the resolved string
 	 */
 	public String resolve(String macroString) {
-		// extract pv names
-		Pattern p = Pattern.compile("\\$\\{PV\\:[^\\}\\$]*\\}");
+		String regex = MacroResolver.REGEX_PREFIX
+				+ MacroResolver.REGEX_VALID_PV_CHARS
+				+ MacroResolver.REGEX_LONG_STRING_PV
+				+ MacroResolver.REGEX_SUFFIX;
+		LOGGER.debug("Pattern for PV replacement is: " + regex);
+		Pattern p = Pattern.compile(regex);
 		Matcher m = p.matcher(macroString);
 		final List<String> pvmacros = new ArrayList<String>();
 		while (m.find()) {
@@ -64,7 +73,6 @@ public class MacroResolver {
 		for (String s : pvmacros) {
 			pvs.add(new MacroPV(s));
 		}
-		;
 		
 		// add non-pv macros
 		List<String> searchList = new ArrayList<>();
