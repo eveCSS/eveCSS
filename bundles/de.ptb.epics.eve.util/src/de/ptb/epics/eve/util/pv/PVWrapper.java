@@ -193,6 +193,7 @@ public class PVWrapper {
 		if (this.triggerPV != null) {
 			this.triggerPV.close();
 		}
+		LOGGER.debug("Disconnecting PV: '" + this.pvName + "'");
 		this.pv.removePVReaderListener(this.readListener);
 		this.pv.close();
 		this.isConnected = false;

@@ -273,7 +273,7 @@ public class ChainView extends ViewPart implements IEditorView,
 		this.filenameLabel = new Label(this.saveOptionsComposite, SWT.NONE);
 		this.filenameLabel.setText("Format:");
 		this.filenameInput = new Text(this.saveOptionsComposite, SWT.BORDER);
-		String tooltip = "The file name where the data should be saved.\n "
+		String tooltip = "The file name where the data should be saved.\n"
 				+ "The following macros can be used:\n"
 				+ "${WEEK} : calendar week\n" 
 				+ "${YEAR} : year as yyyy\n"
