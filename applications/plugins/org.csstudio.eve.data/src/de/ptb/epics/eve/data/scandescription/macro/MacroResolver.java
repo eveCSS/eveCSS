@@ -17,9 +17,8 @@ public class MacroResolver {
 	private static final Logger LOGGER = Logger.getLogger(MacroResolver.class
 			.getName());
 	
-	private static final String REGEX_PREFIX = "\\$\\{PV\\:";
-	private static final String REGEX_VALID_PV_CHARS = "[a-zA-Z0-9_\\-:\\.\\[\\]<>;]*";
-	private static final String REGEX_LONG_STRING_PV = "(\\s\\{\"longString\":true\\})?";
+	private static final String REGEX_PREFIX = "\\$\\{PV:";
+	private static final String REGEX_VALID_PV_CHARS = "[a-zA-Z0-9_\\-:\\.\\[\\]<>;]+";
 	private static final String REGEX_SUFFIX = "\\}";
 	
 	private static MacroResolver INSTANCE;
@@ -58,7 +57,6 @@ public class MacroResolver {
 	public String resolve(String macroString) {
 		String regex = MacroResolver.REGEX_PREFIX
 				+ MacroResolver.REGEX_VALID_PV_CHARS
-				+ MacroResolver.REGEX_LONG_STRING_PV
 				+ MacroResolver.REGEX_SUFFIX;
 		LOGGER.debug("Pattern for PV replacement is: " + regex);
 		Pattern p = Pattern.compile(regex);
@@ -83,7 +81,7 @@ public class MacroResolver {
 		}
 		
 		int loops = 0;
-		final int max_loops = 30;
+		final int max_loops = 40;
 		
 		while (loops < max_loops) {
 			try {

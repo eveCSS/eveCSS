@@ -18,6 +18,8 @@ public class MacroPV extends Macro implements PropertyChangeListener {
 	private static final Logger LOGGER = Logger.getLogger(MacroPV.class
 			.getName());
 	
+	private static final String LONG_STRING_SUFFIX = " {\"longString\":true}";
+	
 	private String value;
 	private PVWrapper pv;
 	private boolean resolved;
@@ -58,8 +60,9 @@ public class MacroPV extends Macro implements PropertyChangeListener {
 	}
 	
 	private void connect() {
-		this.pv = new PVWrapper(this.getName().substring(5,
-				this.getName().length() - 1));
+		String pvName = this.getName().substring(5,
+				this.getName().length() - 1);
+		this.pv = new PVWrapper(pvName + MacroPV.LONG_STRING_SUFFIX);
 		this.pv.addPropertyChangeListener(PVWrapper.VALUE, this);
 	}
 	

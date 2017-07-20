@@ -286,9 +286,7 @@ public class ChainView extends ViewPart implements IEditorView,
 				+ "${DATE-} : date as yyyy-MM-dd (e.g., 2011-12-31)\n"
 				+ "${TIME} : time as HHmmss\n"
 				+ "${TIME-} : time as HH-mm-ss\n"
-				+ "${PV:<pvname>} : replace with value of pvname"
-				+ "${PV:<pvname> {\"longString\":true}} : replace with value of pvname if "
-				+ "pv is a string with more than 40 characters (i.e. char array)";
+				+ "${PV:<pvname>} : replace with value of pvname";
 		this.filenameInput.setToolTipText(tooltip);
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
