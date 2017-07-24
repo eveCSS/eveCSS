@@ -3,12 +3,30 @@
 	<extensionContent id="deptbepicseveviewer-introExtension"
 		style="css/main.css" name="Viewer Overview Extension" path="overview/@">
 		<group style-id="content-group" id="deptbepicseveviewer-introLink-group">
-			<link label="EVE Viewer" url="" id="deptbepicseveviewer-introLink"
+			<link label="EVE Viewer" url="http://org.eclipse.ui.intro/showHelpTopic?id=/de.ptb.epics.eve.viewer/help/content/overview.html" id="deptbepicseveviewer-introLink"
 				style-id="content-link">
-				<text>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-					do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-					enim ad minim veniam, quis nostrud exercitation ullamco laboris
-					nisi ut aliquip ex ea commodo consequat.</text>
+				<text>The EVE Viewer consists of two parts. The Engine Perspective solves the task of monitoring and 
+				controlling the execution of scan descriptions. The Device Perspective helps controlling and monitoring 
+				devices of the beamline.</text>
+			</link>
+		</group>
+	</extensionContent>
+	<extensionContent id="de.ptb.epics.eve.viewer-firstStepsExtension"
+		style="css/main.css" name="Viewer First Steps Extension" path="firststeps/@">
+		<group style-id="content-group" id ="de.ptb.epics.eve.viewer-firststepslink-group">
+			<link label="EVE Viewer" url="http://org.eclipse.ui.intro/showHelpTopic?id=/de.ptb.epics.eve.viewer/help/content/gettingstarted.html" 
+				id="de.ptb.epics.eve.viewer-firststeps-link" style-id="content-link">
+					<text>Click here to get help on how to get started with the EVE Viewer.</text>
+				</link>
+		</group>
+	</extensionContent>
+	<extensionContent id="deptbepicseveviewer-whatsnewExtension"
+		style="css/main.css" name="Viewer What's New Extension" path="whatsnew/@">
+		<group style-id="content-group" id="deptbepicseveviewer-whatsnewLink-group">
+			<link label="EVE Viewer" url="http://org.eclipse.ui.intro/showHelpTopic?id=/de.ptb.epics.eve.viewer/help/content/whatsnew.html" id="deptbepicseveviewer-whatsnewLink"
+				style-id="content-link">
+				<text>What's New in EVE Viewer
+				</text>
 			</link>
 		</group>
 	</extensionContent>

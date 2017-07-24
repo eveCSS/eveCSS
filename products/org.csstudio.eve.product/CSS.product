@@ -33,7 +33,6 @@ See http://ics-web.sns.ornl.gov/css
       <vmArgs>-Xmx256m
 -Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.SimpleLog
 -Dorg.apache.commons.logging.simplelog.defaultlog=fatal
--Dorg.eclipse.swt.browser.DefaultType=mozilla
 -Dorg.eclipse.swt.internal.gtk.cairoGraphics=false
 -Dorg.eclipse.swt.internal.gtk.useCairo=false
 -Dno_proxy=127.0.0.1,localhost

@@ -61,7 +61,7 @@
          </property>
          <property
                name="introTitle"
-               value="Welcome to Control System Studio (CSS)!">
+               value="Welcome to eveCSS 1.28!">
          </property>
       </product>
    </extension>
