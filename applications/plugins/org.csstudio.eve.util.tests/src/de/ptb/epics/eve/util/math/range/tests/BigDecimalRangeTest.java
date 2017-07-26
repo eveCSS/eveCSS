@@ -2,9 +2,12 @@ package de.ptb.epics.eve.util.math.range.tests;
 
 import static org.junit.Assert.assertEquals;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 
-import de.ptb.epics.eve.util.io.StringUtil;
 import de.ptb.epics.eve.util.math.range.BigDecimalRange;
 
 /**
@@ -14,11 +17,133 @@ import de.ptb.epics.eve.util.math.range.BigDecimalRange;
 public class BigDecimalRangeTest {
 	@Test
 	public void testGetValues() {
-		assertEquals("1.0, 2.0, 3.0", StringUtil.buildCommaSeparatedString(
-				new BigDecimalRange("1.0:3").getValues()));
-		assertEquals("3.0, 2.0, 1.0", StringUtil.buildCommaSeparatedString(
-				new BigDecimalRange("3.0:1").getValues()));
-		assertEquals("1, 1.4, 1.8, 2.2, 2.6, 3.0, 3.2", StringUtil.
-				buildCommaSeparatedString(new BigDecimalRange("1:0.4:3.2").getValues()));
+		// case j:k (i=1), j < k
+		List<BigDecimal> list = new ArrayList<BigDecimal>();
+		list.add(new BigDecimal("1.0"));
+		list.add(new BigDecimal("2.0"));
+		list.add(new BigDecimal("3.0"));
+		assertEquals(
+				list,
+				new BigDecimalRange("1.0:3").getValues());
+		// case j:k (i=1), j > k
+		list = new ArrayList<BigDecimal>();
+		list.add(new BigDecimal("3.0"));
+		list.add(new BigDecimal("2.0"));
+		list.add(new BigDecimal("1.0"));
+		assertEquals(
+				list,
+				new BigDecimalRange("3.0:1").getValues());
+		// case j:k (i=1), j = k
+		list = new ArrayList<BigDecimal>();
+		list.add(new BigDecimal("1.0"));
+		assertEquals(
+				list,
+				new BigDecimalRange("1.0:1").getValues());
+		
+		// case j:i:k, j < k ^ (j + i) < k
+		list = new ArrayList<BigDecimal>();
+		list.add(new BigDecimal("1"));
+		list.add(new BigDecimal("1.4"));
+		list.add(new BigDecimal("1.8"));
+		list.add(new BigDecimal("2.2"));
+		list.add(new BigDecimal("2.6"));
+		list.add(new BigDecimal("3.0"));
+		list.add(new BigDecimal("3.2"));
+		assertEquals(
+				list,
+				new BigDecimalRange("1:0.4:3.2").getValues());
+		// case j:i:k, j < k ^ (j + i) > k
+		list = new ArrayList<BigDecimal>();
+		list.add(new BigDecimal("1"));
+		list.add(new BigDecimal("3.2"));
+		assertEquals(
+				list,
+				new BigDecimalRange("1:4:3.2").getValues());
+		// case j:i:k, j > k ^ (j - i) > k
+		list = new ArrayList<BigDecimal>();
+		list.add(new BigDecimal("3.2"));
+		list.add(new BigDecimal("2.8"));
+		list.add(new BigDecimal("2.4"));
+		list.add(new BigDecimal("2.0"));
+		list.add(new BigDecimal("1.6"));
+		list.add(new BigDecimal("1.2"));
+		list.add(new BigDecimal("1"));
+		assertEquals(
+				list,
+				new BigDecimalRange("3.2:0.4:1").getValues());
+		// case j:i:k, j > k ^ (j - i) < k
+		list = new ArrayList<BigDecimal>();
+		list.add(new BigDecimal("3.2"));
+		list.add(new BigDecimal("1"));
+		assertEquals(
+				list,
+				new BigDecimalRange("3.2:4:1").getValues());
+		// case j:i:k, j = k
+		list = new ArrayList<BigDecimal>();
+		list.add(new BigDecimal("1"));
+		assertEquals(
+				list,
+				new BigDecimalRange("1:4:1").getValues());
+		
+		// case j:k/N, j < k ^ (k - j) > N
+		list = new ArrayList<BigDecimal>();
+		list.add(new BigDecimal("1"));
+		list.add(new BigDecimal("2.8"));
+		list.add(new BigDecimal("4.6"));
+		list.add(new BigDecimal("6.4"));
+		list.add(new BigDecimal("8.2"));
+		list.add(new BigDecimal("10.0"));
+		assertEquals(
+				list,
+				new BigDecimalRange("1:10.0/5").getValues());
+		// case j:k/N, j < k ^ (k - j) < N
+		list = new ArrayList<BigDecimal>();
+		list.add(new BigDecimal("1"));
+		list.add(new BigDecimal("1.8"));
+		list.add(new BigDecimal("2.6"));
+		list.add(new BigDecimal("3.4"));
+		list.add(new BigDecimal("4.2"));
+		list.add(new BigDecimal("5.0"));
+		assertEquals(
+				list,
+				new BigDecimalRange("1:5.0/5").getValues());
+		// case j:k/N, j > k ^ (j - k) > N
+		list = new ArrayList<BigDecimal>();
+		list.add(new BigDecimal("10.0"));
+		list.add(new BigDecimal("8.2"));
+		list.add(new BigDecimal("6.4"));
+		list.add(new BigDecimal("4.6"));
+		list.add(new BigDecimal("2.8"));
+		list.add(new BigDecimal("1.0"));
+		assertEquals(
+				list,
+				new BigDecimalRange("10.0:1/5").getValues());
+		// same case, caused ArithmeticException before Rounding was added.
+		list = new ArrayList<BigDecimal>();
+		list.add(new BigDecimal("5.0"));
+		list.add(new BigDecimal("3.7"));
+		list.add(new BigDecimal("2.4"));
+		list.add(new BigDecimal("1.1"));
+		list.add(new BigDecimal("1"));
+		assertEquals(
+				list,
+				new BigDecimalRange("5.0:1/3").getValues());
+		// case j:k/N, j > k ^ (j - k) < N
+		list = new ArrayList<BigDecimal>();
+		list.add(new BigDecimal("5.0"));
+		list.add(new BigDecimal("4.2"));
+		list.add(new BigDecimal("3.4"));
+		list.add(new BigDecimal("2.6"));
+		list.add(new BigDecimal("1.8"));
+		list.add(new BigDecimal("1.0"));
+		assertEquals(
+				list,
+				new BigDecimalRange("5.0:1/5").getValues());
+		// case j:k/N, j = k
+		list = new ArrayList<BigDecimal>();
+		list.add(new BigDecimal("1"));
+		assertEquals(
+				list,
+				new BigDecimalRange("1:1.0/5").getValues());
 	}
 }
