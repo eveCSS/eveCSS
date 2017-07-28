@@ -1,38 +1,49 @@
 h1(eveTopic). Release Notes
 
-h2(eveTopic). Version 1.27
+h2(eveTopic). Version 1.28.0 (2017-07-28)
 
-* [Feature] the playlist can now be saved to a file
+* [Feature-#2986] added timestamp to engine live comment in HDF5 file
+* [Feature-#2838] added "add all/remove all" buttons to global device inspector
+* [Feature-#0179] introduced inversion of y axes in the plot window
+* [Feature-#0015] added table column to playlist view showing when the scan was added
 
-* [Bug Fix] fixed a bug where subsequent connects to the engine failed (GUI stopped refreshing) if a scan was already loaded
+h2(eveTopic). Version 1.27.13 (2017-07-06)
 
-h3(eveTopic). Version 1.27.1
+* [Bug Fix] fixed a bug where executing a scan containing a float type detector caused a conversion error
 
-* [Bug Fix] fixed a bug where the progress bar did not show any progress when connecting to an engine already running a scan (until a new scan was loaded)
+h2(eveTopic). Version 1.27.10 (2017-04-19)
 
-h3(eveTopic). Version 1.27.3
+* [Bug Fix] fixed a bug that lead to a potential memory leak in the Devices View.
 
-* [Bug Fix] fixed a bug where a concurrent modification could occur due to missing synchronization of the playlist controller
-* [Bug Fix] fixed a bug where the Engine View did not behave properly due to bad listener registration timing when auto connecting to the engine after a scan description was received
-
-h3(eveTopic). Version 1.27.4
-
-* [Bug Fix] fixed a bug where the scan module info dialog did not open if the scan module contained interval channels (interval channels are now shown in a separate table instead)
-
-h3(eveTopic). Version 1.27.5
+h2(eveTopic). Version 1.27.5 (2017-02-02)
 
 * [Bug Fix] added known bugs entry (and workaround) for: although a scan description in the editor is unsaved the File -> Save menu entries are not enabled
 * [Bug Fix] fixed the shell position for the info dialogs of the engine view
 
-h3(eveTopic). Version 1.27.10
+h2(eveTopic). Version 1.27.4 (2016-12-21)
 
-* [Bug Fix] fixed a bug that lead to a potential memory leak in the Devices View.
+* [Bug Fix] fixed a bug where the scan module info dialog did not open if the scan module contained interval channels (interval channels are now shown in a separate table instead)
 
-h3(eveTopic). Version 1.27.13
+h2(eveTopic). Version 1.27.3 (2016-12-12)
 
-* [Bug Fix] fixed a bug where executing a scan containing a float type detector caused a conversion error
+* [Bug Fix] fixed a bug where a concurrent modification could occur due to missing synchronization of the playlist controller
+* [Bug Fix] fixed a bug where the Engine View did not behave properly due to bad listener registration timing when auto connecting to the engine after a scan description was received
 
-h2(eveTopic). Version 1.26
+h2(eveTopic). Version 1.27.1 (2016-11-09)
+
+* [Bug Fix] fixed a bug where the progress bar did not show any progress when connecting to an engine already running a scan (until a new scan was loaded)
+
+h2(eveTopic). Version 1.27.0 (2016-11-09)
+
+* [Feature] the playlist can now be saved into a file
+
+* [Bug Fix] fixed a bug where subsequent connects to the engine failed (GUI stopped refreshing) if a scan was already loaded
+
+h2(eveTopic). Version 1.26.1
+
+* [Bug Fix] fixed a bug where engine view (status table, plot) was not refreshed anymore due to improper initialization after a reconnect
+
+h2(eveTopic). Version 1.26.0
 
 * [Feature] introduced Global Device Inspector (Device Inspector which is visible in each Perspective)
 * [Feature] The Device Inspector now allows to select and remove multiple entries at once
@@ -42,10 +53,6 @@ h2(eveTopic). Version 1.26
 * [Bug Fix] fixed a bug where the GUI stopped refreshing due to a device of type short used in a plot window
 * [Bug Fix] fixed a bug where the order of the scan modules in the Engine View table did not match the order they were executed
 * [Bug Fix] fixed a bug where the progress bar accidently reported the start of a measurement instead of its completion
-
-h3(eveTopic). Version 1.26.1
-
-* [Bug Fix] fixed a bug where engine view (status table, plot) was not refreshed anymore due to improper initialization after a reconnect
 
 h2(eveTopic). Version 1.24
 
