@@ -1,0 +1,17 @@
+            <!-- axis, to be included by motors -->
+            <axis>
+                <class>${Class=""}</class>
+                <name>${Name}</name>
+                <id>${PV}</id>
+				include "axis_basic_trigger_part.xtmpl"
+				include "axis_extended_part.xtmpl"
+				include "axis_option_part.xtmpl"
+                <option>
+                    <name>Trigger</name>
+                    <id>${PV}.SPMG</id>
+                    <value>
+                        <access method="PUTCB" transport="ca" type="string" timeout="${Timeout=20.0}">${PV}.SPMG</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+            </axis>

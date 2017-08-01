@@ -1,0 +1,17 @@
+               <goto>
+                    <access method="GETPUTCB" transport="ca" type="${Type=double}" timeout="${Timeout=300.0}">SlotD${PV}.A</access>
+                </goto>
+                <position>
+                    <access monitor="true" method="GETCB" transport="ca" type="${Type=double}">SlotD${PV}rbv</access>
+                </position>
+                <stop>
+                    <access method="PUT" transport="ca" type="int">Slot_${PV}stop</access>
+                    <value type="int">1</value>
+                </stop>
+                <movedone>
+                    <access method="GETCB" type="double" transport="ca">Slot_${PV}dmov</access>
+                </movedone>
+                <unit>
+                    <access method="GETPUTCB" transport="ca" type="string">SlotD${PV}rbv.EGU</access>
+                </unit>
+ 

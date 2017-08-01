@@ -1,0 +1,48 @@
+        <!-- SR 830 (must include sr830Channel) -->
+        <detector>
+            <class>${Class=""}</class>
+            <name>${Name=""}</name>
+            <id>${PV}</id>
+				${includeFile}
+            <option monitor="true">
+                <name>RefFreq</name>
+                <id>Det${PV}Freq.VAL</id>
+                <value>
+                    <access method="GETCB" transport="ca" type="double">${PV}Freq.VAL</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Phase</name>
+                <id>Det${PV}Phas.VAL</id>
+                <value>
+                    <access method="GETCB" transport="ca" type="double">${PV}Phas.VAL</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Sensivity</name>
+                <id>Det${PV}Sens.VAL</id>
+                <value>
+                    <access method="GETCB" transport="ca" type="double">${PV}Sens.VAL</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>timeConst</name>
+                <id>Det${PV}TC.VAL</id>
+                <value>
+                    <access method="GETCB" transport="ca" type="double">${PV}TC.VAL</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>damping</name>
+                <id>Det${PV}FiltCh</id>
+                <value>
+                    <access method="GETCB" transport="ca" type="string">${PV}FiltCh</access>
+                    <value type="string">6 dB/oct,12 dB/oct,18 dB/oct,24 dB/oct</value>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+        </detector>

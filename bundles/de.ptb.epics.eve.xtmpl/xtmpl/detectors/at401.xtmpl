@@ -1,0 +1,8 @@
+        <!-- Leica AT401 (must include at401coord) -->
+        <detector>
+            <class>${Class=""}</class>
+            <name>Lasertracker</name>
+            <id>${PV}</id>
+            include "detector_trigger_ohne_trigger_part.xtmpl"
+            ${includeFile}
+        </detector>

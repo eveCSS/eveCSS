@@ -1,0 +1,155 @@
+                <option>
+                    <name>Selected Value</name>
+                    <id>Value${PV}_Mnu</id>
+                    <value>
+                		<access monitor="true" method="${Method=GETPUT}" transport="ca" type="${Type=double}">${PV}</access>
+                		<value type="${Type=double}">${Menu}</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Zero Label</name>
+                    <id>${PV}.ZRST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}.ZRST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>First Label</name>
+                    <id>${PV}.ONST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}.ONST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Second Label</name>
+                    <id>${PV}.TWST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}.TWST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Third Label</name>
+                    <id>${PV}.THST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}.THST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Forth Label</name>
+                    <id>${PV}.FRST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}.FRST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Fifth Label</name>
+                    <id>${PV}.FVST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}.FVST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>sixth Label</name>
+                    <id>${PV}.SXST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}.SXST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>seventh Label</name>
+                    <id>${PV}.SVST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}.SVST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>eight Label</name>
+                    <id>${PV}.EIST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}.EIST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>ninth Label</name>
+                    <id>${PV}.NIST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}.NIST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>tenth Label</name>
+                    <id>${PV}.TEST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}.TEST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>eleventh Label</name>
+                    <id>${PV}.ELST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}.ELST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>twelfth Label</name>
+                    <id>${PV}.TVST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}.TVST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>thirteenth Label</name>
+                    <id>${PV}.TTST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}.TTST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>fourteenth Label</name>
+                    <id>${PV}.FTST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}.FTST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>fifteenth Label</name>
+                    <id>${PV}.FFST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}.FFST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Severity</name>
+                    <id>${PV}.SEVR</id>
+                    <value>
+                        <access method="GETCB" monitor="true" type="string" transport="ca">${PV}.SEVR</access>
+                        <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Status</name>
+                    <id>${PV}.STAT</id>
+                    <value>
+                        <access method="GETCB" monitor="true" type="string" transport="ca">${PV}.STAT</access>
+                        <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>

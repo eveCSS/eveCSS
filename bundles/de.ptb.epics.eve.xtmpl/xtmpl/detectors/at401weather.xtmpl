@@ -1,0 +1,9 @@
+         <!-- Leica AT401 single weather channel -->
+            <channel>
+				<class>${Ch_Class=""}</class>
+			  	<name>$(Name)</name>
+				<id>${PV}W.$(property)</id>
+				<read>
+					<access monitor="true" method="GETCB" transport="ca" type="double">${PV}.$(property)</access>
+               </read>
+               </channel> 

@@ -1,0 +1,51 @@
+            	<option>
+                    <name>Value</name>
+                    <id>Value${PV}</id>
+                    <value>
+                		<access monitor="true" method="${Method=GETPUT}" transport="ca" type="${Type=double}">${PV}</access>
+                		<value type="${Type=double}">${Menu}</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+            	</option>
+                <option>
+                    <name>High Label</name>
+                    <id>${PV}.ONAM</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}.ONAM</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Low Label</name>
+                    <id>${PV}.ZNAM</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}.ZNAM</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>High / s</name>
+                    <id>${PV}.HIGH</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">${PV}_Mnu.HIGH</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Severity</name>
+                    <id>${PV}.SEVR</id>
+                    <value>
+                        <access method="GETCB" monitor="true" type="string" transport="ca">${PV}.SEVR</access>
+                        <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Status</name>
+                    <id>${PV}.STAT</id>
+                    <value>
+                        <access method="GETCB" monitor="true" type="string" transport="ca">${PV}.STAT</access>
+                        <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>

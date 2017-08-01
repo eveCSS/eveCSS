@@ -1,0 +1,33 @@
+        <!-- ik 342 detector with a single channel -->
+        <detector>
+            <class>${Class=""}</class>
+            <name>${Name=""}</name>
+            <id>${PV}basic</id>
+            <channel>
+                <class>${Ch_Class=""}</class>
+                <name>${Name=""}</name>
+                <id>${PV}chan1</id>
+                <read>
+                    <access monitor="true" method="${Method=GETCB}" transport="ca" type="${Type=double}">${PV}.KI</access>
+                </read>
+                include "channel_unit_part.xtmpl"
+                <option>
+                    <name>refMarkAction</name>
+                    <id>${PV}refmark.VAL</id>
+                    <value>
+                        <access method="GETPUT" transport="ca" type="string">${PV}refmark.VAL</access>
+                        <value type="string">no action,start counter,stop counter,clear counter,get datum,get datum @ 2.,clear @ refMark</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>controlReg</name>
+                    <id>${PV}ctrlReg.VAL</id>
+                    <value>
+                        <access method="GETPUT" transport="ca" type="string">${PV}ctrlReg.VAL</access>
+                        <value type="string">use latch 0,use latch 1,use latch 0 and 1,start counter,stop counter,clear counter,clear error</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+            </channel>
+        </detector>

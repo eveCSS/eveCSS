@@ -1,0 +1,27 @@
+            <!-- file name for area detector -->
+            <channel  deferred="true" saveValue="false">
+                <class>${Ch_Class=""}</class>
+                <name>${Name=""}</name>
+                <id>${PV}Name</id>
+                <read>
+     			   <access monitor="true" method="${Method=GETCB}" transport="ca" type="string">${PV}${Filetype=""}:FullFileName_RBV {"longString":true}</access>
+                </read>
+                <option>
+                    <name>Severity</name>
+                    <id>Det${PV}${Filetype=""}:FullFileName_RBV.SEVR</id>
+                    <value>
+                        <access method="GETCB" monitor="true" transport="ca" type="string">${PV}${Filetype=""}:FullFileName_RBV.SEVR</access>
+                    	<value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>Status</name>
+                    <id>Det${PV}${Filetype=""}:FullFileName_RBV.STAT</id>
+                    <value>
+                        <access method="GETCB" monitor="true" transport="ca" type="string">${PV}${Filetype=""}:FullFileName_RBV.STAT</access>
+                        <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+            </channel>

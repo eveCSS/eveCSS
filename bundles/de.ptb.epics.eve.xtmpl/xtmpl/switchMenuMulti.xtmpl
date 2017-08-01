@@ -1,0 +1,9 @@
+        <!-- simple device as Menu with multi datatype strings -->
+        <device>
+            <class>${Class=""}</class>
+            <name>${Name=""}</name>
+            <id>${PV}</id>
+				substitute "Type=string"
+				include "device_menu_part.xtmpl"
+				include "device_multi_option_part.xtmpl"
+        </device>

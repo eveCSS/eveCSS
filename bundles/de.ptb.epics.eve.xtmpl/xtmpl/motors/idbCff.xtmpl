@@ -1,0 +1,39 @@
+            <!-- idb cff axis, to be included by motor -->
+            substitute "Prefix=cff"
+            <axis>
+                <class>${Class=""}</class>
+                <name>${Name=""}</name>
+                <id>${Prefix}${PV}cffSqRec.A</id>
+                <goto>
+                    <access method="GETPUTCB" transport="ca" type="${Type=double}" timeout="${Timeout=300.0}">${PV}cffSqRec.A</access>
+                </goto>
+                <position>
+                    <access monitor="true" method="GETCB" transport="ca" type="${Type=double}">${PV}cffSqRec.A</access>
+                </position>
+                <stop>
+                    <access method="PUT" transport="ca" type="int">${PV}stop</access>
+                    <value type="int">1</value>
+                </stop>
+                <movedone>
+                    <access method="GETCB" transport="ca" type="int">${PV}dmov</access>
+                </movedone>
+                <unit>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}cffSqRec.EGU</access>
+                </unit>
+                <option>
+                    <name>Position Readback</name>
+                    <id>${PV}cffSqRec.A</id>
+                    <value>
+                        <access method="GETCB" type="${Type=double}" transport="ca">${PV}cffSqRec.A</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Move Done</name>
+                    <id>${Prefix}${PV}dmov</id>
+                    <value>
+                        <access method="GETCB" type="${Type=double}" transport="ca">${PV}dmov</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+            </axis>

@@ -1,0 +1,51 @@
+        <!-- Prema 5000 (must include premaChannel) -->
+        <detector>
+            <class>${Class=""}</class>
+            <name>${Name=""}</name>
+            <id>${PV}</id>
+	    	${includeFile}
+            <option monitor="true">
+                <name>function</name>
+                <id>${PV}function</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">${PV}function</access>
+                    <value type="string">DCVolts,ACVolts,DCAmps,ACAmps,Ohms</value>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>range</name>
+                <id>${PV}range</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">${PV}range</access>
+                    <value type="string">Auto On,0.2 -> V kO,2 -> V mA kO,20 -> V kO,200 -> V kO,2 -> A MO,12 -> MO,Auto Off</value>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>intTime</name>
+                <id>${PV}intTime</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">${PV}intTime</access>
+                    <value type="string">0.1 s,1.0 s,10. s</value>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>Channel Preselect</name>
+                <id>${PV}channel</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="int">${PV}channel</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>Initialize (SDC)</name>
+                <id>${PV}sdc</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">${PV}sdc</access>
+                    <value type="string">Init only,SDC+Init</value>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+        </detector>

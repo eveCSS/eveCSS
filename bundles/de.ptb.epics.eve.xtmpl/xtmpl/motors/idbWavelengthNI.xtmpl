@@ -1,0 +1,63 @@
+            <!-- idb wavelength NI axis, to be included by motor -->
+            substitute "Prefix=wlNI"
+            <axis>
+                <class>${Class=""}</class>
+                <name>${Name=""}</name>
+                <id>${Prefix}${PV}nPrdOrLiWl.A</id>
+                <goto>
+                    <access method="GETPUTCB" transport="ca" type="${Type=double}" timeout="${Timeout=300.0}">${PV}nPrdOrLiWl.A</access>
+                </goto>
+                <position>
+                    <access monitor="true" method="GETCB" transport="ca" type="${Type=double}">${PV}nWlRbv</access>
+                </position>
+                <stop>
+                    <access method="PUT" transport="ca" type="int">${PV}stop</access>
+                    <value type="int">1</value>
+                </stop>
+                <movedone>
+                    <access method="GETCB" transport="ca" type="int">${PV}dmov</access>
+                </movedone>
+                <unit>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}ne2wl.EGU</access>
+                </unit>
+                <option>
+                    <name>Position Readback</name>
+                    <id>${PV}nWlRbv</id>
+                    <value>
+                        <access method="GETCB" type="${Type=double}" transport="ca">${PV}nWlRbv</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Move Done</name>
+                    <id>${Prefix}${PV}dmov</id>
+                    <value>
+                        <access method="GETCB" type="${Type=double}" transport="ca">${PV}dmov</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Order</name>
+                    <id>${Prefix}${PV}gPrdOrLiWl.B</id>
+                    <value>
+                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}nPrdOrLiWl.B</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Lines/mm</name>
+                    <id>${Prefix}${PV}gPrdOrLiWl.C</id>
+                    <value>
+                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}nPrdOrLiWl.C</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>PGR Offset</name>
+                    <id>${Prefix}${PV}nGratingAngle.B</id>
+                    <value>
+                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}nGratingAngle.B</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+            </axis>

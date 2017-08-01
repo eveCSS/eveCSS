@@ -1,0 +1,240 @@
+                <option>
+                    <name>Value 1</name>
+                    <id>DiscPos${PV}_MnuS.A</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}_MnuS.A</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Label 1</name>
+                    <id>DiscPos${PV}_Mnu.ONST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}_Mnu.ONST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Value 2</name>
+                    <id>DiscPos${PV}_MnuS.B</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}_MnuS.B</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Label 2</name>
+                    <id>DiscPos${PV}_Mnu.TWST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}_Mnu.TWST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Value 3</name>
+                    <id>DiscPos${PV}_MnuS.C</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}_MnuS.C</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Label 3</name>
+                    <id>DiscPos${PV}_Mnu.THST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}_Mnu.THST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Value 4</name>
+                    <id>DiscPos${PV}_MnuS.D</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}_MnuS.D</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Label 4</name>
+                    <id>DiscPos${PV}_Mnu.FRST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}_Mnu.FRST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Value 5</name>
+                    <id>DiscPos${PV}_MnuS.E</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}_MnuS.E</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Label 5</name>
+                    <id>DiscPos${PV}_Mnu.FVST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}_Mnu.FVST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Value 6</name>
+                    <id>DiscPos${PV}_MnuS.F</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}_MnuS.F</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Label 6</name>
+                    <id>DiscPos${PV}_Mnu.SXST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}_Mnu.SXST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Value 7</name>
+                    <id>DiscPos${PV}_MnuS.G</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}_MnuS.G</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Label 7</name>
+                    <id>DiscPos${PV}_Mnu.SVST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}_Mnu.SVST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Value 8</name>
+                    <id>DiscPos${PV}_MnuS.H</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}_MnuS.H</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Label 8</name>
+                    <id>DiscPos${PV}_Mnu.EIST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}_Mnu.EIST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Value 9</name>
+                    <id>DiscPos${PV}_MnuS.I</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}_MnuS.I</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Label 9</name>
+                    <id>DiscPos${PV}_Mnu.NIST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}_Mnu.NIST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Value 10</name>
+                    <id>DiscPos${PV}_MnuS.K</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}_MnuS.K</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Label 10</name>
+                    <id>DiscPos${PV}_Mnu.TEST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}_Mnu.TEST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Value 11</name>
+                    <id>DiscPos${PV}_MnuS.L</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}_MnuS.L</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Label 11</name>
+                    <id>DiscPos${PV}_Mnu.ELST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}_Mnu.ELST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Value 12</name>
+                    <id>DiscPos${PV}_MnuS.M</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}_MnuS.M</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Label 12</name>
+                    <id>DiscPos${PV}_Mnu.TVST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}_Mnu.TVST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Value 13</name>
+                    <id>DiscPos${PV}_MnuS.N</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}_MnuS.N</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Label 13</name>
+                    <id>DiscPos${PV}_Mnu.TTST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}_Mnu.TTST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Value 14</name>
+                    <id>DiscPos${PV}_MnuS.O</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}_MnuS.O</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Label 14</name>
+                    <id>DiscPos${PV}_Mnu.FTST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}_Mnu.FTST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Value 15</name>
+                    <id>DiscPos${PV}_MnuS.P</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}_MnuS.P</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Label 15</name>
+                    <id>DiscPos${PV}_Mnu.FFST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}_Mnu.FFST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>

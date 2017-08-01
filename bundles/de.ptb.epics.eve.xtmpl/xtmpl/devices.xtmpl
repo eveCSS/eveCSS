@@ -1,0 +1,4 @@
+    <!-- device section -->
+    <devices>
+    ${includeFile}
+    </devices>

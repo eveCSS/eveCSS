@@ -1,0 +1,26 @@
+                <option>
+                    <name>Severity</name>
+                    <id>SlotD${PV}rbv.SEVR</id>
+                    <value>
+                        <access method="GETCB" monitor="true" type="string" transport="ca">SlotD${PV}rbv.SEVR</access>
+                        <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+               <option>
+                    <name>Status</name>
+                    <id>SlotD${PV}rbv.STAT</id>
+                    <value>
+                        <access method="GETCB" monitor="true" type="string" transport="ca">SlotD${PV}rbv.STAT</access>
+                        <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Offset</name>
+                    <id>SlotD${PV}rbv.C</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">SlotD${PV}rbv.C</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>

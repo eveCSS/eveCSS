@@ -1,0 +1,69 @@
+            <!-- channel for wp 960 -->
+            <channel>
+                <class>${Class=""}</class>
+                <name>${Name=""}</name>
+                <id>${PV}</id>
+                <read>
+                    <access monitor="false" method="GETCB" transport="ca" type="double">${PV}dataStream.VAL</access>
+                </read>
+            	<unit>
+                	<access method="GETCB" transport="ca" type="string">${PV}dataStream.EGU</access>
+            	</unit>
+                <option monitor="true">
+                    <name>MAX /V</name>
+                    <id>${PV}dataStream.HOPR</id>
+                    <value>
+                        <access method="GETCB" transport="ca" type="double">${PV}dataStream.HOPR</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>V/DIV</name>
+                    <id>${PV}VDIV</id>
+                    <value>
+                        <access method="GETCB" transport="ca" type="double">${PV}VDIV</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>inputCoupling</name>
+                    <id>${PV}CPL</id>
+                    <value>
+                        <access method="GETCB" transport="ca" type="string">${PV}CPL</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>inputOffset</name>
+                    <id>${PV}OFST</id>
+                    <value>
+                        <access method="GETCB" transport="ca" type="double">${PV}OFST</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>triggerCoupling</name>
+                    <id>${PV}TRCP</id>
+                    <value>
+                        <access method="GETCB" transport="ca" type="string">${PV}TRCP</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>triggerSlope</name>
+                    <id>${PV}TRSL</id>
+                    <value>
+                        <access method="GETCB" transport="ca" type="string">${PV}TRSL</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>triggerLevel</name>
+                    <id>${PV}TRLV</id>
+                    <value>
+                        <access method="GETCB" transport="ca" type="double">${PV}TRLV</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+            	include "detector_stream_option_part.xtmpl"
+            </channel>

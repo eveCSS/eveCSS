@@ -1,0 +1,48 @@
+        <!-- ortec 0974 (must include ortecChannel) for epicsRelease 3.14 -->
+        <detector>
+            <class>${Class=""}</class>
+            <name>${Name=""}</name>
+            <id>${PV}</id>
+            <trigger>
+                <access method="PUTCB" transport="ca" type="int" timeout="${Timeout=25.0}">${PV}dataStream.PROC</access>
+                <value type="int">1</value>
+            </trigger>
+            <status>
+                <access method="GETCB" transport="ca" type="string">${PV}dataStream.STAT</access>
+            </status>
+				${includeFile}
+            <option>
+                <name>Initialize (SDC)</name>
+                <id>${PV}sdc</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">${PV}sdc</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>display</name>
+                <id>${PV}display</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">${PV}display</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>intTime</name>
+                <id>${PV}intTime.B</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">${PV}intTime.B</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option>
+                <name>Scan</name>
+                <id>${PV}dataStream.SCAN</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">${PV}dataStream.SCAN</access>
+                    <value type="string">Passive,Event,I/O Intr,10 second,5 second,2 second,1 second,.5 second,.2 second,.1 second</value>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            include "detector_stream_option_part.xtmpl"
+        </detector>

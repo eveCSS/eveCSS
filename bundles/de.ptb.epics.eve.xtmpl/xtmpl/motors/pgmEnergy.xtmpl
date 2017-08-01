@@ -1,0 +1,97 @@
+            <!-- pgm energy axis, to be included by motor -->
+            substitute "Prefix=eV"
+            <axis>
+                <class>${Class=""}</class>
+                <name>${Name=""}</name>
+                <id>${Prefix}${PV}cff</id>
+                <goto>
+                    <access method="GETPUTCB" transport="ca" type="${Type=double}" timeout="${Timeout=300.0}">${PV}cff</access>
+                </goto>
+                <position>
+                    <access monitor="true" method="GETCB" transport="ca" type="${Type=double}">${PV}rbv</access>
+                </position>
+                <stop>
+                    <access method="PUT" transport="ca" type="int">${PV}stop</access>
+                    <value type="int">1</value>
+                </stop>
+                <movedone>
+                    <access method="GETCB" transport="ca" type="int">${PV}dmov</access>
+                </movedone>
+                <unit>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}rbv.EGU</access>
+                </unit>
+                include "axis_energy_option_part.xtmpl"
+                <option>
+                    <name>Mode</name>
+                    <id>${Prefix}${PV}mode.VAL</id>
+                    <value>
+                        <access method="GETPUT" type="${Type=string}" transport="ca">${PV}mode.VAL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Order</name>
+                    <id>${Prefix}${PV}.B</id>
+                    <value>
+                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}.B</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Lines/mm</name>
+                    <id>${Prefix}${PV}.C</id>
+                    <value>
+                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}.C</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>2d /nm</name>
+                    <id>${Prefix}${PV}.F</id>
+                    <value>
+                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}.F</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Cff(E) table</name>
+                    <id>${Prefix}${PV}cff.LINR</id>
+                    <value>
+                        <access method="GETCB" type="${Type=string}" transport="ca">${PV}cff.LINR</access>
+                        <value type="string">NO CONVERSION,LINEAR,U180h1SiC300,U180h3Au300,U180h5Au1200,U180h5Au300,U49h1Au1200,U49h1Au300,U49h3Au1200,U49h5Au1200</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Expression (C;E)</name>
+                    <id>${Prefix}${PV}cffFunc.CALC</id>
+                    <value>
+                        <access method="GETCB" type="${Type=string}" transport="ca">${PV}cffFunc.CALC</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Beta</name>
+                    <id>${Prefix}${PV}beta</id>
+                    <value>
+                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}beta</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Theta</name>
+                    <id>${Prefix}${PV}theta</id>
+                    <value>
+                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}theta</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Cff (readback)</name>
+                    <id>${Prefix}${PV}rbcff</id>
+                    <value>
+                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}rbcff</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+            </axis>

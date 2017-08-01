@@ -1,0 +1,6 @@
+        <!-- positioning plugin goto maximum-->
+	<plugin type="postscanpositioning">
+		<name>MAX</name>
+		<location>/path/to/plugin3</location>
+		<!-- <parameter name="threshold" datatype="double" default="100" mandatory="false"></parameter> -->
+	</plugin>

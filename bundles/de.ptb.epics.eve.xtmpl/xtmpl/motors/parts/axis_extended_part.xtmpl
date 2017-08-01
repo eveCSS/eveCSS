@@ -1,0 +1,17 @@
+                <deadband>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}.RDBD</access>
+                </deadband>
+                <offset>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}.OFF</access>
+                </offset>
+                <tweakvalue>
+                    <access method="GETPUTCB" transport="ca" type="${Type=double}">${PV}.TWV</access>
+                </tweakvalue>
+                <tweakforward>
+                    <access method="PUT" transport="ca" type="int">${PV}.TWF</access>
+                    <value type="int">1</value>
+                </tweakforward>
+                <tweakreverse>
+                    <access method="PUT" transport="ca" type="int">${PV}.TWR</access>
+                    <value type="int">1</value>
+                </tweakreverse>

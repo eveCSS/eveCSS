@@ -1,0 +1,237 @@
+            <!-- dmm bender axis, to be included by motor -->
+            substitute "Prefix="
+            <axis>
+                <class>${Class=""}</class>
+                <name>${Name=""}</name>
+                <id>${Prefix}${PV}acceptR</id>
+                <goto>
+                    <access method="GETPUTCB" transport="ca" type="${Type=double}" timeout="${Timeout=300.0}">${PV}acceptR</access>
+                </goto>
+                <position>
+                    <access monitor="true" method="GETCB" transport="ca" type="${Type=double}">${PV}rbv</access>
+                </position>
+                <stop>
+                    <access method="PUT" transport="ca" type="int">${PV}stop</access>
+                    <value type="int">1</value>
+                </stop>
+                <highlimit>
+                    <access method="GETPUT" type="double" transport="ca">${PV}acceptR.HIHI</access>
+                </highlimit>
+                <lowlimit>
+                    <access method="GETPUT" type="double" transport="ca">${PV}acceptR.LOLO</access>
+                </lowlimit>
+                <status>
+                    <access method="GETCB" transport="ca" type="int">${PV}rbv.STAT</access>
+                </status>
+                <movedone>
+                    <access method="GETCB" transport="ca" type="int">${PV}dmov</access>
+                </movedone>
+                <unit>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}rbv.EGU</access>
+                </unit>
+                <option monitor="true">
+                    <name>Radius GotoPos OK?</name>
+                    <id>${Prefix}${PV}acceptR.SEVR</id>
+                    <value>
+                        <access method="GETCB" type="${Type=string}" transport="ca">${PV}acceptR.SEVR</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Radius Readback Pos /m</name>
+                    <id>${PV}rbv</id>
+                    <value>
+                        <access method="GETCB" type="${Type=double}" transport="ca">${PV}rbv</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>DMS Readback /V</name>
+                    <id>${Prefix}${PV}dmsrbv</id>
+                    <value>
+                        <access method="GETCB" type="${Type=double}" transport="ca">${PV}dmsrbv</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Move Done</name>
+                    <id>${Prefix}${PV}dmov</id>
+                    <value>
+                        <access method="GETCB" type="${Type=double}" transport="ca">${PV}dmov</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Severity</name>
+                    <id>${Prefix}${PV}rbv.SEVR</id>
+                    <value>
+                        <access method="GETCB" monitor="true" type="string" transport="ca">${PV}rbv.SEVR</access>
+                        <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Status</name>
+                    <id>${Prefix}${PV}rbv.STAT</id>
+                    <value>
+                        <access method="GETCB" monitor="true" type="string" transport="ca">${PV}rbv.STAT</access>
+                        <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Radius HiLimit /m</name>
+                    <id>${Prefix}${PV}acceptR.HIHI</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">${PV}acceptR.HIHI</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Radius LoLimit /m</name>
+                    <id>${Prefix}${PV}acceptR.LOLO</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">${PV}acceptR.LOLO</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>lvio</name>
+                    <id>${Prefix}${PV}lvio</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">${PV}lvio</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>miss</name>
+                    <id>${Prefix}${PV}miss</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">${PV}miss</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>rlls</name>
+                    <id>${Prefix}${PV}rlls</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">${PV}rlls</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>rhls</name>
+                    <id>${Prefix}${PV}rhls</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">${PV}rhls</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>DMM_theta /deg [A]</name>
+                    <id>${Prefix}${PV}radius.A</id>
+                    <value>
+                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}radius.A</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Source->DMM /m [B]</name>
+                    <id>${Prefix}${PV}radius.B</id>
+                    <value>
+                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}radius.B</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Source->EXP /m [C]</name>
+                    <id>${Prefix}${PV}radius.C</id>
+                    <value>
+                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}radius.C</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>calc Radius</name>
+                    <id>${Prefix}${PV}radius.CALC</id>
+                    <value>
+                        <access method="GETPUT" type="${Type=string}" transport="ca">${PV}radius.CALC</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Radius GotoPos inputMode</name>
+                    <id>${Prefix}${PV}acceptR.OMSL</id>
+                    <value>
+                        <access method="GETPUT" type="${Type=string}" transport="ca">${PV}acceptR.OMSL</access>
+                        <value type="string">supervisory,closed_loop</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>fitC1[D]</name>
+                    <id>${Prefix}${PV}position.D</id>
+                    <value>
+                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}position.D</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>fitC2[E]</name>
+                    <id>${Prefix}${PV}position.E</id>
+                    <value>
+                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}position.E</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>fitC3[F]</name>
+                    <id>${Prefix}${PV}position.F</id>
+                    <value>
+                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}position.F</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>calc MotorPosition</name>
+                    <id>${Prefix}${PV}position.CALC</id>
+                    <value>
+                        <access method="GETPUT" type="${Type=string}" transport="ca">${PV}position.CALC</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Motor GotoPos inputMode</name>
+                    <id>${Prefix}${PV}motPos.OMSL</id>
+                    <value>
+                        <access method="GETPUT" type="${Type=string}" transport="ca">${PV}rightPos.OMSL</access>
+                        <value type="string">supervisory,closed_loop</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Motor GotoPos /mm</name>
+                    <id>${Prefix}${PV}motPos</id>
+                    <value>
+                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}motPos</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Motor GotoPos OK?</name>
+                    <id>${Prefix}${PV}motPos.SEVR</id>
+                    <value>
+                        <access method="GETCB" type="${Type=string}" transport="ca">${PV}motPos.SEVR</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>accept MotorPositions</name>
+                    <id>${Prefix}${PV}menuSPMG</id>
+                    <value>
+                        <access method="GETPUT" type="${Type=string}" transport="ca">${PV}menuSPMG</access>
+                        <value type="string">Yes! Move now!,No! Stay here!,Always!</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+            </axis>

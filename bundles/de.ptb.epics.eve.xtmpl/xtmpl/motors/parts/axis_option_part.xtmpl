@@ -1,0 +1,278 @@
+                <option monitor="true">
+                    <name>Soft High Limit</name>
+                    <id>${Prefix=""}${PV}.HLM</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">${PV}.HLM</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Soft Low Limit</name>
+                    <id>${Prefix=""}${PV}.LLM</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">${PV}.LLM</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Offset</name>
+                    <id>${Prefix=""}${PV}.OFF</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">${PV}.OFF</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Dial Value</name>
+                    <id>${Prefix=""}${PV}.DVAL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">${PV}.DVAL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Position Readback</name>
+                    <id>${Prefix=""}${PV}.RBV</id>
+                    <value>
+                        <access method="GETCB" type="${Type=double}" transport="ca">${PV}.RBV</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Goto Steps</name>
+                    <id>${Prefix=""}${PV}.RVAL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">${PV}.RVAL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Readback Steps</name>
+                    <id>${Prefix=""}${PV}.RRBV</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">${PV}.RRBV</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Motor Steps</name>
+                    <id>${Prefix=""}${PV}.RMP</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">${PV}.RMP</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Encoder Steps</name>
+                    <id>${Prefix=""}${PV}.REP</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">${PV}.REP</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Position Mode</name>
+                    <id>${Prefix=""}${PV}.SET</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}.SET</access>
+                        <value type="string">Use,Set</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Move Fraction</name>
+                    <id>${Prefix=""}${PV}.FRAC</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">${PV}.FRAC</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Motor Resolution</name>
+                    <id>${Prefix=""}${PV}.MRES</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">${PV}.MRES</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Retry Deadband</name>
+                    <id>${Prefix=""}${PV}.RDBD</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">${PV}.RDBD</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Retry Count</name>
+                    <id>${Prefix=""}${PV}.RCNT</id>
+                    <value>
+                        <access monitor="true" method="GETCB" type="int" transport="ca">${PV}.RCNT</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Encoder Resolution</name>
+                    <id>${Prefix=""}${PV}.ERES</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">${PV}.ERES</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Use Encoder</name>
+                    <id>${Prefix=""}${PV}.UEIP</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}.UEIP</access>
+                        <value type="string">No,Yes</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Readback Resolution</name>
+                    <id>${Prefix=""}${PV}.RRES</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">${PV}.RRES</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Readback Link</name>
+                    <id>${Prefix=""}${PV}.RDBL</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}.RDBL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Readback Delay</name>
+                    <id>${Prefix=""}${PV}.DLY</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">${PV}.DLY</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Use Readback</name>
+                    <id>${Prefix=""}${PV}.URIP</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}.URIP</access>
+                        <value type="string">No,Yes</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Velocity</name>
+                    <id>${Prefix=""}${PV}.VELO</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">${PV}.VELO</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Base Velocity</name>
+                    <id>${Prefix=""}${PV}.VBAS</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">${PV}.VBAS</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Acceleration</name>
+                    <id>${Prefix=""}${PV}.ACCL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">${PV}.ACCL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Backlash Distance</name>
+                    <id>${Prefix=""}${PV}.BDST</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">${PV}.BDST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Backlash Velocity</name>
+                    <id>${Prefix=""}${PV}.BVEL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">${PV}.BVEL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Backlash Acceleration</name>
+                    <id>${Prefix=""}${PV}.BACC</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">${PV}.BACC</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Home Run foreward</name>
+                    <id>${Prefix=""}${PV}.HOMF</id>
+                    <value>
+                        <access method="GETPUT" type="int" transport="ca">${PV}.HOMF</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Home Run backward</name>
+                    <id>${Prefix=""}${PV}.HOMR</id>
+                    <value>
+                        <access method="GETPUT" type="int" transport="ca">${PV}.HOMR</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Home Run Velocity</name>
+                    <id>${Prefix=""}${PV}.HVEL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">${PV}.HVEL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Start Mode</name>
+                    <id>${Prefix=""}${PV}.SPMG</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}.SPMG</access>
+                        <value type="string">Stop,Pause,Move,Go</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Motor Status</name>
+                    <id>${Prefix=""}${PV}.MSTA</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">${PV}.MSTA</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Severity</name>
+                    <id>${Prefix=""}${PV}.SEVR</id>
+                    <value>
+                        <access method="GETCB" monitor="true" type="string" transport="ca">${PV}.SEVR</access>
+                        <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Status</name>
+                    <id>${Prefix=""}${PV}.STAT</id>
+                    <value>
+                        <access method="GETCB" monitor="true" type="string" transport="ca">${PV}.STAT</access>
+                        <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Limit Violation</name>
+                    <id>${Prefix=""}${PV}.LVIO</id>
+                    <value>
+                        <access method="GETCB" type="int" transport="ca">${PV}.LVIO</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>

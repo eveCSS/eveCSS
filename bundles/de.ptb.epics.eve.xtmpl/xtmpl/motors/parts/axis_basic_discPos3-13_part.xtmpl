@@ -1,0 +1,17 @@
+                <goto>
+                    <access method="GETPUTCB" transport="ca" type="${Type=string}" timeout="${Timeout=300.0}">${PV}_Mnu</access>
+                    <value type="${Type=string}" >${Menu}</value>
+                </goto>
+                <position>
+                    <access monitor="true" method="GETCB" transport="ca" type="${Type=double}">${PV}.RBV</access>
+                </position>
+                <stop>
+                    <access method="PUT" transport="ca" type="int">${PV}_stop</access>
+                    <value type="int">1</value>
+                </stop>
+                <status>
+                    <access method="GETCB" transport="ca" type="int">${PV}.MSTA</access>
+                </status>
+                <movedone>
+                    <access method="GETCB" transport="ca" type="int">${PV}.DMOV</access>
+                </movedone>

@@ -1,0 +1,25 @@
+        <!-- basic discrete motor without readback value and just one axis -->
+        substitute "Prefix=DiscMot"
+        <motor>
+            <class>${Class=""}</class>
+            <name>${Name=""}</name>
+            <id>${Prefix}${PV}basic</id>
+            <axis>
+                <class>${Ax_Class=""}</class>
+                <name>${Name}</name>
+                <id>${Prefix}${PV}</id>
+                <goto>
+                    <access method="GETPUTCB" transport="ca" type="${Type=string}" timeout="${Timeout=300.0}">${PV}</access>
+                    <value type="${Type=string}" >${Menu}</value>
+                </goto>
+                <position>
+                    <access monitor="true" method="GETCB" transport="ca" type="${Type=string}">${PV}</access>
+                </position>
+                <stop>
+                    <access method="PUT" transport="ca" type="int">${PV}.PROC</access>
+                    <value type="int">1</value>
+                </stop>
+	   			include "channel_ext_options_part.xtmpl"
+	    		include "channel_option_part.xtmpl"
+            </axis>
+        </motor>
