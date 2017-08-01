@@ -2,6 +2,8 @@ package de.ptb.epics.eve.util.math.range;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Marcus Michalsky
@@ -31,7 +33,6 @@ public class IntegerRange extends Range<Integer> {
 	 * @param from the start value
 	 * @param step the stepwidth
 	 * @param to the end value
-	 * @throws IllegalArgumentException if to is less than from
 	 */
 	public IntegerRange(Integer from, Integer step, Integer to) {
 		this.from = from;
@@ -40,18 +41,30 @@ public class IntegerRange extends Range<Integer> {
 	}
 	
 	/**
-	 * Creates a new range with values parsed from the given expression 
-	 * which could have the following form:
+	 * Creates a new range with values parsed from the given expression which
+	 * could have the following form:
 	 * 
 	 * <ul>
-	 *  <li><code>j:i:k</code> - with j=start, i=stepwidth, k=stop</li>
-	 *  <li><code>j:k</code> - with j=start, k=stop and stepwidth=1</li>
-	 *  <li><code>j:k/N</code> - with j=start, k=stop and N=number of elements with equal stepwidth
+	 * <li><code>j:i:k</code> - with j=start, i=stepwidth, k=stop</li>
+	 * <li><code>j:k</code> - with j=start, k=stop and stepwidth=1</li>
+	 * <li><code>j:k/N</code> - with j=start, k=stop and N=number of elements
+	 * with equal stepwidth
 	 * </ul>
 	 * 
-	 * @param expression a formatted string (i.e. <code>j:i:k</code>, <code>j:k</code> or <code>j:k/N</code>)
+	 * @param expression
+	 *            a formatted string (i.e. <code>j:i:k</code>, <code>j:k</code>
+	 *            or <code>j:k/N</code>)
+	 * @throws IllegalArgumentException
+	 *             if the given expression does not match
+	 *             {@link IntegerRange#INTEGER_RANGE_REPEATED_REGEXP}
 	 */
-	public IntegerRange(String expression) {
+	public IntegerRange(String expression) throws IllegalArgumentException {
+		Pattern p = Pattern.compile(IntegerRange.INTEGER_RANGE_REPEATED_REGEXP);
+		Matcher m = p.matcher(expression);
+		if (!m.matches()) {
+			throw new IllegalArgumentException("illegal formed expression!");
+		}
+		
 		if (expression.split("/").length == 1) {
 			// expression is either j:i:k or j:k
 			if (expression.split(":").length == 2) {
@@ -74,7 +87,11 @@ public class IntegerRange extends Range<Integer> {
 			String[] jk = jkN[0].split(":");
 			this.from = Integer.parseInt(jk[0]);
 			this.to = Integer.parseInt(jk[1]);
-			this.step = (this.to - this.from) / n;
+			if (from < to) {
+				this.step = (this.to - this.from) / n;
+			} else {
+				this.step = (this.from - this.to) / n;
+			}
 		}
 	}
 
@@ -84,6 +101,15 @@ public class IntegerRange extends Range<Integer> {
 	@Override
 	public List<Integer> getValues() {
 		List<Integer> values = new ArrayList<Integer>();
+		if (step == 0) {
+			if (from == to) {
+				values.add(from);
+			} else {
+				values.add(from);
+				values.add(to);
+			}
+			return values;
+		}
 		int i = from;
 		values.add(new Integer(i));
 		if (from < to) {

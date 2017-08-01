@@ -1,19 +1,26 @@
 h1(eveTopic). Release Notes
 
-h2(eveTopic). Version 1.27
+h2(eveTopic). Version 1.28.0 (2017-07-28)
 
-* [Feature] EPICS DBE_PROPERTY is now enabled by default
+* [Bug Fix-#1853] help is opened inside the application once again (the browser workaround is no longer necessary)
 
-h3(eveTopic). Version 1.27.2
+h2(eveTopic). Version 1.27.13 (2017-07-06)
+
+* [Feature] introduced dsa8300 array detector template
+
+* [Bug Fix] fixed a bug where the device inspector could not handle float data from the engine
+
+h2(eveTopic). Version 1.27.2 (2016-11-24)
 
 * [Bug Fix] fixed a bug where new defaults could not created due to missing version
 
-h3(eveTopic). Version 1.27.13
+h2(eveTopic). Version 1.27.0 (2016-11-09)
 
-* introduced dsa8300 array detector template
+* [Feature] EPICS DBE_PROPERTY is now enabled by default
 
-h2(eveTopic). Version 1.26
+h2(eveTopic). Version 1.26.0
 
+* [Feature] introduced pseudo detector @SM-Counter@
 * [Feature] added help internationalization (if localized help for current Locale exists it has priority)
 * [Feature] threads (used for engine communication) now register exception handlers to report errors
 

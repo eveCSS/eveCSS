@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Css" uid="eveCSS" id="de.ptb.epics.eve.rcp.product" application="de.ptb.epics.eve.rcp.application" version="1.27.13" useFeatures="true" includeLaunchers="true">
+<product name="Css" uid="eveCSS" id="de.ptb.epics.eve.rcp.product" application="de.ptb.epics.eve.rcp.application" version="1.28.0" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/de.ptb.epics.eve.rcp/icons/about.gif"/>
@@ -33,7 +33,6 @@ See http://ics-web.sns.ornl.gov/css
       <vmArgs>-Xmx256m
 -Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.SimpleLog
 -Dorg.apache.commons.logging.simplelog.defaultlog=fatal
--Dorg.eclipse.swt.browser.DefaultType=mozilla
 -Dorg.eclipse.swt.internal.gtk.cairoGraphics=false
 -Dorg.eclipse.swt.internal.gtk.useCairo=false
 -Dno_proxy=127.0.0.1,localhost

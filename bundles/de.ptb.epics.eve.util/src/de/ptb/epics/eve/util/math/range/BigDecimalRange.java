@@ -1,6 +1,7 @@
 package de.ptb.epics.eve.util.math.range;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +34,11 @@ public class BigDecimalRange extends Range<BigDecimal> {
 			String[] jk = jkN[0].split(":");
 			this.from = new BigDecimal(jk[0]);
 			this.to = new BigDecimal(jk[1]);
-			this.step = to.subtract(from).divide(n);
+			if (from.compareTo(to) == -1) {
+				this.step = to.subtract(from).divide(n);
+			} else {
+				this.step = from.subtract(to).divide(n, RoundingMode.HALF_UP);
+			}
 		}
 	}
 	
@@ -43,6 +48,15 @@ public class BigDecimalRange extends Range<BigDecimal> {
 	@Override
 	public List<BigDecimal> getValues() {
 		List<BigDecimal> values = new ArrayList<>();
+		if (step.compareTo(BigDecimal.ZERO) == 0) {
+			if (from.compareTo(to) == 0) {
+				values.add(from);
+			} else {
+				values.add(from);
+				values.add(to);
+			}
+			return values;
+		}
 		values.add(from);
 		BigDecimal d = from.plus();
 		if (from.compareTo(to) == -1) {

@@ -3,12 +3,28 @@
 	<extensionContent id="deptbepicseveeditor-introExtension"
 		style="css/main.css" name="Editor Overview Extension" path="overview/@">
 		<group style-id="content-group" id="deptbepicseveeditor-introLink-group">
-			<link label="EVE Editor" url="" id="deptbepicseveeditor-introLink"
+			<link label="EVE Editor" url="http://org.eclipse.ui.intro/showHelpTopic?id=/de.ptb.epics.eve.editor/help/content/overview.html" id="deptbepicseveeditor-overviewLink"
 				style-id="content-link">
-				<text>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-					do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-					enim ad minim veniam, quis nostrud exercitation ullamco laboris
-					nisi ut aliquip ex ea commodo consequat.</text>
+				<text>The EVE Editor (Perspective) solves the task of creating and editing scan descriptions.</text>
+			</link>
+		</group>
+	</extensionContent>
+	<extensionContent id="de.ptb.epics.eve.editor-firstStepsExtension"
+		style="css/main.css" name="Editor First Steps Extension" path="firststeps/@">
+		<group style-id="content-group" id ="de.ptb.epics.eve.editor-firststepslink-group">
+			<link label="EVE Editor" url="http://org.eclipse.ui.intro/showHelpTopic?id=/de.ptb.epics.eve.editor/help/content/gettingstarted.html" 
+				id="de.ptb.epics.eve.editor-firststeps-link" style-id="content-link">
+					<text>Click here to get help on how to get started with the EVE Editor.</text>
+				</link>
+		</group>
+	</extensionContent>
+	<extensionContent id="deptbepicseveeditor-whatsnewExtension"
+		style="css/main.css" name="Editor What's New Extension" path="whatsnew/@">
+		<group style-id="content-group" id="deptbepicseveeditor-whatsnewLink-group">
+			<link label="EVE Editor" url="http://org.eclipse.ui.intro/showHelpTopic?id=/de.ptb.epics.eve.editor/help/content/whatsnew.html" id="deptbepicseveeditor-whatsnewLink"
+				style-id="content-link">
+				<text>What's New in EVE Editor
+				</text>
 			</link>
 		</group>
 	</extensionContent>

@@ -79,15 +79,29 @@ import de.ptb.epics.eve.util.ui.jface.SelectionProviderWrapper;
  */
 public class ChainView extends ViewPart implements IEditorView,
 		ISelectionListener, IModelUpdateListener {
-	public ChainView() {
-	}
-
 	/** the unique identifier of the view */
 	public static final String ID = "de.ptb.epics.eve.editor.views.ChainView";
 
+	private static final String MACRO_TOOLTIP = "The following macros can be used:\n"
+				+ "${WEEK} : calendar week\n" 
+				+ "${YEAR} : year as yyyy\n"
+				+ "${YR} : year as yy\n"
+				+ "${MONTH} : month as MM\n" 
+				+ "${MONTHSTR} : month as MMM (e.g., Jul)\n"
+				+ "${DAY} : day as dd\n"
+				+ "${DAYSTR} : day as ddd (e.g., Mon)\n"
+				+ "${DATE} : date as yyyyMMdd (e.g., 20111231)\n"
+				+ "${DATE-} : date as yyyy-MM-dd (e.g., 2011-12-31)\n"
+				+ "${TIME} : time as HHmmss\n"
+				+ "${TIME-} : time as HH-mm-ss\n"
+				+ "${PV:<pvname>} : replace with value of pvname";
+	
 	// logging
 	private static Logger logger = Logger.getLogger(ChainView.class.getName());
-
+	
+	public ChainView() {
+	}
+	
 	private Chain currentChain;
 
 	// the utmost composite (which contains all elements)
@@ -273,21 +287,8 @@ public class ChainView extends ViewPart implements IEditorView,
 		this.filenameLabel = new Label(this.saveOptionsComposite, SWT.NONE);
 		this.filenameLabel.setText("Format:");
 		this.filenameInput = new Text(this.saveOptionsComposite, SWT.BORDER);
-		String tooltip = "The file name where the data should be saved.\n"
-				+ "The following macros can be used:\n"
-				+ "${WEEK} : calendar week\n" 
-				+ "${YEAR} : year as yyyy\n"
-				+ "${YR} : year as yy\n"
-				+ "${MONTH} : month as MM\n" 
-				+ "${MONTHSTR} : month as MMM (e.g., Jul)\n"
-				+ "${DAY} : day as dd\n"
-				+ "${DAYSTR} : day as ddd (e.g., Mon)\n"
-				+ "${DATE} : date as yyyyMMdd (e.g., 20111231)\n"
-				+ "${DATE-} : date as yyyy-MM-dd (e.g., 2011-12-31)\n"
-				+ "${TIME} : time as HHmmss\n"
-				+ "${TIME-} : time as HH-mm-ss\n"
-				+ "${PV:<pvname>} : replace with value of pvname";
-		this.filenameInput.setToolTipText(tooltip);
+		this.filenameInput.setToolTipText("The file name where the data should be saved.\n" 
+				+ ChainView.MACRO_TOOLTIP);
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.verticalAlignment = GridData.CENTER;
@@ -380,7 +381,9 @@ public class ChainView extends ViewPart implements IEditorView,
 		// Comment Input
 		this.commentInput = new Text(this.commentComposite, SWT.MULTI
 				| SWT.WRAP | SWT.BORDER | SWT.V_SCROLL);
-
+		this.commentInput.setToolTipText("A comment for the chain. " 
+				+ ChainView.MACRO_TOOLTIP);
+		
 		// add comment expander to the expand bar
 		this.commentExpandItem = new ExpandItem(this.bar, SWT.NONE, 0);
 		commentExpandItem.setText("Comment");

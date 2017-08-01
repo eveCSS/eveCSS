@@ -4,12 +4,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.junit.Test;
 
-import de.ptb.epics.eve.util.io.StringUtil;
 import de.ptb.epics.eve.util.math.range.IntegerRange;
 
 /**
@@ -74,13 +75,66 @@ public class IntegerRangeTest {
 		assertFalse(m.reset("1:10, 12:20/").matches());
 	}
 	
+	@Test(expected=IllegalArgumentException.class)
+	public void testIntegerRangeIllegalArgumentException() {
+		new IntegerRange("1:10/");
+	}
+	
 	@Test
 	public void testGetValues() {
-		assertEquals("1, 2, 3, 4, 5", StringUtil.buildCommaSeparatedString(
-				new IntegerRange("1:1:5").getValues()));
-		assertEquals("9, 8, 7, 6", StringUtil.buildCommaSeparatedString(
-				new IntegerRange("9:6").getValues()));
-		assertEquals("10", StringUtil.buildCommaSeparatedString(
-				new IntegerRange("10:10").getValues()));
+		// case j:k (i=1), j < k
+		assertEquals(
+				new ArrayList<Integer>(Arrays.asList(1,2,3)),
+				new IntegerRange("1:3").getValues());
+		// case j:k (i=1), j > k
+		assertEquals(
+				new ArrayList<Integer>(Arrays.asList(9,8,7)),
+				new IntegerRange("9:7").getValues());
+		// case j:k (i=1), j = k
+		assertEquals(
+				new ArrayList<Integer>(Arrays.asList(10)),
+				new IntegerRange("10:10").getValues());
+		
+		// case j:i:k, j < k ^ (j + i) < k
+		assertEquals(
+				new ArrayList<Integer>(Arrays.asList(1,3,5,7,9,10)),
+				new IntegerRange("1:2:10").getValues());
+		// case j:i:k, j < k ^ (j + i) > k
+		assertEquals(
+				new ArrayList<Integer>(Arrays.asList(1,5)),
+				new IntegerRange("1:5:5").getValues());
+		// case j:i:k, j > k ^ (j - i) > k
+		assertEquals(
+				new ArrayList<Integer>(Arrays.asList(10,8,6,4,2,1)),
+				new IntegerRange("10:2:1").getValues());
+		// case j:i:k, j > k ^ (j - i) < k
+		assertEquals(
+				new ArrayList<Integer>(Arrays.asList(5,1)),
+				new IntegerRange("5:5:1").getValues());
+		// case j:i:k, j = k
+		assertEquals(
+				new ArrayList<Integer>(Arrays.asList(1)),
+				new IntegerRange("1:2:1").getValues());
+		
+		// case j:k/N, j < k ^ (k - j) > N
+		assertEquals(
+				new ArrayList<Integer>(Arrays.asList(1,2,3,4,5,6,7,8,9,10)),
+				new IntegerRange("1:10/5").getValues());
+		// case j:k/N, j < k ^ (k - j) < N
+		assertEquals(
+				new ArrayList<Integer>(Arrays.asList(1,10)),
+				new IntegerRange("1:10/10").getValues());
+		// case j:k/N, j > k ^ (j - k) > N
+		assertEquals(
+				new ArrayList<Integer>(Arrays.asList(10,9,8,7,6,5,4,3,2,1)),
+				new IntegerRange("10:1/5").getValues());
+		// case j:k/N, j > k ^ (j - k) < N
+		assertEquals(
+				new ArrayList<Integer>(Arrays.asList(10,1)),
+				new IntegerRange("10:1/10").getValues());
+		// case j:k/N, j = k
+		assertEquals(
+				new ArrayList<Integer>(Arrays.asList(1)),
+				new IntegerRange("1:1/10").getValues());
 	}
 }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<introContent>
+	<extensionContent id="deptbepicseve-whatsnewExtension"
+		style="css/main.css" name="EVE What's New Extension" path="whatsnew/@">
+		<group style-id="content-group" id="deptbepicseve-whatsnewLink-group">
+			<link label="EVE" url="http://org.eclipse.ui.intro/showHelpTopic?id=/de.ptb.epics.eve.help/help/content/whatsnew.html" id="deptbepicseveviewer-whatsnewLink"
+				style-id="content-link">
+				<text>What's New in EVE</text>
+			</link>
+		</group>
+	</extensionContent>
+</introContent>
