@@ -23,5 +23,6 @@
         <module>de.ptb.epics.eve.util</module>
         <module>de.ptb.epics.eve.util.ui</module>
         <module>de.ptb.epics.eve.viewer</module>
+        <module>de.ptb.epics.eve.xtmpl</module>
     </modules>
 </project>
