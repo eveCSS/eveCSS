@@ -50,7 +50,7 @@
    <plugin>
    	<groupId>org.apache.maven.plugins</groupId>
    	<artifactId>maven-javadoc-plugin</artifactId>
-   	<version>2.10.4</version>
+   	<version>3.0.0-M1</version>
    	<configuration>
    		<additionalparam>-Xdoclint:all</additionalparam>
    		<doctitle><![CDATA[<h1>eveCSS 1.28</h1>]]></doctitle>
