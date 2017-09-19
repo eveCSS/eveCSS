@@ -7,6 +7,12 @@ h2(eveTopic). Version 1.28.0 (2017-07-28)
 * [Feature-#2782] added macro support for chain comment (analog to filename macros)
 * [Feature-#0179] added plot window modifier (available values are @none@ and @times-1@)
 
+h2(eveTopic). Version 1.27.14 (2017-09-19)
+
+* [Bug Fix] fixed a bug where a scan description with a version newer than the program version could be loaded
+* [Bug Fix] fixed a bug where an invalid scan description (due to schema validation) could be loaded
+* [Bug Fix] fixed a bug where a scan description prior to schema version 2.3 (not supported) could be loaded
+
 h2(eveTopic). Version 1.27.13 (2017-07-06)
 
 * [Bug Fix] fixed a bug where errors in a scan module were not reflected in the editor (as a red bar) after loading a scan (a scan could contain errors after loading if devices not present anymore are removed automatically)
