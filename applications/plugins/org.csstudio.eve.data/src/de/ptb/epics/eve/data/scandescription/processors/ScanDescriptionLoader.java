@@ -153,6 +153,10 @@ public class ScanDescriptionLoader {
 		final ScanDescriptionLoaderHandler handler = new ScanDescriptionLoaderHandler(
 				this.measuringStation, nameProvider);
 		saxParser.parse(this.fileToLoad, handler);
+		if (handler.hasErrors() || handler.hasFatalErrors()) {
+			throw new SAXException("Document could not be parsed due to parser errors. " +
+					"See the log files for details.");
+		}
 
 		this.scanDescription = handler.getScanDescription();
 		this.scanDescription.setFileName(this.fileToLoad.getName());
