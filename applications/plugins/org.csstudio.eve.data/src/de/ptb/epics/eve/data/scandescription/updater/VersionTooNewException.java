@@ -6,14 +6,17 @@ import de.ptb.epics.eve.util.data.Version;
  * @author Marcus Michalsky
  * @since 1.27.14
  */
-public class VersionTooOldException extends Exception {
+public class VersionTooNewException extends Exception {
 	private Version source;
+	private Version target;
 	
 	/**
 	 * @param source the version of the source
+	 * @param target the version currently used by the application
 	 */
-	public VersionTooOldException(Version source) {
+	public VersionTooNewException(Version source, Version target) {
 		this.source = source;
+		this.target = target;
 	}
 	
 	/**
@@ -22,6 +25,7 @@ public class VersionTooOldException extends Exception {
 	@Override
 	public String getMessage() {
 		return "Given version (" + this.source + 
-				") is too old. Must be at least version (2.3)";
+				") is newer than the version used by the application " +
+				"(" + this.target + ")";
 	}
 }

@@ -22,6 +22,7 @@ import org.xml.sax.SAXException;
 
 import de.ptb.epics.eve.data.scandescription.updater.Patch;
 import de.ptb.epics.eve.data.scandescription.updater.Updater;
+import de.ptb.epics.eve.data.scandescription.updater.VersionTooNewException;
 import de.ptb.epics.eve.data.scandescription.updater.VersionTooOldException;
 import de.ptb.epics.eve.data.scandescription.updater.patches.SCMLUpdater;
 import de.ptb.epics.eve.util.data.Version;
@@ -41,8 +42,9 @@ public class ScanDescriptionEditorFileLoader {
 	 * 
 	 * @param scanDescription
 	 * @throws VersionTooOldException 
+	 * @throws VersionTooNewException 
 	 */
-	public File loadFile(File scanDescription) throws VersionTooOldException {
+	public File loadFile(File scanDescription) throws VersionTooOldException, VersionTooNewException {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder;
 		try {
