@@ -52,7 +52,6 @@ import de.ptb.epics.eve.data.scandescription.defaults.updater.DefaultsUpdater;
 import de.ptb.epics.eve.data.scandescription.updater.Modification;
 import de.ptb.epics.eve.data.scandescription.updater.Patch;
 import de.ptb.epics.eve.data.scandescription.updater.VersionTooNewException;
-import de.ptb.epics.eve.data.scandescription.updater.VersionTooOldException;
 import de.ptb.epics.eve.util.data.Version;
 import de.ptb.epics.eve.util.io.*;
 
@@ -157,7 +156,7 @@ public class DefaultsManager {
 			LOGGER.error(e.getMessage(), e);
 		} catch (ParserConfigurationException e) {
 			LOGGER.error(e.getMessage(), e);
-		} catch (VersionTooOldException | VersionTooNewException e) {
+		} catch (VersionTooNewException e) {
 			LOGGER.error(e.getMessage(), e);
 		}
 		return null;
