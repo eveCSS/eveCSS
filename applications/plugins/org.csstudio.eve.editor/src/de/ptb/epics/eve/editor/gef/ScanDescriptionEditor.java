@@ -173,7 +173,7 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 		} catch(final ParserConfigurationException e) {
 			logger.error(e.getMessage(), e);
 		} catch(final SAXException e) {
-			logger.error(e.getMessage(), e);
+			logger.error(e.getMessage());
 			throw new PartInitException(e.getMessage());
 		} catch(final IOException e) {
 			logger.error(e.getMessage(), e);
