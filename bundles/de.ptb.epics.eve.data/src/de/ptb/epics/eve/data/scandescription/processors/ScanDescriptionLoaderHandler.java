@@ -81,6 +81,10 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 	private static final Logger LOGGER = Logger
 			.getLogger(ScanDescriptionLoaderHandler.class.getName());
 
+	private boolean warnings;
+	private boolean errors;
+	private boolean fatalErrors;
+	
 	// The measuring station that contains the devices
 	private final IMeasuringStation measuringStation;
 
@@ -178,8 +182,32 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			throw new IllegalArgumentException(
 					"The parameter 'measuringStation' must not be null!");
 		}
+		this.warnings = false;
+		this.errors = false;
+		this.fatalErrors = false;
 		this.measuringStation = measuringStation;
 		this.nameProvider = nameProvider;
+	}
+	
+	/**
+	 * @return the warnings
+	 */
+	public boolean hasWarnings() {
+		return warnings;
+	}
+
+	/**
+	 * @return the errors
+	 */
+	public boolean hasErrors() {
+		return errors;
+	}
+
+	/**
+	 * @return the fatalErrors
+	 */
+	public boolean hasFatalErrors() {
+		return fatalErrors;
 	}
 
 	/**
@@ -187,6 +215,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 	 */
 	@Override
 	public void error(SAXParseException e) throws SAXException {
+		this.errors = true;
 		LOGGER.error(e.getMessage(), e);
 	}
 	
@@ -195,6 +224,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 	 */
 	@Override
 	public void fatalError(SAXParseException e) throws SAXException {
+		this.fatalErrors = true;
 		LOGGER.fatal(e.getMessage(), e);
 	}
 	
@@ -203,6 +233,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 	 */
 	@Override
 	public void warning(SAXParseException e) throws SAXException {
+		this.warnings = true;
 		LOGGER.warn(e.getMessage(), e);
 	}
 	

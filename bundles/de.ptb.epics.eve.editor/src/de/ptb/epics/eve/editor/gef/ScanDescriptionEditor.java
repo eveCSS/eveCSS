@@ -68,6 +68,7 @@ import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.processors.ScanDescriptionLoader;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
+import de.ptb.epics.eve.data.scandescription.updater.VersionTooNewException;
 import de.ptb.epics.eve.data.scandescription.updater.VersionTooOldException;
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.dialogs.lostdevices.LostDevicesDialog;
@@ -132,8 +133,8 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 		File currentVersionScml;
 		try {
 			currentVersionScml = scmlUpdater.loadFile(scanDescriptionFile);
-		} catch (VersionTooOldException e) {
-			throw new PartInitException("File version is too old (< 2.3)!");
+		} catch (VersionTooOldException | VersionTooNewException e) {
+			throw new PartInitException(e.getMessage());
 		}
 		
 		if (scmlUpdater.getChanges() != null && 
@@ -172,7 +173,8 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 		} catch(final ParserConfigurationException e) {
 			logger.error(e.getMessage(), e);
 		} catch(final SAXException e) {
-			logger.error(e.getMessage(), e);
+			logger.error(e.getMessage());
+			throw new PartInitException(e.getMessage());
 		} catch(final IOException e) {
 			logger.error(e.getMessage(), e);
 		}
@@ -367,7 +369,9 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 	@Override
 	public void dispose() {
 		getSite().setSelectionProvider(null);
-		this.scanDescription.removeModelUpdateListener(this);
+		if (this.scanDescription != null) {
+			this.scanDescription.removeModelUpdateListener(this);
+		}
 		// TODO remove CommandStackListener
 		super.dispose();
 	}

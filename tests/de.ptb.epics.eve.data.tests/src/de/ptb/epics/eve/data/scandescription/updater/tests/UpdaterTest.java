@@ -25,7 +25,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import de.ptb.epics.eve.data.scandescription.updater.Updater;
-import de.ptb.epics.eve.data.scandescription.updater.VersionTooOldException;
+import de.ptb.epics.eve.data.scandescription.updater.VersionTooNewException;
 import de.ptb.epics.eve.data.scandescription.updater.patches.SCMLUpdater;
 import de.ptb.epics.eve.util.data.Version;
 
@@ -96,7 +96,7 @@ public class UpdaterTest {
 			fail(e.getMessage());
 		} catch (IOException e) {
 			fail(e.getMessage());
-		} catch (VersionTooOldException e) {
+		} catch (VersionTooNewException e) {
 			fail(e.getMessage());
 		} catch (TransformerConfigurationException e) {
 			e.printStackTrace();

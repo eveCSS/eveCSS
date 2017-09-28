@@ -55,18 +55,20 @@ public class Updater {
 	 * @param target the target version
 	 * @return a list containing all applied patches or <code>null</code> if 
 	 * 		document version > program version
-	 * @throws VersionTooOldException if document version is older than 2.2
+	 * @throws VersionTooNewException if the document version is newer than 
+	 * the version used by the application
 	 */
 	public List<Patch> update(Document document, Version target) 
-			throws VersionTooOldException {
+			throws VersionTooNewException {
 		List<Patch> changes = new LinkedList<Patch>();
 		Version source = this.getDocumentVersion(document);
 		if (source.compareTo(target) == 0) {
 			LOGGER.info("version match, no update necessary");
 			return changes;
 		} else if (source.compareTo(target) > 0) {
-			LOGGER.info("back to the future");
-			return null;
+			VersionTooNewException e = new VersionTooNewException(source, target);
+			LOGGER.error(e.getMessage());
+			throw e;
 		} else if (source.compareTo(target) < 0) {
 			if (LOGGER.isInfoEnabled()) { 
 				LOGGER.info("file version (" + source

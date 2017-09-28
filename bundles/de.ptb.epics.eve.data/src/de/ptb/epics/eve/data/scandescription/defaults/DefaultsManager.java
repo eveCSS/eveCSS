@@ -51,7 +51,7 @@ import de.ptb.epics.eve.data.scandescription.defaults.channel.DefaultsScheduleEv
 import de.ptb.epics.eve.data.scandescription.defaults.updater.DefaultsUpdater;
 import de.ptb.epics.eve.data.scandescription.updater.Modification;
 import de.ptb.epics.eve.data.scandescription.updater.Patch;
-import de.ptb.epics.eve.data.scandescription.updater.VersionTooOldException;
+import de.ptb.epics.eve.data.scandescription.updater.VersionTooNewException;
 import de.ptb.epics.eve.util.data.Version;
 import de.ptb.epics.eve.util.io.*;
 
@@ -90,11 +90,14 @@ public class DefaultsManager {
 		
 		this.backup(pathToDefaults);
 		
-		Document updated = this.update(pathToDefaults, schema);
-		
-		SchemaFactory schemaFactory = SchemaFactory.newInstance(
-				XMLConstants.W3C_XML_SCHEMA_NS_URI);
+		Document updated;
+
 		try {
+			updated = this.update(pathToDefaults, schema);
+			
+			SchemaFactory schemaFactory = SchemaFactory.newInstance(
+					XMLConstants.W3C_XML_SCHEMA_NS_URI);
+			
 			Schema schemaFile = schemaFactory.newSchema(schema);
 			JAXBContext jaxbContext = JAXBContext.newInstance(Defaults.class);
 			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
@@ -112,6 +115,9 @@ public class DefaultsManager {
 			LOGGER.error(e.getMessage(), e);
 		} catch (SAXException e) {
 			LOGGER.error(e.getMessage(), e);
+		} catch (VersionTooNewException e) {
+			LOGGER.error("found defaults of a future version.");
+			this.defaults = new Defaults();
 		}
 	}
 	
@@ -128,7 +134,7 @@ public class DefaultsManager {
 		}
 	}
 	
-	private Document update(File file, File schema) {
+	private Document update(File file, File schema) throws VersionTooNewException {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		factory.setNamespaceAware(true);
 		DocumentBuilder builder;
@@ -155,8 +161,6 @@ public class DefaultsManager {
 		} catch (SAXException e) {
 			LOGGER.error(e.getMessage(), e);
 		} catch (ParserConfigurationException e) {
-			LOGGER.error(e.getMessage(), e);
-		} catch (VersionTooOldException e) {
 			LOGGER.error(e.getMessage(), e);
 		}
 		return null;
