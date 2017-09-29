@@ -1,0 +1,20 @@
+        <motor>
+            <class>Timer</class>
+            <name></name>
+            <id>motSecTimer</id>
+            <axis>
+                <class></class>
+                <name>Timer</name>
+                <id>Timer1-mot-double</id>
+                <goto>
+                    <access method="PUTCB" transport="local" type="double">Timer</access>
+                </goto>
+                <position>
+                    <access method="GETCB" transport="local" type="double">Timer</access>
+                </position>
+                <stop>
+                    <access method="PUT" transport="local" type="int">no stop available</access>
+                    <value type="OnOff">0</value>
+                </stop>
+            </axis>
+        </motor>

@@ -1,0 +1,3 @@
+                <read>
+                    <access monitor="true" method="${Method=GETCB}" transport="ca" type="${Type=double}">${PV}.OFF</access>
+                </read>

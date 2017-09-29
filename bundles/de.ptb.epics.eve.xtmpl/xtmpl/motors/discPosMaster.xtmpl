@@ -1,0 +1,90 @@
+            <!-- disc pos master axis, to be included by motors -->
+            <axis>
+                <class>${Class=""}</class>
+                <name>${Name}</name>
+                <id>${PV}</id>
+                <goto>
+                    <access method="GETPUTCB" transport="ca" type="${Type=string}" timeout="${Timeout=300.0}">${PV}Mnu</access>
+                    <value type="${Type=string}" >${Menu}</value>
+                </goto>
+                <position>
+                    <access monitor="true" method="GETCB" transport="ca" type="${Type=string}">${PV}Mnu</access>
+                    <value type="${Type=string}" >${Menu}</value>
+                </position>
+                <stop>
+                    <access method="PUT" transport="ca" type="int">${PV}MnuStop</access>
+                    <value type="int">1</value>
+                </stop>
+                <option>
+                    <name>Move Done</name>
+                    <id>${PV}MnuDmov</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}MnuDmov</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Label 0</name>
+                    <id>${PV}Mnu.ZRST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}MnuZRST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Label 1</name>
+                    <id>${PV}Mnu.ONST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}Mnu.ONST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Label 2</name>
+                    <id>${PV}Mnu.TWST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}Mnu.TWST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Label 3</name>
+                    <id>${PV}Mnu.THST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}Mnu.THST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Label 4</name>
+                    <id>${PV}Mnu.FRST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}Mnu.FRST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Label 5</name>
+                    <id>${PV}Mnu.FVST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}Mnu.FVST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Label 6</name>
+                    <id>${PV}Mnu.SXST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}Mnu.SXST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Label 7</name>
+                    <id>${PV}Mnu.SVST</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}Mnu.SVST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+            </axis>

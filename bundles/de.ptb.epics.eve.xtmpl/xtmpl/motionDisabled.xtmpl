@@ -1,0 +1,5 @@
+        <!-- position plugin -->
+	<plugin type="position">
+		<name>MotionDisabled</name>
+		<location>/path/to/referenceadd</location>
+	</plugin>

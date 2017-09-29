@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="all" basedir="./">
+	<property name="eve_arch" value="x86" />
+	<property name="xsubst_dir" value="/messung/eve/xml/xsubst" />
+	<property name="workspace" value="/tmp/xsubst" />
+	<property name="msi_home" 
+			location="/soft/epics/extensions/bin/linux-x86" />
+
+	<target name="all">
+		<echo message="creating stations" />
+		<antcall target="bam" />
+		<antcall target="bragg" />
+		<antcall target="dekabe" />
+		<antcall target="dwl" />
+		<antcall target="dwl20" />
+		<antcall target="dwl_ger" />
+		<antcall target="eez" />
+		<antcall target="euvr" />
+		<antcall target="fem" />
+		<antcall target="id13" />
+		<antcall target="idb" />
+		<antcall target="kmc" />
+		<antcall target="pgm" />
+		<antcall target="qmp_mls" />
+		<antcall target="qnim" />
+		<antcall target="red" />
+		<antcall target="roentgen" />
+		<antcall target="sx700" />
+		<antcall target="test" />
+		<antcall target="thz" />
+		<antcall target="white" />
+		<antcall target="wlsptb" />
+		<antcall target="xpbf2" />
+
+		<echo message="creation instruments" />
+		<antcall target="akman" />
+		<antcall target="allDevices" />
+		<antcall target="avogadro" />
+		<antcall target="bigref" />
+		<antcall target="compton_bessy2" />
+		<antcall target="compton_mls" />
+		<antcall target="elettra" />
+		<antcall target="elli" />
+		<antcall target="ionk" />
+		<antcall target="lecroy01" />
+		<antcall target="maskref" />
+		<antcall target="mimo" />
+		<antcall target="newref" />
+		<antcall target="nrfa" />
+		<antcall target="oldref" />
+		<antcall target="pink" />
+		<antcall target="ptgm" />
+		<antcall target="refo" />
+		<antcall target="rfa" />
+		<antcall target="rfa5" />
+		<antcall target="smchuber02" />
+		<antcall target="syres1" />
+		<antcall target="syres2" />
+		<antcall target="trfa" />
+		<antcall target="vuvref" />
+		<antcall target="vonhamos" />
+		<antcall target="wwl_eez_test" />
+	</target>
+
+	<target name="akman">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="akman" />
+			<param name="station.type" value="instrument" />
+		</antcall>
+	</target>
+
+	<target name="allDevices">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="allDevices" />
+			<param name="station.type" value="instrument" />
+		</antcall>
+	</target>
+
+	<target name="avogadro">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="avogadro" />
+			<param name="station.type" value="instrument" />
+		</antcall>
+	</target>
+
+	<target name="bam">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="bam" />
+			<param name="station.type" value="station" />
+		</antcall>
+	</target>
+
+	<target name="bigref">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="bigref" />
+			<param name="station.type" value="instrument" />
+		</antcall>
+	</target>
+
+	<target name="bragg">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="bragg" />
+			<param name="station.type" value="station" />
+		</antcall>
+	</target>
+
+	<target name="compton_bessy2">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="compton_bessy2" />
+			<param name="station.type" value="instrument" />
+		</antcall>
+	</target>
+
+	<target name="compton_mls">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="compton_mls" />
+			<param name="station.type" value="instrument" />
+		</antcall>
+	</target>
+
+	<target name="dekabe">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="dekabe" />
+			<param name="station.type" value="station" />
+		</antcall>
+	</target>
+
+	<target name="dwl_ger">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="dwl_ger" />
+			<param name="station.type" value="station" />
+		</antcall>
+	</target>
+
+	<target name="dwl">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="dwl" />
+			<param name="station.type" value="station" />
+		</antcall>
+	</target>
+
+	<target name="dwl20">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="dwl20" />
+			<param name="station.type" value="station" />
+		</antcall>
+	</target>
+
+	<target name="eez">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="eez" />
+			<param name="station.type" value="station" />
+		</antcall>
+	</target>
+
+	<target name="elettra">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="elettra" />
+			<param name="station.type" value="instrument" />
+		</antcall>
+	</target>
+
+	<target name="elli">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="elli" />
+			<param name="station.type" value="instrument" />
+		</antcall>
+	</target>
+
+	<target name="euvr">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="euvr" />
+			<param name="station.type" value="station" />
+		</antcall>
+	</target>
+
+	<target name="fem">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="fem" />
+			<param name="station.type" value="station" />
+		</antcall>
+	</target>
+
+	<target name="id13">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="id13" />
+			<param name="station.type" value="station" />
+		</antcall>
+	</target>
+	
+	<target name="idb">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="idb" />
+			<param name="station.type" value="station" />
+		</antcall>
+	</target>
+
+	<target name="idwl">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="idwl" />
+			<param name="station.type" value="station" />
+		</antcall>
+	</target>
+
+	<target name="ionk">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="ionk" />
+			<param name="station.type" value="instrument" />
+		</antcall>
+	</target>
+
+	<target name="kmc">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="kmc" />
+			<param name="station.type" value="station" />
+		</antcall>
+	</target>
+
+	<target name="lecroy01">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="lecroy01" />
+			<param name="station.type" value="instrument" />
+		</antcall>
+	</target>
+
+	<target name="maskref">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="maskref" />
+			<param name="station.type" value="instrument" />
+		</antcall>
+	</target>
+	
+	<target name="mimo">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="mimo" />
+			<param name="station.type" value="instrument" />
+		</antcall>
+	</target>
+
+	<target name="newref">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="newref" />
+			<param name="station.type" value="instrument" />
+		</antcall>
+	</target>
+
+	<target name="nrfa">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="nrfa" />
+			<param name="station.type" value="instrument" />
+		</antcall>
+	</target>
+
+	<target name="oldref">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="oldref" />
+			<param name="station.type" value="instrument" />
+		</antcall>
+	</target>
+
+	<target name="pgm">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="pgm" />
+			<param name="station.type" value="station" />
+		</antcall>
+	</target>
+
+	<target name="pink">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="pink" />
+			<param name="station.type" value="instrument" />
+		</antcall>
+	</target>
+
+	<target name="ptgm">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="ptgm" />
+			<param name="station.type" value="instrument" />
+		</antcall>
+	</target>
+
+	<target name="qmp_mls">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="qmp_mls" />
+			<param name="station.type" value="station" />
+		</antcall>
+	</target>
+
+	<target name="qnim">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="qnim" />
+			<param name="station.type" value="station" />
+		</antcall>
+	</target>
+
+	<target name="red">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="red" />
+			<param name="station.type" value="station" />
+		</antcall>
+	</target>
+
+	<target name="refo">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="refo" />
+			<param name="station.type" value="instrument" />
+		</antcall>
+	</target>
+
+	<target name="rfa">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="rfa" />
+			<param name="station.type" value="instrument" />
+		</antcall>
+	</target>
+
+	<target name="rfa5">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="rfa5" />
+			<param name="station.type" value="instrument" />
+		</antcall>
+	</target>
+
+	<target name="roentgen">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="roentgen" />
+			<param name="station.type" value="station" />
+		</antcall>
+	</target>
+
+	<target name="sx700">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="sx700" />
+			<param name="station.type" value="station" />
+		</antcall>
+	</target>
+
+	<target name="smchuber02">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="smchuber02" />
+			<param name="station.type" value="instrument" />
+		</antcall>
+	</target>
+
+	<target name="syres1">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="syres1" />
+			<param name="station.type" value="instrument" />
+		</antcall>
+	</target>
+
+	<target name="syres2">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="syres2" />
+			<param name="station.type" value="instrument" />
+		</antcall>
+	</target>
+
+	<target name="test">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="test" />
+			<param name="station.type" value="station" />
+		</antcall>
+	</target>
+
+	<target name="thz">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="thz" />
+			<param name="station.type" value="station" />
+		</antcall>
+	</target>
+
+	<target name="trfa">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="trfa" />
+			<param name="station.type" value="instrument" />
+		</antcall>
+	</target>
+
+	<target name="vuvref">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="vuvref" />
+			<param name="station.type" value="instrument" />
+		</antcall>
+	</target>
+
+	<target name="vonhamos">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="vonhamos" />
+			<param name="station.type" value="instrument" />
+		</antcall>
+	</target>
+
+	<target name="white">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="white" />
+			<param name="station.type" value="station" />
+		</antcall>
+	</target>
+
+	<target name="wlsptb">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="wlsptb" />
+			<param name="station.type" value="station" />
+		</antcall>
+	</target>
+
+	<target name="wwl_eez_test">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="wwl_eez_test" />
+			<param name="station.type" value="instrument" />
+		</antcall>
+	</target>
+
+	<target name="xpbf2">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="xpbf2" />
+			<param name="station.type" value="station" />
+		</antcall>
+	</target>
+
+	<target name="-xmlmsi" depends="-check, -clean, -station, -instrument">
+		<echo message="creating ${eve_location} (${station.type})" />
+
+		<exec executable="git" dir="${workspace}">
+			<arg value="clone" />
+			<arg value="/soft/repo/git/eveCSS" />
+			<arg value="repoCSS" />
+		</exec>
+
+		<copy file="${workspace}/repoCSS/applications/plugins/org.csstudio.eve.resources/cfg/schema.xsd" todir="${workspace}" />
+
+		<echo message="xmlmsi" />
+		<exec executable="${msi_home}/xmlmsi" dir="${workspace}" failonerror="true">
+			<arg value="-V" />
+			<arg value="-I${basedir}/../xtmpl/" />
+			<arg value="-I${basedir}/../xtmpl/parts" />
+			<arg value="-I${basedir}/../xtmpl/detectors" />
+			<arg value="-I${basedir}/../xtmpl/detectors/parts" />
+			<arg value="-I${basedir}/../xtmpl/motors" />
+			<arg value="-I${basedir}/../xtmpl/motors/parts" />
+			<arg value="-X${xsubst_dir}" />
+			<arg value="${eve_location}.xsubst" />
+		</exec>
+
+		<echo message="sed" />
+		<exec executable="sed">
+			<arg line="-i 's@&lt;id&gt;\([a-zA-Z0-9_:.;%-]*\)\([/]\)\([a-zA-Z0-9_:./;%-]*\)&lt;/id&gt;@&lt;id&gt;\1%\3&lt;/id&gt;@g' ${workspace}/${eve_location}.xml" />
+		</exec>
+
+		<echo message="sed" />
+		<exec executable="sed">
+			<arg line="-i 's@&lt;id&gt;\([a-zA-Z0-9_:.;%-]*\)\([/]\)\([a-zA-Z0-9_:./;%-]*\)&lt;/id&gt;@&lt;id&gt;\1%\3&lt;/id&gt;@g' ${workspace}/${eve_location}.xml" />
+		</exec>
+
+		<echo message="xmllint" />
+		<exec executable="xmllint">
+			<arg line="--schema ${workspace}/schema.xsd --noout ${workspace}/${eve_location}.xml" />
+		</exec>
+
+		<echo message="mpValidator" />
+		<exec executable="/messung/eve/bin/linux-${eve_arch}/mpValidator">
+			<arg line="${workspace}/${eve_location}.xml" />
+		</exec>
+
+		<move file="${workspace}/${eve_location}.xml" tofile="../xml/${eve_location}.xml" />
+		<delete dir="${workspace}" failonerror="false" />
+
+		<delete>
+			<fileset dir="${basedir}">
+				<include name="xmlmsi_tmp*" />
+			</fileset>
+		</delete>
+	</target>
+
+	<target name="-check">
+		<condition property="is.instrument">
+			<equals arg1="${station.type}" arg2="instrument" />
+		</condition>
+	</target>
+
+	<target name="-clean">
+		<delete dir="${workspace}" />
+		<mkdir dir="${workspace}"/>
+	</target>
+
+	<target name="-station" unless="is.instrument">
+		<copy file="/messung/${eve_location}/${eve_location}.xsubst" 
+					todir="${workspace}" />
+	</target>
+
+	<target name="-instrument" if="is.instrument">
+		<copy file="/messung/instruments/${eve_location}/${eve_location}.xsubst" 
+					todir="${workspace}" />
+	</target>
+</project>

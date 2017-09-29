@@ -1,0 +1,7 @@
+        <!-- position plugin -->
+	<plugin type="position">
+		<name>ReferenceAdd</name>
+		<location>/path/to/referenceadd</location>
+		<parameter name="summand" datatype="double" mandatory="true"></parameter>
+		<parameter name="referenceaxis" datatype="axisid" mandatory="true"></parameter>
+	</plugin>

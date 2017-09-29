@@ -1,0 +1,44 @@
+        <!-- dsa 8300 detector with a single channel -->
+        <detector>
+            <class>${Class=""}</class>
+            <name>${Name=""}</name>
+            <id>${PV}</id>
+            <channel>
+                <class>${Ch_Class=""}</class>
+                <name>${Name=""}</name>
+                <id>${PV}chan1</id>
+                <read>
+                    <access monitor="true" method="${Method=GETCB}" transport="ca" type="${Type=double}">${PV}:getWfFPB</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" transport="ca" type="string">${PV}:getWfFPB.EGU</access>
+                </unit>
+                <option>
+                    <name>setState</name>
+                    <id>${PV}setState</id>
+                    <value>
+                        <access method="GETPUT" transport="ca" type="string">${PV}:setState.VAL</access>
+                        <value type="string">STOP,RUN</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>Severity</name>
+                    <id>Det${PV}.SEVR</id>
+                    <value>
+                        <access method="GETCB" monitor="true" transport="ca" type="string">${PV}:getWfFPB.SEVR</access>
+                        <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>Status</name>
+                    <id>Det${PV}.STAT</id>
+                    <value>
+                        <access method="GETCB" monitor="true" transport="ca" type="string">${PV}:getWfFPB.STAT</access>
+                        <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+            </channel>
+        </detector>

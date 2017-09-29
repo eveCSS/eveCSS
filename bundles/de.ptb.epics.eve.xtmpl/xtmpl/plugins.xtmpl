@@ -1,0 +1,4 @@
+    <!-- plugin section -->
+    <plugins>
+    ${includeFile}
+    </plugins>

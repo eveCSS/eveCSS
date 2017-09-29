@@ -1,0 +1,54 @@
+        <!-- areaDetector (must include at least one of areaDetector or areaDetChannel-->
+        <detector>
+            <class>${Class=""}</class>
+            <name>${Name=""}</name>
+            <id>${PV}</id>
+            <stop>
+                <access method="GETPUT" transport="ca" type="string">${PV}Acquire</access>
+                <value type="string">Done</value>
+            </stop>
+			${includeFile}
+            <option monitor="true">
+                <name>Exposure time</name>
+                <id>${PV}Time</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="double">${PV}AcquireTime</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Temperature</name>
+                <id>${PV}Temperature</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="double">${PV}Temperature</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option>
+                <name>Acquire/Stop</name>
+                <id>${PV}stop</id>
+                <value>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}Acquire</access>
+                    <value type="string">Done,Acquire</value>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option>
+                <name>Severity</name>
+                <id>Det${PV}Acquire.SEVR</id>
+                <value>
+                    <access method="GETCB" monitor="true" transport="ca" type="string">${PV}Acquire.SEVR</access>
+                    <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option>
+                <name>Status</name>
+                <id>Det${PV}Acquire.STAT</id>
+                <value>
+                    <access method="GETCB" monitor="true" transport="ca" type="string">${PV}Acquire.STAT</access>
+                    <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+        </detector>

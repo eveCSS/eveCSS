@@ -1,0 +1,40 @@
+            <!-- channel for Prema 5017 -->
+            <channel>
+                <class>${Class=""}</class>
+                <name>${Name=""}</name>
+                <id>${PV}</id>
+                include "channel_read_part.xtmpl"
+                include "channel_unit_part.xtmpl"
+                include "detector_trigger_ohne_trigger_part.xtmpl"
+            	<option monitor="true">
+                	<name>function</name>
+                	<id>${PV}function</id>
+                	<value>
+                    	<access method="GETPUT" transport="ca" type="string">${PV}function</access>
+                    	<value type="string">DCVolts,ACVolts,Temp/K,Temp/C,Freq,Ohms,V/I Ohms,DCAmps,ACAmps</value>
+                	</value>
+                	<displaygroup>summary</displaygroup>
+            	</option>
+	            <option monitor="true">
+    	            <name>range</name>
+        	        <id>${PV}range</id>
+            	    <value>
+                	    <access method="GETPUT" transport="ca" type="string">${PV}range</access>
+                    	<value type="string">Auto On,R1,R2,R3,R4,R5,R6,Auto Off</value>
+        	        </value>
+    	            <displaygroup>summary</displaygroup>
+	            </option>
+	            <option monitor="true">
+    	            <name>intTime</name>
+        	        <id>${PV}intTime</id>
+            	    <value>
+                	    <access method="GETPUT" transport="ca" type="string">${PV}intTime</access>
+                    	<value type="string">.02s,.04s,.1s,.2s,.4s,1s,2s,4s,10s,20s</value>
+                	</value>
+                	<displaygroup>summary</displaygroup>
+            	</option>
+				include "channel_ext_options_part.xtmpl"
+            	include "channel_spec_options_part.xtmpl"
+				include "channel_option_part.xtmpl"
+                include "detector_scan_ohne_trigger_part.xtmpl"
+            </channel>

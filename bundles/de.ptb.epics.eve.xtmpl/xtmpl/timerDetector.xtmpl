@@ -1,0 +1,13 @@
+        <detector>
+            <class>Timer</class>
+            <name></name>
+            <id>detSecTime</id>
+            <channel>
+                <class></class>
+                <name>Time</name>
+                <id>Timer1-det-double</id>
+                <read>
+                    <access monitor="false" method="GETCB" transport="local" type="double">Timer</access>
+                </read>
+            </channel>
+        </detector>

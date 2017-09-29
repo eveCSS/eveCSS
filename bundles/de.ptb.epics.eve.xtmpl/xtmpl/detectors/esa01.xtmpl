@@ -1,0 +1,32 @@
+        <!-- esa01 (must include esa01Channel) -->
+        <detector>
+            <class>${Class=""}</class>
+            <name>${Name=""}</name>
+            <id>${PV}</id>
+            <unit>
+                <access method="GETPUTCB" transport="ca" type="string">${PV}ROI1:0:MaxValue_RBV.EGU</access>
+            </unit>
+            <trigger>
+                <access method="PUTCB" transport="ca" type="int" timeout="${Timeout=5000.0}">${PV}cam1:trigger.PROC</access>
+                <value type="int">1</value>
+            </trigger>
+			${includeFile}
+            <option>
+                <name>Severity</name>
+                <id>${PV}ROI1:0:MaxValue_RBV.SEVR</id>
+                <value>
+                    <access method="GETPUT" monitor="true" transport="ca" type="string">${PV}ROI1:0:MaxValue_RBV.SEVR</access>
+                    <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option>
+                <name>Status</name>
+                <id>Det${PV}ROI1:0:MaxValue_RBV.STAT</id>
+                <value>
+                    <access method="GETPUT" monitor="true" transport="ca" type="string">${PV}ROI1:0:MaxValue_RBV.STAT</access>
+                    <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+        </detector>

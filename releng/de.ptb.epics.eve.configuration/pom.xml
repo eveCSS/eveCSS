@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+ <modelVersion>4.0.0</modelVersion>
+ <groupId>de.ptb.epics.eve</groupId>
+ <artifactId>de.ptb.epics.eve.configuration</artifactId>
+ <version>1.0.0-SNAPSHOT</version>
+ <packaging>pom</packaging>
+
+ <properties>
+  <tycho.version>1.0.0</tycho.version>
+  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+ </properties>
+
+ <build>
+  <plugins>
+   <plugin>
+    <groupId>org.eclipse.tycho</groupId>
+    <artifactId>tycho-maven-plugin</artifactId>
+    <version>${tycho.version}</version>
+    <extensions>true</extensions>
+   </plugin>
+
+   <plugin>
+    <groupId>org.eclipse.tycho</groupId>
+    <artifactId>target-platform-configuration</artifactId>
+    <version>${tycho.version}</version>
+    <configuration>
+    <target>
+       <artifact>
+         <groupId>de.ptb.epics.eve</groupId>
+         <artifactId>de.ptb.epics.eve.target</artifactId>
+         <version>1.0.0-SNAPSHOT</version>
+       </artifact>
+     </target>
+     <environments>
+      <environment>
+       <os>linux</os>
+       <ws>gtk</ws>
+       <arch>x86_64</arch>
+      </environment>
+      <environment>
+       <os>win32</os>
+       <ws>win32</ws>
+       <arch>x86_64</arch>
+      </environment>
+     </environments>
+    </configuration>
+   </plugin>
+      
+   <plugin>
+   	<groupId>org.apache.maven.plugins</groupId>
+   	<artifactId>maven-javadoc-plugin</artifactId>
+   	<version>3.0.0-M1</version>
+   	<configuration>
+   		<additionalparam>-Xdoclint:all</additionalparam>
+   		<doctitle><![CDATA[<h1>eveCSS 1.28</h1>]]></doctitle>
+   		<windowtitle>eveCSS API</windowtitle>
+   		<failOnError>false</failOnError>
+   		<groups>
+   			<group>
+   				<title>EVE Data</title>
+   				<packages>de.ptb.epics.eve.data*</packages>
+   			</group>
+   			<group>
+   				<title>Engine Communication</title>
+   				<packages>de.ptb.epics.eve.ecp1*</packages>
+   			</group>
+   			<group>
+   				<title>EVE Editor</title>
+   				<packages>de.ptb.epics.eve.editor*</packages>
+   			</group>
+   			<group>
+   				<title>EVE Viewer</title>
+   				<packages>de.ptb.epics.eve.viewer*</packages>
+   			</group>
+   			<group>
+   				<title>EVE Utilities</title>
+   				<packages>de.ptb.epics.eve.util*</packages>
+   			</group>
+   			<group>
+   				<title>Tests</title>
+   				<packages>de.ptb.epics.eve.data.measuringstation.filter.tests*:de.ptb.epics.eve.data.measuringstation.tests*:de.ptb.epics.eve.data.tests*:de.ptb.epics.eve.data.tests.internal.*:de.ptb.epics.eve.data.scandescription.tests*:de.ptb.epics.eve.data.measuringstation.processors.tests*:de.ptb.epics.eve.data.scandescription.processors.tests*:de.ptb.epics.eve.util.tests:de.ptb.epics.eve.editor.tests*</packages>
+   			</group>
+   		</groups>
+   		 <doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
+    <docletArtifact>
+      <groupId>org.umlgraph</groupId>
+      <artifactId>umlgraph</artifactId>
+      <version>5.6.6</version>
+    </docletArtifact>
+    <additionalparam>
+      -inferrel -inferdep -quiet -hide java.*
+      -collpackages java.util.* -qualify
+      -postfixpackage
+      -nodefontsize 9 -nodefontpackagesize 7
+    </additionalparam>
+   	</configuration>
+   </plugin>
+  </plugins>
+ </build>
+</project>

@@ -1,0 +1,25 @@
+                <goto>
+                    <access method="GETPUT" transport="ca" type="${Type=double}" timeout="${Timeout=300.0}">${PV}</access>
+                </goto>
+                <position>
+                    <access monitor="true" method="GETCB" transport="ca" type="${Type=double}">${PV}.RBV</access>
+                </position>
+                <stop>
+                    <access method="PUT" transport="ca" type="int">${PV}.STOP</access>
+                    <value type="int">1</value>
+                </stop>
+                <highlimit>
+                    <access method="GETPUT" type="double" transport="ca">${PV}.HLM</access>
+                </highlimit>
+                <lowlimit>
+                    <access method="GETPUT" type="double" transport="ca">${PV}.LLM</access>
+                </lowlimit>
+                <status>
+                    <access method="GETCB" transport="ca" type="int">${PV}.MSTA</access>
+                </status>
+                <movedone>
+                    <access method="GETCB" transport="ca" type="int">${PV}.DMOV</access>
+               </movedone>
+                <unit>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}.EGU</access>
+                </unit>

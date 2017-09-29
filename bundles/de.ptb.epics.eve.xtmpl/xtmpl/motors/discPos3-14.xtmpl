@@ -1,0 +1,9 @@
+            <!-- discrete position axis, to be included by motors -->
+            <axis>
+                <class>${Class=""}</class>
+                <name>${Name}</name>
+                <id>DiscPos${PV}</id>
+			include "axis_basic_discPos_part.xtmpl"
+			include "discPos_option_part.xtmpl"
+			include "discPos_menu_part3-14.xtmpl"
+            </axis>

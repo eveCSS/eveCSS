@@ -1,0 +1,4 @@
+    <!-- motor section -->
+    <motors>
+    ${includeFile}
+    </motors>

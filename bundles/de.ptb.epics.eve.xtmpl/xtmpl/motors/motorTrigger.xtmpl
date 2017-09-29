@@ -1,0 +1,21 @@
+        <!-- basic motor with trigger, must include axes -->
+	<motor>
+            <class>${Class=""}</class>
+            <name>${Name=""}</name>
+            <id>${Id}</id>
+            <trigger>
+                <access method="PUTCB" transport="ca" type="int" timeout="${Timeout=600.0}">${PV}.PROC</access>
+                <value type="int">1</value>
+            </trigger>
+            ${includeFile}
+            include "detector_scan_ohne_trigger_part.xtmpl"
+            <option>
+                <name>Trigger</name>
+                <id>${PV}.PROC</id>
+                <value>
+                    <access method="PUTCB" transport="ca" type="int" timeout="${Timeout=600.0}">${PV}.PROC</access>
+                    <value type="int">1</value>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+        </motor>

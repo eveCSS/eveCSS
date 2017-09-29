@@ -1,0 +1,75 @@
+                <option>
+                    <name>Move Done</name>
+                    <id>DiscPos${PV}.DMOV</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}.DMOV</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Start Mode</name>
+                    <id>DiscPos${PV}.SPMG</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}.SPMG</access>
+                        <value type="string">Stop,Pause,Move,Go</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Severity</name>
+                    <id>DiscPos${PV}.SEVR</id>
+                    <value>
+                        <access method="GETCB" monitor="true" type="string" transport="ca">${PV}.SEVR</access>
+                        <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Status</name>
+                    <id>DiscPos${PV}.STAT</id>
+                    <value>
+                        <access method="GETCB" monitor="true" type="string" transport="ca">${PV}.STAT</access>
+                        <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>control Mode</name>
+                    <id>DiscPos${PV}_Mnu.OMSL</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}_Mnu.OMSL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>lvio</name>
+                    <id>DiscPos${PV}.LVIO</id>
+                    <value>
+                        <access method="GETPUT" type="int" transport="ca">${PV}.LVIO</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>miss</name>
+                    <id>DiscPos${PV}.MISS</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}.MISS</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>rlls</name>
+                    <id>DiscPos${PV}.RLLS</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}.RLLS</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>rhls</name>
+                    <id>DiscPos${PV}.RHLS</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}.RHLS</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>

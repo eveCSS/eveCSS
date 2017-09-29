@@ -1,0 +1,60 @@
+            <!--  simulation channels to get signals for test scans -->
+        <detector>
+	    <class>Simu</class>
+	    <name>Simu</name>
+	    <id>Simu</id>
+	    <channel>
+		    <class></class>
+		    <name>Noise</name>
+		    <id>simNoise</id>
+	    	    <read>
+		   	<access monitor="false" method="GETCB" transport="ca" type="double">sim://noise</access>
+		   	<value type="double"></value>
+		    </read>
+	    </channel>
+	    <channel>
+		    <class></class>
+		    <name>Sine</name>
+		    <id>simSine</id>
+		    <read>
+			    <access monitor="false" method="GETCB" transport="ca" type="double">sim://sine</access>
+			    <value type="double"></value>
+		    </read>
+	    </channel>
+	    <channel>
+		    <class></class>
+		    <name>Gauss</name>
+		    <id>simGauss</id>
+		    <read>
+			    <access monitor="false" method="GETCB" transport="ca" type="double">sim://gaussian</access>
+			    <value type="double"></value>
+		    </read>
+	    </channel>
+	    <channel>
+		    <class></class>
+		    <name>Ramp</name>
+		    <id>simRamp</id>
+		    <read>
+			    <access monitor="false" method="GETCB" transport="ca" type="int">sim://ramp</access>
+			    <value type="int"></value>
+		    </read>
+	    </channel>
+	    <channel>
+		    <class></class>
+		    <name>FastRamp</name>
+		    <id>simFastRamp</id>
+		    <read>
+			    <access monitor="false" method="GETCB" transport="ca" type="int">sim://ramp(-100,100,1,0.1)</access>
+			    <value type="int"></value>
+		    </read>
+	    </channel>
+	    <channel>
+		    <class></class>
+		    <name>Strings</name>
+		    <id>simStrings</id>
+		    <read>
+			    <access monitor="false" method="GETCB" transport="ca" type="string">sim://strings</access>
+			    <value type="string"></value>
+		    </read>
+	    </channel>
+	</detector>

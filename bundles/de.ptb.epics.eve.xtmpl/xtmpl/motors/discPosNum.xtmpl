@@ -1,0 +1,102 @@
+            <!-- basic axis, to be included by motors -->
+            <axis>
+                <class>${Class=""}</class>
+                <name>${Name=""}</name>
+                <id>DiscPosNum${PV}</id>
+                <goto>
+                    <access method="GETPUTCB" transport="ca" type="${Type=int}" timeout="${Timeout=300.0}">${PV}_Mnu</access>
+                    <value type="${Type=int}" >${Menu}</value>
+                </goto>
+                <position>
+                    <access monitor="true" method="GETCB" transport="ca" type="${Type=double}">${PV}_MnuO</access>
+                    <value type="${Type=int}" >${Menu}</value>
+                </position>
+                <stop>
+                    <access method="PUT" transport="ca" type="int">${PV}.STOP</access>
+                    <value type="int">1</value>
+                </stop>
+                <status>
+                    <access method="GETCB" transport="ca" type="int">${PV}.MSTA</access>
+                </status>
+                <movedone>
+                    <access method="GETCB" transport="ca" type="int">${PV}.DMOV</access>
+                </movedone>
+                <unit>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}.EGU</access>
+                </unit>
+                <option>
+                    <name>Move Done</name>
+                    <id>DiscPosNum${PV}.DMOV</id>
+                    <value>
+                        <access method="GETCB" type="${Type=double}" transport="ca">${PV}.DMOV</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Start Mode</name>
+                    <id>DiscPosNum${PV}.SPMG</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}.SPMG</access>
+                        <value type="string">Stop,Pause,Move,Go</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Severity</name>
+                    <id>DiscPosNum${PV}.SEVR</id>
+                    <value>
+                        <access method="GETCB" monitor="true" type="string" transport="ca">${PV}.SEVR</access>
+                        <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Status</name>
+                    <id>DiscPosNum${PV}.STAT</id>
+                    <value>
+                        <access method="GETCB" monitor="true" type="string" transport="ca">${PV}.STAT</access>
+                        <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>control Mode</name>
+                    <id>DiscPosNum${PV}_Mnu.OMSL</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}_Mnu.OMSL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>lvio</name>
+                    <id>DiscPosNum${PV}.LVIO</id>
+                    <value>
+                        <access method="GETPUT" type="int" transport="ca">${PV}.LVIO</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>miss</name>
+                    <id>DiscPosNum${PV}.MISS</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}.MISS</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>rlls</name>
+                    <id>DiscPosNum${PV}.RLLS</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}.RLLS</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>rhls</name>
+                    <id>DiscPosNum${PV}.RHLS</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}.RHLS</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+            </axis>

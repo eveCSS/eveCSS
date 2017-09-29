@@ -1,0 +1,16 @@
+        <!-- simple device with datatype string (readonly) -->
+        <device>
+            <class>${Class=""}</class>
+            <name>${Name=""}</name>
+            <id>${PV}</id>
+				substitute "Type=string, Method=GETCB"
+				include "device_menu_part.xtmpl"
+            <option>
+                <name>Value</name>
+                <id>Value${PV}</id>
+                <value>
+                    <access monitor="true" method="${Method=GETPUT}" transport="ca" type="${Type=double}">${PV}</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+        </device>
