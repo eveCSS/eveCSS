@@ -17,6 +17,7 @@
 		<antcall target="eez" />
 		<antcall target="euvr" />
 		<antcall target="fem" />
+		<antcall target="id13" />
 		<antcall target="idb" />
 		<antcall target="kmc" />
 		<antcall target="pgm" />
@@ -42,6 +43,7 @@
 		<antcall target="elli" />
 		<antcall target="ionk" />
 		<antcall target="lecroy01" />
+		<antcall target="maskref" />
 		<antcall target="mimo" />
 		<antcall target="newref" />
 		<antcall target="nrfa" />
@@ -179,6 +181,13 @@
 		</antcall>
 	</target>
 
+	<target name="id13">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="id13" />
+			<param name="station.type" value="station" />
+		</antcall>
+	</target>
+	
 	<target name="idb">
 		<antcall target="-xmlmsi">
 			<param name="eve_location" value="idb" />
@@ -214,6 +223,13 @@
 		</antcall>
 	</target>
 
+	<target name="maskref">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="maskref" />
+			<param name="station.type" value="instrument" />
+		</antcall>
+	</target>
+	
 	<target name="mimo">
 		<antcall target="-xmlmsi">
 			<param name="eve_location" value="mimo" />

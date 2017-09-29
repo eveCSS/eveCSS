@@ -10,6 +10,7 @@
 		<loadfile property="eez" srcFile="/messung/eez/eve/version.txt"/>
 		<loadfile property="euvr" srcFile="/messung/euvr/eve/version.txt"/>
 		<loadfile property="fem" srcFile="/messung/fem/eve/version.txt"/>
+		<loadfile property="id13" srcFile="/messung/id13/eve/version.txt"/>
 		<loadfile property="idb" srcFile="/messung/idb/eve/version.txt"/>
 		<loadfile property="kmc" srcFile="/messung/kmc/eve/version.txt"/>
 		<loadfile property="pgm" srcFile="/messung/pgm/eve/version.txt"/>
@@ -42,6 +43,8 @@
 				srcFile="/messung/instruments/ionk/eve/version.txt"/>
 		<loadfile property="lecroy01"
 				srcFile="/messung/instruments/lecroy01/eve/version.txt"/>
+		<loadfile property="maskref" 
+				srcFile="/messung/instruments/maskref/eve/version.txt"/>
 		<loadfile property="mimo" 
 				srcFile="/messung/instruments/mimo/eve/version.txt"/>
 		<loadfile property="newref" 
@@ -84,13 +87,14 @@
 		<echo message="eez:     			${eez}" />
 		<echo message="euvr:    			${euvr}" />
 		<echo message="fem:     			${fem}" />
+		<echo message="id13:                ${id13}" />
 		<echo message="idb:     			${idb}" />
 		<echo message="kmc:     			${kmc}" />
 		<echo message="pgm:     			${pgm}" />
 		<echo message="qmp_mls: 			${qmp_mls}" />
 		<echo message="qnim:    			${qnim}" />
 		<echo message="red:     			${red}" />
-		<echo message="roentgen: 		${roentgen}" />
+		<echo message="roentgen: 	    	${roentgen}" />
 		<echo message="sx700:   			${sx700}" />
 		<echo message="test:    			${test}" />
 		<echo message="thz:    				${thz}" />
@@ -107,6 +111,7 @@
 		<echo message="elli:    			${elli}" />
 		<echo message="ionk:    			${ionk}" />
 		<echo message="lecroy01: 			${lecroy01}" />
+		<echo message="maskref:             ${maskref}" />
 		<echo message="mimo:    			${mimo}" />
 		<echo message="newref:  			${newref}" />
 		<echo message="nrfa:    			${nrfa}" />
