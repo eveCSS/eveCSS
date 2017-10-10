@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?pde version="3.5"?>
+
+<product name="Css" uid="eveCSS" id="de.ptb.epics.eve.rcp.product" application="de.ptb.epics.eve.rcp.application" version="1.28.1" useFeatures="true" includeLaunchers="true">
+
+   <aboutInfo>
+      <image path="/de.ptb.epics.eve.rcp/icons/about.gif"/>
+      <text>
+         Control System Studio (CSS) is a combined
+effort of several parties, including
+- DESY (Hamburg, Germany)
+- SNS (Oak Ridge, TN).
+
+It provides a collection of control system
+tools in a common environment, based
+on Eclipse.
+
+See http://ics-web.sns.ornl.gov/css
+      </text>
+   </aboutInfo>
+
+   <configIni use="default">
+      <linux>/de.ptb.epics.eve.rcp/config.ini</linux>
+      <macosx>/de.ptb.epics.eve.rcp/config.ini</macosx>
+      <solaris>/de.ptb.epics.eve.rcp/config.ini</solaris>
+      <win32>/de.ptb.epics.eve.rcp/config.ini</win32>
+   </configIni>
+
+   <launcherArgs>
+      <programArgs>--launcher.GTK_version
+2
+      </programArgs>
+      <vmArgs>-Xmx256m
+-Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.SimpleLog
+-Dorg.apache.commons.logging.simplelog.defaultlog=fatal
+-Dorg.eclipse.swt.internal.gtk.cairoGraphics=false
+-Dorg.eclipse.swt.internal.gtk.useCairo=false
+-Dno_proxy=127.0.0.1,localhost
+      </vmArgs>
+      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
+      </vmArgsMac>
+   </launcherArgs>
+
+   <windowImages i16="/de.ptb.epics.eve.rcp/icons/css16.gif" i32="/de.ptb.epics.eve.rcp/icons/css32.gif" i48="/de.ptb.epics.eve.rcp/icons/css48.gif" i64="/de.ptb.epics.eve.rcp/icons/css64.gif" i128="/de.ptb.epics.eve.rcp/icons/css128.gif"/>
+
+   <splash
+      location="org.csstudio.eve.product"
+      startupProgressRect="5,210,445,15"
+      startupMessageRect="7,190,445,20"
+      startupForegroundColor="0000FF" />
+   <launcher name="css">
+      <linux icon="../../bundles/de.ptb.epics.eve.rcp/icons/css48.xpm"/>
+      <macosx icon="../../bundles/de.ptb.epics.eve.rcp/icons/css.icns"/>
+      <solaris/>
+      <win useIco="true">
+         <ico path="../../bundles/de.ptb.epics.eve.rcp/icons/css.ico"/>
+         <bmp/>
+      </win>
+   </launcher>
+
+   <intro introId="org.eclipse.ui.intro.universal"/>
+
+   <vm>
+   </vm>
+
+   <plugins>
+   </plugins>
+
+   <features>
+      <feature id="org.csstudio.eve.applications.feature" version="1.0.0.qualifier"/>
+      <feature id="org.csstudio.eve.core.feature" version="1.0.0.qualifier"/>
+      <feature id="org.csstudio.eve.eclipse.feature" version="1.0.0.qualifier"/>
+   </features>
+
+   <configurations>
+      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="0" />
+      <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
+   </configurations>
+
+   <preferencesInfo>
+      <targetfile overwrite="false"/>
+   </preferencesInfo>
+
+   <cssInfo>
+   </cssInfo>
+
+</product>

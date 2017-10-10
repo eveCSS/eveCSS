@@ -1,0 +1,5 @@
+        <!-- plugin to not save data -->
+        <plugin type="save">
+            <name>Do not save</name>
+            <location>nosave</location>
+        </plugin>

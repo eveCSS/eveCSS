@@ -1,0 +1,74 @@
+            <option>
+                <name>Erase</name>
+                <id>${Prefix=""}${PV}EraseAll</id>
+                <value>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}EraseAll</access>
+                    <value type="string">Done,Erase</value>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option>
+                <name>Lifetime</name>
+                <id>${Prefix=""}${PV}ElapsedLive</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="double">${PV}ElapsedLive</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option>
+                <name>Realtime</name>
+                <id>${Prefix=""}${PV}ElapsedReal</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="double">${PV}ElapsedReal</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Preset Lifetime</name>
+                <id>${Prefix=""}${PV}PresetLive</id>
+                <value>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}PresetLive</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Preset Realtime</name>
+                <id>${Prefix=""}${PV}PresetReal</id>
+                <value>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}PresetReal</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>TriggerThreshold</name>
+                <id>${Prefix=""}${PV}dxp1:TriggerThreshold</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="double">${PV}dxp1:TriggerThreshold</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>EnergyThreshold</name>
+                <id>${Prefix=""}${PV}dxp1:EnergyThreshold</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="double">${PV}dxp1:EnergyThreshold</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>BaselineThreshold</name>
+                <id>${Prefix=""}${PV}dxp1:BaselineThreshold</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="double">${PV}dxp1:BaselineThreshold</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option>
+                <name>stop</name>
+                <id>${Prefix=""}${PV}stop</id>
+                <value>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}StopAll</access>
+                    <value type="string">Done,Stop</value>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>

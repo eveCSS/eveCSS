@@ -1,0 +1,52 @@
+        <!-- Pt 2025 with a single channel -->
+        <detector>
+            <class>${Class=""}</class>
+            <name>${Name=""}</name>
+            <id>${PV}</id>
+            include "detector_trigger_ohne_trigger_part.xtmpl"
+            include "pt2025Channel.xtmpl"
+            <option monitor="true">
+                <name>Mode</name>
+                <id>${PV}Mode</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">${PV}Mode</access>
+                    <value type="string">Manual,Auto</value>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>fieldRange / T</name>
+                <id>${PV}fieldRange</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">${PV}fieldRange</access>
+                    <value type="string">0.04-0.13,0.09-0.26,0.17-0.52,0.35-1.05,0.70-2.10,1.50-3.40,3.00-6.80,6.00-13.7</value>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>fieldSearch</name>
+                <id>${PV}startSearch</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">${PV}startSearch</access>
+                    <value type="string">Search On,Search Off</value>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>fieldPreselection / T</name>
+                <id>${PV}radioFreq</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="double">${PV}radioFreq</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>lockState</name>
+                <id>${PV}lockState</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">${PV}lockState</access>
+                    <value type="string">S.Off Unlocked,S.Off Locked,S.On Unlocked,S.On Locked</value>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+        </detector>

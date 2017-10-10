@@ -1,0 +1,14 @@
+        <!-- basic detector (here value Detector) -->
+        <detector>
+            <class>${Class=""}</class>
+            <name>${Name=""}</name>
+            <id>${PV}</id>
+            <channel>
+                <class>${Ch_Class=""}</class>
+                <!-- <name>${ChannelName=""}</name>-->
+                <name>${Name=""}</name>
+                <id>${PV}chan1</id>
+            	include "channel_read_part.xtmpl"
+            	include "channel_option_part.xtmpl"
+            </channel>
+        </detector>

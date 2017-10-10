@@ -1,0 +1,43 @@
+     	<!-- basic motor (here a dosis) with just one axis -->
+        substitute "Prefix=DOSIS:"
+        <motor>
+            <class>${Class=""}</class>
+            <name>${Name=""}</name>
+            <id>${Prefix}${PV}basic</id>
+            <axis>
+                <class></class>
+                <name>${Name=""}</name>
+                <id>${Prefix}${PV}target</id>
+                <goto>
+                    <access method="GETPUTCB" transport="ca" type="${Type=double}" timeout="${Timeout=300.0}">${Prefix}${PV}target</access>
+                </goto>
+                <position>
+                    <access monitor="true" method="GETCB" transport="ca" type="${Type=double}">${Prefix}${PV}target</access>
+                </position>
+                <stop>
+                    <access method="PUT" transport="ca" type="int">${Prefix}${PV}stop</access>
+                    <value type="int">1</value>
+                </stop>
+                <unit>
+                    <access method="GETPUT" transport="ca" type="string">${Prefix}${PV}target.EGU</access>
+                </unit>
+            </axis>
+            <option>
+                <name>Severity</name>
+                <id>${Prefix}${PV}target.SEVR</id>
+                <value>
+                    <access method="GETCB" monitor="true" type="string" transport="ca">${Prefix}${PV}target.SEVR</access>
+                    <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>Status</name>
+                <id>${Prefix}${PV}target.STAT</id>
+                <value>
+                    <access method="GETCB" monitor="true" type="string" transport="ca">${Prefix}${PV}target.STAT</access>
+                    <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+        </motor>

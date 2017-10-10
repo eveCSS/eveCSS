@@ -1,0 +1,8 @@
+        <!-- (dummy) plugin to save data in ascii format -->
+        <plugin type="save">
+            <name>ASCII</name>
+            <location></location>
+            <parameter name="format" datatype="string" default="ASCII"></parameter>
+            <parameter name="suffix" datatype="string" default="txt"></parameter>
+            <parameter name="extent" datatype="int" default="0"></parameter>
+        </plugin>

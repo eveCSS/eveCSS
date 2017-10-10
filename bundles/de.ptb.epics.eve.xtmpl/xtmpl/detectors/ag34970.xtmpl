@@ -1,0 +1,231 @@
+        <!-- Agilent 34970 (must include ag34970Channel) -->
+        <detector>
+            <class>${Class=""}</class>
+            <name>${Name=""}</name>
+            <id>${PV}</id>
+            include "detector_trigger_mit_trigger_part.xtmpl"
+            <status>
+                <access method="GETCB" transport="ca" type="string">${PV}trigger.STAT</access>
+            </status>
+				${includeFile}
+            <option>
+                <name>Severity</name>
+                <id>${PV}trigger.SEVR</id>
+                <value>
+                    <access method="GETCB" monitor="true" transport="ca" type="string">${PV}trigger.SEVR</access>
+                    <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option>
+                <name>Status</name>
+                <id>${PV}trigger.STAT</id>
+                <value>
+                    <access method="GETCB" monitor="true" transport="ca" type="string">${PV}trigger.STAT</access>
+                    <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option>
+                <name>Initialize (SDC)</name>
+                <id>${PV}sdc</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">${PV}sdc</access>
+                    <value type="string">Init only,SDC+Init</value>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Triggerintervall / s</name>
+                <id>${PV}repeatTrig.DLY1</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="double">${PV}repeatTrig.DLY1</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Ch01 selected 1/0</name>
+                <id>${PV}scanList1.B0</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">${PV}scanList1.B0</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Ch02 selected 1/0</name>
+                <id>${PV}scanList1.B1</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">${PV}scanList1.B1</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Ch03 selected 1/0</name>
+                <id>${PV}scanList1.B2</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">${PV}scanList1.B2</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Ch04 selected 1/0</name>
+                <id>${PV}scanList1.B3</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">${PV}scanList1.B3</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Ch05 selected 1/0</name>
+                <id>${PV}scanList1.B4</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">${PV}scanList1.B4</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Ch06 selected 1/0</name>
+                <id>${PV}scanList1.B5</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">${PV}scanList1.B5</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Ch07 selected 1/0</name>
+                <id>${PV}scanList1.B6</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">${PV}scanList1.B6</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Ch08 selected 1/0</name>
+                <id>${PV}scanList1.B7</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">${PV}scanList1.B7</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Ch09 selected 1/0</name>
+                <id>${PV}scanList1.B8</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">${PV}scanList1.B8</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Ch10 selected 1/0</name>
+                <id>${PV}scanList1.B9</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">${PV}scanList1.B9</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Ch11 selected 1/0</name>
+                <id>${PV}scanList1.BA</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">${PV}scanList1.BA</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+          		<name>Ch12 selected 1/0</name>
+                <id>${PV}scanList1.BB</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">${PV}scanList1.BB</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Ch13 selected 1/0</name>
+                <id>${PV}scanList1.BC</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">${PV}scanList1.BC</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Ch14 selected 1/0</name>
+                <id>${PV}scanList1.BD</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">${PV}scanList1.BD</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Ch15 selected 1/0</name>
+                <id>${PV}scanList1.BE</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">${PV}scanList1.BE</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Ch16 selected 1/0</name>
+                <id>${PV}scanList1.BF</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">${PV}scanList1.BF</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Ch17 selected 1/0</name>
+                <id>${PV}scanList2.B0</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">${PV}scanList2.B0</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Ch18 selected 1/0</name>
+                <id>${PV}scanList2.B1</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">${PV}scanList2.B1</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Ch19 selected 1/0</name>
+                <id>${PV}scanList2.B2</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">${PV}scanList2.B2</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Ch20 selected 1/0</name>
+                <id>${PV}scanList2.B3</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">${PV}scanList2.B3</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Ch21 selected 1/0</name>
+                <id>${PV}scanList2.B4</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">${PV}scanList2.B4</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Ch22 selected 1/0</name>
+                <id>${PV}scanList2.B5</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">${PV}scanList2.B5</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option>
+                <name>update scanList</name>
+                <id>${PV}sendScanList.PROC</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">${PV}sendScanList.PROC</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            include "detector_scan_mit_trigger_part.xtmpl"
+        </detector>

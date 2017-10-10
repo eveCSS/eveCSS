@@ -1,0 +1,167 @@
+        <!-- basic detector for omicron from avogadro with just one axis -->
+        substitute "Prefix=preSet"
+        <detector>
+            <class>${Class=""}</class>
+            <name>${Name=""}</name>
+            <id>${Prefix}${PV}basic</id>
+                <trigger>
+                    <access method="PUTCB" transport="ca" type="string" timeout="${Timeout=3600.0}">${PV}Trigger</access>
+                    <value type="string">Acquire</value>
+                </trigger>
+            <stop>
+                <access method="GETPUT" transport="ca" type="int">${PV}Execute_Region</access>
+                <value type="int">0</value>
+            </stop>
+            <channel>
+                <class>${Ax_Class=""}</class>
+                <name>${Name}</name>
+                <id>${Prefix}${PV}</id>
+                <read>
+                    <access method="GETPUTCB" transport="ca" type="${Type=double}" timeout="${Timeout=300.0}">${PV}Totalcps</access>
+                </read>
+                <unit>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}Totalcps.EGU</access>
+                </unit>
+                <status>
+                    <access method="GETCB" transport="ca" type="string">${PV}Trigger</access>
+                </status>
+                <option monitor="true">
+                    <name>Total Repetitions</name>
+                    <id>${PV}TotalRepetitions.VAL</id>
+                    <value>
+                        <access method="GETPUT" type="int" transport="ca">${PV}TotalRepetitions.VAL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Total cps</name>
+                    <id>${PV}Totalcps.VAL</id>
+                    <value>
+                        <access method="GETPUT" type="int" transport="ca">${PV}Totalcps.VAL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>File Path</name>
+                    <id>${PV}FilePath.VAL</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}FilePath.VAL {"longString":true}</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>File Name</name>
+                    <id>${PV}FileName.VAL</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}FileName.VAL {"longString":true}</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>File Number</name>
+                    <id>${PV}Filenumber.VAL</id>
+                    <value>
+                        <access method="GETPUT" type="int" transport="ca">${PV}Filenumber.VAL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Full Filename</name>
+                    <id>${PV}FullFilename.VAL</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}FullFilename.VAL {"longString":true}</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Transition Label</name>
+                    <id>${PV}Transition_Label.VAL</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">${PV}Transition_Label.VAL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>CAE Value</name>
+                    <id>${PV}CAE_Value.VAL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">${PV}CAE_Value.VAL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Dwell Time</name>
+                    <id>${PV}Dwell_Time.VAL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">${PV}Dwell_Time.VAL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Operation Type</name>
+                    <id>${PV}Operation_Type.VAL</id>
+                    <value>
+                        <access method="GETPUT" type="int" transport="ca">${PV}Operation_Type.VAL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Start Energy (Kin)</name>
+                    <id>${PV}Start_Energy.VAL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">${PV}Start_Energy.VAL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>End Energy (Kin)</name>
+                    <id>${PV}End_Energy.VAL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">${PV}End_Energy.VAL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Step Energy</name>
+                    <id>${PV}Step_Energy.VAL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">${PV}Step_Energy.VAL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Start Energy (Bind)</name>
+                    <id>${PV}Start_BindEnergy.VAL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">${PV}Start_BindEnergy.VAL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>End Energy (Bind)</name>
+                    <id>${PV}End_BindEnergy.VAL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">${PV}End_BindEnergy.VAL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Trigger</name>
+                    <id>${PV}Trigger</id>
+                    <value>
+                        <access method="PUTCB" transport="ca" type="string" timeout="${Timeout=3600.0}">${PV}Trigger</access>
+                        <value type="string">Done,Acquire</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+	            <option>
+    	            <name>stop</name>
+        	        <id>${PV}stop</id>
+            	    <value>
+                	    <access method="GETPUTCB" transport="ca" type="int">${PV}Execute_Region</access>
+                    	<value type="string">Done,Acquire</value>
+                	</value>
+                	<displaygroup>detail</displaygroup>
+            	</option>
+            </channel>
+        </detector>

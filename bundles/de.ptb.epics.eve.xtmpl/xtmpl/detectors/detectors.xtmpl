@@ -1,0 +1,4 @@
+    <!-- detector section -->
+    <detectors>
+    ${includeFile}
+    </detectors>

@@ -1,0 +1,74 @@
+            <option>
+                <name>Erase</name>
+                <id>${Prefix=""}${PV}erase</id>
+                <value>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}.ERAS</access>
+                    <value type="string">Done,Erase</value>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option>
+                <name>Lifetime</name>
+                <id>${Prefix=""}${PV}.ELTM</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="double">${PV}.ELTM</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option>
+                <name>Realtime</name>
+                <id>${Prefix=""}${PV}.ERTM</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="double">${PV}.ERTM</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Preset Lifetime</name>
+                <id>${Prefix=""}${PV}.PLTM</id>
+                <value>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}.PLTM</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Preset Realtime</name>
+                <id>${Prefix=""}${PV}.PRTM</id>
+                <value>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}.PRTM</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>CAL O</name>
+                <id>${Prefix=""}${PV}.CALO</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="double">${PV}.CALO</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>CAL S</name>
+                <id>${Prefix=""}${PV}.CALS</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="double">${PV}.CALS</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>CAL Q</name>
+                <id>${Prefix=""}${PV}.CALQ</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="double">${PV}.CALQ</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option>
+                <name>stop</name>
+                <id>${Prefix=""}${PV}stop</id>
+                <value>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}.STOP</access>
+                    <value type="string">Done,Acquire</value>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>

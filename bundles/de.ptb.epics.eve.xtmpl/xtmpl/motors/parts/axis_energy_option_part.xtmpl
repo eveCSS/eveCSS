@@ -1,0 +1,74 @@
+                <option>
+                    <name>Move Done</name>
+                    <id>${Prefix}${PV}dmov</id>
+                    <value>
+                        <access method="GETCB" type="${Type=double}" transport="ca">${PV}dmov</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Severity</name>
+                    <id>${Prefix}${PV}rbv.SEVR</id>
+                    <value>
+                        <access method="GETCB" monitor="true" type="string" transport="ca">${PV}rbv.SEVR</access>
+                        <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Status</name>
+                    <id>${Prefix}${PV}rbv.STAT</id>
+                    <value>
+                        <access method="GETCB" monitor="true" type="string" transport="ca">${PV}rbv.STAT</access>
+                        <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>High Limit / Units</name>
+                    <id>${Prefix}${PV}cff.HIHI</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">${PV}cff.HIHI</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Low Limit / Units</name>
+                    <id>${Prefix}${PV}cff.LOLO</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">${PV}cff.LOLO</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>lvio</name>
+                    <id>${Prefix}${PV}lvio</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">${PV}lvio</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>miss</name>
+                    <id>${Prefix}${PV}miss</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">${PV}miss</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>rlls</name>
+                    <id>${Prefix}${PV}rlls</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">${PV}rlls</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>rhls</name>
+                    <id>${Prefix}${PV}rhls</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">${PV}rhls</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>

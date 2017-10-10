@@ -1,0 +1,9 @@
+            <!-- axis, to be included by motors -->
+            <axis>
+                <class>${Class=""}</class>
+                <name>${Name}</name>
+                <id>${PV}</id>
+				include "axis_basic_part.xtmpl"
+				include "axis_extended_part.xtmpl"
+				include "axis_option_part.xtmpl"
+            </axis>

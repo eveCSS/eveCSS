@@ -1,0 +1,122 @@
+            <!-- SX100 wavelength axis, to be included by motor -->
+            substitute "Prefix=nm"
+            <axis>
+                <class>${Class=""}</class>
+                <name>${Name=""}</name>
+                <id>${Prefix}${PV}wl2e.A</id>
+                <goto>
+                    <access method="GETPUTCB" transport="ca" type="${Type=double}" timeout="${Timeout=300.0}">${PV}wl2e.A</access>
+                </goto>
+                <position>
+                    <access monitor="true" method="GETCB" transport="ca" type="${Type=double}">${PV}e2wl</access>
+                </position>
+                <stop>
+                    <access method="PUT" transport="ca" type="int">${PV}stop</access>
+                    <value type="int">1</value>
+                </stop>
+                <movedone>
+                    <access method="GETCB" transport="ca" type="int">${PV}dmov</access>
+                </movedone>
+                <unit>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}e2wl.EGU</access>
+                </unit>
+                <option>
+                    <name>Move Done</name>
+                    <id>${Prefix}${PV}dmov</id>
+                    <value>
+                        <access method="GETCB" type="${Type=double}" transport="ca">${PV}dmov</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Severity</name>
+                    <id>${Prefix}${PV}rbv.SEVR</id>
+                    <value>
+                        <access method="GETCB" monitor="true" type="string" transport="ca">${PV}rbv.SEVR</access>
+                        <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Status</name>
+                    <id>${Prefix}${PV}rbv.STAT</id>
+                    <value>
+                        <access method="GETCB" monitor="true" type="string" transport="ca">${PV}rbv.STAT</access>
+                    	<value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>High Limit / Units</name>
+                    <id>${Prefix}${PV}cff.HIHI</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">${PV}wl2e.HIHI</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Low Limit / Units</name>
+                    <id>${Prefix}${PV}cff.LOLO</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">${PV}wl2e.LOLO</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Readback Energy</name>
+                    <id>${Prefix}${PV}rbv</id>
+                    <value>
+                        <access method="GETCB" type="${Type=double}" transport="ca">${PV}rbv</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Order</name>
+                    <id>${Prefix}${PV}pre.B</id>
+                    <value>
+                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}pre.B</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Lines/mm</name>
+                    <id>${Prefix}${PV}pre.C</id>
+                    <value>
+                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}pre.C</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Cff Selector</name>
+                    <id>${Prefix}${PV}mbcffFunc</id>
+                    <value>
+                        <access method="GETPUT" type="${Type=string}" transport="ca">${PV}mbcffFunc</access>
+                        <value type="string">Manual,Table</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Current Cff</name>
+                    <id>${Prefix}${PV}CffFunc</id>
+                    <value>
+                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}CffFunc</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Cff (readback)</name>
+                    <id>${Prefix}${PV}Rbcff</id>
+                    <value>
+                        <access method="GETCB" type="${Type=double}" transport="ca">${PV}Rbcff</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Security (1=on 0=off)</name>
+                    <id>${Prefix}${PV}secu0.E</id>
+                    <value>
+                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}secu0.E</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+            </axis>

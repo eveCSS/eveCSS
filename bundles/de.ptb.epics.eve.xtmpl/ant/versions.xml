@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="show_versions" basedir="./">
+	<target name="show_versions">
+		<loadfile property="bam" srcFile="/messung/bam/eve/version.txt"/>
+		<loadfile property="bragg" srcFile="/messung/bragg/eve/version.txt"/>
+		<loadfile property="dekabe" srcFile="/messung/dekabe/eve/version.txt"/>
+		<loadfile property="dwl_ger" srcFile="/messung/dwl_ger/eve/version.txt"/>
+		<loadfile property="dwl" srcFile="/messung/dwl/eve/version.txt"/>
+		<loadfile property="dwl20" srcFile="/messung/dwl20/eve/version.txt"/>
+		<loadfile property="eez" srcFile="/messung/eez/eve/version.txt"/>
+		<loadfile property="euvr" srcFile="/messung/euvr/eve/version.txt"/>
+		<loadfile property="fem" srcFile="/messung/fem/eve/version.txt"/>
+		<loadfile property="id13" srcFile="/messung/id13/eve/version.txt"/>
+		<loadfile property="idb" srcFile="/messung/idb/eve/version.txt"/>
+		<loadfile property="kmc" srcFile="/messung/kmc/eve/version.txt"/>
+		<loadfile property="pgm" srcFile="/messung/pgm/eve/version.txt"/>
+		<loadfile property="qmp_mls" srcFile="/messung/qmp_mls/eve/version.txt"/>
+		<loadfile property="qnim" srcFile="/messung/qnim/eve/version.txt"/>
+		<loadfile property="red" srcFile="/messung/red/eve/version.txt"/>
+		<loadfile property="roentgen" srcFile="/messung/roentgen/eve/version.txt"/>
+		<loadfile property="sx700" srcFile="/messung/sx700/eve/version.txt"/>
+		<loadfile property="test" srcFile="/messung/test/eve/version.txt"/>
+		<loadfile property="thz" srcFile="/messung/thz/eve/version.txt"/>
+		<loadfile property="white" srcFile="/messung/white/eve/version.txt"/>
+		<loadfile property="wlsptb" srcFile="/messung/wlsptb/eve/version.txt"/>
+		<loadfile property="xpbf2" srcFile="/messung/xpbf2/eve/version.txt"/>
+		
+		<loadfile property="akman" 
+				srcFile="/messung/instruments/akman/eve/version.txt"/>
+		<loadfile property="avogadro" 
+				srcFile="/messung/instruments/avogadro/eve/version.txt"/>
+		<loadfile property="bigref" 
+				srcFile="/messung/instruments/bigref/eve/version.txt"/>
+		<loadfile property="compton_bessy2" 
+				srcFile="/messung/instruments/compton_bessy2/eve/version.txt"/>
+		<loadfile property="compton_mls" 
+				srcFile="/messung/instruments/compton_mls/eve/version.txt"/>
+		<loadfile property="elettra" 
+				srcFile="/messung/instruments/elettra/eve/version.txt"/>
+		<loadfile property="elli" 
+				srcFile="/messung/instruments/elli/eve/version.txt"/>
+		<loadfile property="ionk"
+				srcFile="/messung/instruments/ionk/eve/version.txt"/>
+		<loadfile property="lecroy01"
+				srcFile="/messung/instruments/lecroy01/eve/version.txt"/>
+		<loadfile property="maskref" 
+				srcFile="/messung/instruments/maskref/eve/version.txt"/>
+		<loadfile property="mimo" 
+				srcFile="/messung/instruments/mimo/eve/version.txt"/>
+		<loadfile property="newref" 
+				srcFile="/messung/instruments/newref/eve/version.txt"/>
+		<loadfile property="nrfa" 
+				srcFile="/messung/instruments/nrfa/eve/version.txt"/>
+		<loadfile property="oldref" 
+				srcFile="/messung/instruments/oldref/eve/version.txt"/>
+		<loadfile property="pink" 
+				srcFile="/messung/instruments/pink/eve/version.txt"/>
+		<loadfile property="ptgm" 
+				srcFile="/messung/instruments/ptgm/eve/version.txt"/>
+		<loadfile property="refo" 
+				srcFile="/messung/instruments/refo/eve/version.txt"/>
+		<loadfile property="rfa" 
+				srcFile="/messung/instruments/rfa/eve/version.txt"/>
+		<loadfile property="rfa5" 
+				srcFile="/messung/instruments/rfa5/eve/version.txt"/>
+		<loadfile property="smchuber02" 
+				srcFile="/messung/instruments/smchuber02/eve/version.txt"/>
+		<loadfile property="syres1" 
+				srcFile="/messung/instruments/syres1/eve/version.txt"/>
+		<loadfile property="syres2" 
+				srcFile="/messung/instruments/syres2/eve/version.txt"/>
+		<loadfile property="trfa" 
+				srcFile="/messung/instruments/trfa/eve/version.txt"/>
+		<loadfile property="vonhamos" 
+				srcFile="/messung/instruments/vonhamos/eve/version.txt"/>
+		<loadfile property="vuvref" 
+				srcFile="/messung/instruments/vuvref/eve/version.txt"/>
+		<loadfile property="wwl_eez_test" 
+				srcFile="/messung/instruments/wwl_eez_test/eve/version.txt"/>
+		
+		<echo message="bam:     			${bam}" />
+		<echo message="bragg:   			${bragg}" />
+		<echo message="dekabe:  			${dekabe}" />
+		<echo message="dwl:     			${dwl}" />
+		<echo message="dwl20:   			${dwl20}" />
+		<echo message="dwl_ger: 			${dwl_ger}" />
+		<echo message="eez:     			${eez}" />
+		<echo message="euvr:    			${euvr}" />
+		<echo message="fem:     			${fem}" />
+		<echo message="id13:                ${id13}" />
+		<echo message="idb:     			${idb}" />
+		<echo message="kmc:     			${kmc}" />
+		<echo message="pgm:     			${pgm}" />
+		<echo message="qmp_mls: 			${qmp_mls}" />
+		<echo message="qnim:    			${qnim}" />
+		<echo message="red:     			${red}" />
+		<echo message="roentgen: 	    	${roentgen}" />
+		<echo message="sx700:   			${sx700}" />
+		<echo message="test:    			${test}" />
+		<echo message="thz:    				${thz}" />
+		<echo message="white:   			${white}" />
+		<echo message="wlsptb:  			${wlsptb}" />
+		<echo message="xpbf2:   			${xpbf2}" />
+		<echo message=" ${line.separator}" />
+		<echo message="akman:   			${akman}" />
+		<echo message="avogadro:			${avogadro}" />
+		<echo message="bigref:  			${bigref}" />
+		<echo message="compton_bessy2:		${compton_bessy2}" />
+		<echo message="compton_mls: 		${compton_mls}" />
+		<echo message="elettra: 			${elettra}" />
+		<echo message="elli:    			${elli}" />
+		<echo message="ionk:    			${ionk}" />
+		<echo message="lecroy01: 			${lecroy01}" />
+		<echo message="maskref:             ${maskref}" />
+		<echo message="mimo:    			${mimo}" />
+		<echo message="newref:  			${newref}" />
+		<echo message="nrfa:    			${nrfa}" />
+		<echo message="oldref:  			${oldref}" />
+		<echo message="pink:    			${pink}" />
+		<echo message="ptgm:    			${ptgm}" />
+		<echo message="refo:    			${refo}" />
+		<echo message="rfa:     			${rfa}" />
+		<echo message="rfa5:				${rfa5}" />
+		<echo message="smchuber02:  		${smchuber02}" />
+		<echo message="syres1:  			${syres1}" />
+		<echo message="syres2:  			${syres2}" />
+		<echo message="trfa:    			${trfa}" />
+		<echo message="vonhamos:  			${vonhamos}" />
+		<echo message="vuvref:  			${vuvref}" />
+		<echo message="wwl_eez_test:		${wwl_eez_test}" />
+	</target>
+</project>

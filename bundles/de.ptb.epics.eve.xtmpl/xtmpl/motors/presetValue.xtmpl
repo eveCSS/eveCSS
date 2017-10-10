@@ -1,0 +1,26 @@
+        <!-- basic motor (here a preset value for a mca) with just one axis -->
+        substitute "Prefix=preSet"
+        <motor>
+            <class>${Class=""}</class>
+            <name>${Name=""}</name>
+            <id>${Prefix}${PV}basic</id>
+            <axis>
+                <class>${Ax_Class=""}</class>
+                <name>${Name}</name>
+                <id>${Prefix}${PV}</id>
+                <goto>
+                    <access method="GETPUTCB" transport="ca" type="${Type=double}" timeout="${Timeout=300.0}">${PV}</access>
+                </goto>
+                <position>
+                    <access monitor="true" method="GETCB" transport="ca" type="${Type=double}">${PV}</access>
+                </position>
+                <stop>
+                    <access method="PUT" transport="local" type="int">no stop available</access>
+                    <value type="OnOff">0</value>
+                </stop>
+                <unit>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}.EGU</access>
+                </unit>
+            </axis>
+	    include "channel_ext_options_part.xtmpl"
+        </motor>

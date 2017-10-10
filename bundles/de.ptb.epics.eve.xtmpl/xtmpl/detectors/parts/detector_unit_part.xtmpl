@@ -1,0 +1,3 @@
+            <unit>
+                <access method="GETPUT" transport="ca" type="string">${PV}.EGU</access>
+            </unit>

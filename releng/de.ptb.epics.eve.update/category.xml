@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/org.csstudio.eve.applications.feature_1.0.0.qualifier.jar" id="org.csstudio.eve.applications.feature" version="1.0.0.qualifier">
+      <category name="eveCSS"/>
+   </feature>
+   <feature url="features/org.csstudio.eve.core.feature_1.0.0.qualifier.jar" id="org.csstudio.eve.core.feature" version="1.0.0.qualifier">
+      <category name="eveCSS"/>
+   </feature>
+   <feature url="features/org.csstudio.eve.eclipse.feature_1.0.0.qualifier.jar" id="org.csstudio.eve.eclipse.feature" version="1.0.0.qualifier">
+      <category name="eveCSS"/>
+   </feature>
+   <category-def name="eveCSS" label="eveCSS"/>
+</site>

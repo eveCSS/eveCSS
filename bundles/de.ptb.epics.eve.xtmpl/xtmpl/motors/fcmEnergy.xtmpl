@@ -1,0 +1,105 @@
+            <!-- fcm energy axis, to be included by motor -->
+            substitute "Prefix="
+            <axis>
+                <class>${Class=""}</class>
+                <name>${Name=""}</name>
+                <id>${Prefix}${PV}cff</id>
+                <goto>
+                    <access method="GETPUTCB" transport="ca" type="${Type=double}" timeout="${Timeout=300.0}">${PV}cff</access>
+                </goto>
+                <position>
+                    <access monitor="true" method="GETCB" transport="ca" type="${Type=double}">${PV}rbv</access>
+                </position>
+                <stop>
+                    <access method="PUT" transport="ca" type="int">${PV}stop</access>
+                    <value type="int">1</value>
+                </stop>
+                <movedone>
+                    <access method="GETCB" transport="ca" type="int">${PV}dmov</access>
+                </movedone>
+                <unit>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}rbv.EGU</access>
+                </unit>
+                include "axis_energy_option_part.xtmpl"
+                <option>
+                    <name>2D (nm)  [C]</name>
+                    <id>${Prefix}${PV}.C</id>
+                    <value>
+                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}.C</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>DC table</name>
+                    <id>${Prefix}${PV}cff.LINR</id>
+                    <value>
+                        <access method="GETPUT" type="${Type=string}" transport="ca">${PV}cff.LINR</access>
+                        <value type="string">NO CONVERSION,LINEAR,DCInSb,DCSi,DCSi3</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Theta[E] function</name>
+                    <id>${Prefix}${PV}calc</id>
+                    <value>
+                        <access method="GETPUT" type="${Type=string}" transport="ca">${PV}calc</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>DC value  [F]</name>
+                    <id>${Prefix}${PV}.F</id>
+                    <value>
+                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}.F</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Axis2 Comp  [A;E]</name>
+                    <id>${Prefix}${PV}ang2.CALC</id>
+                    <value>
+                        <access method="GETCB" type="${Type=string}" transport="ca">${PV}ang2.CALC</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Coeff B</name>
+                    <id>${Prefix}${PV}ang2.B</id>
+                    <value>
+                        <access method="GETCB" type="${Type=double}" transport="ca">${PV}ang2.B</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Coeff C</name>
+                    <id>${Prefix}${PV}ang2.C</id>
+                    <value>
+                        <access method="GETCB" type="${Type=double}" transport="ca">${PV}ang2.C</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Coeff D</name>
+                    <id>${Prefix}${PV}ang2.D</id>
+                    <value>
+                        <access method="GETCB" type="${Type=double}" transport="ca">${PV}ang2.D</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Theta1 value</name>
+                    <id>${Prefix}${PV}</id>
+                    <value>
+                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Theta2 value</name>
+                    <id>${Prefix}${PV}ang2</id>
+                    <value>
+                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}ang2</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+            </axis>

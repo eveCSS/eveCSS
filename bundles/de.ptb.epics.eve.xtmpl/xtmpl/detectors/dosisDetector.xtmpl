@@ -1,0 +1,45 @@
+        <!-- dosis detector (must include a channel) -->
+        substitute "Prefix=DOSIS:"
+        <detector>
+            <class>${Class=""}</class>
+            <name>${Name=""}</name>
+            <id>${Prefix}${PV}</id>
+            <trigger>
+                <access method="PUTCB" transport="ca" type="int" timeout="${Timeout=2419200.0}">${Prefix}${PV}start</access>
+                <value type="int">1</value>
+            </trigger>
+            <stop>
+                <access method="PUT" transport="ca" type="int">${Prefix}${PV}halt</access>
+                <value type="int">1</value>
+            </stop>
+            <!-- channel without unit, to be included by detetctors -->
+            <channel saveValue="false">
+                <class>${Ch_Class=""}</class>
+                <name>${Name=""}</name>
+                <id>${Prefix}${PV}chan1</id>
+                <read>
+                    <access monitor="true" method="${Method=GETCB}" transport="ca" type="${Type=double}">${Prefix}${PV}dose</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" transport="ca" type="string">${Prefix}${PV}dose.EGU</access>
+                </unit>
+                <option>
+                    <name>Severity</name>
+                    <id>${Prefix}${PV}.SEVR</id>
+                    <value>
+                        <access method="GETCB" monitor="true" transport="ca" type="string">${Prefix}${PV}.SEVR</access>
+                        <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>Status</name>
+                    <id>${Prefix}${PV}.STAT</id>
+                    <value>
+                        <access method="GETCB" monitor="true" transport="ca" type="string">${Prefix}${PV}.STAT</access>
+                        <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+            </channel>
+        </detector>

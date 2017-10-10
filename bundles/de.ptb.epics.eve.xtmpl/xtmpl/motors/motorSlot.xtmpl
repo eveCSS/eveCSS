@@ -1,0 +1,47 @@
+        <!-- basic motor, must include axes -->
+		<motor>
+            <class>${Class=""}</class>
+            <name>${Name=""}</name>
+            <id>${Id}</id>
+            ${includeFile}
+            <option>
+                <name>MoveDone</name>
+                <id>${PV}dmov</id>
+                <value>
+                    <access method="GETCB" type="double" transport="ca">${PV}dmov</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>lvio</name>
+                <id>${PV}lvio</id>
+                <value>
+                    <access method="GETCB" type="double" transport="ca">${PV}lvio</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>miss</name>
+                <id>${PV}miss</id>
+                <value>
+                    <access method="GETCB" type="double" transport="ca">${PV}miss</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>rlls</name>
+                <id>${PV}rlls</id>
+                <value>
+                    <access method="GETCB" type="double" transport="ca">${PV}rlls</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>rhls</name>
+                <id>${PV}rhls</id>
+                <value>
+                    <access method="GETCB" type="double" transport="ca">${PV}rhls</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+        </motor>

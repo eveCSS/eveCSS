@@ -1,0 +1,4 @@
+            <value>
+                <access monitor="true" method="${Method=GETPUT}" transport="ca" type="${Type=double}">${PV}</access>
+                <value type="${Type=double}">${Menu}</value>
+            </value>

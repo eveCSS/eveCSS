@@ -1,0 +1,38 @@
+            <!-- channel for Agilent 34970 -->
+            <channel>
+                <class>${Class=""}</class>
+                <name>${Name=""}</name>
+                <id>${PV}</id>
+				include "channel_read_part.xtmpl"
+                include "channel_unit_part.xtmpl"
+                include "channel_ext_options_part.xtmpl"
+                include "channel_spec_options_part.xtmpl"
+                include "channel_option_part.xtmpl"
+                <option monitor="true">
+                    <name>Function</name>
+                    <id>${PV}function</id>
+                    <value>
+                        <access method="GETPUT" transport="ca" type="string">${PV}function</access>
+                        <value type="string">DC /V,AC /V,2WO /Ohms,4WO /Ohms,RTD Temp /C,Frequency /Hz,Period /Hz,DC /A,AC /A</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Range</name>
+                    <id>${PV}range</id>
+                    <value>
+                        <access method="GETPUT" transport="ca" type="string">${PV}range</access>
+                        <value type="string">Auto On,Auto Off,Min,Max,0.1V; .1kO;.01A,1.0V; 1.kO;.1 A,10 V; 10kO; 1 A,100V;100kO,300V;  1MO,10MO,100MO</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Integration Time</name>
+                    <id>${PV}intTime</id>
+                    <value>
+                        <access method="GETPUT" transport="ca" type="string">${PV}range</access>
+                        <value type="string">Min,Max,.02s;   3Hz,.04s;  20Hz,.20s; 200Hz,.40s,1.0s,2.0s,4.0s</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+            </channel>

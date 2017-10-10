@@ -1,0 +1,31 @@
+            <!-- channel for mca -->
+            <channel deferred="true" saveValue="false">
+                <class>${Ch_Class=""}</class>
+                <name>${Name=""}</name>
+                <id>${PV}</id>
+                include "channel_read_ohne_val_monitor_false_part.xtmpl"
+            	<option>
+                	<name>Label</name>
+                	<id>${PV}NM</id>
+                	<value>
+                    	<access method="GETPUT" transport="ca" type="string">${PV}NM</access>
+                	</value>
+                	<displaygroup>detail</displaygroup>
+            	</option>
+	            <option monitor="true">
+    	            <name>leftMarker</name>
+        	        <id>${PV}LO</id>
+            	    <value>
+                	    <access method="GETPUTCB" transport="ca" type="double">${PV}LO</access>
+                	</value>
+                	<displaygroup>detail</displaygroup>
+            	</option>
+	            <option monitor="true">
+    	            <name>rightMarker</name>
+        	        <id>${PV}HI</id>
+            	    <value>
+                	    <access method="GETPUTCB" transport="ca" type="double">${PV}HI</access>
+                	</value>
+                	<displaygroup>detail</displaygroup>
+            	</option>
+            </channel>

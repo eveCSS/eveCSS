@@ -1,0 +1,8 @@
+            <!-- slit pos axis, to be included by motors -->
+            <axis>
+                <class>${Class=""}</class>
+                <name>${Name}</name>
+                <id>SlotP${PV}</id>
+				include "slotPos3-13_basic_part.xtmpl"
+				include "slotPos3-13_option_part.xtmpl"
+            </axis>
