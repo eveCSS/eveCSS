@@ -3,7 +3,7 @@
 	<extensionContent id="deptbepicseveeditor-introExtension"
 		style="css/main.css" name="Editor Overview Extension" path="overview/@">
 		<group style-id="content-group" id="deptbepicseveeditor-introLink-group">
-			<link label="EVE Editor" url="http://org.eclipse.ui.intro/showHelpTopic?id=/de.ptb.epics.eve.editor/help/content/overview.html" id="deptbepicseveeditor-overviewLink"
+			<link label="EVE Editor" url="http://org.eclipse.ui.intro/showHelpTopic?id=/de.ptb.epics.eve.editor/help/content/overview.html" id="deptbepicseveeditor-introLink"
 				style-id="content-link">
 				<text>The EVE Editor (Perspective) solves the task of creating and editing scan descriptions.</text>
 			</link>
