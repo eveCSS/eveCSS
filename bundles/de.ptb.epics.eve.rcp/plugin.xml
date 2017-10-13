@@ -78,7 +78,7 @@
          point="org.eclipse.ui.intro">
       <introProductBinding
             introId="org.eclipse.ui.intro.universal"
-            productId="org.csstudio.eve.product.product">
+            productId="de.ptb.epics.eve.rcp.product">
       </introProductBinding>
    </extension>
    <extension
