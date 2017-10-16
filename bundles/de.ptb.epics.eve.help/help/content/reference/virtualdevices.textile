@@ -1,0 +1,5 @@
+h1(eveTopic). Virtual Devices
+
+table(eveRefTable).
+|_. Name |_. Type|_. Function|
+| Counter | Motor Axis | Counts from a start to a target value with the given step count |
