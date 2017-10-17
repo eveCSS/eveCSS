@@ -54,6 +54,9 @@ public final class MessagesView extends ViewPart implements PropertyChangeListen
 	private static final String SHOW_ENGINE_MESSAGES_MEMENTO = "showEngineMessages";
 	private static final String MESSAGE_LEVEL_MEMENTO = "messageLevel";
 	private static final String AUTO_SCROLL_MEMENTO = "scrollLock";
+
+	private IMessageList messageList;
+	private IListChangeListener messageListListChangeListener;
 	
 	/**
 	 * {@inheritDoc}
@@ -107,12 +110,12 @@ public final class MessagesView extends ViewPart implements PropertyChangeListen
 		this.tableViewer.setInput(Activator.getDefault().
 				getMessageList().getList());
 		
-		IMessageList messageList = Activator.getDefault().getMessageList();
-		messageList.addPropertyChangeListener(
+		this.messageList = Activator.getDefault().getMessageList();
+		this.messageList.addPropertyChangeListener(
 				MessageList.SOURCE_MAX_WIDTH_PROP, this);
-		messageList.addPropertyChangeListener(
+		this.messageList.addPropertyChangeListener(
 				MessageList.MESSAGE_MAX_WIDTH_PROP, this);
-		messageList.getList().addListChangeListener(new IListChangeListener() {
+		this.messageListListChangeListener = new IListChangeListener() {
 			@Override
 			public void handleListChange(ListChangeEvent event) {
 				if (!scrollLock) {
@@ -120,7 +123,9 @@ public final class MessagesView extends ViewPart implements PropertyChangeListen
 					tableViewer.getTable().setTopIndex(0);
 				}
 			}
-		});
+		};
+		this.messageList.getList().addListChangeListener(
+				this.messageListListChangeListener);
 		
 		this.filterSettings = new FilterSettings();
 		this.restoreState();
@@ -133,6 +138,20 @@ public final class MessagesView extends ViewPart implements PropertyChangeListen
 		this.tableViewer.setComparator(new TimeViewerComparator());
 		
 		this.refreshToggleButton();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void dispose() {
+		messageList.removePropertyChangeListener(
+				MessageList.SOURCE_MAX_WIDTH_PROP, this);
+		messageList.removePropertyChangeListener(
+				MessageList.MESSAGE_MAX_WIDTH_PROP, this);
+		messageList.getList().removeListChangeListener(
+				this.messageListListChangeListener);
+		super.dispose();
 	}
 	
 	/**
