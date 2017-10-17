@@ -65,7 +65,12 @@ public class RequestProcessor implements IRequestListener {
 							.getWorkbench().getModalDialogShellProvider()
 							.getShell(), "Question", null, request
 							.getRequestText(), MessageDialog.QUESTION, buttons,
-							1);
+							0) {
+						@Override
+						protected void handleShellCloseEvent() {
+							// Do not close, answer is mandatory
+						}
+					};
 
 					int answer = yesNoMessageDialog.open();
 					final boolean result = answer == 0;
