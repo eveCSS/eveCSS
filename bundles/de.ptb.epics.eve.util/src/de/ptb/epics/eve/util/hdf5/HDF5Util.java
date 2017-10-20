@@ -94,8 +94,8 @@ public class HDF5Util {
 	 * @throws IOException if file not found or an I/O error occurs
 	 * @throws DataFormatException if the compressed data format is invalid
 	 */
-	public byte[] getSCML(File file) throws IllegalArgumentException, IOException, 
-			DataFormatException {
+	public static byte[] getSCML(File file) throws IllegalArgumentException, 
+			IOException, DataFormatException {
 		if (!HDF5Util.isEveSCML(file)) {
 			throw new IllegalArgumentException("No Embedded SCML data found!");
 		}
@@ -111,12 +111,12 @@ public class HDF5Util {
 		ByteBuffer buffer = ByteBuffer.allocate(HDF5Util.INTEGER_NUMBER_OF_BYTES);
 		buffer.order(ByteOrder.BIG_ENDIAN);
 		buffer.putInt(inputStream.readInt());
-		long lengthCompressed = this.intToUnsignedLong(buffer.getInt(0)); 
+		long lengthCompressed = intToUnsignedLong(buffer.getInt(0)); 
 				// Integer.toUnsignedLong(buffer.getInt(0));
 		
 		buffer.clear();
 		buffer.putInt(inputStream.readInt());
-		long lengthUncompressed = this.intToUnsignedLong(buffer.getInt(0));
+		long lengthUncompressed = intToUnsignedLong(buffer.getInt(0));
 				// Integer.toUnsignedLong(buffer.getInt(0));
 		
 		byte[] compressedSCML = new byte[(int)lengthCompressed];
@@ -139,7 +139,7 @@ public class HDF5Util {
 	 * helper method for as long as java 7 is used.
 	 * In java 8 use Integer.toUnsignedLong instead!
 	 */
-	private long intToUnsignedLong(int i) {
+	private static long intToUnsignedLong(int i) {
 		return i & 0x00000000ffffffffL;
 	}
 }
