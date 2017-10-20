@@ -56,8 +56,8 @@ public class OpenSCML extends AbstractHandler {
 				setFilterPath = file.getAbsolutePath();
 			}
 		}
-		fileDialog.setFilterExtensions(new String[] {"*.scml"});
-		fileDialog.setFilterNames(new String[] {"Scan Description (*.scml)"});
+		fileDialog.setFilterExtensions(new String[] {"*.scml;*.h5"});
+		fileDialog.setFilterNames(new String[] {"Scan Description (*.scml,*.h5)"});
 		String scmlPath = fileDialog.open();
 		
 		if (scmlPath == null) {
