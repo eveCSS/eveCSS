@@ -16,7 +16,7 @@
             class="de.ptb.epics.eve.editor.gef.ScanDescriptionEditor"
             contributorClass="de.ptb.epics.eve.editor.gef.ScanDescriptionEditorActionBarContributor"
             default="true"
-            extensions="scml,h5"
+            extensions="scml"
             filenames="*.scml"
             id="de.ptb.epics.eve.editor.gef.GraphicalEditor"
             name="%editor.name">
