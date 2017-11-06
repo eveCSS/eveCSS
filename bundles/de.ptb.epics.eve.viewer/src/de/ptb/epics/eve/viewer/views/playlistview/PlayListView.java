@@ -243,6 +243,7 @@ public final class PlayListView extends ViewPart
 	 */
 	@Override
 	public void autoPlayHasChanged(final IPlayListController playListController) {
+		// The Playlist is not interested in the auto play property
 	}
 
 	/**

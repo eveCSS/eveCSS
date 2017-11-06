@@ -385,6 +385,12 @@
             id="de.ptb.epics.eve.viewer.views.playlistview.savetotextfile"
             name="Save Playlist to Text File">
       </command>
+      <command
+            categoryId="de.ptb.epics.eve.viewer.views.playlistview"
+            description="Add file (SCML, H5) to playlist"
+            id="de.ptb.epics.eve.viewer.views.playlistview.commands.addfiletoplaylist"
+            name="Add file (SCML, H5) to playlist">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -461,6 +467,15 @@
                      property="viewer.plot.trace1numeric">
                </test>
             </and>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="de.ptb.epics.eve.viewer.handler.playlist.AddFileToPlaylist"
+            commandId="de.ptb.epics.eve.viewer.views.playlistview.commands.addfiletoplaylist">
+         <enabledWhen>
+            <test
+                  property="viewer.playlist.engineConnected">
+            </test>
          </enabledWhen>
       </handler>
    </extension>
@@ -928,6 +943,11 @@
          <command
                commandId="de.ptb.epics.eve.viewer.views.playlistview.savetotextfile"
                icon="icons/save_edit.gif"
+               style="push">
+         </command>
+          <command
+               commandId="de.ptb.epics.eve.viewer.views.playlistview.commands.addfiletoplaylist"
+               icon="icons/add.gif"
                style="push">
          </command>
       </menuContribution>
