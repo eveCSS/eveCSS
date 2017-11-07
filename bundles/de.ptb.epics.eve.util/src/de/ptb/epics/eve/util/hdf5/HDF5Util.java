@@ -2,7 +2,6 @@ package de.ptb.epics.eve.util.hdf5;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
-import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -37,6 +36,9 @@ public class HDF5Util {
 	private static final Logger LOGGER = 
 			Logger.getLogger(HDF5Util.class.getName());
 	
+	private HDF5Util() {
+	}
+	
 	/**
 	 * Returns whether the given file is a HDF5 file 
 	 * without any super block (i.e. contains the HDF5 
@@ -62,25 +64,20 @@ public class HDF5Util {
 	}
 	
 	private static boolean beginsWithSignature(File file, byte[] signature) {
-		DataInputStream input = null;
-		try {
-			input = new DataInputStream(
-					new BufferedInputStream(
-							new FileInputStream(file)));
+		try (
+			FileInputStream fileInputStream = new FileInputStream(file);
+			DataInputStream dataInputStream = new DataInputStream(
+					new BufferedInputStream(fileInputStream));
+		) {
+			for (int i = 0; i < signature.length; i++) {
+				if (dataInputStream.readByte() != signature[i]) {
+					return false;
+				}
+			}
 		} catch (FileNotFoundException e) {
 			LOGGER.error(e.getMessage(), e);
 		} catch (SecurityException e) {
 			LOGGER.error(e.getMessage(), e);
-		}
-		
-		try {
-			for (int i = 0; i < signature.length; i++) {
-				if (input.readByte() != signature[i]) {
-					return false;
-				}
-			}
-		} catch (EOFException e) {
-			return false;
 		} catch (IOException e) {
 			LOGGER.error(e.getMessage(), e);
 		}
