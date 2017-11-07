@@ -1,5 +1,6 @@
 package de.ptb.epics.eve.ecp1.client.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class PlayListEntry {
@@ -34,5 +35,19 @@ public class PlayListEntry {
 
 	public String getAuthor() {
 		return this.author;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @since 1.29
+	 */
+	@Override
+	public String toString() {
+		return "PlayListEntry(" + this.id + ", " +
+				this.name + ", " + 
+				this.author + ", " + 
+				new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(
+						this.timeStamp) + ")";
 	}
 }
