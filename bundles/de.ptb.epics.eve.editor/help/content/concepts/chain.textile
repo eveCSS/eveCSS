@@ -35,7 +35,7 @@ p. This is the resulting __Filename__ from the input above.
 
 h3(eveTopic). Save Scan-Description
 
-p. With __Save Scan-Description__ you define, whether the scan description should be saved (at the same location as the data file).
+p. With __Save Scan-Description__ you define, whether the scan description should be saved (within the data file). The H5 file with embedded SCML can be opened by the editor and viewer. To extract the data see "here":/help/topic/de.ptb.epics.eve.help/help/content/tasks/h5unpack.html.
 
 h3(eveTopic). Confirm Save
 

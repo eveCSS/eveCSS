@@ -31,6 +31,7 @@ Bundle-ActivationPolicy: lazy
 Import-Package: de.ptb.epics.eve.preferences,
  de.ptb.epics.eve.util.data,
  de.ptb.epics.eve.util.datetime,
+ de.ptb.epics.eve.util.hdf5,
  de.ptb.epics.eve.util.pdf,
  de.ptb.epics.eve.util.pv,
  de.ptb.epics.eve.util.ui.jface,

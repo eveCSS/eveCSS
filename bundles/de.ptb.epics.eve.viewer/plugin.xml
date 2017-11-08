@@ -385,6 +385,30 @@
             id="de.ptb.epics.eve.viewer.views.playlistview.savetotextfile"
             name="Save Playlist to Text File">
       </command>
+      <command
+            categoryId="de.ptb.epics.eve.viewer.views.playlistview"
+            description="Add file (SCML, H5) to playlist"
+            id="de.ptb.epics.eve.viewer.views.playlistview.commands.addfiletoplaylist"
+            name="Add file (SCML, H5) to playlist">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.viewer.views.playlistview"
+            description="Moves the scan one position to the front of the playlist"
+            id="de.ptb.epics.eve.viewer.views.playlistview.commands.moveup"
+            name="Move Up">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.viewer.views.playlistview"
+            description="Moves the scan one position to the back of the playlist"
+            id="de.ptb.epics.eve.viewer.views.playlistview.commands.movedown"
+            name="Move Down">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.viewer.views.playlistview"
+            description="Removes the selected item(s) from the playlist"
+            id="de.ptb.epics.eve.viewer.views.playlistview.commands.remove"
+            name="Remove">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -462,6 +486,72 @@
                </test>
             </and>
          </enabledWhen>
+      </handler>
+      <handler
+            class="de.ptb.epics.eve.viewer.handler.playlist.AddFileToPlaylist"
+            commandId="de.ptb.epics.eve.viewer.views.playlistview.commands.addfiletoplaylist">
+         <enabledWhen>
+            <test
+                  property="viewer.playlist.engineConnected">
+            </test>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="de.ptb.epics.eve.viewer.handler.playlist.MoveUp"
+            commandId="de.ptb.epics.eve.viewer.views.playlistview.commands.moveup">
+         <enabledWhen>
+            <test
+                  property="viewer.playlist.engineConnected">
+            </test>
+         </enabledWhen>
+         <activeWhen>
+            <with
+                  variable="selection">
+               <not>
+                  <count
+                        value="0">
+                  </count>
+               </not>
+            </with>
+         </activeWhen>
+      </handler>
+      <handler
+            class="de.ptb.epics.eve.viewer.handler.playlist.MoveDown"
+            commandId="de.ptb.epics.eve.viewer.views.playlistview.commands.movedown">
+         <enabledWhen>
+            <test
+                  property="viewer.playlist.engineConnected">
+            </test>
+         </enabledWhen>
+         <activeWhen>
+            <with
+                  variable="selection">
+               <not>
+                  <count
+                        value="0">
+                  </count>
+               </not>
+            </with>
+         </activeWhen>
+      </handler>
+      <handler
+            class="de.ptb.epics.eve.viewer.handler.playlist.Remove"
+            commandId="de.ptb.epics.eve.viewer.views.playlistview.commands.remove">
+         <enabledWhen>
+            <test
+                  property="viewer.playlist.engineConnected">
+            </test>
+         </enabledWhen>
+         <activeWhen>
+            <with
+                  variable="selection">
+               <not>
+                  <count
+                        value="0">
+                  </count>
+               </not>
+            </with>
+         </activeWhen>
       </handler>
    </extension>
    <extension
@@ -924,7 +1014,31 @@
          </toolbar>
       </menuContribution>
       <menuContribution
-            locationURI="toolbar:PlayListView?after=additions">
+            locationURI="toolbar:PlayListView">
+          <command
+               commandId="de.ptb.epics.eve.viewer.views.playlistview.commands.addfiletoplaylist"
+               icon="icons/add.gif"
+               style="push">
+         </command>
+          <command
+                commandId="de.ptb.epics.eve.viewer.views.playlistview.commands.moveup"
+                icon="icons/prev_nav.gif"
+                style="push">
+          </command>
+          <command
+                commandId="de.ptb.epics.eve.viewer.views.playlistview.commands.movedown"
+                icon="icons/next_nav.gif"
+                style="push">
+          </command>
+          <command
+                commandId="de.ptb.epics.eve.viewer.views.playlistview.commands.remove"
+                icon="icons/clear_co.gif"
+                style="push">
+          </command>
+          <separator
+                name="additions"
+                visible="true">
+          </separator>
          <command
                commandId="de.ptb.epics.eve.viewer.views.playlistview.savetotextfile"
                icon="icons/save_edit.gif"
