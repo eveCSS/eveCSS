@@ -1,0 +1,15 @@
+h1(eveTopic|#top). Send Scan to Engine (without GUI)
+
+p. To send a scan directly to a running engine the following tool can be used:
+
+p(code). @eveCmd [-f <xml-File>] [-d debuglevel] [-h <hostname>] [-r <repeatCount>] [-p <port>]@
+
+p. where 
+
+* @-f <xml-file>@ is the SCML file that should be send
+* @-d <debuglevel>@ is the message threshold (0=none, 1=fatal, 2=error, 3=warning, 4=info, 5=debug), default: 3
+* @-h <hostname>@ is the host the engine is running on (default: localhost)
+* @-r <repeatcount>@ is the repeat count that should be set for the current scan
+* @-p <port>@ is the port of the engine process (default: 12345)
+
+p. Note that the file name is optional because it is possible to only set the repeat count.
