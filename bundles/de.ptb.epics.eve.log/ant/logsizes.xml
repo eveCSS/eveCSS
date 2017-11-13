@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="test" xmlns:if="ant:if" xmlns:unless="ant:unless">
+	<target name="test">
+		<available file="/messung/bam/eve/log" property="bam.present" />
+		<available file="/messung/bragg/eve/log" property="bragg.present" />
+		<available file="/messung/dekabe/eve/log" property="dekabe.present" />
+		<available file="/messung/dwl/eve/log" property="dwl.present" />
+		<available file="/messung/dwl20/eve/log" property="dwl20.present" />
+		<available file="/messung/dwl_ger/eve/log" property="dwl_ger.present" />
+		<available file="/messung/eez/eve/log" property="eez.present" />
+		<available file="/messung/euvr/eve/log" property="euvr.present" />
+		<available file="/messung/fem/eve/log" property="fem.present" />
+		<available file="/messung/id13/eve/log" property="id13.present" />
+		<available file="/messung/idb/eve/log" property="idb.present" />
+		<available file="/messung/kmc/eve/log" property="kmc.present" />
+		<available file="/messung/pgm/eve/log" property="pgm.present" />
+		<available file="/messung/qmp_mls/eve/log" property="qmp_mls.present" />
+		<available file="/messung/qnim/eve/log" property="qnim.present" />
+		<available file="/messung/red/eve/log" property="red.present" />
+		<available file="/messung/roentgen/eve/log" property="roentgen.present" />
+		<available file="/messung/sx700/eve/log" property="sx700.present" />
+		<available file="/messung/test/eve/log" property="test.present" />
+		<available file="/messung/thz/eve/log" property="thz.present" />
+		<available file="/messung/white/eve/log" property="white.present" />
+		<available file="/messung/wlsptb/eve/log" property="wlsptb.present" />
+		<available file="/messung/xpbf2/eve/log" property="xpbf2.present" />
+	
+		<echo message="stations with log files above 100MB:" />
+	
+		<exec executable="du">
+			<arg value="-sh" />
+			<arg value="-t" />
+			<arg value="100M" />
+			<arg value="/messung/bam/eve/log" if:true="${bam.present}" />
+			<arg value="/messung/bragg/eve/log" if:true="${bragg.present}" />
+			<arg value="/messung/dekabe/eve/log" if:true="${dekabe.present}" />
+			<arg value="/messung/dwl/eve/log" if:true="${dwl.present}" />
+			<arg value="/messung/dwl20/eve/log" if:true="${dwl20.present}" />
+			<arg value="/messung/dwl_ger/eve/log" if:true="${dwl_ger.present}" />
+			<arg value="/messung/eez/eve/log" if:true="${eez.present}" />
+			<arg value="/messung/euvr/eve/log" if:true="${euvr.present}" />
+			<arg value="/messung/fem/eve/log" if:true="${fem.present}" />
+			<arg value="/messung/id13/eve/log" if:true="${id13.present}" />
+			<arg value="/messung/idb/eve/log" if:true="${idb.present}" />
+			<arg value="/messung/kmc/eve/log" if:true="${kmc.present}" />
+			<arg value="/messung/pgm/eve/log" if:true="${pgn.present}" />
+			<arg value="/messung/qmp_mls/eve/log" if:true="${qmp_mls.present}" />
+			<arg value="/messung/qnim/eve/log" if:true="${qnim.present}" />
+			<arg value="/messung/red/eve/log" if:true="${red.present}" />
+			<arg value="/messung/roentgen/eve/log" if:true="${roentgen.present}" />
+			<arg value="/messung/sx700/eve/log" if:true="${sx700.present}" />
+			<arg value="/messung/test/eve/log" if:true="${test.present}" />
+			<arg value="/messung/thz/eve/log" if:true="${thz.present}" />
+			<arg value="/messung/white/eve/log" if:true="${white.present}" />
+			<arg value="/messung/wlsptb/eve/log" if:true="${wls_ptb.present}" />
+			<arg value="/messung/xpbf2/eve/log" if:true="${xpbf2.present}" />
+		</exec>
+		
+		<available file="/messung/instruments/akman/eve/log" property="akman.present" />
+		<available file="/messung/instruments/allDevices/eve/log" property="allDevices.present" />
+		<available file="/messung/instruments/avogadro/eve/log" property="avogadro.present" />
+		<available file="/messung/instruments/bigref/eve/log" property="bigref.present" />
+		<available file="/messung/instruments/compton_bessy2/eve/log" property="compton_bessy2.present" />
+		<available file="/messung/instruments/compton_mls/eve/log" property="compton_mls.present" />
+		<available file="/messung/instruments/elettra/eve/log" property="elettra.present" />
+		<available file="/messung/instruments/elli/eve/log" property="elli.present" />
+		<available file="/messung/instruments/ionk/eve/log" property="ionk.present" />
+		<available file="/messung/instruments/lecroy01/eve/log" property="lecroy01.present" />
+		<available file="/messung/instruments/maskref/eve/log" property="maskref.present" />
+		<available file="/messung/instruments/mimo/eve/log" property="mimo.present" />
+		<available file="/messung/instruments/newref/eve/log" property="newref.present" />
+		<available file="/messung/instruments/nrfa/eve/log" property="nrfa.present" />
+		<available file="/messung/instruments/oldref/eve/log" property="oldref.present" />
+		<available file="/messung/instruments/pink/eve/log" property="pink.present" />
+		<available file="/messung/instruments/ptgm/eve/log" property="ptgm.present" />
+		<available file="/messung/instruments/refo/eve/log" property="refo.present" />
+		<available file="/messung/instruments/rfa/eve/log" property="rfa.present" />
+		<available file="/messung/instruments/rfa5/eve/log" property="rfa5.present" />
+		<available file="/messung/instruments/smchuber02/eve/log" property="smchuber02.present" />
+		<available file="/messung/instruments/syres1/eve/log" property="syres1.present" />
+		<available file="/messung/instruments/syres2/eve/log" property="syres2.present" />
+		<available file="/messung/instruments/trfa/eve/log" property="trfa.present" />
+		<available file="/messung/instruments/vuvref/eve/log" property="vuvref.present" />
+		<available file="/messung/instruments/vonhamos/eve/log" property="vonhamos.present" />
+		<available file="/messung/instruments/wwl_eez_test/eve/log" property="wwl_eez_test.present" />
+		
+		<echo message="instruments with log files above 100MB:" />
+		
+		<exec executable="du">
+			<arg value="-sh" />
+			<arg value="-t" />
+			<arg value="100M" />
+			<arg value="/messung/instruments/akman/eve/log" if:true="${akman.present}" />
+			<arg value="/messung/instruments/allDevices/eve/log" if:true="${allDevices.present}" />
+			<arg value="/messung/instruments/avogadro/eve/log" if:true="${avogadro.present}" />
+			<arg value="/messung/instruments/bigref/eve/log" if:true="${bigref.present}" />
+			<arg value="/messung/instruments/compton_bessy2/eve/log" if:true="${compton_bessy2.present}" />
+			<arg value="/messung/instruments/compton_mls/eve/log" if:true="${compton_mls.present}" />
+			<arg value="/messung/instruments/elettra/eve/log" if:true="${elettra.present}" />
+			<arg value="/messung/instruments/elli/eve/log" if:true="${elli.present}" />
+			<arg value="/messung/instruments/ionk/eve/log" if:true="${ionk.present}" />
+			<arg value="/messung/instruments/lecroy01/eve/log" if:true="${lecroy01.present}" />
+			<arg value="/messung/instruments/maskref/eve/log" if:true="${maskref.present}" />
+			<arg value="/messung/instruments/mimo/eve/log" if:true="${mimo.present}" />
+			<arg value="/messung/instruments/newref/eve/log" if:true="${newref.present}" />
+			<arg value="/messung/instruments/nrfa/eve/log" if:true="${nrfa.present}" />
+			<arg value="/messung/instruments/oldref/eve/log" if:true="${oldref.present}" />
+			<arg value="/messung/instruments/pink/eve/log" if:true="${pink.present}" />
+			<arg value="/messung/instruments/ptgm/eve/log" if:true="${ptgm.present}" />
+			<arg value="/messung/instruments/refo/eve/log" if:true="${refo.present}" />
+			<arg value="/messung/instruments/rfa/eve/log" if:true="${rfa.present}" />
+			<arg value="/messung/instruments/rfa5/eve/log" if:true="${rfa5.present}" />
+			<arg value="/messung/instruments/smchuber02/eve/log" if:true="${smchuber02.present}" />
+			<arg value="/messung/instruments/syres1/eve/log" if:true="${syres1.present}" />
+			<arg value="/messung/instruments/syres2/eve/log" if:true="${syres2.present}" />
+			<arg value="/messung/instruments/trfa/eve/log" if:true="${trfa.present}" />
+			<arg value="/messung/instruments/vuvref/eve/log" if:true="${vuvref.present}" />
+			<arg value="/messung/instruments/vonhamos/eve/log" if:true="${vonhamos.present}" />
+			<arg value="/messung/instruments/wwl_eez_test/eve/log" if:true="${wwl_eez_test.present}" />
+		</exec>
+	</target>
+	
+	<target name="-folderSize">
+		<available file="/messung/${station}/eve/log" property="log" />
+		<available file="/messung/${station}/eve/messages" property="messages" />
+
+		<exec executable="du">
+			<arg value="-sh" />
+			<arg value="-t" />
+			<arg value="100M" />
+			<arg value="/messung/${station}/eve/log" if:true="${log}" />
+			<arg value="/messung/${station}/eve/messages" if:true="${messages}" />
+		</exec>
+	</target>
+	
+	<target name="test2">
+		<antcall target="-folderSize"><param name="station" value="bam" /></antcall>
+		<antcall target="-folderSize"><param name="station" value="bragg" /></antcall>
+		<antcall target="-folderSize"><param name="station" value="dekabe" /></antcall>
+		<antcall target="-folderSize"><param name="station" value="dwl" /></antcall>
+		<antcall target="-folderSize"><param name="station" value="dwl20" /></antcall>
+		<antcall target="-folderSize"><param name="station" value="dwl_ger" /></antcall>
+		<antcall target="-folderSize"><param name="station" value="eez" /></antcall>
+		<antcall target="-folderSize"><param name="station" value="euvr" /></antcall>
+		<antcall target="-folderSize"><param name="station" value="fem" /></antcall>
+		
+		<antcall target="-folderSize"><param name="station" value="test" /></antcall>
+	</target>
+</project>
