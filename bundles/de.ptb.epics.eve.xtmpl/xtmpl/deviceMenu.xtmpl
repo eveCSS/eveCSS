@@ -5,7 +5,7 @@
             <id>${PV}</id>
 				substitute "Type=string, Method=GETCB"
 				include "device_menu_part.xtmpl"
-            <option>
+            <option monitor="true">
                 <name>Value</name>
                 <id>Value${PV}</id>
                 <value>
