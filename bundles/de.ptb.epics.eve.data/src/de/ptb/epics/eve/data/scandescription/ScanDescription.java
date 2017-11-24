@@ -19,7 +19,6 @@ import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.data.measuringstation.event.DetectorEvent;
 import de.ptb.epics.eve.data.measuringstation.event.Event;
 import de.ptb.epics.eve.data.measuringstation.event.ScheduleEvent;
-import de.ptb.epics.eve.data.scandescription.channelmode.ChannelModes;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
@@ -464,7 +463,7 @@ public class ScanDescription implements IModelUpdateProvider,
 	 * @author Marcus Michalsky
 	 */
 	public List<Option> getMonitorOptions() {
-		Set<Option> monitors = new HashSet<Option>();
+		Set<Option> monitorSet = new HashSet<>();
 		
 		for(Chain chain : this.getChains()) {
 			for(ScanModule sm : chain.getScanModules()) {
@@ -475,62 +474,62 @@ public class ScanDescription implements IModelUpdateProvider,
 				for(Axis a : sm.getAxes()) {
 					for(Option o : a.getMotorAxis().getOptions()) {
 						if(o.isMonitor()) {
-							monitors.add(o);
+							monitorSet.add(o);
 						}
 					}
 					for(Option o : a.getMotorAxis().getMotor().getOptions()) {
 						if(o.isMonitor()) {
-							monitors.add(o);
+							monitorSet.add(o);
 						}
 					}
 				}
 				for(Channel ch : sm.getChannels()) {
 					for(Option o : ch.getDetectorChannel().getOptions()) {
 						if(o.isMonitor()) {
-							monitors.add(o);
+							monitorSet.add(o);
 						}
 					}
 					for(Option o : ch.getDetectorChannel().getDetector().getOptions()) {
 						if(o.isMonitor()) {
-							monitors.add(o);
+							monitorSet.add(o);
 						}
 					}
 				}
 				for(Prescan prescan : sm.getPrescans()) {
 					if(prescan.isOption()) {
-						monitors.add((Option)prescan.getAbstractDevice());
+						monitorSet.add((Option)prescan.getAbstractDevice());
 						Option o = (Option)prescan.getAbstractDevice();
 						if(o.isMonitor()) {
-							monitors.add(o);
+							monitorSet.add(o);
 						}
 					}
 					if(prescan.isDevice()) {
 						for(Option o : prescan.getAbstractDevice().getOptions()) {
 							if(o.isMonitor()) {
-								monitors.add(o);
+								monitorSet.add(o);
 							}
 						}
 					}
 				}
 				for(Postscan postscan : sm.getPostscans()) {
 					if(postscan.isOption()) {
-						monitors.add((Option)postscan.getAbstractDevice());
+						monitorSet.add((Option)postscan.getAbstractDevice());
 						Option o = (Option)postscan.getAbstractDevice();
 						if(o.isMonitor()) {
-							monitors.add(o);
+							monitorSet.add(o);
 						}
 					}
 					if(postscan.isDevice()) {
 						for(Option o : postscan.getAbstractDevice().getOptions()) {
 							if(o.isMonitor()) {
-								monitors.add(o);
+								monitorSet.add(o);
 							}
 						}
 					}
 				}
 			}
 		}
-		List<Option> monitorList = new ArrayList<Option>(monitors);
+		List<Option> monitorList = new ArrayList<Option>(monitorSet);
 		Collections.sort(monitorList);
 		return monitorList;
 	}
