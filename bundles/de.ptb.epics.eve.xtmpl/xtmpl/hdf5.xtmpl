@@ -4,5 +4,5 @@
             <location>${Path="/messung/eve/lib/linux-x86_64/libhdf5plugin.so"}</location>
             <parameter name="format" datatype="string" default="HDF5"></parameter>
             <parameter name="suffix" datatype="string" default="h5"></parameter>
-            <parameter name="extent" datatype="int" default="0"></parameter>
+            <parameter name="extent" datatype="int" default="1"></parameter>
         </plugin>

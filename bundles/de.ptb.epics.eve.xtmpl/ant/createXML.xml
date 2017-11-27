@@ -428,7 +428,7 @@
 			<arg value="repoCSS" />
 		</exec>
 
-		<copy file="${workspace}/repoCSS/applications/plugins/org.csstudio.eve.resources/cfg/schema.xsd" todir="${workspace}" />
+		<copy file="${workspace}/repoCSS/bundles/de.ptb.epics.eve.resources/cfg/schema.xsd" todir="${workspace}" />
 
 		<echo message="xmlmsi" />
 		<exec executable="${msi_home}/xmlmsi" dir="${workspace}" failonerror="true">

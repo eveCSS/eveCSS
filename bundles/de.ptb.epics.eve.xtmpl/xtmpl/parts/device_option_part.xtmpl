@@ -1,4 +1,4 @@
-            	<option>
+            	<option monitor="true">
                     <name>Value</name>
                     <id>Value${PV}</id>
                     <value>

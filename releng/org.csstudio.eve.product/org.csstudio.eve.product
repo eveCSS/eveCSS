@@ -51,7 +51,6 @@ See http://ics-web.sns.ornl.gov/css
    <launcher name="css">
       <linux icon="../../bundles/de.ptb.epics.eve.rcp/icons/css48.xpm"/>
       <macosx icon="../../bundles/de.ptb.epics.eve.rcp/icons/css.icns"/>
-      <solaris/>
       <win useIco="true">
          <ico path="../../bundles/de.ptb.epics.eve.rcp/icons/css.ico"/>
          <bmp/>

@@ -1,5 +1,9 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.28.2 (2017-11-17)
+
+* [Feature-#2062] default extend value for data file is 1
+
 h2(eveTopic). Version 1.28.0 (2017-07-28)
 
 * [Bug Fix-#1853] help is opened inside the application once again (the browser workaround is no longer necessary)
