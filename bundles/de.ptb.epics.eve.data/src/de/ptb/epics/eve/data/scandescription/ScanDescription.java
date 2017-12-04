@@ -499,9 +499,7 @@ public class ScanDescription implements IModelUpdateProvider,
 					if(prescan.isOption()) {
 						monitorSet.add((Option)prescan.getAbstractDevice());
 						Option o = (Option)prescan.getAbstractDevice();
-						if(o.isMonitor()) {
-							monitorSet.add(o);
-						}
+						monitorSet.add(o);
 					}
 					if(prescan.isDevice()) {
 						for(Option o : prescan.getAbstractDevice().getOptions()) {
@@ -515,9 +513,7 @@ public class ScanDescription implements IModelUpdateProvider,
 					if(postscan.isOption()) {
 						monitorSet.add((Option)postscan.getAbstractDevice());
 						Option o = (Option)postscan.getAbstractDevice();
-						if(o.isMonitor()) {
-							monitorSet.add(o);
-						}
+						monitorSet.add(o);
 					}
 					if(postscan.isDevice()) {
 						for(Option o : postscan.getAbstractDevice().getOptions()) {
@@ -529,7 +525,7 @@ public class ScanDescription implements IModelUpdateProvider,
 				}
 			}
 		}
-		List<Option> monitorList = new ArrayList<Option>(monitorSet);
+		List<Option> monitorList = new ArrayList<>(monitorSet);
 		Collections.sort(monitorList);
 		return monitorList;
 	}
@@ -539,10 +535,8 @@ public class ScanDescription implements IModelUpdateProvider,
 	 */
 	@Override
 	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {
-		if(logger.isDebugEnabled()) {
-			if(modelUpdateEvent != null) {
+		if(logger.isDebugEnabled() && modelUpdateEvent != null) {
 				logger.debug(modelUpdateEvent.getSender());
-			}
 		}
 		updateListeners();
 	}
@@ -570,7 +564,7 @@ public class ScanDescription implements IModelUpdateProvider,
 	 */
 	@Override
 	public List<IModelError> getModelErrors() {
-		final List<IModelError> errorList = new ArrayList<IModelError>();
+		final List<IModelError> errorList = new ArrayList<>();
 		final Iterator<Chain> it = this.chains.iterator();
 		while(it.hasNext()) {
 			errorList.addAll(it.next().getModelErrors());
@@ -583,7 +577,7 @@ public class ScanDescription implements IModelUpdateProvider,
 	 */
 	private void updateListeners() {
 		final CopyOnWriteArrayList<IModelUpdateListener> list = 
-			new CopyOnWriteArrayList<IModelUpdateListener>(this.modelUpdateListener);
+			new CopyOnWriteArrayList<>(this.modelUpdateListener);
 		
 		Iterator<IModelUpdateListener> it = list.iterator();
 		
