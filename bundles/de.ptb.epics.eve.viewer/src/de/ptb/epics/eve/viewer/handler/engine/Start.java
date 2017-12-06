@@ -61,7 +61,7 @@ public class Start extends AbstractHandler {
 		}
 		LOGGER.debug("EngineParameters (after substitution): " + engineParameters);
 		
-		List<String> parameters = new ArrayList<String>();
+		List<String> parameters = new ArrayList<>();
 		parameters.add(engineLocation.trim());
 		for (String s : engineParameters.split(" ")) {
 			parameters.add(s.trim());
@@ -81,7 +81,7 @@ public class Start extends AbstractHandler {
 				pb.redirectErrorStream(true);
 				/*File testLog = new File("/home/mmichals/eve/evEngine-" + Calendar.getInstance().getTime().getTime() + ".txt");
 				pb.redirectOutput(testLog);*/ // does not work cause bash script and engine process redirects output
-				/*Process p = */ pb.start();
+				/*Process p =  pb.start(); */
 				/*BufferedReader br = new BufferedReader(
 						new InputStreamReader(p.getInputStream()));
 				String line;
@@ -91,8 +91,10 @@ public class Start extends AbstractHandler {
 				br.close();
 				br = null;*/ // does not work because it terminates immediately if no data in stream
 				
+				Process p =  pb.start();
+				
 				if (LOGGER.isDebugEnabled()) {
-					StringBuffer buff = new StringBuffer();
+					StringBuilder buff = new StringBuilder();
 					buff.append(" ");
 					for (String s : parameters) {
 						buff.append(s);
@@ -100,15 +102,50 @@ public class Start extends AbstractHandler {
 					}
 					LOGGER.debug("executed " + buff.toString());
 				}
-				String message = "started engine process at: " + engineHost +
+				
+				Thread.sleep(2000);
+				String message = "";
+				
+				try {
+					switch (p.exitValue()) {
+					case ExitStatus.RECEIVED_SIGTERM:
+						message = "Engine terminated due to SIGTERM!";
+						LOGGER.error(message);
+						Activator.getDefault().getMessageList()
+								.add(new ViewerMessage(Levels.ERROR, message));
+						return null;
+					case ExitStatus.SUCCESS:
+						message = "Engine termintated (without errors)!";
+						LOGGER.error(message);
+						Activator.getDefault().getMessageList()
+								.add(new ViewerMessage(Levels.ERROR, message));
+						return null;
+					case ExitStatus.TCP_CONNECTION_ERROR:
+						message = "Engine could not be started due to a TCP connection error! Port wrong or already in use?";
+						LOGGER.error(message);
+						Activator.getDefault().getMessageList()
+								.add(new ViewerMessage(Levels.ERROR, message));
+						return null;
+					case ExitStatus.TCP_PORT_RANGE_VIOLATION:
+						message = "Engine could not be started due to a TCP port range violation! (Port: " + enginePort + ")";
+						LOGGER.error(message);
+						Activator.getDefault().getMessageList()
+								.add(new ViewerMessage(Levels.ERROR, message));
+						return null;
+					default:
+						break;
+					}
+				} catch (IllegalThreadStateException e) {
+					LOGGER.debug("Thread has not (yet) been terminated.");
+				}
+				
+				message = "started engine process at: " + engineHost +
 				"(Port: " + enginePort + ")";
 				LOGGER.info(message);
 				Activator.getDefault().getMessageList().add(
 						new ViewerMessage(Levels.INFO, message));
 			}
-			
-			Thread.sleep(2000);
-			
+	
 			IHandlerService handlerService = (IHandlerService) 
 					PlatformUI.getWorkbench().getService(IHandlerService.class);
 			handlerService.executeCommand(

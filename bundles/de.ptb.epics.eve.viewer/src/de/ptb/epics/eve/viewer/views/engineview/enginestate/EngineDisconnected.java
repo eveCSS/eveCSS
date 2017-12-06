@@ -1,20 +1,20 @@
-package de.ptb.epics.eve.viewer.views.engineview;
+package de.ptb.epics.eve.viewer.views.engineview.enginestate;
 
 /**
  * @author Marcus Michalsky
  * @since 1.25
  */
-public class EngineInvalid extends AbstractEngineState {
+public class EngineDisconnected extends AbstractEngineState {
 	private static EngineState instance;
 	
-	private EngineInvalid() {
+	private EngineDisconnected() {
 	}
 	
 	public static EngineState getInstance() {
-		if (EngineInvalid.instance == null) {
-			EngineInvalid.instance = new EngineInvalid();
+		if (EngineDisconnected.instance == null) {
+			EngineDisconnected.instance = new EngineDisconnected();
 		}
-		return EngineInvalid.instance;
+		return EngineDisconnected.instance;
 	}
 	
 	/**
@@ -22,7 +22,7 @@ public class EngineInvalid extends AbstractEngineState {
 	 */
 	@Override
 	public boolean isStart() {
-		return false;
+		return true;
 	}
 	
 	/**
@@ -30,14 +30,6 @@ public class EngineInvalid extends AbstractEngineState {
 	 */
 	@Override
 	public boolean isKill() {
-		return true;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean isConnect() {
 		return false;
 	}
 	
@@ -45,8 +37,16 @@ public class EngineInvalid extends AbstractEngineState {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean isDisconnect() {
+	public boolean isConnect() {
 		return true;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isDisconnect() {
+		return false;
 	}
 	
 	/**

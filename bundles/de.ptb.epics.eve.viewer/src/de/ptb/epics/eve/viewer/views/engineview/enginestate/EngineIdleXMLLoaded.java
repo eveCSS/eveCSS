@@ -1,20 +1,20 @@
-package de.ptb.epics.eve.viewer.views.engineview;
+package de.ptb.epics.eve.viewer.views.engineview.enginestate;
 
 /**
  * @author Marcus Michalsky
  * @since 1.25
  */
-public class EngineHalted extends AbstractEngineState {
+public class EngineIdleXMLLoaded extends AbstractEngineState {
 	private static EngineState instance;
 	
-	private EngineHalted() {
+	private EngineIdleXMLLoaded() {
 	}
-
+	
 	public static EngineState getInstance() {
-		if (EngineHalted.instance == null) {
-			EngineHalted.instance = new EngineHalted();
+		if (EngineIdleXMLLoaded.instance == null) {
+			EngineIdleXMLLoaded.instance = new EngineIdleXMLLoaded();
 		}
-		return EngineHalted.instance;
+		return EngineIdleXMLLoaded.instance;
 	}
 	
 	/**
@@ -54,7 +54,7 @@ public class EngineHalted extends AbstractEngineState {
 	 */
 	@Override
 	public boolean isPlay() {
-		return false;
+		return true;
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class EngineHalted extends AbstractEngineState {
 	 */
 	@Override
 	public boolean isStop() {
-		return false;
+		return true;
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class EngineHalted extends AbstractEngineState {
 	 */
 	@Override
 	public boolean isHalt() {
-		return false;
+		return true;
 	}
 
 	/**

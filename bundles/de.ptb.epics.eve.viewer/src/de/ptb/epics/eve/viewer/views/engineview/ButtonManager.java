@@ -11,6 +11,17 @@ import de.ptb.epics.eve.ecp1.client.interfaces.IEngineStatusListener;
 import de.ptb.epics.eve.ecp1.commands.ChainStatusCommand;
 import de.ptb.epics.eve.ecp1.types.EngineStatus;
 import de.ptb.epics.eve.viewer.Activator;
+import de.ptb.epics.eve.viewer.views.engineview.enginestate.EngineDisconnected;
+import de.ptb.epics.eve.viewer.views.engineview.enginestate.EngineExecuting;
+import de.ptb.epics.eve.viewer.views.engineview.enginestate.EngineHalted;
+import de.ptb.epics.eve.viewer.views.engineview.enginestate.EngineIdleNoXMLLoaded;
+import de.ptb.epics.eve.viewer.views.engineview.enginestate.EngineIdleXMLLoaded;
+import de.ptb.epics.eve.viewer.views.engineview.enginestate.EngineInvalid;
+import de.ptb.epics.eve.viewer.views.engineview.enginestate.EnginePausedEvent;
+import de.ptb.epics.eve.viewer.views.engineview.enginestate.EnginePausedUser;
+import de.ptb.epics.eve.viewer.views.engineview.enginestate.EngineState;
+import de.ptb.epics.eve.viewer.views.engineview.enginestate.EngineStopped;
+import de.ptb.epics.eve.viewer.views.engineview.enginestate.EngineTryingToConnect;
 
 /**
  * Context of State Pattern maintaining the engine state for button enabling.
@@ -56,6 +67,21 @@ public class ButtonManager implements IEngineStatusListener,
 		}
 	}
 
+	/**
+	 * @since 1.29
+	 */
+	public void tryingToConnect(boolean connecting) {
+		EngineState oldValue = this.engineState;
+		if (connecting) {
+			this.engineState = EngineTryingToConnect.getInstance();
+		} else {
+			this.engineState = EngineDisconnected.getInstance();
+		}
+		this.logStateChange(oldValue, engineState);
+		this.propertyChangeSupport.firePropertyChange(
+				ButtonManager.ENGINE_STATE_PROP, oldValue, engineState);
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
