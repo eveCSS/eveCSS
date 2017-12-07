@@ -73,6 +73,30 @@ public class Activator implements BundleActivator {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 */
+	public void start(BundleContext bundleContext) throws Exception {
+		Activator.context = bundleContext;
+		this.workspace = ResourcesPlugin.getWorkspace();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void stop(BundleContext bundleContext) throws Exception {
+		// saving defaults
+		File defaultsFile = this.workspace.getRoot()
+				.getLocation().append("/defaults.xml").toFile();
+		File schemaFile = de.ptb.epics.eve.resources.Activator
+				.getDefaultsSchema();
+		Job job = new SaveDefaults("Saving Defaults", this.getDefaultsManager(),
+				null, defaultsFile, schemaFile);
+		job.schedule();
+		job.join();
+		Activator.context = null;
+	}
+	
+	/**
 	 * 
 	 * @return
 	 */
@@ -102,29 +126,41 @@ public class Activator implements BundleActivator {
 		}
 		return this.defaultsManager;
 	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public void start(BundleContext bundleContext) throws Exception {
-		Activator.context = bundleContext;
-		this.workspace = ResourcesPlugin.getWorkspace();
-	}
 
 	/**
-	 * {@inheritDoc}
+	 * Returns a file path that could be used as initial path for file dialogs 
+	 * etc. 
+	 * 
+	 * One of the following path' will be returned (descending priority)
+	 * <ul>
+	 *  <li>the path in the defaults (if any)</li>
+	 *  <li>the directory <code>&lt;eve.root&gt;/eve/scml/</code> (if exists)</li>
+	 *  <li>the directory <code>&lt;eve.root&gt;/eve/</code></li>
+	 * </ul>
+	 * @return an initial file path for e.g. file dialogs
+	 * @since 1.29
 	 */
-	public void stop(BundleContext bundleContext) throws Exception {
-		// saving defaults
-		File defaultsFile = this.workspace.getRoot()
-				.getLocation().append("/defaults.xml").toFile();
-		File schemaFile = de.ptb.epics.eve.resources.Activator
-				.getDefaultsSchema();
-		Job job = new SaveDefaults("Saving Defaults", this.getDefaultsManager(),
-				null, defaultsFile, schemaFile);
-		job.schedule();
-		job.join();
-		Activator.context = null;
+	public String getFilterPath() {
+		// if defaults working directory is set return it
+		File defaultsDirectory = Activator.getDefault().getDefaultsManager()
+				.getWorkingDirectory();
+		if (defaultsDirectory.isDirectory()) {
+			LOGGER.debug(
+					"filter path is: " + defaultsDirectory.getAbsolutePath());
+			return defaultsDirectory.getAbsolutePath();
+		}
+		// if <eve.root>/eve/scml/ exists return it
+		File eveDir = new File(Startup.readStartupParameters().getRootDir() 
+				+ "eve/");
+		File scmlDir = new File(eveDir.getAbsolutePath() + "/scml/");
+		if (scmlDir.isDirectory()) {
+			LOGGER.debug("filter path is: " + scmlDir.getAbsolutePath());
+			return scmlDir.getAbsolutePath();
+		}
+		// neither defaults working directory set nor does <eve.root>/eve/scml
+		// exist -> return <eve.root>/eve/ (which has to exist)
+		LOGGER.debug("filter path is: " + eveDir.getAbsolutePath());
+		return eveDir.getAbsolutePath();
 	}
 	
 	public static File getDefaultDeviceDefinition() {

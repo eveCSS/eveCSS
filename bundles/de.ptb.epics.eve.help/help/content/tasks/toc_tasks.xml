@@ -6,5 +6,9 @@
    </topic>
    <topic href="help/content/tasks/updateeveversion.html" label="Update eveCSS Version">
    </topic>
+   <topic href="help/content/tasks/eveCmd.html" label="Send Scan to the Engine (without GUI)">
+   </topic>
+   <topic href="help/content/tasks/h5unpack.html" label="Extract embedded Scan Description">
+   </topic>
 
 </toc>

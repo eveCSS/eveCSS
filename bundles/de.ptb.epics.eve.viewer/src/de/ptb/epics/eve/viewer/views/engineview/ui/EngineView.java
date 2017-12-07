@@ -5,6 +5,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
@@ -12,8 +13,11 @@ import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.SWTObservables;
@@ -24,8 +28,8 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -53,11 +57,14 @@ import de.ptb.epics.eve.ecp1.commands.ChainStatusCommand;
 import de.ptb.epics.eve.ecp1.types.ChainStatus;
 import de.ptb.epics.eve.ecp1.types.EngineStatus;
 import de.ptb.epics.eve.ecp1.types.ErrorType;
+import de.ptb.epics.eve.util.net.NetUtil;
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.preferences.PreferenceConstants;
 import de.ptb.epics.eve.viewer.views.engineview.ButtonManager;
-import de.ptb.epics.eve.viewer.views.engineview.EngineDisconnected;
-import de.ptb.epics.eve.viewer.views.engineview.EngineState;
+import de.ptb.epics.eve.viewer.views.engineview.enginestate.EngineDisconnected;
+import de.ptb.epics.eve.viewer.views.engineview.enginestate.EngineState;
+import de.ptb.epics.eve.viewer.views.messagesview.Levels;
+import de.ptb.epics.eve.viewer.views.messagesview.ViewerMessage;
 
 /**
  * <code>EngineView</code>.
@@ -717,46 +724,73 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 		this.propertyChangeSupport.removePropertyChangeListener(property, listener);
 	}
 	
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of Start Button from
-	 * <code>EngineView</code>.
-	 */
-	private class StartButtonSelectionListener implements SelectionListener {
+	private void connect() {
+		buttonManager.tryingToConnect(true);
+		String engineHost = Activator.getDefault().getPreferenceStore().
+				getString(PreferenceConstants.P_DEFAULT_ENGINE_ADDRESS);
 		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
+		Integer enginePort = Activator.getDefault().getPreferenceStore()
+				.getInt(PreferenceConstants.P_DEFAULT_ENGINE_PORT);
+		final String message = "trying to connect to " 
+				+ engineHost + ":" + enginePort;
+				logger.info(message);
+		Activator.getDefault().getMessageList().add(
+			new ViewerMessage(Levels.INFO, message));
+
+		final IHandlerService handlerService = (IHandlerService) PlatformUI
+				.getWorkbench().getService(IHandlerService.class);
+		Job job = new Job("connect") {
+
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				try {
+					handlerService.executeCommand(
+							"de.ptb.epics.eve.viewer.connectCommand", null);
+				} catch (Exception e) {
+					logger.error(e.getMessage(), e);
+					if (e instanceof ExecutionException) {
+						buttonManager.tryingToConnect(false);
+					}
+				}
+				return Status.OK_STATUS;
+			}
+		};
+		job.schedule(500);
+	}
+	
+	private class StartButtonSelectionListener extends SelectionAdapter {
 		
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			IHandlerService handlerService = (IHandlerService) 
-				PlatformUI.getWorkbench().getService(IHandlerService.class);
-			try {
-				handlerService.executeCommand(
-						"de.ptb.epics.eve.viewer.startCommand", null);
-			} catch (Exception ex) {
-				logger.error(ex.getMessage(), ex);
+			String host = Activator.getDefault().getPreferenceStore().
+					getString(PreferenceConstants.P_DEFAULT_ENGINE_ADDRESS);
+			if (!NetUtil.isItMe(host)) {
+				String message = "Engine could not be started on remote host (" 
+						+ host 
+						+ "). Change preferences to 'localhost' to use start.";
+				logger.error(message);
+				MessageDialog.openError(Display.getDefault().getActiveShell(), 
+						"Remote Host not supported", message);
+				return;
 			}
+			IHandlerService handlerService = (IHandlerService) 
+					PlatformUI.getWorkbench().getService(IHandlerService.class);
+				try {
+					handlerService.executeCommand(
+							"de.ptb.epics.eve.viewer.startCommand", null);
+				} catch (Exception ex) {
+					logger.error(ex.getMessage(), ex);
+					return;
+				}
+			connect();
 		}
 	}
 
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of Kill Button from
-	 * <code>EngineView</code>.
-	 */
-	private class KillButtonSelectionListener implements SelectionListener {
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
+	private class KillButtonSelectionListener extends SelectionAdapter {
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -767,48 +801,18 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 		}
 	}
 
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of Connect Button from
-	 * <code>EngineView</code>.
-	 */
-	private class ConnectButtonSelectionListener implements SelectionListener {
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
+	private class ConnectButtonSelectionListener extends SelectionAdapter {
 		
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			if( !Activator.getDefault().getEcp1Client().isRunning()) {
-				// start ecp1Client
-				IHandlerService handlerService = (IHandlerService) PlatformUI.
-						getWorkbench().getService(IHandlerService.class);
-				try {
-					handlerService.executeCommand(
-						"de.ptb.epics.eve.viewer.connectCommand", null);
-				} catch (Exception e2) {
-					logger.error(e2.getMessage(), e2);
-				}
-			}
+			connect();
 		}
 	}
 
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of Disconnect Button 
-	 * from <code>EngineView</code>.
-	 */
-	private class DisconnectButtonSelectionListener implements SelectionListener {
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
+	private class DisconnectButtonSelectionListener extends SelectionAdapter {
 		
 		/**
 		 * {@inheritDoc}
@@ -829,17 +833,7 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 		}
 	}
 
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of Play Button from
-	 * <code>EngineView</code>.
-	 */
-	private class PlayButtonSelectionListener implements SelectionListener {
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(final SelectionEvent e) {
-		}
+	private class PlayButtonSelectionListener extends SelectionAdapter {
 		
 		/**
 		 * {@inheritDoc}
@@ -850,17 +844,7 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 		}
 	}
 
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of Pause Button from
-	 * <code>EngineView</code>.
-	 */
-	private class PauseButtonSelectionListener implements SelectionListener {
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
+	private class PauseButtonSelectionListener extends SelectionAdapter {
 		
 		/**
 		 * {@inheritDoc}
@@ -870,18 +854,8 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 			Activator.getDefault().getEcp1Client().getPlayController().pause();
 		}
 	}
-		
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of Stop Button from
-	 * <code>EngineView</code>.
-	 */
-	private class StopButtonSelectionListener implements SelectionListener {
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
+	
+	private class StopButtonSelectionListener extends SelectionAdapter {
 		
 		/**
 		 * {@inheritDoc}
@@ -892,17 +866,7 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 		}
 	}
 	
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of Skip Button from
-	 * <code>EngineView</code>.
-	 */
-	private class SkipButtonSelectionListener implements SelectionListener {
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
+	private class SkipButtonSelectionListener extends SelectionAdapter {
 		
 		/**
 		 * {@inheritDoc}
@@ -914,17 +878,7 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 		}
 	}
 
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of Halt Button from
-	 * <code>EngineView</code>.
-	 */
-	private class HaltButtonSelectionListener implements SelectionListener {
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
+	private class HaltButtonSelectionListener extends SelectionAdapter {
 		
 		/**
 		 * {@inheritDoc}
@@ -939,14 +893,7 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 	 * 
 	 */
 	private class AutoPlayToggleButtonSelectionListener 
-			implements SelectionListener {
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
+			extends SelectionAdapter {
 		
 		/**
 		 * {@inheritDoc}
@@ -959,19 +906,8 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 		}
 	}
 	
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener}
-	 *  of SendtoFile Button from <code>EngineView</code>.
-	 */
 	private class CommentSendButtonSelectionListener 
-			implements SelectionListener {
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
+			extends SelectionAdapter {
 		
 		/**
 		 * {@inheritDoc}
