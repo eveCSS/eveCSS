@@ -70,7 +70,7 @@ public class ButtonManager implements IEngineStatusListener,
 	/**
 	 * @since 1.29
 	 */
-	public void tryingToConnect(boolean connecting) {
+	public synchronized void tryingToConnect(boolean connecting) {
 		EngineState oldValue = this.engineState;
 		if (connecting) {
 			this.engineState = EngineTryingToConnect.getInstance();
@@ -86,7 +86,7 @@ public class ButtonManager implements IEngineStatusListener,
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void engineStatusChanged(EngineStatus engineStatus, String xmlName, 
+	public synchronized void engineStatusChanged(EngineStatus engineStatus, String xmlName, 
 			int repeatCount) {
 		EngineState oldValue = this.engineState;
 		switch (engineStatus) {
