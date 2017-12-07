@@ -8,11 +8,6 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.NotEnabledException;
-import org.eclipse.core.commands.NotHandledException;
-import org.eclipse.core.commands.common.NotDefinedException;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.handlers.IHandlerService;
 
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.preferences.EngineExecMacros;
@@ -91,7 +86,7 @@ public class Start extends AbstractHandler {
 				br.close();
 				br = null;*/ // does not work because it terminates immediately if no data in stream
 				
-				Process p =  pb.start();
+				Process p = pb.start();
 				
 				if (LOGGER.isDebugEnabled()) {
 					StringBuilder buff = new StringBuilder();
@@ -113,25 +108,25 @@ public class Start extends AbstractHandler {
 						LOGGER.error(message);
 						Activator.getDefault().getMessageList()
 								.add(new ViewerMessage(Levels.ERROR, message));
-						return null;
+						throw new ExecutionException(message);
 					case ExitStatus.SUCCESS:
 						message = "Engine termintated (without errors)!";
 						LOGGER.error(message);
 						Activator.getDefault().getMessageList()
 								.add(new ViewerMessage(Levels.ERROR, message));
-						return null;
+						throw new ExecutionException(message);
 					case ExitStatus.TCP_CONNECTION_ERROR:
 						message = "Engine could not be started due to a TCP connection error! Port wrong or already in use?";
 						LOGGER.error(message);
 						Activator.getDefault().getMessageList()
 								.add(new ViewerMessage(Levels.ERROR, message));
-						return null;
+						throw new ExecutionException(message);
 					case ExitStatus.TCP_PORT_RANGE_VIOLATION:
 						message = "Engine could not be started due to a TCP port range violation! (Port: " + enginePort + ")";
 						LOGGER.error(message);
 						Activator.getDefault().getMessageList()
 								.add(new ViewerMessage(Levels.ERROR, message));
-						return null;
+						throw new ExecutionException(message);
 					default:
 						break;
 					}
@@ -145,20 +140,9 @@ public class Start extends AbstractHandler {
 				Activator.getDefault().getMessageList().add(
 						new ViewerMessage(Levels.INFO, message));
 			}
-	
-			IHandlerService handlerService = (IHandlerService) 
-					PlatformUI.getWorkbench().getService(IHandlerService.class);
-			handlerService.executeCommand(
-					"de.ptb.epics.eve.viewer.connectCommand", null);
 		} catch (IOException e) {
 			LOGGER.error(e.getMessage(), e);
 		} catch (InterruptedException e) {
-			LOGGER.error(e.getMessage(), e);
-		} catch (NotDefinedException e) {
-			LOGGER.error(e.getMessage(), e);
-		} catch (NotEnabledException e) {
-			LOGGER.error(e.getMessage(), e);
-		} catch (NotHandledException e) {
 			LOGGER.error(e.getMessage(), e);
 		}
 		return null;

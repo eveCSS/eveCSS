@@ -30,7 +30,6 @@ import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -58,6 +57,7 @@ import de.ptb.epics.eve.ecp1.commands.ChainStatusCommand;
 import de.ptb.epics.eve.ecp1.types.ChainStatus;
 import de.ptb.epics.eve.ecp1.types.EngineStatus;
 import de.ptb.epics.eve.ecp1.types.ErrorType;
+import de.ptb.epics.eve.util.net.NetUtil;
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.preferences.PreferenceConstants;
 import de.ptb.epics.eve.viewer.views.engineview.ButtonManager;
@@ -724,6 +724,40 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 		this.propertyChangeSupport.removePropertyChangeListener(property, listener);
 	}
 	
+	private void connect() {
+		buttonManager.tryingToConnect(true);
+		String engineHost = Activator.getDefault().getPreferenceStore().
+				getString(PreferenceConstants.P_DEFAULT_ENGINE_ADDRESS);
+		
+		Integer enginePort = Activator.getDefault().getPreferenceStore()
+				.getInt(PreferenceConstants.P_DEFAULT_ENGINE_PORT);
+		final String message = "trying to connect to " 
+				+ engineHost + ":" + enginePort;
+				logger.info(message);
+		Activator.getDefault().getMessageList().add(
+			new ViewerMessage(Levels.INFO, message));
+
+		final IHandlerService handlerService = (IHandlerService) PlatformUI
+				.getWorkbench().getService(IHandlerService.class);
+		Job job = new Job("connect") {
+
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				try {
+					handlerService.executeCommand(
+							"de.ptb.epics.eve.viewer.connectCommand", null);
+				} catch (Exception e) {
+					logger.error(e.getMessage(), e);
+					if (e instanceof ExecutionException) {
+						buttonManager.tryingToConnect(false);
+					}
+				}
+				return Status.OK_STATUS;
+			}
+		};
+		job.schedule(500);
+	}
+	
 	private class StartButtonSelectionListener extends SelectionAdapter {
 		
 		/**
@@ -731,14 +765,27 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			IHandlerService handlerService = (IHandlerService) 
-				PlatformUI.getWorkbench().getService(IHandlerService.class);
-			try {
-				handlerService.executeCommand(
-						"de.ptb.epics.eve.viewer.startCommand", null);
-			} catch (Exception ex) {
-				logger.error(ex.getMessage(), ex);
+			String host = Activator.getDefault().getPreferenceStore().
+					getString(PreferenceConstants.P_DEFAULT_ENGINE_ADDRESS);
+			if (!NetUtil.isItMe(host)) {
+				String message = "Engine could not be started on remote host (" 
+						+ host 
+						+ "). Change preferences to 'localhost' to use start.";
+				logger.error(message);
+				MessageDialog.openError(Display.getDefault().getActiveShell(), 
+						"Remote Host not supported", message);
+				return;
 			}
+			IHandlerService handlerService = (IHandlerService) 
+					PlatformUI.getWorkbench().getService(IHandlerService.class);
+				try {
+					handlerService.executeCommand(
+							"de.ptb.epics.eve.viewer.startCommand", null);
+				} catch (Exception ex) {
+					logger.error(ex.getMessage(), ex);
+					return;
+				}
+			connect();
 		}
 	}
 
@@ -761,37 +808,7 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			buttonManager.tryingToConnect(true);
-			String engineHost = Activator.getDefault().getPreferenceStore().
-					getString(PreferenceConstants.P_DEFAULT_ENGINE_ADDRESS);
-			
-			Integer enginePort = Activator.getDefault().getPreferenceStore()
-					.getInt(PreferenceConstants.P_DEFAULT_ENGINE_PORT);
-			final String message = "trying to connect to " 
-					+ engineHost + ":" + enginePort;
-					logger.info(message);
-			Activator.getDefault().getMessageList().add(
-				new ViewerMessage(Levels.INFO, message));
-
-			final IHandlerService handlerService = (IHandlerService) PlatformUI
-					.getWorkbench().getService(IHandlerService.class);
-			Job job = new Job("connect") {
-
-				@Override
-				protected IStatus run(IProgressMonitor monitor) {
-					try {
-						handlerService.executeCommand(
-								"de.ptb.epics.eve.viewer.connectCommand", null);
-					} catch (Exception e) {
-						logger.error(e.getMessage(), e);
-						if (e instanceof ExecutionException) {
-							buttonManager.tryingToConnect(false);
-						}
-					}
-					return Status.OK_STATUS;
-				}
-			};
-			job.schedule(500);
+			connect();
 		}
 	}
 
