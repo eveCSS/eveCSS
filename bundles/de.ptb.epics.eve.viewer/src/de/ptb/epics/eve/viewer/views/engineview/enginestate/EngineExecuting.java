@@ -1,20 +1,20 @@
-package de.ptb.epics.eve.viewer.views.engineview;
+package de.ptb.epics.eve.viewer.views.engineview.enginestate;
 
 /**
  * @author Marcus Michalsky
  * @since 1.25
  */
-public class EngineWaitingForTrigger extends AbstractEngineState {
+public class EngineExecuting extends AbstractEngineState {
 	private static EngineState instance;
 	
-	private EngineWaitingForTrigger() {
+	private EngineExecuting() {
 	}
 	
 	public static EngineState getInstance() {
-		if (EngineWaitingForTrigger.instance == null) {
-			EngineWaitingForTrigger.instance = new EngineWaitingForTrigger();
+		if (EngineExecuting.instance == null) {
+			EngineExecuting.instance = new EngineExecuting();
 		}
-		return EngineWaitingForTrigger.instance;
+		return EngineExecuting.instance;
 	}
 	
 	/**
@@ -62,7 +62,7 @@ public class EngineWaitingForTrigger extends AbstractEngineState {
 	 */
 	@Override
 	public boolean isPause() {
-		return false;
+		return true;
 	}
 
 	/**
@@ -94,6 +94,6 @@ public class EngineWaitingForTrigger extends AbstractEngineState {
 	 */
 	@Override
 	public boolean isTrigger() {
-		return true;
+		return false;
 	}
 }

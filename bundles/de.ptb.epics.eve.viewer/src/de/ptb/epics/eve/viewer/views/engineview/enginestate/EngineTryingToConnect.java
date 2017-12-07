@@ -1,20 +1,20 @@
-package de.ptb.epics.eve.viewer.views.engineview;
+package de.ptb.epics.eve.viewer.views.engineview.enginestate;
 
 /**
  * @author Marcus Michalsky
- * @since 1.25
+ * @since 1.29
  */
-public class EngineIdleXMLLoaded extends AbstractEngineState {
+public class EngineTryingToConnect extends AbstractEngineState {
 	private static EngineState instance;
 	
-	private EngineIdleXMLLoaded() {
+	private EngineTryingToConnect() {
 	}
 	
 	public static EngineState getInstance() {
-		if (EngineIdleXMLLoaded.instance == null) {
-			EngineIdleXMLLoaded.instance = new EngineIdleXMLLoaded();
+		if (EngineTryingToConnect.instance == null) {
+			EngineTryingToConnect.instance = new EngineTryingToConnect();
 		}
-		return EngineIdleXMLLoaded.instance;
+		return EngineTryingToConnect.instance;
 	}
 	
 	/**
@@ -24,15 +24,15 @@ public class EngineIdleXMLLoaded extends AbstractEngineState {
 	public boolean isStart() {
 		return false;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean isKill() {
-		return true;
+		return false;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -40,21 +40,21 @@ public class EngineIdleXMLLoaded extends AbstractEngineState {
 	public boolean isConnect() {
 		return false;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean isDisconnect() {
-		return true;
+		return false;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean isPlay() {
-		return true;
+		return false;
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class EngineIdleXMLLoaded extends AbstractEngineState {
 	 */
 	@Override
 	public boolean isStop() {
-		return true;
+		return false;
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class EngineIdleXMLLoaded extends AbstractEngineState {
 	 */
 	@Override
 	public boolean isHalt() {
-		return true;
+		return false;
 	}
 
 	/**

@@ -1,6 +1,7 @@
 package de.ptb.epics.eve.viewer.handler.engine;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -29,31 +30,27 @@ public class Connect extends AbstractHandler {
 	 */
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		
 		if(!Activator.getDefault().getEcp1Client().isRunning()) {
-			
 			String engineHost = Activator.getDefault().getPreferenceStore().
 					getString(PreferenceConstants.P_DEFAULT_ENGINE_ADDRESS);
-
 			Integer enginePort = Activator.getDefault().getPreferenceStore()
 					.getInt(PreferenceConstants.P_DEFAULT_ENGINE_PORT);
-			
 			try {
-				java.net.InetAddress localMachine = 
-						java.net.InetAddress.getLocalHost();
-					Activator.getDefault().getEcp1Client().connect(
-							new InetSocketAddress(engineHost, enginePort), 
-							System.getProperty("user.name")+"@"+
-								localMachine.getHostName());
-					Activator.getDefault().getMessageList().add(
-						new ViewerMessage(Levels.INFO, 
-							"Connection established to: " + engineHost + ":" + 
-									Integer.toString(enginePort) + "."));
+				InetAddress localMachine = InetAddress.getLocalHost();
+				Activator.getDefault().getEcp1Client().connect(
+						new InetSocketAddress(engineHost, enginePort),
+						System.getProperty("user.name") + "@"
+								+ localMachine.getHostName());
+				Activator.getDefault().getMessageList()
+						.add(new ViewerMessage(Levels.INFO,
+							"Connection established to: " + engineHost + ":"
+									+ Integer.toString(enginePort) + "."));
 			} catch(IOException e) {
 				Activator.getDefault().getMessageList().add(
 						new ViewerMessage(Levels.ERROR,
 								"Cannot establish connection! "
 										+ e.getMessage() + "."));
+				throw new ExecutionException(e.getMessage());
 			}
 		}
 		return null;

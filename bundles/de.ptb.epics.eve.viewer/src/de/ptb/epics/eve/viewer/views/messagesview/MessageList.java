@@ -60,7 +60,7 @@ public class MessageList implements IMessageList {
 	@Override
 	public void add(final ViewerMessage message) {
 		final int newSourceWidth = message.getMessageSource().toString().length();
-		final int newMessageWidth = message.getMessage().toString().length();
+		final int newMessageWidth = message.getMessage().length();
 		
 		/*
 		if (LOGGER.isDebugEnabled()) {
@@ -71,7 +71,7 @@ public class MessageList implements IMessageList {
 		
 		String logMessage = "["
 				+ message.getMessageSource().toString() + "] -> "
-				+ message.getMessage().toString();
+				+ message.getMessage();
 		switch(message.getMessageType()) {
 		case DEBUG:
 			LOGGER.debug(logMessage);

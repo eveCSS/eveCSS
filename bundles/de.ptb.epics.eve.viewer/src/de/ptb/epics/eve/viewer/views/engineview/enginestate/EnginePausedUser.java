@@ -1,20 +1,20 @@
-package de.ptb.epics.eve.viewer.views.engineview;
+package de.ptb.epics.eve.viewer.views.engineview.enginestate;
 
 /**
  * @author Marcus Michalsky
  * @since 1.25
  */
-public class EngineDisconnected extends AbstractEngineState {
+public class EnginePausedUser extends AbstractEngineState {
 	private static EngineState instance;
 	
-	private EngineDisconnected() {
+	private EnginePausedUser() {
 	}
 	
 	public static EngineState getInstance() {
-		if (EngineDisconnected.instance == null) {
-			EngineDisconnected.instance = new EngineDisconnected();
+		if (EnginePausedUser.instance == null) {
+			EnginePausedUser.instance = new EnginePausedUser();
 		}
-		return EngineDisconnected.instance;
+		return EnginePausedUser.instance;
 	}
 	
 	/**
@@ -22,7 +22,7 @@ public class EngineDisconnected extends AbstractEngineState {
 	 */
 	@Override
 	public boolean isStart() {
-		return true;
+		return false;
 	}
 	
 	/**
@@ -30,14 +30,6 @@ public class EngineDisconnected extends AbstractEngineState {
 	 */
 	@Override
 	public boolean isKill() {
-		return false;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean isConnect() {
 		return true;
 	}
 	
@@ -45,7 +37,7 @@ public class EngineDisconnected extends AbstractEngineState {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean isDisconnect() {
+	public boolean isConnect() {
 		return false;
 	}
 	
@@ -53,8 +45,16 @@ public class EngineDisconnected extends AbstractEngineState {
 	 * {@inheritDoc}
 	 */
 	@Override
+	public boolean isDisconnect() {
+		return true;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public boolean isPlay() {
-		return false;
+		return true;
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class EngineDisconnected extends AbstractEngineState {
 	 */
 	@Override
 	public boolean isStop() {
-		return false;
+		return true;
 	}
 
 	/**
@@ -78,7 +78,7 @@ public class EngineDisconnected extends AbstractEngineState {
 	 */
 	@Override
 	public boolean isSkip() {
-		return false;
+		return true;
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class EngineDisconnected extends AbstractEngineState {
 	 */
 	@Override
 	public boolean isHalt() {
-		return false;
+		return true;
 	}
 
 	/**
