@@ -68,6 +68,7 @@ import de.ptb.epics.eve.data.scandescription.processors.adaptees.DetectorEventAd
 import de.ptb.epics.eve.data.scandescription.processors.adaptees.DetectorEventAdapter;
 import de.ptb.epics.eve.data.scandescription.processors.adaptees.ScheduleEventAdaptee;
 import de.ptb.epics.eve.data.scandescription.processors.adaptees.ScheduleEventAdapter;
+import de.ptb.epics.eve.util.collection.ListUtil;
 
 /**
  * This class represents a load handler for SAX that loads a scan description
@@ -167,7 +168,16 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 	// A general purpose buffer for strings
 	private StringBuffer textBuffer;
 
-	private List<ScanDescriptionLoaderLostDeviceMessage> lostDevices;
+	private List<ScanDescriptionLoaderDeviceMessage> deviceMessages;
+	
+	/* 
+	 * temporarily save IDs of defined options when 
+	 *   "as in device definition" or
+	 *   "used in scan"
+	 * is the selected monitoring type for later comparison with current 
+	 * device definition.
+	 */
+	private List<String> optionsDefinedInScan;
 
 	private boolean invalidPlugin;
 	
@@ -251,7 +261,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		this.idToScanModulMap = new HashMap<Integer, ScanModule>();
 		this.scanModulChainMap = new HashMap<ScanModule, Chain>();
 
-		this.lostDevices = new ArrayList<ScanDescriptionLoaderLostDeviceMessage>();
+		this.deviceMessages = new ArrayList<ScanDescriptionLoaderDeviceMessage>();
 		
 		this.scheduleEventAdapter = new ScheduleEventAdapter(
 				this.scanDescription);
@@ -299,12 +309,10 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				} else {
 					this.scanDescription.setMonitorOption(
 							MonitorOption.stringToType(atts.getValue("type")));
+					this.optionsDefinedInScan = new ArrayList<>();
 				}
-				if (this.scanDescription.getMonitorOption().equals(
-						MonitorOption.CUSTOM)) {
-					this.state = ScanDescriptionLoaderStates.MONITOROPTIONS_LOADING;
-					this.subState = ScanDescriptionLoaderSubStates.MONITOROPTIONS_ID_LOADING;
-				}
+				this.state = ScanDescriptionLoaderStates.MONITOROPTIONS_LOADING;
+				this.subState = ScanDescriptionLoaderSubStates.MONITOROPTIONS_ID_LOADING;
 			}
 
 		case CHAIN_LOADING:
@@ -323,8 +331,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				if (this.measuringStation.getPluginByName(
 						atts.getValue("name")) == null) {
 					this.invalidPlugin = true;
-					this.lostDevices.add(new ScanDescriptionLoaderLostDeviceMessage(
-							ScanDescriptionLoaderLostDeviceType.PLUGIN_NOT_FOUND,
+					this.deviceMessages.add(new ScanDescriptionLoaderDeviceMessage(
+							ScanDescriptionLoaderMessageType.PLUGIN_NOT_FOUND,
 							"Plugin '" + atts.getValue("name") + "' has been removed!"));
 				}
 				this.currentPluginController = this.currentChain
@@ -440,8 +448,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 						atts.getValue("name")) == null) {
 					// plugin not found
 					this.invalidPlugin = true;
-					this.lostDevices.add(new ScanDescriptionLoaderLostDeviceMessage(
-							ScanDescriptionLoaderLostDeviceType.PLUGIN_NOT_FOUND,
+					this.deviceMessages.add(new ScanDescriptionLoaderDeviceMessage(
+							ScanDescriptionLoaderMessageType.PLUGIN_NOT_FOUND,
 							"Plugin '" + atts.getValue("name")+ "' has been removed!"));
 				}
 				this.currentPluginController = this.currentPositioning
@@ -499,9 +507,9 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 							.getValue("name")) == null) {
 						// plugin not found
 						this.invalidPlugin = true;
-						this.lostDevices
-								.add(new ScanDescriptionLoaderLostDeviceMessage(
-										ScanDescriptionLoaderLostDeviceType.PLUGIN_NOT_FOUND,
+						this.deviceMessages
+								.add(new ScanDescriptionLoaderDeviceMessage(
+										ScanDescriptionLoaderMessageType.PLUGIN_NOT_FOUND,
 										"Plugin '" + atts.getValue("name")
 												+ "' has been removed!"));
 					}
@@ -856,8 +864,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 						.setAbstractPrePostscanDevice(this.measuringStation
 								.getPrePostscanDeviceById(textBuffer.toString()));
 			} else {
-				this.lostDevices.add(new ScanDescriptionLoaderLostDeviceMessage(
-						ScanDescriptionLoaderLostDeviceType.
+				this.deviceMessages.add(new ScanDescriptionLoaderDeviceMessage(
+						ScanDescriptionLoaderMessageType.
 						PRE_POST_SCAN_DEVICE_ID_NOT_FOUND, 
 						"Prescan-Device '" + nameProvider.translatePrePostScanDeviceId(textBuffer.toString()) + 
 						"' has been removed."));
@@ -876,8 +884,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				.setAbstractPrePostscanDevice(this.measuringStation
 						.getPrePostscanDeviceById(textBuffer.toString()));
 			} else {
-				this.lostDevices.add(new ScanDescriptionLoaderLostDeviceMessage(
-						ScanDescriptionLoaderLostDeviceType.
+				this.deviceMessages.add(new ScanDescriptionLoaderDeviceMessage(
+						ScanDescriptionLoaderMessageType.
 						PRE_POST_SCAN_DEVICE_ID_NOT_FOUND, 
 						"Postscan-Device '" + nameProvider.translatePrePostScanDeviceId(textBuffer.toString()) + 
 						"' has been removed."));
@@ -904,8 +912,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.currentAxis.setMotorAxis(this.measuringStation
 						.getMotorAxisById(textBuffer.toString()));
 			} else {
-				this.lostDevices.add(new ScanDescriptionLoaderLostDeviceMessage(
-						ScanDescriptionLoaderLostDeviceType.MOTOR_AXIS_ID_NOT_FOUND,
+				this.deviceMessages.add(new ScanDescriptionLoaderDeviceMessage(
+						ScanDescriptionLoaderMessageType.MOTOR_AXIS_ID_NOT_FOUND,
 						"Axis '" + nameProvider.translateMotorAxisId(textBuffer.toString()) + "' has been removed."));
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_AXISID_READ;
@@ -1081,8 +1089,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.currentChannel.setDetectorChannel(this.measuringStation
 						.getDetectorChannelById(textBuffer.toString()));
 			} else {
-				this.lostDevices.add(new ScanDescriptionLoaderLostDeviceMessage(
-					ScanDescriptionLoaderLostDeviceType.DETECTOR_CHANNEL_ID_NOT_FOUND,
+				this.deviceMessages.add(new ScanDescriptionLoaderDeviceMessage(
+					ScanDescriptionLoaderMessageType.DETECTOR_CHANNEL_ID_NOT_FOUND,
 					"Channel '" + nameProvider.translateDetectorChannelId(textBuffer.toString()) + "' has been removed."));
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_CHANNELID_READ;
@@ -1169,8 +1177,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.currentChannel.setStoppedBy(this.measuringStation
 						.getDetectorChannelById(textBuffer.toString()));
 			} else {
-				this.lostDevices.add(new ScanDescriptionLoaderLostDeviceMessage(
-					ScanDescriptionLoaderLostDeviceType.DETECTOR_CHANNEL_ID_NOT_FOUND,
+				this.deviceMessages.add(new ScanDescriptionLoaderDeviceMessage(
+					ScanDescriptionLoaderMessageType.DETECTOR_CHANNEL_ID_NOT_FOUND,
 					"Channel '" + nameProvider.translateDetectorChannelId(textBuffer.toString()) + "' has been removed."));
 			}
 			// TODO analogy to normalize channel map (to check whether stopped by channel is present in scan module) 
@@ -1465,9 +1473,9 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 									.getLocation())) {
 					} else {
 						// Hinweise ausgeben, daß Location überschrieben wurde!
-						this.lostDevices
-							.add(new ScanDescriptionLoaderLostDeviceMessage(
-							ScanDescriptionLoaderLostDeviceType.PLUGIN_LOCATION_CHANGED,
+						this.deviceMessages
+							.add(new ScanDescriptionLoaderDeviceMessage(
+							ScanDescriptionLoaderMessageType.PLUGIN_LOCATION_CHANGED,
 							textBuffer.toString()
 							+ " replaced by "
 							+ this.currentPluginController.getPlugin()
@@ -1484,17 +1492,28 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 		case MONITOROPTIONS_ID_NEXT:
 			if (qName.equals("id")) {
-				AbstractPrePostscanDevice monOption = this.measuringStation.
-						getPrePostscanDeviceById(textBuffer.toString());
-				if (monOption != null && monOption instanceof Option) {
-					this.scanDescription.addMonitor((Option)monOption);
-				} else {
-					this.lostDevices.add(
-						new ScanDescriptionLoaderLostDeviceMessage(
-							ScanDescriptionLoaderLostDeviceType.
-							MONITOR_OPTION_ID_NOT_FOUND, 
-							"Monitor-Device '" + nameProvider.translatePrePostScanDeviceId(textBuffer.toString()) + 
-							"' has been removed."));
+				switch (this.scanDescription.getMonitorOption()) {
+				case CUSTOM:
+					AbstractPrePostscanDevice monOption = this.measuringStation
+							.getPrePostscanDeviceById(textBuffer.toString());
+					if (monOption != null && monOption instanceof Option) {
+						this.scanDescription.addMonitor((Option) monOption);
+					} else {
+						this.deviceMessages
+								.add(new ScanDescriptionLoaderDeviceMessage(
+										ScanDescriptionLoaderMessageType.MONITOR_OPTION_ID_NOT_FOUND,
+										"Monitor-Device '" + nameProvider
+												.translatePrePostScanDeviceId(
+														textBuffer.toString())
+												+ "' has been removed."));
+					}
+					break;
+				case AS_IN_DEVICE_DEFINITION:
+				case USED_IN_SCAN:
+					this.optionsDefinedInScan.add(textBuffer.toString());
+					break;
+				default:
+					break;
 				}
 			}
 			this.subState = ScanDescriptionLoaderSubStates.MONITOROPTIONS_ID_READ;
@@ -2243,6 +2262,13 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 	@Override
 	public void endDocument() throws SAXException {
 		this.marshalEvents();
+		
+		if (this.getScanDescription().getMonitorOption().equals(
+				MonitorOption.AS_IN_DEVICE_DEFINITION) ||
+			this.getScanDescription().getMonitorOption().equals(
+				MonitorOption.USED_IN_SCAN)) {
+			this.checkMonitors();
+		}
 
 		// set the start event or
 		// define a default start event for chains without startevent tag
@@ -2370,6 +2396,91 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		}
 	}
 
+	/*
+	 * For monitor types 
+	 *   "as in device definition" and
+	 *   "used in scan"
+	 * the loaded monitor list (from scml) has to be compared to the monitor
+	 * options set in the MonitorDelegate of ScanDescription.
+	 * When the attribute is set to one of the mentioned monitor types the 
+	 * type is set in the delegate. The delegate then adds the appropriate 
+	 * monitors based on the current device definition. Multiple things can 
+	 * be inconsistent:
+	 *  - as in device definition
+	 *    # monitors contained in the SCML were added based on a potentially 
+	 *      different device definition (in the past).The device definition 
+	 *      could have changed. Additional monitors could be present and/or old
+	 *      ones not be there anymore.
+	 *  - used in scan
+	 *    # analog to custom all monitors added based on "used in scan" are
+	 *      invalid if the corresponding device is not present in the current
+	 *      device definition.
+	 * During parsing the ids are remembered in "optionsDefinedInScan". They 
+	 * now have to be compared as mentioned and inconsistencies have to be 
+	 * added to the "deviceMessages" list.
+	 * @since 1.29
+	 * @see Redmine #3735
+	 */
+	private void checkMonitors() {
+		// TODO: could be more elegant with Java 8 Lambdas and Streams
+		List<String> newOptionIDs = new ArrayList<>(
+				this.getScanDescription().getMonitors().size());
+		for (Option o : this.getScanDescription().getMonitors()) {
+			newOptionIDs.add(o.getID());
+		}
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Monitor Option Type is: "
+					+ this.getScanDescription().getMonitorOption());
+			LOGGER.debug(
+					"current monitor list is: ");
+			LOGGER.debug(ListUtil.ListAsString(newOptionIDs));
+		}
+		
+		List<String> obsoleteMonitors = new ArrayList<>(optionsDefinedInScan);
+		
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("monitor list of saved file is: ");
+			LOGGER.debug(ListUtil.ListAsString(obsoleteMonitors));
+		}
+		
+		obsoleteMonitors.removeAll(newOptionIDs);
+		
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("monitors present in old but not new list are: ");
+			LOGGER.debug(ListUtil.ListAsString(obsoleteMonitors));
+		}
+		
+		for (String s : obsoleteMonitors) {
+			String message = "Monitor '" + 
+					nameProvider.translatePrePostScanDeviceId(s) + 
+					"' has been removed (not present in current device definition).";
+			LOGGER.info(message);
+			this.deviceMessages
+			.add(new ScanDescriptionLoaderDeviceMessage(
+					ScanDescriptionLoaderMessageType.MONITOR_OPTION_REMOVED,
+					message));
+		}
+		
+		List<String> newMonitors = new ArrayList(newOptionIDs);
+		newMonitors.removeAll(optionsDefinedInScan);
+		
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("monitors present in new but not old list are: ");
+			LOGGER.debug(ListUtil.ListAsString(newMonitors));
+		}
+		
+		for (String s : newMonitors) {
+			String message = "Monitor '" + 
+					nameProvider.translatePrePostScanDeviceId(s) + 
+					"' has been added (present in current device definition).";
+			LOGGER.info(message);
+			this.deviceMessages
+			.add(new ScanDescriptionLoaderDeviceMessage(
+					ScanDescriptionLoaderMessageType.MONITOR_OPTION_ADDED,
+					message));
+		}
+	}
+	
 	/**
 	 * This method returns the loaded scan description.
 	 * 
@@ -2384,9 +2495,9 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 	 * 
 	 * @return The loaded scan description.
 	 */
-	public List<ScanDescriptionLoaderLostDeviceMessage> getLostDevices() {
-		if (this.lostDevices != null) {
-			return this.lostDevices;
+	public List<ScanDescriptionLoaderDeviceMessage> getLostDevices() {
+		if (this.deviceMessages != null) {
+			return this.deviceMessages;
 		} else {
 			return null;
 		}
@@ -2585,15 +2696,15 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			String message) {
 		switch (controlEvent.getEventType()) {
 		case DETECTOR:
-			this.lostDevices
-					.add(new ScanDescriptionLoaderLostDeviceMessage(
-							ScanDescriptionLoaderLostDeviceType.DETECTOR_OF_DETECTOREVENT_NOT_FOUND,
+			this.deviceMessages
+					.add(new ScanDescriptionLoaderDeviceMessage(
+							ScanDescriptionLoaderMessageType.DETECTOR_OF_DETECTOREVENT_NOT_FOUND,
 							"Channel of Detector Event is missing. " + message));
 			break;
 		case SCHEDULE:
-			this.lostDevices
-					.add(new ScanDescriptionLoaderLostDeviceMessage(
-							ScanDescriptionLoaderLostDeviceType.SCANMODULE_OF_SCHEDULEEVENT_NOT_FOUND,
+			this.deviceMessages
+					.add(new ScanDescriptionLoaderDeviceMessage(
+							ScanDescriptionLoaderMessageType.SCANMODULE_OF_SCHEDULEEVENT_NOT_FOUND,
 							"Scanmodule of Schedule Event is missing. "
 									+ message));
 			break;

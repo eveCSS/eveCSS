@@ -10,20 +10,20 @@ package de.ptb.epics.eve.data.scandescription.processors;
  * @author Marcus Michalsy
  * @since 1.5
  */
-public class ScanDescriptionLoaderLostDeviceMessage {
+public class ScanDescriptionLoaderDeviceMessage {
 
-	private ScanDescriptionLoaderLostDeviceType type;
+	private ScanDescriptionLoaderMessageType type;
 	private String action;
 	
 	/**
 	 * Constructor.
 	 * 
 	 * @param type the type as in 
-	 * 		{@link de.ptb.epics.eve.data.scandescription.processors.ScanDescriptionLoaderLostDeviceMessage}
+	 * 		{@link de.ptb.epics.eve.data.scandescription.processors.ScanDescriptionLoaderDeviceMessage}
 	 * @param action the action taken
 	 */
-	public ScanDescriptionLoaderLostDeviceMessage(
-			ScanDescriptionLoaderLostDeviceType type, String action) {
+	public ScanDescriptionLoaderDeviceMessage(
+			ScanDescriptionLoaderMessageType type, String action) {
 		this.type = type;
 		this.action = action;
 	}
@@ -31,7 +31,7 @@ public class ScanDescriptionLoaderLostDeviceMessage {
 	/**
 	 * @return the type
 	 */
-	public ScanDescriptionLoaderLostDeviceType getType() {
+	public ScanDescriptionLoaderMessageType getType() {
 		return type;
 	}
 

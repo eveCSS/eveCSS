@@ -2,7 +2,7 @@ package de.ptb.epics.eve.editor.dialogs.lostdevices;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 
-import de.ptb.epics.eve.data.scandescription.processors.ScanDescriptionLoaderLostDeviceMessage;
+import de.ptb.epics.eve.data.scandescription.processors.ScanDescriptionLoaderDeviceMessage;
 
 /**
  * @author Marcus Michalsky
@@ -15,6 +15,6 @@ public class ActionColumnLabelProvider extends ColumnLabelProvider {
 	 */
 	@Override
 	public String getText(Object element) {
-		return ((ScanDescriptionLoaderLostDeviceMessage)element).getAction();
+		return ((ScanDescriptionLoaderDeviceMessage)element).getAction();
 	}
 }
