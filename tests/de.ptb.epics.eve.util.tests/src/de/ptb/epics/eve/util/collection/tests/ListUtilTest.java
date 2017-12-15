@@ -3,6 +3,7 @@ package de.ptb.epics.eve.util.collection.tests;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
@@ -37,5 +38,11 @@ public class ListUtilTest {
 		assertEquals(list.get(2), "Three");
 		assertEquals(list.get(3), "One");
 		assertEquals(list.get(4), "Four");
+	}
+	
+	@Test
+	public void testListAsString() {
+		List<String> testList = Arrays.asList("a", "b", "c");
+		assertEquals(ListUtil.ListAsString(testList), "List [a, b, c]");
 	}
 }

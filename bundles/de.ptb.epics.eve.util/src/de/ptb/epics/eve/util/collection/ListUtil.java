@@ -28,6 +28,20 @@ public class ListUtil {
 		}
 	}
 	
+	public static String ListAsString(List<? extends Object> list) {
+		StringBuffer buffer = new StringBuffer();
+		for (Object o : list) {
+			buffer.append(o);
+			buffer.append(", ");
+		}
+		if (buffer.length() == 0) {
+			return "List [ ]";
+		}
+		return "List [" 
+				+ buffer.toString().substring(0, buffer.toString().length()-2)
+				+ "]";
+	}
+	
 	private ListUtil() {
 	}
 }

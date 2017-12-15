@@ -8,7 +8,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 
-import de.ptb.epics.eve.data.scandescription.processors.ScanDescriptionLoaderLostDeviceMessage;
+import de.ptb.epics.eve.data.scandescription.processors.ScanDescriptionLoaderDeviceMessage;
 
 /**
  * @author Marcus Michalsky
@@ -16,7 +16,7 @@ import de.ptb.epics.eve.data.scandescription.processors.ScanDescriptionLoaderLos
  */
 public class ContentProvider implements IStructuredContentProvider {
 
-	private List<ScanDescriptionLoaderLostDeviceMessage> messages;
+	private List<ScanDescriptionLoaderDeviceMessage> messages;
 	private Viewer viewer;
 	
 	/**
@@ -25,7 +25,7 @@ public class ContentProvider implements IStructuredContentProvider {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Object[] getElements(Object inputElement) {
-		return ((List<ScanDescriptionLoaderLostDeviceMessage>) inputElement)
+		return ((List<ScanDescriptionLoaderDeviceMessage>) inputElement)
 				.toArray();
 	}
 
@@ -35,7 +35,7 @@ public class ContentProvider implements IStructuredContentProvider {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-		this.messages = (List<ScanDescriptionLoaderLostDeviceMessage>) newInput;
+		this.messages = (List<ScanDescriptionLoaderDeviceMessage>) newInput;
 		this.viewer = viewer;
 		if (newInput == null) {
 			return;
@@ -60,7 +60,7 @@ public class ContentProvider implements IStructuredContentProvider {
 		FontMetrics fm = gc.getFontMetrics();
 		int charWidth = fm.getAverageCharWidth();
 		
-		for (ScanDescriptionLoaderLostDeviceMessage msg : this.messages) {
+		for (ScanDescriptionLoaderDeviceMessage msg : this.messages) {
 			if (typeColMaxWidth < msg.getType().toString().length() * charWidth + 8) {
 				typeColMaxWidth = msg.getType().toString().length() * charWidth + 8;
 			}
