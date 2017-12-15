@@ -1,5 +1,5 @@
                 <!-- extended options part for detector channels -->
-                <option monitor="true">
+                <option>
                     <name>Hi Error Limit</name>
                     <id>${Prefix=""}${PV}.HIHI</id>
                     <value>
@@ -15,7 +15,7 @@
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
-                <option monitor="true">
+                <option>
                     <name>Hi Warn Limit</name>
                     <id>${Prefix=""}${PV}.HIGH</id>
                     <value>
@@ -47,7 +47,7 @@
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
-                <option monitor="true">
+                <option>
                     <name>Low Warn Limit</name>
                     <id>${Prefix=""}${PV}.LOW</id>
                     <value>
@@ -55,7 +55,7 @@
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
-                <option>
+                <option monitor="true">
                     <name>Low Warn Severity</name>
                     <id>${Prefix=""}${PV}.LSV</id>
                     <value>
@@ -63,7 +63,7 @@
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
-                <option monitor="true">
+                <option>
                     <name>Low Error Limit</name>
                     <id>${Prefix=""}${PV}.LOLO</id>
                     <value>
@@ -71,7 +71,7 @@
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
-                <option>
+                <option monitor="true">
                     <name>Low Error Severity</name>
                     <id>${Prefix=""}${PV}.LLSV</id>
                     <value>

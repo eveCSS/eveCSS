@@ -42,7 +42,7 @@ public class ScanDescriptionLoader {
 	/**
 	 * A List of PVs that was not found in the messplatz.xml File.
 	 */
-	private List<ScanDescriptionLoaderLostDeviceMessage> lostDevicesList;
+	private List<ScanDescriptionLoaderDeviceMessage> lostDevicesList;
 
 	/**
 	 * The schema file that is used to load the measuring station description.
@@ -204,7 +204,7 @@ public class ScanDescriptionLoader {
 	 * 
 	 * @return
 	 */
-	public List<ScanDescriptionLoaderLostDeviceMessage> getLostDevices() {
+	public List<ScanDescriptionLoaderDeviceMessage> getLostDevices() {
 		if ((this.lostDevicesList != null) && (!this.lostDevicesList.isEmpty())) {
 			return this.lostDevicesList;
 		}
