@@ -1,20 +1,24 @@
 h1(eveTopic|#top). Virtual Devices
 
+{toc:style=circle|maxLevel=2}
+
 p. Virtual devices are devices which do not exist in reality. They just simulate a certain behavior. In eveCSS there are different types of virtual devices which are described in the following. A summary is given by the "Virtual Devices Reference Page":/help/topic/de.ptb.epics.eve.help/help/content/reference/virtualdevices.html.
 
 h2(eveTopic). Virtual Motor Axes
+
+p(backToTop). "back to top":#top
 
 p. Instead of positions given by a translational/rotational movement by a physical device (or a heating/cooling process with temperatures) a virtual motor axis just emulates these positions with (calculated) values. Besides that there is no movement command send (and the delay until the axis has finished moving) there is no difference to a physical axis if used in a scan.   
 
 h3(eveTopic). Counter
 
-p. A Counter's behavior depends on the chosen @stepfunction@. An Add/Multiply Counter starts with the Start value, calculates the next values based upon the given @stepcount@ / @stepfunction@ and finishes with the stop value. The value is propagated the time it is calculated.
+p. A Counter's behavior depends on the chosen @stepfunction@. An Add/Multiply Counter starts with the Start value, calculates the next values based upon the given @stepcount@ / @stepfunction@ and finishes with the stop value. The value is propagated the time it is calculated. You can think of a counter as a for loop.
 
 p. It is also possible to use a counter in @file@ / @positionlist@ or @range@ mode. Then the sequence of values are just the given values. Hence no values are calculated the (arrival) response will be almost immediate.
 
 h3(eveTopic). (sec) Timer
 
-p. When using the Timer the given values represent seconds, e.g. a Counter with stepfunction Add and the values start=2, stop=10, step=0.5 will wait 2 seconds then reports 2 as its first value, then waits half a second until reporting 2.5, wainting again half a second until reporting 3 ... and reports 10 as its last value (after 10 seconds).
+p. When using the Timer the given values represent seconds, e.g. a Timer with stepfunction Add and the values start=2, stop=10, step=0.5 will wait 2 seconds then reports 2 as its first value, then waits half a second until reporting 2.5, waiting again half a second until reporting 3 ... and reports 10 as its last value (after 10 seconds).
 
 p(attention). Keep in mind that due to a lack of a real time system and the representation in double precision the values could deviate!
 
@@ -22,7 +26,7 @@ p=. !(eveImage)../../img/concepts/virtualdevices/secTimerDouble.png(sec Timer va
 
 h3(eveTopic). mSec Timer
 
-p. The mSec Timer works like the Timer but the given values are integers interpreted as milliseconds.
+p. The mSec Timer works like the Timer but the given values are (positive) integers interpreted as milliseconds.
 
 p(attention). Keep in mind that due to integer limitations the maximum duration of a scan using this timer is approximately 24 days.
 
@@ -30,23 +34,23 @@ p(formula). T ~max~ = __Integer.MAX_VALUE__ ms = (2 ^31^ - 1) ms = 2147483647 ms
 
 h3(eveTopic). date Timer
 
-p. The date Timer defines the start and stop values as dates, the stepwidth as a duration (hours, minutes, seconds and milliseconds) and the stepcount as a double. When switching from absolute to relative mode durations are used exclusively.
-
-p(backToTop). "back to top":#top
+p. The date Timer defines the start and stop values as dates, the stepwidth as a duration (hours, minutes, seconds and milliseconds) and the stepcount as a double. In relative mode durations are used exclusively.
 
 h2(eveTopic). Virtual Detector Channels
 
-p. Virtual detector channels return calculated values instead of values received from remote devices. They can be used to add some "markers" to the data file, e.g. timestamps or the current scan module.
+p(backToTop). "back to top":#top
+
+p. Virtual detector channels return calculated values instead of values received from remote devices. They can be used for instance to add "markers" to the data file, e.g. timestamps or the current scan module.
 
 h3(eveTopic). SM-Counter
 
-p. SM-Counter counts the number of scan modules executed. A return value of @i@ means that @i-1@ scan modules were already executed and the @i@-th one is currently executed.
+p. SM-Counter counts the number of scan modules executed. A return value of @i@ means that @i-1@ scan modules were already executed and the @i@-th one is currently executed. Keep in mind that each execution is counted, i.e. a nested scan module is counted each time it is executed.
 
 p. There are rumours that certain UI tools use this information to divide a scan into subplots.
 
 h3(eveTopic). (sec) Timer
 
-p. The Timer returns the number of seconds (in double precision) elapsed since the start of the scan when in absolute mode. In relative mode it is resetted with the beginning of each scan module.
+p. The Timer returns the number of seconds (in double precision) elapsed since the start of the scan.
 
 h3(eveTopic). msec Timer
 
@@ -55,31 +59,3 @@ p. The msec Timer's behavior is analog to the (sec) Timer. The only difference i
 h3(eveTopic). date Timer
 
 p. The date Timer channel returns a string containing a timestamp specified in ISO 8601. Its format is @YYYY-MM-DDThh:mm:ss.sTZD@ (e.g. @2017-10-16T15:53:10.050+02:00@). For more information on ISO 8601 see ==<a href="https://www.iso.org/iso-8601-date-and-time-format.html" target="_blank">ISO 8601</a>== (with costs) or ==<a href="https://www.w3.org/TR/NOTE-datetime" target="_blank">Date and Time Formats (W3C)</a>==.  
-
-p(backToTop). "back to top":#top
-
-h2(eveTopic). Example
-
-Imagine the following scan
-
-p=. !(eveImage)../../img/concepts/virtualdevices/pseudo-scan.png(a scan with four scan modules each containing one of the available pseudo motor axes and all pseudo detector channels)!
-
-p. containing four scan modules. Each of them contains one pseudo axis (analog to its name) with certain points and all four pseudo channels. The measured data will look similar to the following pictures:
-
-p=. !(eveImage)../../img/concepts/virtualdevices/pseudo-data-motors.png(motor data of the example.)!
-
-p. The motor axes were declared as follows:
-
-|_. Name |_. Id |_. From|_. To|_. Stepwidth |_. Stepcount |
-| Counter | Counter-mot | 1 | 5 | 1 | 4 |
-| Timer | Timer1-mot-double | 0 | 5 | 0.5 | 10 |
-| msec Timer | Timer1-mot-int | 0 | 5000 | 1000 | 5 |
-| date Timer | Timer1-mot-date | 0H0M0.000S | 0H0M10.0S | 0H0M1.0S | 10 |
-
-p. Due to the appended structure each timer motor is declared relative. If at any time an absolute time is already elapsed the scan immediately continues. 
-
-p=. !(eveImage)../../img/concepts/virtualdevices/pseudo-data-detectors.png(detector channel data of the example)!
-
-p. 
-
-p(backToTop). "back to top":#top
