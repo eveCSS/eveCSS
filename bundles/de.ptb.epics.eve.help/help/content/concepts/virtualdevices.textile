@@ -1,6 +1,6 @@
 h1(eveTopic|#top). Virtual Devices
 
-{toc:style=circle|maxLevel=2}
+{toc:style=circle|maxLevel=3}
 
 p. Virtual devices are devices which do not exist in reality. They just simulate a certain behavior. In eveCSS there are different types of virtual devices which are described in the following. A summary is given by the "Virtual Devices Reference Page":/help/topic/de.ptb.epics.eve.help/help/content/reference/virtualdevices.html.
 
@@ -8,25 +8,55 @@ h2(eveTopic). Virtual Motor Axes
 
 p(backToTop). "back to top":#top
 
-p. Instead of positions given by a translational/rotational movement by a physical device (or a heating/cooling process with temperatures) a virtual motor axis just emulates these positions with (calculated) values. Besides that there is no movement command send (and the delay until the axis has finished moving) there is no difference to a physical axis if used in a scan.   
+p. Instead of positions given by a translational/rotational movement by a physical device (or a heating/cooling process with temperatures) a virtual motor axis just emulates these positions with (calculated) values. Besides that there is no movement command send (and the delay until the axis has finished moving) there is no difference to a physical axis if used in a scan.
 
 h3(eveTopic). Counter
 
-p. A Counter's behavior depends on the chosen @stepfunction@. An Add/Multiply Counter starts with the Start value, calculates the next values based upon the given @stepcount@ / @stepfunction@ and finishes with the stop value. The value is propagated the time it is calculated. You can think of a counter as a for loop.
+p. A Counter's behavior depends on the chosen @stepfunction@. An Add/Multiply Counter starts with the Start value, calculates the next values based upon the given @stepcount@ / @stepfunction@ and finishes with the stop value. The value is propagated the time it is calculated.
 
 p. It is also possible to use a counter in @file@ / @positionlist@ or @range@ mode. Then the sequence of values are just the given values. Hence no values are calculated the (arrival) response will be almost immediate.
 
 h3(eveTopic). (sec) Timer
 
-p. When using the Timer the given values represent seconds, e.g. a Timer with stepfunction Add and the values start=2, stop=10, step=0.5 will wait 2 seconds then reports 2 as its first value, then waits half a second until reporting 2.5, waiting again half a second until reporting 3 ... and reports 10 as its last value (after 10 seconds).
+p. When using the Timer virtual device given values are interpreted as seconds elapsed since a certain reference point. The reference point varies depending on the chosen position mode.
+
+p. In __absolute__ position mode the values are the seconds elapsed since the start of the scan module, e.g. a __start__ value of 2 means that two seconds after the start of the scan module the first measurement is made. The reported value is also 2.
+
+p. In __relative__ position mode the values are still the seconds elapsed since the start of the scan module but the reported value will be different since the start of the scan module is the time elapsed since the start of the scan (instead of zero). So a __start__ value of 2 for example still means that two seconds after the start of the scan module the first measurement is made but the reported value depends on when the scan module is executed.
+
+h4(eveTopic). Example 1 - nested absolute timer
+
+p=. !(eveImage)../../img/concepts/virtualdevices/countertimer.png(a counter scan module with a nested timer scan module)!
+
+p. Given: A Scan Module with a Counter (1 to 3), a nested scan module with
+Timer __Start__=3, __Stop__=7, __Stepwidth__=1 (absolute) ==&rArr;== __Stepcount__=4 (calculated)
+
+p. Motor positions: 3, 4, 5, 6, 7, 3, 4, 5, 6, 7, 3, 4, 5, 6, 7
+
+p. Since the values are interpreted as absolute since the start of the scan module each iteration reports the same sequence of numbers.
+
+h4(eveTopic). Example 2 - nested relative timer
+
+p=. !(eveImage)../../img/concepts/virtualdevices/countertimer.png(a counter scan module with a nested timer scan module)!
+
+p. Given: A Scan Module with a Counter (1 to 3), a nested scan module with
+Timer __Start__=3, __Stop__=7, __Stepwidth__=1 (relative) ==&rArr;== __Stepcount__=4 (calculated)
+
+p. Motor positions: 3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 17, 18, 19, 20, 21
+
+p. The defined values are interpreted as relative to the time elapsed since the start of the scan until the start of the scan module, i.e. the second iteration of the scan module start immediately after the first iteration is done (at 7 seconds). Combined with the defined start value of three this leads to a value of 10 reported as the first value of the second iteration (and 17 for the third).
+
+<br />
 
 p(attention). Keep in mind that due to a lack of a real time system and the representation in double precision the values could deviate!
 
-p=. !(eveImage)../../img/concepts/virtualdevices/secTimerDouble.png(sec Timer value deviation due to double precision and lack of real time system)!
+p=. !(eveImage)../../img/concepts/virtualdevices/doubleprecision.png(sec Timer value deviation due to double precision and lack of real time system)!
 
 h3(eveTopic). mSec Timer
 
 p. The mSec Timer works like the Timer but the given values are (positive) integers interpreted as milliseconds.
+
+<br />
 
 p(attention). Keep in mind that due to integer limitations the maximum duration of a scan using this timer is approximately 24 days.
 
@@ -34,7 +64,19 @@ p(formula). T ~max~ = __Integer.MAX_VALUE__ ms = (2 ^31^ - 1) ms = 2147483647 ms
 
 h3(eveTopic). date Timer
 
-p. The date Timer defines the start and stop values as dates, the stepwidth as a duration (hours, minutes, seconds and milliseconds) and the stepcount as a double. In relative mode durations are used exclusively.
+p. The date Timer defines the start and stop values as dates (as in ISO 8601), the stepwidth as a duration (hours, minutes, seconds and milliseconds) and the stepcount as a double. In relative mode durations are used exclusively.
+
+h4(eveTopic). Example 1 - one measurement per hour for 24 hours starting on a certain date
+
+p. To do one measurement per hour on a specific time for 24 hours create a scan module with a date timer motor axis with the following settings:
+
+p=. !(eveImage)../../img/concepts/virtualdevices/datetimer.png(start and stop value as timestamps with one day difference and stepwidth of one hour)!
+
+h4(eveTopic). Example 2 - one measurement per hour for 24 hours starting at an arbitrary time
+
+p. To do one measurement per hour for 24 hours starting immediately when the scan is executed create a scan module with a date timer motor axis with relative position mode with the following settings:
+
+p=. !(eveImage)../../img/concepts/virtualdevices/durationtimer.png(start and stop value as durations with one day difference and stepwidth of one hour)!
 
 h2(eveTopic). Virtual Detector Channels
 
@@ -47,6 +89,18 @@ h3(eveTopic). SM-Counter
 p. SM-Counter counts the number of scan modules executed. A return value of @i@ means that @i-1@ scan modules were already executed and the @i@-th one is currently executed. Keep in mind that each execution is counted, i.e. a nested scan module is counted each time it is executed.
 
 p. There are rumours that certain UI tools use this information to divide a scan into subplots.
+
+h4(eveTopic). Example 1
+
+p. Imagine the following scan with two appended scan modules. The first contains a counter from one to three, the second a counter from one to two and both containing the sm counter detector:
+
+p=. !(eveImage)../../img/concepts/virtualdevices/smcounter.png(two appended scan modules, the first with points 1,2,3 and the second with 1,2)!
+
+p. The reported values for the sm counter would be: 1, 1, 1, 2, 2. When the first scan module is executed it is counted (sm counter equals 1). As long as it is executing (three measurements) the counter remains 1. When the second scan module starts sm counter is incremented and reported for each measurement (two times).
+
+h4(eveTopic). Example 2
+
+p=. !(eveImage)../../img/concepts/virtualdevices/smcounter-nested.png(alt)!
 
 h3(eveTopic). (sec) Timer
 
