@@ -1,5 +1,17 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.29.0 (2017-12-22)
+
+* [Feature-#3755] changed behavior of timer axes in relative mode. "Read more":/help/topic/de.ptb.epics.eve.help/help/content/concepts/virtualdevices.html.
+* [Feature-#3284] the engine log files now support timestamps and daily rolling
+* [Feature-#3195] the engine process now supports non-zero exit states (error codes). See the Wiki for details. 
+* [Feature-#3167] detecting and handling of loading defaults of a "future" version
+* [Feature-#2062] reading HDF5 files while they are written (extent=1)
+
+* [Bug Fix-#3556] fixed a bug where a timing problem caused engine crashes while repeatedly executing scans (repeat count > 0)
+* [Bug Fix-#3450] fixed a bug where values monitored before the scan started reported wrong values (now -1)
+* [Bug Fix-#2817] fixed a bug where (old) data of a channel was written although the status was "invalid"
+
 h2(eveTopic). Version 1.28.2 (2017-12-22)
 
 * [Bug Fix-#3720] introduced missing template for Keithley Range (numerical)
