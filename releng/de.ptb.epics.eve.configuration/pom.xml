@@ -29,7 +29,7 @@
        <artifact>
          <groupId>de.ptb.epics.eve</groupId>
          <artifactId>de.ptb.epics.eve.target</artifactId>
-         <version>1.0.0-SNAPSHOT</version>
+         <version>1.28.2</version>
        </artifact>
      </target>
      <environments>
