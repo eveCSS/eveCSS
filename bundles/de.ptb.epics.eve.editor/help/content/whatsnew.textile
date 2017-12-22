@@ -1,5 +1,11 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.28.2 (2017-12-22)
+
+* [Bug Fix-#3735] fixed a bug where the "as in device definition" monitor list of a file was not adjusted with the current device definition during loading of the file
+* [Bug Fix-#3731] fixed a bug where (pre-/postscan) Devices used in a scan were not monitored
+* [Bug Fix-#3520] fixed a bug where the detector channel help page was not displayed
+
 h2(eveTopic). Version 1.28.0 (2017-07-28)
 
 * [Feature-#3286] added EPICS long string support for filename PV macro
