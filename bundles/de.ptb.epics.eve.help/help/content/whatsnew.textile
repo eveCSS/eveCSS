@@ -1,6 +1,6 @@
 h1(eveTopic). Release Notes
 
-h2(eveTopic). Version 1.29.0 (2017-12-22)
+h2(eveTopic). Version 1.29.0 (2018-01-)
 
 * [Feature-#3755] changed behavior of timer axes in relative mode. "Read more":/help/topic/de.ptb.epics.eve.help/help/content/concepts/virtualdevices.html.
 * [Feature-#3284] the engine log files now support timestamps and daily rolling
@@ -12,7 +12,7 @@ h2(eveTopic). Version 1.29.0 (2017-12-22)
 * [Bug Fix-#3450] fixed a bug where values monitored before the scan started reported wrong values (now -1)
 * [Bug Fix-#2817] fixed a bug where (old) data of a channel was written although the status was "invalid"
 
-h2(eveTopic). Version 1.28.2 (2017-12-22)
+h2(eveTopic). Version 1.28.2 (2018-01-04)
 
 * [Bug Fix-#3720] introduced missing template for Keithley Range (numerical)
 * [Bug Fix-#3705] introduced missing template for Keysight 34470
