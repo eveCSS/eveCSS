@@ -1,6 +1,6 @@
 h1(eveTopic). Release Notes
 
-h2(eveTopic). Version 1.28.2 (2017-12-22)
+h2(eveTopic). Version 1.28.2 (2017-01-04)
 
 * [Bug Fix-#3439] fixed a bug where an auto connect was made although the engine start process failed
 * [Bug Fix-#3621] fixed a bug where the confirm save dialog (asking to keep the data file) blocked the engine

@@ -1,6 +1,6 @@
 h1(eveTopic). Release Notes
 
-h2(eveTopic). Version 1.28.2 (2017-12-22)
+h2(eveTopic). Version 1.28.2 (2017-01-04)
 
 * [Bug Fix-#3720] introduced missing template for Keithley Range (numerical)
 * [Bug Fix-#3705] introduced missing template for Keysight 34470
