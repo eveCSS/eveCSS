@@ -1,6 +1,6 @@
 h1(eveTopic). Release Notes
 
-h2(eveTopic). Version 1.29.0 (2018-01-)
+h2(eveTopic). Version 1.29.0 (2018-01-05)
 
 * [Feature-#3755] changed behavior of timer axes in relative mode. "Read more":/help/topic/de.ptb.epics.eve.help/help/content/concepts/virtualdevices.html.
 * [Feature-#3284] the engine log files now support timestamps and daily rolling
