@@ -2,7 +2,7 @@
 <feature
       id="org.csstudio.eve.applications.feature"
       label="Feature"
-      version="1.28.2">
+      version="1.29.0">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
