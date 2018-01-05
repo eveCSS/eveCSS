@@ -8,7 +8,7 @@
  <parent>
    <groupId>de.ptb.epics.eve</groupId>
    <artifactId>de.ptb.epics.eve.configuration</artifactId>
-   <version>1.0.0-SNAPSHOT</version>
+   <version>1.29.0</version>
   <relativePath>./releng/de.ptb.epics.eve.configuration</relativePath>
  </parent>
 
