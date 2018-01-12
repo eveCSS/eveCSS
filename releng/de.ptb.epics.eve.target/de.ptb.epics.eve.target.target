@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="de.ptb.epics.eve.target" sequenceNumber="22">
+<?pde version="3.8"?><target name="de.ptb.epics.eve.target" sequenceNumber="25">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="false" type="InstallableUnit">
 <unit id="antlr" version="2.7.7"/>
@@ -508,6 +508,10 @@
 <unit id="org.hamcrest.library" version="1.3.0.v201305281000"/>
 <unit id="org.hamcrest.library.source" version="1.3.0.v201305281000"/>
 <repository location="file:/soft/repo/p2/Eclipse/3.7.2/swtbot-2.1.1/"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="false" type="InstallableUnit">
+<unit id="de.ptb.epics.eve.jfxrt.osgi" version="1.0.0"/>
+<repository location="file:/soft/repo/p2/jfxrtOSGi/"/>
 </location>
 </locations>
 </target>

@@ -27,7 +27,7 @@ Require-Bundle: org.eclipse.swt;bundle-version="3.7.1",
  org.csstudio.swt.xygraph;bundle-version="1.0.1",
  org.apache.log4j;bundle-version="1.2.16",
  de.ptb.epics.eve.util;bundle-version="1.0.0",
- org.csstudio.utility.pvmanager
+ org.csstudio.utility.pvmanager,
+ de.ptb.epics.eve.jfxrt.osgi;bundle-version="1.0.0"
 Bundle-Vendor: PTB
-Bundle-ClassPath: lib/jfxrt.jar,
- .
+Bundle-ClassPath: .
