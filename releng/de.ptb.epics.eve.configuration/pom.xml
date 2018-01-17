@@ -3,7 +3,7 @@
  <modelVersion>4.0.0</modelVersion>
  <groupId>de.ptb.epics.eve</groupId>
  <artifactId>de.ptb.epics.eve.configuration</artifactId>
- <version>1.29.0</version>
+ <version>1.29.1</version>
  <packaging>pom</packaging>
 
  <properties>
@@ -29,7 +29,7 @@
        <artifact>
          <groupId>de.ptb.epics.eve</groupId>
          <artifactId>de.ptb.epics.eve.target</artifactId>
-         <version>1.29.0</version>
+         <version>1.29.1</version>
        </artifact>
      </target>
      <environments>

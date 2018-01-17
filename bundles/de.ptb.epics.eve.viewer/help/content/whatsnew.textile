@@ -1,5 +1,9 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.29.1 (2018-01-17)
+
+* [Bug Fix-#3816] fixed a bug where the plot auto scale entered an infinte loop when its first sample had a magnitude greater 15
+
 h2(eveTopic). Version 1.28.2 (2018-01-04)
 
 * [Bug Fix-#3439] fixed a bug where an auto connect was made although the engine start process failed
