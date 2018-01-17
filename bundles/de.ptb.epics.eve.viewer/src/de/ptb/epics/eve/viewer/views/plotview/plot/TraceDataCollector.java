@@ -29,6 +29,8 @@ public class TraceDataCollector implements IDataProvider,
 	private static final Logger LOGGER = Logger
 			.getLogger(TraceDataCollector.class.getName());
 	
+	private static final double PRO_MILLE = 0.001;
+	
 	private List<IDataProviderListener> listeners;
 	private TraceInfo traceInfo;
 	private int size;
@@ -263,6 +265,11 @@ public class TraceDataCollector implements IDataProvider,
 	@Override
 	public synchronized Range getXDataMinMax() {
 		LOGGER.trace("get x min max called ([" + this.xMin + ", " + this.xMax + "]");
+		if (this.xMin == this.xMax) {
+			LOGGER.debug("min == max --> adjusting");
+			double proMille = this.xMax * TraceDataCollector.PRO_MILLE;
+			return new Range(this.xMin, this.xMax + proMille);
+		}
 		return new Range(this.xMin, this.xMax);
 	}
 
@@ -272,6 +279,11 @@ public class TraceDataCollector implements IDataProvider,
 	@Override
 	public synchronized Range getYDataMinMax() {
 		LOGGER.trace("get y min max called ([" + this.yMin + ", " + this.yMax + "]");
+		if (this.yMin == this.yMax) {
+			LOGGER.debug("min == max --> adjusting");
+			double proMille = this.yMax * TraceDataCollector.PRO_MILLE;
+			return new Range(this.yMin, this.yMax + proMille);
+		}
 		return new Range(this.yMin, this.yMax);
 	}
 
