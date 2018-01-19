@@ -69,9 +69,9 @@ public abstract class AbstractDevice implements Comparable<AbstractDevice> {
 		this.id = id;
 		this.unit = unit;
 		if (options != null) {
-			this.options = new ArrayList<Option>(options);
+			this.options = new ArrayList<>(options);
 		} else {
-			this.options = new ArrayList<Option>();
+			this.options = new ArrayList<>();
 		}
 		try {
 			this.setParent(parent);
@@ -191,7 +191,7 @@ public abstract class AbstractDevice implements Comparable<AbstractDevice> {
 	 * @return A list of Option objects.
 	 */
 	public List<Option> getOptions() {
-		List<Option> options = new ArrayList<Option>(this.options);
+		List<Option> options = new ArrayList<>(this.options);
 		// Collections.sort(options);
 		return options;
 	}

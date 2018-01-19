@@ -655,7 +655,7 @@ public class Axis extends AbstractMainPhaseBehavior implements
 	 */
 	@Override
 	public List<IModelError> getModelErrors() {
-		final List<IModelError> errorList = new ArrayList<IModelError>();
+		final List<IModelError> errorList = new ArrayList<>();
 		if (this.mode != null) {
 			errorList.addAll(this.mode.getModelErrors());
 		}
@@ -667,7 +667,7 @@ public class Axis extends AbstractMainPhaseBehavior implements
 	 */
 	private void updateListeners() {
 		final CopyOnWriteArrayList<IModelUpdateListener> list = 
-			new CopyOnWriteArrayList<IModelUpdateListener>(modelUpdateListener);
+			new CopyOnWriteArrayList<>(modelUpdateListener);
 		for (IModelUpdateListener imul : list) {
 			imul.updateEvent(new ModelUpdateEvent(this, null));
 		}
