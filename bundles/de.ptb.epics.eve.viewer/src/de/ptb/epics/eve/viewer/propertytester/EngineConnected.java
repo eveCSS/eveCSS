@@ -11,8 +11,8 @@ import de.ptb.epics.eve.viewer.Activator;
  * @since 1.27
  */
 public class EngineConnected extends PropertyTester {
-	public static String PROPERTY_NAMESPACE = "viewer.playlist";
-	public static String PROPERTY_ENGINE_CONNECTED = "engineConnected";
+	public static final String PROPERTY_NAMESPACE = "viewer.playlist";
+	public static final String PROPERTY_ENGINE_CONNECTED = "engineConnected";
 	
 	/**
 	 * 
