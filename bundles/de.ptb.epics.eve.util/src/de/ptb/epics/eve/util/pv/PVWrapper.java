@@ -122,6 +122,8 @@ public class PVWrapper {
 		
 		this.readListener = new ReadListener();
 		
+		LOGGER.debug("connecting PV '" + this.pvName + "' (read-only).");
+		
 		this.pv = PVManager.readAndWrite(channel(pvname))
 				.timeout(ofSeconds(5), "Timeout: " + this.pvName)
 				.readListener(this.readListener)
@@ -395,7 +397,13 @@ public class PVWrapper {
 					@Override
 					public void run() {
 						try {
-						propertyChangeSupport.firePropertyChange(
+							if (LOGGER.isDebugEnabled()) {
+								LOGGER.debug(pvName + ": " 
+										+ "isReadonly: " 
+										+ isReadOnly + " \u2192 " 
+										+ !pv.isWriteConnected());
+							}
+							propertyChangeSupport.firePropertyChange(
 								PVWrapper.WRITE_STATUS, isReadOnly,
 								isReadOnly = !pv.isWriteConnected());
 						} catch(NullPointerException e) {
