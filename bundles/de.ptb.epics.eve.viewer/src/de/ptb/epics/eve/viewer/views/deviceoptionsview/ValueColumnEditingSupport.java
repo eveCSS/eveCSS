@@ -59,6 +59,14 @@ public class ValueColumnEditingSupport extends EditingSupport {
 	 */
 	@Override
 	protected boolean canEdit(Object element) {
+		if (logger.isDebugEnabled()) {
+			OptionPV pv = (OptionPV)element;
+			if (pv.isReadOnly()) {
+				logger.debug(pv.getName() + " is read only, cannot edit");
+			} else {
+				logger.debug(pv.getName() + " is writable, open Editor");
+			}
+		}
 		return !(((OptionPV)element).isReadOnly());
 	}
 
