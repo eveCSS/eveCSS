@@ -86,6 +86,8 @@ public class PVWrapper {
 	// listener for process variable updates
 	private PVReaderListener<Object> readListener;
 	
+	private PVWriterListener<Object> writeListener;
+	
 	// Delegated Observable
 	private PropertyChangeSupport propertyChangeSupport;
 	
@@ -121,12 +123,14 @@ public class PVWrapper {
 		this.pvUpdateInterval = PVWrapper.PV_UPDATE_INTERVAL;
 		
 		this.readListener = new ReadListener();
+		this.writeListener = new WriteListener();
 		
 		LOGGER.debug("connecting PV '" + this.pvName + "' (read-only).");
 		
 		this.pv = PVManager.readAndWrite(channel(pvname))
 				.timeout(ofSeconds(5), "Timeout: " + this.pvName)
 				.readListener(this.readListener)
+				.writeListener(this.writeListener)
 				.asynchWriteAndMaxReadRate(ofMillis(this.pvUpdateInterval));
 	}
 	
@@ -197,6 +201,7 @@ public class PVWrapper {
 		}
 		LOGGER.debug("Disconnecting PV: '" + this.pvName + "'");
 		this.pv.removePVReaderListener(this.readListener);
+		this.pv.removePVWriterListener(this.writeListener);
 		this.pv.close();
 		this.isConnected = false;
 	}
@@ -392,27 +397,6 @@ public class PVWrapper {
 						}
 					}
 				});
-				
-				Display.getDefault().asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						try {
-							if (LOGGER.isDebugEnabled()) {
-								LOGGER.debug(pvName + ": " 
-										+ "isReadonly: " 
-										+ isReadOnly + " \u2192 " 
-										+ !pv.isWriteConnected());
-							}
-							propertyChangeSupport.firePropertyChange(
-								PVWrapper.WRITE_STATUS, isReadOnly,
-								isReadOnly = !pv.isWriteConnected());
-						} catch(NullPointerException e) {
-							LOGGER.error(
-								"NullPointerException in PVWrapper$ReadListener$2.run: " 
-								+ pvName);
-						}
-					}
-				});
 			}
 			
 			if (pvReaderEvent.isValueChanged()) {
@@ -494,6 +478,37 @@ public class PVWrapper {
 						}
 					});
 				}
+			}
+		}
+	}
+	
+	/**
+	 * @author Marcus Michalsky
+	 * @since 1.29.2
+	 *
+	 */
+	private class WriteListener implements PVWriterListener<Object> {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void pvChanged(PVWriterEvent<Object> event) {
+			if (event.isConnectionChanged()) {
+				Display.getDefault().asyncExec(new Runnable() {
+					@Override
+					public void run() {
+						try {
+						propertyChangeSupport.firePropertyChange(
+								PVWrapper.WRITE_STATUS, isReadOnly,
+								isReadOnly = !pv.isWriteConnected());
+						} catch(NullPointerException e) {
+							LOGGER.error(
+								"NullPointerException in PVWrapper$WriteListener$1.run: " 
+								+ pvName);
+						}
+					}
+				});
 			}
 		}
 	}
