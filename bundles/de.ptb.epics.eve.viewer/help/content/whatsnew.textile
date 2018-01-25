@@ -1,8 +1,16 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.29.2 (2017-01-25)
+
+* [Bug Fix-#2594] fixed a bug where PVs could not be edited (Device Inspector/Options View) due to wrong listener responses (read only status)
+
 h2(eveTopic). Version 1.29.1 (2018-01-17)
 
 * [Bug Fix-#3816] fixed a bug where the plot auto scale entered an infinte loop when its first sample had a magnitude greater 15
+
+h2(eveTopic). Version 1.28.3 (2017-01-25)
+
+* [Bug Fix-#2594] fixed a bug where PVs could not be edited (Device Inspector/Options View) due to wrong listener responses (read only status)
 
 h2(eveTopic). Version 1.28.2 (2018-01-04)
 
