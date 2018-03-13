@@ -3,7 +3,7 @@
  <modelVersion>4.0.0</modelVersion>
  <groupId>de.ptb.epics.eve</groupId>
  <artifactId>de.ptb.epics.eve.configuration</artifactId>
- <version>1.29.2</version>
+ <version>1.29.3</version>
  <packaging>pom</packaging>
 
  <properties>
