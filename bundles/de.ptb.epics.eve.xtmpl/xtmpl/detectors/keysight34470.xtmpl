@@ -32,6 +32,15 @@
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
+            <option>
+                <name>Initialize (SDC)</name>
+                <id>${PV}sdc</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">${PV}sdc</access>
+                    <value type="string">Init only,SDC+Init</value>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
             <option monitor="true">
                 <name>zero</name>
                 <id>${PV}zero</id>

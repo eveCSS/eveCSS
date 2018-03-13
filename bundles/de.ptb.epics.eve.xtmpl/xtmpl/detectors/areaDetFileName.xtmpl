@@ -2,7 +2,7 @@
             <channel  deferred="true" saveValue="false">
                 <class>${Ch_Class=""}</class>
                 <name>${Name=""}</name>
-                <id>${PV}Name</id>
+                <id>${PV}${Filetype=""}FullFilename</id>
                 <read>
      			   <access monitor="true" method="${Method=GETCB}" transport="ca" type="string">${PV}${Filetype=""}:FullFileName_RBV {"longString":true}</access>
                 </read>

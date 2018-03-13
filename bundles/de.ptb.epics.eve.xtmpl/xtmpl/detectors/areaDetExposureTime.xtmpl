@@ -1,0 +1,13 @@
+            <!-- trigger with exposure time as read channel for area detector -->
+            <channel saveValue="false">
+                <class>${Ch_Class=""}</class>
+                <name>${Name=""}</name>
+                <id>${PV}chan1</id>
+                <read>
+                    <access monitor="true" method="${Method=GETCB}" transport="ca" type="int">${PV}AcquireTime_RBV</access>
+                </read>
+            	<trigger>
+                   <access method="PUTCB" transport="ca" type="int" timeout="${Timeout=5000.0}">${Trigger=${PV}Acquire}</access>
+                   <value type="int">1</value>
+            	</trigger>
+            </channel>
