@@ -101,9 +101,13 @@ public class HDF5Util {
 		File scmlFile = null;
 		FileOutputStream fos = null;
 		try {
+			File tempDir = new File(System.getProperty("java.io.tmpdir") + 
+					"/eve-" + System.getProperty("user.name"));
+			if (!tempDir.exists() || !tempDir.isDirectory()) {
+				tempDir.mkdir();
+			}
 			scmlFile = File.createTempFile(h5File.getName() + "-", ".scml",
-					new File(System.getProperty("java.io.tmpdir") + "/eve-"
-							+ System.getProperty("user.name")));
+					tempDir);
 			scmlFile.deleteOnExit();
 			fos = new FileOutputStream(scmlFile);
 			fos.write(HDF5Util.getSCML(h5File));
