@@ -18,6 +18,9 @@
                     <access method="PUT" transport="ca" type="int">${PV}.PROC</access>
                     <value type="int">1</value>
                 </stop>
+                <movedone>
+                    <access method="GETCB" transport="ca" type="int">${PV}.PROC</access>
+                </movedone>
             </axis>
             <option>
                 <name>Initialize (SDC)</name>
