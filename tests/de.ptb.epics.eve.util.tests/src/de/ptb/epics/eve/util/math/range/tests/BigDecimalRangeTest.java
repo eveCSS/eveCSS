@@ -85,6 +85,23 @@ public class BigDecimalRangeTest {
 				list,
 				new BigDecimalRange("1:4:1").getValues());
 		
+		// case j:i:k, j < k ^ (j + i) < j
+		list = new ArrayList<BigDecimal>();
+		list.add(new BigDecimal("-1"));
+		list.add(new BigDecimal("-0.75"));
+		list.add(new BigDecimal("-0.50"));
+		assertEquals(
+				list,
+				new BigDecimalRange("-1:-0.25:-0.5").getValues());
+		// case j:i:k, j > k ^ (j - i) > j
+		list = new ArrayList<BigDecimal>();
+		list.add(new BigDecimal("1"));
+		list.add(new BigDecimal("0.75"));
+		list.add(new BigDecimal("0.50"));
+		assertEquals(
+				list,
+				new BigDecimalRange("1:-0.25:0.5").getValues());
+		
 		// case j:k/N, j < k ^ (k - j) > N
 		list = new ArrayList<BigDecimal>();
 		list.add(new BigDecimal("1"));

@@ -34,11 +34,14 @@ public class BigDecimalRange extends Range<BigDecimal> {
 			String[] jk = jkN[0].split(":");
 			this.from = new BigDecimal(jk[0]);
 			this.to = new BigDecimal(jk[1]);
-			if (from.compareTo(to) == -1) {
+			if (from.compareTo(to) < 0) {
 				this.step = to.subtract(from).divide(n);
 			} else {
 				this.step = from.subtract(to).divide(n, RoundingMode.HALF_UP);
 			}
+		}
+		if (this.isInfinite()) {
+			this.negateStepwidth();
 		}
 	}
 	
@@ -59,7 +62,7 @@ public class BigDecimalRange extends Range<BigDecimal> {
 		}
 		values.add(from);
 		BigDecimal d = from.plus();
-		if (from.compareTo(to) == -1) {
+		if (from.compareTo(to) < 0) {
 			while (d.add(step).compareTo(to) < 1) {
 				values.add(d.add(step));
 				d = d.add(step);
@@ -74,5 +77,24 @@ public class BigDecimalRange extends Range<BigDecimal> {
 			values.add(to);
 		}
 		return values;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected boolean isInfinite() {
+		return ((this.from.compareTo(this.to) < 0 && 
+				this.from.add(this.step).compareTo(this.from) < 0)
+			|| (this.from.compareTo(this.to) > 0 &&
+				this.from.subtract(this.step).compareTo(this.from) > 0));
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void negateStepwidth() {
+		this.step = this.step.negate();
 	}
 }
