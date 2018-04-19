@@ -1,5 +1,9 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.29.2
+
+* [Bug Fix-#3945] fixed a bug where an SCML file embedded in an HDF5 file could not be opened due to a missing temporary subfolder
+
 h2(eveTopic). Version 1.29.0 (2018-01-05)
 
 * [Feature-#3167] The Editor now detects and reports if a SCML of a "future" version should be loaded
