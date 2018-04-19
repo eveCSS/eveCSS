@@ -261,6 +261,12 @@ public class StatusTableSelectionListener extends SelectionAdapter implements
 					tableItemPos.setText(1, axis[i].getStepfunction().toString());
 					tableItemPos.setText(2, axis[i].getPositionlist());
 					break;
+				case RANGE:
+					TableItem tableItemRange = new TableItem(motTable, 0);
+					tableItemRange.setText(0, axis[i].getAbstractDevice().getName());
+					tableItemRange.setText(1, axis[i].getStepfunction().toString());
+					tableItemRange.setText(2, axis[i].getRange());
+					break;
 				default:
 					break;
 				}
