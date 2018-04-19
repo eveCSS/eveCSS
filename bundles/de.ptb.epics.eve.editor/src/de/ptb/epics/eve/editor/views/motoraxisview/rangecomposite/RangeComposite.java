@@ -11,6 +11,8 @@ import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -63,6 +65,13 @@ public class RangeComposite extends MotorAxisViewComposite implements PropertyCh
 				+ "\n"
 				+ "Multiple ranges can be combined by separating them with comma.";
 		this.rangeText.setToolTipText(tooltip);
+		this.rangeText.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				rangeBinding.updateModelToTarget();
+				super.focusLost(e);
+			}
+		});
 		
 		this.previewText = new Text(this, SWT.MULTI | SWT.READ_ONLY | 
 				SWT.WRAP | SWT.BORDER | SWT.V_SCROLL);

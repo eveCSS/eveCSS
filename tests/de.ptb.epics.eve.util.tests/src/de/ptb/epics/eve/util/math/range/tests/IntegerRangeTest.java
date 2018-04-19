@@ -116,6 +116,15 @@ public class IntegerRangeTest {
 				new ArrayList<Integer>(Arrays.asList(1)),
 				new IntegerRange("1:2:1").getValues());
 		
+		// case j:i:k, j < k ^ (j + i) < j
+		assertEquals(
+				new ArrayList<Integer>(Arrays.asList(-5,-4,-3,-2,-1)),
+				new IntegerRange("-5:-1:-1").getValues());
+		// case j:i:k, j > k ^ (j - i) > j
+		assertEquals(
+				new ArrayList<Integer>(Arrays.asList(5,4,3,2,1)),
+				new IntegerRange("5:-1:1").getValues());
+		
 		// case j:k/N, j < k ^ (k - j) > N
 		assertEquals(
 				new ArrayList<Integer>(Arrays.asList(1,2,3,4,5,6,7,8,9,10)),

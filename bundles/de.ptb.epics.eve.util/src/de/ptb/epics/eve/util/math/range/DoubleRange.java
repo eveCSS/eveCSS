@@ -66,6 +66,10 @@ public class DoubleRange extends Range<Double> {
 				this.from = Double.parseDouble(jik[0]);
 				this.step = Double.parseDouble(jik[1]);
 				this.to = Double.parseDouble(jik[2]);
+				
+				if (this.isInfinite()) {
+					this.negateStepwidth();
+				}
 			}
 		} else {
 			// expression is j:k/N
@@ -83,17 +87,17 @@ public class DoubleRange extends Range<Double> {
 	 */
 	@Override
 	public List<Double> getValues() {
-		List<Double> values = new ArrayList<Double>();
+		List<Double> values = new ArrayList<>();
 		double d = from;
-		values.add(new Double(d));
+		values.add(d);
 		if (from < to) {
 			while (d + step <= to) {
-				values.add(new Double(d + step));
+				values.add(d + step);
 				d = d + step;
 			}
 		} else {
 			while (d - step >= to) {
-				values.add(new Double(d - step));
+				values.add(d - step);
 				d = d - step;
 			}
 		}
@@ -101,5 +105,22 @@ public class DoubleRange extends Range<Double> {
 			values.add(to);
 		}
 		return values;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected boolean isInfinite() {
+		return (((this.from < this.to) && (this.from + this.step < this.from)) 
+			|| ((this.from > this.to) && (this.from - this.step > this.from))); 
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void negateStepwidth() {
+		this.step = -this.step;
 	}
 }
