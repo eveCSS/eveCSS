@@ -63,6 +63,32 @@
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
+                    <name>Store Position</name>
+                    <id>${Prefix=""}${PV}:stoPos</id>
+                    <value>
+                        <access method="GETCB" type="int" transport="ca">${PV}:stoPos.PROC</access>
+                        <value type="int">1</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Recall Position</name>
+                    <id>${Prefix=""}${PV}:rclPos</id>
+                    <value>
+                        <access method="GETCB" type="int" transport="ca">${PV}:rclPos.PROC</access>
+                        <value type="int">1</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Memory Position</name>
+                    <id>${Prefix=""}${PV}:memPos</id>
+                    <value>
+                        <access method="GETCB" type="${Type=double}" transport="ca">${PV}:memPos</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
                     <name>Encoder Steps</name>
                     <id>${Prefix=""}${PV}.REP</id>
                     <value>
