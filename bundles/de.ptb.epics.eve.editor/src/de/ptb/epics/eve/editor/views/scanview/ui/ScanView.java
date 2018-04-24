@@ -7,14 +7,15 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
-import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.SWTObservables;
-import org.eclipse.jface.databinding.viewers.ViewerSupport;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
@@ -27,7 +28,6 @@ import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
@@ -38,6 +38,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISelectionListener;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
@@ -51,6 +53,7 @@ import de.ptb.epics.eve.editor.gef.editparts.ChainEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.ScanDescriptionEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.StartEventEditPart;
+import de.ptb.epics.eve.editor.views.DelColumnEditingSupport;
 import de.ptb.epics.eve.editor.views.EditorViewPerspectiveListener;
 import de.ptb.epics.eve.editor.views.IEditorView;
 import de.ptb.epics.eve.editor.views.scanview.DeviceColumnComparator;
@@ -72,8 +75,11 @@ public class ScanView extends ViewPart implements IEditorView,
 	public static final String ID = "de.ptb.epics.eve.editor.views.ScanView";
 
 	// logging
-	private static Logger logger = Logger.getLogger(ScanView.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(
+			ScanView.class.getName());
 
+	private static final int DEL_COLUMN_WIDTH = 22;
+	
 	private ScanDescription currentScanDescription;
 
 	// the utmost composite (which contains all elements)
@@ -116,12 +122,14 @@ public class ScanView extends ViewPart implements IEditorView,
 	// Delegates
 	private EditorViewPerspectiveListener perspectiveListener;
 
+	private TableViewerColumn delColumn;
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void createPartControl(final Composite parent) {
-		logger.debug("createPartControl");
+		LOGGER.debug("createPartControl");
 
 		parent.setLayout(new FillLayout());
 
@@ -217,19 +225,59 @@ public class ScanView extends ViewPart implements IEditorView,
 		gridData.verticalAlignment = SWT.FILL;
 		gridData.horizontalSpan = 3;
 		this.monitorOptionsTable.getTable().setLayoutData(gridData);
+		
+		this.monitorOptionsTable.setContentProvider(
+				ArrayContentProvider.getInstance());
+		this.getSite().setSelectionProvider(this.monitorOptionsTable);
+		
+		// create context menu
+		MenuManager menuManager = new MenuManager();
+		menuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		menuManager.setRemoveAllWhenShown(true);
+		this.monitorOptionsTable.getTable().setMenu(
+			menuManager.createContextMenu(this.monitorOptionsTable.getTable()));
+		// register menu
+		this.getSite().registerContextMenu(
+			"de.ptb.epics.eve.editor.views.scanview.monitoroptions.popup", 
+			menuManager, this.monitorOptionsTable);
 	}
 
 	private void createColumns(final TableViewer viewer) {
-		TableViewerColumn delColumn = new TableViewerColumn(viewer, SWT.NONE);
-		delColumn.getColumn().setWidth(25);
+		delColumn = new TableViewerColumn(viewer, SWT.NONE);
+		delColumn.getColumn().setWidth(ScanView.DEL_COLUMN_WIDTH);
+		delColumn.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				return "";
+			}
+			@Override
+			public Image getImage(Object element) {
+				return PlatformUI.getWorkbench().getSharedImages().
+						getImage(ISharedImages.IMG_TOOL_DELETE);
+			}
+		});
+		delColumn.setEditingSupport(new DelColumnEditingSupport(viewer, 
+				"de.ptb.epics.eve.editor.command.removemonitor"));
 		TableViewerColumn oNameCol = new TableViewerColumn(viewer, SWT.NONE);
 		oNameCol.getColumn().setText("Option Name");
 		oNameCol.getColumn().setWidth(140);
 		oNameCol.getColumn().addSelectionListener(optionColumnSelectionListener);
+		oNameCol.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				return ((Option)element).getName();
+			}
+		});
 		TableViewerColumn dNameCol = new TableViewerColumn(viewer, SWT.NONE);
 		dNameCol.getColumn().setText("Device Name");
 		dNameCol.getColumn().setWidth(140);
 		dNameCol.getColumn().addSelectionListener(deviceColumnSelectionListener);
+		dNameCol.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				return ((Option)element).getParent().getName();
+			}
+		});
 	}
 
 	private void bindValues() {
@@ -265,12 +313,6 @@ public class ScanView extends ViewPart implements IEditorView,
 						UpdateValueStrategy.POLICY_UPDATE),
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
 		this.monitorOptionsBinding.getClass();
-		
-		ViewerSupport.bind(monitorOptionsTable,
-				BeansObservables
-				.observeDetailList(selectionObservable,
-						ScanDescription.MONITOR_OPTIONS_LIST_PROP, Option.class),
-				BeanProperties.values(new String[] {"", "name", "parent.name"}));
 	}
 
 	/*
@@ -281,7 +323,10 @@ public class ScanView extends ViewPart implements IEditorView,
 			this.currentScanDescription.removePropertyChangeListener(
 					ScanDescription.FILE_NAME_PROP, this);
 			this.currentScanDescription.removePropertyChangeListener(
+					ScanDescription.MONITOR_OPTION_PROP, this);
+			this.currentScanDescription.removePropertyChangeListener(
 					ScanDescription.MONITOR_OPTIONS_LIST_PROP, this);
+			this.monitorOptionsTable.setInput(null);
 		}
 		this.currentScanDescription = scanDescription;
 		if (this.currentScanDescription == null) {
@@ -297,7 +342,11 @@ public class ScanView extends ViewPart implements IEditorView,
 			this.currentScanDescription.addPropertyChangeListener(
 					ScanDescription.FILE_NAME_PROP, this);
 			this.currentScanDescription.addPropertyChangeListener(
+					ScanDescription.MONITOR_OPTION_PROP, this);
+			this.currentScanDescription.addPropertyChangeListener(
 					ScanDescription.MONITOR_OPTIONS_LIST_PROP, this);
+			this.monitorOptionsTable.setInput(
+					this.currentScanDescription.getMonitors());
 			this.adjustColumnWidths();
 			this.top.setVisible(true);
 		}
@@ -317,7 +366,7 @@ public class ScanView extends ViewPart implements IEditorView,
 	 */
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-		logger.debug("selection changed");
+		LOGGER.debug("selection changed");
 
 		if (selection instanceof IStructuredSelection) {
 			if (((IStructuredSelection) selection).size() == 0) {
@@ -327,30 +376,30 @@ public class ScanView extends ViewPart implements IEditorView,
 		Object o = ((IStructuredSelection) selection).toList().get(0);
 		if (o instanceof ScanModuleEditPart) {
 			// a scan module belongs to a chain -> show chain's scan description
-			if (logger.isDebugEnabled()) {
-				logger.debug("ScanModule "
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("ScanModule "
 						+ ((ScanModuleEditPart) o).getModel() + " selected.");
 			}
 			setCurrentScanDescription(((ScanModuleEditPart) o).getModel()
 					.getChain().getScanDescription());
 		} else if (o instanceof StartEventEditPart) {
 			// a start event belongs to a chain -> show chain's scan description
-			if (logger.isDebugEnabled()) {
-				logger.debug("ScanDescription "
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("ScanDescription "
 						+ (((StartEventEditPart) o).getModel()).getChain()
 								.getScanDescription() + " selected.");
 			}
 			setCurrentScanDescription((((StartEventEditPart) o).getModel())
 					.getChain().getScanDescription());
 		} else if (o instanceof ChainEditPart) {
-			logger.debug("selection is ChainEditPart: " + o);
+			LOGGER.debug("selection is ChainEditPart: " + o);
 			setCurrentScanDescription(((ChainEditPart) o).getModel()
 					.getScanDescription());
 		} else if (o instanceof ScanDescriptionEditPart) {
-			logger.debug("selection is ScanDescriptionEditPart: " + o);
+			LOGGER.debug("selection is ScanDescriptionEditPart: " + o);
 			setCurrentScanDescription(((ScanDescriptionEditPart) o).getModel());
 		} else {
-			logger.debug("selection other than ScanDescription -> ignore: " + o);
+			LOGGER.debug("selection other than ScanDescription -> ignore: " + o);
 		}
 	}
 
@@ -368,6 +417,75 @@ public class ScanView extends ViewPart implements IEditorView,
 	@Override
 	public void setFocus() {
 		this.top.setFocus();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void propertyChange(PropertyChangeEvent e) {
+		if (e.getPropertyName().equals(ScanDescription.FILE_NAME_PROP)) {
+			this.setPartName("Scan: " + e.getNewValue());
+			LOGGER.debug("new file name: " + e.getNewValue());
+		} else if (e.getPropertyName().equals(
+				ScanDescription.MONITOR_OPTION_PROP)) {
+			switch ((MonitorOption)e.getNewValue()) {
+			case AS_IN_DEVICE_DEFINITION:
+				this.hideDelColumn();
+				break;
+			case CUSTOM:
+				this.showDelColumn();
+				break;
+			case NONE:
+				this.hideDelColumn();
+				break;
+			case USED_IN_SCAN:
+				this.hideDelColumn();
+				break;
+			default:
+				break;
+			}
+		} else if (e.getPropertyName().equals(
+				ScanDescription.MONITOR_OPTIONS_LIST_PROP)) {
+			this.monitorOptionsTable.refresh();
+			this.adjustColumnWidths();
+			LOGGER.debug("monitor option list changed");
+		}
+	}
+
+	private void hideDelColumn() {
+		this.delColumn.getColumn().setWidth(0);
+		this.delColumn.getColumn().setResizable(false);
+		LOGGER.debug("hiding del column");
+	}
+
+	private void showDelColumn() {
+		this.delColumn.getColumn().setWidth(ScanView.DEL_COLUMN_WIDTH);
+		this.delColumn.getColumn().setResizable(true);
+		this.adjustColumnWidths();
+		LOGGER.debug("showing del column");
+	}
+
+	private void adjustColumnWidths() {
+		GC gc = new GC(this.monitorOptionsTable.getTable());
+		int optionColumnWidth = 120;
+		int deviceColumnWidth = 120;
+		for (Option o : this.currentScanDescription.getMonitors()) {
+			int deviceNameWidth = FontHelper.getCharWidth(gc, o.getParent()
+					.getName()) + FontHelper.MARGIN_WIDTH;
+			if (deviceNameWidth > deviceColumnWidth) {
+				deviceColumnWidth = deviceNameWidth;
+			}
+			int optionNameWidth = FontHelper.getCharWidth(gc, o.getName())
+					+ FontHelper.MARGIN_WIDTH;
+			if (optionNameWidth > optionColumnWidth) {
+				optionColumnWidth = optionNameWidth;
+			}
+		}
+		this.monitorOptionsTable.getTable().getColumn(1)
+				.setWidth(optionColumnWidth);
+		this.monitorOptionsTable.getTable().getColumn(2)
+				.setWidth(deviceColumnWidth);
 	}
 
 	/**
@@ -398,14 +516,7 @@ public class ScanView extends ViewPart implements IEditorView,
 
 	/**
 	 */
-	private class EditButtonSelectionListener implements SelectionListener {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
+	private class EditButtonSelectionListener extends SelectionAdapter {
 
 		/**
 		 * {@inheritDoc}
@@ -428,8 +539,8 @@ public class ScanView extends ViewPart implements IEditorView,
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			logger.debug("option column clicked");
-			logger.debug("old option table sort state: " + optionColumnSortState);
+			LOGGER.debug("option column clicked");
+			LOGGER.debug("old option table sort state: " + optionColumnSortState);
 			switch(optionColumnSortState) {
 				case 0: // was no sorting -> now ascending
 						optionColumnComparator.setDirection(
@@ -458,7 +569,7 @@ public class ScanView extends ViewPart implements IEditorView,
 			// if it becomes 3 it has to be 0 again
 			// but before the state has to be increased to the new state
 			optionColumnSortState = ++optionColumnSortState % 3;
-			logger.debug("new options table sort state: " + optionColumnSortState);
+			LOGGER.debug("new options table sort state: " + optionColumnSortState);
 		}
 	}
 	
@@ -469,8 +580,8 @@ public class ScanView extends ViewPart implements IEditorView,
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			logger.debug("device name column clicked");
-			logger.debug("old device table sort state: " + deviceColumnSortState);
+			LOGGER.debug("device name column clicked");
+			LOGGER.debug("old device table sort state: " + deviceColumnSortState);
 			switch(deviceColumnSortState) {
 				case 0: // was no sorting -> now ascending
 						deviceColumnComparator.setDirection(
@@ -497,43 +608,7 @@ public class ScanView extends ViewPart implements IEditorView,
 			// if it becomes 3 it has to be 0 again
 			// but before the state has to be increased to the new state
 			deviceColumnSortState = ++deviceColumnSortState % 3;
-			logger.debug("new device table sort state: " + deviceColumnSortState);
+			LOGGER.debug("new device table sort state: " + deviceColumnSortState);
 		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void propertyChange(PropertyChangeEvent e) {
-		if (e.getPropertyName().equals(ScanDescription.FILE_NAME_PROP)) {
-			this.setPartName("Scan: " + e.getNewValue());
-			logger.debug("new file name: " + e.getNewValue());
-		} else if (e.getPropertyName().equals(
-				ScanDescription.MONITOR_OPTIONS_LIST_PROP)) {
-			this.adjustColumnWidths();
-		}
-	}
-	
-	private void adjustColumnWidths() {
-		GC gc = new GC(this.monitorOptionsTable.getTable());
-		int optionColumnWidth = 120;
-		int deviceColumnWidth = 120;
-		for (Option o : this.currentScanDescription.getMonitors()) {
-			int deviceNameWidth = FontHelper.getCharWidth(gc, o.getParent()
-					.getName()) + FontHelper.MARGIN_WIDTH;
-			if (deviceNameWidth > deviceColumnWidth) {
-				deviceColumnWidth = deviceNameWidth;
-			}
-			int optionNameWidth = FontHelper.getCharWidth(gc, o.getName())
-					+ FontHelper.MARGIN_WIDTH;
-			if (optionNameWidth > optionColumnWidth) {
-				optionColumnWidth = optionNameWidth;
-			}
-		}
-		this.monitorOptionsTable.getTable().getColumn(1)
-				.setWidth(optionColumnWidth);
-		this.monitorOptionsTable.getTable().getColumn(2)
-				.setWidth(deviceColumnWidth);
 	}
 }

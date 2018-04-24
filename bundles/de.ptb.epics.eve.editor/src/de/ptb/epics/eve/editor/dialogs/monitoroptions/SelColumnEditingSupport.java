@@ -35,7 +35,6 @@ public class SelColumnEditingSupport extends EditingSupport {
 			scanDescription.addMonitor(option);
 		}
 		viewer.update(element, null);
-		scanDescription.updateEvent(null);
 		return false;
 	}
 

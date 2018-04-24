@@ -378,6 +378,44 @@
          </command>
       </menuContribution>
       <menuContribution
+            locationURI="popup:de.ptb.epics.eve.editor.views.scanview.monitoroptions.popup">
+         <command
+               commandId="de.ptb.epics.eve.editor.command.removemonitor"
+               icon="icons/rem_co.gif"
+               label="Remove Monitor"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <and>
+                  <reference
+                        definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
+                  </reference>
+                  <test
+                        property="editor.scanview.monitorOptionCustom">
+                  </test>
+               </and>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.removeallmonitors"
+                icon="icons/rem_co.gif"
+               label="Remove All Monitors"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <and>
+                  <reference
+                        definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
+                  </reference>
+                  <test
+                        property="editor.scanview.monitorOptionCustom">
+                  </test>
+               </and>
+            </visibleWhen>
+               definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
+         </command>
+      </menuContribution>
+      <menuContribution
             locationURI="popup:de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.popup">
          <dynamic
                class="de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.MenuContribution"
@@ -948,6 +986,20 @@
             name="Remove All Events">
       </command>
       <category
+            id="de.ptb.epics.eve.editor.views.scanmoduleview.monitors.commands"
+            name="Monitor Option Commands">
+      </category>
+      <command
+            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.monitors.commands"
+            id="de.ptb.epics.eve.editor.command.removemonitor"
+            name="Remove Monitor">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.monitors.commands"
+            id="de.ptb.epics.eve.editor.command.removeallmonitors"
+            name="Remove All Monitors">
+      </command>
+      <category
             id="de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.commands"
             name="Motor Axis Composite">
       </category>
@@ -1197,6 +1249,24 @@
             class="de.ptb.epics.eve.editor.handler.editor.AddNestedScanModule"
             commandId="de.ptb.epics.eve.editor.command.addnested">
       </handler>
+      <handler
+            class="de.ptb.epics.eve.editor.handler.monitors.RemoveMonitor"
+            commandId="de.ptb.epics.eve.editor.command.removemonitor">
+         <enabledWhen>
+            <test
+                  property="editor.scanview.monitorOptionCustom">
+            </test>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="de.ptb.epics.eve.editor.handler.monitors.RemoveAllMonitors"
+            commandId="de.ptb.epics.eve.editor.command.removeallmonitors">
+         <enabledWhen>
+            <test
+                  property="editor.scanview.monitorOptionCustom">
+            </test>
+         </enabledWhen>
+      </handler>
    </extension>
    <extension
          point="org.eclipse.core.runtime.adapters">
@@ -1245,5 +1315,15 @@
       <initializer
             class="de.ptb.epics.eve.editor.preferences.PreferenceInitializer">
       </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="de.ptb.epics.eve.editor.propertytester.MonitorOptionCustom"
+            id="de.ptb.epics.eve.editor.propertytester.monitoroption"
+            namespace="editor.scanview"
+            properties="monitorOptionCustom"
+            type="java.lang.Object">
+      </propertyTester>
    </extension>
 </plugin>

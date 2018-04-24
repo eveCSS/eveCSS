@@ -36,7 +36,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
 public class ScanDescription implements IModelUpdateProvider,
 		IModelUpdateListener, IModelErrorProvider, PropertyChangeListener {
 	
-	private static Logger logger = 
+	private static final Logger LOGGER = 
 		Logger.getLogger(ScanDescription.class.getName());
 
 	/** */
@@ -86,8 +86,8 @@ public class ScanDescription implements IModelUpdateProvider,
 	 */
 	public ScanDescription(final IMeasuringStation measuringStation) {
 		super();
-		this.chains = new ArrayList<Chain>();
-		this.modelUpdateListener = new ArrayList<IModelUpdateListener>();
+		this.chains = new ArrayList<>();
+		this.modelUpdateListener = new ArrayList<>();
 		// default start event
 		Chain chain = new Chain(0);
 		ScanModule sm = new ScanModule(0);
@@ -198,7 +198,7 @@ public class ScanDescription implements IModelUpdateProvider,
 	 * @return a list holding all chain.
 	 */
 	public List<Chain> getChains() {
-		return new ArrayList<Chain>(this.chains);
+		return new ArrayList<>(this.chains);
 	}
 
 	/**
@@ -225,8 +225,10 @@ public class ScanDescription implements IModelUpdateProvider,
 	 * specific by monitorOption
 	 */
 	public void setMonitorOption(final MonitorOption monitorOption) {
-		this.monitors.setType(monitorOption);
-		updateListeners();
+		if (!this.getMonitorOption().equals(monitorOption)) {
+			this.monitors.setType(monitorOption);
+			updateListeners();
+		}
 	}
 	
 	/**
@@ -262,7 +264,7 @@ public class ScanDescription implements IModelUpdateProvider,
 	 * @return a valid id for a plot
 	 */
 	public int getAvailablePlotId() {
-		List<Integer> plotIds = new ArrayList<Integer>();
+		List<Integer> plotIds = new ArrayList<>();
 		for(Chain ch : this.chains) {
 			for(ScanModule sm : ch.getScanModules()) {
 				for(PlotWindow pw : sm.getPlotWindows()) {
@@ -311,8 +313,9 @@ public class ScanDescription implements IModelUpdateProvider,
 			this.monitors.add(option);
 			this.propertyChangeSupport.firePropertyChange(
 					ScanDescription.MONITOR_OPTIONS_LIST_PROP, null, monitors);
+			this.updateEvent(null);
 		} catch (UnsupportedOperationException e) {
-			logger.error("Monitor could not be added: " + e.getMessage());
+			LOGGER.error("Monitor could not be added: " + e.getMessage());
 		}
 	}
 	
@@ -330,8 +333,9 @@ public class ScanDescription implements IModelUpdateProvider,
 			}
 			this.propertyChangeSupport.firePropertyChange(
 					ScanDescription.MONITOR_OPTIONS_LIST_PROP, null, monitors);
+			this.updateEvent(null);
 		} catch (UnsupportedOperationException e) {
-			logger.error("Monitors could not be added: " + e.getMessage());
+			LOGGER.error("Monitors could not be added: " + e.getMessage());
 		}
 	}
 	
@@ -345,8 +349,9 @@ public class ScanDescription implements IModelUpdateProvider,
 			this.monitors.remove(option);
 			this.propertyChangeSupport.firePropertyChange(
 					ScanDescription.MONITOR_OPTIONS_LIST_PROP, null, monitors);
+			this.updateEvent(null);
 		} catch (UnsupportedOperationException e) {
-			logger.error("Monitor could not be removed: " + e.getMessage());
+			LOGGER.error("Monitor could not be removed: " + e.getMessage());
 		}
 	}
 	
@@ -362,11 +367,23 @@ public class ScanDescription implements IModelUpdateProvider,
 			}
 			this.propertyChangeSupport.firePropertyChange(
 					ScanDescription.MONITOR_OPTIONS_LIST_PROP, null, monitors);
+			this.updateEvent(null);
 		} catch (UnsupportedOperationException e) {
-			logger.error("Monitors could not be removed: " + e.getMessage());
+			LOGGER.error("Monitors could not be removed: " + e.getMessage());
 		}
 	}
 
+	/**
+	 * Removes all monitors.
+	 * @since 1.30
+	 */
+	public void removeAllMonitors() {
+		this.monitors.removeAll();
+		this.propertyChangeSupport.firePropertyChange(
+				ScanDescription.MONITOR_OPTIONS_LIST_PROP, null, monitors);
+		this.updateEvent(null);
+	}
+	
 	/**
 	 * Checks the list of monitors for invalid entries and removes them.
 	 * <p>
@@ -376,8 +393,8 @@ public class ScanDescription implements IModelUpdateProvider,
 		for (Option o : new CopyOnWriteArrayList<Option>(this.getMonitors())) {
 			if (o.getParent() == null) {
 				this.monitors.remove(o);
-				if (logger.isDebugEnabled()) {
-					logger.debug("removed orphaned monitor " + o.getName());
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug("removed orphaned monitor " + o.getName());
 				}
 			}
 		}
@@ -535,8 +552,8 @@ public class ScanDescription implements IModelUpdateProvider,
 	 */
 	@Override
 	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {
-		if(logger.isDebugEnabled() && modelUpdateEvent != null) {
-				logger.debug(modelUpdateEvent.getSender());
+		if(LOGGER.isDebugEnabled() && modelUpdateEvent != null) {
+				LOGGER.debug(modelUpdateEvent.getSender());
 		}
 		updateListeners();
 	}

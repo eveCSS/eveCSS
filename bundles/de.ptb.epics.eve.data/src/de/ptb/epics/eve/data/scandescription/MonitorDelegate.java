@@ -96,7 +96,7 @@ public class MonitorDelegate implements IModelUpdateListener {
 	 *             if {@link #getType()} is not
 	 *             {@link de.ptb.epics.eve.data.scandescription.MonitorOption#CUSTOM}
 	 */
-	public void add(Option o) throws UnsupportedOperationException {
+	public void add(Option o) {
 		if (!this.type.equals(MonitorOption.CUSTOM)) {
 			throw new UnsupportedOperationException(
 					"monitoring devices is not set to custom!");
@@ -111,12 +111,24 @@ public class MonitorDelegate implements IModelUpdateListener {
 	 *             if {@link #getType()} is not
 	 *             {@link de.ptb.epics.eve.data.scandescription.MonitorOption#CUSTOM}
 	 */
-	public void remove(Option o) throws UnsupportedOperationException {
+	public void remove(Option o) {
 		if (!this.type.equals(MonitorOption.CUSTOM)) {
 			throw new UnsupportedOperationException(
 					"monitoring devices is not set to custom!");
 		}
 		this.monitors.remove(o);
+	}
+	
+	/**
+	 * Removes all monitor options.
+	 * @since 1.30
+	 */
+	public void removeAll() {
+		if (!this.type.equals(MonitorOption.CUSTOM)) {
+			throw new UnsupportedOperationException(
+					"monitoring devices is not set to custom!");
+		}
+		this.monitors.clear();
 	}
 	
 	/**
