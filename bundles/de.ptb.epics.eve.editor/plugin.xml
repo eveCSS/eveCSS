@@ -380,7 +380,7 @@
       <menuContribution
             locationURI="popup:de.ptb.epics.eve.editor.views.scanview.monitoroptions.popup">
          <command
-               commandId="de.ptb.epics.eve.editor.command.removemonitor"
+               commandId="org.eclipse.ui.edit.delete"
                icon="icons/rem_co.gif"
                label="Remove Monitor"
                style="push">
@@ -1251,7 +1251,7 @@
       </handler>
       <handler
             class="de.ptb.epics.eve.editor.handler.monitors.RemoveMonitor"
-            commandId="de.ptb.epics.eve.editor.command.removemonitor">
+            commandId="org.eclipse.ui.edit.delete">
          <enabledWhen>
             <test
                   property="editor.scanview.monitorOptionCustom">
@@ -1261,6 +1261,23 @@
       <handler
             class="de.ptb.epics.eve.editor.handler.monitors.RemoveAllMonitors"
             commandId="de.ptb.epics.eve.editor.command.removeallmonitors">
+         <enabledWhen>
+            <test
+                  property="editor.scanview.monitorOptionCustom">
+            </test>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="de.ptb.epics.eve.editor.handler.monitors.RemoveMonitor"
+            commandId="org.eclipse.ui.edit.delete">
+         <activeWhen>
+            <with
+                  variable="activePartId">
+               <equals
+                     value="de.ptb.epics.eve.editor.views.ScanView">
+               </equals>
+            </with>
+         </activeWhen>
          <enabledWhen>
             <test
                   property="editor.scanview.monitorOptionCustom">

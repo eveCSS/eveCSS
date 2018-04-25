@@ -257,7 +257,7 @@ public class ScanView extends ViewPart implements IEditorView,
 			}
 		});
 		delColumn.setEditingSupport(new DelColumnEditingSupport(viewer, 
-				"de.ptb.epics.eve.editor.command.removemonitor"));
+				"org.eclipse.ui.edit.delete"));
 		TableViewerColumn oNameCol = new TableViewerColumn(viewer, SWT.NONE);
 		oNameCol.getColumn().setText("Option Name");
 		oNameCol.getColumn().setWidth(140);
