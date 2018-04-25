@@ -7,7 +7,7 @@
                 <access method="PUTCB" transport="ca" type="int" timeout="${Timeout=25.0}">${PV}00.PROC</access>
                 <value type="int">1</value>
             </trigger>
-				${includeFile}
+			${includeFile}
             <option>
                 <name>Initialize (SDC)</name>
                 <id>${PV}sdc</id>
@@ -224,4 +224,5 @@
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
+            include "detector_scan_ohne_trigger_part.xtmpl"
         </detector>

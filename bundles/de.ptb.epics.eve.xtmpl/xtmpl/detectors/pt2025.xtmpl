@@ -49,4 +49,5 @@
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
+           	include "detector_scan_ohne_trigger_part.xtmpl"
         </detector>
