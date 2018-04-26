@@ -22,12 +22,10 @@ import org.eclipse.ui.handlers.IHandlerService;
  * @since 1.5
  */
 public class DelColumnEditingSupport extends EditingSupport {
-
-	private static Logger logger = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(DelColumnEditingSupport.class.getName());
 	
 	private ColumnViewer columnViewer;
-	
 	private String commandId;
 	
 	/**
@@ -60,14 +58,11 @@ public class DelColumnEditingSupport extends EditingSupport {
 				.getWorkbench().getService(IHandlerService.class);
 		try {
 			handlerService.executeCommand(this.commandId, null);
-		} catch (ExecutionException e) {
-			logger.warn(e.getMessage(), e);
-		} catch (NotDefinedException e) {
-			logger.warn(e.getMessage(), e);
-		} catch (NotEnabledException e) {
-			logger.warn(e.getMessage(), e);
-		} catch (NotHandledException e) {
-			logger.warn(e.getMessage(), e);
+		} catch (ExecutionException | 
+				NotDefinedException | 
+				NotEnabledException | 
+				NotHandledException e) {
+			LOGGER.error(e.getMessage(), e);
 		}
 		return false;
 	}
@@ -93,5 +88,7 @@ public class DelColumnEditingSupport extends EditingSupport {
 	 */
 	@Override
 	protected void setValue(Object element, Object value) {
+		// there is no value to set here, the can edit check already
+		// triggers the delete command.
 	}
 }
