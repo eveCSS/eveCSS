@@ -51,6 +51,10 @@ public class MonitorOptionCustom extends PropertyTester {
 			}
 			ScanDescription scanDescription = ((ScanView)activePart).
 					getCurrentScanDescription();
+			if (scanDescription == null) {
+				LOGGER.debug("no scanDescription available");
+				return false;
+			}
 			boolean customMonitor = scanDescription.getMonitorOption().
 					equals(MonitorOption.CUSTOM);
 			LOGGER.debug("evaluated to " + customMonitor);
