@@ -22,7 +22,6 @@ import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
  * @since 1.6
  */
 public class ChainLayoutEditPolicy extends XYLayoutEditPolicy {
-
 	private static Logger logger = Logger.getLogger(ChainLayoutEditPolicy.class
 			.getName());
 
@@ -33,21 +32,15 @@ public class ChainLayoutEditPolicy extends XYLayoutEditPolicy {
 	protected Command createChangeConstraintCommand(
 			ChangeBoundsRequest request, EditPart child, Object constraint) {
 		logger.debug("createChangeConstraintCommand");
+		if (((Rectangle)constraint).x < 0 || ((Rectangle)constraint).y < 0) {
+			return null;
+		}
 		if (child instanceof ScanModuleEditPart
 				&& constraint instanceof Rectangle) {
 			return new MoveScanModule((ScanModule) child.getModel(),
 					(Rectangle) constraint, request);
 		}
 		return super.createChangeConstraintCommand(request, child, constraint);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected Command createChangeConstraintCommand(EditPart child,
-			Object constraint) {
-		return null;
 	}
 	
 	/**
