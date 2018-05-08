@@ -93,6 +93,9 @@ public class IntegerRange extends Range<Integer> {
 				this.step = (this.from - this.to) / n;
 			}
 		}
+		if (this.isInfinite()) {
+			this.negateStepwidth();
+		}
 	}
 
 	/**
@@ -100,7 +103,7 @@ public class IntegerRange extends Range<Integer> {
 	 */
 	@Override
 	public List<Integer> getValues() {
-		List<Integer> values = new ArrayList<Integer>();
+		List<Integer> values = new ArrayList<>();
 		if (step == 0) {
 			if (from == to) {
 				values.add(from);
@@ -111,15 +114,15 @@ public class IntegerRange extends Range<Integer> {
 			return values;
 		}
 		int i = from;
-		values.add(new Integer(i));
+		values.add(i);
 		if (from < to) {
 			while (i + step <= to) {
-				values.add(new Integer(i + step));
+				values.add(i + step);
 				i = i + step;
 			}
 		} else {
 			while (i - step >= to) {
-				values.add(new Integer(i - step));
+				values.add(i - step);
 				i = i - step;
 			}
 		}
@@ -127,5 +130,22 @@ public class IntegerRange extends Range<Integer> {
 			values.add(to);
 		}
 		return values;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected boolean isInfinite() {
+		return (((this.from < this.to) && (this.from + this.step < this.from)) 
+		|| ((this.from > this.to) && (this.from - this.step > this.from))); 
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void negateStepwidth() {
+		this.step = -this.step;
 	}
 }

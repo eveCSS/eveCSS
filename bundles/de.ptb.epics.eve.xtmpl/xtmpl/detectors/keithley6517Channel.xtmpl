@@ -16,5 +16,4 @@
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
-                include "detector_scan_ohne_trigger_part.xtmpl"
             </channel>

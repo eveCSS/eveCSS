@@ -7,7 +7,7 @@
             <status>
                 <access method="GETCB" transport="ca" type="string">${PV}trigger.STAT</access>
             </status>
-	    ${includeFile}
+	        ${includeFile}
             <option>
                 <name>Severity</name>
                 <id>${PV}trigger.SEVR</id>

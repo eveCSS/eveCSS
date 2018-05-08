@@ -93,28 +93,21 @@ public class RangeMode extends AxisMode {
 			}
 			this.positions = StringUtil.buildCommaSeparatedString(intRanges);
 		} else if (type.equals(DataTypes.DOUBLE)) {
-			/*
-			List<DoubleRange> doubleRanges = new ArrayList<>();
-			for (String s : regexp.split(",")) {
-				doubleRanges.add(new DoubleRange(s.trim()));
-			}
-			this.positions = StringUtil.buildCommaSeparatedString(doubleRanges);
-			*/
 			List<BigDecimalRange> decimalRanges = new ArrayList<>();
 			for (String s : regexp.split(",")) {
 				decimalRanges.add(new BigDecimalRange(s.trim()));
 			}
 			NumberFormat numberFormat = DecimalFormat.getInstance(Locale.US);
 			numberFormat.setGroupingUsed(false);
-			StringBuffer buffer = new StringBuffer();
-			for (BigDecimalRange range : decimalRanges) {
-				for (BigDecimal decimal : range.getValues()) {
+			StringBuilder buffer = new StringBuilder();
+			for (BigDecimalRange decimalRange : decimalRanges) {
+				for (BigDecimal decimal : decimalRange.getValues()) {
 					buffer.append(numberFormat.format(decimal));
 					buffer.append(", ");
 				}
 			}
 			this.positions = buffer.toString().substring(
-					0, buffer.toString().lastIndexOf(","));
+					0, buffer.toString().lastIndexOf(','));
 		} else {
 			LOGGER.error("axis is neither of type int nor double" 
 					+ " -> no positions calculated");
@@ -140,7 +133,7 @@ public class RangeMode extends AxisMode {
 	 */
 	@Override
 	public List<IModelError> getModelErrors() {
-		List<IModelError> errors = new ArrayList<IModelError>();
+		List<IModelError> errors = new ArrayList<>();
 		if (this.range == null || this.range.isEmpty()) {
 			errors.add(new AxisError(this.axis, 
 					AxisErrorTypes.RANGE_NOT_SET));
