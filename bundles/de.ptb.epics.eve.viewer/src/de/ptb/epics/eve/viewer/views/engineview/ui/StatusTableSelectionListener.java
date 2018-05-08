@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.TableItem;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Channel;
+import de.ptb.epics.eve.data.scandescription.PositionMode;
 import de.ptb.epics.eve.data.scandescription.channelmode.ChannelModes;
 import de.ptb.epics.eve.ecp1.client.interfaces.IEngineStatusListener;
 import de.ptb.epics.eve.ecp1.types.EngineStatus;
@@ -218,15 +219,18 @@ public class StatusTableSelectionListener extends SelectionAdapter implements
 			motTable.setHeaderVisible(true);
 			motTable.setLinesVisible(true);
 			motTable.setLayoutData(gridData);
-			TableColumn motColumn = new TableColumn(motTable, SWT.NONE);
-			motColumn.setWidth(130);
-			motColumn.setText("Motor Axis");
-			TableColumn motColumn1 = new TableColumn(motTable, SWT.NONE);
-			motColumn1.setWidth(110);
-			motColumn1.setText("Stepfunction");
-			TableColumn motColumn2 = new TableColumn(motTable, SWT.NONE);
-			motColumn2.setWidth(500);
-			motColumn2.setText("Positions");
+			TableColumn axisNameColumn = new TableColumn(motTable, SWT.NONE);
+			axisNameColumn.setWidth(130);
+			axisNameColumn.setText("Motor Axis");
+			TableColumn axisStepfunctionColumn = new TableColumn(motTable, SWT.NONE);
+			axisStepfunctionColumn.setWidth(110);
+			axisStepfunctionColumn.setText("Stepfunction");
+			TableColumn axisPositionModeColumn = new TableColumn(motTable, SWT.NONE);
+			axisPositionModeColumn.setWidth(110);
+			axisPositionModeColumn.setText("Position Mode");
+			TableColumn axisPositionsColumn = new TableColumn(motTable, SWT.NONE);
+			axisPositionsColumn.setWidth(500);
+			axisPositionsColumn.setText("Positions");
 
 			Axis[] axis = displayChain.getScanModuleById(aktSM).getAxes();
 			for (int i = 0; i < axis.length; i++) {
@@ -237,7 +241,9 @@ public class StatusTableSelectionListener extends SelectionAdapter implements
 					TableItem tableItem = new TableItem(motTable, 0);
 					tableItem.setText(0, axis[i].getAbstractDevice().getName());
 					tableItem.setText(1, axis[i].getStepfunction().toString());
-					tableItem.setText(2, axis[i].getStart().toString()
+					tableItem.setText(2, PositionMode.typeToString(
+							axis[i].getPositionMode()));
+					tableItem.setText(3, axis[i].getStart().toString()
 							+ " \u2192 " 
 							+ axis[i].getStop().toString()
 							+ ", "
@@ -247,25 +253,33 @@ public class StatusTableSelectionListener extends SelectionAdapter implements
 					TableItem tableItemFile = new TableItem(motTable, 0);
 					tableItemFile.setText(0, axis[i].getAbstractDevice().getName());
 					tableItemFile.setText(1, axis[i].getStepfunction().toString());
-					tableItemFile.setText(2, axis[i].getFile().getAbsolutePath());
+					tableItemFile.setText(2, PositionMode.typeToString(
+							axis[i].getPositionMode()));
+					tableItemFile.setText(3, axis[i].getFile().getAbsolutePath());
 					break;
 				case PLUGIN:
 					TableItem tableItemPlug = new TableItem(motTable, 0);
 					tableItemPlug.setText(0, axis[i].getAbstractDevice().getName());
 					tableItemPlug.setText(1, axis[i].getStepfunction().toString());
-					tableItemPlug.setText(2, axis[i].getPluginController().getPlugin().getName());
+					tableItemPlug.setText(2, PositionMode.typeToString(
+							axis[i].getPositionMode()));
+					tableItemPlug.setText(3, axis[i].getPluginController().getPlugin().getName());
 					break;
 				case POSITIONLIST:
 					TableItem tableItemPos = new TableItem(motTable, 0);
 					tableItemPos.setText(0, axis[i].getAbstractDevice().getName());
 					tableItemPos.setText(1, axis[i].getStepfunction().toString());
-					tableItemPos.setText(2, axis[i].getPositionlist());
+					tableItemPos.setText(2, PositionMode.typeToString(
+							axis[i].getPositionMode()));
+					tableItemPos.setText(3, axis[i].getPositionlist());
 					break;
 				case RANGE:
 					TableItem tableItemRange = new TableItem(motTable, 0);
 					tableItemRange.setText(0, axis[i].getAbstractDevice().getName());
 					tableItemRange.setText(1, axis[i].getStepfunction().toString());
-					tableItemRange.setText(2, axis[i].getRange());
+					tableItemRange.setText(2, PositionMode.typeToString(
+							axis[i].getPositionMode()));
+					tableItemRange.setText(3, axis[i].getRange());
 					break;
 				default:
 					break;
