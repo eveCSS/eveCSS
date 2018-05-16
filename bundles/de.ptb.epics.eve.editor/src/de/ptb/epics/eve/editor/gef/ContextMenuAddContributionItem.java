@@ -24,9 +24,9 @@ public class ContextMenuAddContributionItem extends CompoundContributionItem {
 	 */
 	@Override
 	protected IContributionItem[] getContributionItems() {
-		ArrayList<IContributionItem> result = new ArrayList<IContributionItem>();
+		ArrayList<IContributionItem> result = new ArrayList<>();
 		
-		Map<String, String> params = new HashMap<String, String>();
+		Map<String, String> params = new HashMap<>();
 		CommandContributionItemParameter p = new CommandContributionItemParameter(
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow(),
 				"", "de.ptb.epics.eve.editor.command.addappended",
@@ -39,7 +39,7 @@ public class ContextMenuAddContributionItem extends CompoundContributionItem {
 		item.setVisible(true);
 		result.add(item);
 		
-		params = new HashMap<String, String>();
+		params = new HashMap<>();
 		p = new CommandContributionItemParameter(
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow(),
 				"", "de.ptb.epics.eve.editor.command.addnested",
@@ -51,7 +51,6 @@ public class ContextMenuAddContributionItem extends CompoundContributionItem {
 		item = new CommandContributionItem(p);
 		item.setVisible(true);
 		result.add(item);
-		
 		
 		return result.toArray(new IContributionItem[0]);
 	}
