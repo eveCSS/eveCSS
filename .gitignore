@@ -4,3 +4,4 @@ target/
 *.euml2
 *.umlproject
 /.directory
+*.directory

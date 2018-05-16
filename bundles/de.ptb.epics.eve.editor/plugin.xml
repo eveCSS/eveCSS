@@ -694,6 +694,7 @@
                visible="true">
          </separator>
          <menu
+               id="de.ptb.epics.eve.editor.gef.GraphicalEditor.AddMenu"
                label="Add">
             <dynamic
                   class="de.ptb.epics.eve.editor.gef.ContextMenuAddContributionItem"
@@ -710,6 +711,10 @@
                   </reference>
                </or>
             </visibleWhen>
+            <separator
+                  name="additions"
+                  visible="false">
+            </separator>
          </menu>
          <menu
                label="Fill">
@@ -738,6 +743,41 @@
                </reference>
             </visibleWhen>
          </menu>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:de.ptb.epics.eve.editor.gef.GraphicalEditor.AddMenu?after=additions">
+         <command
+               commandId="de.ptb.epics.eve.editor.command.addprepended"
+               icon="icons/devices/scanmodule.gif"
+               label="Prepended (append current)"
+               style="push">
+            <parameter
+                  name="de.ptb.epics.eve.editor.command.addprepended.dowithcurrent"
+                  value="append">
+            </parameter>
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.ptb.epics.eve.editor.expressions.scanmoduleselected">
+               </reference>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.addprepended"
+               icon="icons/devices/scanmodule.gif"
+               label="Prepended (nest current)"
+               style="push">
+            <parameter
+                  name="de.ptb.epics.eve.editor.command.addprepended.dowithcurrent"
+                  value="nest">
+            </parameter>
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.ptb.epics.eve.editor.expressions.scanmoduleselected">
+               </reference>
+            </visibleWhen>
+         </command>
       </menuContribution>
       <menuContribution
             locationURI="menu:file?before=new.ext">
@@ -942,6 +982,17 @@
             categoryId="de.ptb.epics.eve.editor.commands"
             id="de.ptb.epics.eve.editor.command.addnested"
             name="Add nested Scan Module">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.commands"
+            id="de.ptb.epics.eve.editor.command.addprepended"
+            name="Add prepended Scan Module">
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.addprepended.dowithcurrent"
+               name="Do with current"
+               optional="true"
+               values="de.ptb.epics.eve.editor.handler.editor.DoWithCurrent">
+         </commandParameter>
       </command>
       <category
             id="de.ptb.epics.eve.editor.views.eventcomposite.commands"
@@ -1248,6 +1299,10 @@
       <handler
             class="de.ptb.epics.eve.editor.handler.editor.AddNestedScanModule"
             commandId="de.ptb.epics.eve.editor.command.addnested">
+      </handler>
+      <handler
+            class="de.ptb.epics.eve.editor.handler.editor.AddPrepended"
+            commandId="de.ptb.epics.eve.editor.command.addprepended">
       </handler>
       <handler
             class="de.ptb.epics.eve.editor.handler.monitors.RemoveMonitor"
