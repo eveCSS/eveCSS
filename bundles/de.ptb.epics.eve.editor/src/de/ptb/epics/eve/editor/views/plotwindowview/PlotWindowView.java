@@ -5,11 +5,12 @@ import java.beans.PropertyChangeListener;
 import org.apache.log4j.Logger;
 import org.csstudio.swt.xygraph.figures.Trace.TraceType;
 import org.csstudio.swt.xygraph.figures.Trace.PointStyle;
-
+import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
 import org.eclipse.jface.fieldassist.ControlDecoration;
@@ -38,7 +39,6 @@ import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.FillLayout;
@@ -82,7 +82,6 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 	public static final String ID = 
 			"de.ptb.epics.eve.editor.views.PlotWindowView";
 	
-	// logging 
 	private static final Logger logger = 
 		Logger.getLogger(PlotWindowView.class.getName());
 	
@@ -120,6 +119,9 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 	private Composite yAxis2Composite;
 	
 	private ExpandItem itemGeneral;
+	
+	private Label idLabel;
+	private Text idText;
 	
 	private Label nameLabel;
 	private Text nameText;
@@ -227,6 +229,11 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 	private PlotWindowSelectionProvider selectionProvider;
 	private IObservableValue selectionObservable;
 	
+	private IObservableValue idTargetObservable;
+	private IObservableValue idModelObservable;
+	private Binding idBinding;
+	private ControlDecorationSupport idDecoration;
+	
 	private IObservableValue nameTargetObservable;
 	private IObservableValue nameModelObservable;
 	
@@ -330,10 +337,28 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 		gridLayout.numColumns = 2;
 		this.xAxisComposite.setLayout(gridLayout);
 		
+		this.idLabel = new Label(this.xAxisComposite, SWT.NONE);
+		this.idLabel.setText("Id:");
+		this.idText = new Text(this.xAxisComposite, SWT.BORDER);
+		GridData gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.horizontalIndent = 7;
+		this.idText.setLayoutData(gridData);
+		this.idText.addFocusListener(new TextSelectAllFocusListener(idText));
+		this.idText.addMouseListener(new TextSelectAllMouseListener(idText));
+		this.idText.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				idBinding.updateModelToTarget();
+				super.focusLost(e);
+			}
+		});
+		
 		this.nameLabel = new Label(this.xAxisComposite, SWT.NONE);
 		this.nameLabel.setText("Name:");
 		this.nameText = new Text(this.xAxisComposite, SWT.BORDER);
-		GridData gridData = new GridData();
+		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalIndent = 7;
@@ -748,6 +773,22 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 		this.selectionObservable = ViewersObservables
 				.observeSingleSelection(selectionProvider);
 		
+		this.idModelObservable = BeansObservables.observeDetailValue(
+				selectionObservable, PlotWindow.class, PlotWindow.ID_PROP, 
+				Integer.class);
+		this.idTargetObservable = SWTObservables.observeText(this.idText, 
+				SWT.Modify);
+		UpdateValueStrategy idTargetToModel = new UpdateValueStrategy(
+				UpdateValueStrategy.POLICY_UPDATE);
+		idTargetToModel.setAfterGetValidator(new IdTargetToModelValidator(
+				this));
+		UpdateValueStrategy idModelToTarget = new UpdateValueStrategy(
+				UpdateValueStrategy.POLICY_UPDATE);
+		this.idBinding = this.context.bindValue(idTargetObservable, 
+				idModelObservable, idTargetToModel, idModelToTarget);
+		this.idDecoration = ControlDecorationSupport.create(
+				this.idBinding, SWT.LEFT);
+		
 		this.nameModelObservable = BeansObservables.observeDetailValue(
 				selectionObservable, PlotWindow.class, PlotWindow.NAME_PROP,
 				String.class);
@@ -836,6 +877,15 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 			this.scanModule.addPropertyChangeListener("removePlot", this);
 		}
 		updateEvent(null);
+	}
+	
+	/**
+	 * Returns the current plot window.
+	 * @return the current plot window
+	 * @since 1.30
+	 */
+	public PlotWindow getPlotWindow() {
+		return this.plotWindow;
 	}
 	
 	/*
@@ -1359,6 +1409,7 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 			this.yAxis2 = null;
 		}
 		addListeners();
+		this.idBinding.validateTargetToModel();
 	}
 
 	/*
@@ -1385,19 +1436,7 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 		memento.putBoolean("itemYAxis2", this.itemYAxis2.getExpanded());
 	}
 	
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of 
-	 * <code>motorAxisComboBox</code>.
-	 */
-	private class MotorAxisComboBoxSelectionListener implements
-			SelectionListener {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
+	private class MotorAxisComboBoxSelectionListener extends SelectionAdapter {
 		
 		/**
 		 * {@inheritDoc}
@@ -1409,18 +1448,7 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 		}
 	}
 
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of 
-	 * <code>scaleTypeComboBox</code>.
-	 */
-	private class ScaleTypeComboBoxSelectionListener implements SelectionListener {
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(final SelectionEvent e) {
-		}
+	private class ScaleTypeComboBoxSelectionListener extends SelectionAdapter {
 
 		/**
 		 * {@inheritDoc}
@@ -1432,22 +1460,8 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 		}
 	}
 	
-	// ************************************************************************
-	// *************************** y axis 1 listener **************************
-	// ************************************************************************	
-	
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of 
-	 * <code>yAxis1DetectorChannelComboBox</code>.
-	 */
-	private class YAxis1DetectorChannelComboBoxSelectionListener 
-										implements SelectionListener {
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
+	private class YAxis1DetectorChannelComboBoxSelectionListener
+			extends SelectionAdapter {
 
 		/**
 		 * {@inheritDoc}
@@ -1475,19 +1489,8 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 		}
 	}
 	
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of 
-	 * <code>yAxis1NormalizechannelComboBox</code>.
-	 */
 	private class YAxis1NormalizeChannelComboBoxSelectionListener
-										implements SelectionListener {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
+			extends SelectionAdapter {
 		
 		/**
 		 * {@inheritDoc}
@@ -1509,18 +1512,7 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 		}
 	}
 	
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of 
-	 * <code>yAxis1ColorComboBox</code>.
-	 */
-	private class YAxis1ColorComboBoxSelectionListener implements SelectionListener {
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(final SelectionEvent e) {
-		}
+	private class YAxis1ColorComboBoxSelectionListener extends SelectionAdapter {
 
 		/**
 		 * {@inheritDoc}<br>
@@ -1540,10 +1532,6 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 		}
 	}
 	
-	/**
-	 * {@link org.eclipse.jface.util.IPropertyChangeListener} of 
-	 * <code>colorFieldEditor</code>.
-	 */
 	private class YAxis1ColorFieldEditorPropertyChangeListener 
 							implements IPropertyChangeListener {
 		/**
@@ -1557,18 +1545,8 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 		}
 	}
 	
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of 
-	 * <code>yAxis1LineStyleComboBox</code>.
-	 */
-	private class YAxis1LineStyleComboBoxSelectionListener 
-											implements SelectionListener {
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(final SelectionEvent e) {
-		}
+	private class YAxis1LineStyleComboBoxSelectionListener
+			extends SelectionAdapter {
 
 		/**
 		 * {@inheritDoc}
@@ -1587,19 +1565,9 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 		}
 	}
 	
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of 
-	 * <code>yAxis1MarkStyleComboBox</code>.
-	 */
-	private class YAxis1MarkStyleComboBoxSelectionListener 
-											implements SelectionListener {
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(final SelectionEvent e) {
-		}
-
+	private class YAxis1MarkStyleComboBoxSelectionListener
+			extends SelectionAdapter {
+		
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1615,18 +1583,8 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 		}
 	}
 	
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of 
-	 * <code>yAxis1ScaleTypeComboBox</code>.
-	 */
 	private class YAxis1ScaleTypeComboBoxSelectionListener
-											implements SelectionListener {
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(final SelectionEvent e) {
-		}
+			extends SelectionAdapter {
 
 		/**
 		 * {@inheritDoc}
@@ -1638,22 +1596,8 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 		}
 	}
 	
-	// ************************************************************************
-	// ********************* Listener of axis 2 *******************************
-	// ************************************************************************
-	
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of
-	 * <code>yAxis2DetectorChannelComboBox</code>.
-	 */
-	private class YAxis2DetectorChannelComboBoxSelectionListener implements
-			SelectionListener {
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
+	private class YAxis2DetectorChannelComboBoxSelectionListener
+			extends SelectionAdapter {
 
 		/**
 		 * {@inheritDoc}
@@ -1683,19 +1627,8 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 		}
 	}
 	
-	/**
-	 * <code>SelectionListener</code> of
-	 * <code>yAxis2NormalizeChannelComboBox</code>.
-	 */
-	private class YAxis2NormalizeChannelComboBoxSelectionListener implements
-			SelectionListener {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
+	private class YAxis2NormalizeChannelComboBoxSelectionListener
+			extends SelectionAdapter {
 
 		/**
 		 * {@inheritDoc}
@@ -1718,17 +1651,8 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 		}
 	}
 	
-	/**
-	 * <code>SelectionListener</code> of <code>yAxis2ColorComboBox</code>.
-	 */
-	private class YAxis2ColorComboBoxSelectionListener implements
-			SelectionListener {
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(final SelectionEvent e) {
-		}
+	private class YAxis2ColorComboBoxSelectionListener
+			extends SelectionAdapter {
 
 		/**
 		 * {@inheritDoc}
@@ -1746,10 +1670,6 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 		}
 	}
 	
-	/**
-	 * <code>PropertyChangeListener</code> of
-	 * <code>yAxis2ColorFieldEditor</code>.
-	 */
 	private class YAxis2ColorFieldEditorPropertyChangeListener implements
 			IPropertyChangeListener {
 		/**
@@ -1763,18 +1683,8 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 		}
 	}
 	
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of
-	 * <code>yAxis2LineStyleComboBox</code>.
-	 */
-	private class YAxis2LineStyleComboBoxSelectionListener implements
-			SelectionListener {
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(final SelectionEvent e) {
-		}
+	private class YAxis2LineStyleComboBoxSelectionListener
+			extends SelectionAdapter {
 
 		/**
 		 * {@inheritDoc}
@@ -1791,18 +1701,8 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 		}
 	}
 	
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of
-	 * <code>yAxis2MarkStyleComboBox</code>.
-	 */
-	private class YAxis2MarkStyleComboBoxSelectionListener implements
-			SelectionListener {
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(final SelectionEvent e) {
-		}
+	private class YAxis2MarkStyleComboBoxSelectionListener
+			extends SelectionAdapter {
 
 		/**
 		 * {@inheritDoc}
@@ -1819,18 +1719,8 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 		}
 	}
 
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of
-	 * <code>yAxis2ScaleTypeComboBox</code>.
-	 */
-	private class YAxis2ScaleTypeComboBoxSelectionListener implements
-			SelectionListener {
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(final SelectionEvent e) {
-		}
+	private class YAxis2ScaleTypeComboBoxSelectionListener
+			extends SelectionAdapter {
 
 		/**
 		 * {@inheritDoc}

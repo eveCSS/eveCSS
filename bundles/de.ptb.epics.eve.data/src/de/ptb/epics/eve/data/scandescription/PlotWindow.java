@@ -32,9 +32,8 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  */
 public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 				PropertyChangeListener {
-
+	public static final String ID_PROP = "id";
 	public static final String NAME_PROP = "name";
-	
 	public static final String PREINIT_WINDOW_PROP = "init";
 	
 	// logging 
@@ -86,8 +85,8 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 
 		this.scanModule.addPropertyChangeListener("addAxis", this);
 
-		this.updateListener = new ArrayList<IModelUpdateListener>();
-		this.yAxes = new ArrayList<YAxis>();
+		this.updateListener = new ArrayList<>();
+		this.yAxes = new ArrayList<>();
 		this.mode = PlotModes.LINEAR;
 		
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
@@ -110,8 +109,7 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 	public PlotWindow(final ScanModule scanModule, final boolean generateId) {
 		this(scanModule);
 		if(generateId) {
-			this.id = this.getScanModule().getChain().getScanDescription().
-				getAvailablePlotId();
+			this.id = this.getScanModule().getChain().getAvailablePlotId();
 			this.name = "Plot " + this.id;
 		}
 		if(scanModule.getAxes().length == 1) {
@@ -153,21 +151,21 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 	}
 	
 	/**
-	 * Returns the id of the plot window.
-	 * 
-	 * @return the id of the plot window
-	 */
-	public int getId() {
-		return this.id;
-	}
-	
-	/**
 	 * Returns the scan module the plot is corresponding to.
 	 * 
 	 * @return the corresponding scan module
 	 */
 	public ScanModule getScanModule() {
 		return this.scanModule;
+	}
+
+	/**
+	 * Returns the id of the plot window.
+	 * 
+	 * @return the id of the plot window
+	 */
+	public int getId() {
+		return this.id;
 	}
 
 	/**
@@ -181,7 +179,10 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 			throw new IllegalArgumentException(
 					"The parameter 'id' must be larger than 0.");
 		}
+		int oldValue = this.id;
 		this.id = id;
+		this.propertyChangeSupport.firePropertyChange(PlotWindow.ID_PROP, 
+				oldValue, this.id);
 		updateListeners();
 	}
 	
@@ -199,8 +200,10 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 	 * @param name the name to set
 	 */
 	public void setName(String name) {
+		String oldValue = this.name;
+		this.name = name;
 		this.propertyChangeSupport.firePropertyChange(PlotWindow.NAME_PROP,
-				this.name, this.name = name);
+				oldValue, this.name);
 		updateListeners();
 	}
 
@@ -327,7 +330,7 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 	 * @return a list of y axes
 	 */
 	public List<YAxis> getYAxes() {
-		return new ArrayList<YAxis>(this.yAxes);
+		return new ArrayList<>(this.yAxes);
 	}
 
 	/**
@@ -451,7 +454,7 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 	 * @return a <code>List</code> of all model errors that occurred
 	 */
 	public List<IModelError> getModelErrors() {
-		final List<IModelError> modelErrors = new ArrayList<IModelError>();
+		final List<IModelError> modelErrors = new ArrayList<>();
 		if(this.xAxis == null) {
 			modelErrors.add(new PlotWindowError(
 					this, PlotWindowErrorTypes.NO_X_AXIS_SET));
@@ -468,7 +471,7 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 	 */
 	private void updateListeners() {
 		final CopyOnWriteArrayList<IModelUpdateListener> list = 
-			new CopyOnWriteArrayList<IModelUpdateListener>(this.updateListener);
+			new CopyOnWriteArrayList<>(this.updateListener);
 		
 		for(IModelUpdateListener imul : list) {
 			imul.updateEvent(new ModelUpdateEvent(this, null));

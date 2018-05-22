@@ -16,10 +16,12 @@ import org.eclipse.ui.PlatformUI;
  * @since 1.28.10
  */
 public abstract class ActionCompositeLabelProvider implements ITableLabelProvider {
-	private static Image DELETE_IMG = PlatformUI.getWorkbench().getSharedImages().
-			getImage(ISharedImages.IMG_TOOL_DELETE);
-	private static Image ERROR_IMG = PlatformUI.getWorkbench().getSharedImages().
-			getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
+	private static final Image DELETE_IMG = PlatformUI.getWorkbench().
+			getSharedImages().getImage(ISharedImages.IMG_TOOL_DELETE);
+	private static final Image ERROR_IMG = PlatformUI.getWorkbench().
+			getSharedImages().getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
+	private static final Image INFO_IMG = PlatformUI.getWorkbench().
+			getSharedImages().getImage(ISharedImages.IMG_OBJS_INFO_TSK);
 	
 	/**
 	 * Returns the image that should be used by subclasses as label image in a delete column
@@ -39,6 +41,15 @@ public abstract class ActionCompositeLabelProvider implements ITableLabelProvide
 		return ActionCompositeLabelProvider.ERROR_IMG;
 	}
 
+	/**
+	 * 
+	 * @return
+	 * @since 1.30
+	 */
+	protected static Image getInfoImage() {
+		return ActionCompositeLabelProvider.INFO_IMG;
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
