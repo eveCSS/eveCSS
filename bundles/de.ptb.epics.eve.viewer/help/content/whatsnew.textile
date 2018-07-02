@@ -1,5 +1,9 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.29.4 (2018-06-12)
+
+* [Bug Fix-#3948] fixed a bug where range stepfunction motor axes were not shown in the Scan Module Info Dialog of the Engine View
+
 h2(eveTopic). Version 1.29.2 (2017-01-25)
 
 * [Bug Fix-#2594] fixed a bug where PVs could not be edited (Device Inspector/Options View) due to wrong listener responses (read only status)
