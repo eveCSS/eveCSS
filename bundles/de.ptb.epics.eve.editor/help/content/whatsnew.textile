@@ -1,6 +1,12 @@
 h1(eveTopic). Release Notes
 
-h2(eveTopic). Version 1.29.2
+h2(eveTopic). Version 1.29.4 (2018-06-12)
+
+* [Bug Fix-#3949] fixed a bug where certain inputs of a range stepfunction lead to a lag due to an overflow
+* [Bug Fix-#3945] fixed a bug where a SCML file embedded in a h5 file could not be opened due to a missing temporary folder
+* [Bug Fix-#3902] fixed a bug where moving a scan module in the graphical editor could lead to (illegal) negative coordinates
+
+h2(eveTopic). Version 1.29.2 (2017-01-25)
 
 * [Bug Fix-#3945] fixed a bug where an SCML file embedded in an HDF5 file could not be opened due to a missing temporary subfolder
 

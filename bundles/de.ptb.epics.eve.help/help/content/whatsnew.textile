@@ -1,7 +1,12 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.29.5 (2018-07-05)
+
+* [Bug Fix-#4120] removed obsolete/malfunctioning @pilatus1m@ template (use @areaDet@ instead)
+
 h2(eveTopic). Version 1.29.4 (2018-06-12)
 
+* [Bug Fix-#3928] added store and recall for motor axes
 * [Bug Fix-#2253] trigger PV added for template dsa8300
 
 h2(eveTopic). Version 1.29.3 (2018-03-13)
