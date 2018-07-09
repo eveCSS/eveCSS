@@ -4,6 +4,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -962,6 +963,61 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 				this.isPauseEventOfTheChain((PauseEvent)controlEvent)) || 
 				this.isBreakEventOfTheChain(controlEvent) || 
 				this.isRedoEventOfTheChain(controlEvent);
+	}
+	
+	/**
+	 * Returns a valid id for a plot.
+	 * 
+	 * @return a valid id for a plot
+	 */
+	public int getAvailablePlotId() {
+		List<Integer> plotIds = new ArrayList<>();
+		for (ScanModule sm : this.scanModules) {
+			for (PlotWindow pw : sm.getPlotWindows()) {
+				plotIds.add(pw.getId());
+			}
+		}
+		Collections.sort(plotIds);
+		int i=1;
+		while(plotIds.contains(i)) {
+			i++;
+		}
+		return i;
+	}
+	
+	/**
+	 * Returns a map which keys are plot window ids and values are lists of 
+	 * scan modules which contain plot windows using this id.
+	 * 
+	 * Can be used to check if a used plot window id is also used elsewhere
+	 * (and where it is used). Remember that the scan module of the plot window
+	 * to check for is also included.
+	 * 
+	 * @return a map of plot window id keys and scan module list values 
+	 *   containing plot windows using this id
+	 * @since 1.30
+	 */
+	public Map<Integer,List<ScanModule>> getUsedIds() {
+		/*
+		 * Idea: the plod id is the key. Iterate over each scan module and 
+		 * for each plot in it put the scan module into the corresponding list.
+		 * Each List with size == 1 must be removed afterwards. The remaining 
+		 * Map contains all Ids (Keys) which are used more than once. The value
+		 * is the list of scan modules where this plot id is used.
+		 */
+		Map<Integer, List<ScanModule>> usedIds = new HashMap<>();
+		for (ScanModule sm : this.scanModules) {
+			for (PlotWindow plotWindow : sm.getPlotWindows()) {
+				if (usedIds.get(plotWindow.getId()) == null) {
+					List<ScanModule> smList = new LinkedList<>();
+					smList.add(sm);
+					usedIds.put(plotWindow.getId(), smList);
+				} else {
+					usedIds.get(plotWindow.getId()).add(sm);
+				}
+			}
+		}
+		return usedIds;
 	}
 	
 	/**

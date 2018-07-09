@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -256,28 +257,6 @@ public class ScanDescription implements IModelUpdateProvider,
 	 */
 	public Event getDefaultStartEvent() {
 		return this.startEvent;
-	}
-	
-	/**
-	 * Returns a valid id for a plot.
-	 * 
-	 * @return a valid id for a plot
-	 */
-	public int getAvailablePlotId() {
-		List<Integer> plotIds = new ArrayList<>();
-		for(Chain ch : this.chains) {
-			for(ScanModule sm : ch.getScanModules()) {
-				for(PlotWindow pw : sm.getPlotWindows()) {
-					plotIds.add(pw.getId());
-				}
-			}
-		}
-		Collections.sort(plotIds);
-		int i=1;
-		while(plotIds.contains(i)) {
-			i++;
-		}
-		return i;
 	}
 	
 	/**
