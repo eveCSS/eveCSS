@@ -284,9 +284,7 @@ public class XyPlot extends Figure implements PlotViewComponent, IStateListener 
 		}
 	}
 	
-	/**
-	 * 
-	 */
+	@Override
 	public void clear() {
 		for (TraceDataCollector coll : this.collectors) {
 			Activator.getDefault().getEcp1Client()
