@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<class-diagram version="1.1.11" icons="true" automaticImage="PNG" always-add-relationships="false" 
-  generalizations="true" realizations="true" associations="true" dependencies="false" nesting-relationships="true" 
-  router="FAN">  
+<class-diagram version="1.2.2" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
   <class id="1" language="java" name="de.ptb.epics.eve.viewer.views.plotview.ui.XyPlot" 
     project="de.ptb.epics.eve.viewer" 
     file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/plotview/ui/XyPlot.java" binary="false" 
@@ -28,7 +27,7 @@
     project="de.ptb.epics.eve.viewer" 
     file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/plotview/plot/TraceInfo.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="983" y="536"/>    
+    <position height="-1" width="-1" x="979" y="576"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -59,8 +58,8 @@
   </interface>  
   <interface id="6" language="java" name="org.csstudio.swt.xygraph.dataprovider.IDataProviderListener" 
     project="de.ptb.epics.eve.viewer" 
-    file="/messung/eve/java/CSS/3.3.9/plugins/org.csstudio.swt.xygraph_2.0.3.201406112024.jar" binary="true" 
-    corner="BOTTOM_RIGHT">    
+    file="/home/mmichals/Projects/eveCSS/workspace-oxygen-bugfix/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.csstudio.swt.xygraph_2.0.3.201410011746.jar" 
+    binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="182" y="-58"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -81,8 +80,8 @@
   </interface>  
   <interface id="8" language="java" name="org.csstudio.swt.xygraph.dataprovider.IDataProvider" 
     project="de.ptb.epics.eve.viewer" 
-    file="/messung/eve/java/CSS/3.3.9/plugins/org.csstudio.swt.xygraph_2.0.3.201406112024.jar" binary="true" 
-    corner="BOTTOM_RIGHT">    
+    file="/home/mmichals/Projects/eveCSS/workspace-oxygen-bugfix/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.csstudio.swt.xygraph_2.0.3.201410011746.jar" 
+    binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="515" y="-5"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -91,9 +90,9 @@
     </display>  
   </interface>  
   <class id="9" language="java" name="org.csstudio.swt.xygraph.figures.XYGraph" project="de.ptb.epics.eve.viewer" 
-    file="/messung/eve/java/CSS/3.3.9/plugins/org.csstudio.swt.xygraph_2.0.3.201406112024.jar" binary="true" 
-    corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="181" y="153"/>    
+    file="/home/mmichals/Projects/eveCSS/workspace-oxygen-bugfix/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.csstudio.swt.xygraph_2.0.3.201410011746.jar" 
+    binary="true" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="180" y="136"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -102,8 +101,8 @@
   </class>  
   <interface id="10" language="java" name="org.csstudio.swt.xygraph.dataprovider.ISample" 
     project="de.ptb.epics.eve.viewer" 
-    file="/messung/eve/java/CSS/3.3.9/plugins/org.csstudio.swt.xygraph_2.0.3.201406112024.jar" binary="true" 
-    corner="BOTTOM_RIGHT">    
+    file="/home/mmichals/Projects/eveCSS/workspace-oxygen-bugfix/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.csstudio.swt.xygraph_2.0.3.201410011746.jar" 
+    binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1230" y="258"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -111,89 +110,89 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <association id="11">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="12" name="listeners">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="13" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="14">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="15" name="traceInfo">        
-        <position height="0" width="0" x="62" y="11"/>      
-      </attribute>      
-      <multiplicity id="16" minimum="0" maximum="1">        
-        <position height="0" width="0" x="62" y="11"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="17">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="18" name="updateStrategy">        
-        <position height="0" width="0" x="29" y="13"/>      
-      </attribute>      
-      <multiplicity id="19" minimum="0" maximum="1">        
-        <position height="0" width="0" x="29" y="13"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="20">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="10"/>  
-  </realization>  
-  <association id="21">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="22" name="xyGraph">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="23" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="24">    
+  <realization id="11">    
     <end type="SOURCE" refId="2"/>    
     <end type="TARGET" refId="8"/>  
   </realization>  
-  <association id="25">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="26" name="data">        
-        <position height="0" width="0" x="59" y="-11"/>      
-      </attribute>      
-      <multiplicity id="27" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="59" y="-11"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="28">    
+  <realization id="12">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="7"/>  
+  </realization>  
+  <association id="13">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="29" name="collectors">        
+      <attribute id="14" name="collectors">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="30" minimum="0" maximum="2147483647">        
+      <multiplicity id="15" minimum="0" maximum="2147483647">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
+  <association id="16">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="17" name="traceInfo">        
+        <position height="0" width="0" x="58" y="51"/>      
+      </attribute>      
+      <multiplicity id="18" minimum="0" maximum="1">        
+        <position height="0" width="0" x="58" y="51"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="19">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="20" name="listeners">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="21" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="22">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="23" name="xyGraph">        
+        <position height="0" width="0" x="-1" y="-17"/>      
+      </attribute>      
+      <multiplicity id="24" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-1" y="-17"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="25">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="26" name="updateStrategy">        
+        <position height="0" width="0" x="29" y="13"/>      
+      </attribute>      
+      <multiplicity id="27" minimum="0" maximum="1">        
+        <position height="0" width="0" x="29" y="13"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="28">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="29" name="data">        
+        <position height="0" width="0" x="59" y="-11"/>      
+      </attribute>      
+      <multiplicity id="30" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="59" y="-11"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
   <realization id="31">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="7"/>  
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="10"/>  
   </realization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
