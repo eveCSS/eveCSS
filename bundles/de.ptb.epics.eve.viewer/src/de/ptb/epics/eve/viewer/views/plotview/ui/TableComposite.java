@@ -251,6 +251,20 @@ public class TableComposite extends Composite implements PlotViewComponent,
 	 * {@inheritDoc}
 	 */
 	@Override
+	public void clear() {
+		for (Object o : det1Elements) {
+			if (o instanceof Data) {
+				((Data)o).deactivate();
+			}
+		}
+		this.removeElements(det1Elements);
+		this.removeElements(det2Elements);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void propertyChange(PropertyChangeEvent event) {
 		if (event.getPropertyName().equals(Data.MOTOR_PROP) || 
 				event.getPropertyName().equals(Data.DETECTOR_PROP)) {

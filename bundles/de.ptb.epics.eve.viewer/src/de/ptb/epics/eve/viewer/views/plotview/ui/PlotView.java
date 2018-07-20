@@ -373,6 +373,7 @@ public class PlotView extends ViewPart implements IChainStatusListener,
 		Activator.getDefault().getEcp1Client().removeEngineStatusListener(this);
 		Activator.getDefault().getEcp1Client().removeChainStatusListener(this);
 		this.xyPlot.clear();
+		this.tableComposite.clear();
 		super.dispose();
 	}
 

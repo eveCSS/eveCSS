@@ -16,4 +16,12 @@ public interface PlotViewComponent {
 	 * @param plotWindow the plot window whose elements should be shown
 	 */
 	void setPlotWindow(PlotWindow plotWindow);
+	
+	/**
+	 * Resets all elements of the plot view component such as listeners such 
+	 * that it is safe to dispose it.
+	 * 
+	 * @since 1.29.6
+	 */
+	void clear();
 }

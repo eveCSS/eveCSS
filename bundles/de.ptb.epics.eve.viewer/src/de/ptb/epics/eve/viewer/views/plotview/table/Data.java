@@ -61,6 +61,16 @@ public abstract class Data implements IMeasurementDataListener,
 	}
 	
 	/**
+	 * Unregisters listeners. Should be called when associated view is disposed.
+	 * @since 1.29.6
+	 */
+	public void deactivate() {
+		Activator.getDefault().getEcp1Client().removeMeasurementDataListener(
+				this);
+		Activator.getDefault().getEcp1Client().removeEngineStatusListener(this);
+	}
+	
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
