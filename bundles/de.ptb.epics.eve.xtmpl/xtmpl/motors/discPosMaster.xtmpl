@@ -27,7 +27,7 @@
                     <name>Label 0</name>
                     <id>${PV}Mnu.ZRST</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}MnuZRST</access>
+                        <access method="GETPUT" type="string" transport="ca">${PV}Mnu.ZRST</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
