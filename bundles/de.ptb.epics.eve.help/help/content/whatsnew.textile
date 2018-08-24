@@ -1,5 +1,9 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.29.6 (2018-08-24)
+
+* [Bug Fix-#4191] fixed typo in template @discPosMaster@
+
 h2(eveTopic). Version 1.29.5 (2018-07-05)
 
 * [Bug Fix-#4120] removed obsolete/malfunctioning @pilatus1m@ template (use @areaDet@ instead)
