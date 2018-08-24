@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Preferences
 Bundle-SymbolicName: de.ptb.epics.eve.preferences;singleton:=true
-Bundle-Version: 1.29.5
+Bundle-Version: 1.29.6
 Bundle-Activator: de.ptb.epics.eve.preferences.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime
