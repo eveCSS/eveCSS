@@ -40,6 +40,36 @@ public class Version implements Comparable<Version> {
 	 * {@inheritDoc}
 	 */
 	@Override
+	public int hashCode() {
+		int result = 1;
+		int prime = 31;
+		result = prime * result + this.major;
+		result = prime * result + this.minor;
+		return result;
+	}
+	
+	/**
+	 * {@inheritDoc.
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof Version)) {
+			return false;
+		}
+		Version other = (Version) obj;
+		return this.major == other.major && this.minor == other.minor;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public int compareTo(Version other) {
 		if (this.major == other.major) {
 			if (this.minor == other.minor) {

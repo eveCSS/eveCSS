@@ -288,7 +288,28 @@ public class Activator extends AbstractUIPlugin {
 		imagereg.put("SCANMODULE", imageDescriptorFromPlugin(
 				PLUGIN_ID, "icons/devices/scanmodule.gif"));
 		
+		imagereg.put("WAITING", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/waiting.gif").createImage());
 		imagereg.put("INFO", imageDescriptorFromPlugin(
 				PLUGIN_ID, "icons/information.gif"));
+		imagereg.put("WARNING", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/warning_obj.gif").createImage());
+		imagereg.put("ERROR", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/error.gif").createImage());
+		imagereg.put("FATAL", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/fatalerror_obj.gif").createImage());
+		
+		imagereg.put("TEST", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/test.png").createImage());
+		imagereg.put("TESTRUN", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/testrun.png").createImage());
+		imagereg.put("TESTOK", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/testok.png").createImage());
+		imagereg.put("TESTFAIL", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/testfail.png").createImage());
+		imagereg.put("TESTERROR", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/testerr.png").createImage());
+		
+		
 	}
 }

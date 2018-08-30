@@ -91,6 +91,14 @@
             name="Progress"
             restorable="true">
       </view>
+      <view
+            category="eveEditorCategory"
+            class="de.ptb.epics.eve.editor.views.batchupdateview.ui.BatchUpdateView"
+            icon="icons/stckframe_running_obj.png"
+            id="de.ptb.epics.eve.editor.views.batchupdateview"
+            name="Batch Update View"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.newWizards">
@@ -889,6 +897,15 @@
             </parameter>
          </command>
       </menuContribution>
+      <menuContribution
+            locationURI="toolbar:de.ptb.epics.eve.editor.views.batchupdateview">
+         <command
+               commandId="de.ptb.epics.eve.editor.command.batchupdateview.reset"
+               icon="icons/clear_co.gif"
+               label="Reset View (clears all input)"
+               style="push">
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.core.expressions.definitions">
@@ -1256,6 +1273,16 @@
             defaultHandler="de.ptb.epics.eve.editor.handler.editor.OpenSCML"
             id="de.ptb.epics.eve.editor.command.openscml"
             name="Open SCML">
+      </command>
+      <category
+            id="de.ptb.epics.eve.editor.command.batchupdateview"
+            name="Batch Update View">
+      </category>
+      <command
+            defaultHandler="de.ptb.epics.eve.editor.handler.batchupdateview.ResetCommandHandler"
+            description="Resets the view to its initial state"
+            id="de.ptb.epics.eve.editor.command.batchupdateview.reset"
+            name="Reset View">
       </command>
    </extension>
    <extension
