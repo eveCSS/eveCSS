@@ -283,6 +283,8 @@ public class BatchUpdateView extends ViewPart implements PropertyChangeListener 
 					fileTable.setComparator(null);
 					fileTable.getTable().getColumn(0).setImage(null);
 					break;
+				default:
+					break;
 				}
 				fileTable.getTable().getColumn(1).setImage(null);
 				fileTable.getTable().getColumn(2).setImage(null);
@@ -326,6 +328,8 @@ public class BatchUpdateView extends ViewPart implements PropertyChangeListener 
 				case 2:
 					fileTable.setComparator(null);
 					fileTable.getTable().getColumn(1).setImage(null);
+					break;
+				default:
 					break;
 				}
 				fileTable.getTable().getColumn(0).setImage(null);
