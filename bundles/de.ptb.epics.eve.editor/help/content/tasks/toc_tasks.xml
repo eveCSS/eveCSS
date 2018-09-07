@@ -16,5 +16,7 @@
    </topic>
    <topic href="help/content/tasks/importaxesfromcsv.html" label="Import Axes from CSV">
    </topic>
+   <topic href="help/content/tasks/batchupdate.html" label="Update multiple Scans (Batch Update)">
+   </topic>
 
 </toc>

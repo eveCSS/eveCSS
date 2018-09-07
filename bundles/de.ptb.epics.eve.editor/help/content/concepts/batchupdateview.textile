@@ -1,0 +1,29 @@
+h1(eveTopic). Batch Update View
+
+p. The Batch Update View is not (like the other views) part of the scan building process. Its only task is to update a folder of scan descriptions (SCMLs) to the current version (if necessary).
+
+p. An update of a scan description is necessary if it was created with an older version of eveCSS. When opening a (single) file in the Editor the update is performed automatically (the file just has to be saved afterwards). For a large amount of files this process is not feasible.
+
+p. The Batch Update View can be opened just like any other view (Window -> Show View -> Other -> EVE Editor -> Batch Update View). The (initially empty) view is shown in the following figure:
+
+p=. !(eveImage)../../img/concepts/BatchUpdateView/batchupdateview.png(Batch Update View Overview)!
+
+p. To perform an update a "source" directory containing the files that should be updated and a "target" directory defining where the updated files should be saved to have to be specified. The table shows the files discovered in the source directory as well as their current version. During the update process the file status is updated. A file has one of the following statuses:
+
+table(eveDataTable).
+|_. Icon |_. Status |_. Description |
+| !../../img/concepts/BatchUpdateView/waiting.gif(Pending icon)! | Pending | The file is currently being read. |
+| !../../img/concepts/BatchUpdateView/fatalerror_obj.gif(Read error icon)! | Error | Error reading the file. |
+| !../../img/concepts/BatchUpdateView/test.png(Up to date icon)! | up to date | The file is (already) up to date. |
+| !../../img/concepts/BatchUpdateView/testfail.png(Outdated icon)! | outdated | The file is outdated and will be upgraded. |
+| !../../img/concepts/BatchUpdateView/testrun.png(Updating icon)! | updating | The file is currently updating. |
+| !../../img/concepts/BatchUpdateView/testok.png(Updated icon)! | updated | The file has been updated. |
+| !../../img/concepts/BatchUpdateView/testerr.png(Update error icon)! | Error during update | An update occurred while updating the file. |
+
+p. Please note that a file could only be updated if it has at least version 2.3 (i.e. was created with eveCSS v1.18 or newer).
+
+p. An update is only possible if both source and target are given (and unequal).
+
+p. The view can be reset (cleared) by clicking the view's toolbar icon.
+
+p. An example of a complete update process is described "here":../tasks/batchupdate.html.

@@ -1,0 +1,31 @@
+h1(eveTopic). Update multiple Scans (Batch Update)
+
+p. The following shows an example of updating multiple scan descriptions within the Batch Update View.
+
+p. If the view is not already open it can be opened with Window -> Show View -> Other -> EVE Editor -> Batch Update View:
+
+p=. !(eveImage)../../img/tasks/batchupdate/batchupdateview.png(initial batch update view)!
+
+p. After selecting a source folder (by clicking on the Search Button) all files in the given directory will be analyzed. The table shows all scan descriptions found. After a short delay the current version and file status should also be shown. The label above the table shows the number of files found as well as the number of files that will be updated:
+
+p=. !(eveImage)../../img/tasks/batchupdate/batchupdate-selectsource.png(table with files found at selected source and their statuses)!
+
+p. The table columns can be sorted by clicking on them (additional clicks toggle between A->Z, Z->A and no sorting):
+
+p=. !(eveImage)../../img/tasks/batchupdate/batchupdate-sortcolumn.png(sorted status column)!
+
+p. After a target (distinct from the source) is select the update could be performed:
+
+p=. !(eveImage)../../img/tasks/batchupdate/batchupdate-selecttarget.png(after target is selected, update is possible)!
+
+p. After clicking on "Update" the update will be performed in the background. If any files already exist at the target location a warning dialog is shown:
+
+p=. !(eveImage)../../img/tasks/batchupdate/batchupdate-filesexistdialog.png(files already exist warning dialog)!
+
+p. When the updates are finished the file statuses and versions are updated:
+
+p=. !(eveImage)../../img/tasks/batchupdate/batchupdate-updated.png(updated statuses of files)!
+
+p. Further updates are not possible until a new source and/or target are selected.
+
+p. For a complete list of file statuses consult the "Batch Update View":../concepts/batchupdateview.html help.
