@@ -82,7 +82,7 @@ public class BatchUpdater {
 		FilenameFilter filenameFilter = new FilenameFilter() {
 			@Override
 			public boolean accept(File dir, String name) {
-				return (name.endsWith(".h5") || name.endsWith(".scml"));
+				return name.endsWith(".h5") || name.endsWith(".scml");
 			}
 		};
 		for (final File file : this.source.listFiles(filenameFilter)) {
