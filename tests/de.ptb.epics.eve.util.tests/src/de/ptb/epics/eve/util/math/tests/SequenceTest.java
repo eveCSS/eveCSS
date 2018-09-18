@@ -11,7 +11,7 @@ public class SequenceTest {
 	public void testStepcountInt() {
 		assertEquals(4, Sequence.getStepcount(1, 5, 1), 0.0001);
 		assertEquals(4, Sequence.getStepcount(5, 1, 1), 0.0001);
-		assertEquals(5, Sequence.getStepcount(1, 10, 2), 0.0001);
+		assertEquals(4.5, Sequence.getStepcount(1, 10, 2), 0.0001);
 		assertEquals(0.4, Sequence.getStepcount(0, 20, 50), 0.0001);
 		assertEquals(10, Sequence.getStepcount(-5, 5, 1), 0.0001);
 		assertEquals(10, Sequence.getStepcount(5, -5, 1), 0.0001);
