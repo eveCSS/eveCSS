@@ -243,7 +243,7 @@ public final class Sequence {
 		if (stepwidth == 0) {
 			return Double.NaN;
 		}
-		return (stop - start) / stepwidth;
+		return Math.abs((stop - start) / stepwidth);
 	}
 	
 	/**
