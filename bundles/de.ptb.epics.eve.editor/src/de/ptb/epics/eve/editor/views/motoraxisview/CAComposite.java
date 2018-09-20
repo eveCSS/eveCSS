@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Text;
 
+import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.scandescription.Axis;
 
 /**
@@ -116,20 +117,23 @@ public class CAComposite extends Composite implements PropertyChangeListener {
 		
 		if (this.currentAxis != null) {
 			this.currentAxis.getMotorAxis().removePropertyChangeListener(
-					"position", this);
+					MotorAxis.POSITION_PROP, this);
 			this.currentAxis.getMotorAxis().removePropertyChangeListener(
-					"lowlimit", this);
+					MotorAxis.LOW_LIMIT_PROP, this);
 			this.currentAxis.getMotorAxis().removePropertyChangeListener(
-					"highlimit", this);
+					MotorAxis.HIGH_LIMIT_PROP, this);
 			this.progressBar.removePaintListener(progressBarPaintListener);
 		}
 		
 		this.currentAxis = axis;
 		
 		if (axis != null) {
-			axis.getMotorAxis().addPropertyChangeListener("position", this);
-			axis.getMotorAxis().addPropertyChangeListener("lowlimit", this);
-			axis.getMotorAxis().addPropertyChangeListener("highlimit", this);
+			axis.getMotorAxis().addPropertyChangeListener(
+					MotorAxis.POSITION_PROP, this);
+			axis.getMotorAxis().addPropertyChangeListener(
+					MotorAxis.LOW_LIMIT_PROP, this);
+			axis.getMotorAxis().addPropertyChangeListener(
+					MotorAxis.HIGH_LIMIT_PROP, this);
 			this.progressBar.addPaintListener(progressBarPaintListener);
 			
 			if (axis.getMotorAxis().getSoftLowLimit() != null) {
@@ -153,11 +157,11 @@ public class CAComposite extends Composite implements PropertyChangeListener {
 	 */
 	@Override
 	public void propertyChange(final PropertyChangeEvent e) {
-		if (e.getPropertyName().equals("position")) {
+		if (e.getPropertyName().equals(MotorAxis.POSITION_PROP)) {
 			this.position = e.getNewValue().toString();
-		} else if (e.getPropertyName().equals("lowlimit")) {
+		} else if (e.getPropertyName().equals(MotorAxis.LOW_LIMIT_PROP)) {
 					llmText.setText(e.getNewValue().toString());
-		} else if (e.getPropertyName().equals("highlimit")) {
+		} else if (e.getPropertyName().equals(MotorAxis.HIGH_LIMIT_PROP)) {
 					hlmText.setText(e.getNewValue().toString());
 		}
 		calculateBarValue();
@@ -203,11 +207,8 @@ public class CAComposite extends Composite implements PropertyChangeListener {
 		} catch (NullPointerException e) {
 			LOGGER.debug(
 					"lowlimit/highlimit/position CA is null, no progress bar");
-			return;
 		}
 	}
-	
-	/* ******************************************************************** */
 	
 	/**
 	 * {@link org.eclipse.swt.events.PaintListener} of <code>progressBar</code>.
