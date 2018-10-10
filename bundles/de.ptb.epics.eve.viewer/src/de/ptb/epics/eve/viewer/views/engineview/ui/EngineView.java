@@ -340,7 +340,7 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 		this.filenameText.setLayoutData(gridData);
 		
 		this.commentLabel = new Label(this.top, SWT.NONE);
-		this.commentLabel.setText("live Comment:");
+		this.commentLabel.setText("Log Message:");
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 2;
