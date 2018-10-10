@@ -51,7 +51,7 @@ public abstract class AddMultiplyMode<T extends Object> extends AxisMode {
 		this.adjustParameter = AdjustParameter.STEPCOUNT;
 		this.mainAxis = false;
 		this.referenceAxis = null;
-		this.stepcount = new Double(Double.NaN);
+		this.stepcount = Double.NaN;
 	}
 	
 	/**
@@ -72,7 +72,7 @@ public abstract class AddMultiplyMode<T extends Object> extends AxisMode {
 		if (this.isMainAxis() && mainAxis != this.getAxis()) {
 			this.mainAxis = false;
 		}
-		if (this.isMainAxis()) { // this.getAxis() == mainAxis) { //this.isMainAxis()) {
+		if (this.isMainAxis()) {
 			this.adjustParameter = AdjustParameter.STEPCOUNT;
 			return;
 		}
@@ -244,7 +244,7 @@ public abstract class AddMultiplyMode<T extends Object> extends AxisMode {
 	 */
 	@Override
 	public Integer getPositionCount() {
-		return new Double(Math.ceil(this.stepcount)).intValue() + 1;
+		return (int)Math.ceil(this.stepcount) + 1;
 	}
 	
 	/**
@@ -255,7 +255,7 @@ public abstract class AddMultiplyMode<T extends Object> extends AxisMode {
 		// there should be always some default value, all succeeding values 
 		// are only written to the model if they are valid, so there should 
 		// be no errors at all for Axis in AddMultiplyMode
-		List<IModelError> errors = new ArrayList<IModelError>();
+		List<IModelError> errors = new ArrayList<>();
 		if (this.getStart() == null) {
 			errors.add(new AxisError(this.axis, AxisErrorTypes.START_NOT_SET));
 		}

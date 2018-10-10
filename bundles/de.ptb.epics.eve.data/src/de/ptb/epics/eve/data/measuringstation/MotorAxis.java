@@ -482,7 +482,7 @@ public class MotorAxis extends AbstractMainPhaseDevice implements Cloneable {
 	/**
 	 * Connects the motor axis via channel access
 	 */
-	public void connect() {
+	public synchronized void connect() {
 		this.channelAccess.connect();
 		connections++;
 		logger.debug("connected (" + connections + " connections)");
@@ -491,7 +491,7 @@ public class MotorAxis extends AbstractMainPhaseDevice implements Cloneable {
 	/**
 	 * Disconnects the motor axis from channel access
 	 */
-	public void disconnect() {
+	public synchronized void disconnect() {
 		if(--connections != 0) {
 			logger.debug("no disconnect (" + connections + " still open)");
 			return;
