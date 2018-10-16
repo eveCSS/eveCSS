@@ -272,7 +272,7 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 				new AutoPlayToggleButtonSelectionListener());
 		
 		this.repeatCountLabel = new Label(this.scanComposite, SWT.NONE);
-		this.repeatCountLabel.setText("repeat count:");
+		this.repeatCountLabel.setText("Repeat Count:");
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.RIGHT;
 		gridData.grabExcessHorizontalSpace = true;
@@ -310,7 +310,7 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 		});
 		
 		this.loadedScmlLabel = new Label(this.top, SWT.NONE);
-		this.loadedScmlLabel.setText("loaded File:");
+		this.loadedScmlLabel.setText("Loaded File:");
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 2;
