@@ -3,7 +3,7 @@
  <modelVersion>4.0.0</modelVersion>
  <groupId>de.ptb.epics.eve</groupId>
  <artifactId>de.ptb.epics.eve.maven.osgi.convert</artifactId>
- <version>1.29.0</version>
+ <version>1.30.0</version>
  <packaging>pom</packaging>
 
  <build>
@@ -17,22 +17,20 @@
       <id>default-cli</id>
       <configuration>
        <artifacts>
-        <!-- specify your depencies here -->
-        <!-- groupId:artifactId:version -->
         <artifact>
-        	<id>org.apache.commons:commons-csv:1.0</id>
+        	<id>org.apache.commons:commons-csv:1.6</id>
         </artifact>
         <artifact>
-        	<id>org.apache.commons:commons-lang3:3.3.2</id>
+        	<id>org.apache.commons:commons-lang3:3.8.1</id>
         </artifact>
         <artifact>
-        	<id>org.apache.commons:commons-math3:3.1.1</id>
+        	<id>org.apache.commons:commons-math3:3.6.1</id>
         </artifact>
         <artifact>
-        	<id>org.apache.pdfbox:fontbox:1.8.2</id>
+        	<id>org.apache.pdfbox:fontbox:1.8.16</id>
         </artifact>
         <artifact>
-        	<id>org.apache.pdfbox:pdfbox:1.8.2</id>
+        	<id>org.apache.pdfbox:pdfbox:1.8.16</id>
         </artifact>
         <artifact>
         	<id>org.eclipse.ecf:org.apache.commons.logging:1.1.1.v201101211721</id>
@@ -44,5 +42,4 @@
    </plugin>
   </plugins>
  </build>
-
 </project>
