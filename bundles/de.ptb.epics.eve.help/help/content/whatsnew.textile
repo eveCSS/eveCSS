@@ -1,5 +1,13 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.30.0 (2018-11-09)
+
+* [Feature-#4032] HDF Data now contains the end date of the scan.
+
+* [Bug Fix-#4151] fixed a bug where eveBuild ignored the given parameter (xsubst definition)
+* [Bug Fix-#4024] fixed a bug where a motor was moved to position zero due to a missing position list file.
+* [Bug Fix-#2975] fixed a bug where a detector value was not written to the data file when a skip action occurred while the motor was still moving.
+
 h2(eveTopic). Version 1.29.6 (2018-08-24)
 
 * [Bug Fix-#4191] fixed typo in template @discPosMaster@

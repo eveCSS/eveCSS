@@ -1,5 +1,13 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.30.0 (2018-11-09)
+
+* [Feature-#3886] Scan Module Info Dialog of the Engine View now shows position modes of used axes:
+
+p=. !(eveImage)../img/whatsnew/130/f3886-scanmoduleinfo.png(scan module info dialog with multiple axes entries and the new column position mode showing absolute and relative entries)!
+
+* [Bug Fix-#4131] fixed a bug where a memory leak could occur due to unclosed listeners after closing a plot window
+
 h2(eveTopic). Version 1.29.4 (2018-06-12)
 
 * [Bug Fix-#3948] fixed a bug where range stepfunction motor axes were not shown in the Scan Module Info Dialog of the Engine View

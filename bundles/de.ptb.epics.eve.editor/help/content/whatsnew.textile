@@ -1,5 +1,29 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.30.0 (2018-11-09)
+
+* [Feature-#3908] The Graphical Editor now allows adding prepended scan modules:
+
+p=. !(eveImage)../img/whatsnew/130/f3908-addmenu.png(context menu entry add with the two new options Prepended - append current and Prepended - nest current)!
+
+* [Feature-#3903] The newly introduced Batch Update View allows updating multiple files to the current SCML version used by eveCSS. For more information consult the "concept description":/help/topic/de.ptb.epics.eve.editor/help/content/concepts/batchupdateview.html and the "example":/help/topic/de.ptb.epics.eve.editor/help/content/tasks/batchupdate.html.
+
+p=. !(eveImage)../img/whatsnew/130/f3903-batchupdateview.png(batch update view containing multiple entries showing different versions and states, e.g. up-to-date, outdated)!
+
+* [Feature-#3244] (comfortable) option to remove monitors. Monitors now can be removed by clicking on the delete column or by using the context menu:
+
+p=. !(eveImage)../img/whatsnew/130/f3244-removemonitors.png(table of monitor entries with delete column and context menu with delete option)!
+ 
+* [Feature-#3243] IDs of plot windows can now be edited in the same way as the other attributes. If an ID is used in another scan module an info message is shown in the plot window view as well as the scan module view: 
+
+p=. !(eveImage)../img/whatsnew/130/f3243-plotwindowview.png(plot window view showing the new id entry with information about duplicate id)!
+
+p=. !(eveImage)../img/whatsnew/130/f3243-scanmoduleview.png(scan module view with pop up information about an id also used in another scan module)!
+
+* [Bug Fix-#4241] fixed a bug where the limits and current position were not shown in the MotorAxisView due to a race condition which lead to a negative connection count
+* [Bug Fix-#4146] fixed a bug where the step count was negative (and incorrect) in descending cases
+* [Bug Fix-#3243] fixed a bug where the plot information in the scan module view did not show normalization channels
+
 h2(eveTopic). Version 1.29.4 (2018-06-12)
 
 * [Bug Fix-#3949] fixed a bug where certain inputs of a range stepfunction lead to a lag due to an overflow
