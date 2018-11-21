@@ -58,7 +58,7 @@ public class YAxis implements IModelUpdateListener, IModelUpdateProvider {
 		this.linestyle = null;
 		this.markstyle = null;
 		this.color = null;
-		this.updateListener = new ArrayList<IModelUpdateListener>();
+		this.updateListener = new ArrayList<>();
 	}
 	
 	/**
@@ -228,11 +228,16 @@ public class YAxis implements IModelUpdateListener, IModelUpdateProvider {
 	/**
 	 * Returns the composite id of detector channel and normalize channel or 
 	 * the channel name if {@link #isNormalized()} is <code>false</code>.
+	 * If the no channel is set an empty String is returned.
 	 * 
-	 * @return the composite id of detector channel and normalize channel
+	 * @return the composite id of detector channel and normalize channel or an 
+	 * 	empty string if none
 	 * @since 1.22
 	 */
 	public String getNormalizedName() {
+		if (this.detectorChannel == null) {
+			return "";
+		}
 		if (!isNormalized()) {
 			return this.detectorChannel.getName();
 		}
@@ -302,7 +307,7 @@ public class YAxis implements IModelUpdateListener, IModelUpdateProvider {
 	 */
 	private void updateListeners() {
 		final CopyOnWriteArrayList<IModelUpdateListener> list = 
-			new CopyOnWriteArrayList<IModelUpdateListener>(this.updateListener);
+			new CopyOnWriteArrayList<>(this.updateListener);
 		
 		for(IModelUpdateListener imul : list) {
 			imul.updateEvent(new ModelUpdateEvent(this, null));
