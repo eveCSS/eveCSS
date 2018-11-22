@@ -1,6 +1,6 @@
 h1(eveTopic). Release Notes
 
-h2(eveTopic). Version 1.30.0 (2018-11-09)
+h2(eveTopic). Version 1.30.0 (2018-11-22)
 
 * [Feature-#3886] Scan Module Info Dialog of the Engine View now shows position modes of used axes:
 
