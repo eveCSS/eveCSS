@@ -8,6 +8,10 @@ h2(eveTopic). Version 1.30.0 (2018-11-22)
 * [Bug Fix-#4024] fixed a bug where a motor was moved to position zero due to a missing position list file.
 * [Bug Fix-#2975] fixed a bug where a detector value was not written to the data file when a skip action occurred while the motor was still moving.
 
+h2(eveTopic). Version 1.29.7 (2018-12-12)
+
+* [Bug Fix-#4387] new template @setAttrMotor@ for attributes of Motor PV's 
+
 h2(eveTopic). Version 1.29.6 (2018-08-24)
 
 * [Bug Fix-#4191] fixed typo in template @discPosMaster@

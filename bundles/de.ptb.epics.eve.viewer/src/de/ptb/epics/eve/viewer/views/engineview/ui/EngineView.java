@@ -236,8 +236,35 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 		this.playButton = new Button(scanButtonComposite, SWT.PUSH);
 		this.playButton.setImage(playIcon);
 		this.playButton.setToolTipText("Play");
-		this.playButton.addSelectionListener(new PlayButtonSelectionListener());
-		
+		this.playButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				boolean autoplayOn = Activator.getDefault().getEcp1Client().
+						getPlayListController().isAutoplay();
+				boolean playlistEmpty = Activator.getDefault().getEcp1Client().
+						getPlayListController().getEntries().isEmpty();
+				boolean repeatCountPositive = getRepeatCount() > 0;
+				if (!autoplayOn && (!playlistEmpty || repeatCountPositive)) {
+					StringBuilder sb = new StringBuilder();
+					if (!playlistEmpty) {
+						sb.append("The playlist is not empty. ");
+					}
+					if (repeatCountPositive) {
+						sb.append("Repeat Count is > 0. ");
+					}
+					sb.append("But Autoplay is off! Should it be turned on?");
+					boolean confirmed = MessageDialog.openConfirm(getSite().
+							getShell(), "Turn Autoplay on?", sb.toString());
+					if (confirmed) {
+						Activator.getDefault().getEcp1Client().
+							getPlayListController().setAutoplay(true);
+					}
+				}
+				Activator.getDefault().getEcp1Client().getPlayController().
+					start();
+			}
+		});
+
 		this.pauseButton = new Button(scanButtonComposite, SWT.PUSH);
 		this.pauseButton.setImage(pauseIcon);
 		this.pauseButton.setToolTipText("Pause");
@@ -268,8 +295,36 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 		this.autoPlayToggleButton.setImage(autoPlayOffIcon);
 		this.autoPlayToggleButton.setSelection(false);
 		this.autoPlayToggleButton.setToolTipText("AutoPlay is off");
-		this.autoPlayToggleButton.addSelectionListener(
-				new AutoPlayToggleButtonSelectionListener());
+		this.autoPlayToggleButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				boolean autoplayOn = Activator.getDefault().getEcp1Client().
+						getPlayListController().isAutoplay();
+				boolean playlistEmpty = Activator.getDefault().getEcp1Client().
+						getPlayListController().getEntries().isEmpty();
+				boolean repeatCountPositive = getRepeatCount() > 0;
+				if (autoplayOn && (!playlistEmpty || repeatCountPositive)) {
+					autoPlayToggleButton.setSelection(true);
+					StringBuilder sb = new StringBuilder();
+					if (!playlistEmpty) {
+						sb.append("The playlist is not empty. ");
+					}
+					if (repeatCountPositive) {
+						sb.append("Repeat Count is > 0. ");
+					}
+					sb.append("Turn Autoplay off anyway?");
+					boolean confirmed = MessageDialog.openConfirm(getSite().
+							getShell(), "Turn Autoplay off ?", sb.toString());
+					if (!confirmed) {
+						return;
+					}
+					autoPlayToggleButton.setSelection(false);
+				}
+				setAutoPlay(autoPlayToggleButton.getSelection());
+				Activator.getDefault().getEcp1Client().getPlayListController().
+					setAutoplay(autoPlayToggleButton.getSelection());
+			}
+		});
 		
 		this.repeatCountLabel = new Label(this.scanComposite, SWT.NONE);
 		this.repeatCountLabel.setText("Repeat Count:");
@@ -833,17 +888,6 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 		}
 	}
 
-	private class PlayButtonSelectionListener extends SelectionAdapter {
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetSelected(final SelectionEvent e) {
-			Activator.getDefault().getEcp1Client().getPlayController().start();
-		}
-	}
-
 	private class PauseButtonSelectionListener extends SelectionAdapter {
 		
 		/**
@@ -886,23 +930,6 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			Activator.getDefault().getEcp1Client().getPlayController().halt();
-		}
-	}
-	
-	/**
-	 * 
-	 */
-	private class AutoPlayToggleButtonSelectionListener 
-			extends SelectionAdapter {
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetSelected(SelectionEvent e) {
-			setAutoPlay(autoPlayToggleButton.getSelection());
-			Activator.getDefault().getEcp1Client().getPlayListController().
-				setAutoplay(autoPlayToggleButton.getSelection());
 		}
 	}
 	

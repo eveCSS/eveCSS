@@ -1,5 +1,9 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.30.2 (2018-12-12)
+
+* [Bug Fix-#4390] Confirmation/Info Dialogs concerning Autoplay
+
 h2(eveTopic). Version 1.30.0 (2018-11-22)
 
 * [Feature-#3886] Scan Module Info Dialog of the Engine View now shows position modes of used axes:
