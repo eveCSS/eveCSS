@@ -1,0 +1,68 @@
+            <!-- dg645axis, to be included by dg645motor -->
+            <axis>
+                <class>${Class=""}</class>
+                <name>${Name}</name>
+                <id>${PV}</id>
+                <goto>
+                    <access method="GETPUTCB" transport="ca" type="${Type=double}" timeout="${Timeout=300.0}">${PV}DelayAO</access>
+                </goto>
+                <position>
+                    <access monitor="true" method="GETCB" transport="ca" type="${Type=double}">${PV}DelayAO</access>
+                </position>
+                <stop>
+                    <access method="PUT" transport="local" type="int">no stop available</access>
+                    <value type="OnOff">0</value>
+                </stop>
+                <unit>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}DelayAO.EGU</access>
+                </unit>
+                <option>
+                    <name>Severity</name>
+                    <id>${PV}DelayA0.SEVR</id>
+                    <value>
+                        <access method="GETCB" type="string" transport="ca">${PV}DelayAO.SEVR</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Status</name>
+                    <id>${PV}.STAT</id>
+                    <value>
+                        <access method="GETCB" monitor="true" type="string" transport="ca">${PV}DelayAO.STAT</access>
+                        <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Soft Hi Limit</name>
+                    <id>${PV}DelayA0.HIHI</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">${PV}DelayAO.HIHI</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Soft Lo Limit</name>
+                    <id>${PV}DelayA0.LOLO</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">${PV}DelayAO.LOLO</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Reference</name>
+                    <id>${PV}reference</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}ReferenceMO</access>
+                        <value type="string">T0,A,B,C,D,E,F,G,H</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>ChannelDelay</name>
+                    <id>${PV}ChannelDelay</id>
+                    <value>
+                    	<access monitor="true" method="GETPUT" transport="ca" type="string">${PV}DelaySI</access>
+                    </value>
+                </option>
+            </axis>

@@ -1,5 +1,9 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.30.3 (2018-12-14)
+
+* [Feature-#4351] new template files @dg625motor@ and @dg625axis@ for Delay Generator 645
+
 h2(eveTopic). Version 1.30.0 (2018-11-22)
 
 * [Feature-#4032] HDF Data now contains the end date of the scan.
