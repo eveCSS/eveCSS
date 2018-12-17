@@ -26,7 +26,7 @@
                 </option>
                 <option>
                     <name>Status</name>
-                    <id>${PV}.STAT</id>
+                    <id>${PV}DelayAO.STAT</id>
                     <value>
                         <access method="GETCB" monitor="true" type="string" transport="ca">${PV}DelayAO.STAT</access>
                         <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>

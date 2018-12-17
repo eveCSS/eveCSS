@@ -5,20 +5,20 @@
             <id>${PV}</id>
             ${includeFile}
             <option>
-                <name>Status</name>
-                <id>${PV}status</id>
-                <value>
-                    <access method="GETCB" monitor="true" type="string" transport="ca">${PV}statusSI</access>
-                   <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
-                </value>
-                <displaygroup>summary</displaygroup>
-            </option>
-            <option>
                 <name>TriggerSource</name>
                 <id>${PV}triggerSource</id>
                 <value>
                     <access method="GETPUTCB" monitor="true" type="string" transport="ca">${PV}triggerSourceMO</access>
-                   <value type="string">Internal,Ext ^edge,Ext ~edge,SS ext ^edge,SS ext ~edge,Single Shot,Line</value>
+                    <value type="string">Internal,Ext ^edge,Ext ~edge,SS ext ^edge,SS ext ~edge,Single Shot,Line,</value>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>Status</name>
+                <id>${PV}status</id>
+                <value>
+                    <access method="GETCB" monitor="true" type="string" transport="ca">${PV}statusSI</access>
+                    <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
