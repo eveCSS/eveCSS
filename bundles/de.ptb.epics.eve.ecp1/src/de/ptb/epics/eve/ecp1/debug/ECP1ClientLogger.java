@@ -112,7 +112,8 @@ public class ECP1ClientLogger implements IEngineStatusListener, IEngineVersionLi
 	public void engineStatusChanged(EngineStatus engineStatus, String xmlName,
 			int repeatCount) {
 		LOGGER.debug(engineStatus + 
-				" | XML: " + xmlName
+				" | XML: " + xmlName +
+				" | RepeatCount: " + repeatCount
 				);
 	}
 
