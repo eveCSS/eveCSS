@@ -1,0 +1,24 @@
+        <!-- DG 645 motor, must include dg645axes -->
+		<motor>
+            <class>${Class=""}</class>
+            <name>${Name=""}</name>
+            <id>${PV}</id>
+            ${includeFile}
+            <option>
+                <name>Status</name>
+                <id>${PV}status</id>
+                <value>
+                    <access method="GETCB" monitor="true" type="string" transport="ca">${PV}statusSI</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>TriggerSource</name>
+                <id>${PV}triggerSource</id>
+                <value>
+                    <access method="GETPUTCB" monitor="true" type="string" transport="ca">${PV}triggerSourceMO</access>
+                    <value type="string">Internal,Ext ^edge,Ext ~edge,SS ext ^edge,SS ext ~edge,Single Shot,Line</value>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+        </motor>

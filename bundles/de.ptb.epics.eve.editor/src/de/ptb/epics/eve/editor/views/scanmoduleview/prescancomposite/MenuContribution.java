@@ -187,7 +187,7 @@ public class MenuContribution extends CompoundContributionItem {
 						// option Severity and Status not inserted in menu
 						if (option.getName().equals("Severity") ||
 							option.getName().equals("Status")) {
-								break;
+								continue;
 						}
 						
 						Map<String,String> params = new HashMap<String,String>();

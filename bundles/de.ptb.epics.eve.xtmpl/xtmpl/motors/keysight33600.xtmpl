@@ -1,0 +1,70 @@
+        <!-- Keysight33600, must include one of keysight33600Freq or keysight33600Volt -->
+		<motor>
+            <class>${Class=""}</class>
+            <name>${Name=""}</name>
+            <id>${PV}</id>
+            ${includeFile}
+            <option>
+                <name>Function</name>
+                <id>${PV}function</id>
+                <value>
+                    <access method="GETPUTCB" monitor="true" type="string" transport="ca">${PV}S1:Function</access>
+                    <value type="string">Sinusoid,Square,Triangle,Ramp,PULSe,PRBS,NOISe,ARB,DC</value>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>TriggerSource</name>
+                <id>${PV}triggerSource</id>
+                <value>
+                    <access method="GETPUTCB" monitor="true" type="string" transport="ca">${PV}S1:Trigger:Source</access>
+                    <value type="string">External,BUS,IMMediate,TIMer</value>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>Output1</name>
+                <id>${PV}output1</id>
+                <value>
+                    <access method="GETPUTCB" monitor="true" type="string" transport="ca">${PV}Output1</access>
+                    <value type="string">Off,On</value>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>VoltageOffset</name>
+                <id>${PV}VoltageOffset</id>
+                <value>
+                    <access method="GETPUT" type="${Type=double}" transport="ca">${PV}S1:Voltage:Offset</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>Burst</name>
+                <id>${PV}Burst</id>
+                <value>
+                    <access method="GETPUTCB" monitor="true" type="string" transport="ca">${PV}S1:Burst</access>
+                    <value type="string">Off,On</value>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>BurstMode</name>
+                <id>${PV}BurstMode</id>
+                <value>
+                    <access method="GETPUTCB" monitor="true" type="string" transport="ca">${PV}S1:Burst:Mode</access>
+                    <value type="string">Triggered,Gated</value>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>BurstCycles</name>
+                <id>${PV}BurstCycles</id>
+                <value>
+                    <access method="GETPUT" type="${Type=double}" transport="ca">${PV}S1:Burst:NCycles</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+
+
+        </motor>
