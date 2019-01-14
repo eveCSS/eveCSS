@@ -134,11 +134,12 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 	private Image stopIcon;
 	private Image skipIcon;
 	private Image haltIcon;
-	private Image autoPlayOnIcon;
-	private Image autoPlayOffIcon;
 	private Image triggerIcon;
 	
 	private ButtonManager buttonManager;
+	
+	private int playListSize;
+	private EngineStatus engineStatus;
 	
 	/**
 	 * {@inheritDoc}
@@ -150,10 +151,6 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 		stopIcon = Activator.getDefault().getImageRegistry().get("STOP16");
 		skipIcon = Activator.getDefault().getImageRegistry().get("SKIP16");
 		haltIcon = Activator.getDefault().getImageRegistry().get("HALT16");
-		autoPlayOnIcon = Activator.getDefault().getImageRegistry().
-				get("AUTOPLAY_ON");
-		autoPlayOffIcon = Activator.getDefault().getImageRegistry().
-				get("AUTOPLAY_OFF");
 		triggerIcon = Activator.getDefault().getImageRegistry().get("TRIGGER16");
 		
 		parent.setLayout(new FillLayout());
@@ -292,7 +289,9 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 		// TODO
 		*/
 		this.autoPlayToggleButton = new Button(scanButtonComposite, SWT.TOGGLE);
-		this.autoPlayToggleButton.setImage(autoPlayOffIcon);
+		this.autoPlayToggleButton.setText("Autoplay Off");
+		this.autoPlayToggleButton.setForeground(getSite().getShell().
+				getDisplay().getSystemColor(SWT.COLOR_DARK_RED)); 
 		this.autoPlayToggleButton.setSelection(false);
 		this.autoPlayToggleButton.setToolTipText("AutoPlay is off");
 		this.autoPlayToggleButton.addSelectionListener(new SelectionAdapter() {
@@ -435,6 +434,9 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 		gridData.grabExcessVerticalSpace = true;
 		statusTableComposite.setLayoutData(gridData);
 
+		this.playListSize = Integer.MAX_VALUE;
+		this.engineStatus = EngineStatus.INVALID;
+		
 		this.buttonManager = ButtonManager.getInstance();
 		this.buttonManager.addPropertyChangeListener(
 				ButtonManager.ENGINE_STATE_PROP, this);
@@ -603,10 +605,14 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 	private void setAutoPlay(boolean autoPlay) {
 		if(autoPlay) {
 			autoPlayToggleButton.setToolTipText("AutoPlay is on");
-			autoPlayToggleButton.setImage(autoPlayOnIcon);
+			autoPlayToggleButton.setText("AutoPlay On");
+			autoPlayToggleButton.setForeground(getSite().getShell().
+				getDisplay().getSystemColor(SWT.COLOR_DARK_GREEN));
 		} else {
 			autoPlayToggleButton.setToolTipText("AutoPlay is off");
-			autoPlayToggleButton.setImage(autoPlayOffIcon);
+			autoPlayToggleButton.setText("AutoPlay Off");
+			autoPlayToggleButton.setForeground(getSite().getShell().
+					getDisplay().getSystemColor(SWT.COLOR_DARK_RED));
 		}
 		autoPlayToggleButton.setSelection(autoPlay);
 	}
@@ -683,7 +689,24 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void playListHasChanged(IPlayListController playListController) {
+	public synchronized void playListHasChanged(final IPlayListController playListController) {
+		if (!playListController.isAutoplay() && 
+				this.engineStatus.equals(EngineStatus.EXECUTING) && 
+				playListController.getEntries().size() > this.playListSize) {
+			this.autoPlayToggleButton.getDisplay().asyncExec(new Runnable() {
+				@Override public void run() {
+					boolean answer = MessageDialog.openQuestion(
+						autoPlayToggleButton.getShell(), 
+						"Enable Auto Play?", 
+						"A scan has beend added to the playlist. " +
+						"Enable Auto Play?");
+					if (answer) {
+						playListController.setAutoplay(true);
+					}
+				}
+			});
+		}
+		this.playListSize = playListController.getEntries().size();
 	}
 
 	/**
@@ -716,8 +739,9 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void engineStatusChanged(EngineStatus engineStatus, 
+	public synchronized void engineStatusChanged(EngineStatus engineStatus, 
 			final String xmlName, int repeatCount) {
+		this.engineStatus = engineStatus;
 		if (!EngineStatus.LOADING_XML.equals(engineStatus)) {
 			this.setCurrentRepeatCount(repeatCount);
 			logger.debug("loaded scml File: " + xmlName);
