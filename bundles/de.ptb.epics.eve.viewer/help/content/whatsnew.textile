@@ -1,8 +1,14 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.30.3 (2019-01-xx)
+
+* [Bug Fix-#4224] the icon of the auto play button has been replaced by colored text (red=inactive, green=active)
+* [Bug Fix-#4390] warn if a scan is added to the play list but auto play is deactivated
+
 h2(eveTopic). Version 1.30.2 (2018-12-12)
 
-* [Bug Fix-#4390] Confirmation/Info Dialogs concerning Autoplay
+* [Bug Fix-#4390] warn (show confirmation dialog) if auto play is deactivated when starting a scan but the play list is not empty or repeat count is positive
+* [Bug Fix-#4390] warn (show confirmation dialog) if auto play is being deactivated but the play list is not empty or repeat count is positive
 
 h2(eveTopic). Version 1.30.0 (2018-11-22)
 
