@@ -1,9 +1,9 @@
 h1(eveTopic). Release Notes
 
-h2(eveTopic). Version 1.30.3 (2018-12-17)
+h2(eveTopic). Version 1.30.3 (2019-01-17)
 
 * [Feature-#4351] new template files @dg625motor@ and @dg625axis@ for Delay Generator 645
-* [Feature-#4352] new template files @keysight33600@, @keysight33600Freq@ and @keysight33600Volt@ for Wave Generator Keysight 33611
+* [Feature-#4352] new template files @keysight33600@, @keysight33600Freq@, @keysight33600Volt@ and @keysight33600VoltOffset@ for Wave Generator Keysight 33611
 
 h2(eveTopic). Version 1.30.0 (2018-11-22)
 
