@@ -64,4 +64,17 @@ public class DetectorMother {
 		detector.add(OptionMother.createNewOption());
 		return detector;
 	}
+	
+	/**
+	 * Adds an option with monitor flag to the given detector.
+	 * A monitored option is considered by the used in scan setting.
+	 * 
+	 * @param detector the detector the option should be added to
+	 * @return the given detector with a new option
+	 * @since 1.30.5
+	 */
+	public static Detector addOptionWithMonitor(Detector detector) {
+		detector.add(OptionMother.createNewOption(true));
+		return detector;
+	}
 }
