@@ -1,13 +1,9 @@
 package de.ptb.epics.eve.data.scandescription;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 
 import de.ptb.epics.eve.data.measuringstation.Option;
-import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
-import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 
 /**
  * Delegate to manage options monitored in a scan description.
@@ -17,14 +13,10 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * @author Marcus Michalsky
  * @since 1.19
  */
-public class MonitorDelegate implements IModelUpdateListener {
-	public static final String TYPE_PROP = "type";
-	
+public class MonitorDelegate {
 	private ScanDescription delegator;
 	private MonitorOption type;
 	private List<Option> monitors;
-	
-	private PropertyChangeSupport propertyChangeSupport;
 	
 	/**
 	 * Constructor.
@@ -32,10 +24,7 @@ public class MonitorDelegate implements IModelUpdateListener {
 	public MonitorDelegate(ScanDescription delegator) {
 		this.delegator = delegator;
 		this.type = MonitorOption.NONE;
-		this.monitors = new ArrayList<Option>();
-		
-		this.delegator.addModelUpdateListener(this);
-		this.propertyChangeSupport = new PropertyChangeSupport(this);
+		this.monitors = new ArrayList<>();
 	}
 	
 	/**
@@ -57,7 +46,6 @@ public class MonitorDelegate implements IModelUpdateListener {
 		if (this.type.equals(type)) {
 			return;
 		}
-		MonitorOption oldType = this.type;
 		this.type = type;
 		
 		switch (type) {
@@ -76,9 +64,6 @@ public class MonitorDelegate implements IModelUpdateListener {
 		default:
 			break;
 		}
-		
-		this.propertyChangeSupport.firePropertyChange(
-				MonitorDelegate.TYPE_PROP, oldType, this.type);
 	}
 	
 	/**
@@ -132,37 +117,12 @@ public class MonitorDelegate implements IModelUpdateListener {
 	}
 	
 	/**
-	 * 
-	 * 
-	 * @param property
-	 * @param listener
+	 * @since 1.31
 	 */
-	public void addPropertyChangeListener(String property,
-			PropertyChangeListener listener) {
-		this.propertyChangeSupport.addPropertyChangeListener(listener);
-	}
-	
-	/**
-	 * 
-	 * 
-	 * @param property
-	 * @param listener
-	 */
-	public void removePropertyChangeListener(String property,
-			PropertyChangeListener listener) {
-		this.propertyChangeSupport.removePropertyChangeListener(listener);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
+	public void update() {
 		if (this.type.equals(MonitorOption.USED_IN_SCAN)) {
 			this.monitors.clear();
 			this.monitors.addAll(this.delegator.getMonitorOptions());
-			this.propertyChangeSupport.firePropertyChange(
-					ScanDescription.MONITOR_OPTIONS_LIST_PROP, null, monitors);
 		}
 	}
 }

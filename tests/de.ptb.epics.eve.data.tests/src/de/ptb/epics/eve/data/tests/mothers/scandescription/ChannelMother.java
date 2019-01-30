@@ -17,9 +17,8 @@ public class ChannelMother {
 	 * @return a new channel
 	 */
 	public static Channel createNewChannel() {
-		Channel channel = new Channel(ScanModuleMother.createNewScanModule(), 
+		return new Channel(ScanModuleMother.createNewScanModule(), 
 				DetectorChannelMother.createNewDetectorChannel());
-		return channel;
 	}
 	
 	/**
@@ -28,8 +27,7 @@ public class ChannelMother {
 	 * @return a new channel within the given scan module
 	 */
 	public static Channel createNewChannel(ScanModule scanModule) {
-		Channel channel = new Channel(scanModule, 
+		return new Channel(scanModule, 
 				DetectorChannelMother.createNewDetectorChannel());
-		return channel;
 	}
 }
