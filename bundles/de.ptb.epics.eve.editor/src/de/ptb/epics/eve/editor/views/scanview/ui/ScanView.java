@@ -445,6 +445,8 @@ public class ScanView extends ViewPart implements IEditorView,
 			default:
 				break;
 			}
+			this.monitorOptionsTable.refresh();
+			this.adjustColumnWidths();
 		} else if (e.getPropertyName().equals(
 				ScanDescription.MONITOR_OPTIONS_LIST_PROP)) {
 			this.monitorOptionsTable.refresh();

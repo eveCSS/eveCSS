@@ -1,6 +1,5 @@
 package de.ptb.epics.eve.data.scandescription;
 
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
@@ -8,7 +7,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -35,7 +33,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * @author Marcus Michalsky
  */
 public class ScanDescription implements IModelUpdateProvider,
-		IModelUpdateListener, IModelErrorProvider, PropertyChangeListener {
+		IModelUpdateListener, IModelErrorProvider {
 	
 	private static final Logger LOGGER = 
 		Logger.getLogger(ScanDescription.class.getName());
@@ -99,7 +97,6 @@ public class ScanDescription implements IModelUpdateProvider,
 		this.dirty = false;
 		this.monitors = new MonitorDelegate(this);
 		this.monitors.setType(MonitorOption.NONE);
-		this.monitors.addPropertyChangeListener(MonitorDelegate.TYPE_PROP, this);
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
 	}
 
@@ -227,7 +224,14 @@ public class ScanDescription implements IModelUpdateProvider,
 	 */
 	public void setMonitorOption(final MonitorOption monitorOption) {
 		if (!this.getMonitorOption().equals(monitorOption)) {
+			MonitorOption oldOption = this.monitors.getType();
 			this.monitors.setType(monitorOption);
+			this.propertyChangeSupport.firePropertyChange(
+					ScanDescription.MONITOR_OPTION_PROP, 
+					oldOption, this.monitors.getType());
+			this.propertyChangeSupport.firePropertyChange(
+					ScanDescription.MONITOR_OPTIONS_LIST_PROP,
+					null, this.monitors.getMonitors());
 			updateListeners();
 		}
 	}
@@ -534,6 +538,11 @@ public class ScanDescription implements IModelUpdateProvider,
 		if(LOGGER.isDebugEnabled() && modelUpdateEvent != null) {
 				LOGGER.debug(modelUpdateEvent.getSender());
 		}
+		if (this.monitors.getType().equals(MonitorOption.USED_IN_SCAN)) {
+			this.monitors.update();
+			this.propertyChangeSupport.firePropertyChange(
+					ScanDescription.MONITOR_OPTIONS_LIST_PROP, null, monitors);
+		}
 		updateListeners();
 	}
 
@@ -598,20 +607,5 @@ public class ScanDescription implements IModelUpdateProvider,
 			PropertyChangeListener listener) {
 		this.propertyChangeSupport.removePropertyChangeListener(propertyName,
 				listener);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void propertyChange(PropertyChangeEvent e) {
-		if (e.getSource() == this.monitors) {
-			this.propertyChangeSupport.firePropertyChange(
-					ScanDescription.MONITOR_OPTION_PROP, e.getOldValue(),
-					e.getNewValue());
-			this.propertyChangeSupport.firePropertyChange(
-					ScanDescription.MONITOR_OPTIONS_LIST_PROP, null,
-					this.getMonitors());
-		}
 	}
 }
