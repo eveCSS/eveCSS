@@ -50,12 +50,14 @@ public class AddAxis extends AbstractHandler {
 				axis.setPluginController(new PluginController(motionDisabled));
 				axis.getPluginController().setPlugin(motionDisabled);
 			} else {
-				DefaultsAxis defMa = Activator.getDefault().getDefaults()
-						.getAxis(motorAxis.getID());
-				if (defMa != null) {
+				if (axis.getMotorAxis().getGoto().isDiscrete()) {
 					axis.getMotorAxis().removePropertyChangeListener(
 							MotorAxis.DISCRETE_VALUES_PROP, axis);
 					axis.getMotorAxis().disconnect();
+				}
+				DefaultsAxis defMa = Activator.getDefault().getDefaults()
+						.getAxis(motorAxis.getID());
+				if (defMa != null) {
 					DefaultsManager.transferDefaults(defMa, axis);
 				}
 			}
