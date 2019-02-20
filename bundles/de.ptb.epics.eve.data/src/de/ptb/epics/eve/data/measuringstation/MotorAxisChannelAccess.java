@@ -52,6 +52,7 @@ public class MotorAxisChannelAccess implements PropertyChangeListener {
 	 */
 	protected void connect() {
 		if (this.isConnected) {
+			logger.debug(this.motorAxis.getName() + " already connected");
 			return;
 		}
 		this.position = new PVWrapper(this.motorAxis.getPosition().getAccess().

@@ -73,17 +73,16 @@ public class Axis extends AbstractMainPhaseBehavior implements
 		this.setMotorAxis(axis);
 		if (axis.getGoto().isDiscrete()) {
 			this.setStepfunction(Stepfunctions.POSITIONLIST);
-			StringBuffer sb = new StringBuffer();
+			StringBuilder sb = new StringBuilder();
 			for (String s : axis.getGoto().getDiscreteValues()) {
 				sb.append(s);
 				sb.append(",");
 			}
 			this.setPositionlist(sb.substring(0, sb.length() - 1));
-			
+			axis.addPropertyChangeListener(MotorAxis.DISCRETE_VALUES_PROP, this);
 			if (connect) {
 				axis.connect();
 			}
-			axis.addPropertyChangeListener(MotorAxis.DISCRETE_VALUES_PROP, this);
 		} else {
 			this.setStepfunction(Stepfunctions.ADD);
 		}
