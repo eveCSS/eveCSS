@@ -250,7 +250,7 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 						sb.append("Repeat Count is > 0. ");
 					}
 					sb.append("But Autoplay is off! Should it be turned on?");
-					boolean confirmed = MessageDialog.openConfirm(getSite().
+					boolean confirmed = MessageDialog.openQuestion(getSite().
 							getShell(), "Turn Autoplay on?", sb.toString());
 					if (confirmed) {
 						Activator.getDefault().getEcp1Client().
@@ -312,7 +312,7 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 						sb.append("Repeat Count is > 0. ");
 					}
 					sb.append("Turn Autoplay off anyway?");
-					boolean confirmed = MessageDialog.openConfirm(getSite().
+					boolean confirmed = MessageDialog.openQuestion(getSite().
 							getShell(), "Turn Autoplay off ?", sb.toString());
 					if (!confirmed) {
 						return;
