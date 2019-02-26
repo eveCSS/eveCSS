@@ -1,5 +1,9 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.30.5 (2019-02-26)
+
+* [Bug Fix-#4432] fixed a bug where events cascaded when altering a scan with "used in scan" monitor setting
+
 h2(eveTopic). Version 1.30.4 (2019-01-30)
 
 * [Bug Fix] fixed a bug in the template file of the keythley6517 (scan pv)
