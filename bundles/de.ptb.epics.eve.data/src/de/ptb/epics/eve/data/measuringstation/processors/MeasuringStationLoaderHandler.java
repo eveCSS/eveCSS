@@ -186,13 +186,15 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
 			} else if (qName.equals("channel")) {
 				this.currentDetectorChannel = new DetectorChannel();
-				if (atts.getValue("deferred") != null) {
-					this.currentDetectorChannel.setDeferred(Boolean
-							.parseBoolean(atts.getValue("deferred")));
+				if (atts.getValue(Literals.XML_ATTRIBUTE_NAME_DEFERRED) != null) {
+					this.currentDetectorChannel.setDeferred(
+							Boolean.parseBoolean(atts.getValue(
+									Literals.XML_ATTRIBUTE_NAME_DEFERRED)));
 				}
-				if (atts.getValue("saveValue") != null) {
-					this.currentDetectorChannel.setSaveValue(Boolean
-							.parseBoolean(atts.getValue("saveValue")));
+				if (atts.getValue(Literals.XML_ATTRIBUTE_NAME_SAVEVALUE) != null) {
+					this.currentDetectorChannel
+							.setSaveValue(Boolean.parseBoolean(atts.getValue(
+									Literals.XML_ATTRIBUTE_NAME_SAVEVALUE)));
 				}
 				this.state = MeasuringStationLoaderStates.DETECTOR_CHANNEL_LOADING;
 			}
@@ -271,6 +273,11 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
 			} else if (qName.equals("axis")) {
 				this.currentMotorAxis = new MotorAxis();
+				if (atts.getValue(Literals.XML_ATTRIBUTE_NAME_SAVEVALUE) != null) {
+					this.currentMotorAxis.setSaveValue(
+						Boolean.parseBoolean(atts.getValue(
+								Literals.XML_ATTRIBUTE_NAME_SAVEVALUE)));
+				}
 				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_LOADING;
 			}
 			break;

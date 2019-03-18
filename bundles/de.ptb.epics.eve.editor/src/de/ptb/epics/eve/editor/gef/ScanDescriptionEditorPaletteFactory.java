@@ -82,11 +82,11 @@ public final class ScanDescriptionEditorPaletteFactory {
 				}, Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"icons/devices/scanmodule.gif"),
 				Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-						"icons/devices/scanmodule24.gif"));
+						"icons/devices/scanmodule32.gif"));
 		componentsDrawer.add(componentCreateSM2);
 
 		CombinedTemplateCreationEntry componentSaveAxisPosSM = new CombinedTemplateCreationEntry(
-				"Scan Module", "Axis Snapshot", new CreationFactory() {
+				"Scan Module", "Axis Snapshot (static)", new CreationFactory() {
 					@Override
 					public Object getObjectType() {
 						return ScanModuleTypes.SAVE_AXIS_POSITIONS;
@@ -99,11 +99,28 @@ public final class ScanDescriptionEditorPaletteFactory {
 				}, Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"icons/devices/axis.gif"),
 				Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-						"icons/devices/scanmoduleaxes24.gif"));
+						"icons/devices/scanmoduleaxes32.gif"));
 		componentsDrawer.add(componentSaveAxisPosSM);
 
+		CombinedTemplateCreationEntry componentSaveAxisPosDynSM = new CombinedTemplateCreationEntry(
+				"Scan Module", "Axis Snapshot (dynamic)", new CreationFactory() {
+					@Override
+					public Object getObjectType() {
+						return ScanModuleTypes.DYNAMIC_AXIS_POSITIONS;
+					}
+					
+					@Override
+					public Object getNewObject() {
+						return null;
+				}
+					}, Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
+							"icons/devices/axis.gif"),
+					Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
+							"icons/devices/scanmoduleaxesdynamic32.gif"));
+		componentsDrawer.add(componentSaveAxisPosDynSM);
+		
 		CombinedTemplateCreationEntry componentSaveChannelValSM = new CombinedTemplateCreationEntry(
-				"Scan Module", "Channel Snapshot", new CreationFactory() {
+				"Scan Module", "Channel Snapshot (static)", new CreationFactory() {
 					@Override
 					public Object getObjectType() {
 						return ScanModuleTypes.SAVE_CHANNEL_VALUES;
@@ -116,8 +133,25 @@ public final class ScanDescriptionEditorPaletteFactory {
 				}, Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"icons/devices/channel.gif"),
 				Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-						"icons/devices/scanmodulechannels24.gif"));
+						"icons/devices/scanmodulechannels32.gif"));
 		componentsDrawer.add(componentSaveChannelValSM);
+		
+		CombinedTemplateCreationEntry componentSaveChannelValDynSM = new CombinedTemplateCreationEntry(
+				"Scan Module", "Channel Snapshot (dynamic)", new CreationFactory() {
+					@Override
+					public Object getObjectType() {
+						return ScanModuleTypes.DYNAMIC_CHANNEL_VALUES;
+					}
+					
+					@Override
+					public Object getNewObject() {
+						return null;
+					}
+				}, Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
+							"icons/devices/channel.gif"),
+					Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
+							"icons/devices/scanmodulechannelsdynamic32.gif"));
+		componentsDrawer.add(componentSaveChannelValDynSM);
 		
 		CombinedTemplateCreationEntry componentTopUpSM = new CombinedTemplateCreationEntry(
 				"Scan Module", "Top Up", new CreationFactory() {
@@ -133,7 +167,7 @@ public final class ScanDescriptionEditorPaletteFactory {
 				}, Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"icons/devices/topup.gif"),
 				Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-						"icons/devices/scanmoduletopup24.gif"));
+						"icons/devices/scanmoduletopup32.gif"));
 		componentsDrawer.add(componentTopUpSM);
 		
 		return componentsDrawer;

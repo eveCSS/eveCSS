@@ -193,6 +193,13 @@ public interface IMeasuringStation extends IModelUpdateProvider {
 	Map<String, MotorAxis> getMotorAxes();
 
 	/**
+	 * 
+	 * @return a map of detector channels of this measuring station
+	 * @since 1.31
+	 */
+	Map<String, DetectorChannel> getDetectorChannels();
+	
+	/**
 	 * Returns a {@link java.util.List} of channel identifiers of the measuring 
 	 * station.
 	 * 

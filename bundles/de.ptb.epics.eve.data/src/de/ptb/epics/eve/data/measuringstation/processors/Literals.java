@@ -2,8 +2,10 @@ package de.ptb.epics.eve.data.measuringstation.processors;
 
 final class Literals {
 	public static final String XML_ATTRIBUTE_NAME_COUNT = "count";
+	public static final String XML_ATTRIBUTE_NAME_DEFERRED = "deferred";
 	public static final String XML_ATTRIBUTE_NAME_MONITOR = "monitor";
 	public static final String XML_ATTRIBUTE_NAME_NAME = "name";
+	public static final String XML_ATTRIBUTE_NAME_SAVEVALUE = "saveValue";
 	public static final String XML_ATTRIBUTE_NAME_TIMEOUT = "timeout";
 	public static final String XML_ATTRIBUTE_NAME_TRANSPORT = "transport";
 	public static final String XML_ATTRIBUTE_NAME_TYPE = "type";

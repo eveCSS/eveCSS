@@ -1781,7 +1781,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 */
 	public Integer getPositionCount() {
 		if (!this.getType().equals(ScanModuleTypes.CLASSIC)) {
-			return 0; // For now, save axis/channels modules have 0 positions
+			return 1; // For now, all non-classic modules have 1 position
 		}
 		// a main axis defines the global position count (of a scan module)
 		if (this.getMainAxis() != null) {

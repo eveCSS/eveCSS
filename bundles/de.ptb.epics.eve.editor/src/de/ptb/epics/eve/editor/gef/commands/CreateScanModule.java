@@ -71,6 +71,15 @@ public class CreateScanModule extends Command {
 							.getMeasuringStation(),
 					Activator.getDefault().getPreferenceStore()
 							.getString(PreferenceConstants.P_TOPUP_PV));
+			break;
+		case DYNAMIC_AXIS_POSITIONS:
+			name ="D APOS";
+			break;
+		case DYNAMIC_CHANNEL_VALUES:
+			name = "D CVAL";
+			break;
+		default:
+			break;
 		}
 		this.scanModule.setName(name);
 	}

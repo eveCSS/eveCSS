@@ -33,7 +33,7 @@ public class Patch3o0T3o1 extends Patch {
 	
 	public static Patch3o0T3o1 getInstance() {
 		if (INSTANCE == null) {
-			List<Modification> modifications = new LinkedList<Modification>();
+			List<Modification> modifications = new LinkedList<>();
 			
 			INSTANCE = new Patch3o0T3o1(new Version(3, 0), new Version(3, 1), 
 				modifications);

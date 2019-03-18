@@ -2,7 +2,7 @@
 <schema xmlns="http://www.w3.org/2001/XMLSchema" 
   targetNamespace="http://www.ptb.de/epics/SCML"
   xmlns:tns="http://www.ptb.de/epics/SCML" 
-  version="6.0">
+  version="7.0">
 
   <!-- please increase version number on every modification
        If the corresponding XML-file of the previous schema version is still
@@ -174,13 +174,25 @@
    
   <complexType name="scanmodule">
     <sequence>
-      <element name="type" type="tns:smtype"></element>
       <element name="name" type="string"></element>
       <element name="xpos" type="nonNegativeInteger"></element>
       <element name="ypos" type="nonNegativeInteger"></element>
       <element name="parent" type="integer"></element>
       <element name="nested" type="positiveInteger"  minOccurs="0"></element>
       <element name="appended" type="positiveInteger" minOccurs="0"></element>
+      <choice>
+        <element name="classic" type="tns:smClassic"></element>
+        <element name="save_axis_positions" type="tns:smSaveAxisPositions"></element>
+        <element name="save_channel_values" type="tns:smSaveChannelValues"></element>
+        <element name="dynamic_axis_positions" type="tns:smDynamicAxisPositions"></element>
+        <element name="dynamic_channel_values" type="tns:smDynamicChannelValues"></element>
+      </choice>
+    </sequence>
+    <attribute name="id" type="positiveInteger"></attribute>
+  </complexType>
+  
+  <complexType name="smClassic">
+    <sequence>
       <element name="valuecount" type="positiveInteger" default="1"></element>
       <element name="settletime" type="double" minOccurs="0"></element>
       <element name="triggerdelay" type="double" minOccurs="0"></element>
@@ -214,8 +226,23 @@
       <element name="positioning" type="tns:positioning" minOccurs="0" maxOccurs="unbounded"></element>
       <element name="plot" type="tns:plot" minOccurs="0" maxOccurs="unbounded"></element>
     </sequence>
-    <attribute name="id" type="positiveInteger"></attribute>
   </complexType>
+  
+  <complexType name="smSaveAxisPositions">
+    <sequence>
+      <element name="smaxis" type="tns:smaxis" minOccurs="0" maxOccurs="unbounded"></element>
+    </sequence>
+  </complexType>
+  
+  <complexType name="smSaveChannelValues">
+    <sequence>
+      <element name="smchannel" type="tns:smchannel" minOccurs="0" maxOccurs="unbounded"></element>
+    </sequence>
+  </complexType>
+  
+  <complexType name="smDynamicAxisPositions"></complexType>
+  
+  <complexType name="smDynamicChannelValues"></complexType>
 
   <complexType name="motors">
     <sequence>
@@ -257,6 +284,7 @@
       <element name="tweakreverse" type="tns:access" minOccurs="0"></element>
       <element name="option" type="tns:option" minOccurs="0" maxOccurs="unbounded"></element>
     </sequence>
+    <attribute name="saveValue" type="boolean" default="true"></attribute>
   </complexType>
 
   <complexType name="smaxis">
@@ -414,7 +442,7 @@
     <sequence>
       <element name="axis_id" type="tns:identifier"></element>
       <element name="channel_id" type="tns:identifier"></element>
-      <element name="normalize_id" type="tns:identifier" minOccurs="0"></element>   
+      <element name="normalize_id" type="tns:identifier" minOccurs="0"></element>
       <element name="plugin" type="tns:controller"></element>
     </sequence>
   </complexType>
@@ -447,8 +475,8 @@
       <element name="name" type="string"></element>
       <element name="id" type="tns:identifier"></element>
       <element name="value" type="tns:access"></element>
-      <element name="unit" type="tns:unit" minOccurs="0"></element>   
-      <element name="displaygroup" type="string" minOccurs="0"></element>   
+      <element name="unit" type="tns:unit" minOccurs="0"></element>
+      <element name="displaygroup" type="string" minOccurs="0"></element>
     </sequence>
   </group>
  
@@ -487,7 +515,7 @@
         <attribute name="type" type="tns:data" use="required"></attribute>
         <attribute name="comparison" type="tns:comparison" use="required"></attribute>
       </extension>
-    </simpleContent>    
+    </simpleContent>
   </complexType>
 
   <simpleType name="comparison">
@@ -559,23 +587,6 @@
     <restriction base="string">
       <enumeration value="ca"></enumeration>
       <enumeration value="local"></enumeration>
-    </restriction>
-  </simpleType>
-
-  <simpleType name="saveAxisPositions">
-    <restriction base="string">
-      <enumeration value="never"></enumeration>
-      <enumeration value="before"></enumeration>
-      <enumeration value="after"></enumeration>
-      <enumeration value="both"></enumeration>
-    </restriction>
-  </simpleType>
-  
-  <simpleType name="smtype">
-    <restriction base="string">
-      <enumeration value="classic"></enumeration>
-      <enumeration value="save_axis_positions"></enumeration>
-      <enumeration value="save_channel_values"></enumeration>
     </restriction>
   </simpleType>
   

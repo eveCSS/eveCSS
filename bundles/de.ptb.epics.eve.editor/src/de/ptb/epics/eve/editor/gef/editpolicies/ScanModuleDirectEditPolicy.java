@@ -14,7 +14,6 @@ import de.ptb.epics.eve.editor.gef.figures.ScanModuleFigure;
  * @since 1.6
  */
 public class ScanModuleDirectEditPolicy extends DirectEditPolicy {
-
 	private static Logger logger = Logger
 			.getLogger(ScanModuleDirectEditPolicy.class.getName());
 	
@@ -38,6 +37,4 @@ public class ScanModuleDirectEditPolicy extends DirectEditPolicy {
 		 String value = (String) request.getCellEditor().getValue();
 		 ((ScanModuleFigure)getHostFigure()).setName(value);
 	}
-	
-	
 }

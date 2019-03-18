@@ -31,6 +31,7 @@ import org.eclipse.swt.layout.GridData;
 
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
 import de.ptb.epics.eve.data.scandescription.channelmode.ChannelModes;
 import de.ptb.epics.eve.data.scandescription.defaults.DefaultsManager;
 import de.ptb.epics.eve.data.scandescription.defaults.channel.DefaultsChannel;
@@ -333,7 +334,7 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 			// of one detector channel, we take the first element of the
 			// selection
 			Object o = ((IStructuredSelection) selection).toList().get(0);
-			if (o instanceof Channel) {
+			if (o instanceof Channel && ((Channel)o).getScanModule().getType().equals(ScanModuleTypes.CLASSIC)) {
 				// set new Channel
 				if (LOGGER.isDebugEnabled()) {
 					LOGGER.debug("Channel: "
