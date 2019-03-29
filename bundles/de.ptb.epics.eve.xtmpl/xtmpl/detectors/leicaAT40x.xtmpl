@@ -5,4 +5,6 @@
             <id>${PV}</id>
             include "detector_trigger_ohne_trigger_part.xtmpl"
             ${includeFile}
+           	include "detector_scan_ohne_trigger_part.xtmpl"
+            include "channel_option_part.xtmpl"
         </detector>
