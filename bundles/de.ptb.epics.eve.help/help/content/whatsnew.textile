@@ -1,5 +1,11 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.30.7 (2019-04-08)
+
+* new template files @leicaAT40x@ for the laser tracker AT403 and new template @basicDeferredDetector@ to read a PV as deferred
+* [Bug Fix-#4619] option raw value removed as channel/detector option
+* template files vacuumGauge and vaccumGaugeChannel removed
+
 h2(eveTopic). Version 1.30.6 (2019-03-15)
 
 * [Bug Fix-#1871] new template file @skipDetector@ for the skip application to read detectors
