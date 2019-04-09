@@ -14,14 +14,6 @@
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
-<!--                <option>
-                    <name>lvio</name>
-                    <id>${PV}.LVIO</id>
-                    <value>
-                        <access method="GETCB" type="int" transport="ca">${PV}.LVIO</access>
-                    </value>
-                    <displaygroup>summary</displaygroup>
-                </option>-->
                 <option>
                     <name>miss</name>
                     <id>${PV}.MISS</id>

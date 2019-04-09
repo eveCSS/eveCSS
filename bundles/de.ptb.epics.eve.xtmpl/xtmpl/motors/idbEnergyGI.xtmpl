@@ -1,4 +1,4 @@
-            <!-- idb energy NI axis, to be included by motor -->
+            <!-- idb energy GI axis, to be included by motor -->
             substitute "Prefix=eVGI"
             <axis>
                 <class>${Class=""}</class>
