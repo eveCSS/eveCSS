@@ -321,6 +321,24 @@ public class ScanModuleFigure extends Shape {
 			graphics.drawImage(channel, 
 					new Point(this.x + this.width/2 + 3, 
 							this.y + this.height/2 - save.getBounds().height/2));
+		} else if (this.type.equals(ScanModuleTypes.DYNAMIC_AXIS_POSITIONS)) {
+			Image date = Activator.getDefault().getImageRegistry().get("DATE");
+			Image axis = Activator.getDefault().getImageRegistry().get("AXIS");
+			graphics.drawImage(date, 
+					new Point(this.x + this.width/2 - date.getBounds().width - 3,
+							this.y + this.height/2 - date.getBounds().height/2));
+			graphics.drawImage(axis, 
+					new Point(this.x + this.width/2 + 3, 
+							this.y + this.height/2 - date.getBounds().height/2));
+		} else if (this.type.equals(ScanModuleTypes.DYNAMIC_CHANNEL_VALUES)) {
+			Image date = Activator.getDefault().getImageRegistry().get("DATE");
+			Image channel = Activator.getDefault().getImageRegistry().get("CHANNEL");
+			graphics.drawImage(date, 
+					new Point(this.x + this.width/2 - date.getBounds().width - 3,
+							this.y + this.height/2 - date.getBounds().height/2));
+			graphics.drawImage(channel, 
+					new Point(this.x + this.width/2 + 3, 
+							this.y + this.height/2 - date.getBounds().height/2));
 		}
 		
 		// restore old clipping

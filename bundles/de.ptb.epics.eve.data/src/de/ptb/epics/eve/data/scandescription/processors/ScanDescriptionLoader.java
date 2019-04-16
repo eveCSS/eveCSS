@@ -25,28 +25,10 @@ import de.ptb.epics.eve.data.scandescription.ScanDescription;
  * @author Hartmut Scherr
  */
 public class ScanDescriptionLoader {
-	
-	// the file to load.
 	private File fileToLoad;
-
-	/**
-	 * The measuring station that contains the devices in the scan description.
-	 */
 	private final IMeasuringStation measuringStation;
-
-	/**
-	 * The loaded scan description.
-	 */
 	private ScanDescription scanDescription;
-
-	/**
-	 * A List of PVs that was not found in the messplatz.xml File.
-	 */
 	private List<ScanDescriptionLoaderDeviceMessage> lostDevicesList;
-
-	/**
-	 * The schema file that is used to load the measuring station description.
-	 */
 	private final File schemaFile;
 
 	/**
@@ -103,7 +85,6 @@ public class ScanDescriptionLoader {
 	 */
 	public void loadFromByteArray(final byte[] xmlData)
 			throws ParserConfigurationException, SAXException, IOException {
-
 		final SchemaFactory sFactory = SchemaFactory
 				.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 		File schemaFile = new File(measuringStation.getSchemaFileName());
@@ -121,7 +102,6 @@ public class ScanDescriptionLoader {
 		saxParser.parse(new ByteArrayInputStream(xmlData), handler);
 
 		this.scanDescription = handler.getScanDescription();
-
 	}
 
 	/**

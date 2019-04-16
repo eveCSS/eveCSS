@@ -59,12 +59,16 @@ public class MotorAxis extends AbstractMainPhaseDevice implements Cloneable {
 	private MotorAxisChannelAccess channelAccess;
 	private int connections;
 	
+	// @since 1.31
+	private boolean saveValue;
+	
 	/**
 	 * Constructor.
 	 */
 	public MotorAxis() {
 		this(new Function(), null, null, new Function(), new Function());
 		this.channelAccess = new MotorAxisChannelAccess(this);
+		this.saveValue = true;
 	}
 
 	/**
@@ -105,6 +109,7 @@ public class MotorAxis extends AbstractMainPhaseDevice implements Cloneable {
 		this.stop = stop;
 		this.channelAccess = new MotorAxisChannelAccess(this);
 		this.connections = 0;
+		this.saveValue = true;
 	}
 
 	/**
@@ -477,6 +482,22 @@ public class MotorAxis extends AbstractMainPhaseDevice implements Cloneable {
 	 */
 	public void setLimitViolation(Function limitViolation) {
 		this.limitViolation = limitViolation;
+	}
+	
+	/**
+	 * @return the saveValue
+	 * @since 1.31
+	 */
+	public boolean isSaveValue() {
+		return saveValue;
+	}
+
+	/**
+	 * @param saveValue the saveValue to set
+	 * @since 1.31
+	 */
+	public void setSaveValue(boolean saveValue) {
+		this.saveValue = saveValue;
 	}
 
 	/**

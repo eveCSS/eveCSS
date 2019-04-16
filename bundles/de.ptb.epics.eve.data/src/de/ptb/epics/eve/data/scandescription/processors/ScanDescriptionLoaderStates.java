@@ -125,16 +125,35 @@ public enum ScanDescriptionLoaderStates {
 	CHAIN_SCANMODULE_LOADING,
 
 	/**
-	 * The begin tag of the scan module type has been read.
+	 * load elements specific to classic scan module
+	 * @since 1.31
 	 */
-	CHAIN_SCANMODULE_TYPE_NEXT,
-
+	CHAIN_SCANMODULE_CLASSIC_LOADING,
+	
 	/**
-	 * The scan module type has been read and the handler waits for the closing
-	 * tag.
+	 * load elements specific to save_axis_positions scan module
+	 * @since 1.31
 	 */
-	CHAIN_SCANMODULE_TYPE_READ,
-
+	CHAIN_SCANMODULE_SAVE_AXIS_POSITIONS_LOADING,
+	
+	/**
+	 * load elements specific to save_channel_values scan module
+	 * @since 1.31
+	 */
+	CHAIN_SCANMODULE_SAVE_CHANNEL_VALUES_LOADING,
+	
+	/**
+	 * load elements specific to dynamic_axis_positions scan module
+	 * @since 1.31
+	 */
+	CHAIN_SCANMODULE_DYNAMIC_AXIS_POSITIONS_LOADING,
+	
+	/**
+	 * load elements specific to dynamic_channel_values scan module
+	 * @since 1.31
+	 */
+	CHAIN_SCANMODULE_DYNAMIC_CHANNEL_VALUES_LOADING,
+	
 	/**
 	 * The begin tag of the scan module name has been read.
 	 */

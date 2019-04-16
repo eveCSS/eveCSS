@@ -205,29 +205,36 @@ public class ScanDescriptionSaver implements
 					&& !this.scanDescription.getMeasuringStation().getName()
 							.isEmpty()) {
 				this.atts.clear();
-				this.contentHandler.startElement("", "", Literals.XML_ELEMENT_NAME_LOCATION, atts);
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.EMPTY_STRING,
+						Literals.XML_ELEMENT_NAME_LOCATION, atts);
 				this.contentHandler.characters(this.scanDescription
 						.getMeasuringStation().getName().toCharArray(), 0,
 						this.scanDescription.getMeasuringStation().getName()
 								.toCharArray().length);
-				this.contentHandler.endElement("", "", Literals.XML_ELEMENT_NAME_LOCATION);
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.EMPTY_STRING,
+						Literals.XML_ELEMENT_NAME_LOCATION);
 			}
 
 			this.atts.clear();
-			this.contentHandler.startElement("", "", "version", atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.EMPTY_STRING,
+					Literals.XML_ELEMENT_NAME_VERSION, atts);
 			this.contentHandler.characters(this.version.toCharArray(), 0,
 					this.version.length());
-			this.contentHandler.endElement("", "", "version");
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.EMPTY_STRING,
+					Literals.XML_ELEMENT_NAME_VERSION);
 			
 			this.atts.clear();
-			this.contentHandler.startElement("", "", "scan", atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.EMPTY_STRING,
+					Literals.XML_ELEMENT_NAME_SCAN, atts);
 
 			this.atts.clear();
-			this.contentHandler.startElement("", "", "repeatcount", atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.EMPTY_STRING,
+					Literals.XML_ELEMENT_NAME_REPEATCOUNT, atts);
 			this.contentHandler.characters(
 					("" + this.scanDescription.getRepeatCount()).toCharArray(),
 					0, ("" + this.scanDescription.getRepeatCount()).length());
-			this.contentHandler.endElement("", "", "repeatcount");
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.EMPTY_STRING,
+					Literals.XML_ELEMENT_NAME_REPEATCOUNT);
 
 			for(Chain chain : this.scanDescription.getChains()) {
 				this.writeChain(chain);
@@ -235,7 +242,8 @@ public class ScanDescriptionSaver implements
 
 			successful = this.writeMonitorDevices();
 			
-			this.contentHandler.endElement("", "", "scan");
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.EMPTY_STRING,
+					Literals.XML_ELEMENT_NAME_SCAN);
 			
 			successful = this.writePlugins();
 			successful = this.writeDetectors();
@@ -260,17 +268,18 @@ public class ScanDescriptionSaver implements
 		boolean successful = true;
 		try {
 			this.atts.clear();
-			this.atts.addAttribute("", Literals.XML_ATTRIBUTE_NAME_TYPE, Literals.XML_ATTRIBUTE_NAME_TYPE, Literals.CHARACTER_DATA,
-					"" + scanDescription.getMonitorOption().toString());
-			this.contentHandler.startElement("", "monitoroptions",
-					"monitoroptions", this.atts);
+			this.atts.addAttribute(Literals.EMPTY_STRING, Literals.XML_ATTRIBUTE_NAME_TYPE,
+					Literals.XML_ATTRIBUTE_NAME_TYPE, Literals.CHARACTER_DATA,
+					scanDescription.getMonitorOption().toString());
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_MONITOROPTIONS,
+					Literals.XML_ELEMENT_NAME_MONITOROPTIONS, this.atts);
 								
 			for (Option o : this.scanDescription.getMonitors()) {
 				successful = this.writeId(o.getID());
 			}
 			
-			this.contentHandler.endElement("", "monitordevices",
-					"monitordevices");
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_MONITORDEVICES,
+					Literals.XML_ELEMENT_NAME_MONITORDEVICES);
 		} catch (SAXException e) {
 			logger.error(e.getMessage(), e);
 			return false;
@@ -286,9 +295,11 @@ public class ScanDescriptionSaver implements
 	private boolean writeId(String id) {
 		this.atts.clear();
 		try {
-			this.contentHandler.startElement("", "id", "id", this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_ID,
+					Literals.XML_ELEMENT_NAME_ID, this.atts);
 			this.contentHandler.characters(id.toCharArray(), 0, id.length());
-			this.contentHandler.endElement("", "id", "id");
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_ID,
+					Literals.XML_ELEMENT_NAME_ID);
 		} catch (SAXException e) {
 			logger.error(e.getMessage(), e);
 			return false;
@@ -304,12 +315,13 @@ public class ScanDescriptionSaver implements
 	private boolean writeDevices() {
 		try {
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_DEVICES, Literals.XML_ELEMENT_NAME_DEVICES,
-					this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_DEVICES,
+					Literals.XML_ELEMENT_NAME_DEVICES, this.atts);
 			for(Device device : this.measuringStation.getDevices()) {
 				this.writeDevice(device);
 			}
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_DEVICES, Literals.XML_ELEMENT_NAME_DEVICES);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_DEVICES,
+					Literals.XML_ELEMENT_NAME_DEVICES);
 		} catch (SAXException e) {
 			logger.error(e.getMessage(), e);
 			return false;
@@ -327,28 +339,35 @@ public class ScanDescriptionSaver implements
 	private boolean writeDevice(final Device device) {
 		try {
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_DEVICE, Literals.XML_ELEMENT_NAME_DEVICE, this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_DEVICE,
+					Literals.XML_ELEMENT_NAME_DEVICE, this.atts);
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_CLASS, Literals.XML_ELEMENT_NAME_CLASS, this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_CLASS,
+					Literals.XML_ELEMENT_NAME_CLASS, this.atts);
 			if (device.getClassName() != null) {
 				this.contentHandler.characters(device.getClassName()
 						.toCharArray(), 0, device.getClassName().length());
 			}
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_CLASS, Literals.XML_ELEMENT_NAME_CLASS);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_CLASS,
+					Literals.XML_ELEMENT_NAME_CLASS);
 
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_NAME, Literals.XML_ELEMENT_NAME_NAME, this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_NAME,
+					Literals.XML_ELEMENT_NAME_NAME, this.atts);
 			if (device.getName() != null) {
 				this.contentHandler.characters(device.getName().toCharArray(),
 						0, device.getName().length());
 			}
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_NAME, Literals.XML_ELEMENT_NAME_NAME);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_NAME,
+					Literals.XML_ELEMENT_NAME_NAME);
 
 			this.atts.clear();
-			this.contentHandler.startElement("", "id", "id", this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_ID,
+					Literals.XML_ELEMENT_NAME_ID, this.atts);
 			this.contentHandler.characters(device.getID().toCharArray(), 0,
 					device.getID().length());
-			this.contentHandler.endElement("", "id", "id");
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_ID,
+					Literals.XML_ELEMENT_NAME_ID);
 
 			if (device.getValue() != null) {
 				this.writeFunction(device.getValue(), "value");
@@ -359,12 +378,12 @@ public class ScanDescriptionSaver implements
 
 			if (device.getDisplaygroup() != null) {
 				this.atts.clear();
-				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_DISPLAYGROUP,
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_DISPLAYGROUP,
 						Literals.XML_ELEMENT_NAME_DISPLAYGROUP, this.atts);
 				this.contentHandler.characters(device.getDisplaygroup()
 						.toString().toCharArray(), 0, device.getDisplaygroup()
 						.toString().length());
-				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_DISPLAYGROUP,
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_DISPLAYGROUP,
 						Literals.XML_ELEMENT_NAME_DISPLAYGROUP);
 			}
 
@@ -372,7 +391,8 @@ public class ScanDescriptionSaver implements
 				this.writeOption(o);
 			}
 
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_DEVICE, Literals.XML_ELEMENT_NAME_DEVICE);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_DEVICE,
+					Literals.XML_ELEMENT_NAME_DEVICE);
 		} catch (SAXException e) {
 			logger.error(e.getMessage(), e);
 			return false;
@@ -388,11 +408,13 @@ public class ScanDescriptionSaver implements
 	private boolean writeMotors() {
 		try {
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_MOTORS, Literals.XML_ELEMENT_NAME_MOTORS, this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_MOTORS,
+					Literals.XML_ELEMENT_NAME_MOTORS, this.atts);
 			for(Motor motor : this.measuringStation.getMotors()) {
 				this.writeMotor(motor);
 			}
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_MOTORS, Literals.XML_ELEMENT_NAME_MOTORS);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_MOTORS,
+					Literals.XML_ELEMENT_NAME_MOTORS);
 		} catch (SAXException e) {
 			logger.error(e.getMessage(), e);
 			return false;
@@ -410,29 +432,36 @@ public class ScanDescriptionSaver implements
 	private boolean writeMotor(final Motor motor) {
 		try {
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_MOTOR, Literals.XML_ELEMENT_NAME_MOTOR, this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_MOTOR,
+					Literals.XML_ELEMENT_NAME_MOTOR, this.atts);
 
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_CLASS, Literals.XML_ELEMENT_NAME_CLASS, this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_CLASS,
+					Literals.XML_ELEMENT_NAME_CLASS, this.atts);
 			if (motor.getClassName() != null) {
 				this.contentHandler.characters(motor.getClassName()
 						.toCharArray(), 0, motor.getClassName().length());
 			}
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_CLASS, Literals.XML_ELEMENT_NAME_CLASS);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_CLASS,
+					Literals.XML_ELEMENT_NAME_CLASS);
 
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_NAME, Literals.XML_ELEMENT_NAME_NAME, this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_NAME,
+					Literals.XML_ELEMENT_NAME_NAME, this.atts);
 			if (motor.getName() != null) {
 				this.contentHandler.characters(motor.getName().toCharArray(),
 						0, motor.getName().length());
 			}
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_NAME, Literals.XML_ELEMENT_NAME_NAME);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_NAME,
+					Literals.XML_ELEMENT_NAME_NAME);
 
 			this.atts.clear();
-			this.contentHandler.startElement("", "id", "id", this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_ID,
+					Literals.XML_ELEMENT_NAME_ID, this.atts);
 			this.contentHandler.characters(motor.getID().toCharArray(), 0,
 					motor.getID().length());
-			this.contentHandler.endElement("", "id", "id");
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_ID,
+					Literals.XML_ELEMENT_NAME_ID);
 
 			if (motor.getTrigger() != null) {
 				this.writeFunction(motor.getTrigger(), "trigger");
@@ -449,7 +478,8 @@ public class ScanDescriptionSaver implements
 				this.writeOption(o);
 			}
 
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_MOTOR, Literals.XML_ELEMENT_NAME_MOTOR);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_MOTOR,
+					Literals.XML_ELEMENT_NAME_MOTOR);
 		} catch (SAXException e) {
 			logger.error(e.getMessage(), e);
 			return false;
@@ -467,28 +497,38 @@ public class ScanDescriptionSaver implements
 	private boolean writeMotorAxis(final MotorAxis axis) {
 		try {
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_AXIS, Literals.XML_ELEMENT_NAME_AXIS, this.atts);
+			/*this.atts.addAttribute("", "", "saveValue",
+					Literals.CHARACTER_DATA,
+					Boolean.toString(axis.isSaveValue()));*/
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_AXIS,
+					Literals.XML_ELEMENT_NAME_AXIS, this.atts);
 			
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_CLASS, Literals.XML_ELEMENT_NAME_CLASS, this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_CLASS,
+					Literals.XML_ELEMENT_NAME_CLASS, this.atts);
 			if (axis.getClassName() != null) {
 				this.contentHandler.characters(axis.getClassName()
 						.toCharArray(), 0, axis.getClassName().length());
 			}
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_CLASS, Literals.XML_ELEMENT_NAME_CLASS);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_CLASS,
+					Literals.XML_ELEMENT_NAME_CLASS);
 
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_NAME, Literals.XML_ELEMENT_NAME_NAME, this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_NAME,
+					Literals.XML_ELEMENT_NAME_NAME, this.atts);
 			if (axis.getName() != null) {
 				this.contentHandler.characters(axis.getName().toCharArray(), 0,
 						axis.getName().length());
 			}
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_NAME, Literals.XML_ELEMENT_NAME_NAME);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_NAME,
+					Literals.XML_ELEMENT_NAME_NAME);
 
 			this.atts.clear();
-			this.contentHandler.startElement("", "id", "id", this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_ID,
+					Literals.XML_ELEMENT_NAME_ID, this.atts);
 			this.contentHandler.characters(axis.getID().toCharArray(), 0, axis
 					.getID().length());
-			this.contentHandler.endElement("", "id", "id");
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_ID,
+					Literals.XML_ELEMENT_NAME_ID);
 
 			if (axis.getGoto() != null) {
 				this.writeFunction(axis.getGoto(), "goto");
@@ -537,7 +577,8 @@ public class ScanDescriptionSaver implements
 				this.writeOption(o);
 			}
 
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_AXIS, Literals.XML_ELEMENT_NAME_AXIS);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_AXIS,
+					Literals.XML_ELEMENT_NAME_AXIS);
 		} catch (SAXException e) {
 			logger.error(e.getMessage(), e);
 			return false;
@@ -553,12 +594,13 @@ public class ScanDescriptionSaver implements
 	private boolean writeDetectors() {
 		try {
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_DETECTORS, Literals.XML_ELEMENT_NAME_DETECTORS,
-					this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_DETECTORS,
+					Literals.XML_ELEMENT_NAME_DETECTORS, this.atts);
 			for(Detector detector : this.measuringStation.getDetectors()) {
 				this.writeDetector(detector);
 			}
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_DETECTORS, Literals.XML_ELEMENT_NAME_DETECTORS);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_DETECTORS,
+					Literals.XML_ELEMENT_NAME_DETECTORS);
 		} catch (SAXException e) {
 			logger.error(e.getMessage(), e);
 			return false;
@@ -576,31 +618,37 @@ public class ScanDescriptionSaver implements
 	private boolean writeDetector(final Detector detector) {
 		try {
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_DETECTOR, Literals.XML_ELEMENT_NAME_DETECTOR,
-					this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_DETECTOR,
+					Literals.XML_ELEMENT_NAME_DETECTOR, this.atts);
 
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_CLASS, Literals.XML_ELEMENT_NAME_CLASS, this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_CLASS,
+					Literals.XML_ELEMENT_NAME_CLASS, this.atts);
 			if (detector.getClassName() != null) {
 				this.contentHandler.characters(detector.getClassName()
 						.toCharArray(), 0, detector.getClassName().length());
 			}
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_CLASS, Literals.XML_ELEMENT_NAME_CLASS);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_CLASS,
+					Literals.XML_ELEMENT_NAME_CLASS);
 
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_NAME, Literals.XML_ELEMENT_NAME_NAME, this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_NAME,
+					Literals.XML_ELEMENT_NAME_NAME, this.atts);
 			if (detector.getName() != null) {
 				this.contentHandler.characters(
 						detector.getName().toCharArray(), 0, detector.getName()
 								.length());
 			}
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_NAME, Literals.XML_ELEMENT_NAME_NAME);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_NAME,
+					Literals.XML_ELEMENT_NAME_NAME);
 
 			this.atts.clear();
-			this.contentHandler.startElement("", "id", "id", this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_ID,
+					Literals.XML_ELEMENT_NAME_ID, this.atts);
 			this.contentHandler.characters(detector.getID().toCharArray(), 0,
 					detector.getID().length());
-			this.contentHandler.endElement("", "id", "id");
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_ID,
+					Literals.XML_ELEMENT_NAME_ID);
 
 			if (detector.getUnit() != null) {
 				this.writeUnit(detector.getUnit());
@@ -620,8 +668,8 @@ public class ScanDescriptionSaver implements
 				this.writeOption(o);
 			}
 
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_DETECTOR, Literals.XML_ELEMENT_NAME_DETECTOR);
-
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_DETECTOR,
+					Literals.XML_ELEMENT_NAME_DETECTOR);
 		} catch (SAXException e) {
 			logger.error(e.getMessage(), e);
 			return false;
@@ -645,29 +693,35 @@ public class ScanDescriptionSaver implements
 			this.atts.addAttribute("", "", "saveValue",
 					Literals.CHARACTER_DATA,
 					Boolean.toString(channel.isSaveValue()));*/
-			this.contentHandler.startElement("", "channel", "channel",
-					this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_CHANNEL,
+					Literals.XML_ELEMENT_NAME_CHANNEL, this.atts);
 			this.atts.clear();
 
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_CLASS, Literals.XML_ELEMENT_NAME_CLASS, this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_CLASS,
+					Literals.XML_ELEMENT_NAME_CLASS, this.atts);
 			if (channel.getClassName() != null) {
 				this.contentHandler.characters(channel.getClassName()
 						.toCharArray(), 0, channel.getClassName().length());
 			}
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_CLASS, Literals.XML_ELEMENT_NAME_CLASS);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_CLASS,
+					Literals.XML_ELEMENT_NAME_CLASS);
 
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_NAME, Literals.XML_ELEMENT_NAME_NAME, this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_NAME,
+					Literals.XML_ELEMENT_NAME_NAME, this.atts);
 			if (channel.getName() != null) {
 				this.contentHandler.characters(channel.getName().toCharArray(),
 						0, channel.getName().length());
 			}
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_NAME, Literals.XML_ELEMENT_NAME_NAME);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_NAME,
+					Literals.XML_ELEMENT_NAME_NAME);
 
 			this.atts.clear();
-			this.contentHandler.startElement("", "id", "id", this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_ID,
+					Literals.XML_ELEMENT_NAME_ID, this.atts);
 			this.contentHandler.characters(channel.getID().toCharArray(), 0,
 					channel.getID().length());
-			this.contentHandler.endElement("", "id", "id");
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_ID,
+					Literals.XML_ELEMENT_NAME_ID);
 
 			this.writeFunction(channel.getRead(), "read");
 			if (channel.getUnit() != null) {
@@ -684,7 +738,8 @@ public class ScanDescriptionSaver implements
 				writeOption(o);
 			}
 
-			this.contentHandler.endElement("", "detector", "detector");
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_CHANNEL,
+					Literals.XML_ELEMENT_NAME_CHANNEL);
 		} catch (SAXException e) {
 			logger.error(e.getMessage(), e);
 			return false;
@@ -704,14 +759,14 @@ public class ScanDescriptionSaver implements
 	private boolean writeFunction(final Function trigger, final String name) {
 		try {
 			this.atts.clear();
-			this.contentHandler.startElement("", name, name, this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, name, name, this.atts);
 			if (trigger.getAccess() != null) {
 				this.writeAccess(trigger.getAccess(), "access");
 			}
 			if (trigger.getValue() != null) {
 				this.writeTypeValue(trigger.getValue(), Literals.XML_ELEMENT_NAME_VALUE);
 			}
-			this.contentHandler.endElement("", name, name);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, name, name);
 		} catch (SAXException e) {
 			logger.error(e.getMessage(), e);
 			return false;
@@ -729,18 +784,21 @@ public class ScanDescriptionSaver implements
 	private boolean writeUnit(final Unit unit) {
 		try {
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_UNIT, Literals.XML_ELEMENT_NAME_UNIT, this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_UNIT,
+					Literals.XML_ELEMENT_NAME_UNIT, this.atts);
 			if (unit.isAccess()) {
 				this.writeAccess(unit.getAccess(), "access");
 			} else {
 				this.atts.clear();
-				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_UNITSTRING,
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_UNITSTRING,
 						Literals.XML_ELEMENT_NAME_UNITSTRING, this.atts);
 				this.contentHandler.characters(unit.getValue().toCharArray(),
 						0, unit.getValue().length());
-				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_UNITSTRING, Literals.XML_ELEMENT_NAME_UNITSTRING);
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_UNITSTRING,
+						Literals.XML_ELEMENT_NAME_UNITSTRING);
 			}
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_UNIT, Literals.XML_ELEMENT_NAME_UNIT);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_UNIT,
+					Literals.XML_ELEMENT_NAME_UNIT);
 		} catch (SAXException e) {
 			logger.error(e.getMessage(), e);
 			return false;
@@ -758,35 +816,41 @@ public class ScanDescriptionSaver implements
 	private boolean writeOption(final Option option) {
 		try {
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_OPTION, Literals.XML_ELEMENT_NAME_OPTION, this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_OPTION,
+					Literals.XML_ELEMENT_NAME_OPTION, this.atts);
 
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_NAME, Literals.XML_ELEMENT_NAME_NAME, this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_NAME,
+					Literals.XML_ELEMENT_NAME_NAME, this.atts);
 			if (option.getName() != null) {
 				this.contentHandler.characters(option.getName().toCharArray(),
 						0, option.getName().length());
 			}
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_NAME, Literals.XML_ELEMENT_NAME_NAME);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_NAME,
+					Literals.XML_ELEMENT_NAME_NAME);
 
 			this.atts.clear();
-			this.contentHandler.startElement("", "id", "id", this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_ID,
+					Literals.XML_ELEMENT_NAME_ID, this.atts);
 			this.contentHandler.characters(option.getID().toCharArray(), 0,
 					option.getID().length());
-			this.contentHandler.endElement("", "id", "id");
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_ID,
+					Literals.XML_ELEMENT_NAME_ID);
 
 			this.writeFunction(option.getValue(), "value");
 
 			if (option.getDisplaygroup() != null) {
 				this.atts.clear();
-				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_DISPLAYGROUP,
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_DISPLAYGROUP,
 						Literals.XML_ELEMENT_NAME_DISPLAYGROUP, this.atts);
 				this.contentHandler.characters(option.getDisplaygroup()
 						.toString().toCharArray(), 0, option.getDisplaygroup()
 						.toString().length());
-				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_DISPLAYGROUP,
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_DISPLAYGROUP,
 						Literals.XML_ELEMENT_NAME_DISPLAYGROUP);
 			}
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_OPTION, Literals.XML_ELEMENT_NAME_OPTION);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_OPTION,
+					Literals.XML_ELEMENT_NAME_OPTION);
 		} catch (SAXException e) {
 			logger.error(e.getMessage(), e);
 			return false;
@@ -806,15 +870,15 @@ public class ScanDescriptionSaver implements
 	private boolean writeTypeValue(final TypeValue typeValue, final String name) {
 		try {
 			this.atts.clear();
-			this.atts.addAttribute("", "", Literals.XML_ATTRIBUTE_NAME_TYPE, Literals.CHARACTER_DATA,
-					DataTypes.typeToString(typeValue.getType()));
-			this.contentHandler.startElement("", name, name, this.atts);
+			this.atts.addAttribute(Literals.EMPTY_STRING, Literals.EMPTY_STRING, Literals.XML_ATTRIBUTE_NAME_TYPE,
+					Literals.CHARACTER_DATA, DataTypes.typeToString(typeValue.getType()));
+			this.contentHandler.startElement(Literals.EMPTY_STRING, name, name, this.atts);
 			this.contentHandler.characters(
 					((typeValue.getValues() != null) ? typeValue.getValues()
-							: "").toCharArray(), 0,
+							: Literals.EMPTY_STRING).toCharArray(), 0,
 					((typeValue.getValues() != null) ? typeValue.getValues()
-							: "").length());
-			this.contentHandler.endElement("", name, name);
+							: Literals.EMPTY_STRING).length());
+			this.contentHandler.endElement(Literals.EMPTY_STRING, name, name);
 		} catch (SAXException e) {
 			logger.error(e.getMessage(), e);
 			return false;
@@ -834,36 +898,34 @@ public class ScanDescriptionSaver implements
 	private boolean writeAccess(final Access access, final String name) {
 		try {
 			this.atts.clear();
-			this.atts.addAttribute("", "", "method",
-					Literals.CHARACTER_DATA,
-					MethodTypes.typeToString(access.getMethod()));
+			this.atts.addAttribute(Literals.EMPTY_STRING, Literals.EMPTY_STRING, Literals.XML_ATTRIBUTE_NAME_METHOD,
+					Literals.CHARACTER_DATA, MethodTypes.typeToString(access.getMethod()));
 			if (access.getType() != null) {
-				this.atts.addAttribute("", "", Literals.XML_ATTRIBUTE_NAME_TYPE,
-						Literals.CHARACTER_DATA,
-						DataTypes.typeToString(access.getType()));
+				this.atts.addAttribute(Literals.EMPTY_STRING, Literals.EMPTY_STRING, Literals.XML_ATTRIBUTE_NAME_TYPE,
+						Literals.CHARACTER_DATA, DataTypes.typeToString(access.getType()));
 			}
 			if (access.getCount() != 0) {
-				this.atts.addAttribute("", "", "count",
+				this.atts.addAttribute(Literals.EMPTY_STRING, Literals.EMPTY_STRING, Literals.XML_ATTRIBUTE_NAME_COUNT,
 						Literals.CHARACTER_DATA, "" + access.getCount());
 			}
 			if (access.getTransport() != null) {
-				this.atts.addAttribute("", "", "transport",
-						Literals.CHARACTER_DATA,
+				this.atts.addAttribute(Literals.EMPTY_STRING, Literals.EMPTY_STRING,
+						Literals.XML_ATTRIBUTE_NAME_TRANSPORT, Literals.CHARACTER_DATA,
 						TransportTypes.typeToString(access.getTransport()));
 			}
 			if (access.getMonitor()) {
-				this.atts.addAttribute("", "", "monitor",
-						Literals.CHARACTER_DATA, Boolean.TRUE.toString());
+				this.atts.addAttribute(Literals.EMPTY_STRING, Literals.EMPTY_STRING,
+						Literals.XML_ATTRIBUTE_NAME_MONITOR, Literals.CHARACTER_DATA, Boolean.TRUE.toString());
 			}
 			if (access.getTimeout() != 0.0) {
-				this.atts.addAttribute("", "", "timeout",
-						Literals.CHARACTER_DATA, "" + access.getTimeout());
+				this.atts.addAttribute(Literals.EMPTY_STRING, Literals.EMPTY_STRING,
+						Literals.XML_ATTRIBUTE_NAME_TIMEOUT, Literals.CHARACTER_DATA, "" + access.getTimeout());
 			}
-			this.contentHandler.startElement("", name, name, this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, name, name, this.atts);
 			this.contentHandler.characters(
 					access.getVariableID().toCharArray(), 0, access
 							.getVariableID().length());
-			this.contentHandler.endElement("", name, name);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, name, name);
 		} catch (SAXException e) {
 			logger.error(e.getMessage(), e);
 			return false;
@@ -879,12 +941,13 @@ public class ScanDescriptionSaver implements
 	private boolean writePlugins() {
 		try {
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_PLUGINS, Literals.XML_ELEMENT_NAME_PLUGINS,
-					this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_PLUGINS,
+					Literals.XML_ELEMENT_NAME_PLUGINS, this.atts);
 			for(PlugIn plugin : this.measuringStation.getPlugins()) {
 				this.writePlugin(plugin);
 			}
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_PLUGINS, Literals.XML_ELEMENT_NAME_PLUGINS);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_PLUGINS,
+					Literals.XML_ELEMENT_NAME_PLUGINS);
 		} catch (SAXException e) {
 			logger.error(e.getMessage(), e);
 			return false;
@@ -902,28 +965,33 @@ public class ScanDescriptionSaver implements
 	private boolean writePlugin(final PlugIn plugin) {
 		try {
 			this.atts.clear();
-			this.atts.addAttribute("", "", Literals.XML_ATTRIBUTE_NAME_TYPE, Literals.CHARACTER_DATA,
-					PluginTypes.typeToString(plugin.getType()));
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_PLUGIN, Literals.XML_ELEMENT_NAME_PLUGIN, this.atts);
+			this.atts.addAttribute(Literals.EMPTY_STRING, Literals.EMPTY_STRING, Literals.XML_ATTRIBUTE_NAME_TYPE,
+					Literals.CHARACTER_DATA, PluginTypes.typeToString(plugin.getType()));
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_PLUGIN,
+					Literals.XML_ELEMENT_NAME_PLUGIN, this.atts);
 
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_NAME, Literals.XML_ELEMENT_NAME_NAME, this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_NAME,
+					Literals.XML_ELEMENT_NAME_NAME, this.atts);
 			this.contentHandler.characters(plugin.getName().toCharArray(), 0,
 					plugin.getName().length());
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_NAME, Literals.XML_ELEMENT_NAME_NAME);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_NAME,
+					Literals.XML_ELEMENT_NAME_NAME);
 
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_LOCATION, Literals.XML_ELEMENT_NAME_LOCATION,
-					this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_LOCATION,
+					Literals.XML_ELEMENT_NAME_LOCATION, this.atts);
 			this.contentHandler.characters(plugin.getLocation().toCharArray(),
 					0, plugin.getLocation().length());
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_LOCATION, Literals.XML_ELEMENT_NAME_LOCATION);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_LOCATION,
+					Literals.XML_ELEMENT_NAME_LOCATION);
 
 			for(PluginParameter pluginparam : plugin.getParameters()) {
 				this.writePluginParameter(pluginparam);
 			}
 
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_PLUGIN, Literals.XML_ELEMENT_NAME_PLUGIN);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_PLUGIN,
+					Literals.XML_ELEMENT_NAME_PLUGIN);
 		} catch (SAXException e) {
 			logger.error(e.getMessage(), e);
 			return false;
@@ -941,28 +1009,27 @@ public class ScanDescriptionSaver implements
 	private boolean writePluginParameter(final PluginParameter pluginParameter) {
 		try {
 			this.atts.clear();
-			this.atts.addAttribute("", "", Literals.XML_ATTRIBUTE_NAME_NAME, Literals.CHARACTER_DATA,
-					pluginParameter.getName());
-			this.atts.addAttribute("", "", "datatype",
-					Literals.CHARACTER_DATA,
-					PluginDataType.typeToString(pluginParameter.getType()));
+			this.atts.addAttribute(Literals.EMPTY_STRING, Literals.EMPTY_STRING, Literals.XML_ATTRIBUTE_NAME_NAME,
+					Literals.CHARACTER_DATA, pluginParameter.getName());
+			this.atts.addAttribute(Literals.EMPTY_STRING, Literals.EMPTY_STRING, Literals.XML_ATTRIBUTE_NAME_DATATYPE,
+					Literals.CHARACTER_DATA, PluginDataType.typeToString(pluginParameter.getType()));
 			if (pluginParameter.getDefaultValue() != null) {
-				this.atts.addAttribute("", "", "default",
-						Literals.CHARACTER_DATA,
+				this.atts.addAttribute(Literals.EMPTY_STRING, Literals.EMPTY_STRING,
+						Literals.XML_ATTRIBUTE_NAME_DEFAULT, Literals.CHARACTER_DATA,
 						pluginParameter.getDefaultValue());
 			}
-			this.atts.addAttribute("", "", "mandatory",
-					Literals.CHARACTER_DATA,
-					"" + pluginParameter.isMandatory());
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_PARAMETER, Literals.XML_ELEMENT_NAME_PARAMETER,
-					this.atts);
+			this.atts.addAttribute(Literals.EMPTY_STRING, Literals.EMPTY_STRING, Literals.XML_ATTRIBUTE_NAME_MANDATORY,
+					Literals.CHARACTER_DATA, "" + pluginParameter.isMandatory());
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_PARAMETER,
+					Literals.XML_ELEMENT_NAME_PARAMETER, this.atts);
 
 			if (pluginParameter.getValues() != null) {
 				this.contentHandler
 						.characters(pluginParameter.getValues().toCharArray(),
 								0, pluginParameter.getValues().length());
 			}
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_PARAMETER, Literals.XML_ELEMENT_NAME_PARAMETER);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_PARAMETER,
+					Literals.XML_ELEMENT_NAME_PARAMETER);
 		} catch (SAXException e) {
 			logger.error(e.getMessage(), e);
 			return false;
@@ -980,55 +1047,60 @@ public class ScanDescriptionSaver implements
 	private boolean writeChain(final Chain chain) {
 		try {
 			this.atts.clear();
-			this.atts.addAttribute("", "id", "id", Literals.CHARACTER_DATA, "" + chain.getId());
+			this.atts.addAttribute(Literals.EMPTY_STRING, Literals.XML_ATTRIBUTE_NAME_ID,
+					Literals.XML_ATTRIBUTE_NAME_ID, Literals.CHARACTER_DATA, "" + chain.getId());
 
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_CHAIN, Literals.XML_ELEMENT_NAME_CHAIN, this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_CHAIN,
+					Literals.XML_ELEMENT_NAME_CHAIN, this.atts);
 
 			if (!chain.getComment().isEmpty()) {
 				this.atts.clear();
-				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_COMMENT, Literals.XML_ELEMENT_NAME_COMMENT,
-						this.atts);
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_COMMENT,
+						Literals.XML_ELEMENT_NAME_COMMENT, this.atts);
 				this.contentHandler.characters(
 						chain.getComment().toCharArray(), 0, chain.getComment()
 								.length());
-				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_COMMENT, Literals.XML_ELEMENT_NAME_COMMENT);
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_COMMENT,
+						Literals.XML_ELEMENT_NAME_COMMENT);
 			}
 
 			if (chain.getSaveFilename() != null
 					&& !chain.getSaveFilename().isEmpty()) {
 				this.atts.clear();
 
-				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_SAVEFILENAME,
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SAVEFILENAME,
 						Literals.XML_ELEMENT_NAME_SAVEFILENAME, this.atts);
 				this.contentHandler.characters(chain.getSaveFilename()
 						.toCharArray(), 0, chain.getSaveFilename().length());
-				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_SAVEFILENAME,
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SAVEFILENAME,
 						Literals.XML_ELEMENT_NAME_SAVEFILENAME);
 			}
 
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_CONFIRMSAVE, Literals.XML_ELEMENT_NAME_CONFIRMSAVE,
-					this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_CONFIRMSAVE,
+					Literals.XML_ELEMENT_NAME_CONFIRMSAVE, this.atts);
 			this.contentHandler.characters(
 					("" + chain.isConfirmSave()).toCharArray(), 0,
 					("" + chain.isConfirmSave()).length());
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_CONFIRMSAVE, Literals.XML_ELEMENT_NAME_CONFIRMSAVE);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_CONFIRMSAVE,
+					Literals.XML_ELEMENT_NAME_CONFIRMSAVE);
 
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_AUTONUMBER, Literals.XML_ELEMENT_NAME_AUTONUMBER,
-					this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_AUTONUMBER,
+					Literals.XML_ELEMENT_NAME_AUTONUMBER, this.atts);
 			this.contentHandler.characters(
 					("" + chain.isAutoNumber()).toCharArray(), 0,
 					("" + chain.isAutoNumber()).length());
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_AUTONUMBER, Literals.XML_ELEMENT_NAME_AUTONUMBER);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_AUTONUMBER,
+					Literals.XML_ELEMENT_NAME_AUTONUMBER);
 
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_SAVESCANDESCRIPTION,
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SAVESCANDESCRIPTION,
 					Literals.XML_ELEMENT_NAME_SAVESCANDESCRIPTION, this.atts);
 			this.contentHandler.characters(
 					("" + chain.isSaveScanDescription()).toCharArray(), 0,
 					("" + chain.isSaveScanDescription()).length());
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_SAVESCANDESCRIPTION,
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SAVESCANDESCRIPTION,
 					Literals.XML_ELEMENT_NAME_SAVESCANDESCRIPTION);
 
 			if (chain.getSavePluginController().getPlugin() != null) {
@@ -1061,14 +1133,16 @@ public class ScanDescriptionSaver implements
 
 			this.atts.clear();
 
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_SCANMODULES, Literals.XML_ELEMENT_NAME_SCANMODULES,
-					this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SCANMODULES,
+					Literals.XML_ELEMENT_NAME_SCANMODULES, this.atts);
 			for(ScanModule sm : chain.getScanModules()) {
 				this.writeScanModule(sm);
 			}
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_SCANMODULES, Literals.XML_ELEMENT_NAME_SCANMODULES);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SCANMODULES,
+					Literals.XML_ELEMENT_NAME_SCANMODULES);
 
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_CHAIN, Literals.XML_ELEMENT_NAME_CHAIN);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_CHAIN,
+					Literals.XML_ELEMENT_NAME_CHAIN);
 		} catch (SAXException e) {
 			logger.error(e.getMessage(), e);
 			return false;
@@ -1086,39 +1160,40 @@ public class ScanDescriptionSaver implements
 	private boolean writeScanModule(final ScanModule scanModule) {
 		try {
 			this.atts.clear();
-			this.atts.addAttribute("", "id", "id", Literals.CHARACTER_DATA,
-					"" + scanModule.getId());
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_SCANMODULE, Literals.XML_ELEMENT_NAME_SCANMODULE,
-					this.atts);
-
+			this.atts.addAttribute(Literals.EMPTY_STRING, Literals.XML_ATTRIBUTE_NAME_ID,
+					Literals.XML_ATTRIBUTE_NAME_ID, Literals.CHARACTER_DATA, "" + scanModule.getId());
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SCANMODULE,
+					Literals.XML_ELEMENT_NAME_SCANMODULE, this.atts);
+			
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_TYPE, Literals.XML_ELEMENT_NAME_TYPE, this.atts);
-			this.contentHandler.characters(scanModule.getType().toString().toCharArray(),
-					0, scanModule.getType().toString().length());
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_TYPE, Literals.XML_ELEMENT_NAME_TYPE);
-
-			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_NAME, Literals.XML_ELEMENT_NAME_NAME, this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_NAME,
+					Literals.XML_ELEMENT_NAME_NAME, this.atts);
 			this.contentHandler.characters(scanModule.getName().toCharArray(),
 					0, scanModule.getName().length());
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_NAME, Literals.XML_ELEMENT_NAME_NAME);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_NAME,
+					Literals.XML_ELEMENT_NAME_NAME);
 
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_XPOS, Literals.XML_ELEMENT_NAME_XPOS, this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_XPOS,
+					Literals.XML_ELEMENT_NAME_XPOS, this.atts);
 			this.contentHandler.characters(
 					("" + scanModule.getX()).toCharArray(), 0,
 					("" + scanModule.getX()).length());
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_XPOS, Literals.XML_ELEMENT_NAME_XPOS);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_XPOS,
+					Literals.XML_ELEMENT_NAME_XPOS);
 
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_YPOS, Literals.XML_ELEMENT_NAME_YPOS, this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_YPOS,
+					Literals.XML_ELEMENT_NAME_YPOS, this.atts);
 			this.contentHandler.characters(
 					("" + scanModule.getY()).toCharArray(), 0,
 					("" + scanModule.getY()).length());
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_YPOS, Literals.XML_ELEMENT_NAME_YPOS);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_YPOS,
+					Literals.XML_ELEMENT_NAME_YPOS);
 
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_PARENT, Literals.XML_ELEMENT_NAME_PARENT, this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_PARENT,
+					Literals.XML_ELEMENT_NAME_PARENT, this.atts);
 			if (scanModule.getParent() != null) {
 				if (scanModule.getParent().getParentScanModule() != null) {
 				this.contentHandler.characters(("" + scanModule.getParent()
@@ -1131,95 +1206,132 @@ public class ScanDescriptionSaver implements
 			} else {
 				this.contentHandler.characters("-1".toCharArray(), 0, 2);
 			}
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_PARENT, Literals.XML_ELEMENT_NAME_PARENT);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_PARENT,
+					Literals.XML_ELEMENT_NAME_PARENT);
 
 			this.atts.clear();
 			if (scanModule.getNested() != null
 					&& scanModule.getNested().getChildScanModule() != null) {
-				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_NESTED, Literals.XML_ELEMENT_NAME_NESTED,
-						this.atts);
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_NESTED,
+						Literals.XML_ELEMENT_NAME_NESTED, this.atts);
 				this.contentHandler.characters(("" + scanModule.getNested()
 						.getChildScanModule().getId()).toCharArray(), 0,
 						("" + scanModule.getNested().getChildScanModule()
 								.getId()).length());
-				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_NESTED, Literals.XML_ELEMENT_NAME_NESTED);
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_NESTED,
+						Literals.XML_ELEMENT_NAME_NESTED);
 			}
 
 			this.atts.clear();
 			if (scanModule.getAppended() != null
 					&& scanModule.getAppended().getChildScanModule() != null) {
-				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_APPENDED, Literals.XML_ELEMENT_NAME_APPENDED,
-						this.atts);
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_APPENDED,
+						Literals.XML_ELEMENT_NAME_APPENDED, this.atts);
 				this.contentHandler.characters(("" + scanModule.getAppended()
 						.getChildScanModule().getId()).toCharArray(), 0,
 						("" + scanModule.getAppended().getChildScanModule()
 								.getId()).length());
-				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_APPENDED, Literals.XML_ELEMENT_NAME_APPENDED);
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_APPENDED,
+						Literals.XML_ELEMENT_NAME_APPENDED);
 			}
 
+			switch(scanModule.getType()) {
+			case CLASSIC:
+				this.writeScanModuleClassic(scanModule);
+				break;
+			case DYNAMIC_AXIS_POSITIONS:
+				this.writeScanModuleDynamicAxisPositions(scanModule);
+				break;
+			case DYNAMIC_CHANNEL_VALUES:
+				this.writeScanModuleDynamicChannelValues(scanModule);
+				break;
+			case SAVE_AXIS_POSITIONS:
+				this.writeScanModuleSaveAxisPositions(scanModule);
+				break;
+			case SAVE_CHANNEL_VALUES:
+				this.writeScanModuleSaveChannelValues(scanModule);
+				break;
+			default:
+				break;
+			}
+			
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SCANMODULE,
+					Literals.XML_ELEMENT_NAME_SCANMODULE);
+		} catch (SAXException e) {
+			logger.error(e.getMessage(), e);
+			return false;
+		}
+		return true;
+	}
+
+	/*
+	 * @since 1.31
+	 */
+	private boolean writeScanModuleClassic(ScanModule scanModule) {
+		try {
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_VALUECOUNT, Literals.XML_ELEMENT_NAME_VALUECOUNT,
-					this.atts);
-			this.contentHandler.characters(
-					("" + scanModule.getValueCount()).toCharArray(), 0,
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SCANMODULE_CLASSIC,
+					Literals.XML_ELEMENT_NAME_SCANMODULE_CLASSIC, this.atts);
+			
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_VALUECOUNT,
+					Literals.XML_ELEMENT_NAME_VALUECOUNT, this.atts);
+			this.contentHandler.characters(("" + scanModule.getValueCount()).toCharArray(), 0,
 					("" + scanModule.getValueCount()).length());
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_VALUECOUNT, Literals.XML_ELEMENT_NAME_VALUECOUNT);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_VALUECOUNT,
+					Literals.XML_ELEMENT_NAME_VALUECOUNT);
 
 			if (scanModule.getSettleTime() != Double.NEGATIVE_INFINITY) {
 				this.atts.clear();
-				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_SETTLETIME,
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SETTLETIME,
 						Literals.XML_ELEMENT_NAME_SETTLETIME, this.atts);
-				this.contentHandler.characters(
-						("" + scanModule.getSettleTime()).toCharArray(), 0,
+				this.contentHandler.characters(("" + scanModule.getSettleTime()).toCharArray(), 0,
 						("" + scanModule.getSettleTime()).length());
-				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_SETTLETIME, Literals.XML_ELEMENT_NAME_SETTLETIME);
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SETTLETIME,
+						Literals.XML_ELEMENT_NAME_SETTLETIME);
 			}
 
 			if (scanModule.getTriggerDelay() != Double.NEGATIVE_INFINITY) {
 				this.atts.clear();
-				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_TRIGGERDELAY,
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_TRIGGERDELAY,
 						Literals.XML_ELEMENT_NAME_TRIGGERDELAY, this.atts);
-				this.contentHandler.characters(
-						("" + scanModule.getTriggerDelay()).toCharArray(), 0,
+				this.contentHandler.characters(("" + scanModule.getTriggerDelay()).toCharArray(), 0,
 						("" + scanModule.getTriggerDelay()).length());
-				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_TRIGGERDELAY,
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_TRIGGERDELAY,
 						Literals.XML_ELEMENT_NAME_TRIGGERDELAY);
 			}
 
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_TRIGGERCONFIRMAXIS,
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_TRIGGERCONFIRMAXIS,
 					Literals.XML_ELEMENT_NAME_TRIGGERCONFIRMAXIS, this.atts);
-			this.contentHandler.characters(
-					("" + scanModule.isTriggerConfirmAxis()).toCharArray(), 0,
+			this.contentHandler.characters(("" + scanModule.isTriggerConfirmAxis()).toCharArray(), 0,
 					("" + scanModule.isTriggerConfirmAxis()).length());
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_TRIGGERCONFIRMAXIS,
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_TRIGGERCONFIRMAXIS,
 					Literals.XML_ELEMENT_NAME_TRIGGERCONFIRMAXIS);
 
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_TRIGGERCONFIRMCHANNEL,
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_TRIGGERCONFIRMCHANNEL,
 					Literals.XML_ELEMENT_NAME_TRIGGERCONFIRMCHANNEL, this.atts);
-			this.contentHandler.characters(
-					("" + scanModule.isTriggerConfirmChannel()).toCharArray(), 0,
+			this.contentHandler.characters(("" + scanModule.isTriggerConfirmChannel()).toCharArray(), 0,
 					("" + scanModule.isTriggerConfirmChannel()).length());
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_TRIGGERCONFIRMCHANNEL,
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_TRIGGERCONFIRMCHANNEL,
 					Literals.XML_ELEMENT_NAME_TRIGGERCONFIRMCHANNEL);
-			
+
 			for (ControlEvent event : scanModule.getTriggerEvents()) {
 				this.writeControlEvent(event, "triggerevent");
 			}
-			
+
 			for (ControlEvent event : scanModule.getPauseEvents()) {
 				this.writeControlEvent(event, "pauseevent");
 			}
-			
+
 			for (ControlEvent event : scanModule.getRedoEvents()) {
 				this.writeControlEvent(event, "redoevent");
 			}
-			
+
 			for (ControlEvent event : scanModule.getBreakEvents()) {
 				this.writeControlEvent(event, "breakevent");
 			}
-			
+
 			Prescan[] prescans = scanModule.getPrescans();
 			for (int i = 0; i < prescans.length; ++i) {
 				this.writePrescan(prescans[i]);
@@ -1255,15 +1367,109 @@ public class ScanDescriptionSaver implements
 					this.writePlotWindow(plotWindows[i]);
 				}
 			}
-
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_SCANMODULE, Literals.XML_ELEMENT_NAME_SCANMODULE);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SCANMODULE_CLASSIC,
+					Literals.XML_ELEMENT_NAME_SCANMODULE_CLASSIC);
 		} catch (SAXException e) {
 			logger.error(e.getMessage(), e);
 			return false;
 		}
 		return true;
 	}
+	
+	/*
+	 * @since 1.31
+	 */
+	private boolean writeScanModuleDynamicAxisPositions(ScanModule scanModule) {
+		try {
+			this.atts.clear();
+			this.contentHandler.startElement(Literals.EMPTY_STRING,
+					Literals.XML_ELEMENT_NAME_SCANMODULE_DYNAMIC_AXIS_POSITIONS,
+					Literals.XML_ELEMENT_NAME_SCANMODULE_DYNAMIC_AXIS_POSITIONS, this.atts);
 
+			this.contentHandler.endElement(Literals.EMPTY_STRING,
+					Literals.XML_ELEMENT_NAME_SCANMODULE_DYNAMIC_AXIS_POSITIONS,
+					Literals.XML_ELEMENT_NAME_SCANMODULE_DYNAMIC_AXIS_POSITIONS);
+		} catch (SAXException e) {
+			logger.error(e.getMessage(), e);
+			return false;
+		}
+		return true;
+	}
+	
+	/*
+	 * @since 1.31
+	 */
+	private boolean writeScanModuleDynamicChannelValues(ScanModule scanModule) {
+		try {
+			this.atts.clear();
+			this.contentHandler.startElement(Literals.EMPTY_STRING,
+					Literals.XML_ELEMENT_NAME_SCANMODULE_DYNAMIC_CHANNEL_VALUES,
+					Literals.XML_ELEMENT_NAME_SCANMODULE_DYNAMIC_CHANNEL_VALUES, this.atts);
+
+			this.contentHandler.endElement(Literals.EMPTY_STRING,
+					Literals.XML_ELEMENT_NAME_SCANMODULE_DYNAMIC_CHANNEL_VALUES,
+					Literals.XML_ELEMENT_NAME_SCANMODULE_DYNAMIC_CHANNEL_VALUES);
+		} catch (SAXException e) {
+			logger.error(e.getMessage(), e);
+			return false;
+		}
+		return true;
+	}
+	
+	/*
+	 * @since 1.31
+	 */
+	private boolean writeScanModuleSaveAxisPositions(ScanModule scanModule) {
+		try {
+			this.atts.clear();
+			this.contentHandler.startElement(Literals.EMPTY_STRING,
+					Literals.XML_ELEMENT_NAME_SCANMODULE_SAVE_AXIS_POSITIONS,
+					Literals.XML_ELEMENT_NAME_SCANMODULE_SAVE_AXIS_POSITIONS, this.atts);
+
+			Axis[] axis = scanModule.getAxes();
+			for (int i = 0; i < axis.length; ++i) {
+				try {
+					this.writeAxis(axis[i]);
+				} catch (Exception ex) {
+					logger.error(ex.getMessage(), ex);
+				}
+			}
+
+			this.contentHandler.endElement(Literals.EMPTY_STRING,
+					Literals.XML_ELEMENT_NAME_SCANMODULE_SAVE_AXIS_POSITIONS,
+					Literals.XML_ELEMENT_NAME_SCANMODULE_SAVE_AXIS_POSITIONS);
+		} catch (SAXException e) {
+			logger.error(e.getMessage(), e);
+			return false;
+		}
+		return true;
+	}
+	
+	/*
+	 * @since 1.31
+	 */
+	private boolean writeScanModuleSaveChannelValues(ScanModule scanModule) {
+		try {
+			this.atts.clear();
+			this.contentHandler.startElement(Literals.EMPTY_STRING,
+					Literals.XML_ELEMENT_NAME_SCANMODULE_SAVE_CHANNEL_VALUES,
+					Literals.XML_ELEMENT_NAME_SCANMODULE_SAVE_CHANNEL_VALUES, this.atts);
+
+			Channel[] channels = scanModule.getChannels();
+			for (int i = 0; i < channels.length; ++i) {
+				this.writeChannel(channels[i]);
+			}
+
+			this.contentHandler.endElement(Literals.EMPTY_STRING,
+					Literals.XML_ELEMENT_NAME_SCANMODULE_SAVE_CHANNEL_VALUES,
+					Literals.XML_ELEMENT_NAME_SCANMODULE_SAVE_CHANNEL_VALUES);
+		} catch (SAXException e) {
+			logger.error(e.getMessage(), e);
+			return false;
+		}
+		return true;
+	}
+	
 	/**
 	 * This method writes a positioning.
 	 * 
@@ -1274,40 +1480,43 @@ public class ScanDescriptionSaver implements
 	private boolean writePositioning(final Positioning positioning) {
 		try {
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_POSITIONING, Literals.XML_ELEMENT_NAME_POSITIONING,
-					this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_POSITIONING,
+					Literals.XML_ELEMENT_NAME_POSITIONING, this.atts);
 
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_AXISID, Literals.XML_ELEMENT_NAME_AXISID,
-					this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_AXISID,
+					Literals.XML_ELEMENT_NAME_AXISID, this.atts);
 			this.contentHandler.characters(positioning.getMotorAxis().getID()
 					.toCharArray(), 0, positioning.getMotorAxis().getID()
 					.length());
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_AXISID, Literals.XML_ELEMENT_NAME_AXISID);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_AXISID,
+					Literals.XML_ELEMENT_NAME_AXISID);
 
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_CHANNELID, Literals.XML_ELEMENT_NAME_CHANNELID,
-					this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_CHANNELID,
+					Literals.XML_ELEMENT_NAME_CHANNELID, this.atts);
 			this.contentHandler.characters(positioning.getDetectorChannel()
 					.getID().toCharArray(), 0, positioning.getDetectorChannel()
 					.getID().length());
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_CHANNELID, Literals.XML_ELEMENT_NAME_CHANNELID);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_CHANNELID,
+					Literals.XML_ELEMENT_NAME_CHANNELID);
 
 			if (positioning.getNormalization() != null) {
 				this.atts.clear();
-				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_NORMALIZEID,
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_NORMALIZEID,
 						Literals.XML_ELEMENT_NAME_NORMALIZEID, this.atts);
 				this.contentHandler.characters(positioning.getNormalization()
 						.getID().toCharArray(), 0, positioning
 						.getNormalization().getID().length());
-				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_NORMALIZEID,
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_NORMALIZEID,
 						Literals.XML_ELEMENT_NAME_NORMALIZEID);
 			}
 
 			this.writePluginController(positioning.getPluginController(),
 					"plugin");
 
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_POSITIONING, Literals.XML_ELEMENT_NAME_POSITIONING);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_POSITIONING,
+					Literals.XML_ELEMENT_NAME_POSITIONING);
 		} catch (SAXException e) {
 			logger.error(e.getMessage(), e);
 			return false;
@@ -1328,46 +1537,49 @@ public class ScanDescriptionSaver implements
 			final PluginController pluginController, final String tagName) {
 		try {
 			this.atts.clear();
-			this.atts.addAttribute("", Literals.XML_ATTRIBUTE_NAME_NAME, Literals.XML_ATTRIBUTE_NAME_NAME, Literals.CHARACTER_DATA,
+			this.atts.addAttribute(Literals.EMPTY_STRING, Literals.XML_ATTRIBUTE_NAME_NAME,
+					Literals.XML_ATTRIBUTE_NAME_NAME, Literals.CHARACTER_DATA,
 					pluginController.getPlugin().getName());
-			this.contentHandler.startElement("", tagName, tagName, this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, tagName, tagName, this.atts);
 
 			this.atts.clear();
-			this.atts.addAttribute("", Literals.XML_ATTRIBUTE_NAME_NAME, Literals.XML_ATTRIBUTE_NAME_NAME, Literals.CHARACTER_DATA, "location");
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_PARAMETER, Literals.XML_ELEMENT_NAME_PARAMETER,
-					this.atts);
+			this.atts.addAttribute(Literals.EMPTY_STRING, Literals.XML_ATTRIBUTE_NAME_NAME,
+					Literals.XML_ATTRIBUTE_NAME_NAME, Literals.CHARACTER_DATA, "location");
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_PARAMETER,
+					Literals.XML_ELEMENT_NAME_PARAMETER, this.atts);
 			this.contentHandler.characters(pluginController.getPlugin()
 					.getLocation().toCharArray(), 0, pluginController
 					.getPlugin().getLocation().length());
-			this.contentHandler.endElement("", tagName, tagName);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, tagName, tagName);
 
 			for (PluginParameter pluginParameter : pluginController.getPlugin().getParameters()) {
 				final String parameterName = pluginParameter.getName();
 
 				if (pluginParameter.isMandatory()) {
 					this.atts.clear();
-					this.atts.addAttribute("", Literals.XML_ATTRIBUTE_NAME_NAME, Literals.XML_ATTRIBUTE_NAME_NAME,
-							Literals.CHARACTER_DATA, parameterName);
-					this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_PARAMETER,
+					this.atts.addAttribute(Literals.EMPTY_STRING, Literals.XML_ATTRIBUTE_NAME_NAME,
+							Literals.XML_ATTRIBUTE_NAME_NAME, Literals.CHARACTER_DATA, parameterName);
+					this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_PARAMETER,
 							Literals.XML_ELEMENT_NAME_PARAMETER, this.atts);
 					this.contentHandler.characters(pluginController.get(parameterName).toCharArray(), 0,
 							pluginController.get(parameterName).length());
-					this.contentHandler.endElement("", tagName, tagName);
+					this.contentHandler.endElement(Literals.EMPTY_STRING, tagName, tagName);
 				} else {
 					if (pluginController.get(parameterName) != null) {
 						this.atts.clear();
-						this.atts.addAttribute("", Literals.XML_ATTRIBUTE_NAME_NAME, Literals.XML_ATTRIBUTE_NAME_NAME,
-								Literals.CHARACTER_DATA, parameterName);
-						this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_PARAMETER,
+						this.atts.addAttribute(Literals.EMPTY_STRING, Literals.XML_ATTRIBUTE_NAME_NAME,
+								Literals.XML_ATTRIBUTE_NAME_NAME, Literals.CHARACTER_DATA, parameterName);
+						this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_PARAMETER,
 								Literals.XML_ELEMENT_NAME_PARAMETER, this.atts);
 						this.contentHandler.characters(pluginController.get(parameterName).toCharArray(), 0,
 								pluginController.get(parameterName).length());
-						this.contentHandler.endElement("", tagName, tagName);
+						this.contentHandler.endElement(Literals.EMPTY_STRING, tagName, tagName);
 					}
 				}
 			}
 
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_PLUGIN, Literals.XML_ELEMENT_NAME_PLUGIN);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_PLUGIN,
+					Literals.XML_ELEMENT_NAME_PLUGIN);
 		} catch (SAXException e) {
 			logger.error(e.getMessage(), e);
 			return false;
@@ -1385,47 +1597,59 @@ public class ScanDescriptionSaver implements
 	private boolean writePlotWindow(final PlotWindow plotWindow) {
 		try {
 			this.atts.clear();
-			this.atts.addAttribute("", "id", "id", Literals.CHARACTER_DATA,
-					"" + plotWindow.getId());
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_PLOT, Literals.XML_ELEMENT_NAME_PLOT, this.atts);
+			this.atts.addAttribute(Literals.EMPTY_STRING, Literals.XML_ATTRIBUTE_NAME_ID,
+					Literals.XML_ATTRIBUTE_NAME_ID, Literals.CHARACTER_DATA, "" + plotWindow.getId());
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_PLOT,
+					Literals.XML_ELEMENT_NAME_PLOT, this.atts);
 
 			if (!plotWindow.getName().isEmpty()) {
 				this.atts.clear();
-				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_NAME, Literals.XML_ELEMENT_NAME_NAME, this.atts);
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_NAME,
+						Literals.XML_ELEMENT_NAME_NAME, this.atts);
 				this.contentHandler.characters(plotWindow.getName()
 						.toCharArray(), 0, plotWindow.getName().length());
-				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_NAME, Literals.XML_ELEMENT_NAME_NAME);
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_NAME,
+						Literals.XML_ELEMENT_NAME_NAME);
 			}
 
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_XAXIS, Literals.XML_ELEMENT_NAME_XAXIS, this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_XAXIS,
+					Literals.XML_ELEMENT_NAME_XAXIS, this.atts);
 
 			this.atts.clear();
-			this.contentHandler.startElement("", "id", "id", this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_ID,
+					Literals.XML_ELEMENT_NAME_ID, this.atts);
 			this.contentHandler.characters(plotWindow.getXAxis().getID()
 					.toCharArray(), 0, plotWindow.getXAxis().getID().length());
-			this.contentHandler.endElement("", "id", "id");
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_ID,
+					Literals.XML_ELEMENT_NAME_ID);
 
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_MODE, Literals.XML_ELEMENT_NAME_MODE, this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_MODE,
+					Literals.XML_ELEMENT_NAME_MODE, this.atts);
 			this.contentHandler.characters((PlotModes.modeToString(plotWindow
 					.getMode())).toCharArray(), 0, (PlotModes
 					.modeToString(plotWindow.getMode())).length());
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_MODE, Literals.XML_ELEMENT_NAME_MODE);
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_XAXIS, Literals.XML_ELEMENT_NAME_XAXIS);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_MODE,
+					Literals.XML_ELEMENT_NAME_MODE);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_XAXIS,
+					Literals.XML_ELEMENT_NAME_XAXIS);
 
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_INIT, Literals.XML_ELEMENT_NAME_INIT, this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_INIT,
+					Literals.XML_ELEMENT_NAME_INIT, this.atts);
 			this.contentHandler.characters(
 					("" + plotWindow.isInit()).toCharArray(), 0,
 					("" + plotWindow.isInit()).length());
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_INIT, Literals.XML_ELEMENT_NAME_INIT);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_INIT,
+					Literals.XML_ELEMENT_NAME_INIT);
 
 			for(YAxis yaxis : plotWindow.getYAxes()) {
 				this.writeYAxis(yaxis);
 			}
 
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_PLOT, Literals.XML_ELEMENT_NAME_PLOT);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_PLOT,
+					Literals.XML_ELEMENT_NAME_PLOT);
 		} catch (SAXException e) {
 			logger.error(e.getMessage(), e);
 			return false;
@@ -1444,53 +1668,58 @@ public class ScanDescriptionSaver implements
 		if (yaxis.getDetectorChannel() != null) {
 			try {
 				this.atts.clear();
-				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_YAXIS, Literals.XML_ELEMENT_NAME_YAXIS,
-						this.atts);
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_YAXIS,
+						Literals.XML_ELEMENT_NAME_YAXIS, this.atts);
 				this.atts.clear();
-				this.contentHandler.startElement("", "id", "id", this.atts);
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_ID,
+						Literals.XML_ELEMENT_NAME_ID, this.atts);
 				this.contentHandler.characters(yaxis.getDetectorChannel()
 						.getID().toCharArray(), 0, yaxis.getDetectorChannel()
 						.getID().length());
-				this.contentHandler.endElement("", "id", "id");
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_ID,
+						Literals.XML_ELEMENT_NAME_ID);
 				
 				this.atts.clear();
-				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_MODE, Literals.XML_ELEMENT_NAME_MODE, this.atts);
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_MODE,
+						Literals.XML_ELEMENT_NAME_MODE, this.atts);
 				this.contentHandler
 						.characters((PlotModes.modeToString(yaxis.getMode()))
 								.toCharArray(), 0, (PlotModes
 								.modeToString(yaxis.getMode())).length());
-				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_MODE, Literals.XML_ELEMENT_NAME_MODE);
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_MODE,
+						Literals.XML_ELEMENT_NAME_MODE);
 
 				this.atts.clear();
-				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_MODIFIER, 
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_MODIFIER,
 						Literals.XML_ELEMENT_NAME_MODIFIER, this.atts);
 				this.contentHandler.characters(yaxis.getModifier().name().toCharArray(), 
 							0, yaxis.getModifier().name().length());
-				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_MODIFIER, 
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_MODIFIER, 
 						Literals.XML_ELEMENT_NAME_MODIFIER);
 				
 				if (yaxis.getNormalizeChannel() != null) {
 					this.atts.clear();
-					this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_NORMALIZEID,
+					this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_NORMALIZEID,
 							Literals.XML_ELEMENT_NAME_NORMALIZEID, this.atts);
 					this.contentHandler.characters(yaxis.getNormalizeChannel()
 							.getID().toCharArray(), 0, yaxis
 							.getNormalizeChannel().getID().length());
-					this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_NORMALIZEID,
+					this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_NORMALIZEID,
 							Literals.XML_ELEMENT_NAME_NORMALIZEID);
 				}
 
 				this.atts.clear();
-				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_LINESTYLE, Literals.XML_ELEMENT_NAME_LINESTYLE,
-						this.atts);
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_LINESTYLE,
+						Literals.XML_ELEMENT_NAME_LINESTYLE, this.atts);
 				this.contentHandler.characters(yaxis.getLinestyle().toString()
 						.toCharArray(), 0, yaxis.getLinestyle().toString()
 						.length());
-				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_LINESTYLE, Literals.XML_ELEMENT_NAME_LINESTYLE);
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_LINESTYLE,
+						Literals.XML_ELEMENT_NAME_LINESTYLE);
 
 				this.atts.clear();
-				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_COLOR, Literals.XML_ELEMENT_NAME_COLOR,
-						this.atts);
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_COLOR,
+						Literals.XML_ELEMENT_NAME_COLOR, this.atts);
 
 				RGB color = yaxis.getColor();
 				String red = Integer.toHexString(color.red);
@@ -1509,11 +1738,12 @@ public class ScanDescriptionSaver implements
 				String sColor = red + green + blue;
 				this.contentHandler.characters(sColor.toCharArray(), 0,
 						sColor.length());
-				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_COLOR, Literals.XML_ELEMENT_NAME_COLOR);
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_COLOR,
+						Literals.XML_ELEMENT_NAME_COLOR);
 
 				this.atts.clear();
-				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_MARKSTYLE, Literals.XML_ELEMENT_NAME_MARKSTYLE,
-						this.atts);
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_MARKSTYLE,
+						Literals.XML_ELEMENT_NAME_MARKSTYLE, this.atts);
 				try {
 					String encoded = URLEncoder.encode(yaxis.getMarkstyle()
 							.toString(), "UTF-8");
@@ -1522,9 +1752,11 @@ public class ScanDescriptionSaver implements
 				} catch (UnsupportedEncodingException e) {
 					logger.warn(e.getMessage(), e);
 				}
-				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_MARKSTYLE, Literals.XML_ELEMENT_NAME_MARKSTYLE);
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_MARKSTYLE,
+						Literals.XML_ELEMENT_NAME_MARKSTYLE);
 
-				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_YAXIS, Literals.XML_ELEMENT_NAME_YAXIS);
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_YAXIS,
+						Literals.XML_ELEMENT_NAME_YAXIS);
 			} catch (SAXException e) {
 				logger.error(e.getMessage(), e);
 				return false;
@@ -1543,28 +1775,30 @@ public class ScanDescriptionSaver implements
 	private boolean writePostscan(final Postscan postscan) {
 		try {
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_POSTSCAN, Literals.XML_ELEMENT_NAME_POSTSCAN,
-					this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_POSTSCAN,
+					Literals.XML_ELEMENT_NAME_POSTSCAN, this.atts);
 			this.atts.clear();
-			this.contentHandler.startElement("", "id", "id", this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_ID,
+					Literals.XML_ELEMENT_NAME_ID, this.atts);
 			this.contentHandler.characters(postscan.getAbstractDevice().getID()
 					.toCharArray(), 0, postscan.getAbstractDevice().getID()
 					.length());
-			this.contentHandler.endElement("", "id", "id");
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_ID,
+					Literals.XML_ELEMENT_NAME_ID);
 
 			if (postscan.isReset()) {
 				this.atts.clear();
-				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_RESETORIGINALVALUE,
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_RESETORIGINALVALUE,
 						Literals.XML_ELEMENT_NAME_RESETORIGINALVALUE, this.atts);
 				this.contentHandler.characters(
 						("" + postscan.isReset()).toCharArray(), 0,
 						("" + postscan.isReset()).length());
-				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_RESETORIGINALVALUE,
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_RESETORIGINALVALUE,
 						Literals.XML_ELEMENT_NAME_RESETORIGINALVALUE);
 			} else {
 				this.atts.clear();
 				this.atts.addAttribute(
-						"",
+						Literals.EMPTY_STRING,
 						Literals.XML_ATTRIBUTE_NAME_TYPE,
 						Literals.XML_ATTRIBUTE_NAME_TYPE,
 						Literals.CHARACTER_DATA,
@@ -1575,16 +1809,18 @@ public class ScanDescriptionSaver implements
 								.getValue().getType() : postscan
 								.getAbstractPrePostscanDevice().getValue()
 								.getAccess().getType())));
-				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_VALUE, Literals.XML_ELEMENT_NAME_VALUE,
-						this.atts);
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_VALUE,
+						Literals.XML_ELEMENT_NAME_VALUE, this.atts);
 				if (postscan.getValue() != null) {
 					this.contentHandler.characters(postscan.getValue()
 							.toCharArray(), 0, postscan.getValue().length());
 				}
-				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_VALUE, Literals.XML_ELEMENT_NAME_VALUE);
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_VALUE,
+						Literals.XML_ELEMENT_NAME_VALUE);
 			}
 
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_POSTSCAN, Literals.XML_ELEMENT_NAME_POSTSCAN);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_POSTSCAN,
+					Literals.XML_ELEMENT_NAME_POSTSCAN);
 		} catch (SAXException e) {
 			logger.error(e.getMessage(), e);
 			return false;
@@ -1772,42 +2008,46 @@ public class ScanDescriptionSaver implements
 	private boolean writeAxis(final Axis axis) {
 		try {
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_SMAXIS, Literals.XML_ELEMENT_NAME_SMAXIS, this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SMAXIS,
+					Literals.XML_ELEMENT_NAME_SMAXIS, this.atts);
 			this.atts.clear();
-			this.contentHandler.startElement("", "axisid", "axisid", this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, "axisid", "axisid", this.atts);
 			this.contentHandler.characters(axis.getAbstractDevice().getID()
 					.toCharArray(), 0, axis.getAbstractDevice().getID()
 					.length());
-			this.contentHandler.endElement("", "axisid", "axisid");
+			this.contentHandler.endElement(Literals.EMPTY_STRING, "axisid", "axisid");
 
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_STEPFUNCTION,
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_STEPFUNCTION,
 					Literals.XML_ELEMENT_NAME_STEPFUNCTION, this.atts);
 			this.contentHandler.characters(axis.getStepfunction().toString()
 					.toCharArray(), 0, axis.getStepfunction().toString().length());
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_STEPFUNCTION, Literals.XML_ELEMENT_NAME_STEPFUNCTION);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_STEPFUNCTION,
+					Literals.XML_ELEMENT_NAME_STEPFUNCTION);
 
 			this.atts.clear();
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_POSITIONMODE,
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_POSITIONMODE,
 					Literals.XML_ELEMENT_NAME_POSITIONMODE, this.atts);
 			this.contentHandler.characters(
 					PositionMode.typeToString(axis.getPositionMode())
 							.toCharArray(), 0,
 					PositionMode.typeToString(axis.getPositionMode()).length());
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_POSITIONMODE, Literals.XML_ELEMENT_NAME_POSITIONMODE);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_POSITIONMODE,
+					Literals.XML_ELEMENT_NAME_POSITIONMODE);
 			
 			switch (axis.getStepfunction()) {
 			case ADD:
 			case MULTIPLY:
 				this.atts.clear();
-				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_STARTSTOPSTEP,
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_STARTSTOPSTEP,
 						Literals.XML_ELEMENT_NAME_STARTSTOPSTEP, this.atts);
 				if (axis.getStart() != null) {
 					this.atts.clear();
-					this.atts.addAttribute("", Literals.XML_ATTRIBUTE_NAME_TYPE, Literals.XML_ATTRIBUTE_NAME_TYPE, Literals.CHARACTER_DATA,
+					this.atts.addAttribute(Literals.EMPTY_STRING, Literals.XML_ATTRIBUTE_NAME_TYPE,
+							Literals.XML_ATTRIBUTE_NAME_TYPE, Literals.CHARACTER_DATA,
 							DataTypes.typeToString(axis.getType()));
-					this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_START, Literals.XML_ELEMENT_NAME_START,
-							this.atts);
+					this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_START,
+							Literals.XML_ELEMENT_NAME_START, this.atts);
 					if (axis.getType().equals(DataTypes.DATETIME)) {
 						switch (axis.getPositionMode()) {
 						case ABSOLUTE:
@@ -1829,14 +2069,16 @@ public class ScanDescriptionSaver implements
 					this.contentHandler.characters(axis.getStart().toString()
 						.toCharArray(), 0, axis.getStart().toString().length());
 					}
-					this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_START, Literals.XML_ELEMENT_NAME_START);
+					this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_START,
+							Literals.XML_ELEMENT_NAME_START);
 				}
 				if (axis.getStop() != null) {
 					this.atts.clear();
-					this.atts.addAttribute("", Literals.XML_ATTRIBUTE_NAME_TYPE, Literals.XML_ATTRIBUTE_NAME_TYPE, Literals.CHARACTER_DATA,
+					this.atts.addAttribute(Literals.EMPTY_STRING, Literals.XML_ATTRIBUTE_NAME_TYPE,
+							Literals.XML_ATTRIBUTE_NAME_TYPE, Literals.CHARACTER_DATA,
 							DataTypes.typeToString(axis.getType()));
-					this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_STOP, Literals.XML_ELEMENT_NAME_STOP,
-							this.atts);
+					this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_STOP,
+							Literals.XML_ELEMENT_NAME_STOP, this.atts);
 					if (axis.getType().equals(DataTypes.DATETIME)) {
 						switch (axis.getPositionMode()) {
 						case ABSOLUTE:
@@ -1859,13 +2101,15 @@ public class ScanDescriptionSaver implements
 								axis.getStop().toString().toCharArray(), 0, 
 										axis.getStop().toString().length());
 					}
-					this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_STOP, Literals.XML_ELEMENT_NAME_STOP);
+					this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_STOP,
+							Literals.XML_ELEMENT_NAME_STOP);
 				}
 				if (axis.getStepwidth() != null) {
 					this.atts.clear();
-					this.atts.addAttribute("", Literals.XML_ATTRIBUTE_NAME_TYPE, Literals.XML_ATTRIBUTE_NAME_TYPE, Literals.CHARACTER_DATA,
+					this.atts.addAttribute(Literals.EMPTY_STRING, Literals.XML_ATTRIBUTE_NAME_TYPE,
+							Literals.XML_ATTRIBUTE_NAME_TYPE, Literals.CHARACTER_DATA,
 							DataTypes.typeToString(axis.getType()));
-					this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_STEPWIDTH,
+					this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_STEPWIDTH,
 							Literals.XML_ELEMENT_NAME_STEPWIDTH, this.atts);
 					if (axis.getType().equals(DataTypes.DATETIME)) {
 						switch (axis.getPositionMode()) {
@@ -1889,29 +2133,30 @@ public class ScanDescriptionSaver implements
 							.toString().toCharArray(), 0, axis.getStepwidth()
 							.toString().length());
 					}
-					this.contentHandler
-							.endElement("", Literals.XML_ELEMENT_NAME_STEPWIDTH, Literals.XML_ELEMENT_NAME_STEPWIDTH);
+					this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_STEPWIDTH,
+							Literals.XML_ELEMENT_NAME_STEPWIDTH);
 				}
 				this.atts.clear();
-				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_ISMAINAXIS,
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_ISMAINAXIS,
 						Literals.XML_ELEMENT_NAME_ISMAINAXIS, this.atts);
 				this.contentHandler.characters(
 						Boolean.toString(axis.isMainAxis()).toCharArray(), 0,
 						Boolean.toString(axis.isMainAxis()).length());
-				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_ISMAINAXIS, Literals.XML_ELEMENT_NAME_ISMAINAXIS);
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_ISMAINAXIS,
+						Literals.XML_ELEMENT_NAME_ISMAINAXIS);
 				this.atts.clear();
-				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_STARTSTOPSTEP,
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_STARTSTOPSTEP,
 						Literals.XML_ELEMENT_NAME_STARTSTOPSTEP);
 				break;
 			case FILE: 
 				if (axis.getFile() != null) {
 					this.atts.clear();
-					this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_STEPFILENAME,
+					this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_STEPFILENAME,
 							Literals.XML_ELEMENT_NAME_STEPFILENAME, this.atts);
 					this.contentHandler.characters(axis.getFile()
 							.getAbsolutePath().toCharArray(), 0, axis.getFile()
 							.getAbsolutePath().length());
-					this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_STEPFILENAME,
+					this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_STEPFILENAME,
 							Literals.XML_ELEMENT_NAME_STEPFILENAME);
 				}
 				break;
@@ -1925,44 +2170,45 @@ public class ScanDescriptionSaver implements
 			case POSITIONLIST:
 				if (axis.getPositionlist() != null) {
 					this.atts.clear();
-					this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_POSITIONLIST,
+					this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_POSITIONLIST,
 							Literals.XML_ELEMENT_NAME_POSITIONLIST, this.atts);
 					this.contentHandler.characters(axis.getPositionlist()
 							.toCharArray(), 0, axis.getPositionlist().length());
-					this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_POSITIONLIST,
+					this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_POSITIONLIST,
 							Literals.XML_ELEMENT_NAME_POSITIONLIST);
 				}
 				break;
 			case RANGE:
 				if (axis.getRange() != null) {
 					this.atts.clear();
-					this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_RANGE, 
+					this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_RANGE,
 							Literals.XML_ELEMENT_NAME_RANGE, this.atts);
 					
 					this.atts.clear();
-					this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_EXPRESSION, 
+					this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_EXPRESSION,
 							Literals.XML_ELEMENT_NAME_EXPRESSION, this.atts);
 					this.contentHandler.characters(axis.getRange().toCharArray(), 
 							0, axis.getRange().length());
-					this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_EXPRESSION, 
+					this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_EXPRESSION,
 							Literals.XML_ELEMENT_NAME_EXPRESSION);
 					
 					this.atts.clear();
-					this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_POSITIONLIST, 
+					this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_POSITIONLIST,
 							Literals.XML_ELEMENT_NAME_POSITIONLIST, this.atts);
 					String posList = ((RangeMode)axis.getMode()).getPositions();
 					this.contentHandler.characters(posList.toCharArray(), 0, posList.length());
-					this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_POSITIONLIST, 
+					this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_POSITIONLIST,
 							Literals.XML_ELEMENT_NAME_POSITIONLIST);
 					
-					this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_RANGE, 
+					this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_RANGE,
 							Literals.XML_ELEMENT_NAME_RANGE);
 				}
 				break;
 			default: 
 				break;
 			}
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_SMAXIS, Literals.XML_ELEMENT_NAME_SMAXIS);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SMAXIS,
+					Literals.XML_ELEMENT_NAME_SMAXIS);
 		} catch (final SAXException e) {
 			logger.error(e.getMessage(), e);
 			return false;
@@ -1980,19 +2226,21 @@ public class ScanDescriptionSaver implements
 	private boolean writePrescan(final Prescan prescan) {
 		this.atts.clear();
 		try {
-			this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_PRESCAN, Literals.XML_ELEMENT_NAME_PRESCAN,
-					this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_PRESCAN,
+					Literals.XML_ELEMENT_NAME_PRESCAN, this.atts);
 
 			this.atts.clear();
-			this.contentHandler.startElement("", "id", "id", this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_ID,
+					Literals.XML_ELEMENT_NAME_ID, this.atts);
 			this.contentHandler.characters(prescan
 					.getAbstractPrePostscanDevice().getID().toCharArray(), 0,
 					prescan.getAbstractPrePostscanDevice().getID().length());
-			this.contentHandler.endElement("", "id", "id");
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_ID,
+					Literals.XML_ELEMENT_NAME_ID);
 
 			this.atts.clear();
 			this.atts.addAttribute(
-					"",
+					Literals.EMPTY_STRING,
 					Literals.XML_ATTRIBUTE_NAME_TYPE,
 					Literals.XML_ATTRIBUTE_NAME_TYPE,
 					Literals.CHARACTER_DATA,
@@ -2003,13 +2251,15 @@ public class ScanDescriptionSaver implements
 							.getValue().getType() : prescan
 							.getAbstractPrePostscanDevice().getValue()
 							.getAccess().getType())));
-			this.contentHandler.startElement(Literals.XML_ELEMENT_NAME_VALUE, Literals.XML_ELEMENT_NAME_VALUE, Literals.XML_ELEMENT_NAME_VALUE,
-					this.atts);
+			this.contentHandler.startElement(Literals.XML_ELEMENT_NAME_VALUE, Literals.XML_ELEMENT_NAME_VALUE,
+					Literals.XML_ELEMENT_NAME_VALUE, this.atts);
 			this.contentHandler.characters(prescan.getValue().toCharArray(), 0,
 					prescan.getValue().length());
-			this.contentHandler.endElement(Literals.XML_ELEMENT_NAME_VALUE, Literals.XML_ELEMENT_NAME_VALUE, Literals.XML_ELEMENT_NAME_VALUE);
+			this.contentHandler.endElement(Literals.XML_ELEMENT_NAME_VALUE, Literals.XML_ELEMENT_NAME_VALUE,
+					Literals.XML_ELEMENT_NAME_VALUE);
 
-			this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_PRESCAN, Literals.XML_ELEMENT_NAME_PRESCAN);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_PRESCAN,
+					Literals.XML_ELEMENT_NAME_PRESCAN);
 		} catch (SAXException e) {
 			logger.error(e.getMessage(), e);
 			return false;
@@ -2030,87 +2280,96 @@ public class ScanDescriptionSaver implements
 			final String name) {
 		this.atts.clear();
 		try {
-			this.contentHandler.startElement("", name, name, this.atts);
+			this.contentHandler.startElement(Literals.EMPTY_STRING, name, name, this.atts);
 			this.atts.clear();
 
 			if (controlEvent.getEventType() == EventTypes.MONITOR) {
-				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_MONITOREVENT,
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_MONITOREVENT,
 						Literals.XML_ELEMENT_NAME_MONITOREVENT, this.atts);
-				this.contentHandler.startElement("", "id", "id", this.atts);
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_ID,
+						Literals.XML_ELEMENT_NAME_ID, this.atts);
 				this.contentHandler.characters(controlEvent.getEvent().getId()
 						.toCharArray(), 0, controlEvent.getEvent().getId()
 						.length());
-				this.contentHandler.endElement("", "id", "id");
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_ID,
+						Literals.XML_ELEMENT_NAME_ID);
 
 				this.atts.clear();
 				this.atts.addAttribute(
-						"",
+						Literals.EMPTY_STRING,
 						Literals.XML_ATTRIBUTE_NAME_TYPE,
 						Literals.XML_ATTRIBUTE_NAME_TYPE,
 						Literals.CHARACTER_DATA,
-						""
+						Literals.EMPTY_STRING
 								+ DataTypes.typeToString(controlEvent
 										.getLimit().getType()));
 				this.atts.addAttribute(
-						"",
-						"comparison",
-						"comparison",
+						Literals.EMPTY_STRING,
+						Literals.XML_ATTRIBUTE_NAME_COMPARISON,
+						Literals.XML_ATTRIBUTE_NAME_COMPARISON,
 						Literals.CHARACTER_DATA,
-						""
+						Literals.EMPTY_STRING
 								+ ComparisonTypes.typeToString(controlEvent
 										.getLimit().getComparison()));
-				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_LIMIT, Literals.XML_ELEMENT_NAME_LIMIT,
-						this.atts);
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_LIMIT,
+						Literals.XML_ELEMENT_NAME_LIMIT, this.atts);
 				this.contentHandler.characters(controlEvent.getLimit()
 						.getValue().toCharArray(), 0, controlEvent.getLimit()
 						.getValue().length());
-				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_LIMIT, Literals.XML_ELEMENT_NAME_LIMIT);
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_LIMIT,
+						Literals.XML_ELEMENT_NAME_LIMIT);
 			} else if (controlEvent.getEventType() == EventTypes.DETECTOR) {
-				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_DETECTOREVENT,
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_DETECTOREVENT,
 						Literals.XML_ELEMENT_NAME_DETECTOREVENT, this.atts);
-				this.contentHandler.startElement("", "id", "id", this.atts);
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_ID,
+						Literals.XML_ELEMENT_NAME_ID, this.atts);
 				this.contentHandler.characters(controlEvent.getEvent().getId()
 						.toCharArray(), 0, controlEvent.getEvent().getId()
 						.length());
-				this.contentHandler.endElement("", "id", "id");
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_ID,
+						Literals.XML_ELEMENT_NAME_ID);
 			} else if (controlEvent.getEventType() == EventTypes.SCHEDULE) {
-				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_SCHEDULEEVENT,
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SCHEDULEEVENT,
 						Literals.XML_ELEMENT_NAME_SCHEDULEEVENT, this.atts);
-				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_INCIDENT, Literals.XML_ELEMENT_NAME_INCIDENT,
-						this.atts);
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_INCIDENT,
+						Literals.XML_ELEMENT_NAME_INCIDENT, this.atts);
 				ScheduleEvent scheduleEvent = (ScheduleEvent) controlEvent
 						.getEvent();
 				String incident = scheduleEvent.getScheduleTime().getXmlValue();
 				this.contentHandler.characters(incident.toCharArray(), 0,
 						incident.length());
-				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_INCIDENT, Literals.XML_ELEMENT_NAME_INCIDENT);
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_INCIDENT,
+						Literals.XML_ELEMENT_NAME_INCIDENT);
 
-				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_CHAINID, Literals.XML_ELEMENT_NAME_CHAINID,
-						this.atts);
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_CHAINID,
+						Literals.XML_ELEMENT_NAME_CHAINID, this.atts);
 				String tag = Integer.toString(scheduleEvent.getScanModule()
 						.getChain().getId());
 				this.contentHandler.characters(tag.toCharArray(), 0,
 						tag.length());
-				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_CHAINID, Literals.XML_ELEMENT_NAME_CHAINID);
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_CHAINID,
+						Literals.XML_ELEMENT_NAME_CHAINID);
 
-				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_SMID, Literals.XML_ELEMENT_NAME_SMID, this.atts);
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SMID,
+						Literals.XML_ELEMENT_NAME_SMID, this.atts);
 				tag = Integer.toString(scheduleEvent.getScanModule().getId());
 				this.contentHandler.characters(tag.toCharArray(), 0,
 						tag.length());
-				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_SMID, Literals.XML_ELEMENT_NAME_SMID);
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SMID,
+						Literals.XML_ELEMENT_NAME_SMID);
 			}
 			this.atts.clear();
 			switch (controlEvent.getEventType()) {
 			case DETECTOR:
-				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_DETECTOREVENT,
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_DETECTOREVENT,
 						Literals.XML_ELEMENT_NAME_DETECTOREVENT);
 				break;
 			case MONITOR:
-				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_MONITOREVENT,
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_MONITOREVENT,
 						Literals.XML_ELEMENT_NAME_MONITOREVENT);
 				break;
 			case SCHEDULE:
-				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_SCHEDULEEVENT,
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SCHEDULEEVENT,
 						Literals.XML_ELEMENT_NAME_SCHEDULEEVENT);
 				break;
 			default:
@@ -2118,17 +2377,18 @@ public class ScanDescriptionSaver implements
 			}
 			if (name.equals("pauseevent")) {
 				atts.clear();
-				this.contentHandler.startElement("", Literals.XML_ELEMENT_NAME_ACTION,
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_ACTION,
 						Literals.XML_ELEMENT_NAME_ACTION, this.atts);
 				this.contentHandler.characters(
 						("" + ((PauseEvent) controlEvent).getEventAction()
 								.toString()).toCharArray(), 0,
 						("" + ((PauseEvent) controlEvent).getEventAction()
 								.toString()).length());
-				this.contentHandler.endElement("", Literals.XML_ELEMENT_NAME_ACTION, Literals.XML_ELEMENT_NAME_ACTION);
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_ACTION,
+						Literals.XML_ELEMENT_NAME_ACTION);
 			}
 			this.atts.clear();
-			this.contentHandler.endElement("", name, name);
+			this.contentHandler.endElement(Literals.EMPTY_STRING, name, name);
 		} catch (SAXException e) {
 			logger.error(e.getMessage(), e);
 			return false;

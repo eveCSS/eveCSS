@@ -24,6 +24,7 @@ import org.eclipse.jface.viewers.TextCellEditor;
 
 import de.ptb.epics.eve.data.scandescription.Connector;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.gef.editpolicies.ScanModuleComponentEditPolicy;
@@ -152,6 +153,10 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 		// click when selected || double click
 		if (request.getType() == RequestConstants.REQ_DIRECT_EDIT
 				|| request.getType() == RequestConstants.REQ_OPEN) {
+			if (!this.getModel().getType().equals(ScanModuleTypes.CLASSIC)) {
+				logger.debug("SM is not of type classic -> deny editing");
+				return;
+			}
 			if (directEditManager == null) {
 				directEditManager = new ScanModuleDirectEditManager(this,
 						TextCellEditor.class, new ScanModuleCellEditorLocator(

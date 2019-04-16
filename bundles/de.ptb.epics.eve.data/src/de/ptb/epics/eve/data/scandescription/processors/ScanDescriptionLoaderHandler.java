@@ -286,58 +286,59 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 		switch (this.state) {
 		case ROOT:
-			if (qName.equals("version")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_VERSION)) {
 				this.state = ScanDescriptionLoaderStates.VERSION_NEXT;
-			} else if (qName.equals("scan")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_SCAN)) {
 				this.state = ScanDescriptionLoaderStates.SCAN_LOADING;
-			} else if (qName.equals("events")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_EVENTS)) {
 				this.state = ScanDescriptionLoaderStates.EVENTS_LOADING;
 			}
 			break;
 
 		case SCAN_LOADING:
-			if (qName.equals("repeatcount")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_REPEATCOUNT)) {
 				this.state = ScanDescriptionLoaderStates.REPEATCOUNT_NEXT;
-			} else if (qName.equals("chain")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_CHAIN)) {
 				this.currentChain = new Chain(Integer.parseInt(atts
-						.getValue("id")));
+						.getValue(Literals.XML_ATTRIBUTE_NAME_ID)));
 				this.chainList.add(this.currentChain);
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
-			} else if (qName.equals("monitoroptions")) {
-				if (atts.getValue("type") == null) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_MONITOROPTIONS)) {
+				if (atts.getValue(Literals.XML_ATTRIBUTE_NAME_TYPE) == null) {
 					this.scanDescription.setMonitorOption(MonitorOption.CUSTOM);
 				} else {
 					this.scanDescription.setMonitorOption(
-							MonitorOption.stringToType(atts.getValue("type")));
+							MonitorOption.stringToType(atts.getValue(Literals.XML_ATTRIBUTE_NAME_TYPE)));
 					this.optionsDefinedInScan = new ArrayList<>();
 				}
 				this.state = ScanDescriptionLoaderStates.MONITOROPTIONS_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.MONITOROPTIONS_ID_LOADING;
 			}
+			break;
 
 		case CHAIN_LOADING:
-			if (qName.equals("comment")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_COMMENT)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_COMMENT_NEXT;
-			} else if (qName.equals("savefilename")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_SAVEFILENAME)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SAVEFILENAME_NEXT;
-			} else if (qName.equals("confirmsave")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_CONFIRMSAVE)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_CONFIRMSAVE_NEXT;
-			} else if (qName.equals("autonumber")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_AUTONUMBER)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_AUTONUMBER_NEXT;
-			} else if (qName.equals("saveplugin")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_SAVEPLUGIN)) {
 				this.invalidPlugin = false;
 				this.state = ScanDescriptionLoaderStates.CHAIN_SAVEPLUGINCONTROLLER_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.PLUGIN_CONTROLLER_LOADING;
 				if (this.measuringStation.getPluginByName(
-						atts.getValue("name")) == null) {
+						atts.getValue(Literals.XML_ATTRIBUTE_NAME_NAME)) == null) {
 					this.invalidPlugin = true;
 					this.deviceMessages.add(new ScanDescriptionLoaderDeviceMessage(
 							ScanDescriptionLoaderMessageType.PLUGIN_NOT_FOUND,
-							"Plugin '" + atts.getValue("name") + "' has been removed!"));
+							"Plugin '" + atts.getValue(Literals.XML_ATTRIBUTE_NAME_NAME) + "' has been removed!"));
 				}
 				this.currentPluginController = this.currentChain
 						.getSavePluginController();
-				String savePluginName = atts.getValue("name");
+				String savePluginName = atts.getValue(Literals.XML_ATTRIBUTE_NAME_NAME);
 				PlugIn savePlugin = this.measuringStation
 						.getPluginByName(savePluginName);
 				if (savePlugin != null) {
@@ -346,9 +347,9 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 								savePlugin);
 					}
 				}
-			} else if (qName.equals("savescandescription")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_SAVESCANDESCRIPTION)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SAVESCANDESCRIPTION_NEXT;
-			} else if (qName.equals("startevent")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_STARTEVENT)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_STARTEVENT_LOADING;
 			} else if (qName.equals(Literals.XML_ELEMENT_NAME_PAUSEEVENT)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_PAUSEEVENT_LOADING;
@@ -356,17 +357,17 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.state = ScanDescriptionLoaderStates.CHAIN_REDOEVENT_LOADING;
 			} else if (qName.equals(Literals.XML_ELEMENT_NAME_BREAKEVENT)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_BREAKEVENT_LOADING;
-			} else if (qName.equals("stopevent")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_STOPEVENT)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_STOPEVENT_LOADING;
-			} else if (qName.equals("scanmodules")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_SCANMODULES)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULES_LOADING;
 			}
 			break;
 			
 		case CHAIN_SCANMODULES_LOADING:
-			if (qName.equals("scanmodule")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_SCANMODULE)) {
 				this.currentScanModule = new ScanModule(Integer.parseInt(atts
-						.getValue("id")));
+						.getValue(Literals.XML_ATTRIBUTE_NAME_ID)));
 				this.currentScanModule.smLoading = true;
 				this.currentRelationReminder = new ScanModulRelationReminder(
 						this.currentScanModule);
@@ -378,31 +379,46 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case CHAIN_SCANMODULE_LOADING:
-			if (qName.equals("type")) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_TYPE_NEXT;
-			} else if (qName.equals("name")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_NAME)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_NAME_NEXT;
-			} else if (qName.equals("xpos")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_XPOS)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_XPOS_NEXT;
-			} else if (qName.equals("ypos")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_YPOS)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_YPOS_NEXT;
-			} else if (qName.equals("parent")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_PARENT)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PARENT_NEXT;
-			} else if (qName.equals("nested")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_NESTED)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_NESTED_NEXT;
-			} else if (qName.equals("appended")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_APPENDED)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_APPENDED_NEXT;
-			} else if (qName.equals("valuecount")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_SCANMODULE_CLASSIC)) {
+				this.currentScanModule.setType(ScanModuleTypes.CLASSIC);
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_CLASSIC_LOADING;
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_SCANMODULE_SAVE_AXIS_POSITIONS)) {
+				this.currentScanModule.setType(ScanModuleTypes.SAVE_AXIS_POSITIONS);
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SAVE_AXIS_POSITIONS_LOADING;
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_SCANMODULE_SAVE_CHANNEL_VALUES)) {
+				this.currentScanModule.setType(ScanModuleTypes.SAVE_CHANNEL_VALUES);
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SAVE_CHANNEL_VALUES_LOADING;
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_SCANMODULE_DYNAMIC_AXIS_POSITIONS)) {
+				this.currentScanModule.setType(ScanModuleTypes.DYNAMIC_AXIS_POSITIONS);
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_SCANMODULE_DYNAMIC_CHANNEL_VALUES)) {
+				this.currentScanModule.setType(ScanModuleTypes.DYNAMIC_CHANNEL_VALUES);
+			}
+			break;
+			
+		case CHAIN_SCANMODULE_CLASSIC_LOADING:
+			if (qName.equals(Literals.XML_ELEMENT_NAME_VALUECOUNT)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_VALUECOUNT_NEXT;
-			} else if (qName.equals("settletime")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_SETTLETIME)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SETTLETIME_NEXT;
-			} else if (qName.equals("triggerdelay")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_TRIGGERDELAY)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_TRIGGERDELAY_NEXT;
-			} else if (qName.equals("triggerconfirmaxis")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_TRIGGERCONFIRMAXIS)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_TRIGGERCONFIRMAXIS_NEXT;
-			} else if (qName.equals("triggerconfirmchannel")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_TRIGGERCONFIRMCHANNEL)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_TRIGGERCONFIRMCHANNEL_NEXT;
-			} else if (qName.equals("triggerevent")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_TRIGGEREVENT)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_TRIGGEREVENT_LOADING;
 			} else if (qName.equals(Literals.XML_ELEMENT_NAME_BREAKEVENT)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_BREAKEVENT_LOADING;
@@ -410,68 +426,83 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_REDOEVENT_LOADING;
 			} else if (qName.equals(Literals.XML_ELEMENT_NAME_PAUSEEVENT)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PAUSEEVENT_LOADING;
-			} else if (qName.equals("prescan")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_PRESCAN)) {
 				this.currentPrescan = new Prescan();
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PRESCAN_LOADING;
-			} else if (qName.equals("postscan")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_POSTSCAN)) {
 				this.currentPostscan = new Postscan();
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSTSCAN_LOADING;
-			} else if (qName.equals("smaxis")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_SMAXIS)) {
 				this.currentAxis = new Axis(this.currentScanModule);
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_LOADING;
-			} else if (qName.equals("smchannel")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_SMCHANNEL)) {
 				this.currentChannel = new Channel(this.currentScanModule);
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_LOADING;
-			} else if (qName.equals("positioning")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_POSITIONING)) {
 				this.currentPositioning = new Positioning(this.currentScanModule);
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSITIONING_LOADING;
-			} else if (qName.equals("plot")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_PLOT)) {
 				this.currentPlotWindow = new PlotWindow(this.currentScanModule);
 				this.currentPlotWindow.setId(Integer.parseInt(atts
-						.getValue("id")));
+						.getValue(Literals.XML_ATTRIBUTE_NAME_ID)));
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PLOT_LOADING;
 			}
 			break;
 			
+		case CHAIN_SCANMODULE_SAVE_AXIS_POSITIONS_LOADING:
+			if (qName.equals(Literals.XML_ELEMENT_NAME_SMAXIS)) {
+				this.currentAxis = new Axis(this.currentScanModule);
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_LOADING;
+			}
+			break;
+			
+		case CHAIN_SCANMODULE_SAVE_CHANNEL_VALUES_LOADING:
+			if (qName.equals("smchannel")) {
+				this.currentChannel = new Channel(this.currentScanModule);
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_LOADING;
+			}
+			break;
+			
 		case CHAIN_SCANMODULE_POSITIONING_LOADING:
-			if (qName.equals("axis_id")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_AXISID)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSITIONING_AXIS_ID_NEXT;
-			} else if (qName.equals("channel_id")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_CHANNELID)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSITIONING_CHANNEL_ID_NEXT;
-			} else if (qName.equals("normalize_id")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_NORMALIZEID)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSITIONING_NORMALIZE_ID_NEXT;
-			} else if (qName.equals("plugin")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_PLUGIN)) {
 				this.invalidPlugin = false;
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSITIONING_CONTROLLER_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.PLUGIN_CONTROLLER_LOADING;
 				if (this.measuringStation.getPluginByName(
-						atts.getValue("name")) == null) {
+						atts.getValue(Literals.XML_ATTRIBUTE_NAME_NAME)) == null) {
 					// plugin not found
 					this.invalidPlugin = true;
 					this.deviceMessages.add(new ScanDescriptionLoaderDeviceMessage(
 							ScanDescriptionLoaderMessageType.PLUGIN_NOT_FOUND,
-							"Plugin '" + atts.getValue("name")+ "' has been removed!"));
+							"Plugin '" + atts.getValue(Literals.XML_ATTRIBUTE_NAME_NAME)+ "' has been removed!"));
 				}
 				this.currentPluginController = this.currentPositioning
 						.getPluginController();
 				this.currentPluginController.setPlugin(this.measuringStation
-						.getPluginByName(atts.getValue("name")));
+						.getPluginByName(atts.getValue(Literals.XML_ATTRIBUTE_NAME_NAME)));
 			}
+			break;
 
 		case CHAIN_SCANMODULE_PRESCAN_LOADING:
-			if (qName.equals("id")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_ID)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PRESCAN_ID_NEXT;
-			} else if (qName.equals("value")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_VALUE)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PRESCAN_VALUE_NEXT;
 			}
 			break;
 
 		case CHAIN_SCANMODULE_POSTSCAN_LOADING:
-			if (qName.equals("id")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_ID)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSTSCAN_ID_NEXT;
-			} else if (qName.equals("value")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_VALUE)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSTSCAN_VALUE_NEXT;
-			} else if (qName.equals("reset_originalvalue")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_RESETORIGINALVALUE)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSTSCAN_RESET_NEXT;
 			}
 			break;
@@ -479,45 +510,45 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		case CHAIN_SCANMODULE_SMMOTOR_LOADING:
 			if (qName.equals("axisid")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_AXISID_NEXT;
-			} else if (qName.equals("stepfunction")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_STEPFUNCTION)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_STEPFUNCTION_NEXT;
-			} else if (qName.equals("positionmode")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_POSITIONMODE)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_POSITIONMODE_NEXT;
-			} else if (qName.equals("start")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_START)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_START_NEXT;
-			} else if (qName.equals("stop")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_STOP)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_STOP_NEXT;
-			} else if (qName.equals("stepwidth")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_STEPWIDTH)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_STEPWIDTH_NEXT;
-			} else if (qName.equals("stepfilename")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_STEPFILENAME)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_STEPFILENAME_NEXT;
-			} else if (qName.equals("positionlist")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_POSITIONLIST)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_POSITIONLIST_NEXT;
-			} else if (qName.equals("range")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_RANGE)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_EXPRESSION_NEXT;
-			} else if (qName.equals("ismainaxis")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_ISMAINAXIS)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_ISMAINAXIS_NEXT;
-			} else if (qName.equals("plugin")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_PLUGIN)) {
 				if (this.currentAxis.getAbstractDevice() != null) {
 					this.invalidPlugin = false;
 					this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_CONTROLLER_LOADING;
 					this.subState = ScanDescriptionLoaderSubStates.PLUGIN_CONTROLLER_LOADING;
 					this.currentPluginController = new PluginController();
 					if (this.measuringStation.getPluginByName(atts
-							.getValue("name")) == null) {
+							.getValue(Literals.XML_ATTRIBUTE_NAME_NAME)) == null) {
 						// plugin not found
 						this.invalidPlugin = true;
 						this.deviceMessages
 								.add(new ScanDescriptionLoaderDeviceMessage(
 										ScanDescriptionLoaderMessageType.PLUGIN_NOT_FOUND,
-										"Plugin '" + atts.getValue("name")
+										"Plugin '" + atts.getValue(Literals.XML_ATTRIBUTE_NAME_NAME)
 												+ "' has been removed!"));
 					}
 					this.currentAxis
 							.setPluginController(this.currentPluginController);
 					this.currentPluginController
 							.setPlugin(this.measuringStation
-									.getPluginByName(atts.getValue("name")));
+									.getPluginByName(atts.getValue(Literals.XML_ATTRIBUTE_NAME_NAME)));
 				}
 			}
 			break;
@@ -570,15 +601,15 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		case CHAIN_SCANMODULE_BREAKEVENT_LOADING:
 		case CHAIN_SCANMODULE_REDOEVENT_LOADING:
 		case CHAIN_SCANMODULE_DETECTOR_REDOEVENT_LOADING:
-			if (qName.equals("detectorevent")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_DETECTOREVENT)) {
 				this.currentControlEvent = new ControlEvent(EventTypes.DETECTOR);
 				this.currentDetectorEventAdaptee = new DetectorEventAdaptee();
 				this.subState = ScanDescriptionLoaderSubStates.DETECTOREVENT_LOADING;
-			} else if (qName.equals("monitorevent")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_MONITOREVENT)) {
 				this.currentControlEvent = new ControlEvent(EventTypes.MONITOR);
 				this.currentDetectorEventAdaptee = new DetectorEventAdaptee();
 				this.subState = ScanDescriptionLoaderSubStates.MONITOREVENT_LOADING;
-			} else if (qName.equals("scheduleevent")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_SCHEDULEEVENT)) {
 				this.currentControlEvent = new ControlEvent(EventTypes.SCHEDULE);
 				this.currentScheduleEventAdaptee = new ScheduleEventAdaptee();
 				this.subState = ScanDescriptionLoaderSubStates.SCHEDULEEVENT_LOADING;
@@ -587,15 +618,15 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			
 		case CHAIN_PAUSEEVENT_LOADING:
 		case CHAIN_SCANMODULE_PAUSEEVENT_LOADING:
-			if (qName.equals("detectorevent")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_DETECTOREVENT)) {
 				this.currentControlEvent = new PauseEvent(EventTypes.DETECTOR);
 				this.currentDetectorEventAdaptee = new DetectorEventAdaptee();
 				this.subState = ScanDescriptionLoaderSubStates.PAUSEDETECTOREVENT_LOADING;
-			} else if (qName.equals("monitorevent")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_MONITOREVENT)) {
 				this.currentControlEvent = new PauseEvent(EventTypes.MONITOR);
 				this.currentDetectorEventAdaptee = new DetectorEventAdaptee();
 				this.subState = ScanDescriptionLoaderSubStates.PAUSEMONITOREVENT_LOADING;
-			} else if (qName.equals("scheduleevent")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_SCHEDULEEVENT)) {
 				this.currentControlEvent = new PauseEvent(EventTypes.SCHEDULE);
 				this.currentScheduleEventAdaptee = new ScheduleEventAdaptee();
 				this.subState = ScanDescriptionLoaderSubStates.PAUSESCHEDULEEVENT_LOADING;
@@ -603,13 +634,13 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 			
 		case CHAIN_SCANMODULE_PLOT_LOADING:
-			if (qName.equals("name")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_NAME)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PLOT_NAME_NEXT;
-			} else if (qName.equals("xaxis")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_XAXIS)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PLOT_AXIS_LOADING;
-			} else if (qName.equals("init")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_INIT)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PLOT_INIT_NEXT;
-			} else if (qName.equals("yaxis")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_YAXIS)) {
 				this.currentYAxis = new YAxis();
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PLOT_YAXIS_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.YAXIS_LOADING;
@@ -617,9 +648,9 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case CHAIN_SCANMODULE_PLOT_AXIS_LOADING:
-			if (qName.equals("id")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_ID)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PLOT_AXIS_ID_NEXT;
-			} else if (qName.equals("mode")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_MODE)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PLOT_AXIS_MODE_NEXT;
 			}
 		}
@@ -627,98 +658,97 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		switch (this.subState) {
 		
 		case DETECTOREVENT_LOADING:
-			if (qName.equals("id")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_ID)) {
 				this.subState = ScanDescriptionLoaderSubStates.EVENT_ID_NEXT;
 			}
 			break;
 		
 		case MONITOREVENT_LOADING:
-			if (qName.equals("id")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_ID)) {
 				this.subState = ScanDescriptionLoaderSubStates.EVENT_ID_NEXT;
-			} else if (qName.equals("limit")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_LIMIT)) {
 				this.currentControlEvent.getLimit().setComparison(
 						ComparisonTypes.stringToType(atts
-								.getValue("comparison")));
+								.getValue(Literals.XML_ATTRIBUTE_NAME_COMPARISON)));
 				this.currentControlEvent.getLimit().setType(
-						DataTypes.stringToType(atts.getValue("type")));
+						DataTypes.stringToType(atts.getValue(Literals.XML_ATTRIBUTE_NAME_TYPE)));
 				this.subState = ScanDescriptionLoaderSubStates.EVENT_LIMIT_NEXT;
 			}
 			break;
 			
 		case SCHEDULEEVENT_LOADING:
-			if (qName.equals("incident")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_INCIDENT)) {
 				this.subState = ScanDescriptionLoaderSubStates.EVENT_INCIDENT_NEXT;
-			} else if (qName.equals("chainid")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_CHAINID)) {
 				this.subState = ScanDescriptionLoaderSubStates.EVENT_CHAINID_NEXT;
-			} else if (qName.equals("smid")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_SMID)) {
 				this.subState = ScanDescriptionLoaderSubStates.EVENT_SCANMODULEID_NEXT;
 			}
 			break;
 
 		case PAUSEDETECTOREVENT_LOADING:
-			if (qName.equals("id")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_ID)) {
 				this.subState = ScanDescriptionLoaderSubStates.PAUSEEVENT_ID_NEXT;
 			}
 			break;
 			
 		case PAUSEMONITOREVENT_LOADING:
-			if (qName.equals("id")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_ID)) {
 				this.subState = ScanDescriptionLoaderSubStates.PAUSEEVENT_ID_NEXT;
-			} else if (qName.equals("limit")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_LIMIT)) {
 				this.currentControlEvent.getLimit().setComparison(
 						ComparisonTypes.stringToType(atts
-								.getValue("comparison")));
+								.getValue(Literals.XML_ATTRIBUTE_NAME_COMPARISON)));
 				this.currentControlEvent.getLimit().setType(
-						DataTypes.stringToType(atts.getValue("type")));
+						DataTypes.stringToType(atts.getValue(Literals.XML_ATTRIBUTE_NAME_TYPE)));
 				this.subState = ScanDescriptionLoaderSubStates.PAUSEEVENT_LIMIT_NEXT;
-			} else if (qName.equals("action")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_ACTION)) {
 				this.subState = ScanDescriptionLoaderSubStates.PAUSEMONITOREVENT_ACTION_NEXT;
 			}
 			break;
 
 		case PAUSESCHEDULEEVENT_LOADING:
-			if (qName.equals("incident")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_INCIDENT)) {
 				this.subState = ScanDescriptionLoaderSubStates.PAUSEEVENT_INCIDENT_NEXT;
-			} else if (qName.equals("chainid")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_CHAINID)) {
 				this.subState = ScanDescriptionLoaderSubStates.PAUSEEVENT_CHAINID_NEXT;
-			} else if (qName.equals("smid")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_SMID)) {
 				this.subState = ScanDescriptionLoaderSubStates.PAUSEEVENT_SCANMODULEID_NEXT;
-			} else if (qName.equals("action")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_ACTION)) {
 				this.subState = ScanDescriptionLoaderSubStates.PAUSESCHEDULEEVENT_ACTION_NEXT;
 			}
 			break;
 
 		case YAXIS_LOADING:
-			if (qName.equals("id")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_ID)) {
 				this.subState = ScanDescriptionLoaderSubStates.YAXIS_ID_NEXT;
-			} else if (qName.equals("mode")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_MODE)) {
 				this.subState = ScanDescriptionLoaderSubStates.YAXIS_MODE_NEXT;
-			} else if (qName.equals("modifier")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_MODIFIER)) {
 				this.subState = ScanDescriptionLoaderSubStates.YAXIS_MODIFIER_NEXT;
-			} else if (qName.equals("normalize_id")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_NORMALIZEID)) {
 				this.subState = ScanDescriptionLoaderSubStates.YAXIS_NORMALIZE_ID_NEXT;
-			} else if (qName.equals("linestyle")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_LINESTYLE)) {
 				this.subState = ScanDescriptionLoaderSubStates.YAXIS_LINESTYLE_NEXT;
-			} else if (qName.equals("markstyle")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_MARKSTYLE)) {
 				this.subState = ScanDescriptionLoaderSubStates.YAXIS_MARKSTYLE_NEXT;
-			} else if (qName.equals("color")) {
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_COLOR)) {
 				this.subState = ScanDescriptionLoaderSubStates.YAXIS_COLOR_NEXT;
 			}
 			break;
 
 		case PLUGIN_CONTROLLER_LOADING:
-			if (qName.equals("parameter")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_PARAMETER)) {
 				this.subState = ScanDescriptionLoaderSubStates.PLUGIN_CONTROLLER_PARAMETER_NEXT;
-				this.currentParameterName = atts.getValue("name");
+				this.currentParameterName = atts.getValue(Literals.XML_ATTRIBUTE_NAME_NAME);
 			}
 			break;
 
 		case MONITOROPTIONS_ID_LOADING:
-			if (qName.equals("id")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_ID)) {
 				this.subState = ScanDescriptionLoaderSubStates.MONITOROPTIONS_ID_NEXT;
 			}
 			break;
-		
 		}
 	}
 
@@ -733,7 +763,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		} else {
 			textBuffer.append(s);
 		}
-
 	}
 
 	/**
@@ -788,11 +817,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			this.currentChain.setSaveScanDescription(Boolean
 					.parseBoolean(textBuffer.toString()));
 			this.state = ScanDescriptionLoaderStates.CHAIN_SAVESCANDESCRIPTION_READ;
-			break;
-			
-		case CHAIN_SCANMODULE_TYPE_NEXT:
-			this.currentScanModule.setType(ScanModuleTypes.getEnum(textBuffer.toString()));
-			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_TYPE_READ;
 			break;
 
 		case CHAIN_SCANMODULE_NAME_NEXT:
@@ -879,7 +903,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case CHAIN_SCANMODULE_POSTSCAN_ID_NEXT:
-			if (this.measuringStation.getPrePostscanDeviceById(textBuffer.toString()) != null) {	
+			if (this.measuringStation.getPrePostscanDeviceById(textBuffer.toString()) != null) {
 				this.currentPostscan
 				.setAbstractPrePostscanDevice(this.measuringStation
 						.getPrePostscanDeviceById(textBuffer.toString()));
@@ -1250,9 +1274,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSITIONING_NORMALIZE_ID_READ;
 			break;
 
-
 		case CHAIN_SAVEPLUGINCONTROLLER_LOADING:
-			if (qName.equals("saveplugin")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_SAVEPLUGIN)) {
 				this.currentPluginController = null;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
@@ -1260,7 +1283,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case MONITOROPTIONS_LOADING:
-			if (qName.equals("monitoroptions")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_MONITOROPTIONS)) {
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 				this.state = ScanDescriptionLoaderStates.SCAN_LOADING;
 			}
@@ -1360,7 +1383,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.currentYAxis.setDetectorChannel(this.measuringStation
 						.getDetectorChannelById(textBuffer.toString()));
 			}
-
 			this.subState = ScanDescriptionLoaderSubStates.YAXIS_ID_READ;
 			break;
 
@@ -1388,35 +1410,27 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 		case YAXIS_LINESTYLE_NEXT:
 			final String linestyleBuffer = textBuffer.toString();
-
 			boolean foundLinestyle = false;
-
 			TraceType[] tracetypes = TraceType.values();
 			for (int i = 0; i < tracetypes.length; i++) {
 				if (tracetypes[i].toString().equals(linestyleBuffer)) {
 					foundLinestyle = true;
 				}
 			}
-
 			if (foundLinestyle) {
-
 				for (int i = 0; i < tracetypes.length; i++) {
 					if (tracetypes[i].toString().equals(linestyleBuffer)) {
 						this.currentYAxis.setLinestyle(tracetypes[i]);
 					}
 				}
 			}
-
 			this.subState = ScanDescriptionLoaderSubStates.YAXIS_LINESTYLE_READ;
 			break;
 
 		case YAXIS_MARKSTYLE_NEXT:
 			final String markstyleBuffer = textBuffer.toString();
-
 			boolean foundMarkstyle = false;
-
 			PointStyle[] markstyles = PointStyle.values();
-
 			for (int i = 0; i < markstyles.length; i++) {
 				try {
 					if (markstyles[i].toString().equals(
@@ -1427,9 +1441,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 					LOGGER.error(e.getMessage(), e);
 				}
 			}
-
 			if (foundMarkstyle) {
-
 				for (int i = 0; i < markstyles.length; i++) {
 					try {
 						if (markstyles[i].toString().equals(
@@ -1441,13 +1453,11 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 					}
 				}
 			}
-
 			this.subState = ScanDescriptionLoaderSubStates.YAXIS_MARKSTYLE_READ;
 			break;
 
 		case YAXIS_COLOR_NEXT:
 			final String colorBuffer = textBuffer.toString();
-
 			String redHex = colorBuffer.substring(0, 2);
 			int red = Integer.parseInt(redHex, 16);
 			String greenHex = colorBuffer.substring(2, 4);
@@ -1491,7 +1501,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case MONITOROPTIONS_ID_NEXT:
-			if (qName.equals("id")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_ID)) {
 				switch (this.scanDescription.getMonitorOption()) {
 				case CUSTOM:
 					AbstractPrePostscanDevice monOption = this.measuringStation
@@ -1527,28 +1537,29 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 		switch (this.state) {
 		case VERSION_READ:
-			if (qName.equals("version")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_VERSION)) {
 				this.state = ScanDescriptionLoaderStates.ROOT;
 			}
 			break;
 
 		case SCAN_LOADING:
-			if (qName.equals("scan")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_SCAN)) {
 				this.state = ScanDescriptionLoaderStates.ROOT;
 
 				for (ScanModule sm : this.currentChain.getScanModules()) {
 					sm.smLoading = false; // TODO public attribute ?!
 				}
 			}
+			break;
 			
 		case REPEATCOUNT_READ:
-			if (qName.equals("repeatcount")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_REPEATCOUNT)) {
 				this.state = ScanDescriptionLoaderStates.SCAN_LOADING;
 			}
 			break;
 
 		case CHAIN_LOADING:
-			if (qName.equals("chain")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_CHAIN)) {
 				this.state = ScanDescriptionLoaderStates.SCAN_LOADING;
 				Iterator<ScanModulRelationReminder> it = this.relationReminders
 						.iterator();
@@ -1581,31 +1592,31 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 			
 		case CHAIN_COMMENT_READ:
-			if (qName.equals("comment")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_COMMENT)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
 			}
 			break;
 
 		case CHAIN_SAVEFILENAME_READ:
-			if (qName.equals("savefilename")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_SAVEFILENAME)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
 			}
 			break;
 
 		case CHAIN_CONFIRMSAVE_READ:
-			if (qName.equals("confirmsave")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_CONFIRMSAVE)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
 			}
 			break;
 
 		case CHAIN_AUTONUMBER_READ:
-			if (qName.equals("autonumber")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_AUTONUMBER)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
 			}
 			break;
 
 		case CHAIN_SAVEPLUGINCONTROLLER_LOADING:
-			if (qName.equals("saveplugin")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_SAVEPLUGIN)) {
 				this.currentPluginController = null;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
@@ -1613,13 +1624,13 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case CHAIN_SAVESCANDESCRIPTION_READ:
-			if (qName.equals("savescandescription")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_SAVESCANDESCRIPTION)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
 			}
 			break;
 
 		case CHAIN_STARTEVENT_LOADING:
-			if (qName.equals("startevent")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_STARTEVENT)) {
 				this.currentChain.addStartEvent(this.currentControlEvent);
 				this.createEventPair();
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
@@ -1646,7 +1657,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 				
 		case CHAIN_STOPEVENT_LOADING:
-			if (qName.equals("stopevent")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_STOPEVENT)) {
 				this.currentChain.addStopEvent(this.currentControlEvent);
 				this.createEventPair();
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
@@ -1665,13 +1676,13 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case CHAIN_SCANMODULES_LOADING:
-			if (qName.equals("scanmodules")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_SCANMODULES)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
 			}
 			break;
 
 		case CHAIN_SCANMODULE_LOADING:
-			if (qName.equals("scanmodule")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_SCANMODULE)) {
 				this.relationReminders.add(this.currentRelationReminder);
 				this.currentChain.add(this.currentScanModule);
 				this.scanModulChainMap.put(this.currentScanModule,
@@ -1695,20 +1706,20 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			}
 			break;
 
-		case CHAIN_SCANMODULE_TYPE_READ:
-			if (qName.equals("type")) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
-			}
+		case CHAIN_SCANMODULE_CLASSIC_LOADING:
+		case CHAIN_SCANMODULE_SAVE_AXIS_POSITIONS_LOADING:
+		case CHAIN_SCANMODULE_SAVE_CHANNEL_VALUES_LOADING:
+			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 			break;
-
+		
 		case CHAIN_SCANMODULE_NAME_READ:
-			if (qName.equals("name")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_NAME)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 			}
 			break;
 
 		case CHAIN_SCANMODULE_PARENT_READ:
-			if (qName.equals("parent")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_PARENT)) {
 				if (this.currentRelationReminder.getParent() == 0) {
 					// TODO
 				}
@@ -1717,52 +1728,52 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case CHAIN_SCANMODULE_APPENDED_READ:
-			if (qName.equals("appended")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_APPENDED)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 			}
 			break;
 
 		case CHAIN_SCANMODULE_NESTED_READ:
-			if (qName.equals("nested")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_NESTED)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 			}
 			break;
 	
 		case CHAIN_SCANMODULE_VALUECOUNT_READ:
-			if (qName.equals("valuecount")) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
+			if (qName.equals(Literals.XML_ELEMENT_NAME_VALUECOUNT)) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_CLASSIC_LOADING;
 			}
 			break;
 			
 		case CHAIN_SCANMODULE_SETTLETIME_READ:
-			if (qName.equals("settletime")) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
+			if (qName.equals(Literals.XML_ELEMENT_NAME_SETTLETIME)) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_CLASSIC_LOADING;
 			}
 			break;
 
 		case CHAIN_SCANMODULE_TRIGGERDELAY_READ:
-			if (qName.equals("triggerdelay")) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
+			if (qName.equals(Literals.XML_ELEMENT_NAME_TRIGGERDELAY)) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_CLASSIC_LOADING;
 			}
 			break;
 
 		case CHAIN_SCANMODULE_TRIGGERCONFIRMAXIS_READ:
-			if (qName.equals("triggerconfirmaxis")) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
+			if (qName.equals(Literals.XML_ELEMENT_NAME_TRIGGERCONFIRMAXIS)) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_CLASSIC_LOADING;
 			}
 			break;
 
 		case CHAIN_SCANMODULE_TRIGGERCONFIRMCHANNEL_READ:
-			if (qName.equals("triggerconfirmchannel")) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
+			if (qName.equals(Literals.XML_ELEMENT_NAME_TRIGGERCONFIRMCHANNEL)) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_CLASSIC_LOADING;
 			}
 			break;
 			
 		case CHAIN_SCANMODULE_TRIGGEREVENT_LOADING:
-			if (qName.equals("triggerevent")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_TRIGGEREVENT)) {
 				this.currentScanModule.addTriggerEvent(this.currentControlEvent);
 				this.createEventPair();
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_CLASSIC_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 			}
 			break;
@@ -1771,7 +1782,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			if (qName.equals(Literals.XML_ELEMENT_NAME_REDOEVENT)) {
 				this.currentScanModule.addRedoEvent(this.currentControlEvent);
 				this.createEventPair();
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_CLASSIC_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 			}
 			break;
@@ -1780,7 +1791,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			if (qName.equals(Literals.XML_ELEMENT_NAME_BREAKEVENT)) {
 				this.currentScanModule.addBreakEvent(this.currentControlEvent);
 				this.createEventPair();
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_CLASSIC_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 			}
 			break;
@@ -1790,61 +1801,61 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.currentScanModule.addPauseEvent((PauseEvent) 
 						this.currentControlEvent);
 				this.createEventPair();
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_CLASSIC_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 			}
 			break;
 
 		case CHAIN_SCANMODULE_PRESCAN_LOADING:
-			if (qName.equals("prescan")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_PRESCAN)) {
 				if (this.currentPrescan.getAbstractPrePostscanDevice() != null) {
 					this.currentScanModule.add(this.currentPrescan);
 				}
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_CLASSIC_LOADING;
 			}
 			break;
 
 		case CHAIN_SCANMODULE_POSTSCAN_LOADING:
-			if (qName.equals("postscan")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_POSTSCAN)) {
 				if (this.currentPostscan.getAbstractPrePostscanDevice() != null) {
 					this.currentScanModule.add(this.currentPostscan);
 				}
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_CLASSIC_LOADING;
 			}
 			break;
 
 		case CHAIN_SCANMODULE_PRESCAN_ID_READ:
-			if (qName.equals("id")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_ID)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PRESCAN_LOADING;
 			}
 			break;
 
 		case CHAIN_SCANMODULE_PRESCAN_VALUE_READ:
-			if (qName.equals("value")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_VALUE)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PRESCAN_LOADING;
 			}
 			break;
 
 		case CHAIN_SCANMODULE_POSTSCAN_ID_READ:
-			if (qName.equals("id")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_ID)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSTSCAN_LOADING;
 			}
 			break;
 
 		case CHAIN_SCANMODULE_POSTSCAN_VALUE_READ:
-			if (qName.equals("value")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_VALUE)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSTSCAN_LOADING;
 			}
 			break;
 
 		case CHAIN_SCANMODULE_POSTSCAN_RESET_READ:
-			if (qName.equals("reset_originalvalue")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_RESETORIGINALVALUE)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSTSCAN_LOADING;
 			}
 			break;
 
 		case CHAIN_SCANMODULE_SMMOTOR_LOADING:
-			if (qName.equals("smaxis")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_SMAXIS)) {
 				
 				if (this.currentAxis.getAbstractDevice() != null) {
 					this.currentScanModule.add(this.currentAxis);
@@ -1868,12 +1879,22 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 						}
 					}
 				}
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
+				switch (this.currentScanModule.getType()) {
+				case CLASSIC:
+					this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_CLASSIC_LOADING;
+					break;
+				case SAVE_AXIS_POSITIONS:
+					this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SAVE_AXIS_POSITIONS_LOADING;
+					break;
+				default:
+					break;
+				
+				}
 			}
 			break;
 
 		case CHAIN_SCANMODULE_DETECTOR_LOADING:
-			if (qName.equals("smchannel")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_SMCHANNEL)) {
 				if (this.currentChannel.getAbstractDevice() != null) {
 					this.smChannels.add(currentChannel);
 					/*Vertex<Channel> channelVertex = new VertexImpl<Channel>(
@@ -1881,7 +1902,16 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 					this.currentChannelGraph.addVertex(channelVertex);*/ // TODO
 					this.currentChannel.setLoadTime(this.channelLoadTime++);
 				}
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
+				switch (this.currentScanModule.getType()) {
+				case CLASSIC:
+					this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_CLASSIC_LOADING;
+					break;
+				case SAVE_CHANNEL_VALUES:
+					this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SAVE_CHANNEL_VALUES_LOADING;
+					break;
+				default:
+					break;
+				}
 			}
 			break;
 
@@ -1907,12 +1937,12 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case CHAIN_SCANMODULE_POSITIONING_LOADING:
-			if (qName.equals("positioning")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_POSITIONING)) {
 				// nur wenn Achse des CurrentPositioning OK, wird es geladen!!
 				if (this.currentPositioning.getAbstractDevice() != null) {
 					this.currentScanModule.add(this.currentPositioning);
 				}
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_CLASSIC_LOADING;
 			}
 			break;
 
@@ -1923,58 +1953,61 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case CHAIN_SCANMODULE_SMMOTOR_STEPFUNCTION_READ:
-			if (qName.equals("stepfunction")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_STEPFUNCTION)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_LOADING;
 			}
 			break;
 
 		case CHAIN_SCANMODULE_SMMOTOR_POSITIONMODE_READ:
-			if (qName.equals("positionmode")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_POSITIONMODE)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_LOADING;
 			}
 			break;
 
 		case CHAIN_SCANMODULE_SMMOTOR_START_READ:
-			if (qName.equals("start")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_START)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_LOADING;
 			}
 			break;
+			
 		case CHAIN_SCANMODULE_SMMOTOR_STOP_READ:
-			if (qName.equals("stop")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_STOP)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_LOADING;
 			}
 			break;
+			
 		case CHAIN_SCANMODULE_SMMOTOR_STEPWIDTH_READ:
-			if (qName.equals("stepwidth")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_STEPWIDTH)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_LOADING;
 			}
 			break;
 
 		case CHAIN_SCANMODULE_SMMOTOR_STEPFILENAME_READ:
-			if (qName.equals("stepfilename")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_STEPFILENAME)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_LOADING;
 			}
 			break;
 
 		case CHAIN_SCANMODULE_SMMOTOR_ISMAINAXIS_READ:
-			if (qName.equals("ismainaxis")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_ISMAINAXIS)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_LOADING;
 			}
 			break;
 
 		case CHAIN_SCANMODULE_SMMOTOR_POSITIONLIST_READ:
-			if (qName.equals("positionlist")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_POSITIONLIST)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_LOADING;
 			}
 			break;
 
 		case CHAIN_SCANMODULE_SMMOTOR_EXPRESSION_READ:
-			if (qName.equals("range")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_RANGE)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_LOADING;
 			}
+			break;
 			
 		case CHAIN_SCANMODULE_SMMOTOR_CONTROLLER_LOADING:
-			if (qName.equals("plugin")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_PLUGIN)) {
 				this.currentAxis.setPluginController(this.currentPluginController);
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
@@ -2012,7 +2045,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case CHAIN_SCANMODULE_DETECTOR_NORMALIZECHANNEL_READ:
-			if (qName.equals("normalize_id")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_NORMALIZEID)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_LOADING;
 			}
 			break;
@@ -2042,44 +2075,44 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 			
 		case CHAIN_SCANMODULE_PLOT_LOADING:
-			if (qName.equals("plot")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_PLOT)) {
 				this.currentScanModule.add(this.currentPlotWindow);
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_CLASSIC_LOADING;
 			}
 			break;
 
 		case CHAIN_SCANMODULE_PLOT_NAME_READ:
-			if (qName.equals("name")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_NAME)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PLOT_LOADING;
 			}
 			break;
 
 		case CHAIN_SCANMODULE_PLOT_AXIS_LOADING:
-			if (qName.equals("xaxis")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_XAXIS)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PLOT_LOADING;
 			}
 			break;
 
 		case CHAIN_SCANMODULE_PLOT_AXIS_ID_READ:
-			if (qName.equals("id")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_ID)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PLOT_AXIS_LOADING;
 			}
 			break;
 
 		case CHAIN_SCANMODULE_PLOT_AXIS_MODE_READ:
-			if (qName.equals("mode")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_MODE)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PLOT_AXIS_LOADING;
 			}
 			break;
 
 		case CHAIN_SCANMODULE_PLOT_INIT_READ:
-			if (qName.equals("init")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_INIT)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PLOT_LOADING;
 			}
 			break;
 
 		case CHAIN_SCANMODULE_PLOT_YAXIS_LOADING:
-			if (qName.equals("yaxis")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_YAXIS)) {
 				if (this.currentYAxis.getDetectorChannel() != null) {
 					this.currentPlotWindow.addYAxis(this.currentYAxis);
 				}
@@ -2089,167 +2122,166 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case CHAIN_SCANMODULE_XPOS_READ:
-			if (qName.equals("xpos")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_XPOS)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 			}
 			break;
 
 		case CHAIN_SCANMODULE_YPOS_READ:
-			if (qName.equals("ypos")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_YPOS)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 			}
 			break;
 
 		case CHAIN_SCANMODULE_POSITIONING_AXIS_ID_READ:
-			if (qName.equals("axis_id")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_AXISID)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSITIONING_LOADING;
 			}
 			break;
 
 		case CHAIN_SCANMODULE_POSITIONING_CHANNEL_ID_READ:
-			if (qName.equals("channel_id")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_CHANNELID)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSITIONING_LOADING;
 			}
 			break;
 
 		case CHAIN_SCANMODULE_POSITIONING_NORMALIZE_ID_READ:
-			if (qName.equals("normalize_id")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_NORMALIZEID)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSITIONING_LOADING;
 			}
 			break;
 
 		case CHAIN_SCANMODULE_POSITIONING_CONTROLLER_LOADING:
-			if (qName.equals("plugin")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_PLUGIN)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSITIONING_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 			}
 			break;
-
 		}
 
 		switch (this.subState) {
 		case PAUSEEVENT_ID_READ:
-			if (qName.equals("id")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_ID)) {
 				this.subState = ScanDescriptionLoaderSubStates.PAUSEMONITOREVENT_LOADING;
 			}
 			break;
 
 		case PAUSEEVENT_LIMIT_READ:
-			if (qName.equals("limit")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_LIMIT)) {
 				this.subState = ScanDescriptionLoaderSubStates.PAUSEMONITOREVENT_LOADING;
 			}
 			break;
 
 		case PAUSESCHEDULEEVENT_ACTION_READ:
-			if (qName.equals("action")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_ACTION)) {
 				this.subState = ScanDescriptionLoaderSubStates.PAUSESCHEDULEEVENT_LOADING;
 			}
 			break;
 
 		case PAUSEMONITOREVENT_ACTION_READ:
-			if (qName.equals("action")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_ACTION)) {
 				this.subState = ScanDescriptionLoaderSubStates.PAUSEMONITOREVENT_LOADING;
 			}
 			break;
 
 		case PAUSEEVENT_INCIDENT_READ:
-			if (qName.equals("incident")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_INCIDENT)) {
 				this.subState = ScanDescriptionLoaderSubStates.PAUSESCHEDULEEVENT_LOADING;
 			}
 			break;
 
 		case PAUSEEVENT_CHAINID_READ:
-			if (qName.equals("chainid")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_CHAINID)) {
 				this.subState = ScanDescriptionLoaderSubStates.PAUSESCHEDULEEVENT_LOADING;
 			}
 			break;
 
 		case PAUSEEVENT_SCANMODULEID_READ:
-			if (qName.equals("smid")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_SMID)) {
 				this.subState = ScanDescriptionLoaderSubStates.PAUSESCHEDULEEVENT_LOADING;
 			}
 			break;
 
 		case EVENT_ID_READ:
-			if (qName.equals("id")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_ID)) {
 				this.subState = ScanDescriptionLoaderSubStates.MONITOREVENT_LOADING;
 			}
 			break;
 
 		case EVENT_LIMIT_READ:
-			if (qName.equals("limit")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_LIMIT)) {
 				this.subState = ScanDescriptionLoaderSubStates.MONITOREVENT_LOADING;
 			}
 			break;
 
 		case EVENT_INCIDENT_READ:
-			if (qName.equals("incident")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_INCIDENT)) {
 				this.subState = ScanDescriptionLoaderSubStates.SCHEDULEEVENT_LOADING;
 			}
 			break;
 
 		case EVENT_CHAINID_READ:
-			if (qName.equals("chainid")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_CHAINID)) {
 				this.subState = ScanDescriptionLoaderSubStates.SCHEDULEEVENT_LOADING;
 			}
 			break;
 
 		case EVENT_SCANMODULEID_READ:
-			if (qName.equals("smid")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_SMID)) {
 				this.subState = ScanDescriptionLoaderSubStates.SCHEDULEEVENT_LOADING;
 			}
 			break;
 
 		case YAXIS_ID_READ:
-			if (qName.equals("id")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_ID)) {
 				this.subState = ScanDescriptionLoaderSubStates.YAXIS_LOADING;
 			}
 			break;
 
 		case YAXIS_MODE_READ:
-			if (qName.equals("mode")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_MODE)) {
 				this.subState = ScanDescriptionLoaderSubStates.YAXIS_LOADING;
 			}
 			break;
 
 		case YAXIS_MODIFIER_READ:
-			if (qName.equals("modifier")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_MODIFIER)) {
 				this.subState = ScanDescriptionLoaderSubStates.YAXIS_LOADING;
 			}
 			break;
 			
 		case YAXIS_NORMALIZE_ID_READ:
-			if (qName.equals("normalize_id")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_NORMALIZEID)) {
 				this.subState = ScanDescriptionLoaderSubStates.YAXIS_LOADING;
 			}
 			break;
 
 		case YAXIS_LINESTYLE_READ:
-			if (qName.equals("linestyle")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_LINESTYLE)) {
 				this.subState = ScanDescriptionLoaderSubStates.YAXIS_LOADING;
 			}
 			break;
 
 		case YAXIS_MARKSTYLE_READ:
-			if (qName.equals("markstyle")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_MARKSTYLE)) {
 				this.subState = ScanDescriptionLoaderSubStates.YAXIS_LOADING;
 			}
 			break;
 
 		case YAXIS_COLOR_READ:
-			if (qName.equals("color")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_COLOR)) {
 				this.subState = ScanDescriptionLoaderSubStates.YAXIS_LOADING;
 			}
 			break;
 
 		case PLUGIN_CONTROLLER_PARAMETER_READ:
-			if (qName.equals("parameter")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_PARAMETER)) {
 				this.subState = ScanDescriptionLoaderSubStates.PLUGIN_CONTROLLER_LOADING;
 			}
 			break;
 
 		case MONITOROPTIONS_ID_READ:
-			if (qName.equals("id")) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_ID)) {
 				this.subState = ScanDescriptionLoaderSubStates.MONITOROPTIONS_ID_LOADING;
 			}
 			break;

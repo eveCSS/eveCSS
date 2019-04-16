@@ -9,6 +9,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
@@ -18,20 +19,43 @@ import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.MonitorOption;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
+import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.data.tests.mothers.measuringstation.MeasuringStationMother;
 import de.ptb.epics.eve.data.tests.mothers.measuringstation.OptionMother;
 import de.ptb.epics.eve.data.tests.mothers.scandescription.ChainMother;
 import de.ptb.epics.eve.data.tests.mothers.scandescription.ChannelMother;
 import de.ptb.epics.eve.data.tests.mothers.scandescription.ScanModuleMother;
 
-public class ScanDescriptionTest implements PropertyChangeListener {
+public class ScanDescriptionTest implements IModelUpdateListener, PropertyChangeListener {
 	private ScanDescription scanDescription;
+	
+	// indicator for IModelUpdateListenerTests 
+	// (used for e.g. dirty state of the editor)
+	// each change anywhere in the scandescription (scanmodule, axis, etc.) 
+	// must propagate this event to the top
+	private boolean modelUpdate;
 	
 	// indicators for PropertyChangeSupportTest
 	private boolean repeatCount;
 	private boolean fileName;
 	private boolean monitorOption;
 	private boolean monitorOptionsList;
+	
+	@Test
+	public void testIModelUpdateListenerRepeatCount() {
+		this.modelUpdate = false;
+		this.scanDescription.setRepeatCount(1);
+		assertTrue(modelUpdate);
+	}
+	
+	@Ignore
+	@Test
+	public void testIModelUpdateListenerFileName() {
+		this.modelUpdate = false;
+		this.scanDescription.setFileName("mockFileName");
+		assertTrue(modelUpdate);
+	}
 	
 	@Test
 	public void testPropertyChangeSupportRepeatCount() {
@@ -470,6 +494,11 @@ public class ScanDescriptionTest implements PropertyChangeListener {
 		}
 	}
 	
+	@Override
+	public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
+		this.modelUpdate = true;
+	}
+	
 	/**
 	 * Class wide setup method of the test
 	 */
@@ -491,6 +520,7 @@ public class ScanDescriptionTest implements PropertyChangeListener {
 		myChain.add(myScanModule);
 		Channel myChannel = ChannelMother.createNewChannel(myScanModule);
 		myScanModule.add(myChannel);
+		this.scanDescription.addModelUpdateListener(this);
 	}
 	
 	/**

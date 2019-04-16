@@ -9,6 +9,8 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
 
+import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
 import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
 import de.ptb.epics.eve.util.ui.rcp.SingleSelectionProvider;
 
@@ -17,9 +19,13 @@ import de.ptb.epics.eve.util.ui.rcp.SingleSelectionProvider;
  * @since 1.8
  */
 public class ScanModuleSelectionProvider extends SingleSelectionProvider {
-
 	private static final Logger LOGGER = Logger
 			.getLogger(ScanModuleSelectionProvider.class.getName());
+	private ScanModuleTypes scanModuleType;
+	
+	public ScanModuleSelectionProvider(ScanModuleTypes scanModuleType) {
+		this.scanModuleType = scanModuleType;
+	}
 	
 	/**
 	 * {@inheritDoc}
@@ -44,8 +50,11 @@ public class ScanModuleSelectionProvider extends SingleSelectionProvider {
 		if (!(sel.getFirstElement() instanceof ScanModuleEditPart)) {
 			return;
 		}
-		ISelection modelSelection = new StructuredSelection(
-				((ScanModuleEditPart) sel.getFirstElement()).getModel());
+		ScanModule scanModule = ((ScanModuleEditPart) sel.getFirstElement()).getModel();
+		if (!scanModule.getType().equals(this.scanModuleType)) {
+			return;
+		}
+		ISelection modelSelection = new StructuredSelection(scanModule);
 		this.currentSelection = modelSelection;
 		for (ISelectionChangedListener listener : this.listeners) {
 			listener.selectionChanged(new SelectionChangedEvent(this,

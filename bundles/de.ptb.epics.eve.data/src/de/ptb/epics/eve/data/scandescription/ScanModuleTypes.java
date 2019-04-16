@@ -6,7 +6,9 @@ package de.ptb.epics.eve.data.scandescription;
  */
 public enum ScanModuleTypes {
 
-	/** a classic scan module */
+	/**
+	 * classic scan module
+	 **/
 	CLASSIC {
 		@Override
 		public String toString() {
@@ -14,7 +16,9 @@ public enum ScanModuleTypes {
 		}
 	},
 
-	/** scan module to save all axis positions */
+	/** 
+	 * scan module to save axis positions 
+	 **/
 	SAVE_AXIS_POSITIONS {
 		@Override
 		public String toString() {
@@ -22,7 +26,9 @@ public enum ScanModuleTypes {
 		}
 	},
 
-	/** scan module to save all channel values */
+	/** 
+	 * scan module to save channel values 
+	 **/
 	SAVE_CHANNEL_VALUES {
 		@Override
 		public String toString() {
@@ -40,6 +46,32 @@ public enum ScanModuleTypes {
 		public String toString() {
 			return "top_up";
 		}
+	},
+	
+	/**
+	 * scan module to save all axis positions of axes in the current device 
+	 * definition (determined by the engine).
+	 * 
+	 * @since 1.31
+	 */
+	DYNAMIC_AXIS_POSITIONS {
+		@Override
+		public String toString() {
+			return "dynamic_axis_positions";
+		}
+	},
+	
+	/**
+	 * scan module to save all channel values of channels in the current device 
+	 * definition (determined by the engine).
+	 * 
+	 * @since 1.31
+	 */
+	DYNAMIC_CHANNEL_VALUES {
+		@Override
+		public String toString() {
+			return "dynamic_channel_values";
+		}
 	};
 	
 	/**
@@ -55,6 +87,10 @@ public enum ScanModuleTypes {
 			return ScanModuleTypes.SAVE_CHANNEL_VALUES;
 		} else if (value.equals("top_up")) {
 			return ScanModuleTypes.TOP_UP;
+		} else if (value.equals("dynamic_axis_positions")) {
+			return ScanModuleTypes.DYNAMIC_AXIS_POSITIONS;
+		} else if (value.equals("dynamic_channel_values")) {
+			return ScanModuleTypes.DYNAMIC_CHANNEL_VALUES;
 		}
 		return null;
 	}

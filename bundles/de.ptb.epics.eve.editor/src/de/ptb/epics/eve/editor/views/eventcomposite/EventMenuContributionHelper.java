@@ -56,8 +56,7 @@ public final class EventMenuContributionHelper {
 				case 3: return EventImpacts.STOP;
 			}
 		} else if(activePart instanceof ScanModuleView) {
-			int index = ((ScanModuleView)activePart).eventsTabFolder.
-					getSelectionIndex();
+			int index = ((ScanModuleView) activePart).getEventsTabFolderSelectionIndex();
 			switch(index) {
 				case 0: return EventImpacts.PAUSE;
 				case 1: return EventImpacts.REDO;

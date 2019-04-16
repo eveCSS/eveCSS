@@ -23,6 +23,8 @@ import de.ptb.epics.eve.data.scandescription.Stepfunctions;
 import de.ptb.epics.eve.data.scandescription.axismode.AddMultiplyMode;
 import de.ptb.epics.eve.data.scandescription.axismode.AdjustParameter;
 import de.ptb.epics.eve.data.scandescription.channelmode.ChannelModes;
+import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
+import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.data.tests.mothers.scandescription.ChannelMother;
 import de.ptb.epics.eve.data.tests.mothers.scandescription.ScanModuleMother;
 
@@ -32,11 +34,56 @@ import de.ptb.epics.eve.data.tests.mothers.scandescription.ScanModuleMother;
  * @author Marcus Michalsky
  * @since 1.23
  */
-public class ScanModuleTest implements PropertyChangeListener {
+public class ScanModuleTest implements IModelUpdateListener, PropertyChangeListener {
 	private ScanModule scanModule;
 	private Axis axis1;
 	private Axis axis2;
 	private boolean mainAxis;
+	
+	private boolean modelUpdate;
+	
+	@Test
+	public void testIModelUpdateListenerNoOfMeasurements() {
+		this.modelUpdate = false;
+		this.scanModule.setValueCount(5);
+		assertTrue(this.modelUpdate);
+	}
+	
+	@Test
+	public void testIModelUpdateListenerTriggerDelay() {
+		this.modelUpdate = false;
+		this.scanModule.setTriggerDelay(2.0);
+		assertTrue(this.modelUpdate);
+	}
+	
+	@Test
+	public void testIModelUpdateListenerSettleTime() {
+		this.modelUpdate = false;
+		this.scanModule.setSettleTime(2.0);
+		assertTrue(this.modelUpdate);
+	}
+	
+	@Test
+	public void testIModelUpdateListenerManualTriggerAxis() {
+		this.modelUpdate = false;
+		this.scanModule.setTriggerConfirmAxis(true);
+		assertTrue(this.modelUpdate);
+	}
+	
+	@Test
+	public void testIModelUpdateListenerManualTriggerChannel() {
+		this.modelUpdate = false;
+		this.scanModule.setTriggerConfirmChannel(true);
+		assertTrue(this.modelUpdate);
+	}
+	
+	@Override
+	public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
+		this.modelUpdate = true;
+	}
+
+	// TODO older tests should be moved to e.g. ScanModuleClassicTest
+	// and one Test File for each scanmodule type should be created
 	
 	/**
 	 * Inserts two axes into a scan module, sets one as main axes and validates 
@@ -216,9 +263,51 @@ public class ScanModuleTest implements PropertyChangeListener {
 		assertNull(this.scanModule.getMainAxis());
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 */
+	@Test
+	public void testIsUsedAsNormalizeChannel() {
+		ScanModule scanModule = ScanModuleMother.createNewScanModule();
+		Channel channel1 = ChannelMother.createNewChannel(scanModule);
+		scanModule.add(channel1);
+		try {
+			Thread.sleep(10);
+		} catch (InterruptedException e) {
+		}
+		Channel channel2 = ChannelMother.createNewChannel(scanModule);
+		scanModule.add(channel2);
+		
+		assertFalse(scanModule.isUsedAsNormalizeChannel(channel1));
+		assertFalse(scanModule.isUsedAsNormalizeChannel(channel2));
+		
+		channel1.setNormalizeChannel(channel2.getDetectorChannel());
+		assertTrue(scanModule.isUsedAsNormalizeChannel(channel2));
+		
+		channel1.setNormalizeChannel(null);
+		assertFalse(scanModule.isUsedAsNormalizeChannel(channel2));
+	}
+
+	@Test
+	public void testIsUsedAsStoppedByChannel() {
+		ScanModule scanModule = ScanModuleMother.createNewScanModule();
+		Channel channel1 = ChannelMother.createNewChannel(scanModule);
+		scanModule.add(channel1);
+		try {
+			Thread.sleep(10);
+		} catch (InterruptedException e) {
+		}
+		Channel channel2 = ChannelMother.createNewChannel(scanModule);
+		scanModule.add(channel2);
+		
+		assertFalse(scanModule.isUsedAsStoppedByChannel(channel1));
+		assertFalse(scanModule.isUsedAsStoppedByChannel(channel2));
+		
+		channel1.setChannelMode(ChannelModes.INTERVAL);
+		channel1.setStoppedBy(channel2.getDetectorChannel());
+		assertTrue(scanModule.isUsedAsStoppedByChannel(channel2));
+		
+		channel1.setStoppedBy(null);
+		assertFalse(scanModule.isUsedAsStoppedByChannel(channel2));
+	}
+
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		switch (evt.getPropertyName()) {
@@ -265,51 +354,6 @@ public class ScanModuleTest implements PropertyChangeListener {
 		axis2.setMotorAxis(mockAxis);
 	}
 	
-	@Test
-	public void testIsUsedAsNormalizeChannel() {
-		ScanModule scanModule = ScanModuleMother.createNewScanModule();
-		Channel channel1 = ChannelMother.createNewChannel(scanModule);
-		scanModule.add(channel1);
-		try {
-			Thread.sleep(10);
-		} catch (InterruptedException e) {
-		}
-		Channel channel2 = ChannelMother.createNewChannel(scanModule);
-		scanModule.add(channel2);
-		
-		assertFalse(scanModule.isUsedAsNormalizeChannel(channel1));
-		assertFalse(scanModule.isUsedAsNormalizeChannel(channel2));
-		
-		channel1.setNormalizeChannel(channel2.getDetectorChannel());
-		assertTrue(scanModule.isUsedAsNormalizeChannel(channel2));
-		
-		channel1.setNormalizeChannel(null);
-		assertFalse(scanModule.isUsedAsNormalizeChannel(channel2));
-	}
-	
-	@Test
-	public void testIsUsedAsStoppedByChannel() {
-		ScanModule scanModule = ScanModuleMother.createNewScanModule();
-		Channel channel1 = ChannelMother.createNewChannel(scanModule);
-		scanModule.add(channel1);
-		try {
-			Thread.sleep(10);
-		} catch (InterruptedException e) {
-		}
-		Channel channel2 = ChannelMother.createNewChannel(scanModule);
-		scanModule.add(channel2);
-		
-		assertFalse(scanModule.isUsedAsStoppedByChannel(channel1));
-		assertFalse(scanModule.isUsedAsStoppedByChannel(channel2));
-		
-		channel1.setChannelMode(ChannelModes.INTERVAL);
-		channel1.setStoppedBy(channel2.getDetectorChannel());
-		assertTrue(scanModule.isUsedAsStoppedByChannel(channel2));
-		
-		channel1.setStoppedBy(null);
-		assertFalse(scanModule.isUsedAsStoppedByChannel(channel2));
-	}
-	
 	/**
 	 * Class wide setup method of the test
 	 */
@@ -323,6 +367,7 @@ public class ScanModuleTest implements PropertyChangeListener {
 	@Before
 	public void beforeEveryTest() {
 		this.scanModule = new ScanModule(1);
+		this.scanModule.addModelUpdateListener(this);
 	}
 	
 	/**

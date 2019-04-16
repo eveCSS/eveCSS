@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Combo;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.PositionMode;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
 import de.ptb.epics.eve.data.scandescription.Stepfunctions;
 import de.ptb.epics.eve.data.scandescription.defaults.DefaultsManager;
 import de.ptb.epics.eve.data.scandescription.defaults.axis.DefaultsAxis;
@@ -369,7 +370,7 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 			// since at any given time this view can only display options of 
 			// one motor axis, we take the first element of the selection
 			Object o = ((IStructuredSelection) selection).toList().get(0);
-			if (o instanceof Axis) {
+			if (o instanceof Axis && ((Axis)o).getScanModule().getType().equals(ScanModuleTypes.CLASSIC)) {
 				// set new Axis
 				if(LOGGER.isDebugEnabled()) {
 					LOGGER.debug("Axis: " + ((Axis)o).getMotorAxis().

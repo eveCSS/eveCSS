@@ -54,6 +54,15 @@ public abstract class AbstractMeasuringStation implements IMeasuringStation {
 
 	/**
 	 * {@inheritDoc}
+	 * @since 1.31
+	 */
+	@Override
+	public Map<String, DetectorChannel> getDetectorChannels() {
+		return detectorChannelsMap;
+	}
+	
+	/**
+	 * {@inheritDoc}
 	 * 
 	 * @since 1.19
 	 * @author Marcus Michalsky

@@ -1,57 +1,27 @@
 package de.ptb.epics.eve.editor.views.scanmoduleview;
 
 import org.apache.log4j.Logger;
-import org.eclipse.core.databinding.Binding;
-import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.UpdateValueStrategy;
-import org.eclipse.core.databinding.beans.BeansObservables;
-import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.gef.EditPart;
-import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
-import org.eclipse.jface.databinding.swt.SWTObservables;
-import org.eclipse.jface.databinding.viewers.ViewersObservables;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.ISelectionListener;
-import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.custom.CTabFolder;
-import org.eclipse.swt.custom.CTabItem;
-import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.custom.StackLayout;
 
-import de.ptb.epics.eve.data.EventImpacts;
-import de.ptb.epics.eve.data.scandescription.ControlEvent;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
-import de.ptb.epics.eve.data.scandescription.errors.AxisError;
-import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
-import de.ptb.epics.eve.data.scandescription.errors.IModelError;
-import de.ptb.epics.eve.data.scandescription.errors.PlotWindowError;
-import de.ptb.epics.eve.data.scandescription.errors.PositioningError;
-import de.ptb.epics.eve.data.scandescription.errors.PostscanError;
-import de.ptb.epics.eve.data.scandescription.errors.PrescanError;
-import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventTypes;
+import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
@@ -61,122 +31,32 @@ import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.tree.ScanModuleTreeEditPart;
 import de.ptb.epics.eve.editor.views.EditorViewPerspectiveListener;
 import de.ptb.epics.eve.editor.views.IEditorView;
-import de.ptb.epics.eve.editor.views.eventcomposite.EventComposite;
-import de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.DetectorChannelComposite;
-import de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.MotorAxisComposite;
-import de.ptb.epics.eve.editor.views.scanmoduleview.plotcomposite.PlotComposite;
-import de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite.PositioningComposite;
-import de.ptb.epics.eve.editor.views.scanmoduleview.postscancomposite.PostscanComposite;
-import de.ptb.epics.eve.editor.views.scanmoduleview.prescancomposite.PrescanComposite;
+import de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.ClassicComposite;
+import de.ptb.epics.eve.editor.views.scanmoduleview.dynamicaxispositionscomposite.DynamicAxisPositionsComposite;
+import de.ptb.epics.eve.editor.views.scanmoduleview.dynamicchannelvaluescomposite.DynamicChannelValuesComposite;
+import de.ptb.epics.eve.editor.views.scanmoduleview.saveaxispositionscomposite.SaveAxisPositionsComposite;
+import de.ptb.epics.eve.editor.views.scanmoduleview.savechannelvaluescomposite.SaveChannelValuesComposite;
 import de.ptb.epics.eve.util.ui.jface.SelectionProviderWrapper;
-import de.ptb.epics.eve.util.ui.swt.TextSelectAllFocusListener;
-import de.ptb.epics.eve.util.ui.swt.TextSelectAllMouseListener;
 
 /**
  * <code>ScanModulView</code> shows the currently selected scan module.
  * 
- * @author ?
  * @author Marcus Michalsky
- * @author Hartmut Scherr
  */
 public class ScanModuleView extends ViewPart implements IEditorView,
 		ISelectionListener, IModelUpdateListener {
-
-	/**
-	 * the id of the <code>ScanModulView</code>.
-	 */
 	public static final String ID = "de.ptb.epics.eve.editor.views.ScanModulView";
-
 	private static Logger logger = Logger.getLogger(ScanModuleView.class);
 
 	// the scan module currently represented by this view
 	private ScanModule currentScanModule;
 
-	private Composite top;
-	// Scrolled Composite wrapping top to enable scrolling
-	private ScrolledComposite sc;
-
-	private Composite generalComposite;
-	private Composite actionsComposite;
-	private Composite eventsComposite;
-
-	private boolean actionsCompositeMaximized;
-	private boolean eventsCompositeMaximized;
-
-	private Label valueCountLabel;
-	private Text valueCountText;
-
-	private Label triggerDelayLabel;
-	private Text triggerDelayText;
-
-	private Label settleTimeLabel;
-	private Text settleTimeText;
-	
-	private Button triggerConfirmAxisCheckBox;
-
-	private Button triggerConfirmChannelCheckBox;
-
-	private CTabFolder actionsTabFolder;
-	private CTabItem motorAxisTab;
-	private CTabItem detectorChannelTab;
-	private CTabItem prescanTab;
-	private CTabItem postscanTab;
-	private CTabItem positioningTab;
-	private CTabItem plotTab;
-
-	private Label actionMaxIcon;
-	private ActionComposite motorAxisComposite;
-	private ActionComposite detectorChannelComposite;
-	private ActionComposite prescanComposite;
-	private ActionComposite postscanComposite;
-	private ActionComposite positioningComposite;
-	private ActionComposite plotComposite;
-
-	/** */
-	public CTabFolder eventsTabFolder;
-	private CTabItem pauseEventsTabItem;
-	private CTabItem redoEventsTabItem;
-	private CTabItem breakEventsTabItem;
-	private CTabItem triggerEventsTabItem;
-
-	private EventsTabFolderSelectionListener eventsTabFolderSelectionListener;
-
-	private Label eventMaxIcon;
-	private EventComposite pauseEventComposite;
-	private EventComposite redoEventComposite;
-	private EventComposite breakEventComposite;
-	private EventComposite triggerEventComposite;
-
-	private SashForm sashForm;
-
-	private Image restoreIcon;
-	private Image maximizeIcon;
-
-	private DataBindingContext context;
-	
-	private ISelectionProvider selectionProvider;
-	
-	private IObservableValue selectionObservable;
-	
-	private IObservableValue valueCountTargetObservable;
-	private IObservableValue valueCountModelObservable;
-	private Binding valueCountBinding;
-	
-	private IObservableValue triggerDelayTargetObservable;
-	private IObservableValue triggerDelayModelObservable;
-	private Binding triggerDelayBinding;
-	
-	private IObservableValue settleTimeTargetObservable;
-	private IObservableValue settleTimeModelObservable;
-	private Binding settleTimeBinding;
-	
-	private IObservableValue axisTriggerTargetObservable;
-	private IObservableValue axisTriggerModelObservable;
-	private Binding axisTriggerBinding;
-	
-	private IObservableValue channelTriggerTargetObservable;
-	private IObservableValue channelTriggerModelObservable;
-	private Binding channelTriggerBinding;
+	private Composite emptyComposite;
+	private ScanModuleViewComposite classicComposite;
+	private ScanModuleViewComposite saveAxisPositionsComposite;
+	private ScanModuleViewComposite saveChannelValuesComposite;
+	private ScanModuleViewComposite dynamicAxisPositionsComposite;
+	private ScanModuleViewComposite dynamicChannelValuesComposite;
 
 	// the selection service only accepts one selection provider per view,
 	// since we have multiple tabs with tables capable of providing selections,
@@ -188,6 +68,13 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 
 	private IMemento memento;
 
+	Composite contentPanel;
+	StackLayout stackLayout;
+	
+	Button button1;
+	Button button2;
+	Button button3;
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -204,52 +91,36 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	public void createPartControl(final Composite parent) {
 		logger.debug("createPartControl");
 
-		parent.setLayout(new FillLayout());
-
+		GridData gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
+		gridData.horizontalAlignment = SWT.FILL;
+		gridData.verticalAlignment = SWT.FILL;
+		parent.setLayoutData(gridData);
+		parent.setLayout(new GridLayout());
+		
 		if (Activator.getDefault().getMeasuringStation() == null) {
 			final Label errorLabel = new Label(parent, SWT.NONE);
 			errorLabel.setText("No Measuring Station has been loaded. "
 					+ "Please check Preferences!");
 			return;
 		}
-
-		this.restoreIcon = Activator.getDefault().getImageRegistry()
-				.get("RESTORE");
-		this.maximizeIcon = Activator.getDefault().getImageRegistry()
-				.get("MAXIMIZE");
-
-		this.sc = new ScrolledComposite(parent, SWT.V_SCROLL);
 		
-		this.top = new Composite(sc, SWT.NONE);
-		GridLayout gridLayout = new GridLayout();
-		this.top.setLayout(gridLayout);
-
-		this.sc.setExpandHorizontal(true);
-		this.sc.setExpandVertical(true);
-		this.sc.setContent(this.top);
-		
-		this.createGeneralComposite(this.top);
-		this.sashForm = new SashForm(this.top, SWT.VERTICAL);
-		this.sashForm.SASH_WIDTH = 4;
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		this.sashForm.setLayoutData(gridData);
-		this.createActionsComposite(this.sashForm);
-		this.createEventComposite(this.sashForm);
-
-		this.actionsCompositeMaximized = false;
-		this.eventsCompositeMaximized = false;
+		contentPanel = new Composite(parent, SWT.NONE);
+		contentPanel.setLayoutData(new GridData(GridData.FILL_BOTH));
+		stackLayout = new StackLayout();
+		stackLayout.marginHeight = 0;
+		stackLayout.marginWidth = 0;
+		contentPanel.setLayout(stackLayout);
+		this.emptyComposite = new Composite(contentPanel, SWT.NONE);
+		this.classicComposite = new ClassicComposite(this, contentPanel, SWT.NONE);
+		this.saveAxisPositionsComposite = new SaveAxisPositionsComposite(this, contentPanel, SWT.NONE);
+		this.saveChannelValuesComposite = new SaveChannelValuesComposite(this, contentPanel, SWT.NONE);
+		this.dynamicAxisPositionsComposite = new DynamicAxisPositionsComposite(this, contentPanel, SWT.NONE);
+		this.dynamicChannelValuesComposite = new DynamicChannelValuesComposite(this, contentPanel, SWT.NONE);
+		stackLayout.topControl = emptyComposite;
 
 		this.restoreState();
-
-		this.sc.setMinSize(this.top.computeSize(500, 500));
-
-		top.setVisible(false);
-
-		this.bindValues();
 
 		// listen to selection changes (if a scan module is selected, its
 		// attributes are made available for editing)
@@ -264,318 +135,9 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 				this);
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 				.addPerspectiveListener(this.editorViewPerspectiveListener);
-	} // end of: createPartControl()
-
-	/*
-	 * 
-	 */
-	private void createGeneralComposite(Composite parent) {
-		this.generalComposite = new Composite(parent, SWT.BORDER);
-		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 2;
-		this.generalComposite.setLayout(gridLayout);
-		GridData gridData = new GridData();
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.horizontalAlignment = GridData.FILL;
-		this.generalComposite.setLayoutData(gridData);
-
-		// value count
-		this.valueCountLabel = new Label(this.generalComposite, SWT.NONE);
-		this.valueCountLabel.setText("No of Measurements:");
-		this.valueCountLabel.setToolTipText(
-				"Number of Measurements taken for each motor position");
-		this.valueCountText = new Text(this.generalComposite, SWT.BORDER);
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.CENTER;
-		gridData.horizontalIndent = 7;
-		gridData.grabExcessHorizontalSpace = true;
-		this.valueCountText.setLayoutData(gridData);
-		this.valueCountText.addFocusListener(new TextSelectAllFocusListener(
-				this.valueCountText));
-		this.valueCountText.addMouseListener(new TextSelectAllMouseListener(
-				this.valueCountText));
-
-		// Trigger Delay
-		this.triggerDelayLabel = new Label(this.generalComposite, SWT.NONE);
-		this.triggerDelayLabel.setText("Trigger Delay (in s):");
-		this.triggerDelayLabel.setToolTipText("Delay time after positioning");
-		this.triggerDelayText = new Text(this.generalComposite, SWT.BORDER);
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.CENTER;
-		gridData.horizontalIndent = 7;
-		gridData.grabExcessHorizontalSpace = true;
-		this.triggerDelayText.setLayoutData(gridData);
-		this.triggerDelayText.addFocusListener(new TextSelectAllFocusListener(
-				this.triggerDelayText));
-		this.triggerDelayText.addMouseListener(new TextSelectAllMouseListener(
-				this.triggerDelayText));
-
-		// Settle Time
-		this.settleTimeLabel = new Label(this.generalComposite, SWT.NONE);
-		this.settleTimeLabel.setText("Settle Time (in s):");
-		this.settleTimeLabel
-				.setToolTipText("Delay time after first positioning in the scan module");
-		this.settleTimeText = new Text(this.generalComposite, SWT.BORDER);
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.CENTER;
-		gridData.horizontalIndent = 7;
-		gridData.grabExcessHorizontalSpace = true;
-		this.settleTimeText.setLayoutData(gridData);
-		this.settleTimeText.addFocusListener(new TextSelectAllFocusListener(
-				this.settleTimeText));
-		this.settleTimeText.addMouseListener(new TextSelectAllMouseListener(
-				this.settleTimeText));
 		
-		// Manual Trigger
-		Label triggerLabel = new Label(this.generalComposite, SWT.NONE);
-		triggerLabel.setText("Manual Trigger:");
-		triggerLabel.setLayoutData(new GridData());
-		Composite triggerCheckBoxes = new Composite(this.generalComposite,
-				SWT.NONE);
-		gridData = new GridData();
-		gridData.horizontalIndent = 7;
-		triggerCheckBoxes.setLayoutData(gridData);
-		triggerCheckBoxes.setLayout(new FillLayout(SWT.HORIZONTAL));
-		this.triggerConfirmAxisCheckBox = new Button(triggerCheckBoxes,
-				SWT.CHECK);
-		this.triggerConfirmAxisCheckBox.setText("Motors");
-		this.triggerConfirmChannelCheckBox = new Button(triggerCheckBoxes,
-				SWT.CHECK);
-		this.triggerConfirmChannelCheckBox.setText("Detectors");
+		this.setCurrentScanModule(null);
 	}
-
-	/*
-	 * 
-	 */
-	private void createActionsComposite(Composite parent) {
-		this.actionsComposite = new Composite(parent, SWT.BORDER);
-		this.actionsComposite.setLayout(new GridLayout(2, false));
-
-		this.actionMaxIcon = new Label(actionsComposite, SWT.NONE);
-		this.actionMaxIcon.setImage(maximizeIcon);
-		this.actionMaxIcon.addMouseListener(new ActionsMaxIconMouseListener());
-
-		Label actionsLabel = new Label(actionsComposite, SWT.NONE);
-		actionsLabel.setText("Actions:");
-
-		this.actionsTabFolder = new CTabFolder(this.actionsComposite, SWT.FLAT);
-		this.actionsTabFolder.setSimple(true);
-		this.actionsTabFolder.setBorderVisible(true);
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		gridData.horizontalSpan = 2;
-		this.actionsTabFolder.setLayoutData(gridData);
-
-		motorAxisComposite = new MotorAxisComposite(this, actionsTabFolder,
-				SWT.NONE);
-		detectorChannelComposite = new DetectorChannelComposite(this,
-				actionsTabFolder, SWT.NONE);
-		prescanComposite = new PrescanComposite(this, actionsTabFolder,
-				SWT.NONE);
-		postscanComposite = new PostscanComposite(this, actionsTabFolder,
-				SWT.NONE);
-		positioningComposite = new PositioningComposite(this, actionsTabFolder,
-				SWT.NONE);
-		plotComposite = new PlotComposite(this, actionsTabFolder, SWT.NONE);
-
-		this.motorAxisTab = new CTabItem(this.actionsTabFolder, SWT.FLAT);
-		this.motorAxisTab.setText(" Motor Axes ");
-		this.motorAxisTab
-				.setToolTipText("Select motor axes to be used in this scan module");
-		this.motorAxisTab.setControl(this.motorAxisComposite);
-
-		this.detectorChannelTab = new CTabItem(this.actionsTabFolder, SWT.FLAT);
-		this.detectorChannelTab.setText(" Detector Channels ");
-		this.detectorChannelTab
-				.setToolTipText("Select detector channels to be used in this scan module");
-		this.detectorChannelTab.setControl(this.detectorChannelComposite);
-
-		this.prescanTab = new CTabItem(this.actionsTabFolder, SWT.FLAT);
-		this.prescanTab.setText(" Prescan ");
-		this.prescanTab
-				.setToolTipText("Action to do before scan module is started");
-		this.prescanTab.setControl(this.prescanComposite);
-
-		this.postscanTab = new CTabItem(this.actionsTabFolder, SWT.FLAT);
-		this.postscanTab.setText(" Postscan ");
-		this.postscanTab.setToolTipText("Action to do if scan module is done");
-		this.postscanTab.setControl(this.postscanComposite);
-
-		this.positioningTab = new CTabItem(this.actionsTabFolder, SWT.FLAT);
-		this.positioningTab.setText(" Positioning ");
-		this.positioningTab
-				.setToolTipText("Move motor to calculated position after scan module is done");
-		this.positioningTab.setControl(this.positioningComposite);
-
-		this.plotTab = new CTabItem(this.actionsTabFolder, SWT.FLAT);
-		this.plotTab.setText(" Plot ");
-		this.plotTab.setToolTipText("Plot settings for this scan module");
-		this.plotTab.setControl(this.plotComposite);
-	}
-
-	/*
-	 * 
-	 */
-	private void createEventComposite(Composite parent) {
-		this.eventsComposite = new Composite(parent, SWT.BORDER);
-		this.eventsComposite.setLayout(new GridLayout(2, false));
-
-		this.eventMaxIcon = new Label(eventsComposite, SWT.NONE);
-		this.eventMaxIcon.setImage(maximizeIcon);
-		this.eventMaxIcon.addMouseListener(new EventMaxIconMouseListener());
-
-		Label eventLabel = new Label(eventsComposite, SWT.NONE);
-		eventLabel.setText("Events:");
-
-		eventsTabFolder = new CTabFolder(this.eventsComposite, SWT.NONE);
-		this.eventsTabFolder.setSimple(true);
-		this.eventsTabFolder.setBorderVisible(true);
-		this.eventsTabFolderSelectionListener = new EventsTabFolderSelectionListener();
-		eventsTabFolder.addSelectionListener(eventsTabFolderSelectionListener);
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		gridData.horizontalSpan = 2;
-		eventsTabFolder.setLayoutData(gridData);
-
-		pauseEventComposite = new EventComposite(eventsTabFolder, SWT.NONE,
-				ControlEventTypes.PAUSE_EVENT, this);
-		redoEventComposite = new EventComposite(eventsTabFolder, SWT.NONE,
-				ControlEventTypes.CONTROL_EVENT, this);
-		breakEventComposite = new EventComposite(eventsTabFolder, SWT.NONE,
-				ControlEventTypes.CONTROL_EVENT, this);
-		triggerEventComposite = new EventComposite(eventsTabFolder, SWT.NONE,
-				ControlEventTypes.CONTROL_EVENT, this);
-
-		this.pauseEventsTabItem = new CTabItem(eventsTabFolder, SWT.NONE);
-		this.pauseEventsTabItem.setText(" Pause ");
-		this.pauseEventsTabItem
-				.setToolTipText("Configure event to pause and resume this scan module");
-		this.pauseEventsTabItem.setControl(pauseEventComposite);
-		this.redoEventsTabItem = new CTabItem(eventsTabFolder, SWT.NONE);
-		this.redoEventsTabItem.setText(" Redo ");
-		this.redoEventsTabItem
-				.setToolTipText("Repeat the last acquisition, if redo event occurs");
-		this.redoEventsTabItem.setControl(redoEventComposite);
-		this.breakEventsTabItem = new CTabItem(eventsTabFolder, SWT.NONE);
-		this.breakEventsTabItem.setText(" Skip ");
-		this.breakEventsTabItem
-				.setToolTipText("Finish this scan module and continue with next");
-		this.breakEventsTabItem.setControl(breakEventComposite);
-		this.triggerEventsTabItem = new CTabItem(eventsTabFolder, SWT.NONE);
-		this.triggerEventsTabItem.setText(" Trigger ");
-		this.triggerEventsTabItem
-				.setToolTipText("Wait for trigger event before moving to next position");
-		this.triggerEventsTabItem.setControl(triggerEventComposite);
-	}
-
-	/*
-	 * 
-	 */
-	private void bindValues() {
-		this.context = new DataBindingContext();
-		
-		this.selectionProvider = new ScanModuleSelectionProvider();
-		this.selectionObservable = ViewersObservables
-				.observeSingleSelection(selectionProvider);
-		
-		this.valueCountTargetObservable = SWTObservables
-				.observeText(this.valueCountText, SWT.Modify);
-		this.valueCountModelObservable = BeansObservables.observeDetailValue(
-				selectionObservable, ScanModule.class,
-				ScanModule.VALUE_COUNT_PROP, Integer.class);
-		UpdateValueStrategy valueCountTargetToModelStrategy = 
-				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE);
-		valueCountTargetToModelStrategy
-				.setAfterGetValidator(new ValueCountValidator());
-		valueCountTargetToModelStrategy.setConverter(new ValueCountConverter());
-		this.valueCountBinding = context.bindValue(valueCountTargetObservable,
-				valueCountModelObservable, valueCountTargetToModelStrategy,
-				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
-		ControlDecorationSupport.create(this.valueCountBinding, SWT.LEFT);
-		this.valueCountText.addFocusListener(new TextFocusListener(
-				this.valueCountText));
-		
-		this.triggerDelayTargetObservable = SWTObservables.observeText(
-				this.triggerDelayText, SWT.Modify);
-		this.triggerDelayModelObservable = BeansObservables.observeDetailValue(
-				selectionObservable, ScanModule.class, 
-				ScanModule.TRIGGER_DELAY_PROP, Double.class);
-		UpdateValueStrategy triggerDelayTargetToModelStrategy = 
-				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE);
-		triggerDelayTargetToModelStrategy
-				.setAfterGetValidator(new TriggerDelaySettleTimeValidator("Settle Time"));
-		triggerDelayTargetToModelStrategy
-				.setConverter(new TriggerDelaySettleTimeConverter());
-		UpdateValueStrategy triggerDelayModelToTargetStrategy = 
-				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE);
-		triggerDelayModelToTargetStrategy
-				.setConverter(new ModelToTargetConverter());
-		this.triggerDelayBinding = context.bindValue(
-				triggerDelayTargetObservable, triggerDelayModelObservable,
-				triggerDelayTargetToModelStrategy,
-				triggerDelayModelToTargetStrategy);
-		ControlDecorationSupport.create(this.triggerDelayBinding, SWT.LEFT);
-		this.triggerDelayText.addFocusListener(new TextFocusListener(
-				this.triggerDelayText));
-		
-		this.settleTimeTargetObservable = SWTObservables.observeText(
-				this.settleTimeText, SWT.Modify);
-		this.settleTimeModelObservable = BeansObservables.observeDetailValue(
-				selectionObservable, ScanModule.class,
-				ScanModule.SETTLE_TIME_PROP, Double.class);
-		UpdateValueStrategy settleTimeTargetToModelStrategy = 
-				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE);
-		UpdateValueStrategy settleTimeModelToTargetStrategy = 
-				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE);
-		settleTimeModelToTargetStrategy
-				.setConverter(new ModelToTargetConverter());
-		settleTimeTargetToModelStrategy
-				.setAfterGetValidator(new TriggerDelaySettleTimeValidator(
-						"Settle Time"));
-		settleTimeTargetToModelStrategy
-				.setConverter(new TriggerDelaySettleTimeConverter());
-		this.settleTimeBinding = context.bindValue(settleTimeTargetObservable,
-				settleTimeModelObservable, settleTimeTargetToModelStrategy,
-				settleTimeModelToTargetStrategy);
-		ControlDecorationSupport.create(this.settleTimeBinding, SWT.LEFT);
-		this.settleTimeText.addFocusListener(new TextFocusListener(
-				this.settleTimeText));
-		
-		this.axisTriggerTargetObservable = SWTObservables
-				.observeSelection(this.triggerConfirmAxisCheckBox);
-		this.axisTriggerModelObservable = BeansObservables.observeDetailValue(
-				selectionObservable, ScanModule.class,
-				ScanModule.TRIGGER_CONFIRM_AXIS_PROP, Boolean.class);
-		this.axisTriggerBinding = context.bindValue(
-				axisTriggerTargetObservable, axisTriggerModelObservable,
-				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE),
-				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
-		this.axisTriggerBinding.getClass();
-		
-		this.channelTriggerTargetObservable = SWTObservables
-				.observeSelection(this.triggerConfirmChannelCheckBox);
-		this.channelTriggerModelObservable = BeansObservables
-				.observeDetailValue(selectionObservable, ScanModule.class,
-						ScanModule.TRIGGER_CONFIRM_CHANNEL_PROP, Boolean.class);
-		this.channelTriggerBinding = context.bindValue(
-				channelTriggerTargetObservable, channelTriggerModelObservable,
-				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE),
-				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
-		this.channelTriggerBinding.getClass();
-	}
-
-	// ***********************************************************************
-	// ********************** end of create part control *********************
-	// ***********************************************************************
 
 	/**
 	 * {@inheritDoc}
@@ -583,9 +145,23 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	@Override
 	public void setFocus() {
 		logger.debug("focus gained -> forward to top composite");
-		this.top.setFocus();
+		this.contentPanel.setFocus();
 	}
 
+	/**
+	 * Introduced to "fix" code smell of EventMenuContributionHelper (which 
+	 * accessed the public attribute directly before).
+	 * @return the selection index of the events tab folder in the classic composite or -1
+	 * @since 1.31
+	 */
+	public int getEventsTabFolderSelectionIndex() {
+		if (!this.currentScanModule.getType().equals(ScanModuleTypes.CLASSIC)) {
+			return -1;
+		}
+		return ((ClassicComposite) this.classicComposite).
+				getEventsTabFolderSelectionIndex();
+	}
+	
 	/**
 	 * Returns the currently active scan module.
 	 * 
@@ -610,143 +186,44 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		// set the new scan module as the current one
 		this.currentScanModule = currentScanModule;
 
-		// tell the action composites about the change
-		this.motorAxisComposite.setScanModule(this.currentScanModule);
-		this.detectorChannelComposite.setScanModule(this.currentScanModule);
-		this.prescanComposite.setScanModule(this.currentScanModule);
-		this.postscanComposite.setScanModule(this.currentScanModule);
-		this.positioningComposite.setScanModule(this.currentScanModule);
-		this.plotComposite.setScanModule(this.currentScanModule);
-
-		// get the selected tab
-		int selectionIndex = this.actionsTabFolder.getSelectionIndex();
-		if (selectionIndex == -1) {
-			this.actionsTabFolder.setSelection(0);
-		} else {
-			this.actionsTabFolder.setSelection(selectionIndex);
-		}
-
+		
 		if (this.currentScanModule != null) {
 			// new scan module
 			this.currentScanModule.addModelUpdateListener(this);
 
-			top.setVisible(true);
-			this.setPartName(this.currentScanModule.getName() + ":"
-					+ this.currentScanModule.getId());
+			this.setPartName("ScanModule: " + this.currentScanModule.getName() 
+					+ " (Id: " + this.currentScanModule.getId() + ")");
 
-			if (this.eventsTabFolder.getSelection() == null) {
-				this.eventsTabFolder.setSelection(0);
+			switch (this.currentScanModule.getType()) {
+			case CLASSIC:
+				stackLayout.topControl = this.classicComposite;
+				break;
+			case DYNAMIC_AXIS_POSITIONS:
+				stackLayout.topControl = this.dynamicAxisPositionsComposite;
+				break;
+			case DYNAMIC_CHANNEL_VALUES:
+				stackLayout.topControl = this.dynamicChannelValuesComposite;
+				break;
+			case SAVE_AXIS_POSITIONS:
+				stackLayout.topControl = this.saveAxisPositionsComposite;
+				break;
+			case SAVE_CHANNEL_VALUES:
+				stackLayout.topControl = this.saveChannelValuesComposite;
+				break;
+			default:
+				stackLayout.topControl = this.emptyComposite;
+				break;
 			}
+			contentPanel.layout();
+			
 		} else {
 			// no scan module selected -> reset contents
 			selectionProviderWrapper.setSelectionProvider(null);
 			this.setPartName("No Scan Module selected");
-			top.setVisible(false);
+			stackLayout.topControl = this.emptyComposite;
+			contentPanel.layout();
 		}
 		updateEvent(null);
-	}
-
-	/*
-	 * 
-	 */
-	private void checkForErrors() {
-		// check errors in Actions Tab
-		this.motorAxisTab.setImage(null);
-		this.detectorChannelTab.setImage(null);
-		this.prescanTab.setImage(null);
-		this.postscanTab.setImage(null);
-		this.positioningTab.setImage(null);
-		this.plotTab.setImage(null);
-		boolean motorAxisErrors = false;
-		boolean detectorChannelErrors = false;
-		boolean prescanErrors = false;
-		boolean postscanErrors = false;
-		boolean positioningErrors = false;
-		boolean plotWindowErrors = false;
-
-		for (IModelError error : this.currentScanModule.getModelErrors()) {
-			if (error instanceof AxisError) {
-				motorAxisErrors = true;
-			} else if (error instanceof ChannelError) {
-				detectorChannelErrors = true;
-			} else if (error instanceof PrescanError) {
-				prescanErrors = true;
-			} else if (error instanceof PostscanError) {
-				postscanErrors = true;
-			} else if (error instanceof PositioningError) {
-				positioningErrors = true;
-			} else if (error instanceof PlotWindowError) {
-				plotWindowErrors = true;
-			}
-		}
-
-		if (motorAxisErrors) {
-			this.motorAxisTab.setImage(PlatformUI.getWorkbench()
-					.getSharedImages()
-					.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
-		}
-		if (detectorChannelErrors) {
-			this.detectorChannelTab.setImage(PlatformUI.getWorkbench()
-					.getSharedImages()
-					.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
-		}
-		if (prescanErrors) {
-			this.prescanTab.setImage(PlatformUI.getWorkbench()
-					.getSharedImages()
-					.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
-		}
-		if (postscanErrors) {
-			this.postscanTab.setImage(PlatformUI.getWorkbench()
-					.getSharedImages()
-					.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
-		}
-		if (positioningErrors) {
-			this.positioningTab.setImage(PlatformUI.getWorkbench()
-					.getSharedImages()
-					.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
-		}
-		if (plotWindowErrors) {
-			this.plotTab.setImage(PlatformUI.getWorkbench().getSharedImages()
-					.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
-		}
-
-		// check errors in Events Tab
-		this.pauseEventsTabItem.setImage(null);
-		this.redoEventsTabItem.setImage(null);
-		this.breakEventsTabItem.setImage(null);
-		this.triggerEventsTabItem.setImage(null);
-
-		for (ControlEvent event : this.currentScanModule.getPauseEvents()) {
-			if (event.getModelErrors().size() > 0) {
-				this.pauseEventsTabItem.setImage(PlatformUI.getWorkbench()
-						.getSharedImages()
-						.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
-			}
-		}
-		
-		for (ControlEvent event : this.currentScanModule.getRedoEvents()) {
-			if (event.getModelErrors().size() > 0) {
-				this.redoEventsTabItem.setImage(PlatformUI.getWorkbench()
-						.getSharedImages()
-						.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
-			}
-		}
-		
-		for (ControlEvent event : this.currentScanModule.getBreakEvents()) {
-			if (event.getModelErrors().size() > 0) {
-				this.breakEventsTabItem.setImage(PlatformUI.getWorkbench()
-						.getSharedImages()
-						.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
-			}
-		}
-		
-		for (ControlEvent event : this.currentScanModule.getTriggerEvents()) {
-			if (event.getModelErrors().size() > 0) {
-				this.triggerEventsTabItem.setImage(PlatformUI.getWorkbench()
-						.getSharedImages()
-						.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
-			}
-		}
 	}
 
 	/**
@@ -785,7 +262,7 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 			setCurrentScanModule((ScanModule)((EditPart)o).getModel());
 		} else if (o instanceof ChainEditPart) {
 			// clicking empty space in the editor
-			logger.debug("selection is ScanDescriptionEditPart: " + o);
+			logger.debug("selection is ChainEditPart: " + o);
 			setCurrentScanModule(null);
 		} else if (o instanceof ScanDescriptionEditPart) {
 			logger.debug("selection is ScanDescriptionEditPart: " + o);
@@ -800,23 +277,6 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	 */
 	@Override
 	public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
-		if (this.currentScanModule != null) {
-			this.triggerEventComposite.setEvents(this.currentScanModule,
-					EventImpacts.TRIGGER);
-			this.breakEventComposite.setEvents(this.currentScanModule,
-					EventImpacts.BREAK);
-			this.redoEventComposite.setEvents(this.currentScanModule,
-					EventImpacts.REDO);
-			this.pauseEventComposite.setEvents(this.currentScanModule,
-					EventImpacts.PAUSE);
-			
-			checkForErrors();
-		} else {
-			triggerEventComposite.setEvents(this.currentScanModule, null);
-			breakEventComposite.setEvents(this.currentScanModule, null);
-			redoEventComposite.setEvents(this.currentScanModule, null);
-			pauseEventComposite.setEvents(this.currentScanModule, null);
-		}
 	}
 
 	/**
@@ -824,21 +284,11 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	 */
 	@Override
 	public void saveState(IMemento memento) {
-		// remember maximized states of sash form
-		memento.putBoolean("actionsCompositeMaximized",
-				this.actionsCompositeMaximized);
-		memento.putBoolean("eventsCompositeMaximized",
-				this.eventsCompositeMaximized);
-		
-		// save composite heights
-		memento.putInteger("actionsCompositeWeight", sashForm.getWeights()[0]);
-		memento.putInteger("eventsCompositeWeight", sashForm.getWeights()[1]);
-		
-		// remember sort state of action composite viewers
-		memento.putInteger("AxesSortState",
-				this.motorAxisComposite.getSortState());
-		memento.putInteger("ChannelSortState",
-				this.detectorChannelComposite.getSortState());
+		this.classicComposite.saveState(memento);
+		this.saveAxisPositionsComposite.saveState(memento);
+		this.saveChannelValuesComposite.saveState(memento);
+		this.dynamicAxisPositionsComposite.saveState(memento);
+		this.dynamicChannelValuesComposite.saveState(memento);
 	}
 
 	/*
@@ -848,40 +298,11 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		if (memento == null) {
 			return;
 		}
-		
-		// restore maximized states
-		this.actionsCompositeMaximized = (memento
-				.getBoolean("actionsCompositeMaximized") == null) ? false
-				: memento.getBoolean("actionsCompositeMaximized");
-		this.eventsCompositeMaximized = (memento
-				.getBoolean("eventsCompositeMaximized") == null) ? false
-				: memento.getBoolean("eventsCompositeMaximized");
-		if (this.actionsCompositeMaximized) {
-			this.actionMaxIcon.setImage(restoreIcon);
-			this.sashForm.setMaximizedControl(actionsComposite);
-		}
-		if (this.eventsCompositeMaximized) {
-			this.eventMaxIcon.setImage(restoreIcon);
-			this.sashForm.setMaximizedControl(eventsComposite);
-		}
-		
-		// restore sash form weights
-		int[] weights = new int[2];
-		weights[0] = (memento.getInteger("actionsCompositeWeight") == null) 
-						? 1 : memento.getInteger("actionsCompositeWeight");
-		weights[1] = (memento.getInteger("eventsCompositeWeight") == null) 
-						? 1 : memento.getInteger("eventsCompositeWeight");
-		sashForm.setWeights(weights);
-		
-		// restore sort state of action composite viewers
-		if (memento.getInteger("AxesSortState") != null) {
-			this.motorAxisComposite.setSortState(memento
-					.getInteger("AxesSortState"));
-		}
-		if (memento.getInteger("ChannelSortState") != null) {
-			this.detectorChannelComposite.setSortState(memento
-					.getInteger("ChannelSortState"));
-		}
+		this.classicComposite.restoreState(memento);
+		this.saveAxisPositionsComposite.restoreState(memento);
+		this.saveChannelValuesComposite.restoreState(memento);
+		this.dynamicAxisPositionsComposite.restoreState(memento);
+		this.dynamicChannelValuesComposite.restoreState(memento);
 	}
 
 	/**
@@ -889,131 +310,8 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	 */
 	@Override
 	public void reset() {
+		// TODO call setSM(null) on SMViewComposites ?
 		this.setCurrentScanModule(null);
-	}
-
-	// ************************************************************************
-	// ******************** Listener ******************************************
-	// ************************************************************************
-
-	/**
-	 * @author Marcus Michalsky
-	 * @since 1.8
-	 */
-	private class ActionsMaxIconMouseListener extends MouseAdapter {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void mouseUp(MouseEvent e) {
-			if (actionsCompositeMaximized) {
-				actionMaxIcon.setImage(maximizeIcon);
-				actionMaxIcon.getParent().layout();
-				sashForm.setMaximizedControl(null);
-				actionsCompositeMaximized = false;
-			} else {
-				actionMaxIcon.setImage(restoreIcon);
-				sashForm.setMaximizedControl(actionsComposite);
-				actionsCompositeMaximized = true;
-			}
-		}
-	}
-
-	/**
-	 * @author Marcus Michalsky
-	 * @since 1.8
-	 */
-	private class EventMaxIconMouseListener extends MouseAdapter {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void mouseUp(MouseEvent e) {
-			if (eventsCompositeMaximized) {
-				eventMaxIcon.setImage(maximizeIcon);
-				eventMaxIcon.getParent().layout();
-				sashForm.setMaximizedControl(null);
-				eventsCompositeMaximized = false;
-			} else {
-				eventMaxIcon.setImage(restoreIcon);
-				sashForm.setMaximizedControl(eventsComposite);
-				eventsCompositeMaximized = true;
-			}
-		}
-	}
-
-	/**
-	 * @author Marcus Michalsky
-	 * @since 1.8
-	 */
-	private class TextFocusListener extends FocusAdapter {
-
-		private Text widget;
-
-		/**
-		 * @param widget the widget to observe
-		 */
-		public TextFocusListener(Text widget) {
-			this.widget = widget;
-		}
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void focusLost(FocusEvent e) {
-			if (this.widget == valueCountText) {
-				valueCountBinding.updateModelToTarget();
-			} else if (this.widget == triggerDelayText) {
-				triggerDelayBinding.updateModelToTarget();
-			} else if (this.widget == settleTimeText) {
-				settleTimeBinding.updateModelToTarget();
-			}
-		}
-	}
-
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of
-	 * <code>eventsTabFolder</code>.
-	 */
-	private class EventsTabFolderSelectionListener implements SelectionListener {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetSelected(SelectionEvent e) {
-			switch (eventsTabFolder.getSelectionIndex()) {
-			case 0:
-				selectionProviderWrapper
-						.setSelectionProvider(pauseEventComposite
-								.getTableViewer());
-				break;
-			case 1:
-				selectionProviderWrapper
-						.setSelectionProvider(redoEventComposite
-								.getTableViewer());
-				break;
-			case 2:
-				selectionProviderWrapper
-						.setSelectionProvider(breakEventComposite
-								.getTableViewer());
-				break;
-			case 3:
-				selectionProviderWrapper
-						.setSelectionProvider(triggerEventComposite
-								.getTableViewer());
-				break;
-			}
-		}
+		// TODO call setSM(null) on SMViewComposites ?
 	}
 }

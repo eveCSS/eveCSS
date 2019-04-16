@@ -282,6 +282,8 @@ public class Activator extends AbstractUIPlugin {
 				PLUGIN_ID, "icons/thin_restore_view.gif").createImage());
 		imagereg.put("SAVE", imageDescriptorFromPlugin(
 				PLUGIN_ID, "icons/save_edit.gif").createImage());
+		imagereg.put("DATE", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/dates.gif"));
 		
 		imagereg.put("CHAIN", imageDescriptorFromPlugin(
 				PLUGIN_ID, "icons/devices/chain.gif").createImage());

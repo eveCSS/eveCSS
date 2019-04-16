@@ -9,7 +9,17 @@ public class Literals {
 	
 	public static final String EMPTY_STRING = "";
 	
+	public static final String XML_ATTRIBUTE_NAME_COMPARISON = "comparison";
+	public static final String XML_ATTRIBUTE_NAME_COUNT = "count";
+	public static final String XML_ATTRIBUTE_NAME_DATATYPE = "datatype";
+	public static final String XML_ATTRIBUTE_NAME_DEFAULT = "default";
+	public static final String XML_ATTRIBUTE_NAME_ID = "id";
+	public static final String XML_ATTRIBUTE_NAME_MANDATORY = "mandatory";
+	public static final String XML_ATTRIBUTE_NAME_METHOD = "method";
+	public static final String XML_ATTRIBUTE_NAME_MONITOR = "monitor";
 	public static final String XML_ATTRIBUTE_NAME_NAME = "name";
+	public static final String XML_ATTRIBUTE_NAME_TIMEOUT = "timeout";
+	public static final String XML_ATTRIBUTE_NAME_TRANSPORT = "transport";
 	public static final String XML_ATTRIBUTE_NAME_TYPE = "type";
 	
 	public static final String XML_ELEMENT_NAME_ACTION = "action";
@@ -21,6 +31,7 @@ public class Literals {
 	public static final String XML_ELEMENT_NAME_BREAKEVENT = "breakevent";
 	public static final String XML_ELEMENT_NAME_CHAIN = "chain";
 	public static final String XML_ELEMENT_NAME_CHAINID = "chainid";
+	public static final String XML_ELEMENT_NAME_CHANNEL = "channel";
 	public static final String XML_ELEMENT_NAME_CHANNELID = "channel_id";
 	public static final String XML_ELEMENT_NAME_CLASS = "class";
 	public static final String XML_ELEMENT_NAME_COLOR = "color";
@@ -33,7 +44,9 @@ public class Literals {
 	public static final String XML_ELEMENT_NAME_DEVICE = "device";
 	public static final String XML_ELEMENT_NAME_DEVICES = "devices";
 	public static final String XML_ELEMENT_NAME_DISPLAYGROUP = "displaygroup";
+	public static final String XML_ELEMENT_NAME_EVENTS = "events";
 	public static final String XML_ELEMENT_NAME_EXPRESSION = "expression";
+	public static final String XML_ELEMENT_NAME_ID = "id";
 	public static final String XML_ELEMENT_NAME_INCIDENT = "incident";
 	public static final String XML_ELEMENT_NAME_INIT = "init";
 	public static final String XML_ELEMENT_NAME_ISMAINAXIS = "ismainaxis";
@@ -46,7 +59,9 @@ public class Literals {
 	public static final String XML_ELEMENT_NAME_MINIMUM = "minimum";
 	public static final String XML_ELEMENT_NAME_MODE = "mode";
 	public static final String XML_ELEMENT_NAME_MODIFIER = "modifier";
+	public static final String XML_ELEMENT_NAME_MONITORDEVICES = "monitordevices";
 	public static final String XML_ELEMENT_NAME_MONITOREVENT = "monitorevent";
+	public static final String XML_ELEMENT_NAME_MONITOROPTIONS = "monitoroptions";
 	public static final String XML_ELEMENT_NAME_MOTORS = "motors";
 	public static final String XML_ELEMENT_NAME_MOTOR = "motor";
 	public static final String XML_ELEMENT_NAME_NAME = "name";
@@ -66,11 +81,19 @@ public class Literals {
 	public static final String XML_ELEMENT_NAME_PRESCAN = "prescan";
 	public static final String XML_ELEMENT_NAME_RANGE = "range";
 	public static final String XML_ELEMENT_NAME_REDOEVENT = "redoevent";
+	public static final String XML_ELEMENT_NAME_REPEATCOUNT = "repeatcount";
 	public static final String XML_ELEMENT_NAME_RESETORIGINALVALUE = "reset_originalvalue";
 	public static final String XML_ELEMENT_NAME_SAVEFILENAME = "savefilename";
+	public static final String XML_ELEMENT_NAME_SAVEPLUGIN = "saveplugin";
 	public static final String XML_ELEMENT_NAME_SAVESCANDESCRIPTION = "savescandescription";
+	public static final String XML_ELEMENT_NAME_SCAN = "scan";
 	public static final String XML_ELEMENT_NAME_SCANMODULES = "scanmodules";
 	public static final String XML_ELEMENT_NAME_SCANMODULE = "scanmodule";
+	public static final String XML_ELEMENT_NAME_SCANMODULE_CLASSIC = "classic";
+	public static final String XML_ELEMENT_NAME_SCANMODULE_SAVE_AXIS_POSITIONS = "save_axis_positions";
+	public static final String XML_ELEMENT_NAME_SCANMODULE_SAVE_CHANNEL_VALUES = "save_channel_values";
+	public static final String XML_ELEMENT_NAME_SCANMODULE_DYNAMIC_AXIS_POSITIONS = "dynamic_axis_positions";
+	public static final String XML_ELEMENT_NAME_SCANMODULE_DYNAMIC_CHANNEL_VALUES = "dynamic_channel_values";
 	public static final String XML_ELEMENT_NAME_SCHEDULEEVENT = "scheduleevent";
 	public static final String XML_ELEMENT_NAME_SENDREADYEVENT = "sendreadyevent";
 	public static final String XML_ELEMENT_NAME_SETTLETIME = "settletime";
@@ -85,19 +108,23 @@ public class Literals {
 	public static final String XML_ELEMENT_NAME_SMSELECTION = "smselection";
 	public static final String XML_ELEMENT_NAME_SMTYPE = "smtype";
 	public static final String XML_ELEMENT_NAME_START = "start";
+	public static final String XML_ELEMENT_NAME_STARTEVENT = "startevent";
 	public static final String XML_ELEMENT_NAME_STARTSTOPSTEP = "startstopstep";
 	public static final String XML_ELEMENT_NAME_STEPFILENAME = "stepfilename";
 	public static final String XML_ELEMENT_NAME_STEPFUNCTION = "stepfunction";
 	public static final String XML_ELEMENT_NAME_STEPWIDTH = "stepwidth";
 	public static final String XML_ELEMENT_NAME_STOP = "stop";
+	public static final String XML_ELEMENT_NAME_STOPEVENT = "stopevent";
 	public static final String XML_ELEMENT_NAME_TRIGGERCONFIRMAXIS = "triggerconfirmaxis";
 	public static final String XML_ELEMENT_NAME_TRIGGERCONFIRMCHANNEL = "triggerconfirmchannel";
 	public static final String XML_ELEMENT_NAME_TRIGGERDELAY = "triggerdelay";
+	public static final String XML_ELEMENT_NAME_TRIGGEREVENT = "triggerevent";
 	public static final String XML_ELEMENT_NAME_TYPE = "type";
 	public static final String XML_ELEMENT_NAME_UNIT = "unit";
 	public static final String XML_ELEMENT_NAME_UNITSTRING = "unitstring";
 	public static final String XML_ELEMENT_NAME_VALUE = "value";
 	public static final String XML_ELEMENT_NAME_VALUECOUNT = "valuecount";
+	public static final String XML_ELEMENT_NAME_VERSION = "version";
 	public static final String XML_ELEMENT_NAME_XAXIS = "xaxis";
 	public static final String XML_ELEMENT_NAME_XPOS = "xpos";
 	public static final String XML_ELEMENT_NAME_YAXIS = "yaxis";
