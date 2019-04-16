@@ -31,14 +31,6 @@
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
-                <option>
-                    <name>Raw Value</name>
-                    <id>${Prefix="Det"}${PV}.RVAL</id>
-                    <value>
-                        <access method="GETPUT" transport="ca" type="double">${PV}.RVAL</access>
-                    </value>
-                    <displaygroup>detail</displaygroup>
-                </option>
                 <option monitor="true">
                     <name>Monitor Deadband</name>
                     <id>${Prefix=""}${PV}.MDEL</id>
