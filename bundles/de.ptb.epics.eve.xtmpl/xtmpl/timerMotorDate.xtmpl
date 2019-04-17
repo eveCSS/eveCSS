@@ -2,7 +2,7 @@
             <class>Timer</class>
             <name></name>
             <id>motDateTimer</id>
-            <axis>
+            <axis saveValue="false">
                 <class></class>
                 <name>date Timer</name>
                 <id>Timer1-mot-date</id>

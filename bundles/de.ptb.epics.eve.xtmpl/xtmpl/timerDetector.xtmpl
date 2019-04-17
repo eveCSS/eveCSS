@@ -2,7 +2,7 @@
             <class>Timer</class>
             <name></name>
             <id>detSecTime</id>
-            <channel>
+            <channel saveValue="false">
                 <class></class>
                 <name>Time</name>
                 <id>Timer1-det-double</id>

@@ -2,7 +2,7 @@
             <class>Timer</class>
             <name></name>
             <id>detDateTime</id>
-            <channel>
+            <channel saveValue="false">
                 <class></class>
                 <name>date Time</name>
                 <id>Timer1-det-date</id>
