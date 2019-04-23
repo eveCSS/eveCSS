@@ -85,6 +85,23 @@ public final class ScanDescriptionEditorPaletteFactory {
 						"icons/devices/scanmodule32.gif"));
 		componentsDrawer.add(componentCreateSM2);
 
+		CombinedTemplateCreationEntry componentTopUpSM = new CombinedTemplateCreationEntry(
+				"Scan Module", "Scan Module with Top Up Redo Event", new CreationFactory() {
+					@Override
+					public Object getObjectType() {
+						return ScanModuleTypes.TOP_UP;
+					}
+					
+					@Override
+					public Object getNewObject() {
+						return null;
+					}
+				}, Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
+						"icons/devices/topup.gif"),
+				Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
+						"icons/devices/scanmoduletopup32.gif"));
+		componentsDrawer.add(componentTopUpSM);
+
 		CombinedTemplateCreationEntry componentSaveAxisPosSM = new CombinedTemplateCreationEntry(
 				"Scan Module", "Axis Snapshot (static)", new CreationFactory() {
 					@Override
@@ -152,23 +169,6 @@ public final class ScanDescriptionEditorPaletteFactory {
 					Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 							"icons/devices/scanmodulechannelsdynamic32.gif"));
 		componentsDrawer.add(componentSaveChannelValDynSM);
-		
-		CombinedTemplateCreationEntry componentTopUpSM = new CombinedTemplateCreationEntry(
-				"Scan Module", "Top Up", new CreationFactory() {
-					@Override
-					public Object getObjectType() {
-						return ScanModuleTypes.TOP_UP;
-					}
-					
-					@Override
-					public Object getNewObject() {
-						return null;
-					}
-				}, Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-						"icons/devices/topup.gif"),
-				Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-						"icons/devices/scanmoduletopup32.gif"));
-		componentsDrawer.add(componentTopUpSM);
 		
 		return componentsDrawer;
 	}
