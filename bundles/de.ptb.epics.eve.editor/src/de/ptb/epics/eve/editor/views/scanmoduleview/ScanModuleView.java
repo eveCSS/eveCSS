@@ -191,7 +191,7 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 			// new scan module
 			this.currentScanModule.addModelUpdateListener(this);
 
-			this.setPartName("ScanModule: " + this.currentScanModule.getName() 
+			this.setPartName("Scan Module: " + this.currentScanModule.getName() 
 					+ " (Id: " + this.currentScanModule.getId() + ")");
 
 			switch (this.currentScanModule.getType()) {
