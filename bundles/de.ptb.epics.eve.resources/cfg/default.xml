@@ -66,7 +66,7 @@
 			<class>Timer</class>
 			<name></name>
 			<id>detMsecTime</id>
-			<channel>
+			<channel saveValue="false">
 				<class></class>
 				<name>msec Time</name>
 				<id>Timer1-det-int</id>
@@ -80,7 +80,7 @@
 			<class>Timer</class>
 			<name></name>
 			<id>detDateTime</id>
-			<channel>
+			<channel saveValue="false">
 				<class></class>
 				<name>date Time</name>
 				<id>Timer1-det-date</id>
@@ -180,7 +180,7 @@
 			<class>Data Sources</class>
 			<name>System</name>
 			<id>eve:sys</id>
-			<channel>
+			<channel saveValue="false">
 				<class></class>
 				<name>time</name>
 				<id>sys:time</id>
@@ -189,7 +189,7 @@
 					</access>
 				</read>
 			</channel>
-			<channel>
+			<channel saveValue="false">
 				<class></class>
 				<name>free_mb</name>
 				<id>sys:freeMb</id>
@@ -198,7 +198,7 @@
 					</access>
 				</read>
 			</channel>
-			<channel>
+			<channel saveValue="false">
 				<class></class>
 				<name>used_mb</name>
 				<id>sys:usedMb</id>
@@ -207,7 +207,7 @@
 					</access>
 				</read>
 			</channel>
-			<channel>
+			<channel saveValue="false">
 				<class></class>
 				<name>max_mb</name>
 				<id>sys:maxMb</id>
@@ -216,7 +216,7 @@
 					</access>
 				</read>
 			</channel>
-			<channel>
+			<channel saveValue="false">
 				<class></class>
 				<name>user</name>
 				<id>sys:user</id>
@@ -225,7 +225,7 @@
 					</access>
 				</read>
 			</channel>
-			<channel>
+			<channel saveValue="false">
 				<class></class>
 				<name>host</name>
 				<id>sys:hostname</id>
@@ -234,7 +234,7 @@
 					</access>
 				</read>
 			</channel>
-			<channel>
+			<channel saveValue="false">
 				<class></class>
 				<name>qualified host</name>
 				<id>sys:qualifiedHostName</id>
@@ -248,7 +248,7 @@
 			<class>Data Sources</class>
 			<name>Simulation</name>
 			<id>eve:sim</id>
-			<channel>
+			<channel saveValue="false">
 				<class></class>
 				<name>Gaussian Noise</name>
 				<id>sim:gaussianNoise</id>
@@ -257,7 +257,7 @@
 					</access>
 				</read>
 			</channel>
-			<channel>
+			<channel saveValue="false">
 				<class></class>
 				<name>Gaussian Waveform</name>
 				<id>sim:gaussianWaveform</id>
@@ -266,7 +266,7 @@
 					</access>
 				</read>
 			</channel>
-			<channel>
+			<channel saveValue="false">
 				<class></class>
 				<name>Sine Waveform</name>
 				<id>sim:sineWaveform</id>
@@ -275,7 +275,7 @@
 					</access>
 				</read>
 			</channel>
-			<channel>
+			<channel saveValue="false">
 				<class></class>
 				<name>Square Waveform</name>
 				<id>sim:squareWaveform</id>
@@ -284,7 +284,7 @@
 					</access>
 				</read>
 			</channel>
-			<channel>
+			<channel saveValue="false">
 				<class></class>
 				<name>Sawtooth Waveform</name>
 				<id>sim:sawtoothWaveform</id>
@@ -293,7 +293,7 @@
 					</access>
 				</read>
 			</channel>
-			<channel>
+			<channel saveValue="false">
 				<class></class>
 				<name>Ramp</name>
 				<id>sim:ramp</id>
@@ -310,7 +310,7 @@
 			<class>Timer</class>
 			<name></name>
 			<id>motMsecTimer</id>
-			<axis>
+			<axis saveValue="false">
 				<class></class>
 				<name>msec Timer</name>
 				<id>Timer1-mot-int</id>
@@ -330,7 +330,7 @@
 			<class>Timer</class>
 			<name></name>
 			<id>motDateTimer</id>
-			<axis>
+			<axis saveValue="false">
 				<class></class>
 				<name>date Timer</name>
 				<id>Timer1-mot-date</id>
@@ -351,7 +351,7 @@
 			<class>Counter</class>
 			<name></name>
 			<id>Counter1</id>
-			<axis>
+			<axis saveValue="false">
 				<class></class>
 				<name>Counter</name>
 				<id>Counter</id>
