@@ -7,6 +7,8 @@ import java.util.List;
  * Defines the position the data is written to. Intended to be used for 
  * {@link de.ptb.epics.eve.data.scandescription.ScanModule}.
  * 
+ * Kept only for updating SCMLs of version 2.3 to 3.0 !
+ * 
  * @author Marcus Michalsky
  * @since 1.18
  */
