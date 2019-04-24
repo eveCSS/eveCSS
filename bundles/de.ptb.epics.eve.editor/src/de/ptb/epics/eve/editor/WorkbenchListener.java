@@ -9,6 +9,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchListener;
 
 import de.ptb.epics.eve.editor.jobs.batchupdate.BatchUpdateJob;
+import de.ptb.epics.eve.editor.jobs.changesmtype.ChangeToJob;
 
 /**
  * <code>WorkbenchListener</code> interrupts the shutdown until all save jobs 
@@ -42,6 +43,7 @@ public class WorkbenchListener implements IWorkbenchListener {
 			manager.join("file", new NullProgressMonitor());
 			manager.join("defaults", new NullProgressMonitor());
 			manager.join(BatchUpdateJob.FAMILY, new NullProgressMonitor());
+			manager.join(ChangeToJob.FAMILY, new NullProgressMonitor());
 		} catch (OperationCanceledException | InterruptedException e1) {
 			logger.warn(e1.getMessage(), e1);
 			logger.warn("shutdown aborted");

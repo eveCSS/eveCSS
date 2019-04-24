@@ -821,6 +821,19 @@
                </reference>
             </visibleWhen>
          </menu>
+         <menu
+               label="Change To">
+            <dynamic
+                  class="de.ptb.epics.eve.editor.gef.ContextMenuChangeToContributionItem"
+                  id="de.ptb.epics.eve.editor.dynamic.changeto.popup">
+            </dynamic>
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.ptb.epics.eve.editor.expressions.scanmoduleselected">
+               </reference>
+            </visibleWhen>
+         </menu>
       </menuContribution>
       <menuContribution
             locationURI="popup:de.ptb.epics.eve.editor.gef.GraphicalEditor.AddMenu?after=additions">
@@ -1353,6 +1366,40 @@
             description="Resets the view to its initial state"
             id="de.ptb.epics.eve.editor.command.batchupdateview.reset"
             name="Reset View">
+      </command>
+      <category
+            id="de.ptb.epics.eve.editor.command.category.changeto"
+            name="Change To">
+      </category>
+      <command
+            categoryId="de.ptb.epics.eve.editor.command.category.changeto"
+            defaultHandler="de.ptb.epics.eve.editor.handler.changeto.ChangeToEmptyScanModule"
+            id="de.ptb.epics.eve.editor.command.changeto.emptyscanmodule"
+            name="Empty Scan Module">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.command.category.changeto"
+            defaultHandler="de.ptb.epics.eve.editor.handler.changeto.ChangeToAxisSnapshotStatic"
+            id="de.ptb.epics.eve.editor.command.changeto.axissnapshotstatic"
+            name="Axis Snapshot (static)">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.command.category.changeto"
+            defaultHandler="de.ptb.epics.eve.editor.handler.changeto.ChangeToAxisSnapshotDynamic"
+            id="de.ptb.epics.eve.editor.command.changeto.axissnapshotdynamic"
+            name="Axis Snapshot (dynamic)">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.command.category.changeto"
+            defaultHandler="de.ptb.epics.eve.editor.handler.changeto.ChangeToChannelSnapshotStatic"
+            id="de.ptb.epics.eve.editor.command.changeto.channelsnapshotstatic"
+            name="Channel Snapshot (static)">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.command.category.changeto"
+            defaultHandler="de.ptb.epics.eve.editor.handler.changeto.ChangeToChannelSnapshotDynamic"
+            id="de.ptb.epics.eve.editor.command.changeto.channelsnapshotdynamic"
+            name="Channel Snapshot (dynamic)">
       </command>
    </extension>
    <extension

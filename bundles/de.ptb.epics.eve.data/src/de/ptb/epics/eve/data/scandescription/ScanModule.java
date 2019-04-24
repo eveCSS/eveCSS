@@ -56,6 +56,11 @@ import de.ptb.epics.eve.util.math.statistics.DescriptiveStats;
  */
 public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, 
 								IModelErrorProvider, PropertyChangeListener, ListChangeListener<AbstractBehavior> {
+	public static final String DEFAULT_NAME_CLASSIC = "SM";
+	public static final String DEFAULT_NAME_SAVE_AXIS_POSITIONS = "Static Axis Snapshot";
+	public static final String DEFAULT_NAME_SAVE_CHANNEL_VALUES = "Static Channel Snapshot";
+	public static final String DEFAULT_NAME_DYNAMIC_AXIS_POSITIONS = "Dynamic Axis Snapshot";
+	public static final String DEFAULT_NAME_DYNAMIC_CHANNEL_VALUES = "Dynamic Channel Snapshot";
 	
 	private static Logger logger = Logger.getLogger(ScanModule.class.getName());
 	
@@ -1590,23 +1595,19 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * @since 1.9
 	 */
 	public void saveAllAxisPositions(IMeasuringStation measuringStation) {
-		// get available motor axes
-		List<MotorAxis> motorAxes = new ArrayList<MotorAxis>();
 		for(Motor m : measuringStation.getMotors()) {
 			for(MotorAxis ma : m.getAxes()) {
-				motorAxes.add(ma);
+				if (ma.isSaveValue()) {
+					final Axis axis = new Axis(this);
+					axis.setMotorAxis(ma);
+					axis.setStepfunction(Stepfunctions.PLUGIN);
+					PlugIn motionDisabled = measuringStation
+							.getPluginByName("MotionDisabled");
+					axis.setPluginController(new PluginController(motionDisabled));
+					axis.getPluginController().setPlugin(motionDisabled);
+					this.add(axis);
+				}
 			}
-		}
-		// create axes
-		for(MotorAxis ma : motorAxes) {
-			final Axis axis = new Axis(this);
-			axis.setMotorAxis(ma);
-			axis.setStepfunction(Stepfunctions.PLUGIN);
-			PlugIn motionDisabled = measuringStation
-					.getPluginByName("MotionDisabled");
-			axis.setPluginController(new PluginController(motionDisabled));
-			axis.getPluginController().setPlugin(motionDisabled);
-			this.add(axis);
 		}
 	}
 	
@@ -1618,21 +1619,15 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * @since 1.9
 	 */
 	public void saveAllChannelValues(IMeasuringStation measuringStation) {
-		// get available channels
-		List<DetectorChannel> detectorChannels = new ArrayList<DetectorChannel>();
 		for (Detector det : measuringStation.getDetectors()) {
 			for (DetectorChannel ch : det.getChannels()) {
 				if (ch.isSaveValue()) {
-					detectorChannels.add(ch);
+					Channel channel = new Channel(this);
+					channel.setDetectorChannel(ch);
+					channel.setAverageCount(1);
+					this.add(channel);
 				}
 			}
-		}
-		// creating channels
-		for (DetectorChannel ch : detectorChannels) {
-			Channel channel = new Channel(this);
-			channel.setDetectorChannel(ch);
-			channel.setAverageCount(1);
-			this.add(channel);
 		}
 	}
 	

@@ -51,15 +51,16 @@ public class CreateScanModule extends Command {
 		String name = "";
 		switch (this.scanModule.getType()) {
 		case CLASSIC:
-			name = "SM " + Integer.toString(this.scanModule.getId());
+			name = ScanModule.DEFAULT_NAME_CLASSIC + " " +
+					Integer.toString(this.scanModule.getId());
 			break;
 		case SAVE_AXIS_POSITIONS:
-			name = "Static Axis Snapshot";
+			name = ScanModule.DEFAULT_NAME_SAVE_AXIS_POSITIONS;
 			this.scanModule.saveAllAxisPositions(this.chain
 					.getScanDescription().getMeasuringStation());
 			break;
 		case SAVE_CHANNEL_VALUES:
-			name = "Static Channel Snapshot";
+			name = ScanModule.DEFAULT_NAME_SAVE_CHANNEL_VALUES;
 			this.scanModule.saveAllChannelValues(this.chain
 					.getScanDescription().getMeasuringStation());
 			break;
@@ -73,10 +74,10 @@ public class CreateScanModule extends Command {
 							.getString(PreferenceConstants.P_TOPUP_PV));
 			break;
 		case DYNAMIC_AXIS_POSITIONS:
-			name ="Dynamic Axis Snapshot";
+			name = ScanModule.DEFAULT_NAME_DYNAMIC_AXIS_POSITIONS;
 			break;
 		case DYNAMIC_CHANNEL_VALUES:
-			name = "Dynamic Channel Snapshot";
+			name = ScanModule.DEFAULT_NAME_DYNAMIC_CHANNEL_VALUES;
 			break;
 		default:
 			break;
