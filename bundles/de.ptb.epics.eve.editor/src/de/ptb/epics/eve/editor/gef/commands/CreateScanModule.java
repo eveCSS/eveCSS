@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.commands.Command;
 
+import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
@@ -49,6 +50,7 @@ public class CreateScanModule extends Command {
 		}
 		this.chain.add(this.scanModule);
 		String name = "";
+		IMeasuringStation measuringStation = Activator.getDefault().getDeviceDefinition();
 		switch (this.scanModule.getType()) {
 		case CLASSIC:
 			name = ScanModule.DEFAULT_NAME_CLASSIC + " " +
@@ -56,20 +58,16 @@ public class CreateScanModule extends Command {
 			break;
 		case SAVE_AXIS_POSITIONS:
 			name = ScanModule.DEFAULT_NAME_SAVE_AXIS_POSITIONS;
-			this.scanModule.saveAllAxisPositions(this.chain
-					.getScanDescription().getMeasuringStation());
+			this.scanModule.saveAllAxisPositions(measuringStation);
 			break;
 		case SAVE_CHANNEL_VALUES:
 			name = ScanModule.DEFAULT_NAME_SAVE_CHANNEL_VALUES;
-			this.scanModule.saveAllChannelValues(this.chain
-					.getScanDescription().getMeasuringStation());
+			this.scanModule.saveAllChannelValues(measuringStation);
 			break;
 		case TOP_UP:
 			name = "TOP UP";
 			this.scanModule.setType(ScanModuleTypes.CLASSIC);
-			this.scanModule.topUp(
-					this.scanModule.getChain().getScanDescription()
-							.getMeasuringStation(),
+			this.scanModule.topUp(measuringStation,
 					Activator.getDefault().getPreferenceStore()
 							.getString(PreferenceConstants.P_TOPUP_PV));
 			break;
