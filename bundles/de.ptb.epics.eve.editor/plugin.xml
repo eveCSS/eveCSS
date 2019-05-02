@@ -812,7 +812,7 @@
             locationURI="popup:de.ptb.epics.eve.editor.gef.GraphicalEditor.AddMenu?after=additions">
          <command
                commandId="de.ptb.epics.eve.editor.command.addprepended"
-               icon="icons/devices/scanmodule.gif"
+               icon="icons/devices/scanmoduleAddPrepended32.gif"
                label="Prepended (append current)"
                style="push">
             <parameter
@@ -828,7 +828,7 @@
          </command>
          <command
                commandId="de.ptb.epics.eve.editor.command.addprepended"
-               icon="icons/devices/scanmodule.gif"
+               icon="icons/devices/scanmoduleAddPrepended32.gif"
                label="Prepended (nest current)"
                style="push">
             <parameter

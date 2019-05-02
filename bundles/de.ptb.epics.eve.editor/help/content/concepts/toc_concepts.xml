@@ -2,15 +2,17 @@
 <?NLS TYPE="org.eclipse.help.toc"?>
 
 <toc label="Concepts">
+   <topic href="help/content/concepts/scandescription.html" label="Scan Description">
+   </topic>
+   <topic href="help/content/concepts/events.html" label="Events">
+   </topic>
    <topic href="help/content/concepts/eveeditorperspective.html" label="EveEditor Perspective">
    </topic>
    <topic href="help/content/concepts/editor.html" label="Scan Description Editor">
    </topic>
    <topic href="help/content/concepts/scanview.html" label="Scan View">
    </topic>
-   <topic href="help/content/concepts/chain.html" label="Chain">
-   </topic>
-   <topic href="help/content/concepts/events.html" label="Events">
+   <topic href="help/content/concepts/chainview.html" label="Chain View">
    </topic>
    <topic href="help/content/concepts/scanmoduleview.html" label="Scan Module View">
    </topic>
@@ -18,9 +20,7 @@
    </topic>
    <topic href="help/content/concepts/detectorchannelview.html" label="Detector Channel View">
    </topic>
-   <topic href="help/content/concepts/plotwindow.html" label="Plot Window">
-   </topic>
-   <topic href="help/content/concepts/scandescription.html" label="Scan Description">
+   <topic href="help/content/concepts/plotwindowview.html" label="Plot Window View">
    </topic>
    <topic href="help/content/concepts/batchupdateview.html" label="Batch Update View">
    </topic>

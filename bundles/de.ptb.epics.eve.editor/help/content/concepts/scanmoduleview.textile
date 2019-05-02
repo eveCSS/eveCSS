@@ -1,60 +1,65 @@
-h1(eveTopic). Scan Module View
+h1(eveTopic|#top). Scan Module View
 
-p. In the Scan Module view you set the properties for a scan module.
+{toc:style=circle|maxLevel=2}
 
-h3(eveTopic). No of Measurements
+The content of the ScanModuleView depends on the type of the currently selected scan module. It shows attributes that can be altered and allows adding/deleting devices, actions, events, etc. in certain cases. The different appearances are shown in the following.
 
-p. The __No of Measurements__ is a given number of measurements taken for each motor position.
+h2(eveTopic). Scan Module
 
-h3(eveTopic). Trigger Delay
+p(backToTop). "back to top":#top
 
-p. The __Trigger Delay__ is a time in seconds for waiting after positioning between the __Prescan__ action and the triggering of the detector channels.
+p. For a common scan module the Scan Module View looks as follows:
 
-h3(eveTopic). Settle Time
+p=. !(eveImage)../../img/concepts/ScanModuleView/ClassicComposite.png(sample content for a scan module)!
 
-p. The __Settle Time__ is a time in seconds for waiting after the first positioning in the scan module. The time is waiting between the __Prescan__ action and the triggering of the detector channels.
+h3(eveTopic). General Settings
 
-h3(eveTopic). Manual Trigger
+* __No of Measurements__: the number of measurements taken for each motor position
+* __Trigger Delay (in s)__: delay in s before detectors are triggered
+* __Settle Time (in s)__: delay in s after the first motor position is reached
+* __Manual Trigger__: whether setting motor positions and/or triggering detectors should be confirmed
 
-p. With __Manual Trigger__ you define, whether triggering of __Motors__ and __Detectors__ should be confirmed.
+h3(eveTopic). Actions
 
-h2(eveTopic). Actions
+* __Motor Axes__: Allows adding/removing of and displays current motor axes. Properties of selected axes can be viewed or modified in the "Motor Axis View":motoraxisview.html.
+* __Detector Channels__: Allows adding/removing of and displays current detector channels. Properties of selected channels can be viewed or modified in the "Detector Channel View":detectorchannelview.html.
+* __Prescan__: Allows defining actions executed before the main phase.
+* __Postscan__: Allows defining actions executed after the main phase.
+* __Positioning__: Allows moving axes to calculated positions after the main phase.
+* __Plot__: Allows defining plot windows for live plots during scan execution. Properties of selected plots can be viewed or modified in the "Plot Window View":plotwindowview.html.
 
-p. In the __Actions__ item you see in a table with six tabs the selected options for __Motor Axes__, __Detector Channels__, __Prescan__, __Postscan__, __Positioning__ and __Plot__.
+h3(eveTopic). Events
 
-h3(eveTopic). Motor Axes
+p. A scan module allows defining different types of events to pause execution, redo the last measurement, etc. More information about events is found "here":events.html.
 
-p. In the __Motor Axes__ tab you define, which axis are used in the scan module. A description of Motor Axis is "here":motoraxis.html
+h2(eveTopic). Static Axis Snapshot
 
-h3(eveTopic). Detector Channels
+p(backToTop). "back to top":#top
 
-p. In the __Detector Channels__ tab you define, which channels are used in the scan module. A description of Detector Channel is "here":detectorchannels.html
+p. When a scan module of type "Axis Snapshot (static)" is selected, the view shows a table containing all axes contained in the snapshot. Axes can be added or removed.
 
-h3(eveTopic). Prescan
+p=. !(eveImage)../../img/concepts/ScanModuleView/StaticAxisPositionsComposite.png(sample content for a static axis snapshot scan module)!
 
-p. In the __Prescan__ tab you define, which prescan action will be done before the scan module is started.
-P. Die __Prescan__ Aktionen werden ausgeführt, nachdem die erste Position des Scan Modules angefahren wurde. Ob die Prescan-Aktion auf eine Antwort wartet oder nur einfach abgeschickt wird, hängt von ihrer Vereinbarung im xml File ab (method="GETPUTCB" oder ="GETPUT")
+h2(eveTopic). Static Channel Snapshot
 
-h3(eveTopic). Postscan
+p(backToTop). "back to top":#top
 
-p. In the __Postscan__ tab you define, which postscan action will be started after the scan module is done.
-P. Ob die Postscan-Aktion auf eine Antwort wartet oder nur einfach abgeschickt wird, hängt von ihrer Vereinbarung im xml File ab (method="GETPUTCB" oder ="GETPUT")
+p. When a scan module of type "Channel Snapshot (static)" is selected the view shows a table containing all channels contained in the snapshot. Channels can be added or removed. 
 
-h3(eveTopic). Positioning
+p=. !(eveImage)../../img/concepts/ScanModuleView/StaticChannelValuesComposite.png(sample content for a static channel snapshot scan module)!
 
-p. In the __Positioning__ tab you define, which type of positionig will be started after the scan module and/or prescan actions will be done. The __Positioning__ move axis to calculated positions.
+h2(eveTopic). Dynamic Axis Snapshot
 
-h3(eveTopic). Plot
+p(backToTop). "back to top":#top
 
-p. In the __Plot__ tab you define, how many plot windows you will seen in the scan module. A description of the Plot Window is "here":plotwindow.html
+p. Scan modules of type "Axis Snapshot (dynamic)" cannot be altered. Their contents is determined during scan execution. The view shows an immutable table showing all axes contained in the snapshot based on the currently loaded device definition.
 
-h2(eveTopic). Events
+p=. !(eveImage)../../img/concepts/ScanModuleView/DynamicAxisPositionsComposite.png(sample content for a dynamic axis snapshot scanmodule)!
 
-p. In the __Events__ Tab you choose which Events you need in the scan module. The description of events an which event types are available in the scan module view you found "here":events.html
+h2(eveTopic). Dynamic Channel Snapshot
 
-h3(eveTopic). Append Schedule Event
+p(backToTop). "back to top":#top
 
-p. In the __Plot__ tab you define, how many plot windows you will seen in the scan module. A description of the Plot Window is "here":plotwindow.html
+p. Scan modules of type "Channel Snapshot (dynamic)" cannot be altered. Their contents is determined during scan execution. The view shows an immutable table showing all channels contained in the snapshot based on the currently loaded device definition.
 
-p. With __Append Schedule Event__ you define, whether the scan module sets an Schedule Event if the scan module is done.
-
+p=. !(eveImage)../../img/concepts/ScanModuleView/DynamicChannelValuesComposite.png(sample content for a dynamic channel snapshot scanmodule)!

@@ -34,7 +34,7 @@ public class ContextMenuAddContributionItem extends CompoundContributionItem {
 		p.label = "Appended Scan Module";
 		p.parameters = params;
 		p.icon = Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID, 
-				"icons/devices/scanmodule.gif");
+				"icons/devices/scanmoduleAddAppended32.gif");
 		CommandContributionItem item = new CommandContributionItem(p);
 		item.setVisible(true);
 		result.add(item);
@@ -47,7 +47,7 @@ public class ContextMenuAddContributionItem extends CompoundContributionItem {
 		p.label = "Nested Scan Module";
 		p.parameters = params;
 		p.icon = Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID, 
-				"icons/devices/scanmodule.gif");
+				"icons/devices/scanmoduleAddNested32.gif");
 		item = new CommandContributionItem(p);
 		item.setVisible(true);
 		result.add(item);
