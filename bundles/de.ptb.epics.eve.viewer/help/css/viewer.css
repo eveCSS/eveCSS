@@ -44,6 +44,13 @@ p {
 	background: url('../img/misc/debug_view.gif') no-repeat;
 }
 
+.backToTop {
+	font-style: underline;
+	display: inline;
+	padding-left: 20px;
+	background: url(../img/misc/prev_nav.gif) no-repeat;
+}
+
 .textCenter {
 	text-align: center;
 }
