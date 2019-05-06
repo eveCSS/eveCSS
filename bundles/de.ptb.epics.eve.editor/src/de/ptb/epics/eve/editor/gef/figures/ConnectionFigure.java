@@ -9,13 +9,17 @@ import org.eclipse.swt.SWT;
  * @since 1.6
  */
 public class ConnectionFigure extends PolylineConnection {
-
+	private static final int LINE_WIDTH = 2;
+	
 	/**
 	 * Constructor.
 	 */
 	public ConnectionFigure() {
+		this.setLineWidth(LINE_WIDTH);
 		PolygonDecoration decoration = new PolygonDecoration();
+		decoration.setLineWidth(LINE_WIDTH);
 		decoration.setTemplate(PolygonDecoration.TRIANGLE_TIP);
+		decoration.setAntialias(SWT.ON);
 		this.setTargetDecoration(decoration);
 		this.setAntialias(SWT.ON);
 	}
