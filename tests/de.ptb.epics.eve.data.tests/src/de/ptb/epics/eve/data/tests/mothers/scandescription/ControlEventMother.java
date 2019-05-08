@@ -16,15 +16,7 @@ import de.ptb.epics.eve.data.tests.mothers.measuringstation.event.ScheduleEventM
  * @since 1.27
  */
 public class ControlEventMother {
-	
-	/**
-	 * Creates a detector ready control event based on a generic channel.
-	 * @return a detector ready control event based on a generic channel
-	 */
-	public static ControlEvent createNewDetectorReadyEvent() {
-		DetectorEvent detectorEvent = DetectorEventMother.createNewDetectorEvent();
-		return new ControlEvent(EventTypes.DETECTOR, detectorEvent, detectorEvent.getId());
-	}
+	private ControlEventMother() {}
 	
 	/**
 	 * Creates a detector ready control event based on the given channel. 
@@ -34,15 +26,6 @@ public class ControlEventMother {
 	public static ControlEvent createNewDetectorReadyEvent(Channel channel) {
 		DetectorEvent detectorEvent = DetectorEventMother.createNewDetectorEvent(channel);
 		return new ControlEvent(EventTypes.DETECTOR, detectorEvent, detectorEvent.getId());
-	}
-	
-	/**
-	 * Creates a schedule control event based on a generic scan module.
-	 * @return a schedule control event based on a generic scan module
-	 */
-	public static ControlEvent createNewScheduleEvent() {
-		ScheduleEvent scheduleEvent = ScheduleEventMother.createNewScheduleEvent();
-		return new ControlEvent(EventTypes.SCHEDULE, scheduleEvent, scheduleEvent.getId());
 	}
 	
 	/**

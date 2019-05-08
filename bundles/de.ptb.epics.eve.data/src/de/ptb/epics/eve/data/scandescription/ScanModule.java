@@ -61,6 +61,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	public static final String DEFAULT_NAME_SAVE_CHANNEL_VALUES = "Static Channel Snapshot";
 	public static final String DEFAULT_NAME_DYNAMIC_AXIS_POSITIONS = "Dynamic Axis Snapshot";
 	public static final String DEFAULT_NAME_DYNAMIC_CHANNEL_VALUES = "Dynamic Channel Snapshot";
+	public static final int DEFAULT_VALUE_VALUE_COUNT = 1;
+	public static final double DEFAULT_VALUE_SETTLE_TIME = 0.0;
+	public static final double DEFALUT_VALUE_TRIGGER_DELAY = 0.0;
 	
 	private static Logger logger = Logger.getLogger(ScanModule.class.getName());
 	
@@ -218,9 +221,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		this.axes.addListener(this);
 		this.mainAxis = null;
 		this.plotWindows = new ArrayList<PlotWindow>();
-		this.valueCount = 1;
-		this.settleTime = 0.0;
-		this.triggerDelay = 0.0;
+		this.valueCount = DEFAULT_VALUE_VALUE_COUNT;
+		this.settleTime = DEFAULT_VALUE_SETTLE_TIME;
+		this.triggerDelay = DEFALUT_VALUE_TRIGGER_DELAY;
 		this.type = ScanModuleTypes.CLASSIC;
 		this.name = "";
 		
@@ -1658,12 +1661,35 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * @since 1.1
 	 */
 	public void removeAll() {
+		this.resetAttributes();
 		this.removeAllAxes();
 		this.removeAllChannels();
 		this.removeAllPrescans();
 		this.removeAllPostscans();
 		this.removeAllPositionings();
 		this.removeAllPlotWindows();
+		this.removeAllEvents();
+	}
+	
+	/**
+	 * @since 1.31
+	 */
+	public void resetAttributes() {
+		if (!this.getType().equals(ScanModuleTypes.CLASSIC)) {
+			logger.warn("trying to call method for non-classic scan module!");
+			return;
+		}
+		if (this.getChain() != null) {
+			this.setName(DEFAULT_NAME_CLASSIC + " " + 
+					this.getChain().getAvailableScanModuleId());
+		} else {
+			this.setName(DEFAULT_NAME_CLASSIC);
+		}
+		this.setValueCount(DEFAULT_VALUE_VALUE_COUNT);
+		this.setSettleTime(DEFAULT_VALUE_SETTLE_TIME);
+		this.setTriggerDelay(DEFALUT_VALUE_TRIGGER_DELAY);
+		this.setTriggerConfirmAxis(false);
+		this.setTriggerConfirmChannel(false);
 	}
 	
 	/**
@@ -1730,6 +1756,20 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		for(PlotWindow plot : this.getPlotWindows()) {
 			this.remove(plot);
 		}
+	}
+	
+	/**
+	 * @since 1.31
+	 */
+	public void removeAllEvents() {
+		if (!this.getType().equals(ScanModuleTypes.CLASSIC)) {
+			logger.warn("trying to call method for non-classic scan module!");
+			return;
+		}
+		this.removeBreakEvents();
+		this.removeRedoEvents();
+		this.removeTriggerEvents();
+		this.removePauseEvents();
 	}
 	
 	/**
