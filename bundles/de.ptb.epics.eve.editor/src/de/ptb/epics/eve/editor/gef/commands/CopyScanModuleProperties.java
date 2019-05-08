@@ -49,7 +49,11 @@ public class CopyScanModuleProperties extends Command {
 	@Override
 	public void execute() {
 		this.to.setType(this.from.getType());
-		this.to.setName(this.from.getName() + " copy");
+		if (this.from.getType().equals(ScanModuleTypes.CLASSIC)) {
+			this.to.setName(this.from.getName() + " copy");
+		} else {
+			this.to.setName(this.from.getName());
+		}
 		this.to.setValueCount(this.from.getValueCount());
 		this.to.setSettleTime(this.from.getSettleTime());
 		this.to.setTriggerDelay(this.from.getTriggerDelay());
