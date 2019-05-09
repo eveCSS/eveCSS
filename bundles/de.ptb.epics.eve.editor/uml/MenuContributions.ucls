@@ -37,10 +37,9 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" 
-    name="de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.motoraxiscomposite.MenuContribution" 
+  <class id="4" language="java" name="de.ptb.epics.eve.editor.views.scanmoduleview.AxisMenuContribution" 
     project="de.ptb.epics.eve.editor" 
-    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/classiccomposite/motoraxiscomposite/MenuContribution.java" 
+    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/AxisMenuContribution.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="203" y="271"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -49,10 +48,9 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="5" language="java" 
-    name="de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.detectorchannelcomposite.MenuContribution" 
+  <class id="5" language="java" name="de.ptb.epics.eve.editor.views.scanmoduleview.ChannelMenuContribution" 
     project="de.ptb.epics.eve.editor" 
-    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/classiccomposite/detectorchannelcomposite/MenuContribution.java" 
+    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/ChannelMenuContribution.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="702" y="268"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 

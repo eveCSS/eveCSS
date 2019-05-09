@@ -426,7 +426,7 @@
       <menuContribution
             locationURI="popup:de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.popup">
          <dynamic
-               class="de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.motoraxiscomposite.MenuContribution"
+               class="de.ptb.epics.eve.editor.views.scanmoduleview.AxisMenuContribution"
                id="de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.popup.dynamic">
          </dynamic>
          <separator
@@ -471,7 +471,7 @@
       <menuContribution
             locationURI="popup:de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.popup">
          <dynamic
-               class="de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.detectorchannelcomposite.MenuContribution"
+               class="de.ptb.epics.eve.editor.views.scanmoduleview.ChannelMenuContribution"
                id="de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.popup.dynamic">
          </dynamic>
          <separator
@@ -660,7 +660,7 @@
       <menuContribution
             locationURI="popup:de.ptb.epics.eve.editor.views.scanmoduleview.saveaxispositionscomposite.popup">
          <dynamic
-               class="de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.motoraxiscomposite.MenuContribution"
+               class="de.ptb.epics.eve.editor.views.scanmoduleview.AxisMenuContribution"
                id="popup:de.ptb.epics.eve.editor.views.scanmoduleview.saveaxispositionscomposite.popup.dynamic">
          </dynamic>
          <separator
@@ -695,7 +695,7 @@
       <menuContribution
             locationURI="popup:de.ptb.epics.eve.editor.views.scanmoduleview.savechannelvaluescomposite.popup">
          <dynamic
-               class="de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.detectorchannelcomposite.MenuContribution"
+               class="de.ptb.epics.eve.editor.views.scanmoduleview.ChannelMenuContribution"
                id="popup:de.ptb.epics.eve.editor.views.scanmoduleview.savechannelvaluescomposite.popup.dynamic">
          </dynamic>
          <separator

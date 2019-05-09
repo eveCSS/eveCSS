@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.detectorchannelcomposite;
+package de.ptb.epics.eve.editor.views.scanmoduleview;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,19 +24,17 @@ import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleFilterManualUpdate;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.Activator;
-import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
 
 /**
- * Menu entries of the
- * {@link de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.detectorchannelcomposite.DetectorChannelComposite}
- * 's context menu.
+ * Menu entry generator for Channel action tab and static channel snapshot 
+ * context menus.
  * 
  * @author Marcus Michalsky
- * @since 1.2
+ * @since 1.2 (updated in 1.31)
  */
-public class MenuContribution extends CompoundContributionItem {
+public class ChannelMenuContribution extends CompoundContributionItem {
 
-	private static Logger logger = Logger.getLogger(MenuContribution.class
+	private static Logger logger = Logger.getLogger(ChannelMenuContribution.class
 			.getName());
 
 	private final ImageDescriptor classImage = ImageDescriptor
