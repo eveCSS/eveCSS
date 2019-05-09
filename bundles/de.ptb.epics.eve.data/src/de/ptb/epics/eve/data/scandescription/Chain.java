@@ -39,34 +39,18 @@ import de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider;
  * @author Marcus Michalsky
  */
 public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModelErrorProvider, PropertyChangeListener {
-	
-	/** */
 	public static final String SCANMODULE_ADDED_PROP = 
 			"Chain.SCANMODULE_ADDED_PROP";
-	/** */
 	public static final String SCANMODULE_REMOVED_PROP = 
 			"Chain.SCANMODULE_REMOVED_PROP";
-	
-	/** */
 	public static final String POSITION_COUNT_PROP = "positionCount";
-	
-	/** */
-	public static final String FILE_NAME_PROP ="saveFilename";
-	
-	/** */
+	public static final String FILE_NAME_PROP = "saveFilename";
 	public static final String SAVE_SCAN_DESCRIPTION_PROP = "saveScanDescription";
-	
-	/** */
 	public static final String CONFIRM_SAVE_PROP = "confirmSave";
-	
-	/** */
 	public static final String AUTO_INCREMENT_PROP = "autoNumber";
-	
-	/** */
 	public static final String COMMENT_PROP = "comment";
-	
 	public static final String RESOLVED_FILENAME_PROP = "resolvedFilename";
-	
+
 	/**
 	 * @since 1.19
 	 */
@@ -74,74 +58,74 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	public static final String PAUSE_EVENT_PROP = "pauseEvent";
 	public static final String REDO_EVENT_PROP =  "redoEvent";
 	public static final String STOP_EVENT_PROP =  "stopEvent";
-	
+
 	private static Logger logger = Logger.getLogger(Chain.class.getName());
-	
-	// unique id of the chain
+
 	private int id;
-	
+
 	// filename where the results should be saved
 	private String saveFilename;
-	
+
+	// filename after macro replacement
 	private String resolvedFilename;
-	
+
 	// indicates if the save should be manually confirmed by the user
 	private boolean confirmSave;
-	
+
 	// indicates if the datafile name should be extended by an autoincrement #
 	private boolean autoNumber;
-	
+
 	// The PluginController for the Save Plugin
 	private final PluginController savePlugInController;
-	
+
 	// TODO Caution, we have a list of ControlEvents called startEvents and 
 	// one StartEvent called startEvent, tidy up this
 	// For now just the first ControlEvent from startEvents is used as the event
 	// part for startEvent
-	
+
 	// the event, that will start the chain
 	private StartEvent startEvent;
-	
+
 	// holds all the scan modules
 	private ObservableList<ScanModule> scanModules;
-	
+
 	// the scan description, that is the parent of this chain
 	private ScanDescription scanDescription;
-	
+
 	// A map for id <-> scan module
 	private Map<Integer, ScanModule> scanModuleMap;
-	
+
 	// holds all objects that need to get an update message
 	private List<IModelUpdateListener> updateListener;
-	
+
 	// control event manager for break events
 	private ControlEventManager breakControlEventManager;
-	
+
 	// control event manager for start events
 	private ControlEventManager startControlEventManager;
-	
+
 	// control event manager for stop events
 	private ControlEventManager stopControlEventManager;
-	
+
 	// control event manager for redo events
 	private ControlEventManager redoControlEventManager;
-	
+
 	// control event manager for pause events
 	private ControlEventManager pauseControlEventManager;
-	
+
 	private Integer positionCount;
-	
+
 	// chain comment
 	private String comment;
-	
+
 	// indicates whether the scan description should be saved in the result file
 	private boolean saveScanDescription;
-	
+
 	private boolean reserveIds;
 	private List<Integer> reservedIds;
-	
+
 	private PropertyChangeSupport propertyChangeSupport;
-	
+
 	/**
 	 * Constructs a <code>ScanDescription</code> with the given id.
 	 * 
@@ -150,7 +134,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 */
 	public Chain(final int id) {
 		super();
-		if(id < 0) {
+		if (id < 0) {
 			throw new IllegalArgumentException(
 					"The parameter 'id' must be at least 1!");
 		}
@@ -176,28 +160,28 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 				ControlEventTypes.CONTROL_EVENT);
 		this.pauseControlEventManager = new ControlEventManager(
 				ControlEventTypes.PAUSE_EVENT);
-		
+
 		this.breakControlEventManager.addModelUpdateListener(this);
 		this.startControlEventManager.addModelUpdateListener(this);
 		this.stopControlEventManager.addModelUpdateListener(this);
 		this.redoControlEventManager.addModelUpdateListener(this);
 		this.pauseControlEventManager.addModelUpdateListener(this);
-		
+
 		this.positionCount = null;
-		
+
 		this.comment = "";
 		this.saveScanDescription = false;
 		this.autoNumber = true;
-		
+
 		this.reserveIds = false;
 		this.reservedIds = new LinkedList<Integer>();
-		
+
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
-		
+
 		if (logger.isDebugEnabled()) {
 			this.addScanModuleChangeListener(new ListChangeListener<ScanModule>() {
 				@Override
-				public void onChanged(javafx.collections.ListChangeListener.
+				public void onChanged(final javafx.collections.ListChangeListener.
 						Change<? extends ScanModule> c) {
 					while (c.next()) {
 						if (c.wasPermutated()) {
@@ -219,7 +203,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 			});
 		}
 	}
-	
+
 	/**
 	 * Returns the id.
 	 * 
@@ -228,7 +212,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	public int getId() {
 		return this.id;
 	}
-	
+
 	/**
 	 * Sets the id.
 	 * 
@@ -236,14 +220,14 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 * @throws IllegalArgumentException if <code>id</code> < 1
 	 */
 	public void setId(final int id) {
-		if(id < 1) {
+		if (id < 1) {
 			throw new IllegalArgumentException(
 					"The parameter 'id' must be at least 1!");
 		}
 		this.id = id;
 		updateListeners();
 	}
-	
+
 	/**
 	 * Returns the {@link de.ptb.epics.eve.data.scandescription.ScanDescription} 
 	 * the chain belongs to.
@@ -254,7 +238,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	public ScanDescription getScanDescription() {
 		return this.scanDescription;
 	}
-	
+
 	/**
 	 * Sets the {@link de.ptb.epics.eve.data.scandescription.ScanDescription} 
 	 * the chain should belong to.
@@ -267,7 +251,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		this.scanDescription = scanDescription;
 		updateListeners();
 	}
-	
+
 	/**
 	 * Get an available id for a scan module. The ID is reserved until
 	 * {@link #resetReservedIds()} is called if reservation is set via 
@@ -279,8 +263,8 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 */
 	public int getAvailableScanModuleId() {
 		int i = 1;
-		while(this.getScanModuleById(i) != null ||
-				reservedIds.contains(i)) {
+		while (this.getScanModuleById(i) != null 
+				|| reservedIds.contains(i)) {
 			i++;
 		}
 		if (this.reserveIds) {
@@ -288,7 +272,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		}
 		return i;
 	}
-	
+
 	/**
 	 * Clears the list of reserved scan module IDs.
 	 * 
@@ -297,7 +281,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	public void resetReservedIds() {
 		this.reservedIds.clear();
 	}
-	
+
 	/**
 	 * Sets whether IDs requested by {@link #getAvailableScanModuleId()} are 
 	 * reserved.
@@ -310,7 +294,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	public void setReserveIds(boolean reserve) {
 		this.reserveIds = reserve;
 	}
-	
+
 	/**
 	 * Returns the number of motor positions. Note that this value is updated 
 	 * only by invoking {@link #calculatePositionCount()} due to performance 
@@ -324,7 +308,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	public Integer getPositionCount() {
 		return this.positionCount;
 	}
-	
+
 	/**
 	 * (Re-)calculates the number of motor positions which can be retrieved by 
 	 * {@link #getPositionCount()}.
@@ -345,7 +329,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 				Chain.POSITION_COUNT_PROP, this.positionCount,
 				this.positionCount = this.calculatePositionCount(first));
 	}
-	
+
 	/*
 	 * Double recursive calculation of motor positions in the chain tree.
 	 * 
@@ -376,7 +360,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Adds a {@link de.ptb.epics.eve.data.scandescription.ScanModule}.
 	 * 
@@ -387,7 +371,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 * 		<code>null</code>
 	 */
 	public void add(final ScanModule scanModule) {
-		if(scanModule == null) {
+		if (scanModule == null) {
 			throw new IllegalArgumentException(
 					"The parameter 'scanModule' must not be null!");
 		}
@@ -399,7 +383,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 				Chain.SCANMODULE_ADDED_PROP, null, scanModule);
 		updateListeners();
 	}
-	
+
 	/**
 	 * Removes the given 
 	 * {@link de.ptb.epics.eve.data.scandescription.ScanModule}.
@@ -409,7 +393,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 * 		should be removed
 	 */
 	public void remove(final ScanModule scanModule) {
-		if(scanModule == null) {
+		if (scanModule == null) {
 			throw new IllegalArgumentException(
 					"The parameter 'scanModul' must not be null!");
 		}
@@ -421,7 +405,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 				Chain.SCANMODULE_REMOVED_PROP, scanModule, null);
 		updateListeners();
 	}
-	
+
 	/**
 	 * Returns the {@link de.ptb.epics.eve.data.scandescription.ScanModule} with 
 	 * the given id.
@@ -435,16 +419,16 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	public ScanModule getScanModuleById(final int id) {
 		return this.scanModuleMap.get(id);
 	}
-	
+
 	/**
 	 * Returns a new {@link java.util.List} of all scan modules.
 	 * 
 	 * @return a new {@link java.util.List} of all scan modules
 	 */
 	public List<ScanModule> getScanModules() {
-		return new ArrayList<ScanModule>(this.scanModules);
+		return new ArrayList<>(this.scanModules);
 	}
-	
+
 	/**
 	 * Returns the filename where the results should be saved.
 	 * 
@@ -453,7 +437,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	public String getSaveFilename() {
 		return saveFilename;
 	}
-	
+
 	/**
 	 * Sets the filename where the results should be saved.
 	 *
@@ -462,22 +446,22 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 * 			<code>null</code>
 	 */
 	public void setSaveFilename(final String saveFilename) {
-		if(saveFilename == null) {
+		if (saveFilename == null) {
 			throw new IllegalArgumentException(
 					"The parameter 'saveFilename' must not be null!");
 		}
 		this.propertyChangeSupport.firePropertyChange(Chain.FILE_NAME_PROP,
 				this.saveFilename, this.saveFilename = saveFilename);
 		updateListeners();
-		
+	
 		new Thread("Macro Resolver") {
+			@Override
 			public void run() {
 				setResolvedFilename(MacroResolver.getInstance().resolve(
 						saveFilename));
-			};
-		}.start();
+			}}.start();
 	}
-	
+
 	/**
 	 * @return the resolvedFilename
 	 */
@@ -503,7 +487,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	public boolean isSaveScanDescription() {
 		return this.saveScanDescription;
 	}
-	
+
 	/**
 	 * Sets whether the scan description should be saved in the results file.
 	 * 
@@ -516,7 +500,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 				this.saveScanDescription = saveScanDescription);
 		updateListeners();
 	}
-	
+
 	/**
 	 * Checks whether saving of the results has to be confirmed manually.
 	 * 
@@ -526,7 +510,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	public boolean isConfirmSave() {
 		return this.confirmSave;
 	}
-	
+
 	/**
 	 * Sets whether saving of results has to be confirmed manually.
 	 * 
@@ -538,7 +522,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 				this.confirmSave, this.confirmSave = confirmSave);
 		updateListeners();
 	}
-	
+
 	/**
 	 * Checks whether auto incremented file names are enabled.
 	 * 
@@ -548,7 +532,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	public boolean isAutoNumber() {
 		return this.autoNumber;
 	}
-	
+
 	/**
 	 * Sets whether auto incremented file names should be used.
 	 * 
@@ -561,7 +545,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 				this.autoNumber = autoNumber);
 		updateListeners();
 	}
-	
+
 	/**
 	 * Returns the comment.
 	 * 
@@ -570,7 +554,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	public String getComment() {
 		return this.comment;
 	}
-	
+
 	/**
 	 * Sets the comment.
 	 * 
@@ -579,7 +563,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 * 			<code>null</code>
 	 */
 	public void setComment(final String comment) {
-		if(comment == null) {
+		if (comment == null) {
 			throw new IllegalArgumentException(
 					"The parameter 'comment' must not be null!");
 		}
@@ -588,7 +572,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		logger.debug("comment set");
 		updateListeners();
 	}
-	
+
 	/**
 	 * Returns the {@link de.ptb.epics.eve.data.scandescription.PluginController}.
 	 * 
@@ -597,7 +581,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	public PluginController getSavePluginController() {
 		return this.savePlugInController;
 	}
-	
+
 	/**
 	 * Returns the {@link de.ptb.epics.eve.data.scandescription.StartEvent}.
 	 * 
@@ -606,7 +590,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	public StartEvent getStartEvent() {
 		return this.startEvent;
 	}
-	
+
 	/**
 	 *	Sets the {@link de.ptb.epics.eve.data.scandescription.StartEvent}.
 	 * 
@@ -618,7 +602,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		this.startEvent = startEvent;
 		updateListeners();
 	}
-	
+
 	/**
 	 * Returns a list of pause events (original list).
 	 * 
@@ -627,7 +611,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	public List<ControlEvent> getPauseEvents() {
 		return this.pauseControlEventManager.getEvents();
 	}
-	
+
 	/**
 	 * Adds the given {@link de.ptb.epics.eve.data.scandescription.PauseEvent}.
 	 * 
@@ -647,7 +631,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Removes the given 
 	 * {@link de.ptb.epics.eve.data.scandescription.PauseEvent}.
@@ -680,7 +664,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		this.propertyChangeSupport.firePropertyChange(Chain.PAUSE_EVENT_PROP,
 				this.pauseControlEventManager.getEvents(), null);
 	}
-	
+
 	/**
 	 * Returns a list of break events (original list).
 	 * 
@@ -691,7 +675,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	public List<ControlEvent> getBreakEvents() {
 		return this.breakControlEventManager.getEvents();
 	}
-	
+
 	/**
 	 * Adds the given {@link de.ptb.epics.eve.data.scandescription.ControlEvent} 
 	 * as a break event.
@@ -712,7 +696,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Removes the given break event.
 	 * 
@@ -730,7 +714,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Removes all break events.
 	 * 
@@ -742,7 +726,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		this.propertyChangeSupport.firePropertyChange(Chain.BREAK_EVENT_PROP,
 				this.breakControlEventManager.getEvents(), null);
 	}
-	
+
 	/**
 	 * Returns a list of start events (original list).
 	 * <p>
@@ -752,7 +736,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	public List<ControlEvent> getStartEvents() {
 		return this.startControlEventManager.getEvents();
 	}
-	
+
 	/**
 	 * Adds the given {@link de.ptb.epics.eve.data.scandescription.ControlEvent} 
 	 * as a start event.
@@ -765,7 +749,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	public boolean addStartEvent(final ControlEvent startEvent) {
 		return this.startControlEventManager.addControlEvent(startEvent);
 	}
-	
+
 	/**
 	 * Removes the given start event.
 	 * 
@@ -775,7 +759,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	public boolean removeStartEvent(final ControlEvent startEvent) {
 		return this.startControlEventManager.removeEvent(startEvent);
 	}
-	
+
 	/**
 	 * Returns a list of stop events (original list).
 	 * 
@@ -786,7 +770,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	public List<ControlEvent> getStopEvents() {
 		return this.stopControlEventManager.getEvents();
 	}
-	
+
 	/**
 	 * Adds the given {@link de.ptb.epics.eve.data.scandescription.ControlEvent} 
 	 * as a stop event.
@@ -807,7 +791,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Removes the given stop event.
 	 * 
@@ -825,7 +809,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Removes all stop events.
 	 * 
@@ -837,7 +821,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		this.propertyChangeSupport.firePropertyChange(Chain.STOP_EVENT_PROP,
 				this.stopControlEventManager.getEvents(), null);
 	}
-	
+
 	/**
 	 * Returns a list of redo events (original list).
 	 * 
@@ -848,7 +832,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	public List<ControlEvent> getRedoEvents() {
 		return this.redoControlEventManager.getEvents();
 	}
-	
+
 	/**
 	 * Adds the given {@link de.ptb.epics.eve.data.scandescription.ControlEvent} 
 	 * as a redo event.
@@ -869,7 +853,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Removes the given redo event.
 	 * 
@@ -887,7 +871,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Removes all redo events.
 	 * 
@@ -899,7 +883,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		this.propertyChangeSupport.firePropertyChange(Chain.REDO_EVENT_PROP,
 				this.redoControlEventManager.getEvents(), null);
 	}
-	
+
 	/**
 	 * Checks whether the given 
 	 * {@link de.ptb.epics.eve.data.scandescription.PauseEvent} exists.
@@ -914,7 +898,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	public boolean isPauseEventOfTheChain(final PauseEvent pauseEvent) {
 		return this.pauseControlEventManager.getEvents().contains(pauseEvent);
 	}
-	
+
 	/**
 	 * Checks whether the given 
 	 * {@link de.ptb.epics.eve.data.scandescription.ControlEvent} exists as 
@@ -930,7 +914,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	public boolean isRedoEventOfTheChain(final ControlEvent redoEvent) {
 		return this.redoControlEventManager.getEvents().contains(redoEvent);
 	}
-	
+
 	/**
 	 * Checks whether the given 
 	 * {@link de.ptb.epics.eve.data.scandescription.ControlEvent} exists as 
@@ -946,7 +930,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	public boolean isBreakEventOfTheChain(final ControlEvent breakEvent) {
 		return this.breakControlEventManager.getEvents().contains(breakEvent);
 	}
-	
+
 	/**
 	 * Checks whether the given 
 	 * {@link de.ptb.epics.eve.data.scandescription.ControlEvent} exists.
@@ -959,12 +943,12 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 * 		<code>false</code> otherwise
 	 */
 	public boolean isAEventOfTheChain(final ControlEvent controlEvent) {
-		return (controlEvent instanceof PauseEvent && 
-				this.isPauseEventOfTheChain((PauseEvent)controlEvent)) || 
-				this.isBreakEventOfTheChain(controlEvent) || 
-				this.isRedoEventOfTheChain(controlEvent);
+		return (controlEvent instanceof PauseEvent 
+				&& this.isPauseEventOfTheChain((PauseEvent) controlEvent)) 
+				|| this.isBreakEventOfTheChain(controlEvent) 
+				|| this.isRedoEventOfTheChain(controlEvent);
 	}
-	
+
 	/**
 	 * Returns a valid id for a plot.
 	 * 
@@ -978,13 +962,13 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 			}
 		}
 		Collections.sort(plotIds);
-		int i=1;
-		while(plotIds.contains(i)) {
+		int i = 1;
+		while (plotIds.contains(i)) {
 			i++;
 		}
 		return i;
 	}
-	
+
 	/**
 	 * Returns a map which keys are plot window ids and values are lists of 
 	 * scan modules which contain plot windows using this id.
@@ -1019,7 +1003,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		}
 		return usedIds;
 	}
-	
+
 	/**
 	 * Returns a list of integers containing the scan module ids in order 
 	 * they are executed (started).
@@ -1034,32 +1018,32 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		binTree.preOrder(preOrderList);
 		return preOrderList;
 	}
-	
+
 	private Node<Integer> getBinaryTree(ScanModule root) {
 		if (root.getNested() == null && root.getAppended() == null) {
-			return new Node<Integer>(root.getId(), null, null);
+			return new Node<>(root.getId(), null, null);
 		}
 		if (root.getNested() == null) {
-			return new Node<Integer>(root.getId(), null, 
+			return new Node<>(root.getId(), null, 
 					getBinaryTree(root.getAppended().getChildScanModule()));
 		}
 		if (root.getAppended() == null) {
-			return new Node<Integer>(root.getId(),  
+			return new Node<>(root.getId(),  
 					getBinaryTree(root.getNested().getChildScanModule()), 
 					null);
 		}
-		return new Node<Integer>(root.getId(), 
+		return new Node<>(root.getId(), 
 				getBinaryTree(root.getNested().getChildScanModule()), 
 				getBinaryTree(root.getAppended().getChildScanModule()));
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public List<IModelError> getModelErrors() {
-		final List<IModelError> errorList = new ArrayList<IModelError>();
-		if(this.saveFilename.isEmpty()) {
+		final List<IModelError> errorList = new ArrayList<>();
+		if (this.saveFilename.isEmpty()) {
 			errorList.add(new ChainError(this, ChainErrorTypes.FILENAME_EMPTY));
 		}
 		errorList.addAll(this.savePlugInController.getModelErrors());
@@ -1070,24 +1054,24 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		errorList.addAll(this.stopControlEventManager.getModelErrors());
 		errorList.addAll(this.startControlEventManager.getModelErrors());
 		
-		for(ScanModule sm : this.scanModules) {
+		for (ScanModule sm : this.scanModules) {
 			errorList.addAll(sm.getModelErrors());
 		}
 		return errorList;
 	}
-	
+
 	/*
 	 * 
 	 */
 	private void updateListeners() {
 		final CopyOnWriteArrayList<IModelUpdateListener> list = 
-			new CopyOnWriteArrayList<IModelUpdateListener>(this.updateListener);
+			new CopyOnWriteArrayList<>(this.updateListener);
 		
-		for(IModelUpdateListener imul : list) {
+		for (IModelUpdateListener imul : list) {
 			imul.updateEvent(new ModelUpdateEvent(this, null));
 		}
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -1096,7 +1080,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		logger.debug("update event");
 		updateListeners();
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -1105,7 +1089,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 			final IModelUpdateListener modelUpdateListener) {
 		return this.updateListener.add(modelUpdateListener);
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -1114,7 +1098,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 			final IModelUpdateListener modelUpdateListener) {
 		return this.updateListener.remove(modelUpdateListener);
 	}
-	
+
 	/**
 	 * 
 	 * @param property
@@ -1136,7 +1120,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		this.propertyChangeSupport.removePropertyChangeListener(property,
 				listener);
 	}
-	
+
 	/**
 	 * Add FXCollection listener to detect changes of scan modules.
 	 * <p>
@@ -1156,7 +1140,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 			ListChangeListener<? super ScanModule> listener) {
 		this.scanModules.addListener(listener);
 	}
-	
+
 	/**
 	 * Remove FXCollection listener to no longer detect changes of scan modules
 	 * 
@@ -1170,21 +1154,21 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	}
 
 	private void registerEventValidProperty(ControlEvent controlEvent) {
-		if (controlEvent.getEvent() instanceof ScheduleEvent || 
-				controlEvent.getEvent() instanceof DetectorEvent) {
+		if (controlEvent.getEvent() instanceof ScheduleEvent 
+				|| controlEvent.getEvent() instanceof DetectorEvent) {
 			((ScanEvent) controlEvent.getEvent()).addPropertyChangeListener(
 					ScanEvent.VALID_PROP, this);
 		}
 	}
-	
+
 	private void unregisterEventValidProperty(ControlEvent controlEvent) {
-		if (controlEvent.getEvent() instanceof ScheduleEvent || 
-				controlEvent.getEvent() instanceof DetectorEvent) {
+		if (controlEvent.getEvent() instanceof ScheduleEvent 
+				|| controlEvent.getEvent() instanceof DetectorEvent) {
 			((ScanEvent) controlEvent.getEvent()).removePropertyChangeListener(
 					ScanEvent.VALID_PROP, this);
 		}
 	}
-	
+
 	/**
 	 * Due to the late registration of ScanEvents (due to mutability) during 
 	 * scan description loading the control events don't register themselves 
@@ -1218,8 +1202,8 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent e) {
-		if (e.getPropertyName().equals(ScanEvent.VALID_PROP) &&
-				e.getNewValue().equals(Boolean.FALSE)) {
+		if (e.getPropertyName().equals(ScanEvent.VALID_PROP) 
+				&& e.getNewValue().equals(Boolean.FALSE)) {
 			logger.debug(((ScanEvent)e.getSource()).getName() + 
 					" (Chain: " + this.getId() + ") " +
 					" got invalid -> start removal");
@@ -1230,9 +1214,9 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	private void removeInvalidScanEvents() {
 		for (ControlEvent controlEvent : new CopyOnWriteArrayList<ControlEvent>(
 				this.getPauseEvents())) {
-			if (controlEvent.getEvent() instanceof ScanEvent &&
-					!((ScanEvent)controlEvent.getEvent()).isValid()) {
-				this.removePauseEvent((PauseEvent)controlEvent);
+			if (controlEvent.getEvent() instanceof ScanEvent 
+					&& !((ScanEvent) controlEvent.getEvent()).isValid()) {
+				this.removePauseEvent((PauseEvent) controlEvent);
 				logger.debug("Pause Event " + 
 						controlEvent.getEvent().getName() + 
 						" removed from chain " + this.getId());
@@ -1240,8 +1224,8 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		}
 		for (ControlEvent controlEvent : new CopyOnWriteArrayList<ControlEvent>(
 				this.getBreakEvents())) {
-			if (controlEvent.getEvent() instanceof ScanEvent &&
-					!((ScanEvent)controlEvent.getEvent()).isValid()) {
+			if (controlEvent.getEvent() instanceof ScanEvent 
+					&& !((ScanEvent) controlEvent.getEvent()).isValid()) {
 				this.removeBreakEvent(controlEvent);
 				logger.debug("Break Event " + 
 						controlEvent.getEvent().getName() + 
@@ -1250,8 +1234,8 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		}
 		for (ControlEvent controlEvent : new CopyOnWriteArrayList<ControlEvent>(
 				this.getStopEvents())) {
-			if (controlEvent.getEvent() instanceof ScanEvent &&
-					!((ScanEvent)controlEvent.getEvent()).isValid()) {
+			if (controlEvent.getEvent() instanceof ScanEvent 
+					&& !((ScanEvent) controlEvent.getEvent()).isValid()) {
 				this.removeStopEvent(controlEvent);
 				logger.debug("Stop Event " + 
 						controlEvent.getEvent().getName() + 
@@ -1260,8 +1244,8 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		}
 		for (ControlEvent controlEvent : new CopyOnWriteArrayList<ControlEvent>(
 				this.getRedoEvents())) {
-			if (controlEvent.getEvent() instanceof ScanEvent &&
-					!((ScanEvent)controlEvent.getEvent()).isValid()) {
+			if (controlEvent.getEvent() instanceof ScanEvent 
+					&& !((ScanEvent) controlEvent.getEvent()).isValid()) {
 				this.removeRedoEvent(controlEvent);
 				logger.debug("Redo Event " + 
 						controlEvent.getEvent().getName() + 
