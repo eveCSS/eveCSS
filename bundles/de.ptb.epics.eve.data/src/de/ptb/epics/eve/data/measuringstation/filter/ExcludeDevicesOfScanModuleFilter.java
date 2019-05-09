@@ -20,6 +20,7 @@ import de.ptb.epics.eve.data.scandescription.Positioning;
 import de.ptb.epics.eve.data.scandescription.Postscan;
 import de.ptb.epics.eve.data.scandescription.Prescan;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 
@@ -278,11 +279,29 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 			this.excludeList.clear();
 			if (this.scanModule != null) {
 				if (this.excludeAxes) {
+					if (this.scanModule.getType().equals(ScanModuleTypes.SAVE_AXIS_POSITIONS)) {
+						for (final Motor motor : this.getSource().getMotors()) {
+							for (final MotorAxis motorAxis : motor.getAxes()) {
+								if (!motorAxis.isSaveValue()) {
+									this.excludeList.add(motorAxis);
+								}
+							}
+						}
+					}
 					for (final Axis axis : this.scanModule.getAxes()) {
 						this.excludeList.add(axis.getAbstractDevice());
 					}
 				}
 				if (this.excludeChannels) {
+					if (this.scanModule.getType().equals(ScanModuleTypes.SAVE_CHANNEL_VALUES)) {
+						for (final Detector detector : this.getSource().getDetectors()) {
+							for (final DetectorChannel detChannel : detector.getChannels()) {
+								if (!detChannel.isSaveValue()) {
+									this.excludeList.add(detChannel);
+								}
+							}
+						}
+					}
 					for (final Channel channel : this.scanModule.getChannels()) {
 						this.excludeList.add(channel.getAbstractDevice());
 					}

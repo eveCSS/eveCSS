@@ -74,7 +74,7 @@ public class MenuContribution extends CompoundContributionItem {
 	@Override
 	protected IContributionItem[] getContributionItems() {
 		// create the list that will be returned.
-		ArrayList<IContributionItem> result = new ArrayList<IContributionItem>();
+		ArrayList<IContributionItem> result = new ArrayList<>();
 
 		// get active part
 		IWorkbenchPart activePart = Activator.getDefault().getWorkbench()
@@ -93,10 +93,7 @@ public class MenuContribution extends CompoundContributionItem {
 		ExcludeDevicesOfScanModuleFilterManualUpdate measuringStation = 
 				new ExcludeDevicesOfScanModuleFilterManualUpdate(
 						false, true, false, false, false);
-		measuringStation
-				.setSource(Activator.getDefault().getMeasuringStation());
-		measuringStation.setSource(sm.getChain().getScanDescription()
-				.getMeasuringStation());
+		measuringStation.setSource(Activator.getDefault().getDeviceDefinition());
 		measuringStation.setScanModule(sm);
 		measuringStation.update();
 
@@ -106,7 +103,7 @@ public class MenuContribution extends CompoundContributionItem {
 		StringBuilder detectorDeviceList = new StringBuilder();
 		
 		// iterate over all classes
-		List<String> classNames = new ArrayList<String>();
+		List<String> classNames = new ArrayList<>();
 		classNames.addAll(measuringStation.getClassNameList());
 		Collections.sort(classNames);
 		
@@ -145,7 +142,7 @@ public class MenuContribution extends CompoundContributionItem {
 					}
 					// if detector has no channels the (invisible) menu entry 
 					// has to be removed
-					if (detector.getChannels().size() == 0) {
+					if (detector.getChannels().isEmpty()) {
 						currentClassMenu.remove(currentDetectorMenu);
 					}
 					// if only one channel in DetectorMenu, switch channel from
@@ -290,7 +287,7 @@ public class MenuContribution extends CompoundContributionItem {
 	private CommandContributionItem getItem(String commandId, String paramId,
 			String paramValue, String label, ImageDescriptor icon) {
 		
-		Map<String, String> params = new HashMap<String, String>();
+		Map<String, String> params = new HashMap<>();
 		params.put(paramId, paramValue);
 		CommandContributionItemParameter p = new CommandContributionItemParameter(
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow(), "",
