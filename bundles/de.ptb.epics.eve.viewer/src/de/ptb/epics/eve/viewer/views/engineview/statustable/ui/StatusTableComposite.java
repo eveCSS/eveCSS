@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.viewer.views.engineview.ui;
+package de.ptb.epics.eve.viewer.views.engineview.statustable.ui;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;

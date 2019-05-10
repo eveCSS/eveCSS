@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<class-diagram version="1.1.10" icons="true" automaticImage="PNG" always-add-relationships="false" 
-  generalizations="true" realizations="true" associations="true" dependencies="false" nesting-relationships="true" 
-  router="FAN">  
+<class-diagram version="1.2.2" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
   <class id="1" language="java" name="de.ptb.epics.eve.ecp1.client.ECP1Client" project="de.ptb.epics.eve.ecp1" 
     file="/de.ptb.epics.eve.ecp1/src/de/ptb/epics/eve/ecp1/client/ECP1Client.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="100" y="-1314"/>    
@@ -55,9 +54,9 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <class id="6" language="java" name="de.ptb.epics.eve.viewer.views.engineview.ui.StatusTableComposite" 
+  <class id="6" language="java" name="de.ptb.epics.eve.viewer.views.engineview.statustable.ui.StatusTableComposite" 
     project="de.ptb.epics.eve.viewer" 
-    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/engineview/ui/StatusTableComposite.java" 
+    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/engineview/statustable/ui/StatusTableComposite.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="110" y="-925"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -122,7 +121,7 @@
     </display>  
   </class>  
   <class id="12" language="java" name="org.eclipse.jface.viewers.TableViewer" project="de.ptb.epics.eve.editor" 
-    file="/messung/eve/java/Eclipse/eclipse-rcp-indigo-SR2-linux-gtk-x86_64/plugins/org.eclipse.jface_3.7.0.v20110928-1505.jar" 
+    file="/home/mmichals/Projects/eveCSS/workspace-2018-09/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.jface_3.7.0.v20110928-1505.jar" 
     binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="115" y="-771"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -131,9 +130,9 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="13" language="java" name="de.ptb.epics.eve.viewer.views.engineview.ui.TableViewerSorter" 
+  <class id="13" language="java" name="de.ptb.epics.eve.viewer.views.engineview.statustable.ui.TableViewerSorter" 
     project="de.ptb.epics.eve.viewer" 
-    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/engineview/ui/TableViewerSorter.java" 
+    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/engineview/statustable/ui/TableViewerSorter.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="437" y="-634"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -143,7 +142,7 @@
     </display>  
   </class>  
   <class id="14" language="java" name="java.beans.PropertyChangeSupport" project="de.ptb.epics.eve.util" 
-    file="/home/mmichals/Development/jdk1.8.0_91/jre/lib/rt.jar" binary="true" corner="BOTTOM_RIGHT">    
+    file="/home/mmichals/Development/jdk1.8.0_191/jre/lib/rt.jar" binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="748" y="-653"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -151,10 +150,10 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="15" language="java" name="de.ptb.epics.eve.viewer.views.engineview.ui.ContentProvider" 
+  <class id="15" language="java" name="de.ptb.epics.eve.viewer.views.engineview.statustable.ui.ContentProvider" 
     project="de.ptb.epics.eve.viewer" 
-    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/engineview/ui/ContentProvider.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
+    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/engineview/statustable/ui/ContentProvider.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="434" y="-437"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -163,7 +162,7 @@
     </display>  
   </class>  
   <interface id="16" language="java" name="java.beans.PropertyChangeListener" project="de.ptb.epics.eve.viewer" 
-    file="/home/mmichals/Development/jdk1.8.0_91/jre/lib/rt.jar" binary="true" corner="BOTTOM_RIGHT">    
+    file="/home/mmichals/Development/jdk1.8.0_191/jre/lib/rt.jar" binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="769" y="-442"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -172,116 +171,148 @@
     </display>  
   </interface>  
   <association id="17">    
-    <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="18" name="propertyChangeSupport"/>      
-      <multiplicity id="19" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="14" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="20">    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="3"/>  
-  </realization>  
-  <association id="21">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="22" name="connectionStateListener"/>      
-      <multiplicity id="23" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="24">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="25" name="chainStatusListener">        
-        <position height="18" width="118" x="480" y="-1206"/>      
+      <attribute id="18" name="ecp1Client">        
+        <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="26" minimum="0" maximum="2147483647">        
-        <position height="16" width="23" x="602" y="-1204"/>      
+      <multiplicity id="19" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="27">    
-    <end type="SOURCE" refId="9" navigable="false">      
-      <attribute id="28" name="scanModuleInfos"/>      
-      <multiplicity id="29" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="10" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="30">    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="5"/>  
-  </realization>  
-  <realization id="31">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="2"/>  
-  </realization>  
-  <association id="32">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="33" name="ecp1Client"/>      
-      <multiplicity id="34" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="35">    
+  <association id="20">    
     <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="36" name="tableViewer"/>      
-      <multiplicity id="37" minimum="0" maximum="1"/>    
+      <attribute id="21" name="tableViewer">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="22" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="12" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="38">    
+  <association id="23">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="24" name="scanInfo">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="25" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="26">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="5"/>  
+  </realization>  
+  <association id="27">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="28" name="scanModuleInfos">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="29" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="30">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="39" name="chainProgressListener">        
+      <attribute id="31" name="chainProgressListener">        
         <position height="18" width="134" x="785" y="-1200"/>      
       </attribute>      
-      <multiplicity id="40" minimum="0" maximum="2147483647">        
+      <multiplicity id="32" minimum="0" maximum="2147483647">        
         <position height="16" width="23" x="925" y="-1201"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="41">    
+  <association id="33">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="34" name="propertyChangeSupport">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="35" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="14" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="36">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="2"/>  
+  </realization>  
+  <association id="37">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="42" name="engineStatusListener"/>      
-      <multiplicity id="43" minimum="0" maximum="2147483647"/>    
+      <attribute id="38" name="engineStatusListener">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="39" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <realization id="44">    
+  <realization id="40">    
     <end type="SOURCE" refId="7"/>    
     <end type="TARGET" refId="2"/>  
   </realization>  
-  <association id="45">    
-    <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="46" name="scanInfo"/>      
-      <multiplicity id="47" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="8" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="48">    
+  <association id="41">    
     <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="49" name="chainInfos"/>      
-      <multiplicity id="50" minimum="0" maximum="2147483647"/>    
+      <attribute id="42" name="chainInfos">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="43" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="9" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <realization id="51">    
+  <association id="44">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="45" name="connectionStateListener">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="46" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="47">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="48" name="chainStatusListener">        
+        <position height="18" width="118" x="480" y="-1206"/>      
+      </attribute>      
+      <multiplicity id="49" minimum="0" maximum="2147483647">        
+        <position height="16" width="23" x="602" y="-1204"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="50">    
     <end type="SOURCE" refId="15"/>    
     <end type="TARGET" refId="16"/>  
   </realization>  
-  <realization id="52">    
+  <realization id="51">    
     <end type="SOURCE" refId="7"/>    
     <end type="TARGET" refId="4"/>  
+  </realization>  
+  <realization id="52">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="3"/>  
   </realization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    

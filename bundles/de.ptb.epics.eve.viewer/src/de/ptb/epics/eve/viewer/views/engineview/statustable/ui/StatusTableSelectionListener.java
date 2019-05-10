@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.viewer.views.engineview.ui;
+package de.ptb.epics.eve.viewer.views.engineview.statustable.ui;
 
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
@@ -19,6 +19,8 @@ import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.PositionMode;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
 import de.ptb.epics.eve.data.scandescription.channelmode.ChannelModes;
 import de.ptb.epics.eve.ecp1.client.interfaces.IEngineStatusListener;
 import de.ptb.epics.eve.ecp1.types.EngineStatus;
@@ -83,6 +85,12 @@ public class StatusTableSelectionListener extends SelectionAdapter implements
 		Chain displayChain = Activator.getDefault().getCurrentScanDescription().getChain(aktChain);
 		
 		if (aktSM > 0) {
+			ScanModule selectedScanModule = displayChain.getScanModuleById(aktSM);
+			if (selectedScanModule.getType().equals(ScanModuleTypes.DYNAMIC_AXIS_POSITIONS)
+					|| selectedScanModule.getType().equals(ScanModuleTypes.DYNAMIC_CHANNEL_VALUES)) {
+				return;
+			}
+			
 			// ScanModule Zeile wurde ausgewählt, ScanModule Infos anzeigen
 
 			Display display = Activator.getDefault().getWorkbench().getDisplay();

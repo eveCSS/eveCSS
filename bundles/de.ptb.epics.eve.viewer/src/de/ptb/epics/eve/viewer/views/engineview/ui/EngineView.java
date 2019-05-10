@@ -63,6 +63,7 @@ import de.ptb.epics.eve.viewer.preferences.PreferenceConstants;
 import de.ptb.epics.eve.viewer.views.engineview.ButtonManager;
 import de.ptb.epics.eve.viewer.views.engineview.enginestate.EngineDisconnected;
 import de.ptb.epics.eve.viewer.views.engineview.enginestate.EngineState;
+import de.ptb.epics.eve.viewer.views.engineview.statustable.ui.StatusTableComposite;
 import de.ptb.epics.eve.viewer.views.messagesview.Levels;
 import de.ptb.epics.eve.viewer.views.messagesview.ViewerMessage;
 
