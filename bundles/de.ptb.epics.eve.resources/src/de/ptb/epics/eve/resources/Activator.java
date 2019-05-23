@@ -179,6 +179,13 @@ public class Activator implements BundleActivator {
 	}
 	
 	/**
+	 * @since 1.31
+	 */
+	public String getLoadedDeviceDefinition() {
+		return Startup.getLoadedDeviceDefinition();
+	}
+	
+	/**
 	 * Returns the XML schema definition.
 	 * 
 	 * @return the XML schema definition

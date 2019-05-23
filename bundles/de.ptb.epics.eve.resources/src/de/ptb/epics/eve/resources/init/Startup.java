@@ -23,6 +23,7 @@ import de.ptb.epics.eve.preferences.PreferenceConstants;
  * @since 1.14
  */
 public final class Startup {
+	private static String loadedDeviceDefinition;
 	
 	private Startup() {
 	}
@@ -163,6 +164,7 @@ public final class Startup {
 			throws Exception {
 		IMeasuringStation measuringStation = null;
 		File deviceDefinition = null;
+		Startup.loadedDeviceDefinition = null;
 		
 		Parameters params = Startup.readStartupParameters();
 		
@@ -212,6 +214,7 @@ public final class Startup {
 					new MeasuringStationLoader(Startup.loadSchemaFile(logger));
 			measuringStationLoader.load(deviceDefinition);
 			measuringStation = measuringStationLoader.getMeasuringStation();
+			Startup.loadedDeviceDefinition = deviceDefinition.getAbsolutePath();
 		} catch (IllegalArgumentException e) {
 			measuringStation = null;
 			logger.fatal(e.getMessage(), e);
@@ -226,5 +229,12 @@ public final class Startup {
 			logger.fatal(e.getMessage(), e);
 		}
 		return measuringStation;
+	}
+	
+	/**
+	 * @since 1.31
+	 */
+	public static String getLoadedDeviceDefinition() {
+		return Startup.loadedDeviceDefinition;
 	}
 }

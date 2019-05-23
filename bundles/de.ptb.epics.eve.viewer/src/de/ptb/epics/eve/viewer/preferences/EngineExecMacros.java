@@ -15,14 +15,24 @@ public enum EngineExecMacros {
 	 * current version of eveCSS
 	 */
 	VERSION {
-		@Override public String toString() { return "${VERSION}"; }
+		@Override public String toString() {
+			return "${VERSION}";
+		}
 	},
 	
 	/**
 	 * name of the test site
 	 */
 	LOCATION {
-		@Override public String toString() { return "${LOCATION}"; }
+		@Override public String toString() {
+			return "${LOCATION}";
+		}
+	},
+	
+	XMLPATH {
+		@Override public String toString() {
+			return "${XMLPATH}";
+		}
 	};
 	
 	/**
@@ -32,12 +42,13 @@ public enum EngineExecMacros {
 	 * @return the ENUM of the corresponding string
 	 * @throws IllegalArgumentException if no match is found
 	 */
-	public static EngineExecMacros getEnum(String value)
-			throws IllegalArgumentException {
+	public static EngineExecMacros getEnum(String value) {
 		if (value.equals(EngineExecMacros.VERSION.toString())) {
 			return EngineExecMacros.VERSION;
 		} else if (value.equals(EngineExecMacros.LOCATION.toString())) {
 			return EngineExecMacros.LOCATION;
+		} else if (value.equals(EngineExecMacros.XMLPATH.toString())) {
+			return EngineExecMacros.XMLPATH;
 		}
 		throw new IllegalArgumentException("no match");
 	}
@@ -55,7 +66,10 @@ public enum EngineExecMacros {
 		case VERSION:
 			Version version = Platform.getProduct().getDefiningBundle()
 			.getVersion();
-	return version.getMajor() + "." + version.getMinor();
+			return version.getMajor() + "." + version.getMinor();
+		case XMLPATH:
+			return de.ptb.epics.eve.resources.Activator.getDefault().
+					getLoadedDeviceDefinition();
 		default:
 			return "";
 		}

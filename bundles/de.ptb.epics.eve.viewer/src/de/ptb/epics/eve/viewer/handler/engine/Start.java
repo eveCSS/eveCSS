@@ -31,8 +31,6 @@ public class Start extends AbstractHandler {
 	private static final Logger LOGGER = Logger.getLogger(Start.class.getName());
 	// private static final Logger ENGINE_LOGGER = Logger.getLogger()
 	
-	private static final String ENV_EVE_LOCATION_PATH = "EVE_LOCATIONPATH";
-	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -50,9 +48,6 @@ public class Start extends AbstractHandler {
 		String engineParameters = Activator.getDefault().getPreferenceStore()
 				.getString(PreferenceConstants.P_DEFAULT_ENGINE_PARAMETERS);
 
-		String customDeviceDefinition = de.ptb.epics.eve.preferences.Activator.getDefault().getPreferenceStore()
-				.getString(de.ptb.epics.eve.preferences.PreferenceConstants.P_DEFAULT_MEASURING_STATION_DESCRIPTION);
-		
 		LOGGER.debug("EngineParameters (before substitution): " + engineParameters);
 		for (EngineExecMacros macro : EngineExecMacros.values()) {
 			engineParameters = engineParameters.replaceAll(
@@ -60,11 +55,6 @@ public class Start extends AbstractHandler {
 					EngineExecMacros.substituteMacro(macro));
 		}
 		LOGGER.debug("EngineParameters (after substitution): " + engineParameters);
-		if (customDeviceDefinition.isEmpty()) {
-			LOGGER.debug("no entry in custom device definition");
-		} else {
-			LOGGER.debug("custom device definition is: " + customDeviceDefinition);
-		}
 		
 		List<String> parameters = new ArrayList<>();
 		parameters.add(engineLocation.trim());
@@ -96,12 +86,6 @@ public class Start extends AbstractHandler {
 				br.close();
 				br = null;*/ // does not work because it terminates immediately if no data in stream
 				
-				if (!customDeviceDefinition.isEmpty()) {
-					LOGGER.debug("Custom device definition is set --> " 
-							+ "setting environment variable EVE_LOCATIONPATH to "
-							+ customDeviceDefinition);
-					pb.environment().put(ENV_EVE_LOCATION_PATH, customDeviceDefinition);
-				}
 				Process p = pb.start();
 				
 				if (LOGGER.isDebugEnabled()) {
