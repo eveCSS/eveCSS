@@ -20,7 +20,7 @@ p. *Average :* Determines how many channel readings are taken to calculate the a
 
 p. *Max Deviation  (%):* The deviation of the first two measured values must be less or equal then the given value in percent to be valid. If that constraint ist not fulfilled, the first measured value is discarded and a new value is taken until the condition is met.
 
-p. *Minimum:* If the first measured value is greater than or equal the given value a tolerance check is conducted. 
+p. *Minimum:* If the first measured value (absolute) is greater than or equal the given value a tolerance check is conducted. 
 
 p. *Max. Attempts:* If the tolerance check failed the given value amount of times, the check is stopped an the next values are used for the average calculation. If Max. Attempts = 0, no tolerance check is conducted.
 

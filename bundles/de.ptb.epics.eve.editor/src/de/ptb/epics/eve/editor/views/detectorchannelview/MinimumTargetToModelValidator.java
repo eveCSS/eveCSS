@@ -20,7 +20,10 @@ public class MinimumTargetToModelValidator implements IValidator {
 			return ValidationStatus.ok();
 		}
 		try {
-			Double.parseDouble(val);
+			Double d = Double.parseDouble(val);
+			if (d < 0) {
+				return ValidationStatus.error("Minimum must not be negative!");
+			}
 			return ValidationStatus.ok();
 		} catch (NumberFormatException e) {
 			return ValidationStatus.error("cannot parse double.");
