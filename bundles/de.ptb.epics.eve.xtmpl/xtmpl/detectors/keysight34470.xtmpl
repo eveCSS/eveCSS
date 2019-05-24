@@ -9,7 +9,7 @@
                 <name>function</name>
                 <id>${PV}function</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}function</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}function</access>
                     <value type="string">DCV /V,DCV Ratio/1,ACV /V,DCI /A,ACI /A,2WO /Ohms,4WO /Ohms</value>
                 </value>
                 <displaygroup>summary</displaygroup>
@@ -18,7 +18,7 @@
                 <name>range</name>
                 <id>${PV}range</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}range</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}range</access>
                     <value type="string">Auto On,Auto Off,Min,Max,0.1 V; .1 kOhm,1. V;   1 kOhm,10 V;  10 kOhm,100 V; 100 kOhm,1000 V; 1 MOhm,10 MOhm,100 MOhm</value>
                 </value>
                 <displaygroup>summary</displaygroup>
@@ -27,7 +27,7 @@
                 <name>intTime</name>
                 <id>${PV}intTime</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}intTime</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}intTime</access>
 					<value type="string">Min,Max,0.02 PLC,0.20 PLC,1.00 PLC,10 PLC,100 PLC</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -36,7 +36,7 @@
                 <name>Initialize (SDC)</name>
                 <id>${PV}sdc</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}sdc</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}sdc</access>
                     <value type="string">Init only,SDC+Init</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -45,7 +45,7 @@
                 <name>zero</name>
                 <id>${PV}zero</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}zero</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}zero</access>
                     <value type="string">Off,On,Once</value>
                 </value>
                 <displaygroup>summary</displaygroup>
@@ -54,7 +54,7 @@
                 <name>display</name>
                 <id>${PV}display</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}display</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}display</access>
                     <value type="string">Off,On</value>
                 </value>
                 <displaygroup>summary</displaygroup>
@@ -63,7 +63,7 @@
                 <name>Filter</name>
                 <id>${PV}filter</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}filter</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}filter</access>
                     <value type="string">Max,Min,Slow 3 Hz,Medium 20 Hz,Fast 200 Hz</value>
                 </value>
                 <displaygroup>detail</displaygroup>

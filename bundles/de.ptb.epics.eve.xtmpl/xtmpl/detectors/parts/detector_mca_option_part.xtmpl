@@ -11,7 +11,7 @@
                 <name>Lifetime</name>
                 <id>${Prefix=""}${PV}.ELTM</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}.ELTM</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}.ELTM</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -19,7 +19,7 @@
                 <name>Realtime</name>
                 <id>${Prefix=""}${PV}.ERTM</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}.ERTM</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}.ERTM</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -43,7 +43,7 @@
                 <name>CAL O</name>
                 <id>${Prefix=""}${PV}.CALO</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}.CALO</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}.CALO</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -51,7 +51,7 @@
                 <name>CAL S</name>
                 <id>${Prefix=""}${PV}.CALS</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}.CALS</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}.CALS</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -59,7 +59,7 @@
                 <name>CAL Q</name>
                 <id>${Prefix=""}${PV}.CALQ</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}.CALQ</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}.CALQ</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>

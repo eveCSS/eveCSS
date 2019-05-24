@@ -31,7 +31,7 @@
                     <name>Soft Hi Limit</name>
                     <id>${PV}gotoPos.HIHI</id>
                     <value>
-                        <access method="GETPUT" type="double" transport="ca">${PV}gotoPos.HIHI</access>
+                        <access method="GETPUTCB" type="double" transport="ca">${PV}gotoPos.HIHI</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -39,7 +39,7 @@
                     <name>Soft Lo Limit</name>
                     <id>${PV}gotoPos.LOLO</id>
                     <value>
-                        <access method="GETPUT" type="double" transport="ca">${PV}gotoPos.LOLO</access>
+                        <access method="GETPUTCB" type="double" transport="ca">${PV}gotoPos.LOLO</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>

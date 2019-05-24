@@ -25,7 +25,7 @@
                     <name>Mode</name>
                     <id>${Prefix}${PV}mode.VAL</id>
                     <value>
-                        <access method="GETPUT" type="${Type=string}" transport="ca">${PV}mode.VAL</access>
+                        <access method="GETPUTCB" type="${Type=string}" transport="ca">${PV}mode.VAL</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -33,7 +33,7 @@
                     <name>Order</name>
                     <id>${Prefix}${PV}.B</id>
                     <value>
-                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}.B</access>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}.B</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -41,7 +41,7 @@
                     <name>Lines/mm</name>
                     <id>${Prefix}${PV}.C</id>
                     <value>
-                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}.C</access>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}.C</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -49,7 +49,7 @@
                     <name>2d /nm</name>
                     <id>${Prefix}${PV}.F</id>
                     <value>
-                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}.F</access>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}.F</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -74,7 +74,7 @@
                     <name>Beta</name>
                     <id>${Prefix}${PV}beta</id>
                     <value>
-                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}beta</access>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}beta</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -82,7 +82,7 @@
                     <name>Theta</name>
                     <id>${Prefix}${PV}theta</id>
                     <value>
-                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}theta</access>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}theta</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -90,7 +90,7 @@
                     <name>Cff (readback)</name>
                     <id>${Prefix}${PV}rbcff</id>
                     <value>
-                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}rbcff</access>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}rbcff</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>

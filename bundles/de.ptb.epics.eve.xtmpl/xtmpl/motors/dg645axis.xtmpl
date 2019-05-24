@@ -37,7 +37,7 @@
                     <name>Soft Hi Limit</name>
                     <id>${PV}DelayA0.HIHI</id>
                     <value>
-                        <access method="GETPUT" type="double" transport="ca">${PV}DelayAO.HIHI</access>
+                        <access method="GETPUTCB" type="double" transport="ca">${PV}DelayAO.HIHI</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -45,7 +45,7 @@
                     <name>Soft Lo Limit</name>
                     <id>${PV}DelayA0.LOLO</id>
                     <value>
-                        <access method="GETPUT" type="double" transport="ca">${PV}DelayAO.LOLO</access>
+                        <access method="GETPUTCB" type="double" transport="ca">${PV}DelayAO.LOLO</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -62,7 +62,7 @@
                     <name>ChannelDelay</name>
                     <id>${PV}ChannelDelay</id>
                     <value>
-                    	<access monitor="true" method="GETPUT" transport="ca" type="string">${PV}DelaySI</access>
+                    	<access monitor="true" method="GETPUTCB" transport="ca" type="string">${PV}DelaySI</access>
                     </value>
                 </option>
             </axis>

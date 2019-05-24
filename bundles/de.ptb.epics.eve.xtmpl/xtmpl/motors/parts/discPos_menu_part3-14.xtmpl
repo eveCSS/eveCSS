@@ -2,7 +2,7 @@
                     <name>Value 1</name>
                     <id>DiscPos${PV}_MnuS.DO1</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}_MnuS.DO1</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}_MnuS.DO1</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -10,7 +10,7 @@
                     <name>Label 1</name>
                     <id>DiscPos${PV}_Mnu.ONST</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}_Mnu.ONST</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}_Mnu.ONST</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -18,7 +18,7 @@
                     <name>Value 2</name>
                     <id>DiscPos${PV}_MnuS.DO2</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}_MnuS.DO2</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}_MnuS.DO2</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -26,7 +26,7 @@
                     <name>Label 2</name>
                     <id>DiscPos${PV}_Mnu.TWST</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}_Mnu.TWST</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}_Mnu.TWST</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -34,7 +34,7 @@
                     <name>Value 3</name>
                     <id>DiscPos${PV}_MnuS.DO3</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}_MnuS.DO3</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}_MnuS.DO3</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -42,7 +42,7 @@
                     <name>Label 3</name>
                     <id>DiscPos${PV}_Mnu.THST</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}_Mnu.THST</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}_Mnu.THST</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -50,7 +50,7 @@
                     <name>Value 4</name>
                     <id>DiscPos${PV}_MnuS.DO4</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}_MnuS.DO4</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}_MnuS.DO4</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -58,7 +58,7 @@
                     <name>Label 4</name>
                     <id>DiscPos${PV}_Mnu.FRST</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}_Mnu.FRST</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}_Mnu.FRST</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -66,7 +66,7 @@
                     <name>Value 5</name>
                     <id>DiscPos${PV}_MnuS.DO5</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}_MnuS.DO5</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}_MnuS.DO5</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -74,7 +74,7 @@
                     <name>Label 5</name>
                     <id>DiscPos${PV}_Mnu.FVST</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}_Mnu.FVST</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}_Mnu.FVST</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -82,7 +82,7 @@
                     <name>Value 6</name>
                     <id>DiscPos${PV}_MnuS.DO6</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}_MnuS.DO6</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}_MnuS.DO6</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -90,7 +90,7 @@
                     <name>Label 6</name>
                     <id>DiscPos${PV}_Mnu.SXST</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}_Mnu.SXST</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}_Mnu.SXST</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -98,7 +98,7 @@
                     <name>Value 7</name>
                     <id>DiscPos${PV}_MnuS.DO7</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}_MnuS.DO7</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}_MnuS.DO7</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -106,7 +106,7 @@
                     <name>Label 7</name>
                     <id>DiscPos${PV}_Mnu.SVST</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}_Mnu.SVST</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}_Mnu.SVST</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -114,7 +114,7 @@
                     <name>Value 8</name>
                     <id>DiscPos${PV}_MnuS.DO8</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}_MnuS.DO8</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}_MnuS.DO8</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -122,7 +122,7 @@
                     <name>Label 8</name>
                     <id>DiscPos${PV}_Mnu.EIST</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}_Mnu.EIST</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}_Mnu.EIST</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -130,7 +130,7 @@
                     <name>Value 9</name>
                     <id>DiscPos${PV}_MnuS.DO9</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}_MnuS.DO9</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}_MnuS.DO9</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -138,7 +138,7 @@
                     <name>Label 9</name>
                     <id>DiscPos${PV}_Mnu.NIST</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}_Mnu.NIST</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}_Mnu.NIST</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -146,7 +146,7 @@
                     <name>Value 10</name>
                     <id>DiscPos${PV}_MnuS.DOA</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}_MnuS.DOA</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}_MnuS.DOA</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -154,7 +154,7 @@
                     <name>Label 10</name>
                     <id>DiscPos${PV}_Mnu.TEST</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}_Mnu.TEST</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}_Mnu.TEST</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -162,7 +162,7 @@
                     <name>Value 11</name>
                     <id>DiscPos${PV}_MnuS.DOB</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}_MnuS.DOB</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}_MnuS.DOB</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -170,7 +170,7 @@
                     <name>Label 11</name>
                     <id>DiscPos${PV}_Mnu.ELST</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}_Mnu.ELST</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}_Mnu.ELST</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -178,7 +178,7 @@
                     <name>Value 12</name>
                     <id>DiscPos${PV}_MnuS.DOC</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}_MnuS.DOC</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}_MnuS.DOC</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -186,7 +186,7 @@
                     <name>Label 12</name>
                     <id>DiscPos${PV}_Mnu.TVST</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}_Mnu.TVST</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}_Mnu.TVST</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -194,7 +194,7 @@
                     <name>Value 13</name>
                     <id>DiscPos${PV}_MnuS.DOD</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}_MnuS.DOD</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}_MnuS.DOD</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -202,7 +202,7 @@
                     <name>Label 13</name>
                     <id>DiscPos${PV}_Mnu.TTST</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}_Mnu.TTST</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}_Mnu.TTST</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -210,7 +210,7 @@
                     <name>Value 14</name>
                     <id>DiscPos${PV}_MnuS.DOE</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}_MnuS.DOE</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}_MnuS.DOE</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -218,7 +218,7 @@
                     <name>Label 14</name>
                     <id>DiscPos${PV}_Mnu.FTST</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}_Mnu.FTST</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}_Mnu.FTST</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -226,7 +226,7 @@
                     <name>Value 15</name>
                     <id>DiscPos${PV}_MnuS.DOF</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}_MnuS.DOF</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}_MnuS.DOF</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -234,7 +234,7 @@
                     <name>Label 15</name>
                     <id>DiscPos${PV}_Mnu.FFST</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}_Mnu.FFST</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}_Mnu.FFST</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>

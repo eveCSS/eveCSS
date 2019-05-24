@@ -9,7 +9,7 @@
                 <name>Function</name>
                 <id>${PV}function</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}function</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}function</access>
                     <value type="string">DC V,AC V,ACDC V,DC A,AC A,ACDC A,Ohms,V/I Ohms,Freq</value>
                 </value>
                 <displaygroup>summary</displaygroup>
@@ -18,7 +18,7 @@
                 <name>Range</name>
                 <id>${PV}range</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}range</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}range</access>
                     <value type="string">Auto On,0.3 mA=,3.0 mA=,.03 V=~, A=~,.30 V=~, A=~,1.0 A~,1.5 A=,3 V=~,30 V=~, Ohm,300 V=~, Ohm,3 kOhm,30 kOhm,300 kOhm,3 MOhm,30 MOhm,3 GOhm</value>
                 </value>
                 <displaygroup>summary</displaygroup>
@@ -27,7 +27,7 @@
                 <name>powerLineCycles</name>
                 <id>${PV}nplc</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}nplc</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}nplc</access>
                     <value type="string">1 plc,10 plc,100 plc</value>
                 </value>
                 <displaygroup>summary</displaygroup>
@@ -36,7 +36,7 @@
                 <name>autoZero</name>
                 <id>${PV}autoZero</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}autoZero</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}autoZero</access>
                     <value type="string">once,always</value>
                 </value>
                 <displaygroup>summary</displaygroup>
@@ -45,7 +45,7 @@
                 <name>input inpedance</name>
                 <id>${PV}fixedZ</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}fixedZ</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}fixedZ</access>
                     <value type="string">10 GOhm / 10 MOhm,always 10 MOhm</value>
                 </value>
                 <displaygroup>summary</displaygroup>
@@ -54,7 +54,7 @@
                 <name>Initialize (SDC)</name>
                 <id>${PV}sdc</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}sdc</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}sdc</access>
                     <value type="string">Init only,SDC+Init</value>
                 </value>
                 <displaygroup>detail</displaygroup>

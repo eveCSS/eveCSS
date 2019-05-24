@@ -27,7 +27,7 @@
                     <name>Label 0</name>
                     <id>${PV}Mnu.ZRST</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}Mnu.ZRST</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}Mnu.ZRST</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -35,7 +35,7 @@
                     <name>Label 1</name>
                     <id>${PV}Mnu.ONST</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}Mnu.ONST</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}Mnu.ONST</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -43,7 +43,7 @@
                     <name>Label 2</name>
                     <id>${PV}Mnu.TWST</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}Mnu.TWST</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}Mnu.TWST</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -51,7 +51,7 @@
                     <name>Label 3</name>
                     <id>${PV}Mnu.THST</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}Mnu.THST</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}Mnu.THST</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -59,7 +59,7 @@
                     <name>Label 4</name>
                     <id>${PV}Mnu.FRST</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}Mnu.FRST</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}Mnu.FRST</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -67,7 +67,7 @@
                     <name>Label 5</name>
                     <id>${PV}Mnu.FVST</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}Mnu.FVST</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}Mnu.FVST</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -75,7 +75,7 @@
                     <name>Label 6</name>
                     <id>${PV}Mnu.SXST</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}Mnu.SXST</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}Mnu.SXST</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -83,7 +83,7 @@
                     <name>Label 7</name>
                     <id>${PV}Mnu.SVST</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}Mnu.SVST</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}Mnu.SVST</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>

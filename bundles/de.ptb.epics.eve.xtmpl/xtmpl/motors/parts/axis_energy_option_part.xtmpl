@@ -28,7 +28,7 @@
                     <name>High Limit / Units</name>
                     <id>${Prefix}${PV}cff.HIHI</id>
                     <value>
-                        <access method="GETPUT" type="double" transport="ca">${PV}cff.HIHI</access>
+                        <access method="GETPUTCB" type="double" transport="ca">${PV}cff.HIHI</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -36,7 +36,7 @@
                     <name>Low Limit / Units</name>
                     <id>${Prefix}${PV}cff.LOLO</id>
                     <value>
-                        <access method="GETPUT" type="double" transport="ca">${PV}cff.LOLO</access>
+                        <access method="GETPUTCB" type="double" transport="ca">${PV}cff.LOLO</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>

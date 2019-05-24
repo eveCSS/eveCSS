@@ -11,14 +11,14 @@
                     <access monitor="true" method="${Method=GETCB}" transport="ca" type="int">${PV}counter</access>
                 </read>
                 <unit>
-                    <access method="GETPUT" transport="ca" type="string">${PV}counter.EGU</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}counter.EGU</access>
                 </unit>
             </channel>
                 <option monitor="true">
                     <name>detector</name>
                     <id>${PV}detector</id>
                     <value>
-                        <access method="GETPUT" transport="ca" type="string">${PV}detector</access>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}detector</access>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
@@ -26,7 +26,7 @@
                     <name>skipcount</name>
                     <id>${PV}skipcount</id>
                     <value>
-                        <access method="GETPUT" transport="ca" type="int">${PV}skipcount</access>
+                        <access method="GETPUTCB" transport="ca" type="int">${PV}skipcount</access>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
@@ -34,7 +34,7 @@
                     <name>limit</name>
                     <id>${PV}limit</id>
                     <value>
-                        <access method="GETPUT" transport="ca" type="double">${PV}limit</access>
+                        <access method="GETPUTCB" transport="ca" type="double">${PV}limit</access>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
@@ -42,7 +42,7 @@
                     <name>maxdev</name>
                     <id>${PV}maxdev</id>
                     <value>
-                        <access method="GETPUT" transport="ca" type="double">${PV}maxdev</access>
+                        <access method="GETPUTCB" transport="ca" type="double">${PV}maxdev</access>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
@@ -50,7 +50,7 @@
                     <name>reset</name>
                     <id>${PV}reset</id>
                     <value>
-                        <access method="GETPUT" transport="ca" type="string">${PV}reset</access>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}reset</access>
                         <value type="string">execute,reset</value>
                     </value>
                     <displaygroup>detail</displaygroup>
@@ -59,7 +59,7 @@
                     <name>skip</name>
                     <id>${PV}skip</id>
                     <value>
-                        <access monitor="true" method="GETPUT" transport="ca" type="string">${PV}skip</access>
+                        <access monitor="true" method="GETPUTCB" transport="ca" type="string">${PV}skip</access>
                         <value type="string">continue,skip</value>
                     </value>
                     <displaygroup>summary</displaygroup>

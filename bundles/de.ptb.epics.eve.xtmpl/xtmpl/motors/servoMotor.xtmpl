@@ -50,7 +50,7 @@
                     <name>Closed Loop</name>
                     <id>${PV}.CNEN</id>
                     <value>
-                        <access method="GETPUT" type="double" transport="ca">${PV}.CNEN</access>
+                        <access method="GETPUTCB" type="double" transport="ca">${PV}.CNEN</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>

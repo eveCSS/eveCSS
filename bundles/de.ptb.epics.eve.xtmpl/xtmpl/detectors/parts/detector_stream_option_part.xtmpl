@@ -2,7 +2,7 @@
                 <name>Severity</name>
                 <id>Det${PV}dataStream.SEVR</id>
                 <value>
-                    <access method="GETPUT" monitor="true" transport="ca" type="string">${PV}dataStream.SEVR</access>
+                    <access method="GETPUTCB" monitor="true" transport="ca" type="string">${PV}dataStream.SEVR</access>
                     <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -11,7 +11,7 @@
                 <name>Status</name>
                 <id>Det${PV}dataStream.STAT</id>
                 <value>
-                    <access method="GETPUT" monitor="true" transport="ca" type="string">${PV}dataStream.STAT</access>
+                    <access method="GETPUTCB" monitor="true" transport="ca" type="string">${PV}dataStream.STAT</access>
                     <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
                 </value>
                 <displaygroup>detail</displaygroup>

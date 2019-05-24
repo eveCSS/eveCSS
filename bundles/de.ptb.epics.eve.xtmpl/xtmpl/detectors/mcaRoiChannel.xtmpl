@@ -8,7 +8,7 @@
                 	<name>Label</name>
                 	<id>${PV}NM</id>
                 	<value>
-                    	<access method="GETPUT" transport="ca" type="string">${PV}NM</access>
+                    	<access method="GETPUTCB" transport="ca" type="string">${PV}NM</access>
                 	</value>
                 	<displaygroup>detail</displaygroup>
             	</option>

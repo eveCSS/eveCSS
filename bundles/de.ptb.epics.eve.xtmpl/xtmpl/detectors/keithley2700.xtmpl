@@ -12,7 +12,7 @@
                 <name>Severity</name>
                 <id>${PV}trigger.SEVR</id>
                 <value>
-                    <access method="GETPUT" monitor="true" transport="ca" type="string">${PV}trigger.SEVR</access>
+                    <access method="GETPUTCB" monitor="true" transport="ca" type="string">${PV}trigger.SEVR</access>
                     <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -21,7 +21,7 @@
                 <name>Status</name>
                 <id>${PV}trigger.STAT</id>
                 <value>
-                    <access method="GETPUT" monitor="true" transport="ca" type="string">${PV}trigger.STAT</access>
+                    <access method="GETPUTCB" monitor="true" transport="ca" type="string">${PV}trigger.STAT</access>
                     <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -30,7 +30,7 @@
                 <name>Initialize (SDC)</name>
                 <id>${PV}sdc</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}sdc</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}sdc</access>
                     <value type="string">Init only,SDC+Init</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -39,7 +39,7 @@
                 <name>autoZeroMode</name>
                 <id>${PV}azero</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}azero</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}azero</access>
                     <value type="string">autoZero OFF,autoZero ON</value>
                 </value>
                 <displaygroup>summary</displaygroup>

@@ -9,7 +9,7 @@
                 <name>Expression</name>
                 <id>${PV}.CALC</id>
                 <value>
-                    <access method="GETPUT" type="string" transport="ca">${PV}.CALC</access>
+                    <access method="GETPUTCB" type="string" transport="ca">${PV}.CALC</access>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -17,7 +17,7 @@
                 <name>Input A</name>
                 <id>${PV}.INPA</id>
                 <value>
-                    <access method="GETPUT" type="string" transport="ca">${PV}.INPA</access>
+                    <access method="GETPUTCB" type="string" transport="ca">${PV}.INPA</access>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -25,7 +25,7 @@
                 <name>A Value</name>
                 <id>${PV}.A</id>
                 <value>
-                    <access method="GETPUT" type="double" transport="ca">${PV}.A</access>
+                    <access method="GETPUTCB" type="double" transport="ca">${PV}.A</access>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -33,7 +33,7 @@
                 <name>Input B</name>
                 <id>${PV}.INPB</id>
                 <value>
-                    <access method="GETPUT" type="string" transport="ca">${PV}.INPB</access>
+                    <access method="GETPUTCB" type="string" transport="ca">${PV}.INPB</access>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -41,7 +41,7 @@
                 <name>B Value</name>
                 <id>${PV}.B</id>
                 <value>
-                    <access method="GETPUT" type="double" transport="ca">${PV}.B</access>
+                    <access method="GETPUTCB" type="double" transport="ca">${PV}.B</access>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -49,7 +49,7 @@
                 <name>Input C</name>
                 <id>${PV}.INPC</id>
                 <value>
-                    <access method="GETPUT" type="string" transport="ca">${PV}.INPC</access>
+                    <access method="GETPUTCB" type="string" transport="ca">${PV}.INPC</access>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -57,7 +57,7 @@
                 <name>C Value</name>
                 <id>${PV}.C</id>
                 <value>
-                    <access method="GETPUT" type="double" transport="ca">${PV}.C</access>
+                    <access method="GETPUTCB" type="double" transport="ca">${PV}.C</access>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -65,7 +65,7 @@
                 <name>Input D</name>
                 <id>${PV}.INPD</id>
                 <value>
-                    <access method="GETPUT" type="string" transport="ca">${PV}.INPD</access>
+                    <access method="GETPUTCB" type="string" transport="ca">${PV}.INPD</access>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -73,7 +73,7 @@
                 <name>D Value</name>
                 <id>${PV}.D</id>
                 <value>
-                    <access method="GETPUT" type="double" transport="ca">${PV}.D</access>
+                    <access method="GETPUTCB" type="double" transport="ca">${PV}.D</access>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -81,7 +81,7 @@
                 <name>Input E</name>
                 <id>${PV}.INPE</id>
                 <value>
-                    <access method="GETPUT" type="string" transport="ca">${PV}.INPE</access>
+                    <access method="GETPUTCB" type="string" transport="ca">${PV}.INPE</access>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -89,7 +89,7 @@
                 <name>E Value</name>
                 <id>${PV}.E</id>
                 <value>
-                    <access method="GETPUT" type="double" transport="ca">${PV}.E</access>
+                    <access method="GETPUTCB" type="double" transport="ca">${PV}.E</access>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -97,7 +97,7 @@
                 <name>Input F</name>
                 <id>${PV}.INPF</id>
                 <value>
-                    <access method="GETPUT" type="string" transport="ca">${PV}.INPF</access>
+                    <access method="GETPUTCB" type="string" transport="ca">${PV}.INPF</access>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -105,7 +105,7 @@
                 <name>F Value</name>
                 <id>${PV}.F</id>
                 <value>
-                    <access method="GETPUT" type="double" transport="ca">${PV}.F</access>
+                    <access method="GETPUTCB" type="double" transport="ca">${PV}.F</access>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -113,7 +113,7 @@
                 <name>Input G</name>
                 <id>${PV}.INPG</id>
                 <value>
-                    <access method="GETPUT" type="string" transport="ca">${PV}.INPG</access>
+                    <access method="GETPUTCB" type="string" transport="ca">${PV}.INPG</access>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -121,7 +121,7 @@
                 <name>G Value</name>
                 <id>${PV}.G</id>
                 <value>
-                    <access method="GETPUT" type="double" transport="ca">${PV}.G</access>
+                    <access method="GETPUTCB" type="double" transport="ca">${PV}.G</access>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -129,7 +129,7 @@
                 <name>Input H</name>
                 <id>${PV}.INPH</id>
                 <value>
-                    <access method="GETPUT" type="string" transport="ca">${PV}.INPH</access>
+                    <access method="GETPUTCB" type="string" transport="ca">${PV}.INPH</access>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -137,7 +137,7 @@
                 <name>H Value</name>
                 <id>${PV}.H</id>
                 <value>
-                    <access method="GETPUT" type="double" transport="ca">${PV}.H</access>
+                    <access method="GETPUTCB" type="double" transport="ca">${PV}.H</access>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -145,7 +145,7 @@
                 <name>Input I</name>
                 <id>${PV}.INPI</id>
                 <value>
-                    <access method="GETPUT" type="string" transport="ca">${PV}.INPI</access>
+                    <access method="GETPUTCB" type="string" transport="ca">${PV}.INPI</access>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -153,7 +153,7 @@
                 <name>I Value</name>
                 <id>${PV}.I</id>
                 <value>
-                    <access method="GETPUT" type="double" transport="ca">${PV}.I</access>
+                    <access method="GETPUTCB" type="double" transport="ca">${PV}.I</access>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -161,7 +161,7 @@
                 <name>Input J</name>
                 <id>${PV}.INPJ</id>
                 <value>
-                    <access method="GETPUT" type="string" transport="ca">${PV}.INPJ</access>
+                    <access method="GETPUTCB" type="string" transport="ca">${PV}.INPJ</access>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -169,7 +169,7 @@
                 <name>J Value</name>
                 <id>${PV}.J</id>
                 <value>
-                    <access method="GETPUT" type="double" transport="ca">${PV}.J</access>
+                    <access method="GETPUTCB" type="double" transport="ca">${PV}.J</access>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -177,7 +177,7 @@
                 <name>Input K</name>
                 <id>${PV}.INPK</id>
                 <value>
-                    <access method="GETPUT" type="string" transport="ca">${PV}.INPK</access>
+                    <access method="GETPUTCB" type="string" transport="ca">${PV}.INPK</access>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -185,7 +185,7 @@
                 <name>K Value</name>
                 <id>${PV}.K</id>
                 <value>
-                    <access method="GETPUT" type="double" transport="ca">${PV}.K</access>
+                    <access method="GETPUTCB" type="double" transport="ca">${PV}.K</access>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -193,7 +193,7 @@
                 <name>Input L</name>
                 <id>${PV}.INPL</id>
                 <value>
-                    <access method="GETPUT" type="string" transport="ca">${PV}.INPL</access>
+                    <access method="GETPUTCB" type="string" transport="ca">${PV}.INPL</access>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -201,7 +201,7 @@
                 <name>L Value</name>
                 <id>${PV}.L</id>
                 <value>
-                    <access method="GETPUT" type="double" transport="ca">${PV}.L</access>
+                    <access method="GETPUTCB" type="double" transport="ca">${PV}.L</access>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -209,7 +209,7 @@
                 <name>Precision (restart braus)</name>
                 <id>${PV}.PREC</id>
                 <value>
-                    <access method="GETPUT" type="double" transport="ca">${PV}.PREC</access>
+                    <access method="GETPUTCB" type="double" transport="ca">${PV}.PREC</access>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>

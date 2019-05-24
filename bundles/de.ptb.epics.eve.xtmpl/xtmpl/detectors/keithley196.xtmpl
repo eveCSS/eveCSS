@@ -9,7 +9,7 @@
                 <name>function</name>
                 <id>${PV}function</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}function</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}function</access>
                     <value type="string">DCVolts,ACVolts,Ohms,DCAmps,ACAmps,ACV dB,ACA dB,V/I Ohms</value>
                 </value>
                 <displaygroup>summary</displaygroup>
@@ -18,7 +18,7 @@
                 <name>range</name>
                 <id>${PV}range</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}range</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}range</access>
                     <value type="string">Auto On,R1,R2,R3,R4,R5,R6,R7</value>
                 </value>
                 <displaygroup>summary</displaygroup>
@@ -27,7 +27,7 @@
                 <name>filter</name>
                 <id>${PV}expFilter</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}expFilter</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}expFilter</access>
                     <value type="string">Filter Off,Filter On</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -36,7 +36,7 @@
                 <name>blSupp</name>
                 <id>${PV}blSupp</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}blSupp</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}blSupp</access>
                     <value type="string">bSuppOff,bSuppOn,bSupp using val</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -45,7 +45,7 @@
                 <name>blVal</name>
                 <id>${PV}blVal</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}blVal</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}blVal</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -53,7 +53,7 @@
                 <name>Initialize (SDC)</name>
                 <id>${PV}sdc</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}sdc</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}sdc</access>
                     <value type="string">Init only,SDC+Init</value>
                 </value>
                 <displaygroup>detail</displaygroup>

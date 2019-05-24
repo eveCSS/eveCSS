@@ -9,7 +9,7 @@
                     <value type="string">Acquire</value>
                 </trigger>
             <stop>
-                <access method="GETPUT" transport="ca" type="int">${PV}Execute_Region</access>
+                <access method="GETPUTCB" transport="ca" type="int">${PV}Execute_Region</access>
                 <value type="int">0</value>
             </stop>
             <channel>
@@ -29,7 +29,7 @@
                     <name>Total Repetitions</name>
                     <id>${PV}TotalRepetitions.VAL</id>
                     <value>
-                        <access method="GETPUT" type="int" transport="ca">${PV}TotalRepetitions.VAL</access>
+                        <access method="GETPUTCB" type="int" transport="ca">${PV}TotalRepetitions.VAL</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -37,7 +37,7 @@
                     <name>Total cps</name>
                     <id>${PV}Totalcps.VAL</id>
                     <value>
-                        <access method="GETPUT" type="int" transport="ca">${PV}Totalcps.VAL</access>
+                        <access method="GETPUTCB" type="int" transport="ca">${PV}Totalcps.VAL</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -45,7 +45,7 @@
                     <name>File Path</name>
                     <id>${PV}FilePath.VAL</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}FilePath.VAL {"longString":true}</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}FilePath.VAL {"longString":true}</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -53,7 +53,7 @@
                     <name>File Name</name>
                     <id>${PV}FileName.VAL</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}FileName.VAL {"longString":true}</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}FileName.VAL {"longString":true}</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -61,7 +61,7 @@
                     <name>File Number</name>
                     <id>${PV}Filenumber.VAL</id>
                     <value>
-                        <access method="GETPUT" type="int" transport="ca">${PV}Filenumber.VAL</access>
+                        <access method="GETPUTCB" type="int" transport="ca">${PV}Filenumber.VAL</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -69,7 +69,7 @@
                     <name>Full Filename</name>
                     <id>${PV}FullFilename.VAL</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}FullFilename.VAL {"longString":true}</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}FullFilename.VAL {"longString":true}</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -77,7 +77,7 @@
                     <name>Transition Label</name>
                     <id>${PV}Transition_Label.VAL</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}Transition_Label.VAL</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}Transition_Label.VAL</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -85,7 +85,7 @@
                     <name>CAE Value</name>
                     <id>${PV}CAE_Value.VAL</id>
                     <value>
-                        <access method="GETPUT" type="double" transport="ca">${PV}CAE_Value.VAL</access>
+                        <access method="GETPUTCB" type="double" transport="ca">${PV}CAE_Value.VAL</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -93,7 +93,7 @@
                     <name>Dwell Time</name>
                     <id>${PV}Dwell_Time.VAL</id>
                     <value>
-                        <access method="GETPUT" type="double" transport="ca">${PV}Dwell_Time.VAL</access>
+                        <access method="GETPUTCB" type="double" transport="ca">${PV}Dwell_Time.VAL</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -101,7 +101,7 @@
                     <name>Operation Type</name>
                     <id>${PV}Operation_Type.VAL</id>
                     <value>
-                        <access method="GETPUT" type="int" transport="ca">${PV}Operation_Type.VAL</access>
+                        <access method="GETPUTCB" type="int" transport="ca">${PV}Operation_Type.VAL</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -109,7 +109,7 @@
                     <name>Start Energy (Kin)</name>
                     <id>${PV}Start_Energy.VAL</id>
                     <value>
-                        <access method="GETPUT" type="double" transport="ca">${PV}Start_Energy.VAL</access>
+                        <access method="GETPUTCB" type="double" transport="ca">${PV}Start_Energy.VAL</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -117,7 +117,7 @@
                     <name>End Energy (Kin)</name>
                     <id>${PV}End_Energy.VAL</id>
                     <value>
-                        <access method="GETPUT" type="double" transport="ca">${PV}End_Energy.VAL</access>
+                        <access method="GETPUTCB" type="double" transport="ca">${PV}End_Energy.VAL</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -125,7 +125,7 @@
                     <name>Step Energy</name>
                     <id>${PV}Step_Energy.VAL</id>
                     <value>
-                        <access method="GETPUT" type="double" transport="ca">${PV}Step_Energy.VAL</access>
+                        <access method="GETPUTCB" type="double" transport="ca">${PV}Step_Energy.VAL</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -133,7 +133,7 @@
                     <name>Start Energy (Bind)</name>
                     <id>${PV}Start_BindEnergy.VAL</id>
                     <value>
-                        <access method="GETPUT" type="double" transport="ca">${PV}Start_BindEnergy.VAL</access>
+                        <access method="GETPUTCB" type="double" transport="ca">${PV}Start_BindEnergy.VAL</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -141,7 +141,7 @@
                     <name>End Energy (Bind)</name>
                     <id>${PV}End_BindEnergy.VAL</id>
                     <value>
-                        <access method="GETPUT" type="double" transport="ca">${PV}End_BindEnergy.VAL</access>
+                        <access method="GETPUTCB" type="double" transport="ca">${PV}End_BindEnergy.VAL</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>

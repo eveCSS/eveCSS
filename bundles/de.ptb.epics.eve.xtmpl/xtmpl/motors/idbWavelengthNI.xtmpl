@@ -40,7 +40,7 @@
                     <name>Order</name>
                     <id>${Prefix}${PV}gPrdOrLiWl.B</id>
                     <value>
-                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}nPrdOrLiWl.B</access>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}nPrdOrLiWl.B</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -48,7 +48,7 @@
                     <name>Lines/mm</name>
                     <id>${Prefix}${PV}gPrdOrLiWl.C</id>
                     <value>
-                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}nPrdOrLiWl.C</access>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}nPrdOrLiWl.C</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -56,7 +56,7 @@
                     <name>PGR Offset</name>
                     <id>${Prefix}${PV}nGratingAngle.B</id>
                     <value>
-                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}nGratingAngle.B</access>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}nGratingAngle.B</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>

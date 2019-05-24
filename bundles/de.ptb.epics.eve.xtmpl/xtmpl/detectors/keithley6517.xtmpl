@@ -12,7 +12,7 @@
                 <name>Initialize (SDC)</name>
                 <id>${PV}sdc</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}sdc</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}sdc</access>
                     <value type="string">Init only,SDC+Init</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -21,7 +21,7 @@
                 <name>triggerMode</name>
                 <id>${PV}triggerMode</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}triggerMode</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}triggerMode</access>
                     <value type="string">internal loop,single or periodic</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -30,7 +30,7 @@
                 <name>triggerDelay/s</name>
                 <id>${PV}triggerDelay</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}triggerDelay</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}triggerDelay</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -38,7 +38,7 @@
                 <name>function</name>
                 <id>${PV}function</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}function</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}function</access>
                     <value type="string">Volts,Amps,V/I Ohms,Coulombs</value>
                 </value>
                 <displaygroup>summary</displaygroup>
@@ -47,7 +47,7 @@
                 <name>medFilter</name>
                 <id>${PV}medFlt</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}medFlt</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}medFlt</access>
                     <value type="string">Curr: Off,Curr: On,Volt: Off,Volt: On,Ohms: Off,Ohms: On,Char: Off,Char: On,Char: On</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -56,7 +56,7 @@
                 <name>avrFilter Status</name>
                 <id>${PV}averFlt</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}averFlt</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}averFlt</access>
                     <value type="string">Curr: Off,Curr: On</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -65,7 +65,7 @@
                 <name>avrFilterType</name>
                 <id>${PV}averFltType</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}averFltType</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}averFltType</access>
                     <value type="string">Curr: None,Curr: Scalar,Curr: Advanced</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -74,7 +74,7 @@
                 <name>avrFilterTcon</name>
                 <id>${PV}averFltTcon</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}averFltTcon</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}averFltTcon</access>
                     <value type="string">Curr: Moving,Curr: Repeat</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -83,7 +83,7 @@
                 <name>avrFilterCoun</name>
                 <id>${PV}averFltCount</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}averFltCount</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}averFltCount</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -91,7 +91,7 @@
                 <name>avrFilterNtol</name>
                 <id>${PV}averFltNtol</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}averFltNtol</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}averFltNtol</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -99,7 +99,7 @@
                 <name>autoLoLim</name>
                 <id>${PV}autoLoLim</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}autoLoLim</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}autoLoLim</access>
                     <value type="string">Curr: 2 pA,Curr: 2 nA,Volt: 2 V,Volt: 200 V,Ohms: 0 O,Ohms: 2 MO,Char: Low,Char: High</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -108,7 +108,7 @@
                 <name>rangeCurr</name>
                 <id>${PV}rangeCurr</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}rangeCurr</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}rangeCurr</access>
                     <value type="string">Auto On,20 pA,200 pA,2 nA,20 nA,200 nA,2 uA,20 uA,200 uA,2 mA,20 mA,Auto Off</value>
                 </value>
                 <displaygroup>summary</displaygroup>
@@ -117,7 +117,7 @@
                 <name>intTimeCurr</name>
                 <id>${PV}intTimeCurr</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}intTimeCurr</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}intTimeCurr</access>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -125,7 +125,7 @@
                 <name>rangeVolt</name>
                 <id>${PV}rangeVolt</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}rangeVolt</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}rangeVolt</access>
                     <value type="string">Auto On,2 V,20 V,200 V,Auto Off</value>
                 </value>
                 <displaygroup>summary</displaygroup>
@@ -134,7 +134,7 @@
                 <name>intTimeVolt</name>
                 <id>${PV}intTimeVolt</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}intTimeVolt</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}intTimeVolt</access>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -142,7 +142,7 @@
                 <name>rangeOhms</name>
                 <id>${PV}rangeOhms</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}rangeOhms</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}rangeOhms</access>
                     <value type="string">Auto On,2 M,20 M,200 M,2 G,20 G,200 G,2 T,20 T,200 T,Auto Off</value>
                 </value>
                 <displaygroup>summary</displaygroup>
@@ -151,7 +151,7 @@
                 <name>intTimeOhms</name>
                 <id>${PV}intTimeOhms</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}intTimeOhms</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}intTimeOhms</access>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -159,7 +159,7 @@
                 <name>rangeChar</name>
                 <id>${PV}rangeChar</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}rangeChar</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}rangeChar</access>
                     <value type="string">Auto On,2 nC,20 nC,200 nC,2 uC,Auto Off</value>
                 </value>
                 <displaygroup>summary</displaygroup>
@@ -168,7 +168,7 @@
                 <name>intTimeChar</name>
                 <id>${PV}intTimeChar</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}intTimeChar</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}intTimeChar</access>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -176,7 +176,7 @@
                 <name>zeroChk</name>
                 <id>${PV}zeroChk</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}zeroChk</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}zeroChk</access>
                     <value type="string">zCheckOff,zCheckOn</value>
                 </value>
                 <displaygroup>summary</displaygroup>
@@ -185,7 +185,7 @@
                 <name>zeroCor</name>
                 <id>${PV}zeroCor</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}zeroCor</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}zeroCor</access>
                     <value type="string">zCorrOff,zCorrOn</value>
                 </value>
                 <displaygroup>summary</displaygroup>
@@ -194,7 +194,7 @@
                 <name>blSupress</name>
                 <id>${PV}blSupp</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}blSupp</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}blSupp</access>
                     <value type="string">Curr: Off,Curr: On,Volt: Off,Volt: On,Ohms: Off,Ohms: On,Char: Off,Char: On</value>
                 </value>
                 <displaygroup>summary</displaygroup>
@@ -203,7 +203,7 @@
                 <name>channel</name>
                 <id>${PV}channel</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}channel</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}channel</access>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -211,7 +211,7 @@
                 <name>vsMode</name>
                 <id>${PV}vsMode</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}vsMode</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}vsMode</access>
                     <value type="string">vSourceOff,vSourceOn</value>
                 </value>
                 <displaygroup>summary</displaygroup>
@@ -220,7 +220,7 @@
                 <name>vsVal</name>
                 <id>${PV}vsVal</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}vsVal</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}vsVal</access>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -228,7 +228,7 @@
                 <name>Scan</name>
                 <id>${PV}.SCAN</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}00.SCAN</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}00.SCAN</access>
                     <value type="string">Passive,Event,I/O Intr,10 second,5 second,2 second,1 second,.5 second,.2 second,.1 second</value>
                 </value>
                 <displaygroup>detail</displaygroup>

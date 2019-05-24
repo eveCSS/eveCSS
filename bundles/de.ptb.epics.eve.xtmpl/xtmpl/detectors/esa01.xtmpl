@@ -15,7 +15,7 @@
                 <name>Severity</name>
                 <id>${PV}ROI1:0:MaxValue_RBV.SEVR</id>
                 <value>
-                    <access method="GETPUT" monitor="true" transport="ca" type="string">${PV}ROI1:0:MaxValue_RBV.SEVR</access>
+                    <access method="GETPUTCB" monitor="true" transport="ca" type="string">${PV}ROI1:0:MaxValue_RBV.SEVR</access>
                     <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -24,7 +24,7 @@
                 <name>Status</name>
                 <id>Det${PV}ROI1:0:MaxValue_RBV.STAT</id>
                 <value>
-                    <access method="GETPUT" monitor="true" transport="ca" type="string">${PV}ROI1:0:MaxValue_RBV.STAT</access>
+                    <access method="GETPUTCB" monitor="true" transport="ca" type="string">${PV}ROI1:0:MaxValue_RBV.STAT</access>
                     <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
                 </value>
                 <displaygroup>detail</displaygroup>

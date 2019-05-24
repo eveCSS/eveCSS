@@ -2,7 +2,7 @@
                     <name>Scan</name>
                     <id>${PV}.SCAN</id>
                     <value>
-                        <access method="GETPUT" transport="ca" type="string">${PV}.SCAN</access>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}.SCAN</access>
                         <value type="string">Passive,Event,I/O Intr,10 second,5 second,2 second,1 second,.5 second,.2 second,.1 second</value>
                     </value>
                     <displaygroup>detail</displaygroup>

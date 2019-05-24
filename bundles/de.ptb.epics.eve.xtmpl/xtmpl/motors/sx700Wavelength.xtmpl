@@ -33,7 +33,7 @@
                     <name>Order</name>
                     <id>${Prefix}${PV}.B</id>
                     <value>
-                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}.B</access>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}.B</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -41,7 +41,7 @@
                     <name>Lines/mm</name>
                     <id>${Prefix}${PV}.C</id>
                     <value>
-                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}.C</access>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}.C</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -49,7 +49,7 @@
                     <name>Cff (E) table</name>
                     <id>${Prefix}${PV}cff.LINR</id>
                     <value>
-                        <access method="GETPUT" type="${Type=string}" transport="ca">${PV}cff.LINR</access>
+                        <access method="GETPUTCB" type="${Type=string}" transport="ca">${PV}cff.LINR</access>
                         <value type="string">NO CONVERSION,LINEAR,SXbrkpt1</value>
                     </value>
                     <displaygroup>summary</displaygroup>
@@ -58,7 +58,7 @@
                     <name>Cff Input</name>
                     <id>${Prefix}${PV}mbcffFunc</id>
                     <value>
-                        <access method="GETPUT" type="${Type=string}" transport="ca">${PV}mbcffFunc</access>
+                        <access method="GETPUTCB" type="${Type=string}" transport="ca">${PV}mbcffFunc</access>
                         <value type="string">Table,Manual</value>
                     </value>
                     <displaygroup>summary</displaygroup>
@@ -67,7 +67,7 @@
                     <name>Cff</name>
                     <id>${Prefix}${PV}cffSelec.A</id>
                     <value>
-                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}cffSelec.A</access>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}cffSelec.A</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -83,7 +83,7 @@
                     <name>Security (1=on 0=off)</name>
                     <id>${Prefix}${PV}secu0.E</id>
                     <value>
-                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}secu0.E</access>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}secu0.E</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>

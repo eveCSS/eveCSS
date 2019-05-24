@@ -16,7 +16,7 @@
                     <access monitor="false" method="${Method=GETCB}" transport="ca" type="${Type=double}">${PV}SeqNumber</access>
                 </read>
                 <unit>
-                    <access method="GETPUT" transport="ca" type="string">${PV}SeqNumber.EGU</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}SeqNumber.EGU</access>
                 </unit>
             </channel>
             <option>

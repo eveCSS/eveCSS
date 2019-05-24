@@ -1,3 +1,3 @@
             <value>
-                <access monitor="true" method="${Method=GETPUT}" transport="ca" type="${Type=double}">${PV}</access>
+                <access monitor="true" method="${Method=GETPUTCB}" transport="ca" type="${Type=double}">${PV}</access>
             </value>

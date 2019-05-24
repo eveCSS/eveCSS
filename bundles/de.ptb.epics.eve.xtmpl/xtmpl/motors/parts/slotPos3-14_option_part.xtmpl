@@ -20,7 +20,7 @@
                     <name>Offset</name>
                     <id>Slot${PV}rbv.E</id>
                     <value>
-                        <access method="GETPUT" type="double" transport="ca">Slot${PV}rbv.E</access>
+                        <access method="GETPUTCB" type="double" transport="ca">Slot${PV}rbv.E</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>

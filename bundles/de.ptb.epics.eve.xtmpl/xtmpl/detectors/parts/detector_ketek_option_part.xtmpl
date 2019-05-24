@@ -11,7 +11,7 @@
                 <name>Lifetime</name>
                 <id>${Prefix=""}${PV}ElapsedLive</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}ElapsedLive</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}ElapsedLive</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -19,7 +19,7 @@
                 <name>Realtime</name>
                 <id>${Prefix=""}${PV}ElapsedReal</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}ElapsedReal</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}ElapsedReal</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -43,7 +43,7 @@
                 <name>TriggerThreshold</name>
                 <id>${Prefix=""}${PV}dxp1:TriggerThreshold</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}dxp1:TriggerThreshold</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}dxp1:TriggerThreshold</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -51,7 +51,7 @@
                 <name>EnergyThreshold</name>
                 <id>${Prefix=""}${PV}dxp1:EnergyThreshold</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}dxp1:EnergyThreshold</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}dxp1:EnergyThreshold</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -59,7 +59,7 @@
                 <name>BaselineThreshold</name>
                 <id>${Prefix=""}${PV}dxp1:BaselineThreshold</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}dxp1:BaselineThreshold</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}dxp1:BaselineThreshold</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>

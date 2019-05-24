@@ -50,7 +50,7 @@
                     <name>High Limit / Units</name>
                     <id>${Prefix}${PV}cff.HIHI</id>
                     <value>
-                        <access method="GETPUT" type="double" transport="ca">${PV}wl2e.HIHI</access>
+                        <access method="GETPUTCB" type="double" transport="ca">${PV}wl2e.HIHI</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -58,7 +58,7 @@
                     <name>Low Limit / Units</name>
                     <id>${Prefix}${PV}cff.LOLO</id>
                     <value>
-                        <access method="GETPUT" type="double" transport="ca">${PV}wl2e.LOLO</access>
+                        <access method="GETPUTCB" type="double" transport="ca">${PV}wl2e.LOLO</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -74,7 +74,7 @@
                     <name>Order</name>
                     <id>${Prefix}${PV}pre.B</id>
                     <value>
-                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}pre.B</access>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}pre.B</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -82,7 +82,7 @@
                     <name>Lines/mm</name>
                     <id>${Prefix}${PV}pre.C</id>
                     <value>
-                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}pre.C</access>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}pre.C</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -90,7 +90,7 @@
                     <name>Cff Selector</name>
                     <id>${Prefix}${PV}mbcffFunc</id>
                     <value>
-                        <access method="GETPUT" type="${Type=string}" transport="ca">${PV}mbcffFunc</access>
+                        <access method="GETPUTCB" type="${Type=string}" transport="ca">${PV}mbcffFunc</access>
                         <value type="string">Manual,Table</value>
                     </value>
                     <displaygroup>summary</displaygroup>
@@ -99,7 +99,7 @@
                     <name>Current Cff</name>
                     <id>${Prefix}${PV}CffFunc</id>
                     <value>
-                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}CffFunc</access>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}CffFunc</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -115,7 +115,7 @@
                     <name>Security (1=on 0=off)</name>
                     <id>${Prefix}${PV}secu0.E</id>
                     <value>
-                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}secu0.E</access>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}secu0.E</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>

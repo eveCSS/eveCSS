@@ -9,7 +9,7 @@
                 <name>function</name>
                 <id>${PV}function</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}function</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}function</access>
                     <value type="string">Voltage,Current,Resistance</value>
                 </value>
                 <displaygroup>summary</displaygroup>
@@ -18,7 +18,7 @@
                 <name>range</name>
                 <id>${PV}range</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}range</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}range</access>
                     <value type="string">Auto,R1,R2,R3,R4,R5,R6,R7,R8,R9,R10,R11,Cancel Auto</value>
                 </value>
                 <displaygroup>summary</displaygroup>
@@ -27,7 +27,7 @@
                 <name>zeroChk</name>
                 <id>${PV}zeroChk</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}zeroChk</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}zeroChk</access>
                     <value type="string">zCheckOff,zCheckOn</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -36,7 +36,7 @@
                 <name>zeroCor</name>
                 <id>${PV}zeroCor</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}zeroCor</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}zeroCor</access>
                     <value type="string">zCorrOff,zCorrOn</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -45,7 +45,7 @@
                 <name>blSupp</name>
                 <id>${PV}blSupp</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}blSupp</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}blSupp</access>
                     <value type="string">bSuppOff,bSuppOn</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -54,7 +54,7 @@
                 <name>vsMode</name>
                 <id>${PV}vsMode</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}vsMode</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}vsMode</access>
                     <value type="string">vSourceOff,vSourceOn</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -63,7 +63,7 @@
                 <name>display</name>
                 <id>${PV}display</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}display</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}display</access>
                     <value type="string">Electrometer,Voltage Source</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -72,7 +72,7 @@
                 <name>Initialize (SDC)</name>
                 <id>${PV}sdc</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}sdc</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}sdc</access>
                     <value type="string">Init only,SDC+Init</value>
                 </value>
                 <displaygroup>detail</displaygroup>

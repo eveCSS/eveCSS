@@ -9,7 +9,7 @@
                 <name>${Name}</name>
                 <id>${Prefix}${PV}scanner</id>
                 <goto>
-                    <access method="GETPUT" transport="ca" type="${Type=double}" timeout="${Timeout=300.0}">${PV}</access>
+                    <access method="GETPUTCB" transport="ca" type="${Type=double}" timeout="${Timeout=300.0}">${PV}</access>
                 </goto>
                 <position>
                     <access monitor="true" method="GETCB" transport="ca" type="${Type=double}">${PV}.RVAL</access>
@@ -26,7 +26,7 @@
                 <name>Initialize (SDC)</name>
                 <id>${Prefix}${PV}sdc</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}sdc</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}sdc</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -34,7 +34,7 @@
                 <name>Settling Time</name>
                 <id>${Prefix}${PV}settling</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}settling</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}settling</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>

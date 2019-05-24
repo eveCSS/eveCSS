@@ -35,7 +35,7 @@
                 <name>VoltageOffset</name>
                 <id>${PV}VoltageOffset</id>
                 <value>
-                    <access method="GETPUT" type="${Type=double}" transport="ca">${PV}S1:Voltage:Offset</access>
+                    <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}S1:Voltage:Offset</access>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -61,7 +61,7 @@
                 <name>BurstCycles</name>
                 <id>${PV}BurstCycles</id>
                 <value>
-                    <access method="GETPUT" type="${Type=double}" transport="ca">${PV}S1:Burst:NCycles</access>
+                    <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}S1:Burst:NCycles</access>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>

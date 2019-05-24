@@ -12,7 +12,7 @@
                     <access monitor="true" method="${Method=GETCB}" transport="ca" type="${Type=double}">${PV}.A</access>
                 </read>
                 <unit>
-                    <access method="GETPUT" transport="ca" type="string">${PV}.EGU</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}.EGU</access>
                 </unit>
             </channel>
         </detector>

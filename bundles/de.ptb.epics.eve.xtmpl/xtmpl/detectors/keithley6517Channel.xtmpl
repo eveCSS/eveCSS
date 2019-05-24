@@ -12,7 +12,7 @@
                     <name>init readout</name>
                     <id>${PV}.PROC</id>
                     <value>
-                        <access method="GETPUT" transport="ca" type="string">${PV}.PROC</access>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}.PROC</access>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>

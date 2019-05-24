@@ -4,7 +4,7 @@
             <name>${Name=""}</name>
             <id>${PV}</id>
             <stop>
-                <access method="GETPUT" transport="ca" type="string">${PV}Acquire</access>
+                <access method="GETPUTCB" transport="ca" type="string">${PV}Acquire</access>
                 <value type="string">Done</value>
             </stop>
 			${includeFile}
@@ -12,7 +12,7 @@
                 <name>Exposure time</name>
                 <id>${PV}Time</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}AcquireTime</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}AcquireTime</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -20,7 +20,7 @@
                 <name>Temperature</name>
                 <id>${PV}Temperature</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}Temperature</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}Temperature</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>

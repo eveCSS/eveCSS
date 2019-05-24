@@ -9,7 +9,7 @@
                 <name>function</name>
                 <id>${PV}function</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}function</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}function</access>
                     <value type="string">VAC,VDC,AAC,ADC,Ohms,V/I Ohms,Freq,Temp/C</value>
                 </value>
                 <displaygroup>summary</displaygroup>
@@ -18,7 +18,7 @@
                 <name>autoZero</name>
                 <id>${PV}autoZero</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}autoZero</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}autoZero</access>
                     <value type="string">autoZeroOff,autoZeroOn</value>
                 </value>
                 <displaygroup>summary</displaygroup>
@@ -27,7 +27,7 @@
                 <name>Initialize (SDC)</name>
                 <id>${PV}sdc</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}sdc</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}sdc</access>
                     <value type="string">Init only,SDC+Init</value>
                 </value>
                 <displaygroup>detail</displaygroup>

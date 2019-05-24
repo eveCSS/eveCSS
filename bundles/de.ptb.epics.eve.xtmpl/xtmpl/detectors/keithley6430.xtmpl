@@ -12,7 +12,7 @@
                 <name>Scan</name>
                 <id>${PV}rawData.SCAN</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}rawData.SCAN</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}rawData.SCAN</access>
                     <value type="string">Passive,Event,I/O Intr,10 second,5 second,2 second,1 second,.5 second,.2 second,.1 second</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -21,7 +21,7 @@
                 <name>Initialize (SDC)</name>
                 <id>${PV}sdc</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}sdc</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}sdc</access>
                     <value type="string">Init only,SDC+Init</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -30,7 +30,7 @@
                 <name>autoZero</name>
                 <id>${PV}autoZero</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}autoZero</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}autoZero</access>
                     <value type="string">On,Off,Once</value>
                 </value>
                 <displaygroup>summary</displaygroup>
@@ -39,7 +39,7 @@
                 <name>autoLoLim</name>
                 <id>${PV}autoLoLim</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}autoLoLim</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}autoLoLim</access>
                     <value type="string">Curr: 2 pA,Curr: 2 nA,Volt: 0 V,Volt: 2 V,Ohms: 0 O,Ohms: 2 MO</value>
    		    	</value>
                 <displaygroup>detail</displaygroup>
@@ -48,7 +48,7 @@
                 <name>Filter</name>
                 <id>${PV}filter</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}filter</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}filter</access>
                     <value type="string">filter Off,filter On</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -57,7 +57,7 @@
                 <name>Sense Function</name>
                 <id>${PV}senseFnctn</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}senseFnctn</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}senseFnctn</access>
                     <value type="string">Volts&amp;Amps,Resistance</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -66,7 +66,7 @@
                 <name>intTime</name>
                 <id>${PV}senseICurr</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}senseICurr</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}senseICurr</access>
 			        <value type="string">.02 s,.04 s,.10 s,.20 s</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -75,7 +75,7 @@
                 <name>Range Current</name>
                 <id>${PV}senseRCurr</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}senseRCurr</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}senseRCurr</access>
                     <value type="string">Auto On,10 pA,100 pA,1 nA,10 nA,100 nA,1 uA,10 uA,100 uA,1 mA,10 mA,Auto Off</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -84,7 +84,7 @@
                 <name>Range Voltage</name>
                 <id>${PV}senseRVolt</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}senseRVolt</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}senseRVolt</access>
                     <value type="string">Auto On,0.2 V,2 V,20 V,200 V,Auto Off</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -93,7 +93,7 @@
                 <name>Range Resistance</name>
                 <id>${PV}senseROhms</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}senseROhms</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}senseROhms</access>
                     <value type="string">Auto On,2 M,20 M,200 M,2 G,20 G,200 G,Auto Off</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -102,7 +102,7 @@
                 <name>complianceCurrent</name>
                 <id>${PV}compCurr</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}compCurr</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}compCurr</access>
                     <value type="string">10 pA,100 pA,1 nA,10 nA,100 nA,1 uA,10 uA,100 uA,1 mA,10 mA</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -111,7 +111,7 @@
                 <name>complianceVoltage</name>
                 <id>${PV}compVolt</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}compVolt</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}compVolt</access>
                     <value type="string">0.2 V,2 V,20 V,200 V</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -120,7 +120,7 @@
                 <name>Source Function</name>
                 <id>${PV}sourceFnctn</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}sourceFnctn</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}sourceFnctn</access>
                     <value type="string">Volt,Curr</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -129,7 +129,7 @@
                 <name>Source Output</name>
                 <id>${PV}sourceState</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}sourceState</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}sourceState</access>
                     <value type="string">Off,On</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -138,7 +138,7 @@
                 <name>Source autoOff</name>
                 <id>${PV}sourceMode</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}sourceMode</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}sourceMode</access>
                     <value type="string">Disable,Enable</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -147,7 +147,7 @@
                 <name>Source Delay /s</name>
                 <id>${PV}sourceDelay</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}sourceDelay</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}sourceDelay</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -155,7 +155,7 @@
                 <name>Source CurrentRange</name>
                 <id>${PV}sourceRCurr</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}sourceRCurr</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}sourceRCurr</access>
                     <value type="string">10 pA,100 pA,1 nA,10 nA,100 nA,1 uA,10 uA,100 uA,1 mA,10 mA</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -164,7 +164,7 @@
                 <name>ource Set Current</name>
                 <id>${PV}sourceSetCurr</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}sourceSetCurr</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}sourceSetCurr</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -172,7 +172,7 @@
                 <name>Source act. Current</name>
                 <id>${PV}sourceGetCurr</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}sourceGetCurr</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}sourceGetCurr</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -180,7 +180,7 @@
                 <name>Source VoltageRange</name>
                 <id>${PV}sourceRVolt</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}sourceRVolt</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}sourceRVolt</access>
                     <value type="string">0.2 V,2 V,20 V,200 V</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -189,7 +189,7 @@
                 <name>Source Set Voltage /V</name>
                 <id>${PV}sourceSetVolt</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}sourceSetVolt</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}sourceSetVolt</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -197,7 +197,7 @@
                 <name>Source act. Voltage	/V</name>
                 <id>${PV}sourceGetVolt</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}sourceGetVolt</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}sourceGetVolt</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -205,7 +205,7 @@
                 <name>voltage /V</name>
                 <id>${PV}volt</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}volt</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}volt</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -213,7 +213,7 @@
                 <name>Resistance /Ohm</name>
                 <id>${PV}ohm</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}ohm</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}ohm</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -221,7 +221,7 @@
                 <name>timeStamp</name>
                 <id>${PV}tStamp</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}tStamp</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}tStamp</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -229,7 +229,7 @@
                 <name>reset TimeStamp</name>
                 <id>${PV}rstStamp.PROC</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}rstStamp.PROC</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}rstStamp.PROC</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -237,7 +237,7 @@
                 <name>baseline Suppress</name>
                 <id>${PV}blSupp</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}blSupp</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}blSupp</access>
                     <value type="string">bSuppOff,bSuppOn</value>
                 </value>
                 <displaygroup>detail</displaygroup>

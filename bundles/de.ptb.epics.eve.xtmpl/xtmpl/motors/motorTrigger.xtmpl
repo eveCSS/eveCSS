@@ -1,5 +1,5 @@
         <!-- basic motor with trigger, must include axes -->
-	<motor>
+	    <motor>
             <class>${Class=""}</class>
             <name>${Name=""}</name>
             <id>${Id}</id>

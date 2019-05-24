@@ -8,7 +8,7 @@
                 <name>Channel Preselect</name>
                 <id>${PV}channel</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="int">${PV}channel</access>
+                    <access method="GETPUTCB" transport="ca" type="int">${PV}channel</access>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -16,7 +16,7 @@
                 <name>Scanner Mode</name>
                 <id>${PV}scMode</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}scMode</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}scMode</access>
                     <value type="string">One pole,Two pole,Four pole</value>
                 </value>
                 <displaygroup>summary</displaygroup>
@@ -25,7 +25,7 @@
                 <name>Filter Mode</name>
                 <id>${PV}filter</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}filter</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}filter</access>
                     <value type="string">w/o filter,avrg filter,auto filter,fast auto</value>
                 </value>
                 <displaygroup>summary</displaygroup>
@@ -34,7 +34,7 @@
                 <name>Initialize (SDC)</name>
                 <id>${PV}sdc</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}sdc</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}sdc</access>
                     <value type="string">Init only,SDC+Init</value>
                 </value>
                 <displaygroup>summary</displaygroup>

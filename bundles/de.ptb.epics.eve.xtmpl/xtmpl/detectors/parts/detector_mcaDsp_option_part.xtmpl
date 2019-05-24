@@ -2,7 +2,7 @@
                 <name>coarse gain</name>
                 <id>${PV}CG</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}CG</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}CG</access>
                     <value type="string">x5,x15,x40,x120,x330,x960</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -11,7 +11,7 @@
                 <name>fineG</name>
                 <id>${PV}FG</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}FG</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}FG</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -19,7 +19,7 @@
                 <name>sFineG</name>
                 <id>${PV}SFG</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}SFG</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}SFG</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -27,7 +27,7 @@
                 <name>coincM</name>
                 <id>${PV}GATM</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}GATM</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}GATM</access>
                     <value type="string">Anti-coinc.,Coincidence</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -36,7 +36,7 @@
                 <name>adcOff</name>
                 <id>${PV}ADCO</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}ADCO</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}ADCO</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -44,7 +44,7 @@
                 <name>lld</name>
                 <id>${PV}LLD</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}LLD</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}LLD</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -52,7 +52,7 @@
                 <name>adcZero</name>
                 <id>${PV}ZERO</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}ZERO</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}ZERO</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -60,7 +60,7 @@
                 <name>adcGain</name>
                 <id>${PV}ADCG</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}ADCG</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}ADCG</access>
                     <value type="string">256,512,1024,2048,4096,8192,16384</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -69,7 +69,7 @@
                 <name>fdiscM</name>
                 <id>${PV}FDM</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}FDM</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}FDM</access>
                     <value type="string">Auto,Manual</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -78,7 +78,7 @@
                 <name>fdisk</name>
                 <id>${PV}FD</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}FD</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}FD</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -86,7 +86,7 @@
                 <name>purGd</name>
                 <id>${PV}GD</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}GD</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}GD</access>
                     <value type="string">Off,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.0,2.1,2.2,2.3,2.4,2.5</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -95,7 +95,7 @@
                 <name>inpp</name>
                 <id>${PV}INPP</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}INPP</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}INPP</access>
                     <value type="string">Positive,Negative</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -104,7 +104,7 @@
                 <name>purM</name>
                 <id>${PV}PURM</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}PURM</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}PURM</access>
                     <value type="string">Off,On,LFC</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -113,7 +113,7 @@
                 <name>ltTrim</name>
                 <id>${PV}LTRM</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}LTRM</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}LTRM</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -121,7 +121,7 @@
                 <name>inhMode</name>
                 <id>${PV}TINH</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}TINH</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}TINH</access>
                     <value type="string">Normal,Reset</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -130,7 +130,7 @@
                 <name>infPol</name>
                 <id>${PV}INHP</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}INHP</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}INHP</access>
                     <value type="string">Positive,Negative</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -139,7 +139,7 @@
                 <name>throuP</name>
                 <id>${PV}THRI</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}THRI</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}THRI</access>
                     <value type="string">Deadtime,Input rate,DSP rate,MCA rate</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -148,7 +148,7 @@
                 <name>BLRmode</name>
                 <id>${PV}BLR</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}BLR</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}BLR</access>
                     <value type="string">Auto,Soft,Medium,Hard</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -157,7 +157,7 @@
                 <name>riseT</name>
                 <id>${PV}RT</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}RT</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}RT</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -165,7 +165,7 @@
                 <name>flatT</name>
                 <id>${PV}FT</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}FT</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}FT</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -173,7 +173,7 @@
                 <name>outM</name>
                 <id>${PV}OUTM</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}OUTM</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}OUTM</access>
                     <value type="string">Trapezoid,Trail</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -182,7 +182,7 @@
                 <name>preampMode</name>
                 <id>${PV}PZM</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}PZM</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}PZM</access>
                     <value type="string">RC,Manual,Reset</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -191,7 +191,7 @@
                 <name>pz</name>
                 <id>${PV}PZ</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}PZ</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}PZ</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -199,7 +199,7 @@
                 <name>thresh</name>
                 <id>${PV}THR</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="double">${PV}THR</access>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}THR</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -207,7 +207,7 @@
                 <name>cutoffF</name>
                 <id>${PV}FRQ</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}FRQ</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}FRQ</access>
                     <value type="string">100 Hz,200 Hz,300 Hz,500 Hz,700 Hz,1000 Hz,1500 Hz,2000 Hz,3000 Hz,5000 Hz,7500 Hz,10000 Hz,15000 Hz,20000 Hz,30000 Hz,50000 Hz</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -216,7 +216,7 @@
                 <name>aPolZ</name>
                 <id>${PV}AUTO_PZ</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}AUTO_PZ</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}AUTO_PZ</access>
                     <value type="string">Done,Start</value>
                 </value>
                 <displaygroup>detail</displaygroup>
@@ -225,7 +225,7 @@
                 <name>aBDC</name>
                 <id>${PV}AUTO_BDC</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}AUTO_BDC</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}AUTO_BDC</access>
                     <value type="string">Done,Start</value>
                 </value>
                 <displaygroup>detail</displaygroup>

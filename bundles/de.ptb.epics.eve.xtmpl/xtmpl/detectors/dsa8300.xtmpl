@@ -11,7 +11,7 @@
                     <access monitor="true" method="${Method=GETCB}" transport="ca" type="${Type=double}">${PV}:getWfFPB</access>
                 </read>
                 <unit>
-                    <access method="GETPUT" transport="ca" type="string">${PV}:getWfFPB.EGU</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}:getWfFPB.EGU</access>
                 </unit>
                 <trigger>
                     <access method="PUTCB" transport="ca" type="int" timeout="${Timeout=25.0}">${PV}:getWfFPB.PROC</access>
@@ -21,7 +21,7 @@
                     <name>setState</name>
                     <id>${PV}setState</id>
                     <value>
-                        <access method="GETPUT" transport="ca" type="string">${PV}:setState.VAL</access>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}:setState.VAL</access>
                         <value type="string">STOP,RUN</value>
                     </value>
                     <displaygroup>detail</displaygroup>

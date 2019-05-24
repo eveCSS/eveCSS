@@ -15,7 +15,7 @@
                 <name>Initialize (SDC)</name>
                 <id>${PV}sdc</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}sdc</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}sdc</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -23,7 +23,7 @@
                 <name>display</name>
                 <id>${PV}display</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}display</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}display</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -31,7 +31,7 @@
                 <name>intTime</name>
                 <id>${PV}intTime.B</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}intTime.B</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}intTime.B</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -39,7 +39,7 @@
                 <name>Scan</name>
                 <id>${PV}dataStream.SCAN</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">${PV}dataStream.SCAN</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}dataStream.SCAN</access>
                     <value type="string">Passive,Event,I/O Intr,10 second,5 second,2 second,1 second,.5 second,.2 second,.1 second</value>
                 </value>
                 <displaygroup>detail</displaygroup>

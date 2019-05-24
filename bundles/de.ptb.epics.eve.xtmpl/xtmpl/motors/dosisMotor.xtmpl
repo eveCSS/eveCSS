@@ -19,7 +19,7 @@
                     <value type="int">1</value>
                 </stop>
                 <unit>
-                    <access method="GETPUT" transport="ca" type="string">${Prefix}${PV}target.EGU</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${Prefix}${PV}target.EGU</access>
                 </unit>
             </axis>
             <option>

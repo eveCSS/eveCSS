@@ -3,7 +3,7 @@
                     <name>Raw Offset</name>
                     <id>${Prefix=""}${PV}.ROFF</id>
                     <value>
-                        <access method="GETPUT" transport="ca" type="int">${PV}.ROFF</access>
+                        <access method="GETPUTCB" transport="ca" type="int">${PV}.ROFF</access>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
@@ -11,7 +11,7 @@
                     <name>Scale</name>
                     <id>${Prefix=""}${PV}.ASLO</id>
                     <value>
-                        <access method="GETPUT" transport="ca" type="double">${PV}.ASLO</access>
+                        <access method="GETPUTCB" transport="ca" type="double">${PV}.ASLO</access>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
@@ -19,7 +19,7 @@
                     <name>Offset</name>
                     <id>${Prefix=""}${PV}.AOFF</id>
                     <value>
-                        <access method="GETPUT" transport="ca" type="double">${PV}.AOFF</access>
+                        <access method="GETPUTCB" transport="ca" type="double">${PV}.AOFF</access>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
@@ -27,7 +27,7 @@
                     <name>Smoothing</name>
                     <id>${Prefix=""}${PV}.SMOO</id>
                     <value>
-                        <access method="GETPUT" transport="ca" type="double">${PV}.SMOO</access>
+                        <access method="GETPUTCB" transport="ca" type="double">${PV}.SMOO</access>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
@@ -35,7 +35,7 @@
                     <name>Hi Full Scale Value</name>
                     <id>${Prefix=""}${PV}.EGUF</id>
                     <value>
-                        <access method="GETPUT" transport="ca" type="double">${PV}.EGUF</access>
+                        <access method="GETPUTCB" transport="ca" type="double">${PV}.EGUF</access>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
@@ -43,7 +43,7 @@
                     <name>Lo Full Scale Value</name>
                     <id>${Prefix=""}${PV}.EGUL</id>
                     <value>
-                        <access method="GETPUT" transport="ca" type="double">${PV}.EGUL</access>
+                        <access method="GETPUTCB" transport="ca" type="double">${PV}.EGUL</access>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>

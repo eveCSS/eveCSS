@@ -15,7 +15,7 @@
                     <name>refMarkAction</name>
                     <id>${PV}refmark.VAL</id>
                     <value>
-                        <access method="GETPUT" transport="ca" type="string">${PV}refmark.VAL</access>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}refmark.VAL</access>
                         <value type="string">no action,start counter,stop counter,clear counter,get datum,get datum @ 2.,clear @ refMark</value>
                     </value>
                     <displaygroup>detail</displaygroup>
@@ -24,7 +24,7 @@
                     <name>controlReg</name>
                     <id>${PV}ctrlReg.VAL</id>
                     <value>
-                        <access method="GETPUT" transport="ca" type="string">${PV}ctrlReg.VAL</access>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}ctrlReg.VAL</access>
                         <value type="string">use latch 0,use latch 1,use latch 0 and 1,start counter,stop counter,clear counter,clear error</value>
                     </value>
                     <displaygroup>detail</displaygroup>

@@ -10,7 +10,7 @@
                 	<name>function</name>
                 	<id>${PV}function</id>
                 	<value>
-                    	<access method="GETPUT" transport="ca" type="string">${PV}function</access>
+                    	<access method="GETPUTCB" transport="ca" type="string">${PV}function</access>
                     	<value type="string">DCVolts,ACVolts,Temp/K,Temp/C,Freq,Ohms,V/I Ohms,DCAmps,ACAmps</value>
                 	</value>
                 	<displaygroup>summary</displaygroup>
@@ -19,7 +19,7 @@
     	            <name>range</name>
         	        <id>${PV}range</id>
             	    <value>
-                	    <access method="GETPUT" transport="ca" type="string">${PV}range</access>
+                	    <access method="GETPUTCB" transport="ca" type="string">${PV}range</access>
                     	<value type="string">Auto On,R1,R2,R3,R4,R5,R6,Auto Off</value>
         	        </value>
     	            <displaygroup>summary</displaygroup>
@@ -28,7 +28,7 @@
     	            <name>intTime</name>
         	        <id>${PV}intTime</id>
             	    <value>
-                	    <access method="GETPUT" transport="ca" type="string">${PV}intTime</access>
+                	    <access method="GETPUTCB" transport="ca" type="string">${PV}intTime</access>
                     	<value type="string">.02s,.04s,.1s,.2s,.4s,1s,2s,4s,10s,20s</value>
                 	</value>
                 	<displaygroup>summary</displaygroup>

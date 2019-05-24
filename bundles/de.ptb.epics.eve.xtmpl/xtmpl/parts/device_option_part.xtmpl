@@ -2,7 +2,7 @@
                     <name>Value</name>
                     <id>Value${PV}</id>
                     <value>
-                		<access monitor="true" method="${Method=GETPUT}" transport="ca" type="${Type=double}">${PV}</access>
+                		<access monitor="true" method="${Method=GETPUTCB}" transport="ca" type="${Type=double}">${PV}</access>
                 		<value type="${Type=double}">${Menu}</value>
                     </value>
                     <displaygroup>summary</displaygroup>
@@ -11,7 +11,7 @@
                     <name>High Label</name>
                     <id>${PV}.ONAM</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}.ONAM</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}.ONAM</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -19,7 +19,7 @@
                     <name>Low Label</name>
                     <id>${PV}.ZNAM</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">${PV}.ZNAM</access>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}.ZNAM</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -27,7 +27,7 @@
                     <name>High / s</name>
                     <id>${PV}.HIGH</id>
                     <value>
-                        <access method="GETPUT" type="double" transport="ca">${PV}_Mnu.HIGH</access>
+                        <access method="GETPUTCB" type="double" transport="ca">${PV}_Mnu.HIGH</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>

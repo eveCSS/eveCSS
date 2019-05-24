@@ -5,7 +5,7 @@
             <id>${PV}</id>
             include "detector_unit_part.xtmpl"
             <stop>
-                <access method="GETPUT" transport="ca" type="string">${PV}StopAll</access>
+                <access method="GETPUTCB" transport="ca" type="string">${PV}StopAll</access>
                 <value type="string">Acquire</value>
             </stop>
 				${includeFile}

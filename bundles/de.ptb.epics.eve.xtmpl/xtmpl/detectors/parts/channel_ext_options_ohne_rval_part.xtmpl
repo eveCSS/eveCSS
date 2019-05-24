@@ -3,7 +3,7 @@
                     <name>Hi Error Limit</name>
                     <id>${Prefix=""}${PV}.HIHI</id>
                     <value>
-                        <access method="GETPUT" transport="ca" type="double">${PV}.HIHI</access>
+                        <access method="GETPUTCB" transport="ca" type="double">${PV}.HIHI</access>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
@@ -11,7 +11,7 @@
                     <name>Hi Error Severity</name>
                     <id>${Prefix=""}${PV}.HHSV</id>
                     <value>
-                        <access method="GETPUT" transport="ca" type="string">${PV}.HHSV</access>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}.HHSV</access>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
@@ -19,7 +19,7 @@
                     <name>Hi Warn Limit</name>
                     <id>${Prefix=""}${PV}.HIGH</id>
                     <value>
-                        <access method="GETPUT" transport="ca" type="double">${PV}.HIGH</access>
+                        <access method="GETPUTCB" transport="ca" type="double">${PV}.HIGH</access>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
@@ -27,7 +27,7 @@
                     <name>Hi Warn Severity</name>
                     <id>${Prefix=""}${PV}.HSV</id>
                     <value>
-                        <access method="GETPUT" transport="ca" type="string">${PV}.HSV</access>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}.HSV</access>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
@@ -35,7 +35,7 @@
                     <name>Monitor Deadband</name>
                     <id>${Prefix=""}${PV}.MDEL</id>
                     <value>
-                        <access method="GETPUT" transport="ca" type="double">${PV}.MDEL</access>
+                        <access method="GETPUTCB" transport="ca" type="double">${PV}.MDEL</access>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
@@ -43,7 +43,7 @@
                     <name>Low Warn Limit</name>
                     <id>${Prefix=""}${PV}.LOW</id>
                     <value>
-                        <access method="GETPUT" transport="ca" type="double">${PV}.LOW</access>
+                        <access method="GETPUTCB" transport="ca" type="double">${PV}.LOW</access>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
@@ -51,7 +51,7 @@
                     <name>Low Warn Severity</name>
                     <id>${Prefix=""}${PV}.LSV</id>
                     <value>
-                        <access method="GETPUT" transport="ca" type="string">${PV}.LSV</access>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}.LSV</access>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
@@ -59,7 +59,7 @@
                     <name>Low Error Limit</name>
                     <id>${Prefix=""}${PV}.LOLO</id>
                     <value>
-                        <access method="GETPUT" transport="ca" type="double">${PV}.LOLO</access>
+                        <access method="GETPUTCB" transport="ca" type="double">${PV}.LOLO</access>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
@@ -67,7 +67,7 @@
                     <name>Low Error Severity</name>
                     <id>${Prefix=""}${PV}.LLSV</id>
                     <value>
-                        <access method="GETPUT" transport="ca" type="string">${PV}.LLSV</access>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}.LLSV</access>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>

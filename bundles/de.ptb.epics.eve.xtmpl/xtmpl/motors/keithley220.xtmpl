@@ -19,10 +19,10 @@
                     <value type="int">1</value>
                 </stop>
                 <highlimit>
-                    <access method="GETPUT" type="double" transport="ca">${PV}current.DRVH</access>
+                    <access method="GETPUTCB" type="double" transport="ca">${PV}current.DRVH</access>
                 </highlimit>
                 <lowlimit>
-                    <access method="GETPUT" type="double" transport="ca">${PV}current.DRVL</access>
+                    <access method="GETPUTCB" type="double" transport="ca">${PV}current.DRVL</access>
                 </lowlimit>
                 <status>
                     <access method="GETCB" transport="ca" type="int">${PV}.STAT</access>
@@ -42,7 +42,7 @@
                     <name>Soft High Limit</name>
                     <id>${PV}current.DRVH</id>
                     <value>
-                        <access method="GETPUT" type="double" transport="ca">${PV}current.DRVH</access>
+                        <access method="GETPUTCB" type="double" transport="ca">${PV}current.DRVH</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -50,7 +50,7 @@
                     <name>Soft Low Limit</name>
                     <id>${PV}current.DRVL</id>
                     <value>
-                        <access method="GETPUT" type="double" transport="ca">${PV}current.DRVL</access>
+                        <access method="GETPUTCB" type="double" transport="ca">${PV}current.DRVL</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -76,7 +76,7 @@
                     <name>voltageLimit</name>
                     <id>${PV}voltageLimit</id>
                     <value>
-                        <access method="GETPUT" type="double" transport="ca">${PV}voltageLimit</access>
+                        <access method="GETPUTCB" type="double" transport="ca">${PV}voltageLimit</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>

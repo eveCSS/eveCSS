@@ -21,7 +21,7 @@
                     <access monitor="true" method="${Method=GETCB}" transport="ca" type="${Type=double}">${Prefix}${PV}dose</access>
                 </read>
                 <unit>
-                    <access method="GETPUT" transport="ca" type="string">${Prefix}${PV}dose.EGU</access>
+                    <access method="GETPUTCB" transport="ca" type="string">${Prefix}${PV}dose.EGU</access>
                 </unit>
                 <option>
                     <name>Severity</name>

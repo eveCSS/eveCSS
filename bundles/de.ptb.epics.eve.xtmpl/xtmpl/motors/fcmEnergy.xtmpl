@@ -25,7 +25,7 @@
                     <name>2D (nm)  [C]</name>
                     <id>${Prefix}${PV}.C</id>
                     <value>
-                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}.C</access>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}.C</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -33,7 +33,7 @@
                     <name>DC table</name>
                     <id>${Prefix}${PV}cff.LINR</id>
                     <value>
-                        <access method="GETPUT" type="${Type=string}" transport="ca">${PV}cff.LINR</access>
+                        <access method="GETPUTCB" type="${Type=string}" transport="ca">${PV}cff.LINR</access>
                         <value type="string">NO CONVERSION,LINEAR,DCInSb,DCSi,DCSi3</value>
                     </value>
                     <displaygroup>summary</displaygroup>
@@ -42,7 +42,7 @@
                     <name>Theta[E] function</name>
                     <id>${Prefix}${PV}calc</id>
                     <value>
-                        <access method="GETPUT" type="${Type=string}" transport="ca">${PV}calc</access>
+                        <access method="GETPUTCB" type="${Type=string}" transport="ca">${PV}calc</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -50,7 +50,7 @@
                     <name>DC value  [F]</name>
                     <id>${Prefix}${PV}.F</id>
                     <value>
-                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}.F</access>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}.F</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -90,7 +90,7 @@
                     <name>Theta1 value</name>
                     <id>${Prefix}${PV}</id>
                     <value>
-                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}</access>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -98,7 +98,7 @@
                     <name>Theta2 value</name>
                     <id>${Prefix}${PV}ang2</id>
                     <value>
-                        <access method="GETPUT" type="${Type=double}" transport="ca">${PV}ang2</access>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}ang2</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>

@@ -9,13 +9,13 @@
                     <value type="int">1</value>
                 </stop>
                 <highlimit>
-                    <access method="GETPUT" type="double" transport="ca">${PV}.HLM</access>
+                    <access method="GETPUTCB" type="double" transport="ca">${PV}.HLM</access>
                 </highlimit>
                 <lowlimit>
-                    <access method="GETPUT" type="double" transport="ca">${PV}.LLM</access>
+                    <access method="GETPUTCB" type="double" transport="ca">${PV}.LLM</access>
                 </lowlimit>
                 <limitviolation>
-                    <access method="GETPUT" type="int" transport="ca">${PV}.LVIO</access>
+                    <access method="GETPUTCB" type="int" transport="ca">${PV}.LVIO</access>
                 </limitviolation>
                 <status>
                     <access method="GETCB" transport="ca" type="int">${PV}.MSTA</access>
