@@ -147,7 +147,7 @@
                     <name>suppressed value</name>
                     <id>${PV}offset</id>
                     <value>
-                        <access method="GET" transport="ca" type="double">${PV}offset</access>
+                        <access method="GETCB" transport="ca" type="double">${PV}offset</access>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
@@ -155,7 +155,7 @@
                     <name>raw value</name>
                     <id>${PV}rawData</id>
                     <value>
-                        <access method="GET" transport="ca" type="double">${PV}rawData</access>
+                        <access method="GETCB" transport="ca" type="double">${PV}rawData</access>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>

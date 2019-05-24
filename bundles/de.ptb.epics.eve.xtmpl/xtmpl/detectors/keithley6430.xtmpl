@@ -246,7 +246,7 @@
                 <name>Suppressed Value</name>
                 <id>${PV}offset</id>
                 <value>
-                    <access method="GET" transport="ca" type="double">${PV}offset</access>
+                    <access method="GETCB" transport="ca" type="double">${PV}offset</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>

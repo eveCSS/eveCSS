@@ -68,7 +68,7 @@
                     <name>counter</name>
                     <id>${PV}counter</id>
                     <value>
-                        <access method="GET" transport="ca" type="int">${PV}counter</access>
+                        <access method="GETCB" transport="ca" type="int">${PV}counter</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
