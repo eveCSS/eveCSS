@@ -3,7 +3,7 @@
  <modelVersion>4.0.0</modelVersion>
  <groupId>de.ptb.epics.eve</groupId>
  <artifactId>de.ptb.epics.eve.maven.osgi.convert</artifactId>
- <version>1.30.0</version>
+ <version>1.31.0</version>
  <packaging>pom</packaging>
 
  <build>

@@ -510,7 +510,7 @@
 		<unit id="org.apache.pdfbox" version="1.8.16"/>
 		<unit id="org.apache.pdfbox.fontbox" version="1.8.16"/>
 		<unit id="org.apache.pdfbox.jempbox" version="1.8.16"/>
-		<repository location="file:/soft/repo/p2/MavenOSGi/1.30/"/>
+		<repository location="file:/soft/repo/p2/MavenOSGi/1.31/"/>
 	</location>
 </locations>
 </target>
