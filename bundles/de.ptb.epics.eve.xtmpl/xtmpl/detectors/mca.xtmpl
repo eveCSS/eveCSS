@@ -3,7 +3,7 @@
             <class>${Class=""}</class>
             <name>${Name=""}</name>
             <id>${PV}</id>
-            include "detector_unit_part.xtmpl"
+            include "channel_unit_part.xtmpl"
             <stop>
                 <access method="GETPUTCB" transport="ca" type="string">${PV}.STOP</access>
                 <value type="string">Acquire</value>
