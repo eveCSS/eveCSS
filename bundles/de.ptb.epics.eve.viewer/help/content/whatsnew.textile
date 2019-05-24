@@ -1,6 +1,8 @@
 h1(eveTopic). What's New in EVE Viewer
 
-h2(eveTopic). Version 1.31.0 (2019-05-xx)
+h2(eveTopic). Version 1.31.0 (2019-05-24)
+
+* [Feature-#2942] enable/disable all option for plot axis auto scale
 
 <hr/>
 

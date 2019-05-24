@@ -1,12 +1,14 @@
 h1(eveTopic). What's New in EVE Editor
 
-h2(eveTopic). Version 1.31.0 (2019-05-xx)
+h2(eveTopic). Version 1.31.0 (2019-05-24)
 
 * [Feature-#4260/#1991] introduced dynamic snapshot scan modules. Dynamic snapshots allow determining the list of devices not until the scan is executed.
 
 p=. !(eveImage)../img/whatsnew/131/f4260-scanmoduletypes.png(Scan module types for static and dynamic axis and channel snapshots)!
 
 p. More information on scan module types can be found in the topics "Scan Description":concepts/scandescription.html and "Scan Module View":concepts/scanmoduleview.html.
+
+* [Bug-#3780] Entering negative Limits for detector channel average measurements is now disallowed (using absolute value).
 
 <hr/>
 
