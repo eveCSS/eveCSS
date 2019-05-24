@@ -360,6 +360,17 @@
       </command>
       <command
             categoryId="de.ptb.epics.eve.viewer.views.plotview"
+            defaultHandler="de.ptb.epics.eve.viewer.handler.plot.AutoScaleOnOff"
+            id="de.ptb.epics.eve.viewer.views.plotview.autoscaleonoff"
+            name="Auto Scale On/Off">
+         <commandParameter
+               id="de.ptb.epics.eve.viewer.views.plotview.autoscaleonoff.parameter.on"
+               name="on"
+               optional="false">
+         </commandParameter>
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.viewer.views.plotview"
             id="de.ptb.epics.eve.viewer.views.plotview.modifier.inverty1"
             name="Axes Modifier Invert y1">
          <state
@@ -985,6 +996,28 @@
                commandId="de.ptb.epics.eve.viewer.views.plotview.autoscaley2"
                label="y2-Axis Auto Scale"
                style="toggle">
+         </command>
+         <separator
+               name="de.ptb.epics.eve.viewer.views.plotview.autoscale.separator"
+               visible="true">
+         </separator>
+         <command
+               commandId="de.ptb.epics.eve.viewer.views.plotview.autoscaleonoff"
+               label="enable all"
+               style="push">
+            <parameter
+                  name="de.ptb.epics.eve.viewer.views.plotview.autoscaleonoff.parameter.on"
+                  value="true">
+            </parameter>
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.viewer.views.plotview.autoscaleonoff"
+               label="disable all"
+               style="push">
+            <parameter
+                  name="de.ptb.epics.eve.viewer.views.plotview.autoscaleonoff.parameter.on"
+                  value="false">
+            </parameter>
          </command>
       </menuContribution>
       <menuContribution
