@@ -1,6 +1,6 @@
 h1(eveTopic). What's New in EVE Editor
 
-h2(eveTopic). Version 1.31.0 (2019-05-24)
+h2(eveTopic). Version 1.31.0 (2019-05-27)
 
 * [Feature-#4260/#1991] introduced dynamic snapshot scan modules. Dynamic snapshots allow determining the list of devices not until the scan is executed.
 
