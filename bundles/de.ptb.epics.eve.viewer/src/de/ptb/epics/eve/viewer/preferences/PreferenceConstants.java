@@ -33,4 +33,9 @@ public final class PreferenceConstants {
 	 * 
 	 */
 	public static final String P_PLOT_BUFFER_SIZE = "PlotBufferSize";
+	
+	/**
+	 * @since 1.31.1
+	 */
+	public static final String P_SHOW_DEFINE_CONFIRM_DIALOG = "showDefineWarningDialog";
 }

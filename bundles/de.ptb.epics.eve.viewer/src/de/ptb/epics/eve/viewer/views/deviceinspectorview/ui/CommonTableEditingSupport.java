@@ -1,11 +1,16 @@
 package de.ptb.epics.eve.viewer.views.deviceinspectorview.ui;
 
+import org.apache.log4j.Logger;
+import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
+import org.eclipse.jface.window.Window;
 
 import de.ptb.epics.eve.util.ui.jface.MyComboBoxCellEditor;
+import de.ptb.epics.eve.viewer.Activator;
+import de.ptb.epics.eve.viewer.preferences.PreferenceConstants;
 import de.ptb.epics.eve.viewer.views.deviceinspectorview.CommonTableElement;
 
 /**
@@ -18,6 +23,8 @@ import de.ptb.epics.eve.viewer.views.deviceinspectorview.CommonTableElement;
  * @author Marcus Michalsky
  */
 public class CommonTableEditingSupport extends EditingSupport {
+	private static final Logger LOGGER = 
+			Logger.getLogger(CommonTableEditingSupport.class.getName());
 	
 	// the table viewer the editing support belongs to
 	private TableViewer viewer;
@@ -117,6 +124,27 @@ public class CommonTableEditingSupport extends EditingSupport {
 	@Override
 	protected void setValue(Object element, Object value) {
 		CommonTableElement ctb = (CommonTableElement) element;
+		if (column.equals("define")) {
+			boolean oldState = Activator.getDefault().getPreferenceStore().
+					getBoolean(PreferenceConstants.P_SHOW_DEFINE_CONFIRM_DIALOG);
+			if (oldState) {
+				MessageDialogWithToggle defineDialog = 
+					MessageDialogWithToggle.openOkCancelConfirm(
+						viewer.getControl().getShell(), 
+						"Confirm Define of Axis " + ctb.getAbstractDevice().getName(), 
+						"You are about to define axis " + ctb.getAbstractDevice().getName() + ". Continue ?", 
+						"Do not show this dialog again", 
+						!oldState,
+						Activator.getDefault().getPreferenceStore(), 
+						PreferenceConstants.P_SHOW_DEFINE_CONFIRM_DIALOG);
+				if (defineDialog.getReturnCode() == Window.CANCEL) {
+					LOGGER.debug("define confirm dialog was canceled.");
+					return;
+				}
+				LOGGER.debug("dialog show define confirm property: " + 
+						defineDialog.getToggleState());
+			}
+		}
 		ctb.setValue(value, column);
 	}
 }

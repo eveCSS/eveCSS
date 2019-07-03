@@ -1,5 +1,6 @@
 package de.ptb.epics.eve.viewer.preferences;
 
+import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.FileFieldEditor;
 import org.eclipse.jface.preference.IntegerFieldEditor;
@@ -69,6 +70,12 @@ public class PreferencePage extends FieldEditorPreferencePage
 				this.getFieldEditorParent());
 		plotIntegerFieldEditor.setValidRange(10, 2000);
 		addField(plotIntegerFieldEditor);
+		
+		BooleanFieldEditor showDefineWarningDialog = new BooleanFieldEditor(
+				PreferenceConstants.P_SHOW_DEFINE_CONFIRM_DIALOG, 
+				"Show Warning Dialog for Define of Motor Axes",
+				this.getFieldEditorParent());
+		addField(showDefineWarningDialog);
 	}
 
 	/**
