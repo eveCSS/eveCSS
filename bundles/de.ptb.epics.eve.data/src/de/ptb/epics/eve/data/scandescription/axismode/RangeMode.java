@@ -1,11 +1,8 @@
 package de.ptb.epics.eve.data.scandescription.axismode;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -97,12 +94,10 @@ public class RangeMode extends AxisMode {
 			for (String s : regexp.split(",")) {
 				decimalRanges.add(new BigDecimalRange(s.trim()));
 			}
-			NumberFormat numberFormat = DecimalFormat.getInstance(Locale.US);
-			numberFormat.setGroupingUsed(false);
 			StringBuilder buffer = new StringBuilder();
 			for (BigDecimalRange decimalRange : decimalRanges) {
 				for (BigDecimal decimal : decimalRange.getValues()) {
-					buffer.append(numberFormat.format(decimal));
+					buffer.append(decimal);
 					buffer.append(", ");
 				}
 			}

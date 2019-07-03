@@ -4,6 +4,12 @@
                 <name>${Name}</name>
                 <id>${PV}</id>
 				include "axis_no_cb_basic_part.xtmpl"
-				include "axis_extended_part.xtmpl"
+                <!-- include "axis_extended_part.xtmpl" entfernt, siehe Ticket 2358 -->
+                <deadband>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}.RDBD</access>
+                </deadband>
+                <offset>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}.OFF</access>
+                </offset>
 				include "axis_option_part.xtmpl"
             </axis>

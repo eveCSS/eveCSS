@@ -910,7 +910,7 @@
                style="push">
             <parameter
                   name="href"
-                  value="/de.ptb.epics.eve.editor/help/content/concepts/plotwindow.html">
+                  value="/de.ptb.epics.eve.editor/help/content/concepts/plotwindowview.html">
             </parameter>
          </command>
       </menuContribution>
@@ -949,7 +949,7 @@
                style="push">
             <parameter
                   name="href"
-                  value="/de.ptb.epics.eve.editor/help/content/concepts/chain.html">
+                  value="/de.ptb.epics.eve.editor/help/content/concepts/chainview.html">
             </parameter>
          </command>
       </menuContribution>

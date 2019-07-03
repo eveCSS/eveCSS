@@ -163,4 +163,40 @@ public class BigDecimalRangeTest {
 				list,
 				new BigDecimalRange("1:1.0/5").getValues());
 	}
+	
+	@Test
+	public void testGetValuesE() {
+		List<BigDecimal> list = new ArrayList<BigDecimal>();
+		list.add(new BigDecimal("0"));
+		list.add(new BigDecimal("1E-5"));
+		list.add(new BigDecimal("2E-5"));
+		list.add(new BigDecimal("3E-5"));
+		list.add(new BigDecimal("4E-5"));
+		list.add(new BigDecimal("5E-5"));
+		list.add(new BigDecimal("6E-5"));
+		list.add(new BigDecimal("7E-5"));
+		list.add(new BigDecimal("8E-5"));
+		list.add(new BigDecimal("9E-5"));
+		list.add(new BigDecimal("0.00010"));
+		assertEquals(
+				list,
+				new BigDecimalRange("0:1E-5:1E-4").getValues());
+		
+		list.clear();
+		list.add(new BigDecimal("0"));
+		list.add(new BigDecimal("1E-10"));
+		list.add(new BigDecimal("2E-10"));
+		list.add(new BigDecimal("3E-10"));
+		list.add(new BigDecimal("4E-10"));
+		list.add(new BigDecimal("5E-10"));
+		list.add(new BigDecimal("6E-10"));
+		list.add(new BigDecimal("7E-10"));
+		list.add(new BigDecimal("8E-10"));
+		list.add(new BigDecimal("9E-10"));
+		list.add(new BigDecimal("1.0E-9"));
+		assertEquals(
+				list,
+				new BigDecimalRange("0:1E-10:1E-9").getValues());
+		
+	}
 }
