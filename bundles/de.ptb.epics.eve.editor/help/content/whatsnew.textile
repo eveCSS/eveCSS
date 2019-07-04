@@ -1,6 +1,6 @@
 h1(eveTopic). What's New in EVE Editor
 
-h2(eveTopic). Version 1.31.1 (2019-xx-yy)
+h2(eveTopic). Version 1.31.1 (2019-07-04)
 
 * [Bug-#4734] fixed rounding of double values when using axes in range mode
 
