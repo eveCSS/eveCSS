@@ -4,13 +4,13 @@
  <parent>
   <groupId>de.ptb.epics.eve</groupId>
   <artifactId>de.ptb.epics.eve.releng</artifactId>
-  <version>1.31.0</version>
+  <version>1.31.1</version>
  </parent>
 
  <groupId>de.ptb.epics.eve</groupId>
  <artifactId>org.csstudio.eve.product</artifactId>
  <packaging>eclipse-repository</packaging>
- <version>1.31.0</version>
+ <version>1.31.1</version>
 
  <build>
   <plugins>
