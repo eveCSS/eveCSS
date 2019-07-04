@@ -1,5 +1,10 @@
 h1(eveTopic). What's New in EVE Viewer
 
+h2(eveTopic). Version 1.31.1 (2019-07-04)
+
+* [Feature-#4794] confirm dialog before define axis
+* [Bug-#4801] fixed define axis without value
+
 h2(eveTopic). Version 1.31.0 (2019-05-27)
 
 * [Feature-#2942] enable/disable all option for plot axis auto scale

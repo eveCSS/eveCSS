@@ -124,6 +124,12 @@ public class CommonTableEditingSupport extends EditingSupport {
 	@Override
 	protected void setValue(Object element, Object value) {
 		CommonTableElement ctb = (CommonTableElement) element;
+
+		if (value.equals("")) {
+			/* no value set => return without an action */
+			return;
+		}
+		
 		if (column.equals("define")) {
 			boolean oldState = Activator.getDefault().getPreferenceStore().
 					getBoolean(PreferenceConstants.P_SHOW_DEFINE_CONFIRM_DIALOG);
