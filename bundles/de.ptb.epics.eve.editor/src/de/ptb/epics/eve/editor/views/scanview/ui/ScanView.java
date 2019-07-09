@@ -58,6 +58,7 @@ import de.ptb.epics.eve.editor.views.EditorViewPerspectiveListener;
 import de.ptb.epics.eve.editor.views.IEditorView;
 import de.ptb.epics.eve.editor.views.scanview.DeviceColumnComparator;
 import de.ptb.epics.eve.editor.views.scanview.OptionColumnComparator;
+import de.ptb.epics.eve.editor.views.scanview.RepeatCountConverter;
 import de.ptb.epics.eve.editor.views.scanview.RepeatCountValidator;
 import de.ptb.epics.eve.util.ui.swt.FontHelper;
 import de.ptb.epics.eve.util.ui.swt.TextSelectAllFocusListener;
@@ -295,6 +296,7 @@ public class ScanView extends ViewPart implements IEditorView,
 		UpdateValueStrategy targetToModelStrategy = new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE);
 		targetToModelStrategy.setAfterGetValidator(new RepeatCountValidator());
+		targetToModelStrategy.setConverter(new RepeatCountConverter());
 		this.repeatCountBinding = this.context.bindValue(
 				repeatCountTargetObservable, repeatCountModelObservable,
 				targetToModelStrategy, new UpdateValueStrategy(
