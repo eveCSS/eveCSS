@@ -1,6 +1,6 @@
 h1(eveTopic). What's New in EVE Editor
 
-h2(eveTopic). Version 1.31.2 (2019-XX-YY)
+h2(eveTopic). Version 1.31.2 (2019-07-31)
 
 * [Bug-#4541] fixed a bug where an IllegalArgumentException was thrown for an empty repeat count
 
