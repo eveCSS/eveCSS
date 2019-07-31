@@ -76,6 +76,12 @@ public class PreferencePage extends FieldEditorPreferencePage
 				"Show Warning Dialog for Define of Motor Axes",
 				this.getFieldEditorParent());
 		addField(showDefineWarningDialog);
+		
+		BooleanFieldEditor showAutoplayWarningsFieldEditor = new BooleanFieldEditor(
+				PreferenceConstants.P_SHOW_AUTOPLAY_WARNINGS,
+				"Show Warnings for deactivated Autoplay",
+				this.getFieldEditorParent());
+		addField(showAutoplayWarningsFieldEditor);
 	}
 
 	/**

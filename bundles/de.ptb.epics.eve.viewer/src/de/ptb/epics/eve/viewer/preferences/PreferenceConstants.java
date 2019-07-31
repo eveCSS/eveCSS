@@ -5,7 +5,6 @@ package de.ptb.epics.eve.viewer.preferences;
  * @author Marcus Michalsky
  */
 public final class PreferenceConstants {
-
 	private PreferenceConstants() {
 	}
 	
@@ -38,4 +37,9 @@ public final class PreferenceConstants {
 	 * @since 1.31.1
 	 */
 	public static final String P_SHOW_DEFINE_CONFIRM_DIALOG = "showDefineWarningDialog";
+	
+	/**
+	 * @since 1.31.2
+	 */
+	public static final String P_SHOW_AUTOPLAY_WARNINGS = "showAutoplayWarnings";
 }
