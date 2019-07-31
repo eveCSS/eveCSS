@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Client
 Bundle-SymbolicName: de.ptb.epics.eve.ecp1;singleton:=true
-Bundle-Version: 1.31.1
+Bundle-Version: 1.31.2
 Export-Package: de.ptb.epics.eve.ecp1.client,
  de.ptb.epics.eve.ecp1.client.interfaces,
  de.ptb.epics.eve.ecp1.client.model,
