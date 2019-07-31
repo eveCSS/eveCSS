@@ -21,7 +21,9 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.FocusEvent;
@@ -242,7 +244,11 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 				boolean playlistEmpty = Activator.getDefault().getEcp1Client().
 						getPlayListController().getEntries().isEmpty();
 				boolean repeatCountPositive = getRepeatCount() > 0;
-				if (!autoplayOn && (!playlistEmpty || repeatCountPositive)) {
+				boolean showAutoplayWarnings = Activator.getDefault().
+						getPreferenceStore().getBoolean(
+								PreferenceConstants.P_SHOW_AUTOPLAY_WARNINGS);
+				if (showAutoplayWarnings &&
+						!autoplayOn && (!playlistEmpty || repeatCountPositive)) {
 					StringBuilder sb = new StringBuilder();
 					if (!playlistEmpty) {
 						sb.append("The playlist is not empty. ");
@@ -251,11 +257,19 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 						sb.append("Repeat Count is > 0. ");
 					}
 					sb.append("But Autoplay is off! Should it be turned on?");
-					boolean confirmed = MessageDialog.openQuestion(getSite().
-							getShell(), "Turn Autoplay on?", sb.toString());
-					if (confirmed) {
+					
+					MessageDialogWithToggle questionDialog = 
+							MessageDialogWithToggle.openYesNoQuestion(
+									getSite().getShell(), 
+									"Turn Autoplay on?", 
+									sb.toString(), 
+									"Do not show this dialog again", 
+									!showAutoplayWarnings, 
+									Activator.getDefault().getPreferenceStore(), 
+									PreferenceConstants.P_SHOW_AUTOPLAY_WARNINGS);
+					if (questionDialog.getReturnCode() == IDialogConstants.YES_ID) {
 						Activator.getDefault().getEcp1Client().
-							getPlayListController().setAutoplay(true);
+						getPlayListController().setAutoplay(true);
 					}
 				}
 				Activator.getDefault().getEcp1Client().getPlayController().
@@ -303,7 +317,11 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 				boolean playlistEmpty = Activator.getDefault().getEcp1Client().
 						getPlayListController().getEntries().isEmpty();
 				boolean repeatCountPositive = getRepeatCount() > 0;
-				if (autoplayOn && (!playlistEmpty || repeatCountPositive)) {
+				boolean showAutoplayWarnings = Activator.getDefault().
+						getPreferenceStore().getBoolean(
+								PreferenceConstants.P_SHOW_AUTOPLAY_WARNINGS);
+				if (showAutoplayWarnings &&
+						autoplayOn && (!playlistEmpty || repeatCountPositive)) {
 					autoPlayToggleButton.setSelection(true);
 					StringBuilder sb = new StringBuilder();
 					if (!playlistEmpty) {
@@ -313,9 +331,17 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 						sb.append("Repeat Count is > 0. ");
 					}
 					sb.append("Turn Autoplay off anyway?");
-					boolean confirmed = MessageDialog.openQuestion(getSite().
-							getShell(), "Turn Autoplay off ?", sb.toString());
-					if (!confirmed) {
+					
+					MessageDialogWithToggle questionDialog = 
+							MessageDialogWithToggle.openYesNoQuestion(
+									getSite().getShell(), 
+									"Turn Autoplay off ?", 
+									sb.toString(), 
+									"Do not show this dialog again", 
+									!showAutoplayWarnings, 
+									Activator.getDefault().getPreferenceStore(), 
+									PreferenceConstants.P_SHOW_AUTOPLAY_WARNINGS);
+					if (questionDialog.getReturnCode() != IDialogConstants.YES_ID) {
 						return;
 					}
 					autoPlayToggleButton.setSelection(false);
@@ -691,17 +717,26 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 	 */
 	@Override
 	public synchronized void playListHasChanged(final IPlayListController playListController) {
-		if (!playListController.isAutoplay() && 
+		final boolean showAutoplayWarnings = Activator.getDefault().
+				getPreferenceStore().getBoolean(
+						PreferenceConstants.P_SHOW_AUTOPLAY_WARNINGS);
+		if (showAutoplayWarnings &&
+				!playListController.isAutoplay() && 
 				this.engineStatus.equals(EngineStatus.EXECUTING) && 
 				playListController.getEntries().size() > this.playListSize) {
 			this.autoPlayToggleButton.getDisplay().asyncExec(new Runnable() {
 				@Override public void run() {
-					boolean answer = MessageDialog.openQuestion(
-						autoPlayToggleButton.getShell(), 
-						"Enable Auto Play?", 
-						"A scan has beend added to the playlist. " +
-						"Enable Auto Play?");
-					if (answer) {
+					MessageDialogWithToggle questionDialog = 
+							MessageDialogWithToggle.openYesNoQuestion(
+									autoPlayToggleButton.getShell(), 
+									"Enable Autoplay?", 
+									"A scan has been added to the playlist. " +
+									"Enable Autoplay?", 
+									"Do not show this dialog again", 
+									!showAutoplayWarnings, 
+									Activator.getDefault().getPreferenceStore(), 
+									PreferenceConstants.P_SHOW_AUTOPLAY_WARNINGS);
+					if (questionDialog.getReturnCode() == IDialogConstants.YES_ID) {
 						playListController.setAutoplay(true);
 					}
 				}
