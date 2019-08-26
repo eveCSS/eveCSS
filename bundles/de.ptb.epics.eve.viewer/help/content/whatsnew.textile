@@ -1,5 +1,7 @@
 h1(eveTopic). What's New in EVE Viewer
 
+h2(eveTopic). Version 1.31.3 (2019-08-26)
+
 h2(eveTopic). Version 1.31.2 (2019-07-31)
 
 * [Bug-#4848] Autoplay warnings were not suppressible
