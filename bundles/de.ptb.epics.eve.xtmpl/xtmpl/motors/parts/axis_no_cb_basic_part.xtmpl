@@ -1,5 +1,5 @@
                 <goto>
-                    <access method="GETPUTCB" transport="ca" type="${Type=double}" timeout="${Timeout=300.0}">${PV}</access>
+                    <access method="GETPUT" transport="ca" type="${Type=double}" timeout="${Timeout=300.0}">${PV}</access>
                 </goto>
                 <position>
                     <access monitor="true" method="GETCB" transport="ca" type="${Type=double}">${PV}.RBV</access>
@@ -9,10 +9,10 @@
                     <value type="int">1</value>
                 </stop>
                 <highlimit>
-                    <access method="GETPUTCB" type="double" transport="ca">${PV}.HLM</access>
+                    <access method="GETPUT" type="double" transport="ca">${PV}.HLM</access>
                 </highlimit>
                 <lowlimit>
-                    <access method="GETPUTCB" type="double" transport="ca">${PV}.LLM</access>
+                    <access method="GETPUT" type="double" transport="ca">${PV}.LLM</access>
                 </lowlimit>
                 <status>
                     <access method="GETCB" transport="ca" type="int">${PV}.MSTA</access>
