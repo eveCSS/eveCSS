@@ -2,6 +2,14 @@ h1(eveTopic). What's New Archive (EVE)
 
 p(backToTop). "back to What's New":whatsnew.html
 
+h2(eveTopic). Version 1.31.3 (2019-08-26)
+
+* callback method in goto removed in template file @axisNoCb@  which is used by bigref motors
+
+h2(eveTopic). Version 1.31.1 (2019-07-04)
+
+* [Bug Fix-#2358] tweak Option removed in template file @axisNoCb@  which is used by bigref motors
+
 h2(eveTopic). Version 1.30.7 (2019-04-08)
 
 * new template files @leicaAT40x@ for the laser tracker AT403 and new template @basicDeferredDetector@ to read a PV as deferred
