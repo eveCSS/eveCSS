@@ -1,6 +1,6 @@
 h1(eveTopic). What's New in EVE Editor
 
-h2(eveTopic). Version 1.32.0 (2019-XX-YY)
+h2(eveTopic). Version 1.32.0 (2019-09-02)
 
 * [Feature-#4862] added "Values" column to the Motor Axes Table of the ScanModuleView.
 
