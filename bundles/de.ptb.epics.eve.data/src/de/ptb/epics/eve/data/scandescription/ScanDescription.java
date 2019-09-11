@@ -395,6 +395,21 @@ public class ScanDescription implements IModelUpdateProvider,
 	}
 	
 	/**
+	 * Sets whether the scan description should be saved.
+	 * @param saveScanDescription <code>true</code> if the scan description 
+	 * 	should be saved, <code>false</code> otherwise
+	 * @since 1.33
+	 */
+	public void setSaveScanDescription(boolean saveScanDescription) {
+		boolean oldValue = this.saveScanDescription;
+		this.saveScanDescription = saveScanDescription;
+		this.propertyChangeSupport.firePropertyChange(
+				ScanDescription.SAVE_SCAN_DESCRIPTION_PROP, 
+				oldValue, saveScanDescription);
+		updateListeners();
+	}
+	
+	/**
 	 * Returns the {@link de.ptb.epics.eve.data.scandescription.PluginController}.
 	 * 
 	 * @return the {@link de.ptb.epics.eve.data.scandescription.PluginController}

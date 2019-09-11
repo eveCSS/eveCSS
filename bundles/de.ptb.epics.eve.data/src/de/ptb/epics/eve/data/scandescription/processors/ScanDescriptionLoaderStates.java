@@ -44,66 +44,77 @@ public enum ScanDescriptionLoaderStates {
 	SCAN_LOADING,
 
 	/**
-	 * This state indicates the a chain is loading.
-	 */
-	CHAIN_LOADING,
-
-	/**
 	 * The begin tag of the comment has been read.
+	 * @since 1.33
 	 */
-	CHAIN_COMMENT_NEXT,
+	SCAN_COMMENT_NEXT,
 
 	/**
-	 * The comment has been read and the handler waits for the closing tag.
+	 * the comment has been read and the handler waits for the closing tag.
+	 * @since 1.33
 	 */
-	CHAIN_COMMENT_READ,
+	SCAN_COMMENT_READ,
 
 	/**
 	 * The begin tag of the save file name has been read.
+	 * @since 1.33
 	 */
-	CHAIN_SAVEFILENAME_NEXT,
-
+	SCAN_SAVEFILENAME_NEXT,
+	
 	/**
 	 * The save file name has been read and the handler waits for the closing
 	 * tag.
+	 * @since 1.33
 	 */
-	CHAIN_SAVEFILENAME_READ,
+	SCAN_SAVEFILENAME_READ,
 
 	/**
 	 * The begin tag of the confirm save has been read.
+	 * @since 1.33
 	 */
-	CHAIN_CONFIRMSAVE_NEXT,
-
+	SCAN_CONFIRMSAVE_NEXT,
+	
 	/**
 	 * The confirm save has been read and the handler waits for the closing tag.
+	 * @since 1.33
 	 */
-	CHAIN_CONFIRMSAVE_READ,
+	SCAN_CONFIRMSAVE_READ,
 
 	/**
 	 * The begin tag of the auto number has been read.
+	 * @since 1.33
 	 */
-	CHAIN_AUTONUMBER_NEXT,
-
+	SCAN_AUTONUMBER_NEXT,
+	
 	/**
 	 * The auto number has been read and the handler waits for the closing tag.
+	 * @since 1.33
 	 */
-	CHAIN_AUTONUMBER_READ,
-
-	/**
-	 * The plug in controller for saving is loading.
-	 */
-	CHAIN_SAVEPLUGINCONTROLLER_LOADING,
+	SCAN_AUTONUMBER_READ,
 
 	/**
 	 * The begin tag of the save scan description has been read.
+	 * @since 1.33
 	 */
-	CHAIN_SAVESCANDESCRIPTION_NEXT,
-
+	SCAN_SAVESCANDESCRIPTION_NEXT,
+	
 	/**
 	 * The save scan description has been read and the handler waits for the
 	 * closing tag.
+	 * @since 1.33
 	 */
-	CHAIN_SAVESCANDESCRIPTION_READ,
+	SCAN_SAVESCANDESCRIPTION_READ,
+
+	/**
+	 * The plug in controller for saving is loading.
+	 * @since 1.33
+	 */
+	SCAN_SAVEPLUGINCONTROLLER_LOADING,
+	
+	/**
+	 * This state indicates the a chain is loading.
+	 */
+	CHAIN_LOADING,
 
 	/**
 	 * The begin tag of the start event has been read.
