@@ -7,11 +7,6 @@ package de.ptb.epics.eve.data.scandescription.errors;
  *
  */
 public enum ChainErrorTypes {
-
-	/**
-	 * The file name is not set.
-	 */
-	FILENAME_EMPTY,
 	
 	/**
 	 * The file name contains illegal character.

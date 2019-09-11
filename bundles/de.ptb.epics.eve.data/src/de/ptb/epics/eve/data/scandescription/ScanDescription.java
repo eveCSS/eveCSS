@@ -20,6 +20,9 @@ import de.ptb.epics.eve.data.measuringstation.event.Event;
 import de.ptb.epics.eve.data.measuringstation.event.ScheduleEvent;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider;
+import de.ptb.epics.eve.data.scandescription.errors.ScanDescriptionError;
+import de.ptb.epics.eve.data.scandescription.errors.ScanDescriptionErrorTypes;
+import de.ptb.epics.eve.data.scandescription.macro.MacroResolver;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateProvider;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
@@ -53,6 +56,36 @@ public class ScanDescription implements IModelUpdateProvider,
 	/** */
 	public static final String FILE_NAME_PROP = "fileName";
 	
+	/** 
+	 * @since 1.33
+	 */
+	public static final String COMMENT_PROP = "comment";
+	
+	/**
+	 * @since 1.33
+	 */
+	public static final String SAVE_FILE_NAME_PROP = "saveFilename";
+	
+	/**
+	 * @since 1.33
+	 */
+	public static final String RESOLVED_FILENAME_PROP = "resolvedFilename";
+	
+	/**
+	 * @since 1.33
+	 */
+	public static final String CONFIRM_SAVE_PROP = "confirmSave";
+	
+	/** 
+	 * @since 1.33 
+	 */
+	public static final String AUTO_INCREMENT_PROP = "autoNumber";
+	
+	/**
+	 * @since 1.33
+	 */
+	public static final String SAVE_SCAN_DESCRIPTION_PROP = "saveScanDescription";
+	
 	private String fileName;
 	
 	// version of the scan description.
@@ -61,6 +94,18 @@ public class ScanDescription implements IModelUpdateProvider,
 	private int inputModification;
 	
 	private int repeatCount;
+	
+	private String comment;
+	private String saveFilename;
+	private String resolvedFilename;
+	// indicates if the save should be manually confirmed by the user
+	private boolean confirmSave;
+	// indicates if the datafile name should be extended by an autoincrement #
+	private boolean autoNumber;
+	// indicates whether the scan description should be saved in the result file
+	private boolean saveScanDescription;
+	// The PluginController for the Save Plugin
+	private PluginController savePluginController;
 	
 	private Event startEvent;
 	
@@ -93,6 +138,13 @@ public class ScanDescription implements IModelUpdateProvider,
 		chain.add(sm);
 		startEvent = new ScheduleEvent(sm);
 		this.fileName = "";
+		this.comment = "";
+		this.saveFilename = "";
+		this.resolvedFilename = "";
+		this.autoNumber = true;
+		this.saveScanDescription = false;
+		this.savePluginController = new PluginController();
+		this.savePluginController.addModelUpdateListener(this);
 		this.measuringStation = measuringStation;
 		this.dirty = false;
 		this.monitors = new MonitorDelegate(this);
@@ -188,6 +240,168 @@ public class ScanDescription implements IModelUpdateProvider,
 		this.propertyChangeSupport.firePropertyChange(REPEAT_COUNT_PROP, 
 				this.repeatCount, this.repeatCount=repeatCount);
 		updateListeners();
+	}
+	
+	/**
+	 * Returns the comment.
+	 * 
+	 * @return the comment
+	 * @since 1.33
+	 */
+	public String getComment() {
+		return this.comment;
+	}
+	
+	/**
+	 * Sets the comment.
+	 * 
+	 * @param comment the comment that should be set
+	 * @throws IllegalArgumentException if <code>comment</code> is 
+	 * 			<code>null</code>
+	 * @since 1.33
+	 */
+	public void setComment(final String comment) {
+		if (comment == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'comment' must not be null!");
+		}
+		String oldValue = this.comment;
+		this.comment = comment;
+		this.propertyChangeSupport.firePropertyChange(
+				ScanDescription.COMMENT_PROP, oldValue, this.comment);
+		updateListeners();
+	}
+	
+	/**
+	 * Returns the filename where the results should be saved.
+	 * 
+	 * @return the filename where the results should be saved
+	 * @since 1.33
+	 */
+	public String getSaveFilename() {
+		return this.saveFilename;
+	}
+	
+	/**
+	 * Sets the filename where the results should be saved.
+	 *
+	 * @param saveFilename the filename where the results should be saved.
+	 * @throws IllegalArgumentException if <code>saveFilename</code> is 
+	 * 			<code>null</code>
+	 * @since 1.33
+	 */
+	public void setSaveFilename(final String saveFilename) {
+		if (saveFilename == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'saveFilename' must not be null!");
+		}
+		String oldValue = this.saveFilename;
+		this.saveFilename = saveFilename;
+		this.propertyChangeSupport.firePropertyChange(
+				ScanDescription.SAVE_FILE_NAME_PROP, oldValue, saveFilename);
+		updateListeners();
+		
+		new Thread("Macro Resolver") {
+			@Override
+			public void run() {
+				setResolvedFilename(MacroResolver.getInstance().resolve(
+						saveFilename));
+			}}.start();
+	}
+	
+	/**
+	 * Returns the filename after macro resolution
+	 * @return the resolvedFilename
+	 * @since 1.33
+	 */
+	public String getResolvedFilename() {
+		return this.resolvedFilename;
+	}
+	
+	/**
+	 * 
+	 * @param resolvedFilename the resolvedFilename to set
+	 * @since 1.33
+	 */
+	public void setResolvedFilename(String resolvedFilename) {
+		String oldValue = this.resolvedFilename;
+		this.resolvedFilename = resolvedFilename;
+		this.propertyChangeSupport.firePropertyChange(
+				ScanDescription.RESOLVED_FILENAME_PROP, 
+					oldValue, resolvedFilename);
+	}
+	
+	/**
+	 * Checks whether saving of the results has to be confirmed manually.
+	 * 
+	 * @return <code>true</code> if saving has to be confirmed, 
+	 * 			<code>false</code> otherwise
+	 * @since 1.33
+	 */
+	public boolean isConfirmSave() {
+		return this.confirmSave;
+	}
+	
+	/**
+	 * Sets whether saving of results has to be confirmed manually.
+	 * 
+	 * @param confirmSave <code>true</code> if saving should be confirmed, 
+	 * 						<code>false</code> otherwise
+	 * @since 1.33
+	 */
+	public void setConfirmSave(final boolean confirmSave) {
+		boolean oldValue = this.confirmSave;
+		this.confirmSave = confirmSave;
+		this.propertyChangeSupport.firePropertyChange(
+				ScanDescription.CONFIRM_SAVE_PROP, oldValue, confirmSave);
+		updateListeners();
+	}
+	
+	/**
+	 * Checks whether auto incremented file names are enabled.
+	 * 
+	 * @return <code>true</code> if auto increment is enabled, 
+	 * 			<code>false</code> otherwise
+	 * @since 1.33
+	 */
+	public boolean isAutoNumber() {
+		return this.autoNumber;
+	}
+	
+	/**
+	 * Sets whether auto incremented file names should be used.
+	 * 
+	 * @param autoNumber <code>true</code> if auto incremented file names 
+	 * 					should be used, <code>false</code> otherwise
+	 * @since 1.33
+	 */
+	public void setAutoNumber(final boolean autoNumber) {
+		boolean oldValue = this.autoNumber;
+		this.autoNumber = autoNumber;
+		this.propertyChangeSupport.firePropertyChange(
+				ScanDescription.AUTO_INCREMENT_PROP, oldValue, autoNumber);
+		updateListeners();
+	}
+	
+	/**
+	 * Checks whether the scan description should be saved in the results file.
+	 * 
+	 * @return <code>true</code> if the scan description should be saved in the 
+	 * 			results, <code>false</code> otherwise
+	 * @since 1.33
+	 */
+	public boolean isSaveScanDescription() {
+		return this.saveScanDescription;
+	}
+	
+	/**
+	 * Returns the {@link de.ptb.epics.eve.data.scandescription.PluginController}.
+	 * 
+	 * @return the {@link de.ptb.epics.eve.data.scandescription.PluginController}
+	 * @since 1.33
+	 */
+	public PluginController getSavePluginController() {
+		return this.savePluginController;
 	}
 	
 	/**
@@ -570,6 +784,11 @@ public class ScanDescription implements IModelUpdateProvider,
 	@Override
 	public List<IModelError> getModelErrors() {
 		final List<IModelError> errorList = new ArrayList<>();
+		if (this.saveFilename.isEmpty()) {
+			errorList.add(new ScanDescriptionError(
+					this, ScanDescriptionErrorTypes.FILENAME_EMPTY));
+		}
+		errorList.addAll(this.savePluginController.getModelErrors());
 		final Iterator<Chain> it = this.chains.iterator();
 		while(it.hasNext()) {
 			errorList.addAll(it.next().getModelErrors());
