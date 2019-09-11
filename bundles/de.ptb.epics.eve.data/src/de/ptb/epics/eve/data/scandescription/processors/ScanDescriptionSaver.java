@@ -236,6 +236,57 @@ public class ScanDescriptionSaver implements
 			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.EMPTY_STRING,
 					Literals.XML_ELEMENT_NAME_REPEATCOUNT);
 
+			if (!this.scanDescription.getComment().isEmpty()) {
+				this.atts.clear();
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_COMMENT,
+						Literals.XML_ELEMENT_NAME_COMMENT, this.atts);
+				String comment = this.scanDescription.getComment();
+				this.contentHandler.characters(comment.toCharArray(), 0, comment.length());
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_COMMENT,
+						Literals.XML_ELEMENT_NAME_COMMENT);
+			}
+			
+			if (this.scanDescription.getSaveFilename() != null &&
+					!this.scanDescription.getSaveFilename().isEmpty()) {
+				this.atts.clear();
+				
+				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SAVEFILENAME,
+						Literals.XML_ELEMENT_NAME_SAVEFILENAME, this.atts);
+				String saveFilename = this.scanDescription.getSaveFilename();
+				this.contentHandler.characters(saveFilename.toCharArray(), 0, saveFilename.length());
+				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SAVEFILENAME,
+						Literals.XML_ELEMENT_NAME_SAVEFILENAME);
+			}
+
+			this.atts.clear();
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_CONFIRMSAVE,
+					Literals.XML_ELEMENT_NAME_CONFIRMSAVE, this.atts);
+			String confirmSave = Boolean.toString(this.scanDescription.isConfirmSave());
+			this.contentHandler.characters(confirmSave.toCharArray(), 0, confirmSave.length());
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_CONFIRMSAVE,
+					Literals.XML_ELEMENT_NAME_CONFIRMSAVE);
+
+			this.atts.clear();
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_AUTONUMBER,
+					Literals.XML_ELEMENT_NAME_AUTONUMBER, this.atts);
+			String autoNumber = Boolean.toString(this.scanDescription.isAutoNumber());
+			this.contentHandler.characters(autoNumber.toCharArray(), 0, autoNumber.length());
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_AUTONUMBER,
+					Literals.XML_ELEMENT_NAME_AUTONUMBER);
+
+			this.atts.clear();
+			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SAVESCANDESCRIPTION,
+					Literals.XML_ELEMENT_NAME_SAVESCANDESCRIPTION, this.atts);
+			String saveScanDescription = Boolean.toString(this.scanDescription.isSaveScanDescription());
+			this.contentHandler.characters(saveScanDescription.toCharArray(), 0, saveScanDescription.length());
+			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SAVESCANDESCRIPTION,
+					Literals.XML_ELEMENT_NAME_SAVESCANDESCRIPTION);
+
+			if (this.scanDescription.getSavePluginController().getPlugin() != null) {
+				this.atts.clear();
+				this.writePluginController(this.scanDescription.getSavePluginController(), "saveplugin");
+			}
+			
 			for(Chain chain : this.scanDescription.getChains()) {
 				this.writeChain(chain);
 			}
@@ -1052,63 +1103,6 @@ public class ScanDescriptionSaver implements
 
 			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_CHAIN,
 					Literals.XML_ELEMENT_NAME_CHAIN, this.atts);
-
-			if (!chain.getComment().isEmpty()) {
-				this.atts.clear();
-				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_COMMENT,
-						Literals.XML_ELEMENT_NAME_COMMENT, this.atts);
-				this.contentHandler.characters(
-						chain.getComment().toCharArray(), 0, chain.getComment()
-								.length());
-				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_COMMENT,
-						Literals.XML_ELEMENT_NAME_COMMENT);
-			}
-
-			if (chain.getSaveFilename() != null
-					&& !chain.getSaveFilename().isEmpty()) {
-				this.atts.clear();
-
-				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SAVEFILENAME,
-						Literals.XML_ELEMENT_NAME_SAVEFILENAME, this.atts);
-				this.contentHandler.characters(chain.getSaveFilename()
-						.toCharArray(), 0, chain.getSaveFilename().length());
-				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SAVEFILENAME,
-						Literals.XML_ELEMENT_NAME_SAVEFILENAME);
-			}
-
-			this.atts.clear();
-			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_CONFIRMSAVE,
-					Literals.XML_ELEMENT_NAME_CONFIRMSAVE, this.atts);
-			this.contentHandler.characters(
-					("" + chain.isConfirmSave()).toCharArray(), 0,
-					("" + chain.isConfirmSave()).length());
-			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_CONFIRMSAVE,
-					Literals.XML_ELEMENT_NAME_CONFIRMSAVE);
-
-			this.atts.clear();
-			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_AUTONUMBER,
-					Literals.XML_ELEMENT_NAME_AUTONUMBER, this.atts);
-			this.contentHandler.characters(
-					("" + chain.isAutoNumber()).toCharArray(), 0,
-					("" + chain.isAutoNumber()).length());
-			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_AUTONUMBER,
-					Literals.XML_ELEMENT_NAME_AUTONUMBER);
-
-			this.atts.clear();
-			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SAVESCANDESCRIPTION,
-					Literals.XML_ELEMENT_NAME_SAVESCANDESCRIPTION, this.atts);
-			this.contentHandler.characters(
-					("" + chain.isSaveScanDescription()).toCharArray(), 0,
-					("" + chain.isSaveScanDescription()).length());
-			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SAVESCANDESCRIPTION,
-					Literals.XML_ELEMENT_NAME_SAVESCANDESCRIPTION);
-
-			if (chain.getSavePluginController().getPlugin() != null) {
-				this.atts.clear();
-
-				this.writePluginController(chain.getSavePluginController(),
-						"saveplugin");
-			}
 
 			// all events except the default start event are in startevent
 			for (ControlEvent event : chain.getStartEvents()) {
