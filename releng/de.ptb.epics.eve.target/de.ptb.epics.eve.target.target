@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="de.ptb.epics.eve.target" sequenceNumber="27">
+<?pde version="3.8"?>
+<target name="de.ptb.epics.eve.target" sequenceNumber="27">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="false" type="InstallableUnit">
 <unit id="antlr" version="2.7.7"/>
@@ -513,6 +514,5 @@
 <unit id="org.apache.pdfbox.jempbox" version="1.8.16"/>
 <repository location="file:/soft/repo/p2/MavenOSGi/1.32/"/>
 </location>
-<location path="/soft/repo/p2/MavenOSGi/1.32" type="Directory"/>
 </locations>
 </target>
