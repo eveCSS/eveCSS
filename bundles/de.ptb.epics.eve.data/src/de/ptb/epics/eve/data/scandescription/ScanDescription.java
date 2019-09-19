@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 import de.ptb.epics.eve.data.EventTypes;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.Option;
+import de.ptb.epics.eve.data.measuringstation.PlugIn;
 import de.ptb.epics.eve.data.measuringstation.event.DetectorEvent;
 import de.ptb.epics.eve.data.measuringstation.event.Event;
 import de.ptb.epics.eve.data.measuringstation.event.ScheduleEvent;
@@ -65,6 +66,11 @@ public class ScanDescription implements IModelUpdateProvider,
 	 * @since 1.33
 	 */
 	public static final String SAVE_FILE_NAME_PROP = "saveFilename";
+	
+	/**
+	 * @since 1.33
+	 */
+	public static final String FILE_FORMAT_PROP = "fileFormat";
 	
 	/**
 	 * @since 1.33
@@ -294,6 +300,9 @@ public class ScanDescription implements IModelUpdateProvider,
 		if (saveFilename == null) {
 			throw new IllegalArgumentException(
 					"The parameter 'saveFilename' must not be null!");
+		} else if (this.saveFilename.equals(saveFilename)) {
+			LOGGER.debug("set savefilename that was already set -> do nothing");
+			return;
 		}
 		String oldValue = this.saveFilename;
 		this.saveFilename = saveFilename;
@@ -329,6 +338,35 @@ public class ScanDescription implements IModelUpdateProvider,
 		this.propertyChangeSupport.firePropertyChange(
 				ScanDescription.RESOLVED_FILENAME_PROP, 
 					oldValue, resolvedFilename);
+	}
+	
+	/**
+	 * Returns the save plugin of the used file format.
+	 * 
+	 * Used for data binding (combo viewer in Scan View of Editor).
+	 * Old "design" used an exposed plugin controller. no delegation.
+	 * 
+	 * @return the save plugin of the used file format
+	 * @since 1.33
+	 */
+	public PlugIn getFileFormat() {
+		return this.savePluginController.getPlugin();
+	}
+	
+	/**
+	 * Sets the file format (save plugin).
+	 * 
+	 * Used for data binding (combo viewer in Scan View of Editor).
+	 * Old "design" used an exposed plugin controller. no delegation.
+	 * 
+	 * @param plugin the plugin to set
+	 * @since 1.33
+	 */
+	public void setFileFormat(PlugIn plugin) {
+		PlugIn oldValue = this.getSavePluginController().getPlugin();
+		this.getSavePluginController().setPlugin(plugin);
+		this.propertyChangeSupport.firePropertyChange(
+				ScanDescription.FILE_FORMAT_PROP, oldValue, plugin);
 	}
 	
 	/**

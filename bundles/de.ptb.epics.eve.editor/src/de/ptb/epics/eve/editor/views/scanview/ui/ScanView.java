@@ -2,30 +2,45 @@ package de.ptb.epics.eve.editor.views.scanview.ui;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.observable.ChangeEvent;
+import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.databinding.validation.IValidator;
+import org.eclipse.core.databinding.validation.ValidationStatus;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
+import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.ExpandEvent;
+import org.eclipse.swt.events.ExpandListener;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.GC;
@@ -33,9 +48,15 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.ExpandBar;
+import org.eclipse.swt.widgets.ExpandItem;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISharedImages;
@@ -44,10 +65,14 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
+import de.ptb.epics.eve.data.PluginTypes;
 import de.ptb.epics.eve.data.measuringstation.Option;
+import de.ptb.epics.eve.data.measuringstation.PlugIn;
+import de.ptb.epics.eve.data.measuringstation.PluginParameter;
 import de.ptb.epics.eve.data.scandescription.MonitorOption;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.editor.dialogs.PluginControllerDialog;
 import de.ptb.epics.eve.editor.dialogs.monitoroptions.MonitorOptionsDialog;
 import de.ptb.epics.eve.editor.gef.editparts.ChainEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.ScanDescriptionEditPart;
@@ -71,30 +96,45 @@ import de.ptb.epics.eve.util.ui.swt.TextSelectAllMouseListener;
  */
 public class ScanView extends ViewPart implements IEditorView,
 		ISelectionListener, PropertyChangeListener {
-
 	/** the unique identifier of the view */
 	public static final String ID = "de.ptb.epics.eve.editor.views.ScanView";
 
-	// logging
 	private static final Logger LOGGER = Logger.getLogger(
 			ScanView.class.getName());
 
 	private static final int DEL_COLUMN_WIDTH = 22;
+	private static final String MACRO_TOOLTIP = "The following macros can be used:\n"
+			+ "${WEEK} : calendar week\n" 
+			+ "${YEAR} : year as yyyy\n"
+			+ "${YR} : year as yy\n"
+			+ "${MONTH} : month as MM\n" 
+			+ "${MONTHSTR} : month as MMM (e.g., Jul)\n"
+			+ "${DAY} : day as dd\n"
+			+ "${DAYSTR} : day as ddd (e.g., Mon)\n"
+			+ "${DATE} : date as yyyyMMdd (e.g., 20111231)\n"
+			+ "${DATE-} : date as yyyy-MM-dd (e.g., 2011-12-31)\n"
+			+ "${TIME} : time as HHmmss\n"
+			+ "${TIME-} : time as HH-mm-ss\n"
+			+ "${PV:<pvname>} : replace with value of pvname";
 	
 	private ScanDescription currentScanDescription;
 
-	// the utmost composite (which contains all elements)
 	private ScrolledComposite sc = null;
 	private Composite top;
-
+	
+	private Text commentText;
+	private Text filenameText;
+	private Label filenameResolvedLabel;
+	private Button saveSCMLCheckbox;
+	private Button confirmSaveCheckbox;
+	private Button autoIncrementCheckbox;
+	private ComboViewer formatCombo;	
 	private Label repeatCountLabel;
 	private Text repeatCountText;
 
-	private Label monitorOptionsLabel;
-	private ComboViewer monitorOptionsCombo;
-
 	private Button editButton;
-	private EditButtonSelectionListener editButtonSelectionListener;
+	private ComboViewer monitorsCombo;
+	private TableViewerColumn delColumn;
 
 	private TableViewer monitorOptionsTable;
 	private OptionColumnSelectionListener optionColumnSelectionListener;
@@ -112,18 +152,14 @@ public class ScanView extends ViewPart implements IEditorView,
 	private ISelectionProvider selectionProvider;
 	private IObservableValue selectionObservable;
 
-	private IObservableValue repeatCountTargetObservable;
-	private IObservableValue repeatCountModelObservable;
 	private Binding repeatCountBinding;
-
-	private IObservableValue monitorOptionsComboTargetObservable;
-	private IObservableValue monitorOptionsComboModelObservable;
-	private Binding monitorOptionsBinding;
 	
 	// Delegates
 	private EditorViewPerspectiveListener perspectiveListener;
 
-	private TableViewerColumn delColumn;
+	private Button optionsButton;
+
+	private Button browseButton;
 
 	/**
 	 * {@inheritDoc}
@@ -146,52 +182,294 @@ public class ScanView extends ViewPart implements IEditorView,
 
 		// top composite
 		this.top = new Composite(sc, SWT.NONE);
-		this.top.setLayout(new GridLayout(3, false));
+		this.top.setLayout(new FillLayout());
 
 		this.sc.setExpandHorizontal(true);
 		this.sc.setExpandVertical(true);
 		this.sc.setContent(this.top);
 
-		this.repeatCountLabel = new Label(this.top, SWT.NONE);
+		ExpandBar expandBar = new ExpandBar(this.top, SWT.V_SCROLL);
+		
+		final ExpandItem propertiesItem = new ExpandItem(expandBar, SWT.NONE);
+		propertiesItem.setText("Properties");
+		
+		Composite propertiesComposite = new Composite(expandBar, SWT.NONE);
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.numColumns = 3;
+		gridLayout.horizontalSpacing = 5;
+		propertiesComposite.setLayout(gridLayout);
+		propertiesItem.setControl(propertiesComposite);
+		propertiesItem.setExpanded(true);
+		
+		Label commentLabel = new Label(propertiesComposite, SWT.NONE);
+		commentLabel.setText("Comment:");
+		GridData gridData = new GridData();
+		gridData.verticalAlignment = SWT.TOP;
+		commentLabel.setLayoutData(gridData);
+		
+		commentText = new Text(propertiesComposite, 
+				SWT.MULTI | SWT.WRAP | SWT.BORDER | SWT.V_SCROLL);
+		commentText.setToolTipText("Scan comment. " + ScanView.MACRO_TOOLTIP);
+		gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.horizontalSpan = 2;
+		gridData.heightHint = 60;
+		commentText.setLayoutData(gridData);
+		
+		Label filenameLabel = new Label(propertiesComposite, SWT.NONE);
+		filenameLabel.setText("Filename:");
+		gridData = new GridData();
+		gridData.verticalAlignment = GridData.CENTER;
+		gridData.verticalSpan = 2;
+		filenameLabel.setLayoutData(gridData);
+		
+		filenameText = new Text(propertiesComposite, SWT.BORDER);
+		filenameText.setToolTipText(
+				"The filename where the data should be saved.\n" + 
+						ScanView.MACRO_TOOLTIP);
+		gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalAlignment = GridData.FILL;
+		filenameText.setLayoutData(gridData);
+		
+		browseButton = new Button(propertiesComposite, SWT.NONE);
+		browseButton.setText("Browse...");
+		gridData = new GridData();
+		gridData.verticalSpan = 2;
+		gridData.verticalAlignment = GridData.FILL;
+		browseButton.setLayoutData(gridData);
+		browseButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				int lastSeparatorIndex;
+				final String filePath;
+				
+				if (currentScanDescription.getSaveFilename() != null && 
+						!currentScanDescription.getSaveFilename().isEmpty()) {
+					// filename present -> show the path
+					lastSeparatorIndex = currentScanDescription.getSaveFilename().lastIndexOf(File.separatorChar);
+					filePath = currentScanDescription.getSaveFilename().substring(0, lastSeparatorIndex + 1);
+				} else {
+					// no filename -> set path to <rootDir>/daten/ or <rootDir>
+					String rootDir = Activator.getDefault().getRootDirectory();
+					File file = new File(rootDir + "data/");
+					if (file.exists()) {
+						filePath = rootDir + "data/";
+					} else {
+						filePath = rootDir;
+					}
+					file = null;
+				}
+				
+				FileDialog fileWindow = new FileDialog(getSite().getShell(), SWT.SAVE);
+				fileWindow.setFilterPath(filePath);
+				String fileName = fileWindow.open();
+				if (fileName != null) {
+					// try to get suffix parameter of the selected plugin
+					PluginParameter pluginParameter = null;
+					for (PluginParameter param : currentScanDescription.
+							getSavePluginController().getPlugin().getParameters()) {
+						if (param.getName().equals("suffix")) {
+							pluginParameter = param;
+							break;
+						}
+					}
+					if (pluginParameter != null) {
+						// suffix found -> replace
+						String suffix = currentScanDescription.getSavePluginController().get("suffix").toString();
+						// remove old suffix
+						final int lastPoint = fileName.lastIndexOf('.');
+						final int lastSep = fileName.lastIndexOf('/');
+						
+						if ((lastPoint > 0) && (lastPoint > lastSep)) {
+							currentScanDescription.setSaveFilename(
+									fileName.substring(0, lastPoint) + 
+									"." + suffix);
+						} else {
+						currentScanDescription.setSaveFilename(fileName + "." + suffix);
+						}
+					} else {
+						currentScanDescription.setSaveFilename(fileName);
+					}
+					filenameText.setSelection(filenameText.getText().length());
+				}
+			}
+		});
+		
+		filenameResolvedLabel = new Label(propertiesComposite, SWT.NONE);
+		filenameResolvedLabel.setText("");
+		gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.verticalAlignment = GridData.CENTER;
+		gridData.horizontalAlignment = GridData.FILL;
+		filenameResolvedLabel.setLayoutData(gridData);
+		
+		Label formatLabel = new Label(propertiesComposite, SWT.NONE);
+		formatLabel.setText("Format:");
+		
+		Composite rowComposite = new Composite(propertiesComposite, SWT.NONE);
+		gridLayout = new GridLayout();
+		gridLayout.numColumns = 2;
+		gridLayout.marginWidth = 0;
+		gridLayout.marginHeight = 0;
+		rowComposite.setLayout(gridLayout);
+		gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalAlignment = GridData.FILL;
+		rowComposite.setLayoutData(gridData);
+		
+		Composite fileFormatComposite = new Composite(rowComposite, SWT.NONE);
+		fileFormatComposite.setLayout(new GridLayout(2, false));
+		gridData = new GridData();
+		gridData.horizontalAlignment = SWT.LEFT;
+		gridData.grabExcessHorizontalSpace = true;
+		fileFormatComposite.setLayoutData(gridData);
+		
+		formatCombo = new ComboViewer(fileFormatComposite, SWT.READ_ONLY);
+		List<PlugIn> savePlugins = new ArrayList<>();
+		for (PlugIn plugin : Activator.getDefault().getMeasuringStation().getPlugins()) {
+			if (PluginTypes.SAVE.equals(plugin.getType())) {
+				savePlugins.add(plugin);
+			}
+		}
+		formatCombo.setContentProvider(ArrayContentProvider.getInstance());
+		formatCombo.setLabelProvider(new LabelProvider() {
+			@Override
+			public String getText(Object element) {
+				return ((PlugIn)element).getName();
+			}
+		});
+		formatCombo.setInput(savePlugins);
+		formatCombo.getCombo().addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				refreshFileRelatedControls(true);
+			}
+		});
+		
+		optionsButton = new Button(fileFormatComposite, SWT.NONE);
+		optionsButton.setText("Options");
+		optionsButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				PluginControllerDialog dialog = new PluginControllerDialog(
+						getSite().getShell(), 
+							currentScanDescription.getSavePluginController());
+				dialog.setBlockOnOpen(true);
+				dialog.open();
+			}
+		});
+		
+		Composite repeatCountComposite = new Composite(rowComposite, SWT.NONE);
+		repeatCountComposite.setLayout(new GridLayout(2, false));
+		gridData = new GridData();
+		gridData.horizontalAlignment = SWT.RIGHT;
+		gridData.grabExcessHorizontalSpace = true;
+		repeatCountComposite.setLayoutData(gridData);
+		
+		this.repeatCountLabel = new Label(repeatCountComposite, SWT.NONE);
 		this.repeatCountLabel.setText("Repeat Count:");
-
-		this.repeatCountText = new Text(this.top, SWT.BORDER);
-		this.repeatCountText
-				.setToolTipText("the number of times the scan will be repeated");
+		
+		this.repeatCountText = new Text(propertiesComposite, SWT.BORDER);
+		this.repeatCountText.setToolTipText("number of times the scan will be repeated");
 		this.repeatCountText.addFocusListener(new TextSelectAllFocusListener(
 				this.repeatCountText));
 		this.repeatCountText.addFocusListener(new TextFocusListener(
 				this.repeatCountText));
 		this.repeatCountText.addMouseListener(new TextSelectAllMouseListener(
 				this.repeatCountText));
-		GridData gridData = new GridData();
-		gridData.widthHint = 40;
-		gridData.horizontalSpan = 2;
-		this.repeatCountText.setLayoutData(gridData);
-
-		this.monitorOptionsLabel = new Label(this.top, SWT.NONE);
-		this.monitorOptionsLabel.setText("Monitored Devices:");
-
-		this.monitorOptionsCombo = new ComboViewer(this.top, SWT.READ_ONLY);
-		this.monitorOptionsCombo.setContentProvider(ArrayContentProvider
-				.getInstance());
-		this.monitorOptionsCombo.setInput(MonitorOption.values());
-
-		// Edit button
-		this.editButton = new Button(this.top, SWT.NONE);
-		this.editButton.setText(" Edit ");
-		editButtonSelectionListener = new EditButtonSelectionListener();
-		this.editButton.addSelectionListener(editButtonSelectionListener);
-
+		
+		Composite checkboxComposite = new Composite(propertiesComposite, SWT.NONE);
+		RowLayout checkboxLayout = new RowLayout();
+		checkboxComposite.setLayout(checkboxLayout);
+		gridData = new GridData();
+		gridData.horizontalSpan = 3;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalAlignment = GridData.FILL;
+		checkboxComposite.setLayoutData(gridData);
+		
+		saveSCMLCheckbox = new Button(checkboxComposite, SWT.CHECK);
+		saveSCMLCheckbox.setText("Save SCML");
+		saveSCMLCheckbox.setToolTipText(
+				"Save scan description within HDF file " +
+				"(or separate in case if ASCII)");
+		
+		confirmSaveCheckbox = new Button(checkboxComposite, SWT.CHECK);
+		confirmSaveCheckbox.setText("Confirm Save");
+		confirmSaveCheckbox.setToolTipText(
+				"Check if saving the datafile should be confirmed");
+		
+		autoIncrementCheckbox = new Button(checkboxComposite, SWT.CHECK);
+		autoIncrementCheckbox.setText("Append Autoincrementing Number");
+		
+		propertiesItem.setHeight(propertiesComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
+		
+		final ExpandItem monitorsItem = new ExpandItem(expandBar, SWT.NONE);
+		monitorsItem.setText("Monitors");
+		
+		Composite monitorsComposite = new Composite(expandBar, SWT.NONE);
+		gridLayout = new GridLayout();
+		gridLayout.numColumns = 3;
+		gridLayout.horizontalSpacing = 5;
+		monitorsComposite.setLayout(gridLayout);
+		monitorsItem.setControl(monitorsComposite);
+		monitorsItem.setExpanded(true);
+		
+		Label monitorsLabel = new Label(monitorsComposite, SWT.NONE);
+		monitorsLabel.setText("Monitored Devices:");
+		
+		monitorsCombo = new ComboViewer(monitorsComposite, SWT.READ_ONLY);
+		monitorsCombo.setContentProvider(ArrayContentProvider.getInstance());
+		monitorsCombo.setInput(MonitorOption.values());
+		
+		this.editButton = new Button(monitorsComposite, SWT.NONE);
+		this.editButton.setText("Edit");
+		this.editButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				MonitorOptionsDialog dialog = new MonitorOptionsDialog(PlatformUI
+						.getWorkbench().getActiveWorkbenchWindow().getShell(),
+						currentScanDescription);
+				currentScanDescription.setMonitorOption(MonitorOption.CUSTOM);
+				dialog.setBlockOnOpen(true);
+				dialog.open();
+			}
+		});
+		
 		ascending = de.ptb.epics.eve.util.ui.Activator.getDefault()
 				.getImageRegistry().get("SORT_ASCENDING");
 		descending = de.ptb.epics.eve.util.ui.Activator.getDefault()
 				.getImageRegistry().get("SORT_DESCENDING");
 		
-		this.createTable(this.top);
-
+		this.createTable(monitorsComposite);
+		
+		monitorsItem.setHeight(monitorsComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
+		
+		expandBar.addExpandListener(new ExpandListener() {
+			@Override
+			public void itemExpanded(ExpandEvent e) {
+				// TODO Auto-generated method stub
+				if (e.item.equals(propertiesItem)) {
+					
+				} else if (e.item.equals(monitorsItem)) {
+					//monitorsItem.setText("Monitors");
+				}
+			}
+			
+			@Override
+			public void itemCollapsed(ExpandEvent e) {
+				// TODO Auto-generated method stub
+				if (e.item.equals(propertiesItem)) {
+					
+				} else if (e.item.equals(monitorsItem)) {
+				//	monitorsItem.setText("Monitors (collapsed)");
+				}
+			}
+		});
+		
 		this.sc.setMinSize(this.top.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-
+		
 		this.top.setVisible(false);
 
 		// listen to selection changes (if a chain (or one of its scan modules)
@@ -206,6 +484,45 @@ public class ScanView extends ViewPart implements IEditorView,
 		this.bindValues();
 	}
 
+	/*
+	 * If the file format is "Do not save" certain controls should be disabled
+	 * because they do not make sense for this format. The method should be 
+	 * called when the format changes (selection listener of combo) and when 
+	 * a new scan description is set (e.g. when loading/creating a file) or when
+	 * switching between open files.
+	 * 
+	 * @param useWidget indicates whether to use the widget (true) or the model 
+	 * 	(false) to determine the status (necessary because when switching to 
+	 * 	another open editor the binding is "late" and the old value would be 
+	 * 	used. In the other case, i.e. changing the combo, the widget must be 
+	 * 	used.)
+	 * 
+	 * @since 1.33
+	 */
+	private void refreshFileRelatedControls(boolean useWidget) {
+		if ((useWidget && formatCombo.getCombo().getText().equals("Do not save"))
+				|| (!useWidget && this.currentScanDescription.getFileFormat().
+						getName().equals("Do not save"))) {
+			commentText.setEnabled(false);
+			filenameText.setEnabled(false);
+			browseButton.setEnabled(false);
+			filenameResolvedLabel.setEnabled(false);
+			optionsButton.setEnabled(false);
+			saveSCMLCheckbox.setEnabled(false);
+			confirmSaveCheckbox.setEnabled(false);
+			autoIncrementCheckbox.setEnabled(false);
+		} else {
+			commentText.setEnabled(true);
+			filenameText.setEnabled(true);
+			browseButton.setEnabled(true);
+			filenameResolvedLabel.setEnabled(true);
+			optionsButton.setEnabled(true);
+			saveSCMLCheckbox.setEnabled(true);
+			confirmSaveCheckbox.setEnabled(true);
+			autoIncrementCheckbox.setEnabled(true);
+		}
+	}
+	
 	private void createTable(final Composite parent) {
 		this.monitorOptionsTable = new TableViewer(parent, SWT.BORDER);
 		this.monitorOptionsTable.getTable().setHeaderVisible(true);
@@ -221,7 +538,7 @@ public class ScanView extends ViewPart implements IEditorView,
 		GridData gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
-		gridData.minimumHeight = 100;
+		gridData.minimumHeight = 110;
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.FILL;
 		gridData.horizontalSpan = 3;
@@ -287,12 +604,130 @@ public class ScanView extends ViewPart implements IEditorView,
 		this.selectionProvider = new ScanSelectionProvider();
 		this.selectionObservable = ViewersObservables
 				.observeSingleSelection(selectionProvider);
-
-		this.repeatCountTargetObservable = SWTObservables.observeText(
-				this.repeatCountText, SWT.Modify);
-		this.repeatCountModelObservable = BeansObservables.observeDetailValue(
-				selectionObservable, ScanDescription.REPEAT_COUNT_PROP,
-				Integer.class);
+		
+		IObservableValue commentTargetObservable = SWTObservables.
+				observeText(this.commentText, SWT.Modify);
+		IObservableValue commentTargetDelayedObservable = SWTObservables.
+				observeDelayedValue(1000, 
+						(ISWTObservableValue) commentTargetObservable);
+		IObservableValue commentModelObservable = BeansObservables.
+				observeDetailValue(selectionObservable, ScanDescription.class, 
+						ScanDescription.COMMENT_PROP, String.class);
+		this.context.bindValue(commentTargetDelayedObservable, 
+				commentModelObservable, 
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE), 
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
+		
+		IObservableValue filenameTextTargetObservable = SWTObservables.
+				observeText(this.filenameText, SWT.Modify);
+		IObservableValue filenameTextDelayedObservable = SWTObservables.
+				observeDelayedValue(500, 
+						(ISWTObservableValue) filenameTextTargetObservable);
+		IObservableValue filenameTextModelObservable = BeansObservables.
+				observeDetailValue(selectionObservable,
+						ScanDescription.class,
+						ScanDescription.SAVE_FILE_NAME_PROP, 
+						String.class);
+		UpdateValueStrategy filenameTargetStrategy = new UpdateValueStrategy();
+		filenameTargetStrategy.setAfterGetValidator(new IValidator() {
+			@Override
+			public IStatus validate(Object value) {
+				if (filenameText.getText().isEmpty()) {
+					return ValidationStatus.error("Filename must not be empty!");
+				}
+				File file = new File(filenameText.getText());
+				if (file.isFile() && file.exists()) {
+					return ValidationStatus.warning("File already exists!");
+				} else if (file.isFile()) {
+					return ValidationStatus.error("Given filename/path is not valid!");
+				}
+				return ValidationStatus.ok();
+			}
+		});
+		final Binding filenameTextBinding = this.context.bindValue(
+				filenameTextDelayedObservable,
+				filenameTextModelObservable,
+				filenameTargetStrategy,
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
+		ControlDecorationSupport.create(filenameTextBinding, SWT.LEFT);
+		filenameText.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				filenameTextBinding.updateModelToTarget();
+			}
+		});
+		
+		IObservableValue filenameLabelTargetObservable = SWTObservables.
+				observeText(this.filenameResolvedLabel);
+		IObservableValue filenameLabelModelObservable = BeansObservables.
+				observeDetailValue(selectionObservable, ScanDescription.class,
+						ScanDescription.RESOLVED_FILENAME_PROP, String.class);
+		filenameLabelModelObservable.addChangeListener(new IChangeListener() {
+			@Override
+			public void handleChange(ChangeEvent event) {
+				filenameResolvedLabel.setToolTipText(
+						currentScanDescription.getResolvedFilename());
+			}
+		});
+		this.context.bindValue(filenameLabelTargetObservable, 
+				filenameLabelModelObservable, 
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE), 
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
+		
+		IObservableValue formatComboTargetObservable = ViewersObservables.
+				observeSingleSelection(formatCombo);
+		IObservableValue formatComboModelObservable = BeansObservables.
+				observeDetailValue(selectionObservable, 
+						ScanDescription.class,
+						ScanDescription.FILE_FORMAT_PROP,
+						String.class);
+		this.context.bindValue(formatComboTargetObservable, 
+				formatComboModelObservable, 
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE), 
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
+		
+		IObservableValue saveSCMLTargetObservable = SWTObservables.
+				observeSelection(saveSCMLCheckbox);
+		IObservableValue saveSCMLModelObservable = BeansObservables.
+				observeDetailValue(selectionObservable, 
+						ScanDescription.class, 
+						ScanDescription.SAVE_SCAN_DESCRIPTION_PROP, 
+						Boolean.class);
+		this.context.bindValue(saveSCMLTargetObservable, 
+				saveSCMLModelObservable, 
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE), 
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
+		
+		IObservableValue confirmSaveTargetObservable = SWTObservables.
+				observeSelection(confirmSaveCheckbox);
+		IObservableValue confirmSaveModelObservable = BeansObservables.
+				observeDetailValue(selectionObservable, 
+						ScanDescription.class, 
+						ScanDescription.CONFIRM_SAVE_PROP, 
+						Boolean.class);
+		this.context.bindValue(confirmSaveTargetObservable, 
+				confirmSaveModelObservable, 
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE), 
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
+		
+		IObservableValue autoIncrementTargetObservable = SWTObservables.
+				observeSelection(autoIncrementCheckbox);
+		IObservableValue autoImcrementModelObservable = BeansObservables.
+				observeDetailValue(selectionObservable, 
+						ScanDescription.class, 
+						ScanDescription.AUTO_INCREMENT_PROP, 
+						Boolean.class);
+		this.context.bindValue(autoIncrementTargetObservable, 
+				autoImcrementModelObservable, 
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE), 
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
+		
+		IObservableValue repeatCountTargetObservable = SWTObservables.
+				observeText(this.repeatCountText,SWT.Modify);
+		IObservableValue repeatCountModelObservable = BeansObservables.
+				observeDetailValue(selectionObservable, 
+						ScanDescription.REPEAT_COUNT_PROP, 
+						Integer.class);
 		UpdateValueStrategy targetToModelStrategy = new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE);
 		targetToModelStrategy.setAfterGetValidator(new RepeatCountValidator());
@@ -303,23 +738,19 @@ public class ScanView extends ViewPart implements IEditorView,
 						UpdateValueStrategy.POLICY_UPDATE));
 		ControlDecorationSupport.create(repeatCountBinding, SWT.LEFT);
 
-		this.monitorOptionsComboTargetObservable = ViewersObservables
-				.observeSingleSelection(monitorOptionsCombo);
-		this.monitorOptionsComboModelObservable = BeansObservables
-				.observeDetailValue(selectionObservable,
-						ScanDescription.MONITOR_OPTION_PROP,
+		IObservableValue monitorsComboTargetObservable = ViewersObservables.
+				observeSingleSelection(monitorsCombo);
+		IObservableValue monitorsComboModelObservable = BeansObservables.
+				observeDetailValue(selectionObservable, 
+						ScanDescription.MONITOR_OPTION_PROP, 
 						MonitorOption.class);
-		this.monitorOptionsBinding = this.context.bindValue(
-				monitorOptionsComboTargetObservable,
-				monitorOptionsComboModelObservable, new UpdateValueStrategy(
-						UpdateValueStrategy.POLICY_UPDATE),
+		this.context.bindValue(
+				monitorsComboTargetObservable,
+				monitorsComboModelObservable, 
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE),
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
-		this.monitorOptionsBinding.getClass();
 	}
 
-	/*
-	 * 
-	 */
 	private void setCurrentScanDescription(ScanDescription scanDescription) {
 		if (this.currentScanDescription != null) {
 			this.currentScanDescription.removePropertyChangeListener(
@@ -350,6 +781,7 @@ public class ScanView extends ViewPart implements IEditorView,
 			this.monitorOptionsTable.setInput(
 					this.currentScanDescription.getMonitors());
 			this.adjustColumnWidths();
+			this.refreshFileRelatedControls(false);
 			this.top.setVisible(true);
 		}
 	}
@@ -456,7 +888,7 @@ public class ScanView extends ViewPart implements IEditorView,
 			LOGGER.debug("monitor option list changed");
 		}
 	}
-
+	
 	private void hideDelColumn() {
 		this.delColumn.getColumn().setWidth(0);
 		this.delColumn.getColumn().setResizable(false);
@@ -515,24 +947,6 @@ public class ScanView extends ViewPart implements IEditorView,
 			if (this.widget == repeatCountText) {
 				repeatCountBinding.updateModelToTarget();
 			}
-		}
-	}
-
-	/**
-	 */
-	private class EditButtonSelectionListener extends SelectionAdapter {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetSelected(SelectionEvent e) {
-			MonitorOptionsDialog dialog = new MonitorOptionsDialog(PlatformUI
-					.getWorkbench().getActiveWorkbenchWindow().getShell(),
-					currentScanDescription);
-			currentScanDescription.setMonitorOption(MonitorOption.CUSTOM);
-			dialog.setBlockOnOpen(true);
-			dialog.open();
 		}
 	}
 	
