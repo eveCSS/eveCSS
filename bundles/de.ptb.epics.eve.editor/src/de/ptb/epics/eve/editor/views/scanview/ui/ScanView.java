@@ -23,7 +23,6 @@ import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ComboViewer;
@@ -35,6 +34,8 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ExpandEvent;
 import org.eclipse.swt.events.ExpandListener;
 import org.eclipse.swt.events.FocusAdapter;
@@ -45,23 +46,25 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IMemento;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
@@ -101,7 +104,7 @@ public class ScanView extends ViewPart implements IEditorView,
 
 	private static final Logger LOGGER = Logger.getLogger(
 			ScanView.class.getName());
-
+	
 	private static final int DEL_COLUMN_WIDTH = 22;
 	private static final String MACRO_TOOLTIP = "The following macros can be used:\n"
 			+ "${WEEK} : calendar week\n" 
@@ -117,6 +120,9 @@ public class ScanView extends ViewPart implements IEditorView,
 			+ "${TIME-} : time as HH-mm-ss\n"
 			+ "${PV:<pvname>} : replace with value of pvname";
 	
+	private static final String MEMENTO_PROPERTIES_EXPANDED = "propertiesExpanded";
+	private static final String MEMENTO_MONITORS_EXPANDED = "monitorsExpanded";
+	
 	private ScanDescription currentScanDescription;
 
 	private ScrolledComposite sc = null;
@@ -125,12 +131,14 @@ public class ScanView extends ViewPart implements IEditorView,
 	private Text commentText;
 	private Text filenameText;
 	private Label filenameResolvedLabel;
+	private Button browseButton;
+	private ComboViewer formatCombo;
+	private Button optionsButton;
+	private Label repeatCountLabel;
+	private Text repeatCountText;
 	private Button saveSCMLCheckbox;
 	private Button confirmSaveCheckbox;
 	private Button autoIncrementCheckbox;
-	private ComboViewer formatCombo;	
-	private Label repeatCountLabel;
-	private Text repeatCountText;
 
 	private Button editButton;
 	private ComboViewer monitorsCombo;
@@ -157,10 +165,22 @@ public class ScanView extends ViewPart implements IEditorView,
 	// Delegates
 	private EditorViewPerspectiveListener perspectiveListener;
 
-	private Button optionsButton;
+	private IMemento memento;
 
-	private Button browseButton;
+	private ExpandItem propertiesItem;
 
+	private ExpandItem monitorsItem;
+
+	/**
+	 * {@inheritDoc}
+	 * @since 1.33
+	 */
+	@Override
+	public void init(IViewSite site, IMemento memento) throws PartInitException {
+		init(site);
+		this.memento = memento;
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -190,7 +210,7 @@ public class ScanView extends ViewPart implements IEditorView,
 
 		ExpandBar expandBar = new ExpandBar(this.top, SWT.V_SCROLL);
 		
-		final ExpandItem propertiesItem = new ExpandItem(expandBar, SWT.NONE);
+		propertiesItem = new ExpandItem(expandBar, SWT.NONE);
 		propertiesItem.setText("Properties");
 		
 		Composite propertiesComposite = new Composite(expandBar, SWT.NONE);
@@ -382,6 +402,7 @@ public class ScanView extends ViewPart implements IEditorView,
 		
 		Composite checkboxComposite = new Composite(propertiesComposite, SWT.NONE);
 		RowLayout checkboxLayout = new RowLayout();
+		checkboxLayout.wrap = true;
 		checkboxComposite.setLayout(checkboxLayout);
 		gridData = new GridData();
 		gridData.horizontalSpan = 3;
@@ -405,10 +426,10 @@ public class ScanView extends ViewPart implements IEditorView,
 		
 		propertiesItem.setHeight(propertiesComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 		
-		final ExpandItem monitorsItem = new ExpandItem(expandBar, SWT.NONE);
+		monitorsItem = new ExpandItem(expandBar, SWT.NONE);
 		monitorsItem.setText("Monitors");
 		
-		Composite monitorsComposite = new Composite(expandBar, SWT.NONE);
+		final Composite monitorsComposite = new Composite(expandBar, SWT.NONE);
 		gridLayout = new GridLayout();
 		gridLayout.numColumns = 3;
 		gridLayout.horizontalSpacing = 5;
@@ -449,29 +470,24 @@ public class ScanView extends ViewPart implements IEditorView,
 		expandBar.addExpandListener(new ExpandListener() {
 			@Override
 			public void itemExpanded(ExpandEvent e) {
-				// TODO Auto-generated method stub
 				if (e.item.equals(propertiesItem)) {
-					
+					setPropertiesExpandItemText(true);
 				} else if (e.item.equals(monitorsItem)) {
-					//monitorsItem.setText("Monitors");
+					setMonitorsExpandItemText(true);
 				}
 			}
-			
 			@Override
 			public void itemCollapsed(ExpandEvent e) {
-				// TODO Auto-generated method stub
 				if (e.item.equals(propertiesItem)) {
-					
+					setPropertiesExpandItemText(false);
 				} else if (e.item.equals(monitorsItem)) {
-				//	monitorsItem.setText("Monitors (collapsed)");
+					setMonitorsExpandItemText(false);
 				}
 			}
 		});
 		
-		this.sc.setMinSize(this.top.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-		
 		this.top.setVisible(false);
-
+		
 		// listen to selection changes (if a chain (or one of its scan modules)
 		// is selected, its attributes are made available for editing)
 		getSite().getWorkbenchWindow().getSelectionService()
@@ -482,6 +498,8 @@ public class ScanView extends ViewPart implements IEditorView,
 				.addPerspectiveListener(perspectiveListener);
 
 		this.bindValues();
+		this.restoreState();
+		this.refreshExpandItemTexts();
 	}
 
 	/*
@@ -784,6 +802,7 @@ public class ScanView extends ViewPart implements IEditorView,
 			this.refreshFileRelatedControls(false);
 			this.top.setVisible(true);
 		}
+		this.refreshExpandItemTexts();
 	}
 
 	/**
@@ -839,6 +858,109 @@ public class ScanView extends ViewPart implements IEditorView,
 
 	/**
 	 * {@inheritDoc}
+	 * @since 1.33
+	 */
+	@Override
+	public void saveState(IMemento memento) {
+		memento.putBoolean(ScanView.MEMENTO_PROPERTIES_EXPANDED, 
+				this.propertiesItem.getExpanded());
+		memento.putBoolean(ScanView.MEMENTO_MONITORS_EXPANDED, 
+				this.monitorsItem.getExpanded());
+	}
+	
+	/*
+	 * @since 1.33
+	 */
+	private void restoreState() {
+		if (this.memento.getBoolean(ScanView.MEMENTO_PROPERTIES_EXPANDED) != null) {
+			this.propertiesItem.setExpanded(
+				this.memento.getBoolean(ScanView.MEMENTO_PROPERTIES_EXPANDED));
+		}
+		if (this.memento.getBoolean(ScanView.MEMENTO_MONITORS_EXPANDED) != null) {
+			this.monitorsItem.setExpanded(
+				this.memento.getBoolean(ScanView.MEMENTO_MONITORS_EXPANDED));
+		}
+	}
+	
+	/*
+	 * Expand Items should show more information when they are collapsed. The 
+	 * contents has to be refreshed if 
+	 * - a new scan is loaded
+	 * - a new scan is created
+	 * - the user switches between two open scans
+	 * - when the expand bar is collapsed (or expanded)
+	 * @since 1.33
+	 */
+	private void refreshExpandItemTexts() {
+		this.setPropertiesExpandItemText(this.propertiesItem.getExpanded());
+		this.setMonitorsExpandItemText(this.monitorsItem.getExpanded());
+	}
+	
+	private void setPropertiesExpandItemText(boolean expanded) {
+		if (this.currentScanDescription == null) {
+			this.propertiesItem.setText("Properties");
+			return;
+		}
+		if (expanded) {
+			this.propertiesItem.setText("Properties");
+		} else {
+			StringBuilder builder = new StringBuilder();
+			builder.append("Properties");
+			builder.append(" (" + 
+					this.currentScanDescription.getResolvedFilename());
+			if (currentScanDescription.getRepeatCount() > 0) {
+				builder.append(", repeat: " + currentScanDescription.getRepeatCount());
+			}
+			if (currentScanDescription.isSaveScanDescription()) {
+				builder.append(", save SCML");
+			}
+			if (currentScanDescription.isConfirmSave()) {
+				builder.append(", confirm");
+			}
+			if (currentScanDescription.isAutoNumber()) {
+				builder.append(", autoinc");
+			}
+			final int COMMENT_MAX_CHARS = 10;
+			if (!currentScanDescription.getComment().isEmpty() && 
+					currentScanDescription.getComment().length() <= COMMENT_MAX_CHARS) {
+				builder.append(", '" + currentScanDescription.getComment() + "'");
+			} else if (currentScanDescription.getComment().length() > COMMENT_MAX_CHARS) {
+				builder.append(", '" + currentScanDescription.getComment().
+						substring(0, COMMENT_MAX_CHARS) + "...'");
+			}
+			builder.append(")");
+			this.propertiesItem.setText(builder.toString());
+		}
+	}
+	
+	private void setMonitorsExpandItemText(boolean expanded) {
+		if (this.currentScanDescription == null) {
+			this.monitorsItem.setText("Monitors");
+			return;
+		}
+		if (expanded) {
+			this.monitorsItem.setText("Monitors");
+		} else {
+			StringBuilder builder = new StringBuilder();
+			builder.append("Monitors");
+			builder.append(" (" + 
+					this.currentScanDescription.getMonitorOption().toString());
+			if (!this.currentScanDescription.getMonitors().isEmpty()) {
+				int count = this.currentScanDescription.getMonitors().size();
+				builder.append(", " + count); 
+				if (count == 1) {
+					builder.append(" monitor");
+				} else {
+					builder.append(" monitors");
+				}
+			}
+			builder.append(")");
+			this.monitorsItem.setText(builder.toString());
+		}
+	}
+	
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void reset() {
@@ -861,8 +983,9 @@ public class ScanView extends ViewPart implements IEditorView,
 		if (e.getPropertyName().equals(ScanDescription.FILE_NAME_PROP)) {
 			this.setPartName("Scan: " + e.getNewValue());
 			LOGGER.debug("new file name: " + e.getNewValue());
-		} else if (e.getPropertyName().equals(
-				ScanDescription.MONITOR_OPTION_PROP)) {
+		} else if (e.getPropertyName().equals(ScanDescription.RESOLVED_FILENAME_PROP)) { 
+			this.refreshExpandItemTexts();
+		} else if (e.getPropertyName().equals(ScanDescription.MONITOR_OPTION_PROP)) {
 			switch ((MonitorOption)e.getNewValue()) {
 			case AS_IN_DEVICE_DEFINITION:
 				this.hideDelColumn();
