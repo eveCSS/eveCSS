@@ -425,62 +425,6 @@ public class StatusTableSelectionListener extends SelectionAdapter implements
 			gridData.horizontalAlignment = GridData.FILL;
 			chainText.setLayoutData(gridData);
 
-			Label descLabel = new Label(chainShell, SWT.NONE);
-			descLabel.setText("Save Scan-Description:");
-			gridData = new GridData();
-			gridData.horizontalAlignment = GridData.FILL;
-			descLabel.setLayoutData(gridData);
-			Label descText = new Label(chainShell, SWT.NONE);
-			if (displayChain.isSaveScanDescription()) {
-				descText.setText(" YES ");
-			} else {
-				descText.setText(" NO ");
-			}
-			gridData = new GridData();
-			gridData.horizontalAlignment = GridData.FILL;
-			descText.setLayoutData(gridData);
-
-			Label confLabel = new Label(chainShell, SWT.NONE);
-			confLabel.setText("Confirm Save:");
-			gridData = new GridData();
-			gridData.horizontalAlignment = GridData.FILL;
-			confLabel.setLayoutData(gridData);
-			Label confText = new Label(chainShell, SWT.NONE);
-			if (displayChain.isConfirmSave()) {
-				confText.setText(" YES ");
-			} else {
-				confText.setText(" NO ");
-			}
-			gridData = new GridData();
-			gridData.horizontalAlignment = GridData.FILL;
-			confText.setLayoutData(gridData);
-
-			Label autoincrLabel = new Label(chainShell, SWT.NONE);
-			autoincrLabel.setText("Add Autoincrementing Number to Filename:");
-			gridData = new GridData();
-			gridData.horizontalAlignment = GridData.FILL;
-			autoincrLabel.setLayoutData(gridData);
-			Label autoincrText = new Label(chainShell, SWT.NONE);
-			if (displayChain.isAutoNumber()) {
-				autoincrText.setText(" YES ");
-			} else {
-				autoincrText.setText(" NO ");
-			}
-			gridData = new GridData();
-			gridData.horizontalAlignment = GridData.FILL;
-			autoincrText.setLayoutData(gridData);
-
-			Label commentLabel = new Label(chainShell, SWT.NONE);
-			commentLabel.setText("Comment:");
-			gridData = new GridData();
-			gridData.horizontalAlignment = GridData.FILL;
-			commentLabel.setLayoutData(gridData);
-			Label commentText = new Label(chainShell, SWT.NONE);
-			commentText.setText(displayChain.getComment());
-			gridData = new GridData();
-			gridData.horizontalAlignment = GridData.FILL;
-			commentText.setLayoutData(gridData);
-
 			chainShell.open();
 			shellTable[selection] = chainShell;
 		}
