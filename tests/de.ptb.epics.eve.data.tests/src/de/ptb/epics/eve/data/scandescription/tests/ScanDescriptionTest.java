@@ -37,6 +37,11 @@ public class ScanDescriptionTest implements IModelUpdateListener, PropertyChange
 	private boolean modelUpdate;
 	
 	// indicators for PropertyChangeSupportTest
+	private boolean comment;
+	private boolean saveFilename;
+	private boolean saveScanDescription;
+	private boolean confirmSave;
+	private boolean autoIncrement;
 	private boolean repeatCount;
 	private boolean fileName;
 	private boolean monitorOption;
@@ -55,6 +60,76 @@ public class ScanDescriptionTest implements IModelUpdateListener, PropertyChange
 		this.modelUpdate = false;
 		this.scanDescription.setFileName("mockFileName");
 		assertTrue(modelUpdate);
+	}
+	
+	/**
+	 * @since 1.33
+	 */
+	@Test
+	public void testPropertyChangeSupportComment() {
+		this.comment = false;
+		this.scanDescription.addPropertyChangeListener(
+				ScanDescription.COMMENT_PROP, this);
+		this.scanDescription.setComment("foo");
+		this.scanDescription.removePropertyChangeListener(
+				ScanDescription.COMMENT_PROP, this);
+		assertTrue(this.comment);
+	}
+	
+	/**
+	 * @since 1.33
+	 */
+	@Test
+	public void testPropertyChangeSupportSaveFilename() {
+		this.saveFilename = false;
+		this.scanDescription.addPropertyChangeListener(
+				ScanDescription.SAVE_FILE_NAME_PROP, this);
+		this.scanDescription.setSaveFilename("/dev/null/myfile.h5");
+		this.scanDescription.removePropertyChangeListener(
+				ScanDescription.SAVE_FILE_NAME_PROP, this);
+		assertTrue(this.saveFilename);
+	}
+	
+	/**
+	 * @since 1.33
+	 */
+	@Test
+	public void testPropertyChangeSupportSaveScanDescription() {
+		this.saveScanDescription = false;
+		this.scanDescription.addPropertyChangeListener(
+				ScanDescription.SAVE_SCAN_DESCRIPTION_PROP, this);
+		this.scanDescription.setSaveScanDescription(true);
+		this.scanDescription.removePropertyChangeListener(
+				ScanDescription.SAVE_SCAN_DESCRIPTION_PROP, this);
+		assertTrue(this.saveScanDescription);
+	}
+	
+	/**
+	 * @since 1.33
+	 */
+	@Test
+	public void testPropertyChangeSupportConfirmSave() {
+		this.confirmSave = false;
+		this.scanDescription.addPropertyChangeListener(
+				ScanDescription.CONFIRM_SAVE_PROP, this);
+		this.scanDescription.setConfirmSave(true);
+		this.scanDescription.removePropertyChangeListener(
+				ScanDescription.CONFIRM_SAVE_PROP, this);
+		assertTrue(this.confirmSave);
+	}
+	
+	/**
+	 * @since 1.33
+	 */
+	@Test
+	public void testPropertyChangeSupportAutoIncrement() {
+		this.autoIncrement = false;
+		this.scanDescription.addPropertyChangeListener(
+				ScanDescription.AUTO_INCREMENT_PROP, this);
+		this.scanDescription.setAutoNumber(false);
+		this.scanDescription.removePropertyChangeListener(
+				ScanDescription.AUTO_INCREMENT_PROP, this);
+		assertTrue(this.autoIncrement);
 	}
 	
 	@Test
@@ -483,7 +558,17 @@ public class ScanDescriptionTest implements IModelUpdateListener, PropertyChange
 	
 	@Override
 	public void propertyChange(PropertyChangeEvent e) {
-		if (e.getPropertyName().equals(ScanDescription.REPEAT_COUNT_PROP)) {
+		if (e.getPropertyName().equals(ScanDescription.COMMENT_PROP)) {
+			this.comment = true;
+		} else if (e.getPropertyName().equals(ScanDescription.SAVE_FILE_NAME_PROP)) { 
+			this.saveFilename = true;
+		} else if (e.getPropertyName().equals(ScanDescription.SAVE_SCAN_DESCRIPTION_PROP)) {
+			this.saveScanDescription = true;
+		} else if (e.getPropertyName().equals(ScanDescription.CONFIRM_SAVE_PROP)) {
+			this.confirmSave = true;
+		} else if (e.getPropertyName().equals(ScanDescription.AUTO_INCREMENT_PROP)) {
+			this.autoIncrement = true;
+		} else if (e.getPropertyName().equals(ScanDescription.REPEAT_COUNT_PROP)) {
 			this.repeatCount = true;
 		} else if (e.getPropertyName().equals(ScanDescription.FILE_NAME_PROP)) {
 			this.fileName = true;
