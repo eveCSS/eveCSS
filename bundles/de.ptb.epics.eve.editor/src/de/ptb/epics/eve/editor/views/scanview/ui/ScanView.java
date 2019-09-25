@@ -34,8 +34,6 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.events.ControlAdapter;
-import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ExpandEvent;
 import org.eclipse.swt.events.ExpandListener;
 import org.eclipse.swt.events.FocusAdapter;
@@ -46,7 +44,6 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -271,15 +268,20 @@ public class ScanView extends ViewPart implements IEditorView,
 					lastSeparatorIndex = currentScanDescription.getSaveFilename().lastIndexOf(File.separatorChar);
 					filePath = currentScanDescription.getSaveFilename().substring(0, lastSeparatorIndex + 1);
 				} else {
-					// no filename -> set path to <rootDir>/daten/ or <rootDir>
-					String rootDir = Activator.getDefault().getRootDirectory();
-					File file = new File(rootDir + "data/");
-					if (file.exists()) {
-						filePath = rootDir + "data/";
+					// no filename -> set path to defaults or <rootDir>/daten/ or <rootDir>
+					File workDir = de.ptb.epics.eve.resources.Activator.
+						getDefault().getDefaultsManager().getWorkingDirectory();
+					if (workDir.isDirectory()) {
+						filePath = workDir.getAbsolutePath();
 					} else {
-						filePath = rootDir;
+						String rootDir = Activator.getDefault().getRootDirectory();
+						File file = new File(rootDir + "daten/");
+						if (file.exists()) {
+							filePath = rootDir + "daten/";
+						} else {
+							filePath = rootDir;
+						}
 					}
-					file = null;
 				}
 				
 				FileDialog fileWindow = new FileDialog(getSite().getShell(), SWT.SAVE);
