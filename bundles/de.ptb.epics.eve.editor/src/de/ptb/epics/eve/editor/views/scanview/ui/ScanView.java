@@ -405,6 +405,8 @@ public class ScanView extends ViewPart implements IEditorView,
 		Composite checkboxComposite = new Composite(propertiesComposite, SWT.NONE);
 		RowLayout checkboxLayout = new RowLayout();
 		checkboxLayout.wrap = true;
+		checkboxLayout.pack = true;
+		checkboxLayout.justify = false;
 		checkboxComposite.setLayout(checkboxLayout);
 		gridData = new GridData();
 		gridData.horizontalSpan = 3;
