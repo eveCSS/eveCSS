@@ -298,6 +298,32 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		case SCAN_LOADING:
 			if (qName.equals(Literals.XML_ELEMENT_NAME_REPEATCOUNT)) {
 				this.state = ScanDescriptionLoaderStates.REPEATCOUNT_NEXT;
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_COMMENT)) {
+				this.state = ScanDescriptionLoaderStates.SCAN_COMMENT_NEXT;
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_SAVEFILENAME)) {
+				this.state = ScanDescriptionLoaderStates.SCAN_SAVEFILENAME_NEXT;
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_CONFIRMSAVE)) {
+				this.state = ScanDescriptionLoaderStates.SCAN_CONFIRMSAVE_NEXT;
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_AUTONUMBER)) {
+				this.state = ScanDescriptionLoaderStates.SCAN_AUTONUMBER_NEXT;
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_SAVESCANDESCRIPTION)) {
+				this.state = ScanDescriptionLoaderStates.SCAN_SAVESCANDESCRIPTION_NEXT;
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_SAVEPLUGIN)) {
+				this.invalidPlugin = false;
+				this.state = ScanDescriptionLoaderStates.SCAN_SAVEPLUGINCONTROLLER_LOADING;
+				this.subState = ScanDescriptionLoaderSubStates.PLUGIN_CONTROLLER_LOADING;
+				if (this.measuringStation.getPluginByName(atts.getValue(Literals.XML_ATTRIBUTE_NAME_NAME)) == null) {
+					this.invalidPlugin = true;
+					this.deviceMessages.add(new ScanDescriptionLoaderDeviceMessage(
+							ScanDescriptionLoaderMessageType.PLUGIN_NOT_FOUND,
+							"Plugin '" + atts.getValue(Literals.XML_ATTRIBUTE_NAME_NAME) + "' has been removed!"));
+				}
+				this.currentPluginController = this.scanDescription.getSavePluginController();
+				String savePluginName = atts.getValue(Literals.XML_ATTRIBUTE_NAME_NAME);
+				PlugIn savePlugin = this.measuringStation.getPluginByName(savePluginName);
+				if (savePlugin != null && savePlugin.getType() == PluginTypes.SAVE) {
+					this.scanDescription.getSavePluginController().setPlugin(savePlugin);
+				}
 			} else if (qName.equals(Literals.XML_ELEMENT_NAME_CHAIN)) {
 				this.currentChain = new Chain(Integer.parseInt(atts
 						.getValue(Literals.XML_ATTRIBUTE_NAME_ID)));
@@ -317,39 +343,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case CHAIN_LOADING:
-			if (qName.equals(Literals.XML_ELEMENT_NAME_COMMENT)) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_COMMENT_NEXT;
-			} else if (qName.equals(Literals.XML_ELEMENT_NAME_SAVEFILENAME)) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_SAVEFILENAME_NEXT;
-			} else if (qName.equals(Literals.XML_ELEMENT_NAME_CONFIRMSAVE)) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_CONFIRMSAVE_NEXT;
-			} else if (qName.equals(Literals.XML_ELEMENT_NAME_AUTONUMBER)) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_AUTONUMBER_NEXT;
-			} else if (qName.equals(Literals.XML_ELEMENT_NAME_SAVEPLUGIN)) {
-				this.invalidPlugin = false;
-				this.state = ScanDescriptionLoaderStates.CHAIN_SAVEPLUGINCONTROLLER_LOADING;
-				this.subState = ScanDescriptionLoaderSubStates.PLUGIN_CONTROLLER_LOADING;
-				if (this.measuringStation.getPluginByName(
-						atts.getValue(Literals.XML_ATTRIBUTE_NAME_NAME)) == null) {
-					this.invalidPlugin = true;
-					this.deviceMessages.add(new ScanDescriptionLoaderDeviceMessage(
-							ScanDescriptionLoaderMessageType.PLUGIN_NOT_FOUND,
-							"Plugin '" + atts.getValue(Literals.XML_ATTRIBUTE_NAME_NAME) + "' has been removed!"));
-				}
-				this.currentPluginController = this.currentChain
-						.getSavePluginController();
-				String savePluginName = atts.getValue(Literals.XML_ATTRIBUTE_NAME_NAME);
-				PlugIn savePlugin = this.measuringStation
-						.getPluginByName(savePluginName);
-				if (savePlugin != null) {
-					if (savePlugin.getType() == PluginTypes.SAVE) {
-						this.currentChain.getSavePluginController().setPlugin(
-								savePlugin);
-					}
-				}
-			} else if (qName.equals(Literals.XML_ELEMENT_NAME_SAVESCANDESCRIPTION)) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_SAVESCANDESCRIPTION_NEXT;
-			} else if (qName.equals(Literals.XML_ELEMENT_NAME_STARTEVENT)) {
+			if (qName.equals(Literals.XML_ELEMENT_NAME_STARTEVENT)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_STARTEVENT_LOADING;
 			} else if (qName.equals(Literals.XML_ELEMENT_NAME_PAUSEEVENT)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_PAUSEEVENT_LOADING;
@@ -791,32 +785,37 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			this.state = ScanDescriptionLoaderStates.REPEATCOUNT_READ;
 			break;
 
-		case CHAIN_COMMENT_NEXT:
-			this.currentChain.setComment(textBuffer.toString());
-			this.state = ScanDescriptionLoaderStates.CHAIN_COMMENT_READ;
+		case SCAN_COMMENT_NEXT:
+			this.scanDescription.setComment(textBuffer.toString());
+			this.state = ScanDescriptionLoaderStates.SCAN_COMMENT_READ;
 			break;
 
-		case CHAIN_SAVEFILENAME_NEXT:
-			this.currentChain.setSaveFilename(textBuffer.toString());
-			this.state = ScanDescriptionLoaderStates.CHAIN_SAVEFILENAME_READ;
+		case SCAN_SAVEFILENAME_NEXT:
+			this.scanDescription.setSaveFilename(textBuffer.toString());
+			this.state = ScanDescriptionLoaderStates.SCAN_SAVEFILENAME_READ;
 			break;
 
-		case CHAIN_CONFIRMSAVE_NEXT:
-			this.currentChain.setConfirmSave(Boolean.parseBoolean(textBuffer
-					.toString()));
-			this.state = ScanDescriptionLoaderStates.CHAIN_CONFIRMSAVE_READ;
+		case SCAN_CONFIRMSAVE_NEXT:
+			this.scanDescription.setConfirmSave(Boolean.parseBoolean(textBuffer.toString()));
+			this.state = ScanDescriptionLoaderStates.SCAN_CONFIRMSAVE_READ;
 			break;
 
-		case CHAIN_AUTONUMBER_NEXT:
-			this.currentChain.setAutoNumber(Boolean.parseBoolean(textBuffer
-					.toString()));
-			this.state = ScanDescriptionLoaderStates.CHAIN_AUTONUMBER_READ;
+		case SCAN_AUTONUMBER_NEXT:
+			this.scanDescription.setAutoNumber(Boolean.parseBoolean(textBuffer.toString()));
+			this.state = ScanDescriptionLoaderStates.SCAN_AUTONUMBER_READ;
 			break;
 
-		case CHAIN_SAVESCANDESCRIPTION_NEXT:
-			this.currentChain.setSaveScanDescription(Boolean
-					.parseBoolean(textBuffer.toString()));
-			this.state = ScanDescriptionLoaderStates.CHAIN_SAVESCANDESCRIPTION_READ;
+		case SCAN_SAVESCANDESCRIPTION_NEXT:
+			this.scanDescription.setSaveScanDescription(Boolean.parseBoolean(textBuffer.toString()));
+			this.state = ScanDescriptionLoaderStates.SCAN_SAVESCANDESCRIPTION_READ;
+			break;
+
+		case SCAN_SAVEPLUGINCONTROLLER_LOADING:
+			if (qName.equals(Literals.XML_ELEMENT_NAME_SAVEPLUGIN)) {
+				this.currentPluginController = null;
+				this.subState = ScanDescriptionLoaderSubStates.NONE;
+				this.state = ScanDescriptionLoaderStates.SCAN_LOADING;
+			}
 			break;
 
 		case CHAIN_SCANMODULE_NAME_NEXT:
@@ -1274,14 +1273,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSITIONING_NORMALIZE_ID_READ;
 			break;
 
-		case CHAIN_SAVEPLUGINCONTROLLER_LOADING:
-			if (qName.equals(Literals.XML_ELEMENT_NAME_SAVEPLUGIN)) {
-				this.currentPluginController = null;
-				this.subState = ScanDescriptionLoaderSubStates.NONE;
-				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
-			}
-			break;
-
 		case MONITOROPTIONS_LOADING:
 			if (qName.equals(Literals.XML_ELEMENT_NAME_MONITOROPTIONS)) {
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
@@ -1558,6 +1549,44 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			}
 			break;
 
+		case SCAN_COMMENT_READ:
+			if (qName.equals(Literals.XML_ELEMENT_NAME_COMMENT)) {
+				this.state = ScanDescriptionLoaderStates.SCAN_LOADING;
+			}
+			break;
+
+		case SCAN_SAVEFILENAME_READ:
+			if (qName.equals(Literals.XML_ELEMENT_NAME_SAVEFILENAME)) {
+				this.state = ScanDescriptionLoaderStates.SCAN_LOADING;
+			}
+			break;
+
+		case SCAN_CONFIRMSAVE_READ:
+			if (qName.equals(Literals.XML_ELEMENT_NAME_CONFIRMSAVE)) {
+				this.state = ScanDescriptionLoaderStates.SCAN_LOADING;
+			}
+			break;
+
+		case SCAN_AUTONUMBER_READ:
+			if (qName.equals(Literals.XML_ELEMENT_NAME_AUTONUMBER)) {
+				this.state = ScanDescriptionLoaderStates.SCAN_LOADING;
+			}
+			break;
+
+		case SCAN_SAVESCANDESCRIPTION_READ:
+			if (qName.equals(Literals.XML_ELEMENT_NAME_SAVESCANDESCRIPTION)) {
+				this.state = ScanDescriptionLoaderStates.SCAN_LOADING;
+			}
+			break;
+
+		case SCAN_SAVEPLUGINCONTROLLER_LOADING:
+			if (qName.equals(Literals.XML_ELEMENT_NAME_SAVEPLUGIN)) {
+				this.currentPluginController = null;
+				this.subState = ScanDescriptionLoaderSubStates.NONE;
+				this.state = ScanDescriptionLoaderStates.SCAN_LOADING;
+			}
+			break;
+
 		case CHAIN_LOADING:
 			if (qName.equals(Literals.XML_ELEMENT_NAME_CHAIN)) {
 				this.state = ScanDescriptionLoaderStates.SCAN_LOADING;
@@ -1588,44 +1617,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 					}
 				}
 				this.scanDescription.add(this.currentChain);
-			}
-			break;
-			
-		case CHAIN_COMMENT_READ:
-			if (qName.equals(Literals.XML_ELEMENT_NAME_COMMENT)) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
-			}
-			break;
-
-		case CHAIN_SAVEFILENAME_READ:
-			if (qName.equals(Literals.XML_ELEMENT_NAME_SAVEFILENAME)) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
-			}
-			break;
-
-		case CHAIN_CONFIRMSAVE_READ:
-			if (qName.equals(Literals.XML_ELEMENT_NAME_CONFIRMSAVE)) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
-			}
-			break;
-
-		case CHAIN_AUTONUMBER_READ:
-			if (qName.equals(Literals.XML_ELEMENT_NAME_AUTONUMBER)) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
-			}
-			break;
-
-		case CHAIN_SAVEPLUGINCONTROLLER_LOADING:
-			if (qName.equals(Literals.XML_ELEMENT_NAME_SAVEPLUGIN)) {
-				this.currentPluginController = null;
-				this.subState = ScanDescriptionLoaderSubStates.NONE;
-				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
-			}
-			break;
-
-		case CHAIN_SAVESCANDESCRIPTION_READ:
-			if (qName.equals(Literals.XML_ELEMENT_NAME_SAVESCANDESCRIPTION)) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
 			}
 			break;
 

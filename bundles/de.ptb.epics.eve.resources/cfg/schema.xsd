@@ -2,7 +2,7 @@
 <schema xmlns="http://www.w3.org/2001/XMLSchema" 
   targetNamespace="http://www.ptb.de/epics/SCML"
   xmlns:tns="http://www.ptb.de/epics/SCML" 
-  version="7.0">
+  version="8.0">
 
   <!-- please increase version number on every modification
        If the corresponding XML-file of the previous schema version is still
@@ -37,6 +37,8 @@
   <complexType name="scan">
     <sequence>
       <element name="repeatcount" type="tns:repeatcount" default="0"></element>
+      <element name="comment" type="string" minOccurs="0"></element>
+      <group ref="tns:fileGroup"></group>
       <element name="chain" type="tns:chain" maxOccurs="unbounded"></element>
       <element name="monitoroptions" type="tns:monitoroptions"></element>
     </sequence>
@@ -44,8 +46,6 @@
 
   <complexType name="chain">
     <sequence>
-      <element name="comment" type="string" minOccurs="0"></element>
-      <group ref="tns:fileGroup" minOccurs="0"></group>
       <element name="startevent" type="tns:smevent" minOccurs="0"></element>
       <element name="pauseevent" type="tns:pauseevent" minOccurs="0" maxOccurs="unbounded"></element>
       <element name="redoevent" type="tns:smevent" minOccurs="0" maxOccurs="unbounded"></element>
@@ -68,8 +68,8 @@
       <element name="savefilename" type="string"></element>
       <element name="confirmsave" type="boolean" default="false"></element>
       <element name="autonumber" type="boolean" default="true"></element>
-      <element name="savescandescription" type="boolean" minOccurs="0"></element>
-      <element name="saveplugin" type="tns:controller" minOccurs="0"></element>
+      <element name="savescandescription" type="boolean" default="true"></element>
+      <element name="saveplugin" type="tns:controller"></element>
     </sequence>
   </group>
 

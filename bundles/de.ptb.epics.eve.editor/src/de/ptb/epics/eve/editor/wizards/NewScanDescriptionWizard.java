@@ -154,7 +154,7 @@ public class NewScanDescriptionWizard extends Wizard implements INewWizard {
 		final ScanDescription scanDescription = 
 				new ScanDescription(measuringStation);
 		final Chain chain = new Chain(1);
-		chain.setSaveFilename(Activator.getDefault().getRootDirectory() + 
+		scanDescription.setSaveFilename(Activator.getDefault().getRootDirectory() + 
 								"daten/" + 
 								Calendar.getInstance().get(Calendar.YEAR) + "/" + 
 								"kw" + Calendar.getInstance().get(Calendar.WEEK_OF_YEAR) + "/");
@@ -163,7 +163,7 @@ public class NewScanDescriptionWizard extends Wizard implements INewWizard {
 		chain.setStartEvent(startEvent);
 		PlugIn plugin = measuringStation.getPluginByName("HDF5");
 		if (plugin != null) {
-			chain.getSavePluginController().setPlugin(plugin);
+			scanDescription.getSavePluginController().setPlugin(plugin);
 		}
 		scanDescription.add(chain);
 		
