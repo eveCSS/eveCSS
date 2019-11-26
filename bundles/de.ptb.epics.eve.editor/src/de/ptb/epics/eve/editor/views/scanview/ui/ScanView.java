@@ -3,6 +3,9 @@ package de.ptb.epics.eve.editor.views.scanview.ui;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.nio.file.FileSystems;
+import java.nio.file.PathMatcher;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -910,8 +913,10 @@ public class ScanView extends ViewPart implements IEditorView,
 		} else {
 			StringBuilder builder = new StringBuilder();
 			builder.append("Properties");
-			builder.append(" (" + 
-					this.currentScanDescription.getResolvedFilename());
+			builder.append(" (" + this.getFilteredFilename());
+			if (!currentScanDescription.getComment().isEmpty()) {
+				builder.append(", 'comment'");
+			}
 			if (currentScanDescription.getRepeatCount() > 0) {
 				builder.append(", repeat: " + currentScanDescription.getRepeatCount());
 			}
@@ -924,17 +929,23 @@ public class ScanView extends ViewPart implements IEditorView,
 			if (currentScanDescription.isAutoNumber()) {
 				builder.append(", autoinc");
 			}
-			final int COMMENT_MAX_CHARS = 10;
-			if (!currentScanDescription.getComment().isEmpty() && 
-					currentScanDescription.getComment().length() <= COMMENT_MAX_CHARS) {
-				builder.append(", '" + currentScanDescription.getComment() + "'");
-			} else if (currentScanDescription.getComment().length() > COMMENT_MAX_CHARS) {
-				builder.append(", '" + currentScanDescription.getComment().
-						substring(0, COMMENT_MAX_CHARS) + "...'");
-			}
 			builder.append(")");
 			this.propertiesItem.setText(builder.toString());
 		}
+	}
+	
+	/*
+	 * removes "/messung/<anything>/daten/" from filename, if found
+	 * @since 1.33
+	 */
+	private String getFilteredFilename() {
+		String fileName = this.currentScanDescription.getResolvedFilename();
+		PathMatcher matcher = FileSystems.getDefault().getPathMatcher(
+				"glob:/messung/*/daten/**");
+		if (matcher.matches(Paths.get(fileName))) {
+			return ".../" + fileName.replaceFirst("/messung/.*/daten/", "");
+		}
+		return fileName;
 	}
 	
 	private void setMonitorsExpandItemText(boolean expanded) {
