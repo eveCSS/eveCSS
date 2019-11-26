@@ -30,11 +30,11 @@
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
-                    <name>DC table</name>
-                    <id>${Prefix}${PV}cff.LINR</id>
+                    <name>Crystal</name>
+                    <id>${Prefix}${PV}selectCrystal</id>
                     <value>
-                        <access method="GETPUTCB" type="${Type=string}" transport="ca">${PV}cff.LINR</access>
-                        <value type="string">NO CONVERSION,SLOPE,LINEAR,DCSi,DCSi3</value>
+                        <access method="GETPUTCB" type="${Type=string}" transport="ca">${PV}selectCrystal</access>
+                        <value type="string">Si 111,Si 311,Si 333</value>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -47,7 +47,7 @@
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
-                    <name>DCvalue /deg [C]</name>
+                    <name>dispersion corr. [C]</name>
                     <id>${Prefix}${PV}.C</id>
                     <value>
                         <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}.C</access>
