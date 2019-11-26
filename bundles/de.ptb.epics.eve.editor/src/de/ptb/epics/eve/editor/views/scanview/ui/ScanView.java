@@ -6,8 +6,6 @@ import java.io.File;
 import java.nio.file.FileSystems;
 import java.nio.file.PathMatcher;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.Binding;
@@ -32,7 +30,6 @@ import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -68,14 +65,11 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
-import de.ptb.epics.eve.data.PluginTypes;
 import de.ptb.epics.eve.data.measuringstation.Option;
-import de.ptb.epics.eve.data.measuringstation.PlugIn;
 import de.ptb.epics.eve.data.measuringstation.PluginParameter;
 import de.ptb.epics.eve.data.scandescription.MonitorOption;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.editor.Activator;
-import de.ptb.epics.eve.editor.dialogs.PluginControllerDialog;
 import de.ptb.epics.eve.editor.dialogs.monitoroptions.MonitorOptionsDialog;
 import de.ptb.epics.eve.editor.gef.editparts.ChainEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.ScanDescriptionEditPart;
@@ -132,8 +126,6 @@ public class ScanView extends ViewPart implements IEditorView,
 	private Text filenameText;
 	private Label filenameResolvedLabel;
 	private Button browseButton;
-	private ComboViewer formatCombo;
-	private Button optionsButton;
 	private Label repeatCountLabel;
 	private Text repeatCountText;
 	private Button saveSCMLCheckbox;
@@ -168,8 +160,10 @@ public class ScanView extends ViewPart implements IEditorView,
 	private IMemento memento;
 
 	private ExpandItem propertiesItem;
-
+	private Composite propertiesComposite;
+	
 	private ExpandItem monitorsItem;
+	private Composite monitorsComposite;
 
 	/**
 	 * {@inheritDoc}
@@ -213,7 +207,7 @@ public class ScanView extends ViewPart implements IEditorView,
 		propertiesItem = new ExpandItem(expandBar, SWT.NONE);
 		propertiesItem.setText("Properties");
 		
-		Composite propertiesComposite = new Composite(expandBar, SWT.NONE);
+		propertiesComposite = new Composite(expandBar, SWT.NONE);
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 3;
 		gridLayout.horizontalSpacing = 5;
@@ -329,74 +323,22 @@ public class ScanView extends ViewPart implements IEditorView,
 		gridData.verticalAlignment = GridData.CENTER;
 		gridData.horizontalAlignment = GridData.FILL;
 		filenameResolvedLabel.setLayoutData(gridData);
-		
-		Label formatLabel = new Label(propertiesComposite, SWT.NONE);
-		formatLabel.setText("Format:");
-		
-		Composite rowComposite = new Composite(propertiesComposite, SWT.NONE);
+
+		this.repeatCountLabel = new Label(propertiesComposite, SWT.NONE);
+		this.repeatCountLabel.setText("Repeat Count:");
+
+		Composite repeatCountComposite = new Composite(propertiesComposite, SWT.NONE);
 		gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
 		gridLayout.marginWidth = 0;
-		gridLayout.marginHeight = 0;
-		rowComposite.setLayout(gridLayout);
-		gridData = new GridData();
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.horizontalAlignment = GridData.FILL;
-		rowComposite.setLayoutData(gridData);
-		
-		Composite fileFormatComposite = new Composite(rowComposite, SWT.NONE);
-		fileFormatComposite.setLayout(new GridLayout(2, false));
+		gridLayout.horizontalSpacing = 0;
+		repeatCountComposite.setLayout(gridLayout);
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.LEFT;
 		gridData.grabExcessHorizontalSpace = true;
-		fileFormatComposite.setLayoutData(gridData);
-		
-		formatCombo = new ComboViewer(fileFormatComposite, SWT.READ_ONLY);
-		List<PlugIn> savePlugins = new ArrayList<>();
-		for (PlugIn plugin : Activator.getDefault().getMeasuringStation().getPlugins()) {
-			if (PluginTypes.SAVE.equals(plugin.getType())) {
-				savePlugins.add(plugin);
-			}
-		}
-		formatCombo.setContentProvider(ArrayContentProvider.getInstance());
-		formatCombo.setLabelProvider(new LabelProvider() {
-			@Override
-			public String getText(Object element) {
-				return ((PlugIn)element).getName();
-			}
-		});
-		formatCombo.setInput(savePlugins);
-		formatCombo.getCombo().addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				refreshFileRelatedControls(true);
-			}
-		});
-		
-		optionsButton = new Button(fileFormatComposite, SWT.NONE);
-		optionsButton.setText("Options");
-		optionsButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				PluginControllerDialog dialog = new PluginControllerDialog(
-						getSite().getShell(), 
-							currentScanDescription.getSavePluginController());
-				dialog.setBlockOnOpen(true);
-				dialog.open();
-			}
-		});
-		
-		Composite repeatCountComposite = new Composite(rowComposite, SWT.NONE);
-		repeatCountComposite.setLayout(new GridLayout(2, false));
-		gridData = new GridData();
-		gridData.horizontalAlignment = SWT.RIGHT;
-		gridData.grabExcessHorizontalSpace = true;
 		repeatCountComposite.setLayoutData(gridData);
-		
-		this.repeatCountLabel = new Label(repeatCountComposite, SWT.NONE);
-		this.repeatCountLabel.setText("Repeat Count:");
-		
-		this.repeatCountText = new Text(propertiesComposite, SWT.BORDER);
+
+		this.repeatCountText = new Text(repeatCountComposite, SWT.BORDER);
 		this.repeatCountText.setToolTipText("number of times the scan will be repeated");
 		this.repeatCountText.addFocusListener(new TextSelectAllFocusListener(
 				this.repeatCountText));
@@ -436,7 +378,7 @@ public class ScanView extends ViewPart implements IEditorView,
 		monitorsItem = new ExpandItem(expandBar, SWT.NONE);
 		monitorsItem.setText("Monitors");
 		
-		final Composite monitorsComposite = new Composite(expandBar, SWT.NONE);
+		monitorsComposite = new Composite(expandBar, SWT.NONE);
 		gridLayout = new GridLayout();
 		gridLayout.numColumns = 3;
 		gridLayout.horizontalSpacing = 5;
@@ -507,45 +449,6 @@ public class ScanView extends ViewPart implements IEditorView,
 		this.bindValues();
 		this.restoreState();
 		this.refreshExpandItemTexts();
-	}
-
-	/*
-	 * If the file format is "Do not save" certain controls should be disabled
-	 * because they do not make sense for this format. The method should be 
-	 * called when the format changes (selection listener of combo) and when 
-	 * a new scan description is set (e.g. when loading/creating a file) or when
-	 * switching between open files.
-	 * 
-	 * @param useWidget indicates whether to use the widget (true) or the model 
-	 * 	(false) to determine the status (necessary because when switching to 
-	 * 	another open editor the binding is "late" and the old value would be 
-	 * 	used. In the other case, i.e. changing the combo, the widget must be 
-	 * 	used.)
-	 * 
-	 * @since 1.33
-	 */
-	private void refreshFileRelatedControls(boolean useWidget) {
-		if ((useWidget && formatCombo.getCombo().getText().equals("Do not save"))
-				|| (!useWidget && this.currentScanDescription.getFileFormat().
-						getName().equals("Do not save"))) {
-			commentText.setEnabled(false);
-			filenameText.setEnabled(false);
-			browseButton.setEnabled(false);
-			filenameResolvedLabel.setEnabled(false);
-			optionsButton.setEnabled(false);
-			saveSCMLCheckbox.setEnabled(false);
-			confirmSaveCheckbox.setEnabled(false);
-			autoIncrementCheckbox.setEnabled(false);
-		} else {
-			commentText.setEnabled(true);
-			filenameText.setEnabled(true);
-			browseButton.setEnabled(true);
-			filenameResolvedLabel.setEnabled(true);
-			optionsButton.setEnabled(true);
-			saveSCMLCheckbox.setEnabled(true);
-			confirmSaveCheckbox.setEnabled(true);
-			autoIncrementCheckbox.setEnabled(true);
-		}
 	}
 	
 	private void createTable(final Composite parent) {
@@ -699,18 +602,6 @@ public class ScanView extends ViewPart implements IEditorView,
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE), 
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
 		
-		IObservableValue formatComboTargetObservable = ViewersObservables.
-				observeSingleSelection(formatCombo);
-		IObservableValue formatComboModelObservable = BeansObservables.
-				observeDetailValue(selectionObservable, 
-						ScanDescription.class,
-						ScanDescription.FILE_FORMAT_PROP,
-						String.class);
-		this.context.bindValue(formatComboTargetObservable, 
-				formatComboModelObservable, 
-				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE), 
-				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
-		
 		IObservableValue saveSCMLTargetObservable = SWTObservables.
 				observeSelection(saveSCMLCheckbox);
 		IObservableValue saveSCMLModelObservable = BeansObservables.
@@ -806,7 +697,6 @@ public class ScanView extends ViewPart implements IEditorView,
 			this.monitorOptionsTable.setInput(
 					this.currentScanDescription.getMonitors());
 			this.adjustColumnWidths();
-			this.refreshFileRelatedControls(false);
 			this.top.setVisible(true);
 		}
 		this.refreshExpandItemTexts();
@@ -1061,7 +951,7 @@ public class ScanView extends ViewPart implements IEditorView,
 		this.monitorOptionsTable.getTable().getColumn(2)
 				.setWidth(deviceColumnWidth);
 	}
-
+	
 	/**
 	 * @author Marcus Michalsky
 	 * @since 1.10
