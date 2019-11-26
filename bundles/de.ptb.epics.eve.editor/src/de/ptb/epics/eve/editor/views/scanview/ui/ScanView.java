@@ -833,7 +833,7 @@ public class ScanView extends ViewPart implements IEditorView,
 		PathMatcher matcher = FileSystems.getDefault().getPathMatcher(
 				"glob:/messung/*/daten/**");
 		if (matcher.matches(Paths.get(fileName))) {
-			return ".../" + fileName.replaceFirst("/messung/.*/daten/", "");
+			return fileName.replaceFirst("/messung/.*/daten/", ".../");
 		}
 		return fileName;
 	}
