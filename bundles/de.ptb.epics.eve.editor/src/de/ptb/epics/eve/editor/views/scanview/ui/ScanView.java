@@ -34,6 +34,8 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ExpandEvent;
 import org.eclipse.swt.events.ExpandListener;
 import org.eclipse.swt.events.FocusAdapter;
@@ -100,6 +102,7 @@ public class ScanView extends ViewPart implements IEditorView,
 			ScanView.class.getName());
 	
 	private static final int DEL_COLUMN_WIDTH = 22;
+	private static final int MONITORS_TABLE_MIN_HEIGHT = 110;
 	private static final String MACRO_TOOLTIP = "The following macros can be used:\n"
 			+ "${WEEK} : calendar week\n" 
 			+ "${YEAR} : year as yyyy\n"
@@ -119,6 +122,7 @@ public class ScanView extends ViewPart implements IEditorView,
 	
 	private ScanDescription currentScanDescription;
 
+	private Composite parent;
 	private ScrolledComposite sc = null;
 	private Composite top;
 	
@@ -180,8 +184,7 @@ public class ScanView extends ViewPart implements IEditorView,
 	 */
 	@Override
 	public void createPartControl(final Composite parent) {
-		LOGGER.debug("createPartControl");
-
+		this.parent = parent;
 		parent.setLayout(new FillLayout());
 
 		// if no measuring station is loaded -> show error and do nothing
@@ -201,9 +204,9 @@ public class ScanView extends ViewPart implements IEditorView,
 		this.sc.setExpandHorizontal(true);
 		this.sc.setExpandVertical(true);
 		this.sc.setContent(this.top);
-
-		ExpandBar expandBar = new ExpandBar(this.top, SWT.V_SCROLL);
 		
+		ExpandBar expandBar = new ExpandBar(this.top, SWT.V_SCROLL);
+
 		propertiesItem = new ExpandItem(expandBar, SWT.NONE);
 		propertiesItem.setText("Properties");
 		
@@ -214,13 +217,13 @@ public class ScanView extends ViewPart implements IEditorView,
 		propertiesComposite.setLayout(gridLayout);
 		propertiesItem.setControl(propertiesComposite);
 		propertiesItem.setExpanded(true);
-		
+
 		Label commentLabel = new Label(propertiesComposite, SWT.NONE);
 		commentLabel.setText("Comment:");
 		GridData gridData = new GridData();
 		gridData.verticalAlignment = SWT.TOP;
 		commentLabel.setLayoutData(gridData);
-		
+
 		commentText = new Text(propertiesComposite, 
 				SWT.MULTI | SWT.WRAP | SWT.BORDER | SWT.V_SCROLL);
 		commentText.setToolTipText("Scan comment. " + ScanView.MACRO_TOOLTIP);
@@ -230,14 +233,14 @@ public class ScanView extends ViewPart implements IEditorView,
 		gridData.horizontalSpan = 2;
 		gridData.heightHint = 60;
 		commentText.setLayoutData(gridData);
-		
+
 		Label filenameLabel = new Label(propertiesComposite, SWT.NONE);
 		filenameLabel.setText("Filename:");
 		gridData = new GridData();
 		gridData.verticalAlignment = GridData.CENTER;
 		gridData.verticalSpan = 2;
 		filenameLabel.setLayoutData(gridData);
-		
+
 		filenameText = new Text(propertiesComposite, SWT.BORDER);
 		filenameText.setToolTipText(
 				"The filename where the data should be saved.\n" + 
@@ -246,7 +249,7 @@ public class ScanView extends ViewPart implements IEditorView,
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		filenameText.setLayoutData(gridData);
-		
+
 		browseButton = new Button(propertiesComposite, SWT.NONE);
 		browseButton.setText("Browse...");
 		gridData = new GridData();
@@ -416,21 +419,30 @@ public class ScanView extends ViewPart implements IEditorView,
 		
 		monitorsItem.setHeight(monitorsComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 		
+		/*
+		 * expand state refreshes only AFTER following listeners are executed.
+		 * therefore calling functions need parameters to indicate "real" 
+		 * expand states.
+		 */
 		expandBar.addExpandListener(new ExpandListener() {
 			@Override
 			public void itemExpanded(ExpandEvent e) {
 				if (e.item.equals(propertiesItem)) {
 					setPropertiesExpandItemText(true);
+					adjustHeight(true, monitorsItem.getExpanded());
 				} else if (e.item.equals(monitorsItem)) {
 					setMonitorsExpandItemText(true);
+					adjustHeight(propertiesItem.getExpanded(), true);
 				}
 			}
 			@Override
 			public void itemCollapsed(ExpandEvent e) {
 				if (e.item.equals(propertiesItem)) {
 					setPropertiesExpandItemText(false);
+					adjustHeight(false, monitorsItem.getExpanded());
 				} else if (e.item.equals(monitorsItem)) {
 					setMonitorsExpandItemText(false);
+					adjustHeight(propertiesItem.getExpanded(), false);
 				}
 			}
 		});
@@ -449,6 +461,14 @@ public class ScanView extends ViewPart implements IEditorView,
 		this.bindValues();
 		this.restoreState();
 		this.refreshExpandItemTexts();
+		
+		this.parent.addControlListener(new ControlAdapter() {
+			@Override
+			public void controlResized(ControlEvent e) {
+				adjustHeight(propertiesItem.getExpanded(), 
+						monitorsItem.getExpanded());
+			}
+		});
 	}
 	
 	private void createTable(final Composite parent) {
@@ -466,7 +486,7 @@ public class ScanView extends ViewPart implements IEditorView,
 		GridData gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
-		gridData.minimumHeight = 110;
+		gridData.minimumHeight = MONITORS_TABLE_MIN_HEIGHT;
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.FILL;
 		gridData.horizontalSpan = 3;
@@ -700,6 +720,8 @@ public class ScanView extends ViewPart implements IEditorView,
 			this.top.setVisible(true);
 		}
 		this.refreshExpandItemTexts();
+		this.adjustHeight(propertiesItem.getExpanded(), 
+				monitorsItem.getExpanded());
 	}
 
 	/**
@@ -825,7 +847,7 @@ public class ScanView extends ViewPart implements IEditorView,
 	}
 	
 	/*
-	 * removes "/messung/<anything>/daten/" from filename, if found
+	 * replaces "/messung/<anything>/daten/" from filename, if found, with ".../"
 	 * @since 1.33
 	 */
 	private String getFilteredFilename() {
@@ -861,6 +883,54 @@ public class ScanView extends ViewPart implements IEditorView,
 			}
 			builder.append(")");
 			this.monitorsItem.setText(builder.toString());
+		}
+	}
+	
+	/*
+	 * @since 1.33
+	 * 
+	 * when the view is resized, the height of the monitors expand item has to 
+	 * be set. Otherwise the monitors table will not grab any exceeding vertical
+	 * space. 
+	 * The remaining free space must be calculated. 
+	 * Height of monitor item is the height of the parent minus the following:
+	 *  - propertiesHeaderHeight
+	 *  - propertiesHeight
+	 *  - monitorsHeaderHeight
+	 * But only if the result is greater than a specified minimum value = sum of
+	 *  - edit Button height
+	 *  - minimum height of the monitors table local constant)
+	 *  - 3 times standard grid layout spacing (5px) = 15px
+	 *  Caution if expand items are collapsed -> composite still has height > 0
+	 *  
+	 *  parameters are needed because expand/collapse listener are called BEFORE
+	 *  expand state is refreshed!
+	 */
+	private void adjustHeight(boolean propertiesExpanded, boolean monitorsExpanded) {
+		if (!monitorsExpanded) return;
+		int parentHeight = this.parent.getSize().y;
+		LOGGER.debug("Parent Height: " + parentHeight);
+		int propertiesHeight = this.propertiesItem.getHeight();
+		LOGGER.debug("PropertiesHeight: " + propertiesHeight);
+		int propertiesHeaderHeight = this.propertiesItem.getHeaderHeight();
+		LOGGER.debug("PropertiesHeaderHeight: " + propertiesHeaderHeight);
+		int monitorsHeaderHeight = this.monitorsItem.getHeaderHeight();
+		LOGGER.debug("MonitorsHeaderHeight: " + monitorsHeaderHeight);
+		
+		int minimumHeight = this.editButton.getSize().y + 
+				MONITORS_TABLE_MIN_HEIGHT + 15;
+		
+		if (!propertiesExpanded) {
+			propertiesHeight = 0;
+			LOGGER.debug("PropertiesHeight set to 0 (not expanded)");
+		}
+		
+		int monitorsHeight = parentHeight - propertiesHeaderHeight - 
+				propertiesHeight - monitorsHeaderHeight;
+		if (monitorsHeight > minimumHeight) {
+		monitorsItem.setHeight(monitorsHeight);
+		} else {
+			monitorsItem.setHeight(minimumHeight);
 		}
 	}
 	
