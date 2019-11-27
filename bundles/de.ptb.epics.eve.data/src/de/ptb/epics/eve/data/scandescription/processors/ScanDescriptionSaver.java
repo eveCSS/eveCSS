@@ -281,11 +281,17 @@ public class ScanDescriptionSaver implements
 			this.contentHandler.characters(saveScanDescription.toCharArray(), 0, saveScanDescription.length());
 			this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SAVESCANDESCRIPTION,
 					Literals.XML_ELEMENT_NAME_SAVESCANDESCRIPTION);
-
-			if (this.scanDescription.getSavePluginController().getPlugin() != null) {
-				this.atts.clear();
-				this.writePluginController(this.scanDescription.getSavePluginController(), "saveplugin");
-			}
+			
+			/*
+			 * @since 1.33
+			 * code that writes static HDF plugin with extent 1 attribute into file
+			 * ignoring loaded setting.
+			 * Dirty Hack to ensure nothing has to be changed in XML schema and 
+			 * the engine has not to be changed.
+			 */
+			PlugIn savePlugin = this.measuringStation.getPluginByName("HDF5");
+			this.atts.clear();
+			this.writePluginController(new PluginController(savePlugin), "saveplugin");
 			
 			for(Chain chain : this.scanDescription.getChains()) {
 				this.writeChain(chain);
