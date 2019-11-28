@@ -827,7 +827,7 @@ public class ScanView extends ViewPart implements IEditorView,
 			builder.append("Properties");
 			builder.append(" (" + this.getFilteredFilename());
 			if (!currentScanDescription.getComment().isEmpty()) {
-				builder.append(", 'comment'");
+				builder.append(", comment");
 			}
 			if (currentScanDescription.getRepeatCount() > 0) {
 				builder.append(", repeat: " + currentScanDescription.getRepeatCount());
