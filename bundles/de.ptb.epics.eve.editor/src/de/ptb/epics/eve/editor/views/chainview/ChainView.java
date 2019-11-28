@@ -8,6 +8,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
@@ -15,8 +16,6 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.ExpandBar;
-import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISharedImages;
@@ -81,8 +80,6 @@ public class ChainView extends ViewPart implements IEditorView,
 	 */
 	@Override
 	public void createPartControl(Composite parent) {
-		logger.debug("createPartControl");
-
 		parent.setLayout(new FillLayout());
 
 		// if no measuring station is loaded -> show error and do nothing
@@ -96,35 +93,35 @@ public class ChainView extends ViewPart implements IEditorView,
 		this.eventErrorImage = PlatformUI.getWorkbench().getSharedImages()
 				.getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
 
+		ScrolledComposite sc = new ScrolledComposite(parent, SWT.V_SCROLL);
+		
 		// top composite
-		this.top = new Composite(parent, SWT.NONE);
+		this.top = new Composite(sc, SWT.NONE);
 		this.top.setLayout(new GridLayout());
 
-		// expand bar for Save Options, Comment & Events
-		ExpandBar bar = new ExpandBar(this.top, SWT.V_SCROLL);
+		sc.setExpandHorizontal(true);
+		sc.setExpandVertical(true);
+		sc.setContent(this.top);
+		
+		Label eventLabel = new Label(top, SWT.NONE);
+		eventLabel.setText("Events:");
 		GridData gridData = new GridData();
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.FILL;
-		bar.setLayoutData(gridData);
-
-		Composite eventsComposite = new Composite(bar, SWT.NONE);
-		GridLayout gridLayout = new GridLayout();
-		eventsComposite.setLayout(gridLayout);
-
-		this.eventsTabFolder = new CTabFolder(eventsComposite, SWT.FLAT);
+		gridData.horizontalAlignment = SWT.LEFT;
+		gridData.verticalAlignment = SWT.CENTER;
+		eventLabel.setLayoutData(gridData);
+		
+		this.eventsTabFolder = new CTabFolder(top, SWT.FLAT);
 		this.eventsTabFolder.setSimple(true);
 		this.eventsTabFolder.setBorderVisible(true);
 		this.eventsTabFolder
 				.addSelectionListener(new EventsTabFolderSelectionListener());
 
 		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.FILL;
-		gridData.minimumHeight = 150;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
+		gridData.minimumHeight = 150;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.verticalAlignment = GridData.FILL;
 		this.eventsTabFolder.setLayoutData(gridData);
 		
 		pauseEventComposite = new EventComposite(eventsTabFolder, SWT.NONE,
@@ -154,13 +151,6 @@ public class ChainView extends ViewPart implements IEditorView,
 		this.stopTabItem.setText(" Stop ");
 		this.stopTabItem.setControl(stopEventComposite);
 		this.stopTabItem.setToolTipText("Stop this scan");
-
-		ExpandItem eventsExpandItem = new ExpandItem(bar, SWT.NONE, 0);
-		eventsExpandItem.setText("Events");
-		eventsExpandItem.setControl(eventsComposite);
-		eventsExpandItem.setExpanded(true);
-		eventsExpandItem.setHeight(eventsComposite.computeSize(
-				SWT.DEFAULT, SWT.DEFAULT).y);
 
 		this.eventsTabFolder.showItem(this.pauseTabItem);
 		
