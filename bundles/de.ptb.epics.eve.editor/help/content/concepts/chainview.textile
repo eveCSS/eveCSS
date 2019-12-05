@@ -1,54 +1,9 @@
 h1(eveTopic). Chain View
 
-p. In the Chain View you set the following chain properties.
+p. The Chain View contains properties concerning a chain. The Chain shown is the one selected. A chain is also "selected" if its start event or one of its scan modules is selected.
 
-h2(eveTopic). Save Options
+p. For each chain events could be defined which influence execution of the scan (by pausing it, redoing it, etc.).
 
-p. In the __Save Options__ item you make settings for properties in connection of saving the data file.
+p=. !(eveImage)../../img/concepts/ChainView/ChainView.png(ChainView example with pause event)!
 
-h3(eveTopic). File Format
-
-p. The __File Format__ is a given format of the data file. You can choose between __ASCII__, __HDF5__ and __Do not save__.
-
-h3(eveTopic). Format
-
-p. The __Filename__ defines the name of the data file. You can use the macros shown in the table to build the filename.
-
-table(eveRefTable).
-|_. Macro |_. Description|
-| ${WEEK} | calendar week|
-| ${YEAR} | year as yyyy|
-| ${YR} | year as yy|
-| ${MONTH} | month as MM|
-| ${MONTHSTR} | month as MMM (e.g., Jul)|
-| ${DAY} | day as dd|
-| ${DAYSTR} | day as ddd (e.g., Mon)|
-| ${DATE} | date as yyyyMMdd (e.g., 20111231)|
-| ${DATE-} | date as yyyy-MM-dd (e.g., 2011-12-31)|
-| ${TIME} | time as HHmmss|
-| ${TIME-} | time as HH-mm-ss|
-| ${PV:&lt;pvname&gt;} | replace with value of pvname|
-
-h3(eveTopic). Filename
-
-p. This is the resulting __Filename__ from the input above.
-
-h3(eveTopic). Save Scan-Description
-
-p. With __Save Scan-Description__ you define, whether the scan description should be saved (within the data file). The H5 file with embedded SCML can be opened by the editor and viewer. To extract the data see "here":/help/topic/de.ptb.epics.eve.help/help/content/tasks/h5unpack.html.
-
-h3(eveTopic). Confirm Save
-
-p. With __Confirm Save__ you define, whether saving should be confirmed.
-
-h3(eveTopic). Add Autoincrementing Number to Filename
-
-p. If __Add Autoincrementing Number to Filename__ is true, a five digit number is appended to the filename. Starting at __x + 1__ where __x__ is the largest number found with the same filename prefix.
-
-h2(eveTopic). Comment
-
-p. In the __Comment__ Box you can write additional comments.
-
-h2(eveTopic). Events
-
-p. In the __Events__ Tab you choose which Events you need in the chain. The description of events and which event types are available in the chain view you found "here":events.html
+p. To learn more about events, see "here":events.html.

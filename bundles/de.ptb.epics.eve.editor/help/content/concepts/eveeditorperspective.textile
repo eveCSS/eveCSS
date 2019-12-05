@@ -6,9 +6,10 @@ p. The image below shows an overview of the EveEditor Perspective.
 
 table(eveRefTable).
 | 1| Editor Area| graphical representation of scans|
-| 2| Chain View | chain properties|
-| 3| Scan Module View| scan module properties|
-| 4| Motor Axis View| motor axis properties|
-| 5| Detector Channel View| detector channel properties|
-| 6| Plot Window View| plot window properties|
-| 7| Error View| message log|
+| 2| Error View| message log|
+| 3| Scan View| scan properties|
+| 4| Chain View | chain properties|
+| 5| Scan Module View| scan module properties|
+| 6| Motor Axis View| motor axis properties|
+| 7| Detector Channel View| detector channel properties|
+| 8| Plot Window View| plot window properties|
