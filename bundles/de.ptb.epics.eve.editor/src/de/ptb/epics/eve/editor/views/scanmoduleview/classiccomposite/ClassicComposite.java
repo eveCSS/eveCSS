@@ -207,7 +207,7 @@ public class ClassicComposite extends ScanModuleViewComposite implements IModelU
 		
 		Label triggerDelayLabel = new Label(generalComposite, SWT.NONE);
 		triggerDelayLabel.setText("Trigger Delay (in s):");
-		triggerDelayLabel.setToolTipText("Delay time after positioning");
+		triggerDelayLabel.setToolTipText("delay in s before detectors are triggered");
 		this.triggerDelayText = new Text(generalComposite, SWT.BORDER);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
