@@ -791,6 +791,9 @@ public class ScanView extends ViewPart implements IEditorView,
 	 * @since 1.33
 	 */
 	private void restoreState() {
+		if (this.memento == null) {
+			return;
+		}
 		if (this.memento.getBoolean(ScanView.MEMENTO_PROPERTIES_EXPANDED) != null) {
 			this.propertiesItem.setExpanded(
 				this.memento.getBoolean(ScanView.MEMENTO_PROPERTIES_EXPANDED));
