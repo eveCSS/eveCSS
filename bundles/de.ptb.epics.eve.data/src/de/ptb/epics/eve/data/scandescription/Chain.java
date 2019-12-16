@@ -298,7 +298,8 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 					&& subChainHead.getNested() == null) {
 				return subChainHead.getPositionCount();
 			} else if (subChainHead.getAppended() == null) {
-				return subChainHead.getPositionCount()
+				return subChainHead.getPositionCount() + 
+						subChainHead.getPositionCount()
 						* this.calculatePositionCount(subChainHead
 								.getNested().getChildScanModule());
 			} else if (subChainHead.getNested() == null) {
@@ -306,7 +307,8 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 						+ this.calculatePositionCount(subChainHead.getAppended()
 								.getChildScanModule());
 			} else {
-				return subChainHead.getPositionCount()
+				return subChainHead.getPositionCount() + 
+						subChainHead.getPositionCount()
 						* this.calculatePositionCount(subChainHead
 								.getNested().getChildScanModule())
 						+ this.calculatePositionCount(subChainHead.getAppended()
