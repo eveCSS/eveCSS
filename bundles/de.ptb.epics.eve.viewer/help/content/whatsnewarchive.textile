@@ -2,6 +2,8 @@ h1(eveTopic). What's New Archive (EVE Viewer)
 
 p(backToTop). "back to What's New":whatsnew.html
 
+h2(eveTopic). Version 1.32.0 (2019-09-02)
+
 h2(eveTopic). Version 1.31.2 (2019-07-31)
 
 * [Bug-#4848] Autoplay warnings were not suppressible
