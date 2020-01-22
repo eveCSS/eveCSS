@@ -503,16 +503,16 @@
 <unit id="de.ptb.epics.eve.jfxrt.osgi" version="1.0.0"/>
 <repository location="file:/soft/repo/p2/jfxrtOSGi/"/>
 </location>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="false" type="InstallableUnit">
-<unit id="commons-logging" version="1.1.1"/>
-<unit id="org.apache.commons.csv" version="1.6.0"/>
-<unit id="org.apache.commons.lang3" version="3.8.1"/>
-<unit id="org.apache.commons.logging" version="1.1.1.v201101211721"/>
-<unit id="org.apache.commons.math3" version="3.6.1"/>
-<unit id="org.apache.pdfbox" version="1.8.16"/>
-<unit id="org.apache.pdfbox.fontbox" version="1.8.16"/>
-<unit id="org.apache.pdfbox.jempbox" version="1.8.16"/>
-<repository location="file:/soft/repo/p2/MavenOSGi/1.32/"/>
-</location>
+	<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="false" type="InstallableUnit">
+		<repository location="file:/soft/repo/p2/MavenOSGi/1.33/"/>
+		<unit id="commons-logging" version="1.1.1"/>
+		<unit id="org.apache.commons.csv" version="1.6.0"/>
+		<unit id="org.apache.commons.lang3" version="3.8.1"/>
+		<unit id="org.apache.commons.logging" version="1.1.1.v201101211721"/>
+		<unit id="org.apache.commons.math3" version="3.6.1"/>
+		<unit id="org.apache.pdfbox" version="1.8.16"/>
+		<unit id="org.apache.pdfbox.fontbox" version="1.8.16"/>
+		<unit id="org.apache.pdfbox.jempbox" version="1.8.16"/>
+	</location>
 </locations>
 </target>
