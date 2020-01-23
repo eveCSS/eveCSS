@@ -11,34 +11,24 @@ public enum PluginTypes {
 	/**
 	 * A position plug in, that could be used to 
 	 * calculate the position of motor axis.
-	 *
-	 * @uml.property  name="pOSITION"
-	 * @uml.associationEnd  
 	 */
 	POSITION,
+	
 	/**
 	 * A save plug in, that could be used in the 
 	 * definition of a scan chain.
-	 *
-	 * @uml.property  name="sAVE"
-	 * @uml.associationEnd  
 	 */
 	SAVE,
+	
 	/**
 	 * A display plug in, that is doing some 
 	 * pre-calculations for a plotWindow. 
-	 *
-	 * @uml.property  name="dISPLAY"
-	 * @uml.associationEnd  
 	 */
 	DISPLAY,
 	
 	/**
 	 * A post scan positions plug in, that moves an axis
 	 * to a position after
-	 *
-	 * @uml.property  name="pOSTSCANPOSITIONING"
-	 * @uml.associationEnd  
 	 */
 	POSTSCANPOSITIONING;
 	
@@ -66,6 +56,6 @@ public enum PluginTypes {
 			case POSTSCANPOSITIONING:
 				return "postscanpositioning";
 		}
-		return null;	
-	}	
+		return null;
+	}
 }
