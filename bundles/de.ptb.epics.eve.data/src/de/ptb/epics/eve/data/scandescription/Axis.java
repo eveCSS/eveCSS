@@ -142,8 +142,8 @@ public class Axis extends AbstractMainPhaseBehavior implements
 			stepfunctions.add(Stepfunctions.MULTIPLY);
 		}
 		stepfunctions.add(Stepfunctions.FILE);
-		stepfunctions.add(Stepfunctions.POSITIONLIST);
 		stepfunctions.add(Stepfunctions.PLUGIN);
+		stepfunctions.add(Stepfunctions.POSITIONLIST);
 		if (!this.getMotorAxis().getGoto().isDiscrete() && 
 				(this.getType().equals(DataTypes.INT) || 
 				this.getType().equals(DataTypes.DOUBLE))) {
