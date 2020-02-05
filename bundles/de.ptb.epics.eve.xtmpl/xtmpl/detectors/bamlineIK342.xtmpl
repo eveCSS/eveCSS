@@ -1,0 +1,159 @@
+        <!-- ik 342 detector with a single channel -->
+        <detector>
+            <class>${Class=""}</class>
+            <name>${Name=""}</name>
+            <id>${PV}basic</id>
+            <channel>
+                <class>${Ch_Class=""}</class>
+                <name>${Name=""}</name>
+                <id>${PV}</id>
+                <read>
+                    <access monitor="true" method="GETCB" transport="ca" type="${Type=double}">${PV}</access>
+                </read>
+                include "channel_unit_part.xtmpl"
+				<option>
+					<name>Hi Error Limit</name>
+					<id>${PV}.HIHI</id>
+					<value>
+						<access method="GETCB" transport="ca" type="double">${PV}.HIHI</access>
+					</value>
+					<displaygroup>detail</displaygroup>
+				</option>
+				<option>
+					<name>Hi Error Severity</name>
+					<id>${PV}.HHSV</id>
+					<value>
+						<access method="GETPUTCB" monitor="true" transport="ca" type="string">${PV}.HHSV</access>
+						<value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
+					</value>
+					<displaygroup>detail</displaygroup>
+				</option>
+				<option>
+					<name>Hi Warn Limit</name>
+					<id>${PV}.HIGH</id>
+					<value>
+						<access method="GETCB" transport="ca" type="double">${PV}.HIGH</access>
+					</value>
+					<displaygroup>detail</displaygroup>
+				</option>
+				<option>
+					<name>Hi Warn Severity</name>
+					<id>${PV}.HSV</id>
+					<value>
+						<access method="GETPUTCB" monitor="true" transport="ca" type="string">${PV}.HSV</access>
+						<value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
+					</value>
+					<displaygroup>detail</displaygroup>
+				</option>
+				<option>
+					<name>MDEL</name>
+					<id>${PV}.MDEL</id>
+					<value>
+						<access method="GETCB" transport="ca" type="double">${PV}.MDEL</access>
+					</value>
+					<displaygroup>detail</displaygroup>
+				</option>
+				<option>
+					<name>Low Warn Limit</name>
+					<id>${PV}.LOW</id>
+					<value>
+						<access method="GETCB" transport="ca" type="double">${PV}.LOW</access>
+					</value>
+					<displaygroup>detail</displaygroup>
+				</option>
+				<option>
+					<name>Low Warn Severity</name>
+					<id>${PV}.LSV</id>
+					<value>
+						<access method="GETPUTCB" monitor="true" transport="ca" type="string">${PV}.LSV</access>
+						<value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
+					</value>
+					<displaygroup>detail</displaygroup>
+				</option>
+				<option>
+					<name>Low Error Limit</name>
+					<id>${PV}.LOLO</id>
+					<value>
+						<access method="GETCB" transport="ca" type="double">${PV}.LOLO</access>
+					</value>
+					<displaygroup>detail</displaygroup>
+				</option>
+				<option>
+					<name>Low Error Severity</name>
+					<id>${PV}.LLSV</id>
+					<value>
+						<access method="GETPUTCB" monitor="true" transport="ca" type="string">${PV}.LLSV</access>
+						<value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
+					</value>
+					<displaygroup>detail</displaygroup>
+				</option>
+				<option>
+					<name>Severity</name>
+					<id>${PV}.SEVR</id>
+					<value>
+						<access method="GETPUTCB" monitor="true" transport="ca" type="string">${PV}.SEVR</access>
+						<value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
+					</value>
+					<displaygroup>detail</displaygroup>
+				</option>
+				<option>
+					<name>Raw Offset</name>
+					<id>${PV}.ROFF</id>
+					<value>
+						<access method="GETCB" transport="ca" type="double">${PV}.ROFF</access>
+					</value>
+					<displaygroup>detail</displaygroup>
+				</option>
+				<option>
+					<name>Scale</name>
+					<id>${PV}.ASLO</id>
+					<value>
+						<access method="GETCB" transport="ca" type="double">${PV}.ASLO</access>
+					</value>
+					<displaygroup>detail</displaygroup>
+				</option>
+				<option>
+					<name>Offset</name>
+					<id>${PV}.AOFF</id>
+					<value>
+						<access method="GETCB" transport="ca" type="double">${PV}.AOFF</access>
+					</value>
+					<displaygroup>detail</displaygroup>
+				</option>
+				<option>
+					<name>Smoothing</name>
+					<id>${PV}.SMOO</id>
+					<value>
+						<access method="GETCB" transport="ca" type="double">${PV}.SMOO</access>
+					</value>
+					<displaygroup>detail</displaygroup>
+				</option>
+                <option>
+                    <name>refMarkAction</name>
+                    <id>${PV}refmark.VAL</id>
+                    <value>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}refMark.VAL</access>
+                        <value type="string">no action,start counter,stop counter,clear counter,get datum,get datum @ 2.,clear @ refMark</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>controlReg</name>
+                    <id>${PV}ctrlReg.VAL</id>
+                    <value>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}ctrlReg.VAL</access>
+                        <value type="string">use latch 0,use latch 1,use latch 0 and 1,start counter,stop counter,clear counter,clear error</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                <name>Scan</name>
+                <id>${PV}.SCAN</id>
+                <value>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}.SCAN</access>
+                    <value type="string">Passive,Event,I/O Intr,10 second,5 second,2 second,1 second,.5 second,.2 second,.1 second</value>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            </channel>
+        </detector>
