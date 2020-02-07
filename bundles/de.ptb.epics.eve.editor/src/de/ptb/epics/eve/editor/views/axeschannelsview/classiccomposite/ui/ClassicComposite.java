@@ -1,17 +1,22 @@
 package de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.ui;
 
+import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IMemento;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.PlatformUI;
 
+import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
@@ -21,6 +26,9 @@ import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.Main
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.PositionModeEditingSupport;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.StepfunctionEditingSupport;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.ValuesEditingSupport;
+import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.ChannelsContentProvider;
+import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.DeferredColumnLabelProvider;
+import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.ParametersColumnLabelProvider;
 import de.ptb.epics.eve.editor.views.axeschannelsview.ui.AxesChannelsView;
 import de.ptb.epics.eve.editor.views.axeschannelsview.ui.AxesChannelsViewComposite;
 
@@ -145,19 +153,85 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 		channelsTable.getTable().setLayoutData(gridData);
 		
 		createChannelsTableColumns(channelsTable);
+		
+		channelsTable.setContentProvider(new ChannelsContentProvider());
 	}
 	
 	private void createChannelsTableColumns(TableViewer viewer) {
 		TableViewerColumn delColumn = new TableViewerColumn(viewer, SWT.NONE);
 		delColumn.getColumn().setText("");
 		delColumn.getColumn().setWidth(22);
+		delColumn.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				return PlatformUI.getWorkbench().getSharedImages().getImage(
+						ISharedImages.IMG_TOOL_DELETE);
+			}
+		});
 		// TODO set EditingSupport command: de.ptb.epics.eve.editor.command.removechannel ?
 		
 		TableViewerColumn nameColumn = new TableViewerColumn(viewer, SWT.NONE);
 		nameColumn.getColumn().setText("Name");
 		nameColumn.getColumn().setWidth(220);
+		nameColumn.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				return ((Channel)element).getAbstractDevice().getName();
+			}
+		});
 		// TODO add selection listener for sorting
 		
+		TableViewerColumn acquisitionTypeColumn = new TableViewerColumn(viewer, 
+				SWT.NONE);
+		acquisitionTypeColumn.getColumn().setText("Acq. Type");
+		acquisitionTypeColumn.getColumn().setWidth(80);
+		acquisitionTypeColumn.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				Channel channel = (Channel)element;
+				if (channel.getScanModule().isUsedAsNormalizeChannel(channel)) {
+					return "Normalize";
+				}
+				return ((Channel)element).getChannelMode().toString();
+			}
+			
+			@Override
+			public String getToolTipText(Object element) {
+				Channel channel = (Channel)element;
+				if (channel.getScanModule().isUsedAsNormalizeChannel(channel)) {
+					return "used as normalize channel";
+				}
+				return super.getToolTipText(element);
+			}
+		});
+		
+		TableViewerColumn parametersColumn = new TableViewerColumn(viewer, 
+				SWT.NONE);
+		parametersColumn.getColumn().setText("Parameters");
+		parametersColumn.getColumn().setWidth(250);
+		parametersColumn.setLabelProvider(new ParametersColumnLabelProvider());
+		
+		TableViewerColumn deferredColumn = new TableViewerColumn(viewer, 
+				SWT.NONE);
+		deferredColumn.getColumn().setText("Deferred");
+		deferredColumn.getColumn().setWidth(75);
+		deferredColumn.setLabelProvider(new DeferredColumnLabelProvider());
+		
+		TableViewerColumn normalizeColumn = new TableViewerColumn(viewer, 
+				SWT.NONE);
+		normalizeColumn.getColumn().setText("Normalized By");
+		normalizeColumn.getColumn().setWidth(220);
+		normalizeColumn.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				Channel channel = (Channel)element;
+				if (channel.getNormalizeChannel() != null) {
+					return channel.getNormalizeChannel().getName();
+				} else {
+					return Character.toString('\u2014');
+				}
+			}
+		});
 	}
 
 	/**
@@ -178,7 +252,7 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 		}
 		this.scanModule = scanModule;
 		this.axesTable.setInput(scanModule);
-		// this.channelsTable.setInput(scanModule);
+		this.channelsTable.setInput(scanModule);
 		if (this.scanModule != null) {
 			this.scanModule.addModelUpdateListener(this);
 		}
