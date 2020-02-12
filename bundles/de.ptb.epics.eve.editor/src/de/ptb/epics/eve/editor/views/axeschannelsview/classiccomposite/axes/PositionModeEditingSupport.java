@@ -20,17 +20,26 @@ public class PositionModeEditingSupport extends EditingSupport {
 		this.viewer = viewer;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected CellEditor getCellEditor(Object element) {
 		return new MyComboBoxCellEditor(this.viewer.getTable(), 
 				new String[] {"relative", "absolute"});
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected boolean canEdit(Object element) {
 		return true;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected Object getValue(Object element) {
 		PositionMode posMode = ((Axis)element).getPositionMode();
@@ -41,6 +50,9 @@ public class PositionModeEditingSupport extends EditingSupport {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void setValue(Object element, Object value) {
 		int index = (Integer)value;

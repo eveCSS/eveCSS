@@ -21,6 +21,9 @@ public class StepfunctionEditingSupport extends EditingSupport {
 		this.viewer = viewer;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected CellEditor getCellEditor(Object element) {
 		return new MyComboBoxCellEditor(this.viewer.getTable(), 
@@ -28,11 +31,17 @@ public class StepfunctionEditingSupport extends EditingSupport {
 						toArray(new String[] {}));
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected boolean canEdit(Object element) {
 		return true;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected Object getValue(Object element) {
 		Axis axis = (Axis)element;
@@ -52,6 +61,9 @@ public class StepfunctionEditingSupport extends EditingSupport {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void setValue(Object element, Object value) {
 		int index = (Integer)value;

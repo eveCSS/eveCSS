@@ -1,5 +1,6 @@
 package de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.ui;
 
+import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -26,9 +27,13 @@ import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.Main
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.PositionModeEditingSupport;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.StepfunctionEditingSupport;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.ValuesEditingSupport;
+import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.AcquisitionTypeEditingSupport;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.ChannelsContentProvider;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.DeferredColumnLabelProvider;
+import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.DeferredEditingSupport;
+import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.NormalizeEditingSupport;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.ParametersColumnLabelProvider;
+import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.ParametersEditingSupport;
 import de.ptb.epics.eve.editor.views.axeschannelsview.ui.AxesChannelsView;
 import de.ptb.epics.eve.editor.views.axeschannelsview.ui.AxesChannelsViewComposite;
 
@@ -204,18 +209,24 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 				return super.getToolTipText(element);
 			}
 		});
+		acquisitionTypeColumn.setEditingSupport(
+				new AcquisitionTypeEditingSupport(viewer));
 		
 		TableViewerColumn parametersColumn = new TableViewerColumn(viewer, 
 				SWT.NONE);
 		parametersColumn.getColumn().setText("Parameters");
-		parametersColumn.getColumn().setWidth(250);
-		parametersColumn.setLabelProvider(new ParametersColumnLabelProvider());
+		parametersColumn.getColumn().setWidth(260);
+		ColumnLabelProvider parametersLabelProvider = new ParametersColumnLabelProvider();
+		parametersColumn.setLabelProvider(parametersLabelProvider);
+		parametersColumn.setEditingSupport(new ParametersEditingSupport(viewer, 
+				parametersLabelProvider));
 		
 		TableViewerColumn deferredColumn = new TableViewerColumn(viewer, 
 				SWT.NONE);
 		deferredColumn.getColumn().setText("Deferred");
 		deferredColumn.getColumn().setWidth(75);
 		deferredColumn.setLabelProvider(new DeferredColumnLabelProvider());
+		deferredColumn.setEditingSupport(new DeferredEditingSupport(viewer));
 		
 		TableViewerColumn normalizeColumn = new TableViewerColumn(viewer, 
 				SWT.NONE);
@@ -232,6 +243,7 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 				}
 			}
 		});
+		normalizeColumn.setEditingSupport(new NormalizeEditingSupport(viewer));
 	}
 
 	/**
