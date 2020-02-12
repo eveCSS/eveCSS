@@ -1,8 +1,10 @@
 h1(eveTopic). What's New in EVE Editor
 
-h2(eveTopic). Version 1.33.0 (2020-XX-YY)
+h2(eveTopic). Version 1.33.0 (2020-01-22)
 
 * [Feature-#4915] updated Scan-/Chain-View (moved scan related properties)
+
+* [Bug Fix-#5011] The number of positions is calculated correctly now in the editor (after changing the counting in the engine according to nested scan modules)
 
 <hr/>
 
