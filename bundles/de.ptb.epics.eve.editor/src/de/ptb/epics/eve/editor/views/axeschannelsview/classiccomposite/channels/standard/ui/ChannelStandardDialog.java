@@ -1,5 +1,12 @@
 package de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.ui;
 
+import org.eclipse.core.databinding.Binding;
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.beans.BeanProperties;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -10,6 +17,16 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import de.ptb.epics.eve.data.scandescription.Channel;
+import de.ptb.epics.eve.data.scandescription.channelmode.StandardMode;
+import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.AverageTargetToModelConverter;
+import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.AverageTargetToModelValidator;
+import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.DoubleModelToTargetConverter;
+import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.DoubleTargetToModelConverter;
+import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.MaxAttemptsModelToTargetConverter;
+import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.MaxAttemptsTargetToModelConverter;
+import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.MaxAttemptsTargetToModelValidator;
+import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.MaxDeviationTargetToModelValidator;
+import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.MinimumTargetToModelValidator;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.ui.DialogCellEditorDialog;
 
 /**
@@ -23,6 +40,14 @@ public class ChannelStandardDialog extends DialogCellEditorDialog {
 	private static final int TEXT_INDENTATION = 7;
 	
 	private Channel channel;
+
+	private Text averageText;
+
+	private Text maxDeviationText;
+
+	private Text minimumText;
+
+	private Text maxAttemptsText;
 	
 	public ChannelStandardDialog(Shell shell, Control control, Channel channel) {
 		super(shell, control);
@@ -54,7 +79,7 @@ public class ChannelStandardDialog extends DialogCellEditorDialog {
 		gridData.horizontalAlignment = GridData.FILL;
 		averageLabel.setLayoutData(gridData);
 
-		Text averageText = new Text(composite, SWT.BORDER);
+		averageText = new Text(composite, SWT.BORDER);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalIndent = TEXT_INDENTATION;
@@ -68,7 +93,7 @@ public class ChannelStandardDialog extends DialogCellEditorDialog {
 		gridData.horizontalAlignment = GridData.FILL;
 		maxDeviationLabel.setLayoutData(gridData);
 
-		Text maxDeviationText = new Text(composite, SWT.BORDER);
+		maxDeviationText = new Text(composite, SWT.BORDER);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalIndent = TEXT_INDENTATION;
@@ -83,7 +108,7 @@ public class ChannelStandardDialog extends DialogCellEditorDialog {
 		gridData.horizontalAlignment = GridData.FILL;
 		minimumLabel.setLayoutData(gridData);
 
-		Text minimumText = new Text(composite, SWT.BORDER);
+		minimumText = new Text(composite, SWT.BORDER);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalIndent = TEXT_INDENTATION;
@@ -98,7 +123,7 @@ public class ChannelStandardDialog extends DialogCellEditorDialog {
 		gridData.horizontalAlignment = GridData.FILL;
 		maxAttemptsLabel.setLayoutData(gridData);
 
-		Text maxAttemptsText = new Text(composite, SWT.BORDER);
+		maxAttemptsText = new Text(composite, SWT.BORDER);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalIndent = TEXT_INDENTATION;
@@ -115,8 +140,66 @@ public class ChannelStandardDialog extends DialogCellEditorDialog {
 
 		// TODO Event composite benötigt Parent View ?!?
 		
+		this.createBinding();
 		
 		// TODO Auto-generated method stub
 		return composite;
+	}
+	
+	private void createBinding() {
+		DataBindingContext context = new DataBindingContext();
+
+		IObservableValue averageTargetObservable = 
+				WidgetProperties.text(SWT.Modify).observe(this.averageText);
+		IObservableValue averageModelObservable = 
+				BeanProperties.value(StandardMode.AVERAGE_COUNT_PROP, 
+						Integer.class).observe(this.channel);
+		Binding averageBinding = context.bindValue(
+				averageTargetObservable, averageModelObservable, 
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).
+					setConverter(new AverageTargetToModelConverter()).
+					setAfterGetValidator(new AverageTargetToModelValidator()),
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
+		ControlDecorationSupport.create(averageBinding, SWT.LEFT);
+
+		IObservableValue maxDeviationTargetObservable =
+				WidgetProperties.text(SWT.Modify).observe(this.maxDeviationText);
+		IObservableValue maxDeviationModelObservable = 
+				BeanProperties.value(StandardMode.MAX_DEVIATION_PROP, 
+						Double.class).observe(this.channel);
+		Binding maxDeviationBinding = context.bindValue(
+				maxDeviationTargetObservable, maxDeviationModelObservable, 
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).
+					setConverter(new DoubleTargetToModelConverter()).
+					setAfterGetValidator(new MaxDeviationTargetToModelValidator()),
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).
+					setConverter(new DoubleModelToTargetConverter()));
+		ControlDecorationSupport.create(maxDeviationBinding, SWT.LEFT);
+		
+		IObservableValue minimumTargetObservable = 
+				WidgetProperties.text(SWT.Modify).observe(this.minimumText);
+		IObservableValue minimumModelObservable = BeanProperties.value(
+				StandardMode.MINIMUM_PROP, Double.class).observe(this.channel);
+		Binding minimumBinding = context.bindValue(
+				minimumTargetObservable, minimumModelObservable, 
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).
+					setConverter(new DoubleTargetToModelConverter()).
+					setAfterGetValidator(new MinimumTargetToModelValidator()),
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).
+					setConverter(new DoubleModelToTargetConverter()));
+		ControlDecorationSupport.create(minimumBinding, SWT.LEFT);
+		
+		IObservableValue maxAttemptsTargetObservable = 
+				WidgetProperties.text(SWT.Modify).observe(this.maxAttemptsText);
+		IObservableValue maxAttemptsModelObservable = BeanProperties.value(
+				StandardMode.MAX_ATTEMPTS_PROP, Integer.class).observe(this.channel);
+		Binding maxAttemptsBinding = context.bindValue(
+				maxAttemptsTargetObservable, maxAttemptsModelObservable, 
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).
+					setConverter(new MaxAttemptsTargetToModelConverter()).
+					setAfterGetValidator(new MaxAttemptsTargetToModelValidator()),
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).
+				setConverter(new MaxAttemptsModelToTargetConverter()));
+		ControlDecorationSupport.create(maxAttemptsBinding, SWT.LEFT);
 	}
 }
