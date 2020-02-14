@@ -180,6 +180,15 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 		nameColumn.getColumn().setWidth(220);
 		nameColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override
+			public Image getImage(Object element) {
+				if (!((Channel)element).getModelErrors().isEmpty()) {
+					return PlatformUI.getWorkbench().getSharedImages().
+							getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
+				}
+				return null;
+			}
+			
+			@Override
 			public String getText(Object element) {
 				return ((Channel)element).getAbstractDevice().getName();
 			}
