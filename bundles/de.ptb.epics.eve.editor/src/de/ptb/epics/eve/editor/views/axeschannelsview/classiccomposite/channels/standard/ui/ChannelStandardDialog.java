@@ -8,6 +8,8 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -28,6 +30,8 @@ import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.MaxDeviationTargetToModelValidator;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.MinimumTargetToModelValidator;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.ui.DialogCellEditorDialog;
+import de.ptb.epics.eve.util.ui.swt.TextSelectAllFocusListener;
+import de.ptb.epics.eve.util.ui.swt.TextSelectAllMouseListener;
 
 /**
  * @author Marcus Michalsky
@@ -42,12 +46,14 @@ public class ChannelStandardDialog extends DialogCellEditorDialog {
 	private Channel channel;
 
 	private Text averageText;
-
 	private Text maxDeviationText;
-
 	private Text minimumText;
-
 	private Text maxAttemptsText;
+
+	private Binding averageBinding;
+	private Binding maxDeviationBinding;
+	private Binding minimumBinding;
+	private Binding maxAttemptsBinding;
 	
 	public ChannelStandardDialog(Shell shell, Control control, Channel channel) {
 		super(shell, control);
@@ -85,7 +91,9 @@ public class ChannelStandardDialog extends DialogCellEditorDialog {
 		gridData.horizontalIndent = TEXT_INDENTATION;
 		gridData.grabExcessHorizontalSpace = true;
 		averageText.setLayoutData(gridData);
-		// TODO add Focus, Mouse and Focus Listener ?
+		averageText.addFocusListener(new TextSelectAllFocusListener(averageText));
+		averageText.addMouseListener(new TextSelectAllMouseListener(averageText));
+		averageText.addFocusListener(new TextFocusListener(averageText));
 
 		Label maxDeviationLabel = new Label(composite, SWT.NONE);
 		maxDeviationLabel.setText("Max. Deviation (%):");
@@ -99,7 +107,12 @@ public class ChannelStandardDialog extends DialogCellEditorDialog {
 		gridData.horizontalIndent = TEXT_INDENTATION;
 		gridData.grabExcessHorizontalSpace = true;
 		maxDeviationText.setLayoutData(gridData);
-		// TODO Focus, Mouse, Focus Listener
+		maxDeviationText.addFocusListener(
+				new TextSelectAllFocusListener(maxDeviationText));
+		maxDeviationText.addMouseListener(
+				new TextSelectAllMouseListener(maxDeviationText));
+		maxDeviationText.addFocusListener(
+				new TextFocusListener(maxDeviationText));
 
 		Label minimumLabel = new Label(composite, SWT.NONE);
 		minimumLabel.setText("Minimum:");
@@ -114,7 +127,9 @@ public class ChannelStandardDialog extends DialogCellEditorDialog {
 		gridData.horizontalIndent = TEXT_INDENTATION;
 		gridData.grabExcessHorizontalSpace = true;
 		minimumText.setLayoutData(gridData);
-		// TODO Focus, Mouse, Focus
+		minimumText.addFocusListener(new TextSelectAllFocusListener(minimumText));
+		minimumText.addMouseListener(new TextSelectAllMouseListener(minimumText));
+		minimumText.addFocusListener(new TextFocusListener(minimumText));
 
 		Label maxAttemptsLabel = new Label(composite, SWT.NONE);
 		maxAttemptsLabel.setText("Max. Attempts:");
@@ -129,7 +144,11 @@ public class ChannelStandardDialog extends DialogCellEditorDialog {
 		gridData.horizontalIndent = TEXT_INDENTATION;
 		gridData.grabExcessHorizontalSpace = true;
 		maxAttemptsText.setLayoutData(gridData);
-		// TODO Focus, Mouse, Focus
+		maxAttemptsText.addFocusListener(
+				new TextSelectAllFocusListener(maxAttemptsText));
+		maxAttemptsText.addMouseListener(
+				new TextSelectAllMouseListener(maxAttemptsText));
+		maxAttemptsText.addFocusListener(new TextFocusListener(maxAttemptsText));
 
 		Label redoEventsLabel = new Label(composite, SWT.NONE);
 		redoEventsLabel.setText("Redo Events:");
@@ -141,8 +160,6 @@ public class ChannelStandardDialog extends DialogCellEditorDialog {
 		// TODO Event composite benötigt Parent View ?!?
 		
 		this.createBinding();
-		
-		// TODO Auto-generated method stub
 		return composite;
 	}
 	
@@ -154,7 +171,7 @@ public class ChannelStandardDialog extends DialogCellEditorDialog {
 		IObservableValue averageModelObservable = 
 				BeanProperties.value(StandardMode.AVERAGE_COUNT_PROP, 
 						Integer.class).observe(this.channel);
-		Binding averageBinding = context.bindValue(
+		averageBinding = context.bindValue(
 				averageTargetObservable, averageModelObservable, 
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).
 					setConverter(new AverageTargetToModelConverter()).
@@ -167,7 +184,7 @@ public class ChannelStandardDialog extends DialogCellEditorDialog {
 		IObservableValue maxDeviationModelObservable = 
 				BeanProperties.value(StandardMode.MAX_DEVIATION_PROP, 
 						Double.class).observe(this.channel);
-		Binding maxDeviationBinding = context.bindValue(
+		maxDeviationBinding = context.bindValue(
 				maxDeviationTargetObservable, maxDeviationModelObservable, 
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).
 					setConverter(new DoubleTargetToModelConverter()).
@@ -180,7 +197,7 @@ public class ChannelStandardDialog extends DialogCellEditorDialog {
 				WidgetProperties.text(SWT.Modify).observe(this.minimumText);
 		IObservableValue minimumModelObservable = BeanProperties.value(
 				StandardMode.MINIMUM_PROP, Double.class).observe(this.channel);
-		Binding minimumBinding = context.bindValue(
+		minimumBinding = context.bindValue(
 				minimumTargetObservable, minimumModelObservable, 
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).
 					setConverter(new DoubleTargetToModelConverter()).
@@ -193,7 +210,7 @@ public class ChannelStandardDialog extends DialogCellEditorDialog {
 				WidgetProperties.text(SWT.Modify).observe(this.maxAttemptsText);
 		IObservableValue maxAttemptsModelObservable = BeanProperties.value(
 				StandardMode.MAX_ATTEMPTS_PROP, Integer.class).observe(this.channel);
-		Binding maxAttemptsBinding = context.bindValue(
+		maxAttemptsBinding = context.bindValue(
 				maxAttemptsTargetObservable, maxAttemptsModelObservable, 
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).
 					setConverter(new MaxAttemptsTargetToModelConverter()).
@@ -201,5 +218,30 @@ public class ChannelStandardDialog extends DialogCellEditorDialog {
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).
 				setConverter(new MaxAttemptsModelToTargetConverter()));
 		ControlDecorationSupport.create(maxAttemptsBinding, SWT.LEFT);
+	}
+	
+	private class TextFocusListener extends FocusAdapter {
+		private Text widget;
+		
+		public TextFocusListener(Text widget) {
+			this.widget = widget;
+		}
+		
+		@Override
+		public void focusLost(FocusEvent e) {
+			if (widget == averageText) {
+				averageText.setSelection(0, 0);
+				averageBinding.updateModelToTarget();
+			} else if (widget == maxDeviationText) {
+				maxDeviationText.setSelection(0, 0);
+				maxDeviationBinding.updateModelToTarget();
+			} else if (widget == minimumText) {
+				minimumText.setSelection(0, 0);
+				minimumBinding.updateModelToTarget();
+			} else if (widget == maxAttemptsText) {
+				maxAttemptsText.setSelection(0, 0);
+				maxAttemptsBinding.updateModelToTarget();
+			}
+		}
 	}
 }

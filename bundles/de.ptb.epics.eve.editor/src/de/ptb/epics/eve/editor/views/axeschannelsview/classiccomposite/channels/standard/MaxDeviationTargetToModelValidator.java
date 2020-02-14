@@ -21,9 +21,8 @@ public class MaxDeviationTargetToModelValidator implements IValidator {
 		}
 		try {
 			Double d = Double.parseDouble(val);
-			if (d < 0) {
-				return ValidationStatus.error(
-						"Standard deviation must be positive!");
+			if (d < 0 || d > 100) {
+				return ValidationStatus.error("Value must be within 0 and 100%!");
 			}
 			return ValidationStatus.ok();
 		} catch (NumberFormatException e) {
