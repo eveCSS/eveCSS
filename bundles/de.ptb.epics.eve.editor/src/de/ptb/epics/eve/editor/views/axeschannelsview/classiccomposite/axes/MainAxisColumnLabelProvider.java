@@ -10,7 +10,7 @@ import de.ptb.epics.eve.data.scandescription.Stepfunctions;
  * @since 1.34
  */
 public class MainAxisColumnLabelProvider extends ColumnLabelProvider {
-	private static final String CHECK_MARK = Character.toString('\u2713');
+	private static final String HEAVY_CHECK_MARK = Character.toString('\u2714');
 	
 	/**
 	 * {@inheritDoc}
@@ -23,7 +23,7 @@ public class MainAxisColumnLabelProvider extends ColumnLabelProvider {
 			return "n/a";
 		}
 		if (smAxis.isMainAxis()) {
-			return CHECK_MARK;
+			return HEAVY_CHECK_MARK;
 		} else {
 			return "";
 		}
