@@ -136,7 +136,9 @@ public class AxesChannelsView extends AbstractScanModuleView {
 		this.currentScanModule = scanModule;
 		if (this.currentScanModule != null) {
 
-			// TODO setPartName ??
+			this.setPartName("SM Axes / Channels: " + 
+					this.currentScanModule.getName() + 
+					" (Id: " + this.currentScanModule.getId() + ")");
 			
 			switch (this.currentScanModule.getType()) {
 			case CLASSIC:

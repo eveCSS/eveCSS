@@ -7,10 +7,12 @@ import org.eclipse.jface.viewers.TableViewer;
 import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.datetime.ui.AddDateTimeDialogCellEditor;
+import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.intdouble.ui.AddIntDoubleDialogCellEditor;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.intdouble.ui.AddIntDoubleTextCellEditor;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.file.ui.FileDialogCellEditor;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.plugin.ui.PluginDialogCellEditor;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.positionlist.ui.PositionlistDialogCellEditor;
+import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.positionlist.ui.PositionlistTextCellEditor;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.range.ui.RangeTextCellEditor;
 
 /**
@@ -38,7 +40,8 @@ public class ValuesEditingSupport extends EditingSupport {
 			}
 			if (DataTypes.INT.equals(axis.getType()) || 
 					DataTypes.DOUBLE.equals(axis.getType())) {
-				return new AddIntDoubleTextCellEditor(viewer.getTable(), axis);
+				// return new AddIntDoubleTextCellEditor(viewer.getTable(), axis);
+				return new AddIntDoubleDialogCellEditor(viewer.getTable(), axis);
 			}
 			break;
 		case FILE:
@@ -52,6 +55,7 @@ public class ValuesEditingSupport extends EditingSupport {
 		case PLUGIN:
 			return new PluginDialogCellEditor(viewer.getTable(), axis);
 		case POSITIONLIST:
+			//return new PositionlistTextCellEditor(viewer.getTable(), axis);
 			return new PositionlistDialogCellEditor(viewer.getTable(), axis);
 		case RANGE:
 			return new RangeTextCellEditor(viewer.getTable(), axis);

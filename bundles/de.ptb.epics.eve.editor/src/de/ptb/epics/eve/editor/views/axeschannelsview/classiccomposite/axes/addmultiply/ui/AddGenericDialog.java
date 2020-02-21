@@ -1,10 +1,7 @@
-package de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.datetime.ui;
+package de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.ui;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Date;
-
-import javax.xml.datatype.Duration;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
@@ -14,10 +11,7 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.SelectObservableValue;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.SWTObservables;
-import org.eclipse.jface.fieldassist.ControlDecoration;
-import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -27,65 +21,53 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import de.ptb.epics.eve.data.scandescription.Axis;
-import de.ptb.epics.eve.data.scandescription.PositionMode;
 import de.ptb.epics.eve.data.scandescription.axismode.AddMultiplyMode;
 import de.ptb.epics.eve.data.scandescription.axismode.AdjustParameter;
+import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.AddDoubleModelToTargetConverter;
+import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.AddDoubleTargetToModelConverter;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.AddDoubleTargetToModelValidator;
-import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.datetime.AddDateTimeModelToTargetConverter;
-import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.datetime.AddDateTimeTargetToModelConverter;
-import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.datetime.AddDateTimeTargetToModelValidator;
+import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.intdouble.AddIntDoubleModelToTargetValidator;
+import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.intdouble.AddIntDoubleTargetToModelValidator;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.ui.DialogCellEditorDialog;
 
 /**
  * @author Marcus Michalsky
  * @since 1.34
  */
-public class AddDateTimeDialog extends DialogCellEditorDialog implements PropertyChangeListener {
+public abstract class AddGenericDialog extends DialogCellEditorDialog implements PropertyChangeListener {
 	private Axis axis;
 	private AddMultiplyMode<?> addMultiplyMode;
 	
 	private Button startRadioButton;
 	private Text startText;
-	private ControlDecoration startTextProposalDecoration;
 	private Button stopRadioButton;
 	private Text stopText;
-	private ControlDecoration stopTextProposalDecoration;
 	private Button stepwidthRadioButton;
 	private Text stepwidthText;
-	private ControlDecoration stepwidthTextProposalDecoration;
 	private Button stepcountRadioButton;
 	private Text stepcountText;
 	
-	private Image contentProposalImage;
+	DataBindingContext context;
 	
 	@SuppressWarnings("unchecked")
-	public AddDateTimeDialog(Shell shell, Control control, Axis axis) {
+	public AddGenericDialog(Shell shell, Control control, Axis axis) {
 		super(shell, control);
 		this.axis = axis;
 		
-		if (PositionMode.ABSOLUTE.equals(axis.getPositionMode())) {
-			this.addMultiplyMode = (AddMultiplyMode<Date>)axis.getMode();
-		} else if (PositionMode.RELATIVE.equals(axis.getPositionMode())) {
-			this.addMultiplyMode = (AddMultiplyMode<Duration>)axis.getMode();
+		switch(axis.getType()) {
+		case DATETIME:
+			break;
+		case DOUBLE:
+			this.addMultiplyMode = (AddMultiplyMode<Double>)axis.getMode();
+			break;
+		case INT:
+			this.addMultiplyMode = (AddMultiplyMode<Integer>)axis.getMode();
+			break;
+		default:
+			break;
 		}
-		
 		this.addMultiplyMode.addPropertyChangeListener(
 				AddMultiplyMode.ADJUST_PARAMETER_PROP, this);
-		
-		this.contentProposalImage = FieldDecorationRegistry.getDefault()
-			.getFieldDecoration(FieldDecorationRegistry.DEC_CONTENT_PROPOSAL)
-			.getImage();
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean close() {
-		this.addMultiplyMode.removePropertyChangeListener(
-				AddMultiplyMode.ADJUST_PARAMETER_PROP, this);
-		// TODO dispose image ???
-		return super.close();
 	}
 	
 	/**
@@ -111,10 +93,6 @@ public class AddDateTimeDialog extends DialogCellEditorDialog implements Propert
 		gridData.horizontalIndent = 7;
 		gridData.grabExcessHorizontalSpace = true;
 		startText.setLayoutData(gridData);
-		startTextProposalDecoration = new ControlDecoration(this.startText, 
-				SWT.LEFT | SWT.BOTTOM);
-		startTextProposalDecoration.setImage(contentProposalImage);
-		startTextProposalDecoration.setShowOnlyOnFocus(true);
 
 		stopRadioButton = new Button(composite, SWT.RADIO);
 		stopRadioButton.setText("Stop:");
@@ -124,10 +102,6 @@ public class AddDateTimeDialog extends DialogCellEditorDialog implements Propert
 		gridData.horizontalIndent = 7;
 		gridData.grabExcessHorizontalSpace = true;
 		stopText.setLayoutData(gridData);
-		stopTextProposalDecoration = new ControlDecoration(this.stopText, 
-				SWT.LEFT | SWT.BOTTOM);
-		stopTextProposalDecoration.setImage(contentProposalImage);
-		stopTextProposalDecoration.setShowOnlyOnFocus(true);
 
 		stepwidthRadioButton = new Button(composite, SWT.RADIO);
 		stepwidthRadioButton.setText("Stepwidth:");
@@ -137,10 +111,6 @@ public class AddDateTimeDialog extends DialogCellEditorDialog implements Propert
 		gridData.horizontalIndent = 7;
 		gridData.grabExcessHorizontalSpace = true;
 		stepwidthText.setLayoutData(gridData);
-		stepwidthTextProposalDecoration = new ControlDecoration(
-				this.stepwidthText, SWT.LEFT | SWT.BOTTOM);
-		stepwidthTextProposalDecoration.setImage(contentProposalImage);
-		stepwidthTextProposalDecoration.setShowOnlyOnFocus(true);
 
 		stepcountRadioButton = new Button(composite, SWT.RADIO);
 		stepcountRadioButton.setText("Stepcount:");
@@ -151,14 +121,33 @@ public class AddDateTimeDialog extends DialogCellEditorDialog implements Propert
 		gridData.grabExcessHorizontalSpace = true;
 		stepcountText.setLayoutData(gridData);
 		
-		this.createBinding();
+		this.createBindings();
+		this.createTypedBindings();
 		this.setEnabled();
 
 		return composite;
 	}
 	
-	private void createBinding() {
-		DataBindingContext context = new DataBindingContext();
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean close() {
+		this.addMultiplyMode.removePropertyChangeListener(
+				AddMultiplyMode.ADJUST_PARAMETER_PROP, this);
+		return super.close();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		this.setEnabled();
+	}
+	
+	private void createBindings() {
+		this.context = new DataBindingContext();
 		
 		SelectObservableValue selectionTargetObservable = 
 				new SelectObservableValue();
@@ -179,85 +168,29 @@ public class AddDateTimeDialog extends DialogCellEditorDialog implements Propert
 		context.bindValue(selectionTargetObservable, 
 				selectionModelObservable, targetToModel, modelToTarget);
 		
-		IObservableValue startTargetObservable = SWTObservables.observeText(
-				startText, SWT.Modify);
-		IObservableValue startModelObservable = BeansObservables.observeValue(
-				this.addMultiplyMode, AddMultiplyMode.START_PROP);
-		UpdateValueStrategy startTargetToModel = new UpdateValueStrategy(
-				UpdateValueStrategy.POLICY_UPDATE);
-		startTargetToModel.setConverter(
-				new AddDateTimeTargetToModelConverter(axis));
-		startTargetToModel.setAfterGetValidator(
-				new AddDateTimeTargetToModelValidator(axis));
-		UpdateValueStrategy startModelToTarget = new UpdateValueStrategy(
-				UpdateValueStrategy.POLICY_UPDATE);
-		startModelToTarget.setConverter(new AddDateTimeModelToTargetConverter(
-				axis, false));
-		Binding startBinding = context.bindValue(startTargetObservable, 
-				startModelObservable, startTargetToModel, startModelToTarget);
-		ControlDecorationSupport.create(startBinding, SWT.LEFT | SWT.TOP);
-		
-		IObservableValue stopTargetObservable = SWTObservables.observeText(
-				stopText, SWT.Modify);
-		IObservableValue stopModelObservable = BeansObservables.observeValue(
-				this.addMultiplyMode, AddMultiplyMode.STOP_PROP);
-		UpdateValueStrategy stopTargetToModel = new UpdateValueStrategy(
-				UpdateValueStrategy.POLICY_UPDATE);
-		stopTargetToModel.setConverter(
-				new AddDateTimeTargetToModelConverter(axis));
-		stopTargetToModel.setAfterGetValidator(
-				new AddDateTimeTargetToModelValidator(axis));
-		UpdateValueStrategy stopModelToTarget = new UpdateValueStrategy(
-				UpdateValueStrategy.POLICY_UPDATE);
-		stopModelToTarget.setConverter(
-				new AddDateTimeModelToTargetConverter(axis, false));
-		Binding stopBinding = context.bindValue(stopTargetObservable, 
-				stopModelObservable, stopTargetToModel, stopModelToTarget);
-		ControlDecorationSupport.create(stopBinding, SWT.LEFT | SWT.TOP);
-		
-		IObservableValue stepwidthTargetObservable = SWTObservables.observeText(
-				stepwidthText, SWT.Modify);
-		IObservableValue stepwidthModelObservable = BeansObservables.observeValue(
-				this.addMultiplyMode, AddMultiplyMode.STEPWIDTH_PROP);
-		UpdateValueStrategy stepwidthTargetToModel = new UpdateValueStrategy(
-				UpdateValueStrategy.POLICY_UPDATE);
-		stepwidthTargetToModel.setConverter(
-				new AddDateTimeTargetToModelConverter(axis));
-		stepwidthTargetToModel.setAfterGetValidator(
-				new AddDateTimeTargetToModelValidator(axis));
-		UpdateValueStrategy stepwidthModelToTarget = new UpdateValueStrategy(
-				UpdateValueStrategy.POLICY_UPDATE);
-		stepwidthModelToTarget.setConverter(
-				new AddDateTimeModelToTargetConverter(axis, true));
-		Binding stepwidthBinding = context.bindValue(stepwidthTargetObservable, 
-				stepwidthModelObservable, stepwidthTargetToModel, 
-				stepwidthModelToTarget);
-		ControlDecorationSupport.create(stepwidthBinding, SWT.LEFT | SWT.TOP);
-		
 		IObservableValue stepcountTargetObservable = 
 				SWTObservables.observeText(stepcountText, SWT.Modify);
 		IObservableValue stepcountModelObservable = BeansObservables.observeValue(
 						this.addMultiplyMode, AddMultiplyMode.STEPCOUNT_PROP);
 		UpdateValueStrategy stepcountTargetToModel = new UpdateValueStrategy(
-				UpdateValueStrategy.POLICY_UPDATE);
-		// TODO target to model Converter
+				UpdateValueStrategy.POLICY_UPDATE).
+				setAfterGetValidator(new AddIntDoubleTargetToModelValidator(this.axis)).
+				setConverter(new AddDoubleTargetToModelConverter());
 		stepcountTargetToModel.setAfterGetValidator(
 				new AddDoubleTargetToModelValidator());
 		UpdateValueStrategy stepcountModelToTarget = new UpdateValueStrategy(
-				UpdateValueStrategy.POLICY_UPDATE);
-		// TODO model to target converter
+				UpdateValueStrategy.POLICY_UPDATE).
+				setAfterGetValidator(new AddIntDoubleModelToTargetValidator(this.axis)).
+				setConverter(new AddDoubleModelToTargetConverter());
 		Binding stepcountBinding = context.bindValue(stepcountTargetObservable, 
 				stepcountModelObservable, stepcountTargetToModel, stepcountModelToTarget);
 		ControlDecorationSupport.create(stepcountBinding, SWT.LEFT);
 	}
-
+	
 	/**
-	 * {@inheritDoc}
+	 * creates bindings for widgets according to axis type
 	 */
-	@Override
-	public void propertyChange(PropertyChangeEvent evt) {
-		this.setEnabled();
-	}
+	protected abstract void createTypedBindings();
 	
 	private void setEnabled() {
 		if (this.addMultiplyMode == null) {
@@ -295,5 +228,27 @@ public class AddDateTimeDialog extends DialogCellEditorDialog implements Propert
 		}
 	}
 	
-	// TODO destroy bindings when dialog is closed ?
+	protected Axis getAxis() {
+		return this.axis;
+	}
+	
+	protected AddMultiplyMode<?> getAxisMode() {
+		return this.addMultiplyMode;
+	}
+	
+	protected DataBindingContext getContext() {
+		return this.context;
+	}
+	
+	protected Text getStartText() {
+		return this.startText;
+	}
+	
+	protected Text getStopText() {
+		return this.stopText;
+	}
+	
+	protected Text getStepwidthText() {
+		return this.stepwidthText;
+	}
 }

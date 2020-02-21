@@ -44,6 +44,9 @@ public class RangeTextCellEditor extends TextCellEditor {
 		this.setValidator(new ICellEditorValidator() {
 			@Override
 			public String isValid(Object value) {
+				if (value == null) {
+					return "Range not set.";
+				}
 				String patternString = "";
 				switch (axis.getType()) {
 				case DOUBLE:
@@ -58,7 +61,13 @@ public class RangeTextCellEditor extends TextCellEditor {
 				Pattern p = Pattern.compile(patternString);
 				Matcher m = p.matcher((String)value);
 				if (!m.matches()) {
-					return "expression is invalid";
+					return "Expression is invalid. Allowed are:\n" 
+							+ "\u2022 j : k - positionlist from j to k with stepwidth 1\n" 
+							+ "\u2022 j : i : k - positionlist from j to k with stepwidth i\n"
+							+ "\u2022 j : k / n - positionlist from j to k with n steps of equal width\n"
+							+ "\n"
+							+ "Multiple ranges can be combined by separating them with comma.\n"
+							+ "Values must be of type " + axis.getType().toString();
 				}
 				return null;
 			}

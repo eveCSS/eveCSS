@@ -482,7 +482,7 @@
                id="de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.popup.dynamic">
          </dynamic>
          <separator
-               name="de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.popup.spearator"
+               name="de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.popup.separator"
                visible="true">
          </separator>
          <command
@@ -741,7 +741,7 @@
                id="popup:de.ptb.epics.eve.editor.views.axeschannelsview.saveaxispositionscomposite.popup.dynamic">
          </dynamic>
          <separator
-               name="de.ptb.epics.eve.editor.views.axeschannelsview.motoraxiscomposite.popup.remove.separator"
+               name="de.ptb.epics.eve.editor.views.axeschannelsview.motoraxiscomposite.popup.separator"
                visible="true">
          </separator>
          <command
@@ -776,7 +776,7 @@
                id="popup:de.ptb.epics.eve.editor.views.axeschannelsview.savechannelvaluescomposite.popup.dynamic">
          </dynamic>
          <separator
-               name="de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.popup.spearator"
+               name="de.ptb.epics.eve.editor.views.axeschannelsview.savechannelvaluescomposite.popup.separator"
                visible="true">
          </separator>
          <command
@@ -795,6 +795,52 @@
                commandId="de.ptb.epics.eve.editor.command.removeallchannels"
                icon="icons/progress_remall.gif"
                label="Remove All Channels"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
+               </reference>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axestable.popup">
+         <dynamic
+               class="de.ptb.epics.eve.editor.views.axeschannelsview.AxesMenuContribution"
+               id="popup:de.ptb.epics.eve.editor.views.axeschannelsview.saveaxispositionscomposite.popup.dynamic">
+         </dynamic>
+         <separator
+               name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axestable.popup.separator"
+               visible="true">
+         </separator>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.removeaxis"
+               icon="icons/rem_co.gif"
+               label="Remove Axis"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
+               </reference>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channelstable.popup">
+         <dynamic
+               class="de.ptb.epics.eve.editor.views.axeschannelsview.ChannelsMenuContribution"
+               id="popup:de.ptb.epics.eve.editor.views.axeschannelsview.savechannelvaluescomposite.popup.dynamic">
+         </dynamic>
+         <separator
+               name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channelstable.popup.separator"
+               visible="true">
+         </separator>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.removechannel"
+               icon="icons/rem_co.gif"
+               label="Remove Channel"
                style="push">
             <visibleWhen
                   checkEnabled="false">

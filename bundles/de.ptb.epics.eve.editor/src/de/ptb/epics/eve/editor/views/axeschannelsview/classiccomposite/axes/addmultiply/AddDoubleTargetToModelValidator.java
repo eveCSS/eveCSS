@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.datetime;
+package de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply;
 
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
