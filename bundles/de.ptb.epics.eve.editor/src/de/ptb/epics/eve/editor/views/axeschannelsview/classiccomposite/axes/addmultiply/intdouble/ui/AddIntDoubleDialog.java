@@ -1,7 +1,5 @@
 package de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.intdouble.ui;
 
-import java.beans.PropertyChangeListener;
-
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeanProperties;
@@ -24,7 +22,7 @@ import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addm
  * @author Marcus Michalsky
  * @since 1.34
  */
-public class AddIntDoubleDialog extends AddGenericDialog implements PropertyChangeListener {
+public class AddIntDoubleDialog extends AddGenericDialog {
 
 	public AddIntDoubleDialog(Shell shell, Control control, Axis axis) {
 		super(shell, control, axis);

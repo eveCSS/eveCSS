@@ -2,6 +2,9 @@ package de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.add
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Date;
+
+import javax.xml.datatype.Duration;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
@@ -21,13 +24,14 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import de.ptb.epics.eve.data.scandescription.Axis;
+import de.ptb.epics.eve.data.scandescription.PositionMode;
 import de.ptb.epics.eve.data.scandescription.axismode.AddMultiplyMode;
 import de.ptb.epics.eve.data.scandescription.axismode.AdjustParameter;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.AddDoubleModelToTargetConverter;
+import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.AddDoubleModelToTargetValidator;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.AddDoubleTargetToModelConverter;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.AddDoubleTargetToModelValidator;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.intdouble.AddIntDoubleModelToTargetValidator;
-import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.intdouble.AddIntDoubleTargetToModelValidator;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.ui.DialogCellEditorDialog;
 
 /**
@@ -56,6 +60,11 @@ public abstract class AddGenericDialog extends DialogCellEditorDialog implements
 		
 		switch(axis.getType()) {
 		case DATETIME:
+			if (PositionMode.ABSOLUTE.equals(axis.getPositionMode())) {
+				this.addMultiplyMode = (AddMultiplyMode<Date>)axis.getMode();
+			} else if (PositionMode.RELATIVE.equals(axis.getPositionMode())) {
+				this.addMultiplyMode = (AddMultiplyMode<Duration>)axis.getMode();
+			}
 			break;
 		case DOUBLE:
 			this.addMultiplyMode = (AddMultiplyMode<Double>)axis.getMode();
@@ -174,13 +183,11 @@ public abstract class AddGenericDialog extends DialogCellEditorDialog implements
 						this.addMultiplyMode, AddMultiplyMode.STEPCOUNT_PROP);
 		UpdateValueStrategy stepcountTargetToModel = new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE).
-				setAfterGetValidator(new AddIntDoubleTargetToModelValidator(this.axis)).
-				setConverter(new AddDoubleTargetToModelConverter());
-		stepcountTargetToModel.setAfterGetValidator(
-				new AddDoubleTargetToModelValidator());
+				setConverter(new AddDoubleTargetToModelConverter()).
+				setAfterGetValidator(new AddDoubleTargetToModelValidator());
 		UpdateValueStrategy stepcountModelToTarget = new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE).
-				setAfterGetValidator(new AddIntDoubleModelToTargetValidator(this.axis)).
+				setAfterGetValidator(new AddDoubleModelToTargetValidator()).
 				setConverter(new AddDoubleModelToTargetConverter());
 		Binding stepcountBinding = context.bindValue(stepcountTargetObservable, 
 				stepcountModelObservable, stepcountTargetToModel, stepcountModelToTarget);

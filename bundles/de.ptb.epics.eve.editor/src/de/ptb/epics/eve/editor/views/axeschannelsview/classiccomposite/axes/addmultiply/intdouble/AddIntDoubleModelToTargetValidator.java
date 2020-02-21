@@ -28,6 +28,7 @@ public class AddIntDoubleModelToTargetValidator implements IValidator {
 	public IStatus validate(Object value) {
 		switch (this.axis.getType()) {
 		case DOUBLE:
+			return ValidationStatus.ok();
 		case INT:
 			return ValidationStatus.ok();
 		default:
