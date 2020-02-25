@@ -120,7 +120,7 @@ public class PositionlistDialogCellEditor extends DialogCellEditor {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
+/*	@Override
 	protected Control createContents(Composite cell) {
 		this.text = new Text(cell, SWT.NONE);
 		this.text.addKeyListener(new KeyAdapter() {
@@ -144,34 +144,34 @@ public class PositionlistDialogCellEditor extends DialogCellEditor {
 				positionlistModelObservable, targetToModel, modelToTarget);
 		ControlDecorationSupport.create(binding, SWT.LEFT);
 		return text;
-	}
+	}*/
 	
-	@Override
+/*	@Override
 	protected void keyReleaseOccured(KeyEvent keyEvent) {
 		if (keyEvent.keyCode == SWT.CR && this.validate(this.text.getText()).isEmpty()) {
-			/*this.axis.setPositionlist(this.text.getText());
-			markDirty();
-			doSetValue(this.text.getText());*/
+			//this.axis.setPositionlist(this.text.getText());
+			//markDirty();
+			//doSetValue(this.text.getText());
 			// TODO
 		} else {
 			
 		}
 		// TODO Auto-generated method stub
 		super.keyReleaseOccured(keyEvent);
-	}
+	}*/
 	
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
+/*	@Override
 	protected void doSetFocus() {
 		this.text.setFocus();
-	}
+	}*/
 	
 	/**
 	 * ´{@inheritDoc}
 	 */
-	@Override
+/*	@Override
 	protected void updateContents(Object value) {
 		if (this.text == null) {
 			return;
@@ -182,7 +182,7 @@ public class PositionlistDialogCellEditor extends DialogCellEditor {
 			this.text.getParent().layout();
 		}
 		super.updateContents(value);
-	}
+	}*/
 	
 	/**
 	 * {@inheritDoc}
