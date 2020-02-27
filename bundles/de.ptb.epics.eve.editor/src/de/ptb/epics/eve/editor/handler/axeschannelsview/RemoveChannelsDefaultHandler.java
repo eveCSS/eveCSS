@@ -30,13 +30,15 @@ public class RemoveChannelsDefaultHandler extends AbstractHandler {
 	
 	private static final Logger LOGGER = Logger.getLogger(
 			RemoveChannelsDefaultHandler.class.getName());
+
+	private IWorkbenchPart activePart;
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
+		activePart = HandlerUtil.getActivePart(event);
 		if (activePart instanceof AbstractScanModuleView) {
 			ScanModule sm = ((AbstractScanModuleView)activePart).getScanModule();
 			ISelection selection = HandlerUtil.getCurrentSelection(event);
@@ -109,8 +111,8 @@ public class RemoveChannelsDefaultHandler extends AbstractHandler {
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				MessageDialog.openInformation(
-						Display.getDefault().getActiveShell(), 
+				MessageDialog.openInformation( 
+						activePart.getSite().getShell(),
 						"Normalization Removed", message);
 			}
 		});
@@ -132,8 +134,8 @@ public class RemoveChannelsDefaultHandler extends AbstractHandler {
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				MessageDialog.openInformation(Display
-						.getDefault().getActiveShell(),
+				MessageDialog.openInformation(
+						activePart.getSite().getShell(),
 						"Stopped By Removed",
 						message);
 			}
