@@ -28,6 +28,9 @@ import de.ptb.epics.eve.data.scandescription.PositionMode;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
+import de.ptb.epics.eve.editor.handler.axeschannelsview.RemoveAxesDefaultHandler;
+import de.ptb.epics.eve.editor.handler.axeschannelsview.RemoveChannelsDefaultHandler;
+import de.ptb.epics.eve.editor.views.DelColumnEditingSupport;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.AxesContentProvider;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.MainAxisColumnLabelProvider;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.MainAxisEditingSupport;
@@ -99,7 +102,7 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 	}
 	
 	private void createAxesTable(Composite parent) {
-		this.axesTable = new TableViewer(parent, SWT.BORDER);
+		this.axesTable = new TableViewer(parent, SWT.BORDER | SWT.MULTI);
 		axesTable.getTable().setHeaderVisible(true);
 		axesTable.getTable().setLinesVisible(true);
 		GridData gridData = new GridData();
@@ -147,7 +150,8 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 						ISharedImages.IMG_TOOL_DELETE);
 			}
 		});
-		// TODO set EditingSupport command: de.ptb.epics.eve.editor.command.removeaxis
+		delColumn.setEditingSupport(new DelColumnEditingSupport(viewer, 
+				RemoveAxesDefaultHandler.ID));
 		
 		TableViewerColumn nameColumn = new TableViewerColumn(viewer, SWT.NONE);
 		nameColumn.getColumn().setText("Name");
@@ -215,7 +219,7 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 	}
 	
 	private void createChannelsTable(Composite parent) {
-		this.channelsTable = new TableViewer(parent, SWT.BORDER);
+		this.channelsTable = new TableViewer(parent, SWT.BORDER | SWT.MULTI);
 		channelsTable.getTable().setHeaderVisible(true);
 		channelsTable.getTable().setLinesVisible(true);
 		GridData gridData = new GridData();
@@ -263,7 +267,8 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 						ISharedImages.IMG_TOOL_DELETE);
 			}
 		});
-		// TODO set EditingSupport command: de.ptb.epics.eve.editor.command.removechannel ?
+		delColumn.setEditingSupport(new DelColumnEditingSupport(viewer, 
+				RemoveChannelsDefaultHandler.ID));
 		
 		TableViewerColumn nameColumn = new TableViewerColumn(viewer, SWT.NONE);
 		nameColumn.getColumn().setText("Name");

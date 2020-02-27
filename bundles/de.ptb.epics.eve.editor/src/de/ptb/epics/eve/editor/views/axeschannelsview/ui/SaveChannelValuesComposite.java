@@ -24,6 +24,7 @@ import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
+import de.ptb.epics.eve.editor.handler.axeschannelsview.RemoveChannelsDefaultHandler;
 import de.ptb.epics.eve.editor.views.DelColumnEditingSupport;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.ChannelsContentProvider;
 
@@ -45,7 +46,7 @@ public class SaveChannelValuesComposite extends AxesChannelsViewComposite {
 		gridData.grabExcessHorizontalSpace = true;
 		label.setLayoutData(gridData);
 		
-		tableViewer = new TableViewer(this, SWT.FULL_SELECTION | SWT.BORDER);
+		tableViewer = new TableViewer(this, SWT.FULL_SELECTION | SWT.MULTI | SWT.BORDER);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
@@ -67,8 +68,7 @@ public class SaveChannelValuesComposite extends AxesChannelsViewComposite {
 			}
 		});
 		delColumn.setEditingSupport(new DelColumnEditingSupport(
-				this.tableViewer, 
-				"de.ptb.epics.eve.editor.command.removechannel"));
+				this.tableViewer, RemoveChannelsDefaultHandler.ID));
 		
 		TableViewerColumn nameColumn = new TableViewerColumn(tableViewer, 
 				SWT.NONE);

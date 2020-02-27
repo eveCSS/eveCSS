@@ -24,6 +24,7 @@ import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
+import de.ptb.epics.eve.editor.handler.axeschannelsview.RemoveAxesDefaultHandler;
 import de.ptb.epics.eve.editor.views.DelColumnEditingSupport;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.AxesContentProvider;
 
@@ -45,7 +46,7 @@ public class SaveAxisPositionsComposite extends AxesChannelsViewComposite {
 		gridData.grabExcessHorizontalSpace = true;
 		label.setLayoutData(gridData);
 		
-		tableViewer = new TableViewer(this, SWT.FULL_SELECTION | SWT.BORDER);
+		tableViewer = new TableViewer(this, SWT.FULL_SELECTION | SWT.MULTI | SWT.BORDER);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
@@ -66,7 +67,7 @@ public class SaveAxisPositionsComposite extends AxesChannelsViewComposite {
 			}
 		});
 		delColumn.setEditingSupport(new DelColumnEditingSupport(tableViewer, 
-				"de.ptb.epics.eve.editor.command.removeaxis"));
+				RemoveAxesDefaultHandler.ID));
 		
 		TableViewerColumn nameColumn = new TableViewerColumn(tableViewer, SWT.NONE);
 		nameColumn.getColumn().setText("Name");
@@ -102,9 +103,9 @@ public class SaveAxisPositionsComposite extends AxesChannelsViewComposite {
 		this.tableViewer.getTable().setMenu(
 				menuManager.createContextMenu(this.tableViewer.getTable()));
 		// register menu
-				parentView.getSite().registerContextMenu(
-					"de.ptb.epics.eve.editor.views.axeschannelsview.saveaxispositionscomposite.popup", 
-					menuManager, this.tableViewer);
+		parentView.getSite().registerContextMenu(
+			"de.ptb.epics.eve.editor.views.axeschannelsview.saveaxispositionscomposite.popup", 
+			menuManager, this.tableViewer);
 	}
 
 	/**

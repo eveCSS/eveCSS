@@ -745,21 +745,23 @@
                visible="true">
          </separator>
          <command
-               commandId="de.ptb.epics.eve.editor.command.removeaxis"
+               commandId="de.ptb.epics.eve.editor.command.scanmodule.removeaxes"
                icon="icons/rem_co.gif"
-               label="Remove Axis"
+               label="Remove Selected"
                style="push">
             <visibleWhen
                   checkEnabled="false">
-               <reference
-                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
-               </reference>
+               <not>
+                  <reference
+                        definitionId="de.ptb.epics.eve.editor.expressions.emptyselection">
+                  </reference>
+               </not>
             </visibleWhen>
          </command>
          <command
-               commandId="de.ptb.epics.eve.editor.command.removeallaxis"
+               commandId="de.ptb.epics.eve.editor.command.scanmodule.removeallaxes"
                icon="icons/progress_remall.gif"
-               label="Remove All Axes"
+               label="Remove All"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -780,21 +782,23 @@
                visible="true">
          </separator>
          <command
-               commandId="de.ptb.epics.eve.editor.command.removechannel"
+               commandId="de.ptb.epics.eve.editor.command.scanmodule.removechannels"
                icon="icons/rem_co.gif"
-               label="Remove Channel"
+               label="Remove Selected"
                style="push">
             <visibleWhen
                   checkEnabled="false">
-               <reference
-                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
-               </reference>
+               <not>
+                  <reference
+                        definitionId="de.ptb.epics.eve.editor.expressions.emptyselection">
+                  </reference>
+               </not>
             </visibleWhen>
          </command>
          <command
-               commandId="de.ptb.epics.eve.editor.command.removeallchannels"
+               commandId="de.ptb.epics.eve.editor.command.scanmodule.removeallchannels"
                icon="icons/progress_remall.gif"
-               label="Remove All Channels"
+               label="Remove All"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -815,9 +819,23 @@
                visible="true">
          </separator>
          <command
-               commandId="de.ptb.epics.eve.editor.command.removeaxis"
+               commandId="de.ptb.epics.eve.editor.command.scanmodule.removeaxes"
                icon="icons/rem_co.gif"
-               label="Remove Axis"
+               label="Remove Selected"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <not>
+                  <reference
+                        definitionId="de.ptb.epics.eve.editor.expressions.emptyselection">
+                  </reference>
+               </not>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.scanmodule.removeallaxes"
+               icon="icons/progress_remall.gif"
+               label="Remove All"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -838,9 +856,23 @@
                visible="true">
          </separator>
          <command
-               commandId="de.ptb.epics.eve.editor.command.removechannel"
+               commandId="de.ptb.epics.eve.editor.command.scanmodule.removechannels"
                icon="icons/rem_co.gif"
-               label="Remove Channel"
+               label="Remove Selected"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <not>
+                  <reference
+                        definitionId="de.ptb.epics.eve.editor.expressions.emptyselection">
+                  </reference>
+               </not>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.scanmodule.removeallchannels"
+               icon="icons/progress_remall.gif"
+               label="Remove All"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1474,6 +1506,34 @@
             defaultHandler="de.ptb.epics.eve.editor.handler.changeto.ChangeToChannelSnapshotDynamic"
             id="de.ptb.epics.eve.editor.command.changeto.channelsnapshotdynamic"
             name="Channel Snapshot (dynamic)">
+      </command>
+      <category
+            id="de.ptb.epics.eve.editor.category.axeschannelsview"
+            name="AxesChannelsView">
+      </category>
+      <command
+            categoryId="de.ptb.epics.eve.editor.category.axeschannelsview"
+            defaultHandler="de.ptb.epics.eve.editor.handler.axeschannelsview.RemoveAxesDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.scanmodule.removeaxes"
+            name="Remove Axes">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.category.axeschannelsview"
+            defaultHandler="de.ptb.epics.eve.editor.handler.axeschannelsview.RemoveAllAxesDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.scanmodule.removeallaxes"
+            name="Remove All Axes">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.category.axeschannelsview"
+            defaultHandler="de.ptb.epics.eve.editor.handler.axeschannelsview.RemoveChannelsDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.scanmodule.removechannels"
+            name="Remove Channels">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.category.axeschannelsview"
+            defaultHandler="de.ptb.epics.eve.editor.handler.axeschannelsview.RemoveAllChannelsDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.scanmodule.removeallchannels"
+            name="Remove All Channels">
       </command>
    </extension>
    <extension

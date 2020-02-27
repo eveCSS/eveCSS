@@ -210,4 +210,12 @@ public class AxesChannelsView extends AbstractScanModuleView {
 		this.setScanModule(null);
 		// TODO setSM(null) on composites ?
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ScanModule getScanModule() {
+		return this.currentScanModule;
+	}
 }

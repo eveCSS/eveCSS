@@ -49,4 +49,12 @@ public abstract class AbstractScanModuleView extends ViewPart implements
 	 * @param scanModule
 	 */
 	protected abstract void setScanModule(ScanModule scanModule);
+	
+	/**
+	 * Returns the current scan module (set by selection) or <code>null</code> 
+	 * if none.
+	 * @return the current scan module (set by selection) or <code>null</code> 
+	 * if none
+	 */
+	public abstract ScanModule getScanModule();
 }
