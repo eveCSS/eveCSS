@@ -24,6 +24,7 @@ import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleFilterManualUpdate;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.editor.handler.axeschannelsview.AddChannelDefaultHandler;
 import de.ptb.epics.eve.editor.views.axeschannelsview.ui.AxesChannelsView;
 
 /**
@@ -126,8 +127,8 @@ public class ChannelsMenuContribution extends CompoundContributionItem {
 						if (channel.getClassName().isEmpty()) {
 							// add only channels which have no className
 							currentDetectorMenu.add(this.getItem(
-								"de.ptb.epics.eve.editor.command.addchannel", 
-								"de.ptb.epics.eve.editor.command.addchannel.detectorchannelid", 
+								AddChannelDefaultHandler.COMMAND_ID, 
+								AddChannelDefaultHandler.PARAM_CHANNEL_ID, 
 								channel.getID(), 
 								channel.getName(), 
 								channelImage));
@@ -159,8 +160,8 @@ public class ChannelsMenuContribution extends CompoundContributionItem {
 				} else if (device instanceof DetectorChannel) {
 					DetectorChannel channel = (DetectorChannel) device;
 					currentClassMenu.add(this.getItem(
-						"de.ptb.epics.eve.editor.command.addchannel", 
-						"de.ptb.epics.eve.editor.command.addchannel.detectorchannelid", 
+							AddChannelDefaultHandler.COMMAND_ID, 
+							AddChannelDefaultHandler.PARAM_CHANNEL_ID, 
 						channel.getID(),
 						channel.getName(),
 						channelImage));
@@ -206,8 +207,8 @@ public class ChannelsMenuContribution extends CompoundContributionItem {
 					if (channel.getClassName().isEmpty()
 							|| channel.getClassName() == null) {
 						currentDetectorMenu.add(this.getItem(
-							"de.ptb.epics.eve.editor.command.addchannel", 
-							"de.ptb.epics.eve.editor.command.addchannel.detectorchannelid", 
+							AddChannelDefaultHandler.COMMAND_ID, 
+							AddChannelDefaultHandler.PARAM_CHANNEL_ID, 
 							channel.getID(),
 							channel.getName(), 
 							channelImage));

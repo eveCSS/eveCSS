@@ -1536,6 +1536,7 @@
       </command>
       <command
             categoryId="de.ptb.epics.eve.editor.category.axeschannelsview"
+            defaultHandler="de.ptb.epics.eve.editor.handler.axeschannelsview.AddChannelDefaultHandler"
             id="de.ptb.epics.eve.editor.command.scanmodule.addchannel"
             name="Add Channel">
          <commandParameter
