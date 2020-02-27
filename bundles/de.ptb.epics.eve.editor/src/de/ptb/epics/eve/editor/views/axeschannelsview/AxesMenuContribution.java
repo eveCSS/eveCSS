@@ -24,6 +24,7 @@ import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleFilterManualUpdate;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.editor.handler.axeschannelsview.AddAxisDefaultHandler;
 import de.ptb.epics.eve.editor.views.axeschannelsview.ui.AxesChannelsView;
 
 /**
@@ -128,8 +129,8 @@ public class AxesMenuContribution extends CompoundContributionItem {
 						if (axis.getClassName().isEmpty()) {
 							// add only axis which have no className
 							currentMotorMenu.add(this.getItem(
-									"de.ptb.epics.eve.editor.command.addaxis",
-									"de.ptb.epics.eve.editor.command.addaxis.motoraxisid", 
+									AddAxisDefaultHandler.COMMAND_ID,
+									AddAxisDefaultHandler.PARAM_AXIS_ID, 
 									axis.getID(),
 									axis.getName(), 
 									axisImage));
@@ -161,8 +162,8 @@ public class AxesMenuContribution extends CompoundContributionItem {
 				} else if (device instanceof MotorAxis) {
 					MotorAxis axis = (MotorAxis) device;
 					currentClassMenu.add(this.getItem(
-							"de.ptb.epics.eve.editor.command.addaxis",
-							"de.ptb.epics.eve.editor.command.addaxis.motoraxisid", 
+							AddAxisDefaultHandler.COMMAND_ID,
+							AddAxisDefaultHandler.PARAM_AXIS_ID, 
 							axis.getID(),
 							axis.getName(), 
 							axisImage));
@@ -211,8 +212,8 @@ public class AxesMenuContribution extends CompoundContributionItem {
 					if (axis.getClassName().isEmpty()
 							|| axis.getClassName() == null) {
 						currentMotorMenu.add(this.getItem(
-								"de.ptb.epics.eve.editor.command.addaxis", 
-								"de.ptb.epics.eve.editor.command.addaxis.motoraxisid", 
+								AddAxisDefaultHandler.COMMAND_ID, 
+								AddAxisDefaultHandler.PARAM_AXIS_ID, 
 								axis.getID(),
 								axis.getName(),
 								axisImage));

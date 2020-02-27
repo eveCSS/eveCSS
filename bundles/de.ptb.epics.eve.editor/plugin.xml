@@ -1513,6 +1513,17 @@
       </category>
       <command
             categoryId="de.ptb.epics.eve.editor.category.axeschannelsview"
+            defaultHandler="de.ptb.epics.eve.editor.handler.axeschannelsview.AddAxisDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.scanmodule.addaxis"
+            name="Add Axis">
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.scanmodule.addaxis.motoraxisid"
+               name="MotorAxis Id"
+               optional="false">
+         </commandParameter>
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.category.axeschannelsview"
             defaultHandler="de.ptb.epics.eve.editor.handler.axeschannelsview.RemoveAxesDefaultHandler"
             id="de.ptb.epics.eve.editor.command.scanmodule.removeaxes"
             name="Remove Axes">
@@ -1522,6 +1533,16 @@
             defaultHandler="de.ptb.epics.eve.editor.handler.axeschannelsview.RemoveAllAxesDefaultHandler"
             id="de.ptb.epics.eve.editor.command.scanmodule.removeallaxes"
             name="Remove All Axes">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.category.axeschannelsview"
+            id="de.ptb.epics.eve.editor.command.scanmodule.addchannel"
+            name="Add Channel">
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.scanmodule.addchannel.detectorchannelid"
+               name="DetectorChannel Id"
+               optional="false">
+         </commandParameter>
       </command>
       <command
             categoryId="de.ptb.epics.eve.editor.category.axeschannelsview"
