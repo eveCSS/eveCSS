@@ -24,6 +24,7 @@ import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleFilterManualUpdate;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.editor.handler.axeschannelsview.AddAbstractDevicesDefaultHandler;
 import de.ptb.epics.eve.editor.handler.axeschannelsview.AddChannelDefaultHandler;
 import de.ptb.epics.eve.editor.views.axeschannelsview.ui.AxesChannelsView;
 
@@ -153,8 +154,8 @@ public class ChannelsMenuContribution extends CompoundContributionItem {
 						// insert all menu entry
 						currentDetectorMenu.add(new Separator());
 						currentDetectorMenu.add(this.getItem(
-							"de.ptb.epics.eve.editor.command.addabstractdevices",
-							"de.ptb.epics.eve.editor.command.addabstractdevices.devicelist",
+								AddAbstractDevicesDefaultHandler.COMMAND_ID,
+								AddAbstractDevicesDefaultHandler.PARAM_DEVICE_LIST,
 							detectorDeviceList.toString(), "Add All", null));
 					}
 				} else if (device instanceof DetectorChannel) {
@@ -180,8 +181,8 @@ public class ChannelsMenuContribution extends CompoundContributionItem {
 				// insert all menu entry
 				currentClassMenu.add(new Separator());
 				currentClassMenu.add(this.getItem(
-					"de.ptb.epics.eve.editor.command.addabstractdevices",
-					"de.ptb.epics.eve.editor.command.addabstractdevices.devicelist",
+						AddAbstractDevicesDefaultHandler.COMMAND_ID,
+						AddAbstractDevicesDefaultHandler.PARAM_DEVICE_LIST,
 					classDeviceList.toString(), "Add All", null));
 			}
 			
@@ -240,8 +241,8 @@ public class ChannelsMenuContribution extends CompoundContributionItem {
 					// insert all menu entry
 					currentDetectorMenu.add(new Separator());
 					currentDetectorMenu.add(this.getItem(
-							"de.ptb.epics.eve.editor.command.addabstractdevices",
-							"de.ptb.epics.eve.editor.command.addabstractdevices.devicelist",
+							AddAbstractDevicesDefaultHandler.COMMAND_ID,
+							AddAbstractDevicesDefaultHandler.PARAM_DEVICE_LIST,
 							noClassDetectorDeviceList.toString(), "Add All", null));
 				}
 			}
@@ -258,8 +259,8 @@ public class ChannelsMenuContribution extends CompoundContributionItem {
 		if (count > 1) {
 			detectorsAndChannelsMenu.add(new Separator());
 			detectorsAndChannelsMenu.add(this.getItem(
-					"de.ptb.epics.eve.editor.command.addabstractdevices",
-					"de.ptb.epics.eve.editor.command.addabstractdevices.devicelist",
+					AddAbstractDevicesDefaultHandler.COMMAND_ID,
+					AddAbstractDevicesDefaultHandler.PARAM_DEVICE_LIST,
 					noClassChannelDeviceList.toString(), "Add All", null));
 		}
 		

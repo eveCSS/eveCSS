@@ -1557,6 +1557,17 @@
             id="de.ptb.epics.eve.editor.command.scanmodule.removeallchannels"
             name="Remove All Channels">
       </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.category.axeschannelsview"
+            defaultHandler="de.ptb.epics.eve.editor.handler.axeschannelsview.AddAbstractDevicesDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.scanmodule.addabstractdevices"
+            name="Add Abstract Devices">
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.scanmodule.addabstractdevices.devicelist"
+               name="Device List"
+               optional="false">
+         </commandParameter>
+      </command>
    </extension>
    <extension
          point="org.eclipse.help.toc">

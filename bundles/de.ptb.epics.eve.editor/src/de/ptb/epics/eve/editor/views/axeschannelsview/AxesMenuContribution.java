@@ -24,6 +24,7 @@ import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleFilterManualUpdate;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.editor.handler.axeschannelsview.AddAbstractDevicesDefaultHandler;
 import de.ptb.epics.eve.editor.handler.axeschannelsview.AddAxisDefaultHandler;
 import de.ptb.epics.eve.editor.views.axeschannelsview.ui.AxesChannelsView;
 
@@ -155,8 +156,8 @@ public class AxesMenuContribution extends CompoundContributionItem {
 						// insert all menu entry
 						currentMotorMenu.add(new Separator());
 						currentMotorMenu.add(this.getItem(
-							"de.ptb.epics.eve.editor.command.addabstractdevices",
-							"de.ptb.epics.eve.editor.command.addabstractdevices.devicelist",
+							AddAbstractDevicesDefaultHandler.COMMAND_ID,
+							AddAbstractDevicesDefaultHandler.PARAM_DEVICE_LIST,
 							motorDeviceList.toString(), "Add All", null));
 					}
 				} else if (device instanceof MotorAxis) {
@@ -184,8 +185,8 @@ public class AxesMenuContribution extends CompoundContributionItem {
 				// insert all menu entry
 				currentClassMenu.add(new Separator());
 				currentClassMenu.add(this.getItem(
-						"de.ptb.epics.eve.editor.command.addabstractdevices", 
-						"de.ptb.epics.eve.editor.command.addabstractdevices.devicelist",
+						AddAbstractDevicesDefaultHandler.COMMAND_ID, 
+						AddAbstractDevicesDefaultHandler.PARAM_DEVICE_LIST,
 						classDeviceList.toString(), 
 						"Add All", 
 						null));
@@ -245,8 +246,8 @@ public class AxesMenuContribution extends CompoundContributionItem {
 					// insert all menu entry
 					currentMotorMenu.add(new Separator());
 					currentMotorMenu.add(this.getItem(
-							"de.ptb.epics.eve.editor.command.addabstractdevices",
-							"de.ptb.epics.eve.editor.command.addabstractdevices.devicelist",
+							AddAbstractDevicesDefaultHandler.COMMAND_ID,
+							AddAbstractDevicesDefaultHandler.PARAM_DEVICE_LIST,
 							noClassMotorDeviceList.toString(), "Add All", null));
 				}
 			}
@@ -263,8 +264,8 @@ public class AxesMenuContribution extends CompoundContributionItem {
 		if (count > 1) {
 			motorsAndAxesMenu.add(new Separator());
 			motorsAndAxesMenu.add(this.getItem(
-					"de.ptb.epics.eve.editor.command.addabstractdevices",
-					"de.ptb.epics.eve.editor.command.addabstractdevices.devicelist",
+					AddAbstractDevicesDefaultHandler.COMMAND_ID,
+					AddAbstractDevicesDefaultHandler.PARAM_DEVICE_LIST,
 					noClassAxesDeviceList.toString(), "Add All", null));
 		}
 		
