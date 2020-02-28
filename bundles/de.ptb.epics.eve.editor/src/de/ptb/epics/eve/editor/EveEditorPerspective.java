@@ -4,6 +4,7 @@ import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
+import de.ptb.epics.eve.editor.views.axeschannelsview.ui.AxesChannelsView;
 import de.ptb.epics.eve.editor.views.chainview.ChainView;
 import de.ptb.epics.eve.editor.views.detectorchannelview.ui.DetectorChannelView;
 import de.ptb.epics.eve.editor.views.errorview.ErrorView;
@@ -33,11 +34,11 @@ public class EveEditorPerspective implements IPerspectiveFactory {
 		layout.addView(ScanView.ID, IPageLayout.RIGHT, 0.33f, editorArea);
 		layout.getViewLayout(ScanView.ID).setCloseable(false);
 		
-		layout.addView(MotorAxisView.ID, IPageLayout.RIGHT, 0.50f, ScanView.ID);
-		layout.getViewLayout(MotorAxisView.ID).setCloseable(false);
-		
 		layout.addView(ErrorView.ID, IPageLayout.BOTTOM , 0.67f, editorArea);
 		layout.getViewLayout(ErrorView.ID).setCloseable(false);
+		
+		layout.addView(ScanModuleView.ID, IPageLayout.RIGHT, 0.55f, ScanView.ID);
+		layout.getViewLayout(ScanModuleView.ID).setCloseable(false);
 		
 		/*layout.addStandaloneView(IPageLayout.ID_OUTLINE, true, IPageLayout.TOP,
 				0.67f, ErrorView.ID);*/
@@ -45,7 +46,18 @@ public class EveEditorPerspective implements IPerspectiveFactory {
 		layout.addView(ChainView.ID, IPageLayout.BOTTOM, 0.35f, ScanView.ID);
 		layout.getViewLayout(ChainView.ID).setCloseable(false);
 		
-		layout.addView(ScanModuleView.ID, IPageLayout.BOTTOM, 0.28f, ChainView.ID);
+		layout.addView(AxesChannelsView.ID, IPageLayout.BOTTOM, 0.28f, ChainView.ID);
+		layout.getViewLayout(AxesChannelsView.ID).setCloseable(false);
+		
+		layout.addView(PlotWindowView.ID, 
+				IPageLayout.BOTTOM, 0.70f, ScanModuleView.ID);
+		layout.getViewLayout(PlotWindowView.ID).setCloseable(false);
+		
+		IFolderLayout plotViewFolder = layout.createFolder("PlotViewFolder", 
+				IPageLayout.BOTTOM, 0.60f, editorArea);
+		plotViewFolder.addPlaceholder("PlotView:*");
+		
+		/*layout.addView(ScanModuleView.ID, IPageLayout.BOTTOM, 0.28f, ChainView.ID);
 		layout.getViewLayout(ScanModuleView.ID).setCloseable(false);
 		
 		layout.addView(DetectorChannelView.ID, 
@@ -58,6 +70,6 @@ public class EveEditorPerspective implements IPerspectiveFactory {
 		
 		IFolderLayout plotViewFolder = layout.createFolder("PlotViewFolder", 
 				IPageLayout.BOTTOM, 0.60f, editorArea);
-		plotViewFolder.addPlaceholder("PlotView:*");
+		plotViewFolder.addPlaceholder("PlotView:*");*/
 	}
 }
