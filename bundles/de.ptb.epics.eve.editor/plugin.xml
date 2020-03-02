@@ -819,6 +819,16 @@
                visible="true">
          </separator>
          <command
+               commandId="de.ptb.epics.eve.editor.command.scanmodule.importcsvaxes"
+               icon="icons/importpref_obj.gif"
+               label="Import CSV..."
+               style="push">
+         </command>
+         <separator
+               name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axestable.remove.separator"
+               visible="true">
+         </separator>
+         <command
                commandId="de.ptb.epics.eve.editor.command.scanmodule.removeaxes"
                icon="icons/rem_co.gif"
                label="Remove Selected"
@@ -1521,6 +1531,12 @@
                name="MotorAxis Id"
                optional="false">
          </commandParameter>
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.category.axeschannelsview"
+            defaultHandler="de.ptb.epics.eve.editor.handler.axeschannelsview.ImportAxesFromCSVDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.scanmodule.importcsvaxes"
+            name="Import Axes from csv">
       </command>
       <command
             categoryId="de.ptb.epics.eve.editor.category.axeschannelsview"
