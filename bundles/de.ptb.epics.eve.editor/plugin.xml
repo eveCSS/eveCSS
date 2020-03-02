@@ -812,7 +812,7 @@
             locationURI="popup:de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axestable.popup">
          <dynamic
                class="de.ptb.epics.eve.editor.views.axeschannelsview.AxesMenuContribution"
-               id="popup:de.ptb.epics.eve.editor.views.axeschannelsview.saveaxispositionscomposite.popup.dynamic">
+               id="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axestable.popup.dynamic">
          </dynamic>
          <separator
                name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axestable.popup.separator"
@@ -849,7 +849,7 @@
             locationURI="popup:de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channelstable.popup">
          <dynamic
                class="de.ptb.epics.eve.editor.views.axeschannelsview.ChannelsMenuContribution"
-               id="popup:de.ptb.epics.eve.editor.views.axeschannelsview.savechannelvaluescomposite.popup.dynamic">
+               id="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channelstable.popup.dynamic">
          </dynamic>
          <separator
                name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channelstable.popup.separator"
