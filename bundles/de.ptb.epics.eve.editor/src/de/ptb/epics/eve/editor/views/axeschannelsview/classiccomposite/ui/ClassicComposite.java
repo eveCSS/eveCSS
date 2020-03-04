@@ -6,6 +6,7 @@ import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -47,6 +48,9 @@ import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.ParametersEditingSupport;
 import de.ptb.epics.eve.editor.views.axeschannelsview.ui.AxesChannelsView;
 import de.ptb.epics.eve.editor.views.axeschannelsview.ui.AxesChannelsViewComposite;
+import de.ptb.epics.eve.util.ui.jface.viewercomparator.alphabetical.AlphabeticalTableViewerSorter;
+import de.ptb.epics.eve.util.ui.jface.viewercomparator.alphabetical.AlphabeticalViewerComparator;
+import de.ptb.epics.eve.util.ui.jface.viewercomparator.alphabetical.SortOrder;
 
 /**
  * @author Marcus Michalsky
@@ -55,9 +59,19 @@ import de.ptb.epics.eve.editor.views.axeschannelsview.ui.AxesChannelsViewComposi
 public class ClassicComposite extends AxesChannelsViewComposite {
 	private static final int TABLE_MIN_HEIGHT = 150;
 	
+	private static final String MEMENTO_AXES_SASH_WEIGHT = "axesSashWeight";
+	private static final String MEMENTO_CHANNELS_SASH_WEIGHT = "channelsSashWeight";
+	private static final String MEMENTO_AXES_SORT_ORDER = "axesSortState";
+	private static final String MEMENTO_CHANNELS_SORT_ORDER = "channelsSortState";
+	
 	private ScanModule scanModule;
 	private TableViewer axesTable;
 	private TableViewer channelsTable;
+	
+	private AlphabeticalTableViewerSorter axesTableSorter;
+	private AlphabeticalTableViewerSorter channelsTableSorter;
+
+	private SashForm sashForm;
 	
 	public ClassicComposite(AxesChannelsView parentView, Composite parent, int style) {
 		super(parentView, parent, style);
@@ -68,7 +82,7 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 		sc.setExpandHorizontal(true);
 		sc.setExpandVertical(true);
 		
-		SashForm sashForm = new SashForm(sc, SWT.VERTICAL);
+		sashForm = new SashForm(sc, SWT.VERTICAL);
 		sashForm.setLayout(new FillLayout());
 		sc.setContent(sashForm);
 		
@@ -127,6 +141,25 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 		
 		ColumnViewerToolTipSupport.enableFor(axesTable);
 		
+		this.axesTableSorter = new AlphabeticalTableViewerSorter(axesTable, 
+				axesTable.getTable().getColumn(1), // sorry for the "hack"
+				new AlphabeticalViewerComparator() {
+			@Override
+			public int compare(Viewer viewer, Object e1, Object e2) {
+				String axis1Name = ((Axis)e1).getAbstractDevice().getName().
+						toLowerCase();
+				String axis2Name = ((Axis)e2).getAbstractDevice().getName().
+						toLowerCase();
+				int result = axis1Name.compareTo(axis2Name);
+				if (SortOrder.ASCENDING.equals(getSortOrder())) {
+					return result;
+				} else if (SortOrder.DESCENDING.equals(getSortOrder())) {
+					return result * -1;
+				}
+				return 0;
+			}
+		});
+		
 		// create context menu
 		MenuManager menuManager = new MenuManager();
 		menuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
@@ -162,7 +195,6 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 				return ((Axis)element).getAbstractDevice().getName();
 			}
 		});
-		// TODO add selection listener for sorting
 		
 		TableViewerColumn stepfunctionColumn = new TableViewerColumn(viewer, SWT.NONE);
 		stepfunctionColumn.getColumn().setText("Stepfunction");
@@ -244,6 +276,26 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 		
 		ColumnViewerToolTipSupport.enableFor(channelsTable);
 		
+		this.channelsTableSorter = new AlphabeticalTableViewerSorter(
+				channelsTable,
+				channelsTable.getTable().getColumn(1), // sorry for the "hack"
+				new AlphabeticalViewerComparator() {
+					@Override
+					public int compare(Viewer viewer, Object e1, Object e2) {
+						String channel1Name = ((Channel)e1).getAbstractDevice().
+								getName().toLowerCase();
+						String channel2Name = ((Channel)e2).getAbstractDevice().
+								getName().toLowerCase();
+						int result = channel1Name.compareTo(channel2Name);
+						if (SortOrder.ASCENDING.equals(getSortOrder())) {
+							return result;
+						} else if (SortOrder.DESCENDING.equals(getSortOrder())) {
+							return result * -1;
+						}
+						return 0;
+					}
+				});
+		
 		// create context menu
 		MenuManager menuManager = new MenuManager();
 		menuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
@@ -288,7 +340,6 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 				return ((Channel)element).getAbstractDevice().getName();
 			}
 		});
-		// TODO add selection listener for sorting
 		
 		TableViewerColumn acquisitionTypeColumn = new TableViewerColumn(viewer, 
 				SWT.NONE);
@@ -388,9 +439,15 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 	 */
 	@Override
 	protected void saveState(IMemento memento) {
-		// TODO Auto-generated method stub
-		// sash weights, table sort states, ... ?
+		// sash weights
+		memento.putInteger(MEMENTO_AXES_SASH_WEIGHT, sashForm.getWeights()[0]);
+		memento.putInteger(MEMENTO_CHANNELS_SASH_WEIGHT, sashForm.getWeights()[1]);
 		
+		// table sort states
+		memento.putInteger(MEMENTO_AXES_SORT_ORDER, 
+				axesTableSorter.getSortOrder().ordinal());
+		memento.putInteger(MEMENTO_CHANNELS_SORT_ORDER, 
+				channelsTableSorter.getSortOrder().ordinal());
 	}
 
 	/**
@@ -398,7 +455,22 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 	 */
 	@Override
 	protected void restoreState(IMemento memento) {
-		// TODO Auto-generated method stub
+		// restore sash weights
+		int[] weights = new int[2];
+		weights[0] = (memento.getInteger(MEMENTO_AXES_SASH_WEIGHT) == null) 
+				? 1 : memento.getInteger(MEMENTO_AXES_SASH_WEIGHT);
+		weights[1] = (memento.getInteger(MEMENTO_CHANNELS_SASH_WEIGHT) == null)
+				? 1 : memento.getInteger(MEMENTO_CHANNELS_SASH_WEIGHT);
+		this.sashForm.setWeights(weights);
 		
+		// restore table sort states
+		if (memento.getInteger(MEMENTO_AXES_SORT_ORDER) != null) {
+			this.axesTableSorter.setSortOrder(SortOrder.values()
+					[memento.getInteger(MEMENTO_AXES_SORT_ORDER)]);
+		}
+		if (memento.getInteger(MEMENTO_CHANNELS_SORT_ORDER) != null) {
+			this.channelsTableSorter.setSortOrder(SortOrder.values()
+					[memento.getInteger(MEMENTO_CHANNELS_SORT_ORDER)]);
+		}
 	}
 }
