@@ -1,5 +1,7 @@
 package de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.ui;
 
+import java.util.List;
+
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
@@ -10,6 +12,9 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.graphics.Image;
@@ -23,6 +28,7 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PlatformUI;
 
+import de.ptb.epics.eve.data.scandescription.AbstractBehavior;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.PositionMode;
@@ -32,6 +38,8 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
 import de.ptb.epics.eve.editor.handler.axeschannelsview.RemoveAxesDefaultHandler;
 import de.ptb.epics.eve.editor.handler.axeschannelsview.RemoveChannelsDefaultHandler;
 import de.ptb.epics.eve.editor.views.DelColumnEditingSupport;
+import de.ptb.epics.eve.editor.views.ScanModuleTableDragSourceListener;
+import de.ptb.epics.eve.editor.views.ScanModuleTableDropTargetListener;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.AxesContentProvider;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.MainAxisColumnLabelProvider;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.MainAxisEditingSupport;
@@ -96,7 +104,7 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = SWT.LEFT;
 		axesLabel.setLayoutData(gridData);
-		createAxesTable(axesComposite);
+		this.createAxesTable(axesComposite);
 		
 		Composite channelsComposite = new Composite(sashForm, SWT.NONE);
 		gridLayout = new GridLayout();
@@ -108,7 +116,9 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = SWT.LEFT;
 		channelsLabel.setLayoutData(gridData);
-		createChannelsTable(channelsComposite);
+		this.createChannelsTable(channelsComposite);
+		
+		this.initDragAndDrop();
 		
 		sashForm.setWeights(new int[] {50, 50});
 		
@@ -401,6 +411,29 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 		normalizeColumn.setEditingSupport(new NormalizeEditingSupport(viewer));
 	}
 
+	private void initDragAndDrop() {
+		Transfer[] axesTransfers = new Transfer[] {TextTransfer.getInstance()};
+		this.axesTable.addDragSupport(DND.DROP_MOVE, axesTransfers, 
+				new ScanModuleTableDragSourceListener(this.axesTable));
+		this.axesTable.addDropSupport(DND.DROP_MOVE, axesTransfers, 
+				new ScanModuleTableDropTargetListener(this.axesTable) {
+			@Override
+			public List<? extends AbstractBehavior> getModel() {
+				return scanModule.getAxesList();
+			}
+		});
+		Transfer[] channelsTransfers = new Transfer[] {TextTransfer.getInstance()};
+		this.channelsTable.addDragSupport(DND.DROP_MOVE, channelsTransfers, 
+				new ScanModuleTableDragSourceListener(this.channelsTable));
+		this.channelsTable.addDropSupport(DND.DROP_MOVE, channelsTransfers, 
+				new ScanModuleTableDropTargetListener(this.channelsTable) {
+			@Override
+			public List<? extends AbstractBehavior> getModel() {
+				return scanModule.getChannelList();
+			}
+		});
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
