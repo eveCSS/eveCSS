@@ -7,7 +7,7 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import de.ptb.epics.eve.editor.views.axeschannelsview.AbstractScanModuleView;
+import de.ptb.epics.eve.editor.views.AbstractScanModuleView;
 
 /**
  * @author Marcus Michalsky

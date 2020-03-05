@@ -15,8 +15,8 @@ import org.eclipse.ui.PlatformUI;
 
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.editor.views.AbstractScanModuleView;
 import de.ptb.epics.eve.editor.views.EditorViewPerspectiveListener;
-import de.ptb.epics.eve.editor.views.axeschannelsview.AbstractScanModuleView;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.ui.ClassicComposite;
 import de.ptb.epics.eve.util.ui.jface.SelectionProviderWrapper;
 

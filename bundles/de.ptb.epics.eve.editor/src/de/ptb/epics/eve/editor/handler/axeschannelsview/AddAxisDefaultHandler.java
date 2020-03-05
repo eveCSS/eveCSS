@@ -18,7 +18,7 @@ import de.ptb.epics.eve.data.scandescription.Stepfunctions;
 import de.ptb.epics.eve.data.scandescription.defaults.DefaultsManager;
 import de.ptb.epics.eve.data.scandescription.defaults.axis.DefaultsAxis;
 import de.ptb.epics.eve.editor.Activator;
-import de.ptb.epics.eve.editor.views.axeschannelsview.AbstractScanModuleView;
+import de.ptb.epics.eve.editor.views.AbstractScanModuleView;
 
 /**
  * @author Marcus Michalsky

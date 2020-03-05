@@ -17,7 +17,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.channelmode.ChannelModes;
-import de.ptb.epics.eve.editor.views.axeschannelsview.AbstractScanModuleView;
+import de.ptb.epics.eve.editor.views.AbstractScanModuleView;
 import de.ptb.epics.eve.util.io.StringUtil;
 
 /**

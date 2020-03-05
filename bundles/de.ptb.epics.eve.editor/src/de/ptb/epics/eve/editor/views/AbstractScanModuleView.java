@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.editor.views.axeschannelsview;
+package de.ptb.epics.eve.editor.views;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.jface.viewers.ISelection;
@@ -12,7 +12,6 @@ import de.ptb.epics.eve.editor.gef.editparts.ChainEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.ScanDescriptionEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.tree.ScanModuleTreeEditPart;
-import de.ptb.epics.eve.editor.views.IEditorView;
 
 /**
  * 

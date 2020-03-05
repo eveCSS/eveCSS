@@ -11,7 +11,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
-import de.ptb.epics.eve.editor.views.axeschannelsview.AbstractScanModuleView;
+import de.ptb.epics.eve.editor.views.AbstractScanModuleView;
 
 /**
  * @author Marcus Michalsky
