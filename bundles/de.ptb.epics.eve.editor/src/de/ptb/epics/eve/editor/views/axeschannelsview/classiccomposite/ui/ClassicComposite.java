@@ -6,6 +6,10 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
@@ -80,6 +84,8 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 	private AlphabeticalTableViewerSorter channelsTableSorter;
 
 	private SashForm sashForm;
+
+	private AxesCAComposite axesCAComposite;
 	
 	public ClassicComposite(AxesChannelsView parentView, Composite parent, int style) {
 		super(parentView, parent, style);
@@ -98,9 +104,16 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 1;
 		axesComposite.setLayout(gridLayout);
+		
+		axesCAComposite = new AxesCAComposite(axesComposite, SWT.NONE);
+		GridData gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalAlignment = GridData.FILL;
+		axesCAComposite.setLayoutData(gridData);
+		
 		Label axesLabel = new Label(axesComposite, SWT.NONE);
 		axesLabel.setText("Motor Axes:");
-		GridData gridData = new GridData();
+		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = SWT.LEFT;
 		axesLabel.setLayoutData(gridData);
@@ -146,6 +159,22 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 			public void focusGained(FocusEvent e) {
 				getParentView().setSelectionProvider(axesTable);
 				super.focusGained(e);
+			}
+		});
+		
+		axesTable.addSelectionChangedListener(new ISelectionChangedListener() {
+			
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				ISelection selection = event.getSelection();
+				if (!(selection instanceof IStructuredSelection) || 
+						((IStructuredSelection)selection).size() != 1) {
+					return;
+				}
+				Object o = ((IStructuredSelection)selection).getFirstElement();
+				if (o instanceof Axis) {
+					axesCAComposite.setAxis((Axis)o);
+				}
 			}
 		});
 		
@@ -449,6 +478,7 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 	protected void setScanModule(ScanModule scanModule) {
 		if (this.scanModule != null) {
 			this.scanModule.removeModelUpdateListener(this);
+			this.axesCAComposite.setAxis(null);
 		}
 		this.scanModule = scanModule;
 		this.axesTable.setInput(scanModule);
