@@ -1,5 +1,7 @@
 package de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.datetime.ui;
 
+import java.util.Date;
+
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
@@ -8,7 +10,10 @@ import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -56,16 +61,40 @@ public class AddDateTimeDialog extends AddGenericDialog {
 	@Override
 	protected Control createDialogArea(Composite parent) {
 		Control myControl = super.createDialogArea(parent);
-		
+
 		startTextProposalDecoration = new ControlDecoration(getStartText(), 
 				SWT.LEFT | SWT.BOTTOM);
 		startTextProposalDecoration.setImage(contentProposalImage);
 		startTextProposalDecoration.setShowOnlyOnFocus(true);
+		startTextProposalDecoration.addSelectionListener(new SelectionAdapter() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				DateSelectorDialog dialog = new DateSelectorDialog(getShell(), 
+						((AddMultiplyMode<Date>)getAxis().getMode()).getStart());
+				dialog.open();
+				if (dialog.getReturnCode() == Window.OK) {
+					((AddMultiplyMode<Date>)getAxis().getMode()).setStart(dialog.getDate());
+				}
+			}
+		});
 
 		stopTextProposalDecoration = new ControlDecoration(getStopText(), 
 				SWT.LEFT | SWT.BOTTOM);
 		stopTextProposalDecoration.setImage(contentProposalImage);
 		stopTextProposalDecoration.setShowOnlyOnFocus(true);
+		stopTextProposalDecoration.addSelectionListener(new SelectionAdapter() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				DateSelectorDialog dialog = new DateSelectorDialog(getShell(), 
+						((AddMultiplyMode<Date>)getAxis().getMode()).getStop());
+				dialog.open();
+				if (dialog.getReturnCode() == Window.OK) {
+					((AddMultiplyMode<Date>)getAxis().getMode()).setStop(dialog.getDate());
+				}
+			}
+		});
 
 		stepwidthTextProposalDecoration = new ControlDecoration(
 				getStepwidthText(), SWT.LEFT | SWT.BOTTOM);

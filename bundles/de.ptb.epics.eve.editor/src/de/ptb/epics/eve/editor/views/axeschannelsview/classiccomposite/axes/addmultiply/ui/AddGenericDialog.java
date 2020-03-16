@@ -31,7 +31,6 @@ import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addm
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.AddDoubleModelToTargetValidator;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.AddDoubleTargetToModelConverter;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.AddDoubleTargetToModelValidator;
-import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.intdouble.AddIntDoubleModelToTargetValidator;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.ui.DialogCellEditorDialog;
 
 /**
