@@ -64,8 +64,7 @@ public class AddDateTimeModelToTargetConverter implements IConverter {
 		case ABSOLUTE:
 			return this.dateFormat.format((Date)fromObject);
 		case RELATIVE:
-			Duration duration = (Duration)fromObject;
-			return duration.toString().substring(0);
+			return ((Duration)fromObject).toString().substring(8);
 		default:
 			return fromObject.toString();
 		}

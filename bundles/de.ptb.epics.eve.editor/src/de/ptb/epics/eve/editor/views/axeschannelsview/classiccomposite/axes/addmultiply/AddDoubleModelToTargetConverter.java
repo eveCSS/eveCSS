@@ -29,6 +29,9 @@ public class AddDoubleModelToTargetConverter implements IConverter {
 	 */
 	@Override
 	public Object convert(Object fromObject) {
+		if (((Double)fromObject).isNaN()) {
+			return "0.0";
+		}
 		return fromObject.toString();
 	}
 }

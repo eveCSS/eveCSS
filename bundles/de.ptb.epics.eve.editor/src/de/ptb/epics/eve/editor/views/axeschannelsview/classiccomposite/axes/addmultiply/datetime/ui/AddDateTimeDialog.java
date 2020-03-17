@@ -2,6 +2,8 @@ package de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.add
 
 import java.util.Date;
 
+import javax.xml.datatype.Duration;
+
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
@@ -20,6 +22,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 import de.ptb.epics.eve.data.scandescription.Axis;
+import de.ptb.epics.eve.data.scandescription.PositionMode;
 import de.ptb.epics.eve.data.scandescription.axismode.AddMultiplyMode;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.datetime.AddDateTimeModelToTargetConverter;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.datetime.AddDateTimeTargetToModelConverter;
@@ -70,11 +73,23 @@ public class AddDateTimeDialog extends AddGenericDialog {
 			@SuppressWarnings("unchecked")
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				DateSelectorDialog dialog = new DateSelectorDialog(getShell(), 
-						((AddMultiplyMode<Date>)getAxis().getMode()).getStart());
-				dialog.open();
-				if (dialog.getReturnCode() == Window.OK) {
-					((AddMultiplyMode<Date>)getAxis().getMode()).setStart(dialog.getDate());
+				if (PositionMode.ABSOLUTE.equals(getAxis().getPositionMode())) {
+					DateSelectorDialog dialog = new DateSelectorDialog(getShell(), 
+							((AddMultiplyMode<Date>)getAxis().getMode()).getStart());
+					dialog.open();
+					if (dialog.getReturnCode() == Window.OK) {
+						((AddMultiplyMode<Date>)getAxis().getMode()).
+							setStart(dialog.getDate());
+					}
+				} else if (PositionMode.RELATIVE.equals(getAxis().getPositionMode())) {
+					DurationSelectorDialog dialog = new DurationSelectorDialog(
+							getShell(), ((AddMultiplyMode<Duration>)getAxis().
+									getMode()).getStart());
+					dialog.open();
+					if (dialog.getReturnCode() == Window.OK) {
+						((AddMultiplyMode<Duration>)getAxis().getMode()).
+							setStart(dialog.getDuration());
+					}
 				}
 			}
 		});
@@ -87,23 +102,50 @@ public class AddDateTimeDialog extends AddGenericDialog {
 			@SuppressWarnings("unchecked")
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				DateSelectorDialog dialog = new DateSelectorDialog(getShell(), 
-						((AddMultiplyMode<Date>)getAxis().getMode()).getStop());
-				dialog.open();
-				if (dialog.getReturnCode() == Window.OK) {
-					((AddMultiplyMode<Date>)getAxis().getMode()).setStop(dialog.getDate());
+					if (PositionMode.ABSOLUTE.equals(getAxis().getPositionMode())) {
+					DateSelectorDialog dialog = new DateSelectorDialog(getShell(), 
+							((AddMultiplyMode<Date>)getAxis().getMode()).getStop());
+					dialog.open();
+					if (dialog.getReturnCode() == Window.OK) {
+						((AddMultiplyMode<Date>)getAxis().getMode()).
+							setStop(dialog.getDate());
+					}
+				} else if (PositionMode.RELATIVE.equals(getAxis().getPositionMode())) {
+					DurationSelectorDialog dialog = new DurationSelectorDialog(getShell(), 
+							((AddMultiplyMode<Duration>)getAxis().getMode()).getStop());
+					dialog.open();
+					if (dialog.getReturnCode() == Window.OK) {
+						((AddMultiplyMode<Duration>)getAxis().getMode()).
+							setStop(dialog.getDuration());
+					}
 				}
 			}
 		});
 
 		stepwidthTextProposalDecoration = new ControlDecoration(
 				getStepwidthText(), SWT.LEFT | SWT.BOTTOM);
-		stepwidthTextProposalDecoration.setImage(contentProposalImage);
-		stepwidthTextProposalDecoration.setShowOnlyOnFocus(true);
-		
+		if (PositionMode.RELATIVE.equals(getAxis().getPositionMode())) {
+			stepwidthTextProposalDecoration.setImage(contentProposalImage);
+			stepwidthTextProposalDecoration.setShowOnlyOnFocus(true);
+			stepwidthTextProposalDecoration.addSelectionListener(new SelectionAdapter() {
+				@SuppressWarnings("unchecked")
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					if (PositionMode.RELATIVE.equals(getAxis().getPositionMode())) {
+						DurationSelectorDialog dialog = new DurationSelectorDialog(getShell(),
+								((AddMultiplyMode<Duration>)getAxis().getMode()).getStepwidth());
+						dialog.open();
+						if (dialog.getReturnCode() == Window.OK) {
+							((AddMultiplyMode<Duration>)getAxis().getMode()).
+							setStepwidth(dialog.getDuration());
+						}
+					}
+				}
+			});
+		}
 		return myControl;
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
