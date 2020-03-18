@@ -14,9 +14,6 @@ import de.ptb.epics.eve.data.scandescription.errors.IModelError;
  * @since 1.34
  */
 public class ValuesColumnLabelProvider extends ColumnLabelProvider {
-	private static final String RIGHT_ARROW = Character.toString('\u2192');
-	private static final String SLASH_WITH_SPACE = " / ";
-	private static final String LONG_DASH = Character.toString('\u2014');
 	
 	/**
 	 * {@inheritDoc}
@@ -36,38 +33,7 @@ public class ValuesColumnLabelProvider extends ColumnLabelProvider {
 	 * {@inheritDoc}
 	 */
 	@Override
-		public String getText(Object element) {
-			return getValuesString((Axis)element);
-		}
-	
-	private String getValuesString(Axis axis) {
-		switch (axis.getStepfunction()) {
-		case ADD:
-			return axis.getStart().toString() + RIGHT_ARROW +
-					axis.getStop().toString() + SLASH_WITH_SPACE + 
-					axis.getStepwidth().toString();
-		case FILE:
-			if (axis.getFile() != null && axis.getFile().getName() != null) {
-				return axis.getFile().getName();
-			}
-			return "<path invalid>";
-		case MULTIPLY:
-			return axis.getStart().toString() + RIGHT_ARROW +
-					axis.getStop().toString() + SLASH_WITH_SPACE + 
-					axis.getStepwidth().toString();
-		case PLUGIN:
-			if (axis.getPluginController() == null || 
-				axis.getPluginController().getPlugin() == null) {
-					return "Plugin";
-			}
-			return "Plugin (" + axis.getPluginController().
-				getPlugin().getName() + ")";
-		case POSITIONLIST:
-			return axis.getPositionlist();
-		case RANGE:
-			return axis.getRange();
-		default:
-			return LONG_DASH;
-		}
+	public String getText(Object element) {
+		return ValuesColumnStringFormatter.getValuesString((Axis)element);
 	}
 }
