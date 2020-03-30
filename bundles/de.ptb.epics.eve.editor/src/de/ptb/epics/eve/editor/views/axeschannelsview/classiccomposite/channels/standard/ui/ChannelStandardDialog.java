@@ -41,6 +41,7 @@ import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.AverageTargetToModelConverter;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.AverageTargetToModelValidator;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.ChannelRedoEventMenuContributionMonitor;
+import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.DeleteColumnEditingSupport;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.DoubleModelToTargetConverter;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.DoubleTargetToModelConverter;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.LimitEditingSupport;
@@ -225,6 +226,8 @@ public class ChannelStandardDialog extends DialogCellEditorDialog
 				return "";
 			}
 		});
+		deleteColumn.setEditingSupport(new DeleteColumnEditingSupport(viewer, 
+				this.channel));
 		
 		TableViewerColumn sourceColumn = new TableViewerColumn(viewer, SWT.LEFT);
 		sourceColumn.getColumn().setText("Source");
