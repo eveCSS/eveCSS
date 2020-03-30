@@ -1584,6 +1584,36 @@
                optional="false">
          </commandParameter>
       </command>
+      <category
+            id="de.ptb.epics.eve.editor.category.detectorredoevents"
+            name="Detector Redo Events">
+      </category>
+      <command
+            categoryId="de.ptb.epics.eve.editor.category.detectorredoevents"
+            defaultHandler="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.handler.AddChannelRedoEventDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.AddChannelRedoEvent"
+            name="Add Channel Redo Event">
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.AddChannelRedoEvent.ChainId"
+               name="Chain Identifier"
+               optional="false">
+         </commandParameter>
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.AddChannelRedoEvent.ScanModuleId"
+               name="ScanModule Identifier"
+               optional="false">
+         </commandParameter>
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.AddChannelRedoEvent.ChannelId"
+               name="Channel Identifier"
+               optional="false">
+         </commandParameter>
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.AddChannelRedoEvent.EventId"
+               name="Event Identifier"
+               optional="false">
+         </commandParameter>
+      </command>
    </extension>
    <extension
          point="org.eclipse.help.toc">

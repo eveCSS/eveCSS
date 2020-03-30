@@ -5,6 +5,9 @@ import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.jface.action.IContributionItem;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -23,7 +26,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.menus.IMenuService;
 
 import de.ptb.epics.eve.data.ComparisonTypes;
 import de.ptb.epics.eve.data.measuringstation.event.MonitorEvent;
@@ -32,8 +37,10 @@ import de.ptb.epics.eve.data.scandescription.ControlEvent;
 import de.ptb.epics.eve.data.scandescription.channelmode.StandardMode;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
+import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.AverageTargetToModelConverter;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.AverageTargetToModelValidator;
+import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.ChannelRedoEventMenuContributionMonitor;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.DoubleModelToTargetConverter;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.DoubleTargetToModelConverter;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.LimitEditingSupport;
@@ -71,6 +78,8 @@ public class ChannelStandardDialog extends DialogCellEditorDialog
 	private Binding minimumBinding;
 	private Binding maxAttemptsBinding;
 	private TableViewer eventsTable;
+	
+	private MenuManager menuManager;
 	
 	public ChannelStandardDialog(Shell shell, Control control, Channel channel) {
 		super(shell, control);
@@ -196,6 +205,8 @@ public class ChannelStandardDialog extends DialogCellEditorDialog
 		eventsTable.setContentProvider(new ArrayContentProvider());
 		eventsTable.setInput(this.channel.getRedoEvents());
 		this.channel.getRedoControlEventManager().addModelUpdateListener(this);
+		
+		this.createMenu(eventsTable);
 	}
 	
 	private void createRedoEventsTableColumns(TableViewer viewer) {
@@ -269,6 +280,28 @@ public class ChannelStandardDialog extends DialogCellEditorDialog
 		limitColumn.setEditingSupport(new LimitEditingSupport(viewer));
 	}
 	
+	private void createMenu(TableViewer viewer) {
+		menuManager = new MenuManager();
+		
+		MenuManager monitorEventsMenu = new MenuManager("Monitor Events", 
+				Activator.getDefault().getImageRegistry().getDescriptor(
+						"MONITOREVENTS"), "monitorEventsMenu");
+		for (IContributionItem item : new ChannelRedoEventMenuContributionMonitor(channel).getContributionItems()) {
+			monitorEventsMenu.add(item);
+		}
+		menuManager.add(monitorEventsMenu);
+		menuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		//menuManager.setRemoveAllWhenShown(true);
+		
+		IMenuService menuService = (IMenuService) PlatformUI.getWorkbench().
+				getService(IMenuService.class);
+		menuService.populateContributionManager(menuManager, 
+				"popup:de.ptb.epics.eve.editor.dialog.channelstandarddialog.redoevents.popup");
+		menuManager.update();
+		
+		viewer.getControl().setMenu(menuManager.createContextMenu(viewer.getControl()));
+	}
+	
 	private void createBinding() {
 		DataBindingContext context = new DataBindingContext();
 
@@ -331,6 +364,8 @@ public class ChannelStandardDialog extends DialogCellEditorDialog
 	 */
 	@Override
 	public boolean close() {
+		((IMenuService) PlatformUI.getWorkbench().
+			getService(IMenuService.class)).releaseContributions(menuManager);
 		this.channel.getRedoControlEventManager().removeModelUpdateListener(this);
 		return super.close();
 	}

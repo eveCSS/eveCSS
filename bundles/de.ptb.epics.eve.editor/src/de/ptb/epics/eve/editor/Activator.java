@@ -312,6 +312,7 @@ public class Activator extends AbstractUIPlugin {
 		imagereg.put("TESTERROR", imageDescriptorFromPlugin(
 				PLUGIN_ID, "icons/testerr.png").createImage());
 		
-		
+		imagereg.put("MONITOREVENTS", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/monitor_obj.gif"));
 	}
 }
