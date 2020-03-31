@@ -2,7 +2,10 @@ package de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 
+import de.ptb.epics.eve.data.ComparisonTypes;
+import de.ptb.epics.eve.data.measuringstation.event.MonitorEvent;
 import de.ptb.epics.eve.data.scandescription.Channel;
+import de.ptb.epics.eve.data.scandescription.ControlEvent;
 
 /**
  * @author Marcus Michalsky
@@ -58,5 +61,32 @@ public class ParametersColumnLabelProvider extends ColumnLabelProvider {
 		default:
 			return DASH;
 		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String getToolTipText(Object element) {
+		Channel channel = (Channel)element;
+		
+		StringBuilder sb = new StringBuilder();
+		
+		for (ControlEvent controlEvent : channel.getRedoEvents()) {
+			sb.append("Redo Event: " + controlEvent.getEvent().getName());
+			if (controlEvent.getEvent() instanceof MonitorEvent) {
+				sb.append(", Operator: " + ComparisonTypes.typeToString(
+						controlEvent.getLimit().getComparison()));
+			}
+			if (controlEvent.getEvent() instanceof MonitorEvent) {
+				sb.append(", Limit: " + controlEvent.getLimit().getValue());
+			}
+			sb.append("\n");
+		}
+		if (sb.toString().isEmpty()) {
+			return null;
+		}
+		// cut last line break
+		return sb.toString().substring(0, sb.toString().length()-1);
 	}
 }

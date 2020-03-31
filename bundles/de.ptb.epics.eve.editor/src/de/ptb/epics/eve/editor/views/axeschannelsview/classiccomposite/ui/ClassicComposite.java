@@ -38,6 +38,7 @@ import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.PositionMode;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
+import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.handler.axeschannelsview.RemoveAxesDefaultHandler;
 import de.ptb.epics.eve.editor.handler.axeschannelsview.RemoveChannelsDefaultHandler;
@@ -370,6 +371,19 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 				if (!((Channel)element).getModelErrors().isEmpty()) {
 					return PlatformUI.getWorkbench().getSharedImages().
 							getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
+				}
+				return null;
+			}
+			
+			@Override
+			public String getToolTipText(Object element) {
+				if  (!((Channel)element).getModelErrors().isEmpty()) {
+					StringBuilder sb = new StringBuilder();
+					for (IModelError error : ((Channel)element).getModelErrors()) {
+						sb.append(error.getErrorMessage() + "\n");
+					}
+					// cut last line break
+					return sb.toString().substring(0, sb.toString().length()-1);
 				}
 				return null;
 			}
