@@ -1,5 +1,6 @@
 package de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
@@ -12,7 +13,6 @@ import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addm
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.file.ui.FileDialogCellEditor;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.plugin.ui.PluginDialogCellEditor;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.positionlist.ui.PositionlistDialogCellEditor;
-import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.positionlist.ui.PositionlistTextCellEditor;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.range.ui.RangeTextCellEditor;
 
 /**
@@ -20,6 +20,9 @@ import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.rang
  * @since 1.34
  */
 public class ValuesEditingSupport extends EditingSupport {
+	private static final Logger LOGGER = Logger.getLogger(
+			ValuesEditingSupport.class.getName());
+	
 	private TableViewer viewer;
 	
 	public ValuesEditingSupport(TableViewer viewer) {
@@ -55,14 +58,16 @@ public class ValuesEditingSupport extends EditingSupport {
 		case PLUGIN:
 			return new PluginDialogCellEditor(viewer.getTable(), axis);
 		case POSITIONLIST:
+			LOGGER.debug("requesting Cell Editor for position list editing");
 			//return new PositionlistTextCellEditor(viewer.getTable(), axis);
 			return new PositionlistDialogCellEditor(viewer.getTable(), axis);
+			//return new PositionListDialogCellEditor2(viewer.getTable(), axis);
+			//return new PositionlistDialogCellEditor3(viewer.getTable(), axis);
 		case RANGE:
 			return new RangeTextCellEditor(viewer.getTable(), axis);
 		default:
 			break;
 		}
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -79,6 +84,7 @@ public class ValuesEditingSupport extends EditingSupport {
 	 */
 	@Override
 	protected Object getValue(Object element) {
+		LOGGER.debug("getValue: " + element);
 		Axis axis = (Axis) element;
 		switch (axis.getStepfunction()) {
 		case ADD:
@@ -92,6 +98,7 @@ public class ValuesEditingSupport extends EditingSupport {
 		case PLUGIN:
 			return "Plugin (" + axis.getPluginController().getPlugin().getName() + ")";
 		case POSITIONLIST:
+			LOGGER.debug("getValue for positionlist axis");
 			return axis.getPositionlist();
 		case RANGE:
 			return axis.getRange();
@@ -106,6 +113,7 @@ public class ValuesEditingSupport extends EditingSupport {
 	 */
 	@Override
 	protected void setValue(Object element, Object value) {
+		LOGGER.debug("setValue: Element=" + element + ", Value=" + value);
 		Axis axis = (Axis)element;
 		switch (axis.getStepfunction()) {
 		case ADD:
@@ -117,8 +125,13 @@ public class ValuesEditingSupport extends EditingSupport {
 		case PLUGIN:
 			break;
 		case POSITIONLIST:
-			// System.out.println("<<<<<<<<<<<<<<<<<<< set value: " + value.toString());
-			// axis.setPositionlist(value.toString());
+			if (value == null) {
+				axis.setPositionlist(null);
+			} else {
+				if (!value.equals(axis.getPositionlist())) {
+					axis.setPositionlist(value.toString());
+				}
+			}
 			break;
 		case RANGE:
 			axis.setRange(value.toString());
@@ -126,6 +139,5 @@ public class ValuesEditingSupport extends EditingSupport {
 		default:
 			break;
 		}
-		// TODO Auto-generated method stub
 	}
 }
