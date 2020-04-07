@@ -35,6 +35,10 @@ public class PluginDialogCellEditor extends DialogCellEditor {
 		// TODO focusLost() ?
 		//focusLost();
 		// TODO Auto-generated method stub
+		if (axis.getPluginController() == null || 
+				axis.getPluginController().getPlugin() == null) {
+			return null;
+		}
 		return "Plugin (" + axis.getPluginController().getPlugin().getName() + ")";
 		//return null;
 	}

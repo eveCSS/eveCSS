@@ -121,9 +121,11 @@ public class PluginDialog extends DialogCellEditorDialog {
 		tableViewer.setLabelProvider(this.labelProvider);
 		
 		// set initial values
-		
-		pluginCombo.select(pluginNames.indexOf(
-				axis.getPluginController().getPlugin().getName()));
+		if (axis.getPluginController() != null && 
+				axis.getPluginController().getPlugin() != null) {
+			pluginCombo.select(pluginNames.indexOf(
+					axis.getPluginController().getPlugin().getName()));
+		}
 		// legacy code requires setting the plugin in the label provider ?!?
 		labelProvider.setPluginController(axis.getPluginController());
 		tableViewer.setInput(axis.getPluginController());
