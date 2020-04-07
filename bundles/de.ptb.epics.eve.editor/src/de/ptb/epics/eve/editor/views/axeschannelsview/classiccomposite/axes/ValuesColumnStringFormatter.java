@@ -32,7 +32,7 @@ public class ValuesColumnStringFormatter {
 			if (axis.getFile() != null && axis.getFile().getName() != null) {
 				return axis.getFile().getName();
 			}
-			return "<path invalid>";
+			return "<no file set>";
 		case MULTIPLY:
 			return axis.getStart().toString() + RIGHT_ARROW +
 					axis.getStop().toString() + SLASH_WITH_SPACE + 
@@ -47,6 +47,9 @@ public class ValuesColumnStringFormatter {
 		case POSITIONLIST:
 			return axis.getPositionlist();
 		case RANGE:
+			if (axis.getRange() == null) {
+				return "";
+			}
 			return axis.getRange();
 		default:
 			return LONG_DASH;

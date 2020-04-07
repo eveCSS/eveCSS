@@ -86,6 +86,15 @@ public class ValuesEditingSupport extends EditingSupport {
 	protected Object getValue(Object element) {
 		LOGGER.debug("getValue: " + element);
 		Axis axis = (Axis) element;
+		/*
+		 * switch (axis.getStepfunction()) {
+		case ADD:
+		case MULTIPLY:
+			return axis.getStart().toString() + " / " +
+			axis.getStop().toString() + " / " + 
+			axis.getStepwidth().toString() + " / " + 
+			axis.getStepcount();
+		 */
 		return ValuesColumnStringFormatter.getValuesString(axis);
 	}
 
@@ -115,7 +124,11 @@ public class ValuesEditingSupport extends EditingSupport {
 			}
 			break;
 		case RANGE:
-			axis.setRange(value.toString());
+			if (value == null) {
+				axis.setRange(null);
+			} else {
+				axis.setRange(value.toString());
+			}
 			break;
 		default:
 			break;

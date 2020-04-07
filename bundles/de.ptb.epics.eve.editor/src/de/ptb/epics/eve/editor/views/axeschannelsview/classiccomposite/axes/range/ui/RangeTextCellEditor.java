@@ -79,15 +79,13 @@ public class RangeTextCellEditor extends TextCellEditor {
 					decoration.setDescriptionText(getErrorMessage());
 					decoration.setImage(errorImage);
 					decoration.show();
-					
 					getControl().setToolTipText("");
 				} else {
 					decoration.setDescriptionText("");
 					decoration.setImage(null);
 					decoration.hide();
-					
-					setTooltip();
 				}
+				setTooltip();
 			}
 			
 			@Override
@@ -103,6 +101,10 @@ public class RangeTextCellEditor extends TextCellEditor {
 	}
 	
 	public void setTooltip() {
+		if (!isCorrect(((Text)getControl()).getText())) {
+			getControl().setToolTipText(getErrorMessage());
+			return;
+		}
 		String positionList = getPositionlist(((Text)getControl()).
 				getText(), axis);
 		int length = positionList.split(",").length;
