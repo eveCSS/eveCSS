@@ -70,9 +70,9 @@ public class FileDialogCellEditor extends DialogCellEditor {
 		PositionFileDialog dialog = new PositionFileDialog(
 				cellEditorWindow.getShell(), cellEditorWindow, axis);
 		dialog.open();
-		return axis.getFile().getAbsolutePath();
-		//focusLost();
-		// TODO Auto-generated method stub
-		//return null;
+		if (axis.getFile() != null) {
+			return axis.getFile().getAbsolutePath();
+		}
+		return null;
 	}
 }

@@ -94,7 +94,11 @@ public class ValuesEditingSupport extends EditingSupport {
 			axis.getStepwidth().toString() + " / " + 
 			axis.getStepcount();
 		case FILE:
-			return axis.getFile().getName();
+			if (axis.getFile() == null) {
+				return "";
+			} else {
+				return axis.getFile().getName();
+			}
 		case PLUGIN:
 			return "Plugin (" + axis.getPluginController().getPlugin().getName() + ")";
 		case POSITIONLIST:

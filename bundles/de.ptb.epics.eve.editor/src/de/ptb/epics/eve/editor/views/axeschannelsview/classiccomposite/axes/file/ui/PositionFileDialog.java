@@ -67,7 +67,11 @@ public class PositionFileDialog extends DialogCellEditorDialog {
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		filenameInput.setLayoutData(gridData);
-		filenameInput.setText(axis.getFile().getAbsolutePath());
+		if (axis.getFile() != null) {
+			filenameInput.setText(axis.getFile().getAbsolutePath());
+		} else {
+			filenameInput.setText("");
+		}
 
 		Button filenameButton = new Button(composite, SWT.PUSH);
 		filenameButton.setText("Search...");
@@ -143,7 +147,9 @@ public class PositionFileDialog extends DialogCellEditorDialog {
 				return null;
 			}
 		});
-		setFile(axis.getFile().getAbsolutePath());
+		if (axis.getFile() != null) {
+			setFile(axis.getFile().getAbsolutePath());
+		}
 		return composite;
 	}
 
