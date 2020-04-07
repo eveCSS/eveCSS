@@ -40,7 +40,7 @@ public class ValuesColumnStringFormatter {
 		case PLUGIN:
 			if (axis.getPluginController() == null || 
 				axis.getPluginController().getPlugin() == null) {
-					return "Plugin";
+					return "<no plugin selected>";
 			}
 			return "Plugin (" + axis.getPluginController().
 				getPlugin().getName() + ")";

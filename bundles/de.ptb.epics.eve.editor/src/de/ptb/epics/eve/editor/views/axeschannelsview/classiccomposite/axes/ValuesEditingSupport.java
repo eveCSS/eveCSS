@@ -86,30 +86,7 @@ public class ValuesEditingSupport extends EditingSupport {
 	protected Object getValue(Object element) {
 		LOGGER.debug("getValue: " + element);
 		Axis axis = (Axis) element;
-		switch (axis.getStepfunction()) {
-		case ADD:
-		case MULTIPLY:
-			return axis.getStart().toString() + " / " +
-			axis.getStop().toString() + " / " + 
-			axis.getStepwidth().toString() + " / " + 
-			axis.getStepcount();
-		case FILE:
-			if (axis.getFile() == null) {
-				return "";
-			} else {
-				return axis.getFile().getName();
-			}
-		case PLUGIN:
-			return "Plugin (" + axis.getPluginController().getPlugin().getName() + ")";
-		case POSITIONLIST:
-			LOGGER.debug("getValue for positionlist axis");
-			return axis.getPositionlist();
-		case RANGE:
-			return axis.getRange();
-		default:
-			break;
-		}
-		return null;
+		return ValuesColumnStringFormatter.getValuesString(axis);
 	}
 
 	/**
