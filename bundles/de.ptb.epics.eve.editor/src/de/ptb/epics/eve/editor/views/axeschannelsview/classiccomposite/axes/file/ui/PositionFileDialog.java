@@ -1,10 +1,20 @@
 package de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.file.ui;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+import org.eclipse.core.databinding.Binding;
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.beans.BeanProperties;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableLabelProvider;
@@ -25,7 +35,11 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import de.ptb.epics.eve.data.scandescription.Axis;
+import de.ptb.epics.eve.data.scandescription.axismode.FileMode;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.file.FileStats;
+import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.file.FilenameModelToTargetConverter;
+import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.file.FilenameTargetToModelConverter;
+import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.file.FilenameValidator;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.ui.DialogCellEditorDialog;
 import de.ptb.epics.eve.util.io.FileUtil;
 import de.ptb.epics.eve.util.io.StringUtil;
@@ -34,16 +48,35 @@ import de.ptb.epics.eve.util.io.StringUtil;
  * @author Marcus Michalsky
  * @since 1.34
  */
-public class PositionFileDialog extends DialogCellEditorDialog {
+public class PositionFileDialog extends DialogCellEditorDialog implements PropertyChangeListener {
+	private static final Logger LOGGER = Logger.getLogger(
+			PositionFileDialog.class.getName());
+	
 	private TableViewer viewer;
 	private Text filenameInput;
+	
 	private Axis axis;
+	private FileMode fileMode;
 	
 	public PositionFileDialog(Shell shell, Control control, Axis axis) {
 		super(shell, control);
 		this.axis = axis;
+		this.fileMode = (FileMode)this.axis.getMode();
+		this.fileMode.addPropertyChangeListener(FileMode.FILE_PROP, this);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean close() {
+		this.fileMode.removePropertyChangeListener(FileMode.FILE_PROP, this);
+		return super.close();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NONE);
@@ -62,17 +95,18 @@ public class PositionFileDialog extends DialogCellEditorDialog {
 		Label filenameLabel = new Label(composite, SWT.NONE);
 		filenameLabel.setText("Filename:");
 
-		filenameInput = new Text(composite, SWT.READ_ONLY | SWT.BORDER);
+		filenameInput = new Text(composite, SWT.BORDER);
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
+		gridData.horizontalIndent = 7;
 		filenameInput.setLayoutData(gridData);
 		if (axis.getFile() != null) {
 			filenameInput.setText(axis.getFile().getAbsolutePath());
 		} else {
 			filenameInput.setText("");
 		}
-
+		
 		Button filenameButton = new Button(composite, SWT.PUSH);
 		filenameButton.setText("Search...");
 		filenameButton.addSelectionListener(new SelectionAdapter() {
@@ -98,7 +132,8 @@ public class PositionFileDialog extends DialogCellEditorDialog {
 				if (name == null) {
 					return;
 				}
-				setFile(name);
+				LOGGER.debug("File '" + name + "' selected in dialog.");
+				axis.setFile(new File(name));
 			}
 		});
 
@@ -106,7 +141,6 @@ public class PositionFileDialog extends DialogCellEditorDialog {
 		this.createColumns();
 		this.viewer.setContentProvider(new ArrayContentProvider());
 		this.viewer.setLabelProvider(new ITableLabelProvider() {
-
 			@Override
 			public void removeListener(ILabelProviderListener listener) {
 			}
@@ -147,9 +181,8 @@ public class PositionFileDialog extends DialogCellEditorDialog {
 				return null;
 			}
 		});
-		if (axis.getFile() != null) {
-			setFile(axis.getFile().getAbsolutePath());
-		}
+		this.createBinding();
+		this.refresh();
 		return composite;
 	}
 
@@ -190,13 +223,46 @@ public class PositionFileDialog extends DialogCellEditorDialog {
 		emptyColumn.getColumn().setWidth(10);
 	}
 
-	private void setFile(String path) {
-		axis.setFile(new File(path));
-		filenameInput.setText(path);
+	private void createBinding() {
+		DataBindingContext context = new DataBindingContext();
+		IObservableValue filenameInputTargetObservable = WidgetProperties.text(
+				SWT.Modify).observeDelayed(500, this.filenameInput);
+		IObservableValue filenameInputModelObservable = BeanProperties.value(
+				FileMode.FILE_PROP).observe(this.fileMode);
+		UpdateValueStrategy filenameTargetToModel = new UpdateValueStrategy(
+				UpdateValueStrategy.POLICY_UPDATE).
+				setConverter(new FilenameTargetToModelConverter()).
+				setAfterGetValidator(new FilenameValidator());
+		UpdateValueStrategy filenameModelToTarget = new UpdateValueStrategy(
+				UpdateValueStrategy.POLICY_UPDATE).
+				setConverter(new FilenameModelToTargetConverter()).
+				setAfterConvertValidator(new FilenameValidator());
+		Binding filenameBinding = context.bindValue(
+				filenameInputTargetObservable, filenameInputModelObservable, 
+				filenameTargetToModel, filenameModelToTarget);
+		ControlDecorationSupport.create(filenameBinding, SWT.LEFT);
+	}
+	
+	/*
+	 * refreshes the content of the table
+	 * - if the file exists, and the values are valid, statistics are generated
+	 *   and shown in the table
+	 * - otherwise table is disabled
+	 */
+	private void refresh() {
+		if (this.axis.getFile() == null) {
+			this.filenameInput.setText("");
+			this.viewer.getTable().setEnabled(false);
+			return;
+		}
+		String path = this.axis.getFile().getAbsolutePath();
 
 		try {
-			List<Double> values = StringUtil.getDoubleList(FileUtil.readLines(new File(path)));
+			List<Double> values = StringUtil.getDoubleList(FileUtil.readLines(
+					new File(path)));
 			if (values == null) {
+				this.viewer.setInput(null);
+				this.viewer.getTable().setEnabled(false);
 				return;
 			}
 			FileStats fileStats = new FileStats(values);
@@ -205,8 +271,21 @@ public class PositionFileDialog extends DialogCellEditorDialog {
 			this.viewer.setInput(statsList);
 			this.viewer.getTable().setEnabled(true);
 		} catch (IOException e) {
+			this.viewer.setInput(null);
 			this.viewer.getTable().setEnabled(false);
 		}
 		this.viewer.refresh();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void propertyChange(PropertyChangeEvent e) {
+		if (e.getPropertyName().equals(FileMode.FILE_PROP)) {
+			LOGGER.debug("received FILE_PROP property change: " + 
+					((File)e.getNewValue()).getAbsolutePath());
+			this.refresh();
+		}
 	}
 }

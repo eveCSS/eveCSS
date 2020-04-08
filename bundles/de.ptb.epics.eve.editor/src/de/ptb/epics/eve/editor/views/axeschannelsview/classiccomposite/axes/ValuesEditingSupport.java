@@ -108,9 +108,9 @@ public class ValuesEditingSupport extends EditingSupport {
 		switch (axis.getStepfunction()) {
 		case ADD:
 			break;
-		case FILE:
-			break;
 		case MULTIPLY:
+			break;
+		case FILE:
 			break;
 		case PLUGIN:
 			break;
