@@ -36,4 +36,31 @@ public class ValuesColumnLabelProvider extends ColumnLabelProvider {
 	public String getText(Object element) {
 		return ValuesColumnStringFormatter.getValuesString((Axis)element);
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String getToolTipText(Object element) {
+		Axis axis = (Axis)element;
+		switch (axis.getStepfunction()) {
+		case ADD:
+		case MULTIPLY:
+			break;
+		case FILE:
+			if (axis.getFile() != null) {
+				return axis.getFile().getAbsolutePath();
+			}
+			break;
+		case PLUGIN:
+			break;
+		case POSITIONLIST:
+			break;
+		case RANGE:
+			break;
+		default:
+			break;
+		}
+		return null;
+	}
 }

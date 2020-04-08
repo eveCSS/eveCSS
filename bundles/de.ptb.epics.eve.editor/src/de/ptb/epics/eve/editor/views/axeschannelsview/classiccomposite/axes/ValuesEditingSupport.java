@@ -1,5 +1,7 @@
 package de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes;
 
+import java.io.File;
+
 import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
@@ -86,15 +88,25 @@ public class ValuesEditingSupport extends EditingSupport {
 	protected Object getValue(Object element) {
 		LOGGER.debug("getValue: " + element);
 		Axis axis = (Axis) element;
-		/*
-		 * switch (axis.getStepfunction()) {
+		// in some cases, the label differs from the editing text:
+		switch (axis.getStepfunction()) {
 		case ADD:
 		case MULTIPLY:
 			return axis.getStart().toString() + " / " +
 			axis.getStop().toString() + " / " + 
 			axis.getStepwidth().toString() + " / " + 
 			axis.getStepcount();
-		 */
+		case FILE:
+			// show full path
+			if (axis.getFile() != null) {
+				return axis.getFile().getAbsolutePath();
+			} else {
+				return "";
+			}
+		default:
+			break;
+		}
+		// for all other cases, use same text as for the label provider
 		return ValuesColumnStringFormatter.getValuesString(axis);
 	}
 
@@ -111,6 +123,13 @@ public class ValuesEditingSupport extends EditingSupport {
 		case MULTIPLY:
 			break;
 		case FILE:
+			if (value == null) {
+				axis.setFile(null);
+			} else {
+				if (!value.equals(axis.getFile())) {
+					axis.setFile(new File(value.toString()));
+				}
+			}
 			break;
 		case PLUGIN:
 			break;
