@@ -1,5 +1,8 @@
 package de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes;
 
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
@@ -53,6 +56,25 @@ public class ValuesColumnLabelProvider extends ColumnLabelProvider {
 			}
 			break;
 		case PLUGIN:
+			if (axis.getPluginController() != null && 
+					axis.getPluginController().getPlugin() != null) {
+				StringBuilder sb = new StringBuilder();
+				sb.append("Plugin '" + 
+						axis.getPluginController().getPlugin().getName() +
+						"'");
+				Map<String,String> parameters = 
+						axis.getPluginController().getValues();
+				if (!parameters.isEmpty()) {
+					sb.append(", Parameters:");
+				} else {
+					sb.append(" (no parameters)");
+				}
+				sb.append("\n");
+				for (Entry<String,String> entry : parameters.entrySet()) {
+					sb.append(entry.getKey() + ": " + entry.getValue() + "\n");
+				}
+				return sb.toString().substring(0, sb.toString().length()-1);
+			}
 			break;
 		case POSITIONLIST:
 			break;
