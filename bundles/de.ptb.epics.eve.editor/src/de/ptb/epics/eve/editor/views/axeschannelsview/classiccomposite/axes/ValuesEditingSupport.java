@@ -11,7 +11,6 @@ import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.datetime.ui.AddDateTimeDialogCellEditor;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.intdouble.ui.AddIntDoubleDialogCellEditor;
-import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.intdouble.ui.AddIntDoubleTextCellEditor;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.file.ui.FileDialogCellEditor;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.plugin.ui.PluginDialogCellEditor;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.positionlist.ui.PositionlistDialogCellEditor;
@@ -45,7 +44,6 @@ public class ValuesEditingSupport extends EditingSupport {
 			}
 			if (DataTypes.INT.equals(axis.getType()) || 
 					DataTypes.DOUBLE.equals(axis.getType())) {
-				// return new AddIntDoubleTextCellEditor(viewer.getTable(), axis);
 				return new AddIntDoubleDialogCellEditor(viewer.getTable(), axis);
 			}
 			break;
@@ -54,17 +52,14 @@ public class ValuesEditingSupport extends EditingSupport {
 		case MULTIPLY:
 			if (DataTypes.INT.equals(axis.getType()) || 
 					DataTypes.DOUBLE.equals(axis.getType())) {
-				return new AddIntDoubleTextCellEditor(viewer.getTable(), axis);
+				return new AddIntDoubleDialogCellEditor(viewer.getTable(), axis);
 			}
 			break;
 		case PLUGIN:
 			return new PluginDialogCellEditor(viewer.getTable(), axis);
 		case POSITIONLIST:
 			LOGGER.debug("requesting Cell Editor for position list editing");
-			//return new PositionlistTextCellEditor(viewer.getTable(), axis);
 			return new PositionlistDialogCellEditor(viewer.getTable(), axis);
-			//return new PositionListDialogCellEditor2(viewer.getTable(), axis);
-			//return new PositionlistDialogCellEditor3(viewer.getTable(), axis);
 		case RANGE:
 			return new RangeTextCellEditor(viewer.getTable(), axis);
 		default:
@@ -92,12 +87,20 @@ public class ValuesEditingSupport extends EditingSupport {
 		switch (axis.getStepfunction()) {
 		case ADD:
 		case MULTIPLY:
+			// show a / b / c / d instead of a -> b / c
+			// if a main axis is set (which is not this axis) show a / b / c only
+			if (axis.getScanModule().getMainAxis() != null && 
+				!axis.getScanModule().getMainAxis().equals(axis)) {
+					return axis.getStart().toString() + " / " +
+							axis.getStop().toString() + " / " + 
+							axis.getStepwidth().toString() + " / ";
+				}
 			return axis.getStart().toString() + " / " +
 			axis.getStop().toString() + " / " + 
 			axis.getStepwidth().toString() + " / " + 
 			axis.getStepcount();
 		case FILE:
-			// show full path
+			// show full path (instead of file name only)
 			if (axis.getFile() != null) {
 				return axis.getFile().getAbsolutePath();
 			} else {
