@@ -19,27 +19,16 @@ public class PluginDialogCellEditor extends DialogCellEditor {
 		this.axis = axis;
 	}
 	
-	@Override
-	protected void doSetFocus() {
-		//openDialogBox(getControl());
-		// TODO Auto-generated method stub
-		super.doSetFocus();
-	}
-	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected Object openDialogBox(Control cellEditorWindow) {
 		new PluginDialog(cellEditorWindow.getShell(), getControl(), axis).open();
-		// TODO focusLost() ?
-		//focusLost();
-		// TODO Auto-generated method stub
 		if (axis.getPluginController() == null || 
 				axis.getPluginController().getPlugin() == null) {
 			return null;
 		}
 		return "Plugin (" + axis.getPluginController().getPlugin().getName() + ")";
-		//return null;
 	}
 }
