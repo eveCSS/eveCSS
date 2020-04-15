@@ -1,6 +1,7 @@
 package de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.ui;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.viewers.DialogCellEditor;
@@ -23,8 +24,10 @@ import com.ibm.icu.text.MessageFormat;
 import de.ptb.epics.eve.data.scandescription.Axis;
 
 /**
- * Subclasses must implement {@link #validate(String)} and 
- * {@link #openDialogBox(Control)}.
+ * Superclass to achieve common behavior between DialogCellEditors with additional
+ * text editing support. Creates an editable text field with decoration instead 
+ * of the default label. Subclasses must implement {@link #validate(String)}, 
+ * {@link #decorate(boolean, boolean)} and {@link #openDialogBox(Control)}.
  * 
  * @author Marcus Michalsky
  * @since 1.34
@@ -35,18 +38,20 @@ public abstract class ValuesDialogCellEditor extends DialogCellEditor {
 	
 	private FieldDecorationRegistry registry = 
 			FieldDecorationRegistry.getDefault();
+	private Image warnImage = registry.getFieldDecoration(
+			FieldDecorationRegistry.DEC_WARNING).getImage();
 	private Image errorImage = registry.getFieldDecoration(
 			FieldDecorationRegistry.DEC_ERROR).getImage();
 	
 	private Axis axis;
 	private Text valuesText;
+	private final ControlDecoration decoration;
 	
 	public ValuesDialogCellEditor(Composite parent, Axis axis) {
 		super(parent, SWT.NONE);
 		this.axis = axis;
 		
-		final ControlDecoration decoration = new ControlDecoration(getControl(), 
-				SWT.LEFT);
+		this.decoration = new ControlDecoration(getControl(), SWT.LEFT);
 		this.setValidator(new ICellEditorValidator() {
 			@Override
 			public String isValid(Object value) {
@@ -58,15 +63,9 @@ public abstract class ValuesDialogCellEditor extends DialogCellEditor {
 			@Override
 			public void editorValueChanged(boolean oldValidState, 
 					boolean newValidState) {
-				if (!newValidState) {
-					decoration.setDescriptionText(getErrorMessage());
-					decoration.setImage(errorImage);
-					decoration.show();
-				} else {
-					decoration.setDescriptionText("");
-					decoration.setImage(null);
-					decoration.hide();
-				}
+				LOGGER.debug("value changed - old sate: " + oldValidState + 
+						", new state: " + newValidState);
+				decorate(oldValidState, newValidState);
 			}
 
 			@Override
@@ -82,9 +81,37 @@ public abstract class ValuesDialogCellEditor extends DialogCellEditor {
 	}
 	
 	/**
+	 * A {@link ICellEditorListener} is automatically registered. Changes will 
+	 * call this function. It should set the decoration according to the given 
+	 * valid states. The default implementation shows an error icon with tooltip
+	 * error text if newValidState is false. Override for specific behavior.
 	 * 
-	 * @param value
-	 * @return
+	 * Use {@link #getDecoration()} to get the text field decorator.
+	 * Use {@link #getWarnImage()} and {@link #getErrorImage()} for images.
+	 * 
+	 * @param oldValidState the valid state before the end user changed the value
+	 * @param newValidState the current valid state
+	 */
+	protected void decorate(boolean oldValidState, boolean newValidState) {
+		if (!newValidState) {
+			this.decoration.setDescriptionText(getErrorMessage());
+			this.decoration.setImage(errorImage);
+			this.decoration.show();
+		} else {
+			this.decoration.setDescriptionText("");
+			this.decoration.setImage(null);
+			this.decoration.hide();
+		}
+	}
+	
+	/**
+	 * A {@link IValidator} is automatically registered. It forwards the call to
+	 * this method. Override accordingly.
+	 * 
+	 * Use {@link #getAxis()} to get the axis.
+	 * 
+	 * @param value the value to be validated
+	 * @return the error message, or null indicating that the value is valid
 	 */
 	protected abstract String validate(String value);
 	
@@ -180,5 +207,21 @@ public abstract class ValuesDialogCellEditor extends DialogCellEditor {
 
 	protected Axis getAxis() {
 		return this.axis;
+	}
+	
+	protected Text getValuesText() {
+		return this.valuesText;
+	}
+	
+	protected ControlDecoration getDecoration() {
+		return this.decoration;
+	}
+	
+	protected Image getWarnImage() {
+		return this.warnImage;
+	}
+	
+	protected Image getErrorImage() {
+		return this.errorImage;
 	}
 }
