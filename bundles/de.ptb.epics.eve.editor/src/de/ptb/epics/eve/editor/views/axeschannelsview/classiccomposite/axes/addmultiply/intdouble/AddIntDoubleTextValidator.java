@@ -3,6 +3,8 @@ package de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.add
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import de.ptb.epics.eve.data.scandescription.Axis;
 
 /**
@@ -10,6 +12,9 @@ import de.ptb.epics.eve.data.scandescription.Axis;
  * @since 1.34
  */
 public class AddIntDoubleTextValidator {
+	private static final Logger LOGGER = 
+			Logger.getLogger(AddIntDoubleTextValidator.class.getName());
+	
 	private static final String MSG_SYNTAX = 
 			"Syntax must be a / b / c / d where exactly one of [a,b,c,d] must be omitted (a dash '-')";
 	private static final String MSG_SYNTAX_MAINAXIS = 
@@ -48,9 +53,11 @@ public class AddIntDoubleTextValidator {
 		// empty entry ?
 		if (value.isEmpty()) {
 			if (mainAxisSet) {
-				return MSG_SYNTAX;
-			} else {
+				LOGGER.debug("Validation Error: " + MSG_SYNTAX_MAINAXIS);
 				return MSG_SYNTAX_MAINAXIS;
+			} else {
+				LOGGER.debug("Validation Error: " + MSG_SYNTAX);
+				return MSG_SYNTAX;
 			}
 		}
 		
@@ -58,10 +65,12 @@ public class AddIntDoubleTextValidator {
 		String[] elements = value.split("/");
 		if (mainAxisSet) {
 			if (elements.length != 3) {
+				LOGGER.debug("Validation Error: " + MSG_SYNTAX_MAINAXIS);
 				return MSG_SYNTAX_MAINAXIS;
 			}
 		} else {
 			if (elements.length != 4) {
+				LOGGER.debug("Validation Error: " + MSG_SYNTAX);
 				return MSG_SYNTAX;
 			}
 		}
@@ -74,8 +83,12 @@ public class AddIntDoubleTextValidator {
 			}
 		}
 		if (count == 0) {
+			LOGGER.debug("Validation error: " + 
+					MSG_DASH_NOT_FOUND + MSG_DASH_INFO);
 			return MSG_DASH_NOT_FOUND + MSG_DASH_INFO;
 		} else if (count > 1) {
+			LOGGER.debug("Validation error: " + 
+					MSG_DASH_MULTIPLE_FOUND + MSG_DASH_INFO);
 			return MSG_DASH_MULTIPLE_FOUND + MSG_DASH_INFO;
 		}
 		
@@ -94,6 +107,7 @@ public class AddIntDoubleTextValidator {
 					Double.parseDouble(element.trim());
 				}
 			} catch (NumberFormatException e) {
+				LOGGER.error("Validation error: " + MSG_TYPE_WRONG_DOUBLE);
 				return MSG_TYPE_WRONG_DOUBLE;
 			}
 			break;
@@ -103,11 +117,13 @@ public class AddIntDoubleTextValidator {
 					Integer.parseInt(element.trim());
 				}
 			} catch (NumberFormatException e) {
+				LOGGER.error("Validation error: " + MSG_TYPE_WRONG_INT);
 				return MSG_TYPE_WRONG_INT;
 			}
 			try {
 				Double.parseDouble(numbers.get(numbers.size()-1));
 			} catch (NumberFormatException e) {
+				LOGGER.error("Validation error: " + MSG_TYPE_WRONG_STEPWIDTH);
 				return MSG_TYPE_WRONG_STEPWIDTH;
 			}
 			break;
