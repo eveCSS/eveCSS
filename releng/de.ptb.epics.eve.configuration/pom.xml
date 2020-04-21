@@ -96,6 +96,21 @@
     </additionalparam>
    	</configuration>
    </plugin>
+   
+   <plugin>
+     <groupId>org.eclipse.tycho</groupId>
+     <artifactId>tycho-surefire-plugin</artifactId>
+     <version>${tycho.version}</version>
+     <configuration>
+       <bundleStartLevel>
+         <bundle>
+           <id>de.ptb.epics.eve.editor</id>
+           <level>7</level>
+           <autoStart>false</autoStart>
+         </bundle>
+       </bundleStartLevel>
+     </configuration>
+   </plugin>
   </plugins>
  </build>
 </project>
