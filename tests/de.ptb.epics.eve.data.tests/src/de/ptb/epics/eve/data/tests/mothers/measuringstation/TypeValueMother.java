@@ -11,13 +11,25 @@ import de.ptb.epics.eve.data.TypeValue;
  */
 public class TypeValueMother {
 	
-	/**
-	 * 
-	 * @return
-	 */
 	public static TypeValue createNewTypeValue() {
-		TypeValue typeValue = new TypeValue(DataTypes.INT);
-		
-		return typeValue;
+		return TypeValueMother.createNewIntTypeValue();
+	}
+	
+	/**
+	 * @since 1.34
+	 */
+	public static TypeValue createNewIntTypeValue() {
+		return new TypeValue(DataTypes.INT);
+	}
+	
+	/**
+	 * @since 1.34
+	 */
+	public static TypeValue createNewDoubleTypeValue() {
+		return new TypeValue(DataTypes.DOUBLE);
+	}
+	
+	private TypeValueMother() {
+		// private
 	}
 }
