@@ -15,6 +15,17 @@ public class AddIntDoubleTextConverter {
 	private static final Logger LOGGER = Logger.getLogger(
 			AddIntDoubleTextConverter.class.getName());
 	
+	/**
+	 * Precondition: input is a valid string, i.e. "a / b / c / d" (or 
+	 * "a / b / c" if main axis is set in corresponding scanmodule) and
+	 * <ul>
+	 *   <li>exactly one of the values is a dash "-"</li>
+	 *   <li>the other values are valid integers</li>
+	 *   <li>spaces are optional</li>
+	 * </ul>
+	 * @param input valid "a / b / c / d" (or "a / b / c" if main axis is set)
+	 * @return a bean with typed values for direct access
+	 */
 	public static AddIntDoubleValues<Integer> convertInt(String input) {
 		String[] elements = input.split("/");
 		int dashIndex = 4;
@@ -64,6 +75,17 @@ public class AddIntDoubleTextConverter {
 		return null;
 	}
 	
+	/**
+	 * Precondition: input is a valid string, i.e. "a / b / c / d" (or 
+	 * "a / b / c" if main axis is set in corresponding scanmodule) and
+	 * <ul>
+	 *   <li>exactly one of the values is a dash "-"</li>
+	 *   <li>the other values are valid doubles</li>
+	 *   <li>spaces are optional</li>
+	 * </ul>
+	 * @param input valid "a / b / c / d" (or "a / b / c" if main axis is set)
+	 * @return a bean with typed values for direct access
+	 */
 	public static AddIntDoubleValues<Double> convertDouble(String input) {
 		String[] elements = input.split("/");
 		int dashIndex = 4; 
