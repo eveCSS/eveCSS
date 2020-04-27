@@ -91,6 +91,9 @@ public class ValuesEditingSupport extends EditingSupport {
 		switch (axis.getStepfunction()) {
 		case ADD:
 		case MULTIPLY:
+			if (axis.getType().equals(DataTypes.DATETIME)) {
+				break;
+			}
 			// show a / b / c / d instead of a -> b / c
 			// if a main axis is set (which is not this axis) show a / b / c only
 			// the field the adjust parameter is set to is replaced with "-"

@@ -1,5 +1,7 @@
 package de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -8,7 +10,9 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
+import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.scandescription.Axis;
+import de.ptb.epics.eve.data.scandescription.PositionMode;
 import de.ptb.epics.eve.data.scandescription.errors.AxisError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 
@@ -49,6 +53,29 @@ public class ValuesColumnLabelProvider extends ColumnLabelProvider {
 		switch (axis.getStepfunction()) {
 		case ADD:
 		case MULTIPLY:
+			if (axis.getType().equals(DataTypes.DATETIME) && 
+					axis.getPositionMode().equals(PositionMode.ABSOLUTE)) {
+				SimpleDateFormat dateFormat = 
+						new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+				StringBuilder sb = new StringBuilder();
+				sb.append("Start: " + dateFormat.format((Date)axis.getStart()));
+				sb.append("\n");
+				sb.append("Stop: " + dateFormat.format((Date)axis.getStop()));
+				sb.append("\n");
+				sb.append("Stepwidth: " + new SimpleDateFormat("HH:mm:ss.SSS").
+						format((Date)axis.getStepwidth()));
+				return sb.toString();
+			}
+			if (axis.getType().equals(DataTypes.DATETIME) && 
+					axis.getPositionMode().equals(PositionMode.RELATIVE)) {
+				StringBuilder sb = new StringBuilder();
+				sb.append("Start: " + axis.getStart());
+				sb.append("\n");
+				sb.append("Stop: " + axis.getStop());
+				sb.append("\n");
+				sb.append("Stepwidth: " + axis.getStepwidth());
+				return sb.toString();
+			}
 			break;
 		case FILE:
 			if (axis.getFile() != null) {

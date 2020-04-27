@@ -1,32 +1,31 @@
 package de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.xml.datatype.Duration;
 
 import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.scandescription.Axis;
 
 /**
- * @author Marcus Michalsk
+ * @author Marcus Michalsky
  * @since 1.34
  */
 public class ValuesColumnStringFormatter {
 	private static final String RIGHT_ARROW = Character.toString('\u2192');
 	private static final String SLASH_WITH_SPACE = " / ";
 	private static final String LONG_DASH = Character.toString('\u2014');
-	private static final String WATCH = Character.toString('\u231a');
-	private static final String HOUR_GLASS = Character.toString('\u231b');
-	private static final String ALARM_CLOCK = Character.toString('\u23f0');
-	private static final String STOP_WATCH = Character.toString('\u23f1');
 	
 	public static String getValuesString(Axis axis) {
 		switch (axis.getStepfunction()) {
 		case ADD:
-			if (!axis.getType().equals(DataTypes.DATETIME)) {
-				return axis.getStart().toString() + RIGHT_ARROW +
-					axis.getStop().toString() + SLASH_WITH_SPACE + 
-					axis.getStepwidth().toString();
-			} else {
+			if (axis.getType().equals(DataTypes.DATETIME)) {
 				return getDateString(axis);
+			} else {
+				return axis.getStart().toString() + RIGHT_ARROW +
+						axis.getStop().toString() + SLASH_WITH_SPACE + 
+						axis.getStepwidth().toString();
 			}
 		case FILE:
 			if (axis.getFile() != null && axis.getFile().getName() != null) {
@@ -60,16 +59,19 @@ public class ValuesColumnStringFormatter {
 		StringBuilder sb = new StringBuilder();
 		switch (axis.getPositionMode()) {
 		case ABSOLUTE:
-			return Character.toString('\u25f4') + 
-					Character.toString('\u25f5') + 
-					Character.toString('\u25f6') + 
-					Character.toString('\u25f7') + 
-					Character.toString('\u231a')  + 
-					Character.toString('\u231b')  + 
-					Character.toString('\u23f1') ;
+			SimpleDateFormat dateFormat = 
+					new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+			sb.append(dateFormat.format((Date)axis.getStart()));
+			sb.append(RIGHT_ARROW);
+			sb.append(dateFormat.format((Date)axis.getStop()));
+			sb.append(SLASH_WITH_SPACE);
+			sb.append(new SimpleDateFormat("HH:mm:ss.SSS").format(
+					(Date)axis.getStepwidth()));
+			break;
 		case RELATIVE:
 			if (!axis.getStart().toString().equals("P0Y0M0DT0H0M0.000S")) {
-				sb.append(WATCH + ": ");
+				// show only if start is not "now" (0)
+				sb.append("Start: ");
 				Duration startDuration = (Duration)axis.getStart();
 				if (startDuration.getHours() != 0) {
 					sb.append(startDuration.getHours() + "h ");
@@ -82,7 +84,7 @@ public class ValuesColumnStringFormatter {
 				}
 				sb.replace(sb.length()-1, sb.length(), ", ");
 			}
-			sb.append(HOUR_GLASS + ": ");
+			sb.append("Duration: ");
 			Duration stepwidthDuration = (Duration)axis.getStepwidth();
 			if (stepwidthDuration.getHours() != 0) {
 				sb.append(stepwidthDuration.getHours() + "h ");
