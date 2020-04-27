@@ -43,6 +43,7 @@ public class ValuesEditingSupport extends EditingSupport {
 		Axis axis = (Axis) element;
 		switch (axis.getStepfunction()) {
 		case ADD:
+		case MULTIPLY:
 			if (DataTypes.DATETIME.equals(axis.getType())) {
 				return new AddDateTimeDialogCellEditor(viewer.getTable(), axis);
 			}
@@ -53,12 +54,6 @@ public class ValuesEditingSupport extends EditingSupport {
 			break;
 		case FILE:
 			return new FileDialogCellEditor(viewer.getTable(), axis);
-		case MULTIPLY:
-			if (DataTypes.INT.equals(axis.getType()) || 
-					DataTypes.DOUBLE.equals(axis.getType())) {
-				return new AddIntDoubleDialogCellEditor(viewer.getTable(), axis);
-			}
-			break;
 		case PLUGIN:
 			return new PluginDialogCellEditor(viewer.getTable(), axis);
 		case POSITIONLIST:
