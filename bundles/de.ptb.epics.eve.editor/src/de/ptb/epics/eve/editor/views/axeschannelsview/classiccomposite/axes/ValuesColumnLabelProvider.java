@@ -13,6 +13,7 @@ import org.eclipse.ui.PlatformUI;
 import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.PositionMode;
+import de.ptb.epics.eve.data.scandescription.axismode.RangeMode;
 import de.ptb.epics.eve.data.scandescription.errors.AxisError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 
@@ -106,6 +107,11 @@ public class ValuesColumnLabelProvider extends ColumnLabelProvider {
 		case POSITIONLIST:
 			break;
 		case RANGE:
+			if (axis.getMode() != null) {
+				String positions = ((RangeMode)axis.getMode()).getPositions();
+				int count = positions.split(",").length;
+				return positions + " (" + count + " positions)";
+			}
 			break;
 		default:
 			break;
