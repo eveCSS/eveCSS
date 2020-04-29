@@ -6,6 +6,7 @@ import de.ptb.epics.eve.data.ComparisonTypes;
 import de.ptb.epics.eve.data.measuringstation.event.MonitorEvent;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
+import de.ptb.epics.eve.data.scandescription.channelmode.ChannelModes;
 
 /**
  * @author Marcus Michalsky
@@ -69,6 +70,9 @@ public class ParametersColumnLabelProvider extends ColumnLabelProvider {
 	@Override
 	public String getToolTipText(Object element) {
 		Channel channel = (Channel)element;
+		if (channel.getChannelMode().equals(ChannelModes.INTERVAL)) {
+			return null;
+		}
 		
 		StringBuilder sb = new StringBuilder();
 		
