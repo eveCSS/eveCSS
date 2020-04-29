@@ -71,7 +71,6 @@ public class ValuesColumnStringFormatter {
 		case RELATIVE:
 			if (!axis.getStart().toString().equals("P0Y0M0DT0H0M0.000S")) {
 				// show only if start is not "now" (0)
-				sb.append("Start: ");
 				Duration startDuration = (Duration)axis.getStart();
 				if (startDuration.getHours() != 0) {
 					sb.append(startDuration.getHours() + "h ");
@@ -82,9 +81,25 @@ public class ValuesColumnStringFormatter {
 				if (startDuration.getSeconds() != 0) {
 					sb.append(startDuration.getSeconds() + "s ");
 				}
-				sb.replace(sb.length()-1, sb.length(), ", ");
+			} else {
+				sb.append("0s ");
 			}
-			sb.append("Duration: ");
+			sb.append(RIGHT_ARROW + " ");
+			
+			Duration stopDuration = (Duration)axis.getStop();
+			if (stopDuration.getHours() != 0) {
+				sb.append(stopDuration.getHours() + "h ");
+			}
+			if (stopDuration.getMinutes() != 0) {
+				sb.append(stopDuration.getMinutes() + "min ");
+			}
+			if (stopDuration.getSeconds() != 0) {
+				sb.append(stopDuration.getSeconds() + "s ");
+			}
+			sb.replace(sb.length()-1, sb.length(), "");
+			
+			sb.append(" / ");
+			
 			Duration stepwidthDuration = (Duration)axis.getStepwidth();
 			if (stepwidthDuration.getHours() != 0) {
 				sb.append(stepwidthDuration.getHours() + "h ");
