@@ -94,7 +94,7 @@
     project="de.ptb.epics.eve.data" 
     file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/updatenotification/IModelUpdateListener.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="349" y="61"/>    
+    <position height="-1" width="-1" x="952" y="60"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -102,7 +102,7 @@
     </display>  
   </interface>  
   <interface id="10" language="java" name="org.eclipse.ui.ISelectionListener" project="de.ptb.epics.eve.editor" 
-    file="/home/mmichals/Projects/eveCSS/workspace-2019-12/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.ui.workbench_3.7.1.v20120104-1859.jar" 
+    file="/home/mmichals/Projects/eveCSS/workspace-2020-03-feature4917b/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.ui.workbench_3.7.1.v20120104-1859.jar" 
     binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="672" y="60"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -122,7 +122,7 @@
     </display>  
   </interface>  
   <class id="12" language="java" name="org.eclipse.swt.custom.StackLayout" project="de.ptb.epics.eve.editor" 
-    file="/home/mmichals/Projects/eveCSS/workspace-2019-12/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.swt.gtk.linux.x86_64_3.7.2.v3740f.jar" 
+    file="/home/mmichals/Projects/eveCSS/workspace-2020-03-feature4917b/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.swt.gtk.linux.x86_64_3.7.2.v3740f.jar" 
     binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="117" y="702"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -132,9 +132,9 @@
     </display>  
   </class>  
   <interface id="13" language="java" name="org.eclipse.ui.IMemento" project="de.ptb.epics.eve.editor" 
-    file="/home/mmichals/Projects/eveCSS/workspace-2019-12/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.ui.workbench_3.7.1.v20120104-1859.jar" 
+    file="/home/mmichals/Projects/eveCSS/workspace-2020-03-feature4917b/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.ui.workbench_3.7.1.v20120104-1859.jar" 
     binary="true" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="261" y="702"/>    
+    <position height="-1" width="-1" x="564" y="336"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -142,7 +142,7 @@
     </display>  
   </interface>  
   <class id="14" language="java" name="org.eclipse.ui.part.ViewPart" project="de.ptb.epics.eve.editor" 
-    file="/home/mmichals/Projects/eveCSS/workspace-2019-12/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.ui.workbench_3.7.1.v20120104-1859.jar" 
+    file="/home/mmichals/Projects/eveCSS/workspace-2020-03-feature4917b/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.ui.workbench_3.7.1.v20120104-1859.jar" 
     binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="573" y="196"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -173,37 +173,44 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <association id="17">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="18" name="saveAxisPositionsComposite">        
+  <interface id="17" language="java" name="org.eclipse.jface.viewers.ISelectionProvider" 
+    project="de.ptb.epics.eve.util.ui" 
+    file="/home/mmichals/Projects/eveCSS/workspace-2020-03-feature4917b/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.jface_3.7.0.v20110928-1505.jar" 
+    binary="true" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="484" y="794"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </interface>  
+  <association id="18">    
+    <end type="SOURCE" refId="16" navigable="false">      
+      <attribute id="19" name="view">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="19" minimum="0" maximum="1">        
+      <multiplicity id="20" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
+    <end type="TARGET" refId="11" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="20">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="21" name="saveChannelValuesComposite">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="22" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
+  <realization id="21">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="10"/>  
+  </realization>  
+  <dependency id="22">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="9"/>  
+  </dependency>  
   <generalization id="23">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="2"/>  
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="8"/>  
   </generalization>  
   <association id="24">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="25" name="dynamicChannelValuesComposite">        
+      <attribute id="25" name="saveAxisPositionsComposite">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
       <multiplicity id="26" minimum="0" maximum="1">        
@@ -213,76 +220,76 @@
     <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="27">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="28" name="selectionProviderWrapper">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="29" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="15" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="30">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="2"/>  
-  </generalization>  
-  <generalization id="31">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="2"/>  
-  </generalization>  
-  <association id="32">    
-    <end type="SOURCE" refId="16" navigable="false">      
-      <attribute id="33" name="view">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="34" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="35">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="8"/>  
-  </generalization>  
-  <association id="36">    
+  <realization id="27">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="10"/>  
+  </realization>  
+  <realization id="28">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="17"/>  
+  </realization>  
+  <association id="29">    
     <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="37" name="parentView">        
+      <attribute id="30" name="parentView">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="38" minimum="0" maximum="1">        
+      <multiplicity id="31" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="39">    
+  <generalization id="32">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <association id="33">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="40" name="memento">        
+      <attribute id="34" name="dynamicChannelValuesComposite">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="41" minimum="0" maximum="1">        
+      <multiplicity id="35" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="13" navigable="true"/>    
+    <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
+  <generalization id="36">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <dependency id="37">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="13"/>  
+  </dependency>  
+  <association id="38">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="39" name="selectionProviderWrapper">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="40" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="41">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
   <association id="42">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="43" name="stackLayout">        
+      <attribute id="43" name="dynamicAxisPositionsComposite">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
       <multiplicity id="44" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="12" navigable="true"/>    
+    <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <generalization id="45">    
@@ -290,12 +297,12 @@
     <end type="TARGET" refId="2"/>  
   </generalization>  
   <generalization id="46">    
-    <end type="SOURCE" refId="7"/>    
+    <end type="SOURCE" refId="6"/>    
     <end type="TARGET" refId="2"/>  
   </generalization>  
   <association id="47">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="48" name="dynamicAxisPositionsComposite">        
+      <attribute id="48" name="saveChannelValuesComposite">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
       <multiplicity id="49" minimum="0" maximum="1">        
@@ -305,34 +312,34 @@
     <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="50">    
-    <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="14"/>  
-  </generalization>  
-  <realization id="51">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="10"/>  
-  </realization>  
-  <realization id="52">    
-    <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="10"/>  
-  </realization>  
-  <realization id="53">    
-    <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="11"/>  
-  </realization>  
-  <association id="54">    
+  <association id="50">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="55" name="classicComposite">        
+      <attribute id="51" name="memento">        
+        <position height="0" width="0" x="303" y="-366"/>      
+      </attribute>      
+      <multiplicity id="52" minimum="0" maximum="1">        
+        <position height="0" width="0" x="303" y="-366"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="53">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="54" name="classicComposite">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="56" minimum="0" maximum="1">        
+      <multiplicity id="55" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
+  <realization id="56">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="11"/>  
+  </realization>  
   <association id="57">    
     <end type="SOURCE" refId="1" navigable="false">      
       <attribute id="58" name="editorViewPerspectiveListener">        
@@ -343,6 +350,30 @@
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="16" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="60">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="14"/>  
+  </generalization>  
+  <association id="61">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="62" name="stackLayout">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="63" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="64">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="65" name="selectionProvider"/>      
+      <multiplicity id="66" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="17" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 

@@ -1,6 +1,5 @@
 package de.ptb.epics.eve.editor.views.axeschannelsview.ui;
 
-import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
@@ -21,14 +20,18 @@ import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.ui.Classi
 import de.ptb.epics.eve.util.ui.jface.SelectionProviderWrapper;
 
 /**
+ * Listens to Scan Module selections showing different content depending on its 
+ * type. For snapshot types tables containing the snapshot devices are shown. For 
+ * non-dynamic snapshots these tables are editable. If a scan module of type 
+ * classic is selected an axes and channels table are shown. Devices can be added
+ * and removed and attributes of them can be edited.
+ * 
  * @author Marcus Michalsky
  * @since 1.34
  */
 public class AxesChannelsView extends AbstractScanModuleView {
 	public static final String ID = 
 			"de.ptb.epics.eve.editor.views.AxesChannelsView";
-	private static Logger LOGGER = Logger.getLogger(
-			AxesChannelsView.class.getName());
 	
 	private ScanModule currentScanModule;
 
@@ -162,7 +165,7 @@ public class AxesChannelsView extends AbstractScanModuleView {
 			}
 		} else {
 			// no scan module selected -> reset contents
-			// TODO resetPartName ?
+			this.setPartName("SM Axes / Channels: No Scan Module selected");
 			stackLayout.topControl = this.emptyComposite;
 		}
 		contentPanel.layout();
@@ -208,7 +211,6 @@ public class AxesChannelsView extends AbstractScanModuleView {
 	@Override
 	public void reset() {
 		this.setScanModule(null);
-		// TODO setSM(null) on composites ?
 	}
 
 	/**
