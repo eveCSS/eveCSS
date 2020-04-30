@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<class-diagram version="1.2.4" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
-  associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+<class-diagram version="1.2.4" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
   <class id="1" language="java" name="de.ptb.epics.eve.editor.views.axeschannelsview.ui.AxesChannelsViewComposite" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/ui/AxesChannelsViewComposite.java" 
