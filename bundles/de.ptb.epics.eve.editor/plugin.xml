@@ -106,6 +106,13 @@
             name="SM Axes / Channels View"
             restorable="true">
       </view>
+      <view
+            category="eveEditorCategory"
+            class="de.ptb.epics.eve.editor.views.prepostscanview.ui.PrePostscanView"
+            id="de.ptb.epics.eve.editor.view.PrePostscanView"
+            name="SM Pre- / Postscan View"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.newWizards">
