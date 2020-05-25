@@ -81,6 +81,8 @@ import de.ptb.epics.eve.editor.views.axeschannelsview.ui.AxesChannelsViewComposi
 import de.ptb.epics.eve.util.ui.jface.viewercomparator.alphabetical.AlphabeticalTableViewerSorter;
 import de.ptb.epics.eve.util.ui.jface.viewercomparator.alphabetical.AlphabeticalViewerComparator;
 import de.ptb.epics.eve.util.ui.jface.viewercomparator.alphabetical.SortOrder;
+import de.ptb.epics.eve.util.ui.swt.TextSelectAllFocusListener;
+import de.ptb.epics.eve.util.ui.swt.TextSelectAllMouseListener;
 
 /**
  * @author Marcus Michalsky
@@ -110,6 +112,10 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 	private Text settleTimeText;
 	private Button triggerConfirmAxisCheckBox;
 	private Button triggerConfirmChannelCheckBox;
+
+	private Binding valueCountBinding;
+	private Binding triggerDelayBinding;
+	private Binding settleTimeBinding;
 	
 	public ClassicComposite(AxesChannelsView parentView, Composite parent, int style) {
 		super(parentView, parent, style);
@@ -200,7 +206,16 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalIndent = 7;
 		this.valueCountText.setLayoutData(gridData);
-		// TODO add focus listener mouse listener focus listener
+		this.valueCountText.addFocusListener(new TextSelectAllFocusListener(
+				this.valueCountText));
+		this.valueCountText.addMouseListener(new TextSelectAllMouseListener(
+				this.valueCountText));
+		this.valueCountText.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				valueCountBinding.updateModelToTarget();
+			}
+		});
 		
 		Composite triggerDelayComposite = new Composite(generalComposite, SWT.NONE);
 		gridLayout = new GridLayout();
@@ -214,7 +229,16 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalIndent = 7;
 		this.triggerDelayText.setLayoutData(gridData);
-		// TODO add focus listener mouse listener focus listener
+		this.triggerDelayText.addFocusListener(new TextSelectAllFocusListener(
+				this.triggerDelayText));
+		this.triggerDelayText.addMouseListener(new TextSelectAllMouseListener(
+				this.triggerDelayText));
+		this.triggerDelayText.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				triggerDelayBinding.updateModelToTarget();
+			}
+		});
 		
 		Composite settleTimeComposite = new Composite(generalComposite, SWT.NONE);
 		gridLayout = new GridLayout();
@@ -229,7 +253,16 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalIndent = 7;
 		this.settleTimeText.setLayoutData(gridData);
-		// TODO add focus listener mouse listener focus listener
+		this.settleTimeText.addFocusListener(new TextSelectAllFocusListener(
+				this.settleTimeText));
+		this.settleTimeText.addMouseListener(new TextSelectAllMouseListener(
+				this.settleTimeText));
+		this.settleTimeText.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				settleTimeBinding.updateModelToTarget();
+			}
+		});
 		
 		Composite triggerComposite = new Composite(generalComposite, SWT.NONE);
 		gridData = new GridData();
@@ -246,7 +279,6 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 		this.triggerConfirmChannelCheckBox = new Button(triggerComposite, 
 				SWT.CHECK);
 		this.triggerConfirmChannelCheckBox.setText("Detectors");
-		// TODO add Focus listener
 	}
 	
 	private void createAxesTable(Composite parent) {
@@ -580,7 +612,7 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).
 				setAfterGetValidator(new ValueCountTargetToModelValidator()).
 				setConverter(new ValueCountTargetToModelConverter());
-		Binding valueCountBinding = context.bindValue(
+		valueCountBinding = context.bindValue(
 				valueCountTargetObservable, valueCountModelObservable, 
 				valueCountTargetToModelStrategy, 
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
@@ -599,7 +631,7 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 		UpdateValueStrategy triggerDelayModelToTargetStrategy = 
 			new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).
 			setConverter(new TriggerDelaySettleTimeModelToTargetConverter());
-		Binding triggerDelayBinding = context.bindValue(
+		triggerDelayBinding = context.bindValue(
 				triggerDelayTargetObservable, triggerDelayModelObservable, 
 				triggerDelayTargetToModelStrategy, 
 				triggerDelayModelToTargetStrategy);
@@ -618,7 +650,7 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 		UpdateValueStrategy settleTimeModelToTargetStrategy = 
 			new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).
 			setConverter(new TriggerDelaySettleTimeModelToTargetConverter());
-		Binding settleTimeBinding = context.bindValue(settleTimeTargetObservable, 
+		settleTimeBinding = context.bindValue(settleTimeTargetObservable, 
 				settleTimeModelObservable, settleTimeTargetToModelStrategy, 
 				settleTimeModelToTargetStrategy);
 		ControlDecorationSupport.create(settleTimeBinding, SWT.LEFT);
