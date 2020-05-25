@@ -2,12 +2,21 @@ package de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.ui;
 
 import java.util.List;
 
+import org.eclipse.core.databinding.Binding;
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
+import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.databinding.viewers.ViewersObservables;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
@@ -25,8 +34,10 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchActionConstants;
@@ -45,6 +56,12 @@ import de.ptb.epics.eve.editor.handler.axeschannelsview.RemoveChannelsDefaultHan
 import de.ptb.epics.eve.editor.views.DelColumnEditingSupport;
 import de.ptb.epics.eve.editor.views.ScanModuleTableDragSourceListener;
 import de.ptb.epics.eve.editor.views.ScanModuleTableDropTargetListener;
+import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.ScanModuleSelectionProvider;
+import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.TriggerDelaySettleTimeModelToTargetConverter;
+import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.TriggerDelaySettleTimeTargetToModelConverter;
+import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.TriggerDelaySettleTimeTargetToModelValidator;
+import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.ValueCountTargetToModelConverter;
+import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.ValueCountTargetToModelValidator;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.AxesContentProvider;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.MainAxisColumnLabelProvider;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.MainAxisEditingSupport;
@@ -64,6 +81,8 @@ import de.ptb.epics.eve.editor.views.axeschannelsview.ui.AxesChannelsViewComposi
 import de.ptb.epics.eve.util.ui.jface.viewercomparator.alphabetical.AlphabeticalTableViewerSorter;
 import de.ptb.epics.eve.util.ui.jface.viewercomparator.alphabetical.AlphabeticalViewerComparator;
 import de.ptb.epics.eve.util.ui.jface.viewercomparator.alphabetical.SortOrder;
+import de.ptb.epics.eve.util.ui.swt.TextSelectAllFocusListener;
+import de.ptb.epics.eve.util.ui.swt.TextSelectAllMouseListener;
 
 /**
  * @author Marcus Michalsky
@@ -88,26 +107,48 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 
 	private AxesCAComposite axesCAComposite;
 	
+	private Text valueCountText;
+	private Text triggerDelayText;
+	private Text settleTimeText;
+	private Button triggerConfirmAxisCheckBox;
+	private Button triggerConfirmChannelCheckBox;
+
+	private Binding valueCountBinding;
+	private Binding triggerDelayBinding;
+	private Binding settleTimeBinding;
+	
 	public ClassicComposite(AxesChannelsView parentView, Composite parent, int style) {
 		super(parentView, parent, style);
 		
 		this.setLayout(new FillLayout());
-		
 		ScrolledComposite sc = new ScrolledComposite(this, SWT.V_SCROLL);
+		
+		Composite topComposite = new Composite(sc, SWT.NONE);
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.numColumns = 1;
+		topComposite.setLayout(gridLayout);
 		sc.setExpandHorizontal(true);
 		sc.setExpandVertical(true);
+		sc.setContent(topComposite);
 		
-		sashForm = new SashForm(sc, SWT.VERTICAL);
-		sashForm.setLayout(new FillLayout());
-		sc.setContent(sashForm);
+		this.createGeneralComposite(topComposite);
 		
-		Composite axesComposite = new Composite(sashForm, SWT.NONE);
-		GridLayout gridLayout = new GridLayout();
+		sashForm = new SashForm(topComposite, SWT.VERTICAL);
+		sashForm.SASH_WIDTH = 4;
+		GridData gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.verticalAlignment = GridData.FILL;
+		sashForm.setLayoutData(gridData);
+		
+		Composite axesComposite = new Composite(sashForm, SWT.BORDER);
+		gridLayout = new GridLayout();
 		gridLayout.numColumns = 1;
 		axesComposite.setLayout(gridLayout);
 		
 		axesCAComposite = new AxesCAComposite(axesComposite, SWT.NONE);
-		GridData gridData = new GridData();
+		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		axesCAComposite.setLayoutData(gridData);
@@ -120,7 +161,7 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 		axesLabel.setLayoutData(gridData);
 		this.createAxesTable(axesComposite);
 		
-		Composite channelsComposite = new Composite(sashForm, SWT.NONE);
+		Composite channelsComposite = new Composite(sashForm, SWT.BORDER);
 		gridLayout = new GridLayout();
 		gridLayout.numColumns = 1;
 		channelsComposite.setLayout(gridLayout);
@@ -137,6 +178,107 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 		sashForm.setWeights(new int[] {50, 50});
 		
 		sc.setMinSize(sashForm.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+		
+		this.bindValues();
+	}
+	
+	private void createGeneralComposite(Composite parent) {
+		Composite generalComposite = new Composite(parent, SWT.BORDER);
+		GridData gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalAlignment = GridData.FILL;
+		generalComposite.setLayoutData(gridData);
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.numColumns = 3;
+		gridLayout.horizontalSpacing = 15;
+		generalComposite.setLayout(gridLayout);
+		
+		Composite valueCountComposite = new Composite(generalComposite, SWT.NONE);
+		gridLayout = new GridLayout();
+		gridLayout.numColumns = 2;
+		valueCountComposite.setLayout(gridLayout);
+		Label valueCountLabel = new Label(valueCountComposite, SWT.NONE);
+		valueCountLabel.setText("No of Measurements:");
+		valueCountLabel.setToolTipText(
+				"Number of Measurements taken for each motor position");
+		this.valueCountText = new Text(valueCountComposite, SWT.BORDER);
+		gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.horizontalIndent = 7;
+		this.valueCountText.setLayoutData(gridData);
+		this.valueCountText.addFocusListener(new TextSelectAllFocusListener(
+				this.valueCountText));
+		this.valueCountText.addMouseListener(new TextSelectAllMouseListener(
+				this.valueCountText));
+		this.valueCountText.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				valueCountBinding.updateModelToTarget();
+			}
+		});
+		
+		Composite triggerDelayComposite = new Composite(generalComposite, SWT.NONE);
+		gridLayout = new GridLayout();
+		gridLayout.numColumns = 2;
+		triggerDelayComposite.setLayout(gridLayout);
+		Label triggerDelayLabel = new Label(triggerDelayComposite, SWT.NONE);
+		triggerDelayLabel.setText("Trigger Delay (in s):");
+		triggerDelayLabel.setToolTipText("delay in s before detectors are triggered");
+		this.triggerDelayText = new Text(triggerDelayComposite, SWT.BORDER);
+		gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.horizontalIndent = 7;
+		this.triggerDelayText.setLayoutData(gridData);
+		this.triggerDelayText.addFocusListener(new TextSelectAllFocusListener(
+				this.triggerDelayText));
+		this.triggerDelayText.addMouseListener(new TextSelectAllMouseListener(
+				this.triggerDelayText));
+		this.triggerDelayText.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				triggerDelayBinding.updateModelToTarget();
+			}
+		});
+		
+		Composite settleTimeComposite = new Composite(generalComposite, SWT.NONE);
+		gridLayout = new GridLayout();
+		gridLayout.numColumns = 2;
+		settleTimeComposite.setLayout(gridLayout);
+		Label settleTimeLabel = new Label(settleTimeComposite, SWT.NONE);
+		settleTimeLabel.setText("Settle Time (in s):");
+		settleTimeLabel.setToolTipText(
+				"delay time after first positioning in the scan module");
+		this.settleTimeText = new Text(settleTimeComposite, SWT.BORDER);
+		gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.horizontalIndent = 7;
+		this.settleTimeText.setLayoutData(gridData);
+		this.settleTimeText.addFocusListener(new TextSelectAllFocusListener(
+				this.settleTimeText));
+		this.settleTimeText.addMouseListener(new TextSelectAllMouseListener(
+				this.settleTimeText));
+		this.settleTimeText.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				settleTimeBinding.updateModelToTarget();
+			}
+		});
+		
+		Composite triggerComposite = new Composite(generalComposite, SWT.NONE);
+		gridData = new GridData();
+		gridData.horizontalSpan = 3;
+		triggerComposite.setLayoutData(gridData);
+		gridLayout = new GridLayout();
+		gridLayout.numColumns = 3;
+		triggerComposite.setLayout(gridLayout);
+		Label triggerLabel = new Label(triggerComposite, SWT.NONE);
+		triggerLabel.setText("Manual Trigger:");
+		this.triggerConfirmAxisCheckBox = new Button(triggerComposite, 
+				SWT.CHECK);
+		this.triggerConfirmAxisCheckBox.setText("Motors");
+		this.triggerConfirmChannelCheckBox = new Button(triggerComposite, 
+				SWT.CHECK);
+		this.triggerConfirmChannelCheckBox.setText("Detectors");
 	}
 	
 	private void createAxesTable(Composite parent) {
@@ -454,6 +596,86 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 		normalizeColumn.setEditingSupport(new NormalizeEditingSupport(viewer));
 	}
 
+	private void bindValues() {
+		DataBindingContext context = new DataBindingContext();
+		ISelectionProvider selectionProvider = new ScanModuleSelectionProvider(
+				ScanModuleTypes.CLASSIC);
+		IObservableValue selectionObservable = ViewersObservables.
+				observeSingleSelection(selectionProvider);
+		
+		IObservableValue valueCountTargetObservable = SWTObservables.
+				observeText(this.valueCountText, SWT.Modify);
+		IObservableValue valueCountModelObservable = BeansObservables.
+				observeDetailValue(selectionObservable, ScanModule.class, 
+						ScanModule.VALUE_COUNT_PROP, Integer.class);
+		UpdateValueStrategy valueCountTargetToModelStrategy = 
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).
+				setAfterGetValidator(new ValueCountTargetToModelValidator()).
+				setConverter(new ValueCountTargetToModelConverter());
+		valueCountBinding = context.bindValue(
+				valueCountTargetObservable, valueCountModelObservable, 
+				valueCountTargetToModelStrategy, 
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
+		ControlDecorationSupport.create(valueCountBinding, SWT.LEFT);
+		
+		IObservableValue triggerDelayTargetObservable = SWTObservables.
+				observeText(this.triggerDelayText, SWT.Modify);
+		IObservableValue triggerDelayModelObservable = BeansObservables.
+				observeDetailValue(selectionObservable, ScanModule.class, 
+						ScanModule.TRIGGER_DELAY_PROP, Double.class);
+		UpdateValueStrategy triggerDelayTargetToModelStrategy = 
+			new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).
+			setAfterGetValidator(
+				new TriggerDelaySettleTimeTargetToModelValidator("Trigger Delay")).
+			setConverter(new TriggerDelaySettleTimeTargetToModelConverter());
+		UpdateValueStrategy triggerDelayModelToTargetStrategy = 
+			new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).
+			setConverter(new TriggerDelaySettleTimeModelToTargetConverter());
+		triggerDelayBinding = context.bindValue(
+				triggerDelayTargetObservable, triggerDelayModelObservable, 
+				triggerDelayTargetToModelStrategy, 
+				triggerDelayModelToTargetStrategy);
+		ControlDecorationSupport.create(triggerDelayBinding, SWT.LEFT);
+		
+		IObservableValue settleTimeTargetObservable = SWTObservables.
+				observeText(this.settleTimeText, SWT.Modify);
+		IObservableValue settleTimeModelObservable = BeansObservables.
+				observeDetailValue(selectionObservable, ScanModule.class, 
+						ScanModule.SETTLE_TIME_PROP, Double.class);
+		UpdateValueStrategy settleTimeTargetToModelStrategy = 
+			new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).
+			setAfterGetValidator(
+				new TriggerDelaySettleTimeTargetToModelValidator("Settle Time")).
+			setConverter(new TriggerDelaySettleTimeTargetToModelConverter());
+		UpdateValueStrategy settleTimeModelToTargetStrategy = 
+			new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).
+			setConverter(new TriggerDelaySettleTimeModelToTargetConverter());
+		settleTimeBinding = context.bindValue(settleTimeTargetObservable, 
+				settleTimeModelObservable, settleTimeTargetToModelStrategy, 
+				settleTimeModelToTargetStrategy);
+		ControlDecorationSupport.create(settleTimeBinding, SWT.LEFT);
+		
+		IObservableValue axisTriggerTargetObservable = SWTObservables.
+				observeSelection(this.triggerConfirmAxisCheckBox);
+		IObservableValue axisTriggerModelObservable = BeansObservables.
+				observeDetailValue(selectionObservable, ScanModule.class, 
+						ScanModule.TRIGGER_CONFIRM_AXIS_PROP, Boolean.class);
+		context.bindValue(axisTriggerTargetObservable, 
+				axisTriggerModelObservable, 
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE), 
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
+		
+		IObservableValue channelTriggerTargetObservable = SWTObservables.
+				observeSelection(this.triggerConfirmChannelCheckBox);
+		IObservableValue channelTriggerModelObservable = BeansObservables.
+				observeDetailValue(selectionObservable, ScanModule.class, 
+						ScanModule.TRIGGER_CONFIRM_CHANNEL_PROP, Boolean.class);
+		context.bindValue(channelTriggerTargetObservable, 
+				channelTriggerModelObservable, 
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE), 
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
+	}
+	
 	private void initDragAndDrop() {
 		Transfer[] axesTransfers = new Transfer[] {TextTransfer.getInstance()};
 		this.axesTable.addDragSupport(DND.DROP_MOVE, axesTransfers, 
