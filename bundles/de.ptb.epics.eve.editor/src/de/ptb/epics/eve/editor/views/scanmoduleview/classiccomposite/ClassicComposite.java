@@ -69,6 +69,8 @@ public class ClassicComposite extends ScanModuleViewComposite implements IModelU
 	private static final Logger LOGGER = Logger.getLogger(
 			ClassicComposite.class.getName());
 	
+	// TODO remove general composite
+	
 	private static final String MEMENTO_ACTIONS_COMPOSITE_MAXIMIZED = 
 			"actionsCompositeMaximized";
 	private static final String MEMENTO_EVENTS_COMPOSITE_MAXIMIZED = 
@@ -77,10 +79,10 @@ public class ClassicComposite extends ScanModuleViewComposite implements IModelU
 			"actionsCompositeWeight";
 	private static final String MEMENTO_EVENTS_COMPOSITE_WEIGHT =
 			"eventsCompositeWeight";
-	private static final String MEMENTO_AXES_SORT_STATE = 
+	/*private static final String MEMENTO_AXES_SORT_STATE = 
 			"AxesSortState";
 	private static final String MEMENTO_CHANNEL_SORT_STATE = 
-			"ChannelSortState";
+			"ChannelSortState";*/
 	private static final String MEMENTO_ACTIONS_TAB_FOLDER_SELECTION_INDEX = 
 			"actionsTabFolderSelectionIndex";
 	private static final String MEMENTO_EVENTS_TAB_FOLDER_SELECTION_INDEX = 
@@ -94,14 +96,14 @@ public class ClassicComposite extends ScanModuleViewComposite implements IModelU
 	Composite top;
 	
 	// general composite
-	private Text valueCountText;
-	private Text triggerDelayText;
-	private Text settleTimeText;
-	private Button triggerConfirmAxisCheckBox;
-	private Button triggerConfirmChannelCheckBox;
-	private Binding valueCountBinding;
-	private Binding triggerDelayBinding;
-	private Binding settleTimeBinding;
+	//private Text valueCountText;
+	//private Text triggerDelayText;
+	//private Text settleTimeText;
+	//private Button triggerConfirmAxisCheckBox;
+	//private Button triggerConfirmChannelCheckBox;
+	//private Binding valueCountBinding;
+	//private Binding triggerDelayBinding;
+	//private Binding settleTimeBinding;
 	
 	private SashForm actionEventSashForm;
 	
@@ -155,12 +157,14 @@ public class ClassicComposite extends ScanModuleViewComposite implements IModelU
 		
 		this.top = new Composite(sc, SWT.NONE);
 		GridLayout gridLayout = new GridLayout();
+		gridLayout.marginWidth = 0;
+		gridLayout.marginHeight = 0;
 		this.top.setLayout(gridLayout);
 		sc.setExpandHorizontal(true);
 		sc.setExpandVertical(true);
 		sc.setContent(top);
 		
-		this.createGeneralComposite(top);
+		// this.createGeneralComposite(top);
 		
 		this.actionEventSashForm = new SashForm(top, SWT.VERTICAL);
 		this.actionEventSashForm.SASH_WIDTH = 4;
@@ -174,10 +178,10 @@ public class ClassicComposite extends ScanModuleViewComposite implements IModelU
 		this.createEventsComposite(this.actionEventSashForm);
 		sc.setMinSize(SWT.DEFAULT, SWT.DEFAULT);
 		
-		this.bindValues();
+		//this.bindValues();
 	}
 
-	private void createGeneralComposite(Composite parent) {
+	/*private void createGeneralComposite(Composite parent) {
 		Composite generalComposite = new Composite(parent, SWT.BORDER);
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
@@ -255,9 +259,7 @@ public class ClassicComposite extends ScanModuleViewComposite implements IModelU
 		this.triggerConfirmChannelCheckBox = new Button(triggerCheckBoxes,
 				SWT.CHECK);
 		this.triggerConfirmChannelCheckBox.setText("Detectors");
-		this.triggerDelayText.addFocusListener(new TextFocusListener(
-				this.triggerDelayText));
-	}
+	}*/
 	
 	private void createActionsComposite(Composite parent) {
 		this.actionsComposite = new Composite(parent, SWT.BORDER);
@@ -418,13 +420,13 @@ public class ClassicComposite extends ScanModuleViewComposite implements IModelU
 	}
 	
 	private void bindValues() {
-		DataBindingContext context = new DataBindingContext();
+		/*DataBindingContext context = new DataBindingContext();
 		ISelectionProvider selectionProvider = new ScanModuleSelectionProvider(
 				ScanModuleTypes.CLASSIC);
 		IObservableValue selectionObservable = ViewersObservables
-				.observeSingleSelection(selectionProvider);
+				.observeSingleSelection(selectionProvider);*/
 		
-		IObservableValue valueCountTargetObservable = SWTObservables
+		/*IObservableValue valueCountTargetObservable = SWTObservables
 				.observeText(this.valueCountText, SWT.Modify);
 		IObservableValue valueCountModelObservable = BeansObservables.observeDetailValue(
 				selectionObservable, ScanModule.class,
@@ -501,7 +503,7 @@ public class ClassicComposite extends ScanModuleViewComposite implements IModelU
 				channelTriggerTargetObservable, channelTriggerModelObservable,
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE),
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
-		channelTriggerBinding.getClass();
+		channelTriggerBinding.getClass();*/
 	}
 
 	/**
@@ -591,19 +593,19 @@ public class ClassicComposite extends ScanModuleViewComposite implements IModelU
 		this.postscanTab.setImage(null);
 		this.positioningTab.setImage(null);
 		this.plotTab.setImage(null);
-		boolean motorAxisErrors = false;
-		boolean detectorChannelErrors = false;
+		//boolean motorAxisErrors = false;
+		//boolean detectorChannelErrors = false;
 		boolean prescanErrors = false;
 		boolean postscanErrors = false;
 		boolean positioningErrors = false;
 		boolean plotWindowErrors = false;
 
 		for (IModelError error : this.currentScanModule.getModelErrors()) {
-			if (error instanceof AxisError) {
+			/*if (error instanceof AxisError) {
 				motorAxisErrors = true;
 			} else if (error instanceof ChannelError) {
 				detectorChannelErrors = true;
-			} else if (error instanceof PrescanError) {
+			} else  */ if (error instanceof PrescanError) {
 				prescanErrors = true;
 			} else if (error instanceof PostscanError) {
 				postscanErrors = true;
@@ -802,7 +804,7 @@ public class ClassicComposite extends ScanModuleViewComposite implements IModelU
 		}
 	}
 	
-	private class TextFocusListener extends FocusAdapter {
+	/*private class TextFocusListener extends FocusAdapter {
 		private Text widget;
 
 		public TextFocusListener(Text widget) {
@@ -819,5 +821,5 @@ public class ClassicComposite extends ScanModuleViewComposite implements IModelU
 				settleTimeBinding.updateModelToTarget();
 			}
 		}
-	}
+	}*/
 }

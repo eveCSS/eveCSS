@@ -38,7 +38,10 @@ public class SaveAxisPositionsComposite extends AxesChannelsViewComposite {
 	public SaveAxisPositionsComposite(AxesChannelsView parentView, Composite parent, int style) {
 		super(parentView, parent, style);
 		
-		this.setLayout(new GridLayout());
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.marginWidth = 0;
+		gridLayout.marginHeight = 0;
+		this.setLayout(gridLayout);
 		Label label = new Label(this, SWT.NONE);
 		label.setText("Snapshot Axes:");
 		GridData gridData = new GridData();
