@@ -121,11 +121,13 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 		super(parentView, parent, style);
 		
 		this.setLayout(new FillLayout());
-		ScrolledComposite sc = new ScrolledComposite(this, SWT.V_SCROLL);
+		ScrolledComposite sc = new ScrolledComposite(this, SWT.H_SCROLL | SWT.V_SCROLL);
 		
 		Composite topComposite = new Composite(sc, SWT.NONE);
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 1;
+		gridLayout.marginWidth = 0;
+		gridLayout.marginHeight = 0;
 		topComposite.setLayout(gridLayout);
 		sc.setExpandHorizontal(true);
 		sc.setExpandVertical(true);
