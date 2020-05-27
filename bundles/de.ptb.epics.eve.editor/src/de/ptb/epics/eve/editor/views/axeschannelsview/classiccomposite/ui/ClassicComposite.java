@@ -272,6 +272,7 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 		triggerComposite.setLayoutData(gridData);
 		gridLayout = new GridLayout();
 		gridLayout.numColumns = 3;
+		gridLayout.horizontalSpacing = 20;
 		triggerComposite.setLayout(gridLayout);
 		Label triggerLabel = new Label(triggerComposite, SWT.NONE);
 		triggerLabel.setText("Manual Trigger:");
