@@ -1,16 +1,19 @@
-package de.ptb.epics.eve.editor.views.prepostscanview.classiccomposite.ui;
+package de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.ui;
 
 import org.eclipse.gef.EditPart;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPart;
 
 import de.ptb.epics.eve.data.scandescription.ScanModule;
@@ -37,13 +40,25 @@ public class ClassicComposite extends Composite implements ISelectionListener,
 	
 	public ClassicComposite(IViewPart parentView, Composite parent, int style) {
 		super(parent, style);
-		this.setLayout(new FillLayout());
+		GridLayout gridLayout = new GridLayout();
+		// TODO set Border to zero ?
+		this.setLayout(gridLayout);
 		this.parentView = parentView;
 		this.parentView.getSite().getWorkbenchWindow().getSelectionService().
 			addSelectionListener(this);
 		
 		
-		this.createTable(parent);
+		this.createTable(this);
+		
+		MenuManager menuManager = new MenuManager();
+		menuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		menuManager.setRemoveAllWhenShown(true);
+		this.prePostscanTable.getTable().setMenu(
+				menuManager.createContextMenu(this.prePostscanTable.getTable()));
+		this.parentView.getSite().registerContextMenu(
+			"de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.popup", 
+			menuManager, this.prePostscanTable);
+		
 		// TODO Auto-generated constructor stub
 	}
 	

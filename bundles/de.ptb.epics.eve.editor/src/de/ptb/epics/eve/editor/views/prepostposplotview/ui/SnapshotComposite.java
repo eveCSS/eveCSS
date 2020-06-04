@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.editor.views.prepostscanview.ui;
+package de.ptb.epics.eve.editor.views.prepostposplotview.ui;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;

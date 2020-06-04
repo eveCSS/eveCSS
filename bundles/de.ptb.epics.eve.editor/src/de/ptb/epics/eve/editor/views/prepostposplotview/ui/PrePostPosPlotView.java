@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.editor.views.prepostscanview.ui;
+package de.ptb.epics.eve.editor.views.prepostposplotview.ui;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
@@ -10,13 +10,13 @@ import org.eclipse.swt.widgets.Label;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.views.AbstractScanModuleView;
-import de.ptb.epics.eve.editor.views.prepostscanview.classiccomposite.ui.ClassicComposite;
+import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.ui.ClassicComposite;
 
 /**
  * @author Marcus Michalsky
  * @since 1.34
  */
-public class PrePostscanView extends AbstractScanModuleView {
+public class PrePostPosPlotView extends AbstractScanModuleView {
 	public static final String ID = 
 			"de.ptb.epics.eve.editor.view.PrePostscanView";
 
@@ -85,7 +85,7 @@ public class PrePostscanView extends AbstractScanModuleView {
 	protected void setScanModule(ScanModule scanModule) {
 		this.currentScanModule = scanModule;
 		if (this.currentScanModule != null) {
-			this.setPartName("SM Pre- / Postscans: " + 
+			this.setPartName("SM Prescan / Postscan / Positioning / Plot: " + 
 					this.currentScanModule.getName() + 
 					" (Id: " + this.currentScanModule.getId() + ")");
 			
@@ -105,7 +105,7 @@ public class PrePostscanView extends AbstractScanModuleView {
 			}
 		} else {
 			// no scan module selected -> reset contents
-			this.setPartName("SM Pre- / Postscans: No Scan Module selected");
+			this.setPartName("SM Prescan / Postscan / Positioning / Plot: No Scan Module selected");
 		}
 		contentPanel.layout();
 

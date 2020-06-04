@@ -102,15 +102,17 @@
       <view
             category="eveEditorCategory"
             class="de.ptb.epics.eve.editor.views.axeschannelsview.ui.AxesChannelsView"
+            icon="icons/devices/scanmodule.gif"
             id="de.ptb.epics.eve.editor.views.AxesChannelsView"
             name="SM Axes / Channels View"
             restorable="true">
       </view>
       <view
             category="eveEditorCategory"
-            class="de.ptb.epics.eve.editor.views.prepostscanview.ui.PrePostscanView"
+            class="de.ptb.epics.eve.editor.views.prepostposplotview.ui.PrePostPosPlotView"
+            icon="icons/devices/scanmodule.gif"
             id="de.ptb.epics.eve.editor.view.PrePostscanView"
-            name="SM Pre- / Postscan View"
+            name="SM Prescan / Postscan / Positioning / Plot View"
             restorable="true">
       </view>
    </extension>
@@ -898,6 +900,13 @@
                </reference>
             </visibleWhen>
          </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.popup">
+         <dynamic
+               class="de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.PrePostscanMenuContribution"
+               id="de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.popup.dynamic">
+         </dynamic>
       </menuContribution>
       <menuContribution
             locationURI="popup:de.ptb.epics.eve.editor.gef.GraphicalEditor">
