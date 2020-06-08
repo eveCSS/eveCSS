@@ -53,6 +53,7 @@ import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.handler.axeschannelsview.RemoveAxesDefaultHandler;
 import de.ptb.epics.eve.editor.handler.axeschannelsview.RemoveChannelsDefaultHandler;
+import de.ptb.epics.eve.editor.views.AbstractScanModuleViewComposite;
 import de.ptb.epics.eve.editor.views.DelColumnEditingSupport;
 import de.ptb.epics.eve.editor.views.ScanModuleTableDragSourceListener;
 import de.ptb.epics.eve.editor.views.ScanModuleTableDropTargetListener;
@@ -77,7 +78,6 @@ import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.ParametersColumnLabelProvider;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.ParametersEditingSupport;
 import de.ptb.epics.eve.editor.views.axeschannelsview.ui.AxesChannelsView;
-import de.ptb.epics.eve.editor.views.axeschannelsview.ui.AxesChannelsViewComposite;
 import de.ptb.epics.eve.util.ui.jface.viewercomparator.alphabetical.AlphabeticalTableViewerSorter;
 import de.ptb.epics.eve.util.ui.jface.viewercomparator.alphabetical.AlphabeticalViewerComparator;
 import de.ptb.epics.eve.util.ui.jface.viewercomparator.alphabetical.SortOrder;
@@ -88,13 +88,15 @@ import de.ptb.epics.eve.util.ui.swt.TextSelectAllMouseListener;
  * @author Marcus Michalsky
  * @since 1.34
  */
-public class ClassicComposite extends AxesChannelsViewComposite {
+public class ClassicComposite extends AbstractScanModuleViewComposite {
 	private static final int TABLE_MIN_HEIGHT = 150;
 	
 	private static final String MEMENTO_AXES_SASH_WEIGHT = "axesSashWeight";
 	private static final String MEMENTO_CHANNELS_SASH_WEIGHT = "channelsSashWeight";
 	private static final String MEMENTO_AXES_SORT_ORDER = "axesSortState";
 	private static final String MEMENTO_CHANNELS_SORT_ORDER = "channelsSortState";
+	
+	private AxesChannelsView parentView;
 	
 	private ScanModule scanModule;
 	private TableViewer axesTable;
@@ -119,6 +121,7 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 	
 	public ClassicComposite(AxesChannelsView parentView, Composite parent, int style) {
 		super(parentView, parent, style);
+		this.parentView = parentView;
 		
 		this.setLayout(new FillLayout());
 		ScrolledComposite sc = new ScrolledComposite(this, SWT.H_SCROLL | SWT.V_SCROLL);
@@ -182,6 +185,9 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 		sc.setMinSize(sashForm.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		
 		this.bindValues();
+		
+		this.parentView.getSite().getWorkbenchWindow().getSelectionService().
+			addSelectionListener(this);
 	}
 	
 	private void createGeneralComposite(Composite parent) {
@@ -706,7 +712,15 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected ScanModuleTypes getType() {
+	public AxesChannelsView getParentView() {
+		return this.parentView;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ScanModuleTypes getType() {
 		return ScanModuleTypes.CLASSIC;
 	}
 
@@ -714,7 +728,7 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void setScanModule(ScanModule scanModule) {
+	public void setScanModule(ScanModule scanModule) {
 		if (this.scanModule != null) {
 			this.scanModule.removeModelUpdateListener(this);
 			this.axesCAComposite.setAxis(null);
@@ -740,7 +754,7 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void saveState(IMemento memento) {
+	public void saveState(IMemento memento) {
 		// sash weights
 		memento.putInteger(MEMENTO_AXES_SASH_WEIGHT, sashForm.getWeights()[0]);
 		memento.putInteger(MEMENTO_CHANNELS_SASH_WEIGHT, sashForm.getWeights()[1]);
@@ -756,7 +770,7 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void restoreState(IMemento memento) {
+	public void restoreState(IMemento memento) {
 		// restore sash weights
 		int[] weights = new int[2];
 		weights[0] = (memento.getInteger(MEMENTO_AXES_SASH_WEIGHT) == null) 

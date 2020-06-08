@@ -1,16 +1,23 @@
 package de.ptb.epics.eve.editor.views.prepostposplotview.ui;
 
+import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.ui.IMemento;
+import org.eclipse.ui.IViewSite;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.views.AbstractScanModuleView;
+import de.ptb.epics.eve.editor.views.EditorViewPerspectiveListener;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.ui.ClassicComposite;
+import de.ptb.epics.eve.util.ui.jface.SelectionProviderWrapper;
 
 /**
  * @author Marcus Michalsky
@@ -24,10 +31,23 @@ public class PrePostPosPlotView extends AbstractScanModuleView {
 	
 	private Composite contentPanel;
 	private StackLayout stackLayout;
+	
 	private Composite emptyComposite;
 	private Composite snapshotComposite;
 	private ClassicComposite classicComposite;
 	
+	protected SelectionProviderWrapper selectionProviderWrapper;
+	
+	private IMemento memento;
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void init(IViewSite site, IMemento memento) throws PartInitException {
+		super.init(site);
+		this.memento = memento;
+	}
 	
 	/**
 	 * {@inheritDoc}
@@ -61,9 +81,17 @@ public class PrePostPosPlotView extends AbstractScanModuleView {
 		this.classicComposite = new ClassicComposite(this, contentPanel, SWT.NONE);
 		this.stackLayout.topControl = this.emptyComposite;
 		
+		this.restoreState();
+		
 		getSite().getWorkbenchWindow().getSelectionService().
 				addSelectionListener(this);
-		// TODO Auto-generated method stub
+		
+		this.selectionProviderWrapper = new SelectionProviderWrapper();
+		getSite().setSelectionProvider(selectionProviderWrapper);
+		
+		PlatformUI.getWorkbench().getActiveWorkbenchWindow().
+			addPerspectiveListener(new EditorViewPerspectiveListener(this));
+		
 		this.setScanModule(null);
 	}
 	
@@ -105,10 +133,11 @@ public class PrePostPosPlotView extends AbstractScanModuleView {
 			}
 		} else {
 			// no scan module selected -> reset contents
-			this.setPartName("SM Prescan / Postscan / Positioning / Plot: No Scan Module selected");
+			this.setPartName("SM Prescan / Postscan / Positioning / Plot: " + 
+					"No Scan Module selected");
+			this.stackLayout.topControl = this.emptyComposite;
 		}
 		contentPanel.layout();
-
 	}
 
 	/**
@@ -116,8 +145,7 @@ public class PrePostPosPlotView extends AbstractScanModuleView {
 	 */
 	@Override
 	public ScanModule getScanModule() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.currentScanModule;
 	}
 
 	/**
@@ -126,5 +154,30 @@ public class PrePostPosPlotView extends AbstractScanModuleView {
 	@Override
 	public void reset() {
 		this.setScanModule(null);
+	}
+	
+	/**
+	 * Sets the selection provider.
+	 * 
+	 * @param selectionProvider
+	 *            the selection provider that should be set
+	 */
+	public void setSelectionProvider(ISelectionProvider selectionProvider) {
+		this.selectionProviderWrapper.setSelectionProvider(selectionProvider);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void saveState(IMemento memento) {
+		this.classicComposite.saveState(memento);
+	}
+	
+	private void restoreState() {
+		if (memento == null) {
+			return;
+		}
+		this.classicComposite.restoreState(this.memento);
 	}
 }

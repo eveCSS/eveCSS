@@ -1,35 +1,28 @@
 package de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.ui;
 
-import org.eclipse.gef.EditPart;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.ISelectionListener;
+import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchActionConstants;
-import org.eclipse.ui.IWorkbenchPart;
 
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
-import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
-import de.ptb.epics.eve.editor.gef.editparts.ChainEditPart;
-import de.ptb.epics.eve.editor.gef.editparts.ScanDescriptionEditPart;
-import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
+import de.ptb.epics.eve.editor.views.AbstractScanModuleViewComposite;
+import de.ptb.epics.eve.editor.views.prepostposplotview.ui.PrePostPosPlotView;
 
 /**
  * @author Marcus Michalsky
  * @since 1.34
  */
-public class ClassicComposite extends Composite implements ISelectionListener, 
-		IModelUpdateListener {
+public class ClassicComposite extends AbstractScanModuleViewComposite {
 	private static final int TABLE_MIN_HEIGHT = 150;
 	
 	private IViewPart parentView;
@@ -39,14 +32,11 @@ public class ClassicComposite extends Composite implements ISelectionListener,
 	private TableViewer prePostscanTable;
 	
 	public ClassicComposite(IViewPart parentView, Composite parent, int style) {
-		super(parent, style);
+		super(parentView, parent, style);
 		GridLayout gridLayout = new GridLayout();
 		// TODO set Border to zero ?
 		this.setLayout(gridLayout);
 		this.parentView = parentView;
-		this.parentView.getSite().getWorkbenchWindow().getSelectionService().
-			addSelectionListener(this);
-		
 		
 		this.createTable(this);
 		
@@ -59,6 +49,8 @@ public class ClassicComposite extends Composite implements ISelectionListener,
 			"de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.popup", 
 			menuManager, this.prePostscanTable);
 		
+		this.parentView.getSite().getWorkbenchWindow().getSelectionService().
+		addSelectionListener(this);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -97,7 +89,27 @@ public class ClassicComposite extends Composite implements ISelectionListener,
 		resetColumn.getColumn().setText("Reset Original");
 	}
 
-	private void setScanModule(ScanModule scanModule) {
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public PrePostPosPlotView getParentView() {
+		return this.getParentView();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ScanModuleTypes getType() {
+		return ScanModuleTypes.CLASSIC;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setScanModule(ScanModule scanModule) {
 		if (this.scanModule != null) {
 			this.scanModule.removeModelUpdateListener(this);
 		}
@@ -112,33 +124,25 @@ public class ClassicComposite extends Composite implements ISelectionListener,
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-		if (!(selection instanceof IStructuredSelection)
-				|| ((IStructuredSelection) selection).size() == 0
-				|| ((IStructuredSelection) selection).size() > 1) {
-			return;
-		}
-		Object o = ((IStructuredSelection)selection).getFirstElement();
-		if (o instanceof ScanModuleEditPart) {
-			ScanModule selectedScanModule = (ScanModule)((EditPart)o).getModel();
-			if (selectedScanModule.getType().equals(ScanModuleTypes.CLASSIC)) {
-				this.setScanModule(selectedScanModule);
-			} else {
-				setScanModule(null);
-			}
-		} else if (o instanceof ChainEditPart) {
-			// clicking empty space in the editor
-			setScanModule(null);
-		} else if (o instanceof ScanDescriptionEditPart) {
-			setScanModule(null);
-		}
+	public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
+		this.prePostscanTable.refresh();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void saveState(IMemento memento) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
-		this.prePostscanTable.refresh();
+	public void restoreState(IMemento memento) {
+		// TODO Auto-generated method stub
+		
 	}
 }

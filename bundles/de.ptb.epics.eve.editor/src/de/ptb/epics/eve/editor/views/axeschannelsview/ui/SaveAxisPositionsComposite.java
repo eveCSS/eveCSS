@@ -25,6 +25,7 @@ import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.handler.axeschannelsview.RemoveAxesDefaultHandler;
+import de.ptb.epics.eve.editor.views.AbstractScanModuleViewComposite;
 import de.ptb.epics.eve.editor.views.DelColumnEditingSupport;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.AxesContentProvider;
 
@@ -32,11 +33,13 @@ import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.Axes
  * @author Marcus Michalsky
  * @since 1.34
  */
-public class SaveAxisPositionsComposite extends AxesChannelsViewComposite {
+public class SaveAxisPositionsComposite extends AbstractScanModuleViewComposite {
+	private AxesChannelsView parentView;
 	private TableViewer tableViewer;
 
 	public SaveAxisPositionsComposite(AxesChannelsView parentView, Composite parent, int style) {
 		super(parentView, parent, style);
+		this.parentView = parentView;
 		
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.marginWidth = 0;
@@ -109,13 +112,24 @@ public class SaveAxisPositionsComposite extends AxesChannelsViewComposite {
 		parentView.getSite().registerContextMenu(
 			"de.ptb.epics.eve.editor.views.axeschannelsview.saveaxispositionscomposite.popup", 
 			menuManager, this.tableViewer);
+		
+		this.parentView.getSite().getWorkbenchWindow().getSelectionService().
+			addSelectionListener(this);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected ScanModuleTypes getType() {
+	public AxesChannelsView getParentView() {
+		return this.parentView;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ScanModuleTypes getType() {
 		return ScanModuleTypes.SAVE_AXIS_POSITIONS;
 	}
 
@@ -123,7 +137,7 @@ public class SaveAxisPositionsComposite extends AxesChannelsViewComposite {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void setScanModule(ScanModule scanModule) {
+	public void setScanModule(ScanModule scanModule) {
 		if (scanModule == null) {
 			this.tableViewer.setInput(null);
 			return;
@@ -143,7 +157,7 @@ public class SaveAxisPositionsComposite extends AxesChannelsViewComposite {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void saveState(IMemento memento) {
+	public void saveState(IMemento memento) {
 		// nothing to save for now
 	}
 	
@@ -151,7 +165,7 @@ public class SaveAxisPositionsComposite extends AxesChannelsViewComposite {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void restoreState(IMemento memento) {
+	public void restoreState(IMemento memento) {
 		// nothing to restore for now
 	}
 }

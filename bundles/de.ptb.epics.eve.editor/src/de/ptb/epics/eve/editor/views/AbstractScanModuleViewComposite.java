@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.editor.views.axeschannelsview.ui;
+package de.ptb.epics.eve.editor.views;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.jface.viewers.ISelection;
@@ -6,6 +6,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.ISelectionListener;
+import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPart;
 
 import de.ptb.epics.eve.data.scandescription.ScanModule;
@@ -16,8 +17,8 @@ import de.ptb.epics.eve.editor.gef.editparts.ScanDescriptionEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
 
 /**
- * AxesChannelsViewComposite contains elements common to all composites in the 
- * AxesChannelsView.
+ * Contains elements common to all composites in a scan module View, e.g. 
+ * scan module selection (type) and memento.
  * 
  * <ul>
  *  <li>Selections are "forwarded" as follows:
@@ -31,18 +32,16 @@ import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
  * @author Marcus Michalsky
  * @since 1.34
  */
-public abstract class AxesChannelsViewComposite extends Composite implements 
-		ISelectionListener, IModelUpdateListener {
-	private AxesChannelsView parentView;
-
-	public AxesChannelsViewComposite(AxesChannelsView parentView, 
+public abstract class AbstractScanModuleViewComposite extends Composite 
+		implements ISelectionListener, IModelUpdateListener {
+	private IViewPart parentView;
+	
+	public AbstractScanModuleViewComposite(IViewPart parentView, 
 			Composite parent, int style) {
 		super(parent, style);
 		this.parentView = parentView;
-		this.parentView.getSite().getWorkbenchWindow().getSelectionService().
-				addSelectionListener(this);
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -70,38 +69,38 @@ public abstract class AxesChannelsViewComposite extends Composite implements
 	}
 	
 	/**
-	 * Returns the scan module view this composite belongs to.
-	 * @return the scan module view this composite belongs to
+	 * Returns the view this composite belongs to
+	 * @return the view this composite belongs to
 	 */
-	protected AxesChannelsView getParentView() {
+	public IViewPart getParentView() {
 		return this.parentView;
 	}
 	
 	/**
-	 * Returns the scanmodule type the composite is responsible for.
-	 * @return the scanmodule type the composite is responsible for
+	 * Returns the scan module type the composite is responsible for.
+	 * @return the scan module type the composite is responsible for
 	 */
-	protected abstract ScanModuleTypes getType();
+	public abstract ScanModuleTypes getType();
 	
 	/**
-	 * Called with the selected scanmodule if current selection is a scan module and of the correct type.
+	 * Called with the selected scan module if current selection is a scan module and of the correct type.
 	 * Called with <code>null</code> if selected element is <code>ChainEditPart</code> or <code>ScanDescriptionEditPart</code>.
 	 * 
-	 * @param scanModule the currently selected scanmodule
+	 * @param scanModule the currently selected scan module
 	 */
-	protected abstract void setScanModule(ScanModule scanModule);
+	public abstract void setScanModule(ScanModule scanModule);
 	
 	/**
 	 * Called by the parentView when saving memento. Composites should save the 
 	 * configuration that should be persisted here. 
 	 * @param memento the memento interface
 	 */
-	protected abstract void saveState(IMemento memento);
+	public abstract void saveState(IMemento memento);
 	
 	/**
 	 * Called by the parentView to indicate that persisted states can be 
 	 * retrieved now. Only called if memento is not <code>null</code>.
 	 * @param memento the memento interface
 	 */
-	protected abstract void restoreState(IMemento memento);
+	public abstract void restoreState(IMemento memento);
 }

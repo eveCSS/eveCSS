@@ -12,52 +12,41 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="2" language="java" name="de.ptb.epics.eve.editor.views.axeschannelsview.ui.AxesChannelsViewComposite" 
-    project="de.ptb.epics.eve.editor" 
-    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/ui/AxesChannelsViewComposite.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="900" y="485"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="3" language="java" 
+  <class id="2" language="java" 
     name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.ui.ClassicComposite" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/classiccomposite/ui/ClassicComposite.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1336" y="488"/>    
+    <position height="-1" width="-1" x="1220" y="536"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="de.ptb.epics.eve.editor.views.axeschannelsview.ui.DynamicAxisPositionsComposite" 
+  <class id="3" language="java" name="de.ptb.epics.eve.editor.views.axeschannelsview.ui.DynamicAxisPositionsComposite" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/ui/DynamicAxisPositionsComposite.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1010" y="657"/>    
+    <position height="-1" width="-1" x="982" y="657"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="5" language="java" name="de.ptb.epics.eve.editor.views.axeschannelsview.ui.DynamicChannelValuesComposite" 
+  <class id="4" language="java" name="de.ptb.epics.eve.editor.views.axeschannelsview.ui.DynamicChannelValuesComposite" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/ui/DynamicChannelValuesComposite.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1283" y="714"/>    
+    <position height="-1" width="-1" x="1189" y="727"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="6" language="java" name="de.ptb.epics.eve.editor.views.axeschannelsview.ui.SaveAxisPositionsComposite" 
+  <class id="5" language="java" name="de.ptb.epics.eve.editor.views.axeschannelsview.ui.SaveAxisPositionsComposite" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/ui/SaveAxisPositionsComposite.java" 
     binary="false" corner="BOTTOM_RIGHT">    
@@ -68,7 +57,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="7" language="java" name="de.ptb.epics.eve.editor.views.axeschannelsview.ui.SaveChannelValuesComposite" 
+  <class id="6" language="java" name="de.ptb.epics.eve.editor.views.axeschannelsview.ui.SaveChannelValuesComposite" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/ui/SaveChannelValuesComposite.java" 
     binary="false" corner="BOTTOM_RIGHT">    
@@ -79,7 +68,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="8" language="java" name="de.ptb.epics.eve.editor.views.AbstractScanModuleView" 
+  <class id="7" language="java" name="de.ptb.epics.eve.editor.views.AbstractScanModuleView" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/AbstractScanModuleView.java" binary="false" 
     corner="BOTTOM_RIGHT">    
@@ -90,7 +79,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <interface id="9" language="java" name="de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener" 
+  <interface id="8" language="java" name="de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener" 
     project="de.ptb.epics.eve.data" 
     file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/updatenotification/IModelUpdateListener.java" 
     binary="false" corner="BOTTOM_RIGHT">    
@@ -101,8 +90,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <interface id="10" language="java" name="org.eclipse.ui.ISelectionListener" project="de.ptb.epics.eve.editor" 
-    file="/home/mmichals/Projects/eveCSS/workspace-2020-03-feature4917b/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.ui.workbench_3.7.1.v20120104-1859.jar" 
+  <interface id="9" language="java" name="org.eclipse.ui.ISelectionListener" project="de.ptb.epics.eve.editor" 
+    file="/home/mmichals/Projects/eveCSS/workspace-2020-03-feature4917c/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.ui.workbench_3.7.1.v20120104-1859.jar" 
     binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="672" y="60"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -111,7 +100,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <interface id="11" language="java" name="de.ptb.epics.eve.editor.views.IEditorView" project="de.ptb.epics.eve.editor" 
+  <interface id="10" language="java" name="de.ptb.epics.eve.editor.views.IEditorView" project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/IEditorView.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="110" y="63"/>    
@@ -121,8 +110,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <class id="12" language="java" name="org.eclipse.swt.custom.StackLayout" project="de.ptb.epics.eve.editor" 
-    file="/home/mmichals/Projects/eveCSS/workspace-2020-03-feature4917b/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.swt.gtk.linux.x86_64_3.7.2.v3740f.jar" 
+  <class id="11" language="java" name="org.eclipse.swt.custom.StackLayout" project="de.ptb.epics.eve.editor" 
+    file="/home/mmichals/Projects/eveCSS/workspace-2020-03-feature4917c/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.swt.gtk.linux.x86_64_3.7.2.v3740f.jar" 
     binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="117" y="702"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -131,8 +120,8 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <interface id="13" language="java" name="org.eclipse.ui.IMemento" project="de.ptb.epics.eve.editor" 
-    file="/home/mmichals/Projects/eveCSS/workspace-2020-03-feature4917b/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.ui.workbench_3.7.1.v20120104-1859.jar" 
+  <interface id="12" language="java" name="org.eclipse.ui.IMemento" project="de.ptb.epics.eve.editor" 
+    file="/home/mmichals/Projects/eveCSS/workspace-2020-03-feature4917c/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.ui.workbench_3.7.1.v20120104-1859.jar" 
     binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="564" y="336"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -141,8 +130,8 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </interface>  
-  <class id="14" language="java" name="org.eclipse.ui.part.ViewPart" project="de.ptb.epics.eve.editor" 
-    file="/home/mmichals/Projects/eveCSS/workspace-2020-03-feature4917b/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.ui.workbench_3.7.1.v20120104-1859.jar" 
+  <class id="13" language="java" name="org.eclipse.ui.part.ViewPart" project="de.ptb.epics.eve.editor" 
+    file="/home/mmichals/Projects/eveCSS/workspace-2020-03-feature4917c/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.ui.workbench_3.7.1.v20120104-1859.jar" 
     binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="573" y="196"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -151,7 +140,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="15" language="java" name="de.ptb.epics.eve.util.ui.jface.SelectionProviderWrapper" 
+  <class id="14" language="java" name="de.ptb.epics.eve.util.ui.jface.SelectionProviderWrapper" 
     project="de.ptb.epics.eve.util.ui" 
     file="/de.ptb.epics.eve.util.ui/src/de/ptb/epics/eve/util/ui/jface/SelectionProviderWrapper.java" binary="false" 
     corner="BOTTOM_RIGHT">    
@@ -162,7 +151,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="16" language="java" name="de.ptb.epics.eve.editor.views.EditorViewPerspectiveListener" 
+  <class id="15" language="java" name="de.ptb.epics.eve.editor.views.EditorViewPerspectiveListener" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/EditorViewPerspectiveListener.java" binary="false" 
     corner="BOTTOM_RIGHT">    
@@ -173,9 +162,9 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <interface id="17" language="java" name="org.eclipse.jface.viewers.ISelectionProvider" 
+  <interface id="16" language="java" name="org.eclipse.jface.viewers.ISelectionProvider" 
     project="de.ptb.epics.eve.util.ui" 
-    file="/home/mmichals/Projects/eveCSS/workspace-2020-03-feature4917b/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.jface_3.7.0.v20110928-1505.jar" 
+    file="/home/mmichals/Projects/eveCSS/workspace-2020-03-feature4917c/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.jface_3.7.0.v20110928-1505.jar" 
     binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="484" y="794"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -184,198 +173,177 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </interface>  
+  <class id="17" language="java" name="de.ptb.epics.eve.editor.views.AbstractScanModuleViewComposite" 
+    project="de.ptb.epics.eve.editor" 
+    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/AbstractScanModuleViewComposite.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="894" y="402"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
   <association id="18">    
-    <end type="SOURCE" refId="16" navigable="false">      
-      <attribute id="19" name="view">        
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="19" name="dynamicAxisPositionsComposite"/>      
+      <multiplicity id="20" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="17" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="21">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="17"/>  
+  </generalization>  
+  <association id="22">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="23" name="stackLayout">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="20" minimum="0" maximum="1">        
+      <multiplicity id="24" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="11" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <realization id="21">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="10"/>  
-  </realization>  
-  <dependency id="22">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="9"/>  
-  </dependency>  
-  <generalization id="23">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="8"/>  
-  </generalization>  
-  <association id="24">    
+  <association id="25">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="25" name="saveAxisPositionsComposite">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="26" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
+      <attribute id="26" name="dynamicChannelValuesComposite"/>      
+      <multiplicity id="27" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
+    <end type="TARGET" refId="17" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <realization id="27">    
-    <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="10"/>  
-  </realization>  
-  <realization id="28">    
-    <end type="SOURCE" refId="15"/>    
+  <generalization id="28">    
+    <end type="SOURCE" refId="5"/>    
     <end type="TARGET" refId="17"/>  
-  </realization>  
+  </generalization>  
   <association id="29">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="30" name="parentView">        
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="30" name="selectionProviderWrapper">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
       <multiplicity id="31" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
+    <end type="TARGET" refId="14" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="32">    
+  <realization id="32">    
     <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="2"/>  
-  </generalization>  
-  <association id="33">    
+    <end type="TARGET" refId="10"/>  
+  </realization>  
+  <realization id="33">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="8"/>  
+  </realization>  
+  <association id="34">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="34" name="dynamicChannelValuesComposite">        
+      <attribute id="35" name="editorViewPerspectiveListener">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="35" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="36">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="2"/>  
-  </generalization>  
-  <dependency id="37">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="13"/>  
-  </dependency>  
-  <association id="38">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="39" name="selectionProviderWrapper">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="40" minimum="0" maximum="1">        
+      <multiplicity id="36" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="15" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="41">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="2"/>  
-  </generalization>  
-  <association id="42">    
+  <association id="37">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="43" name="dynamicAxisPositionsComposite">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="44" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="45">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="2"/>  
-  </generalization>  
-  <generalization id="46">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="2"/>  
-  </generalization>  
-  <association id="47">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="48" name="saveChannelValuesComposite">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="49" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="50">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="51" name="memento">        
+      <attribute id="38" name="memento">        
         <position height="0" width="0" x="303" y="-366"/>      
       </attribute>      
-      <multiplicity id="52" minimum="0" maximum="1">        
+      <multiplicity id="39" minimum="0" maximum="1">        
         <position height="0" width="0" x="303" y="-366"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="13" navigable="true"/>    
+    <end type="TARGET" refId="12" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="53">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="54" name="classicComposite">        
+  <generalization id="40">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="17"/>  
+  </generalization>  
+  <association id="41">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="42" name="view">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="55" minimum="0" maximum="1">        
+      <multiplicity id="43" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
+    <end type="TARGET" refId="10" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <realization id="56">    
-    <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="11"/>  
+  <association id="44">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="45" name="saveChannelValuesComposite"/>      
+      <multiplicity id="46" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="17" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="47">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="16"/>  
   </realization>  
-  <association id="57">    
+  <association id="48">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="58" name="editorViewPerspectiveListener">        
+      <attribute id="49" name="classicComposite"/>      
+      <multiplicity id="50" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="17" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="51">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="13"/>  
+  </generalization>  
+  <generalization id="52">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="17"/>  
+  </generalization>  
+  <realization id="53">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="9"/>  
+  </realization>  
+  <generalization id="54">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="7"/>  
+  </generalization>  
+  <association id="55">    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="56" name="selectionProvider">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="59" minimum="0" maximum="1">        
+      <multiplicity id="57" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="16" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="60">    
-    <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="14"/>  
-  </generalization>  
-  <association id="61">    
+  <association id="58">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="62" name="stackLayout">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="63" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="12" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="64">    
-    <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="65" name="selectionProvider"/>      
-      <multiplicity id="66" minimum="0" maximum="1"/>    
+      <attribute id="59" name="saveAxisPositionsComposite"/>      
+      <multiplicity id="60" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="17" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
+  <generalization id="61">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="17"/>  
+  </generalization>  
+  <realization id="62">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="9"/>  
+  </realization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    
