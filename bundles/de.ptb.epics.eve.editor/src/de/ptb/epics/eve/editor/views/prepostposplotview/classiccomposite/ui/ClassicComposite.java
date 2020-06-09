@@ -5,9 +5,13 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchActionConstants;
@@ -25,50 +29,116 @@ import de.ptb.epics.eve.editor.views.prepostposplotview.ui.PrePostPosPlotView;
 public class ClassicComposite extends AbstractScanModuleViewComposite {
 	private static final int TABLE_MIN_HEIGHT = 150;
 	
+	private static final String MEMENTO_PREPOST_SASH_WEIGHT = 
+			"prePostSashWeight";
+	private static final String MEMENTO_POSITIONING_SASH_WEIGHT = 
+			"positioningSashWeight";
+	private static final String MEMENTO_PLOT_SASH_WEIGHT = "plotSashWeight";
+	
 	private IViewPart parentView;
 	
 	private ScanModule scanModule;
 
+	private SashForm sashForm;
+	
 	private TableViewer prePostscanTable;
+	private TableViewer positioningTable;
+	private TableViewer plotTable;
 	
 	public ClassicComposite(IViewPart parentView, Composite parent, int style) {
 		super(parentView, parent, style);
-		GridLayout gridLayout = new GridLayout();
-		// TODO set Border to zero ?
-		this.setLayout(gridLayout);
 		this.parentView = parentView;
 		
-		this.createTable(this);
+		this.setLayout(new FillLayout());
+		ScrolledComposite sc = new ScrolledComposite(this, SWT.H_SCROLL | SWT.V_SCROLL);
 		
-		MenuManager menuManager = new MenuManager();
-		menuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
-		menuManager.setRemoveAllWhenShown(true);
-		this.prePostscanTable.getTable().setMenu(
-				menuManager.createContextMenu(this.prePostscanTable.getTable()));
-		this.parentView.getSite().registerContextMenu(
-			"de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.popup", 
-			menuManager, this.prePostscanTable);
+		Composite topComposite = new Composite(sc, SWT.NONE);
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.numColumns = 1;
+		gridLayout.marginWidth = 0;
+		gridLayout.marginHeight = 0;
+		topComposite.setLayout(gridLayout);
+		sc.setExpandHorizontal(true);
+		sc.setExpandVertical(true);
+		sc.setContent(topComposite);
+		
+		this.sashForm = new SashForm(topComposite, SWT.VERTICAL);
+		this.sashForm.SASH_WIDTH = 4;
+		GridData gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.verticalAlignment = GridData.FILL;
+		sashForm.setLayoutData(gridData);
+		
+		Composite prePostScanComposite = new Composite(sashForm, SWT.BORDER);
+		gridLayout = new GridLayout();
+		gridLayout.numColumns = 1;
+		prePostScanComposite.setLayout(gridLayout);
+		
+		Label prePostScanLabel = new Label(prePostScanComposite, SWT.NONE);
+		prePostScanLabel.setText("Prescans / Postscans:");
+		gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalAlignment = SWT.LEFT;
+		prePostScanLabel.setLayoutData(gridData);
+		this.createPrePostScanTable(prePostScanComposite);
+		
+		Composite positioningComposite = new Composite(sashForm, SWT.BORDER);
+		gridLayout = new GridLayout();
+		gridLayout.numColumns = 1;
+		positioningComposite.setLayout(gridLayout);
+		
+		Label positiongLabel = new Label(positioningComposite, SWT.NONE);
+		positiongLabel.setText("Positionings:");
+		gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalAlignment = SWT.LEFT;
+		positiongLabel.setLayoutData(gridData);
+		this.createPositioningTable(positioningComposite);
+		
+		Composite plotComposite = new Composite(sashForm, SWT.BORDER);
+		gridLayout = new GridLayout();
+		gridLayout.numColumns = 1;
+		plotComposite.setLayout(gridLayout);
+		
+		Label plotLabel = new Label(plotComposite, SWT.NONE);
+		plotLabel.setText("Plots:");
+		gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalAlignment = SWT.LEFT;
+		plotLabel.setLayoutData(gridData);
+		this.createPlotTable(plotComposite);
+		
 		
 		this.parentView.getSite().getWorkbenchWindow().getSelectionService().
-		addSelectionListener(this);
-		// TODO Auto-generated constructor stub
+			addSelectionListener(this);
 	}
 	
-	private void createTable(Composite parent) {
-		prePostscanTable = new TableViewer(parent, SWT.BORDER);
-		prePostscanTable.getTable().setHeaderVisible(true);
-		prePostscanTable.getTable().setLinesVisible(true);
+	private void createPrePostScanTable(Composite parent) {
+		this.prePostscanTable = new TableViewer(parent, SWT.BORDER);
+		this.prePostscanTable.getTable().setHeaderVisible(true);
+		this.prePostscanTable.getTable().setLinesVisible(true);
 		GridData gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
 		gridData.minimumHeight = TABLE_MIN_HEIGHT;
-		prePostscanTable.getTable().setLayoutData(gridData);
-		this.createColumns(prePostscanTable);
+		this.prePostscanTable.getTable().setLayoutData(gridData);
+		this.createPrePostScanTableColumns(prePostscanTable);
+		
+		MenuManager menuManager = new MenuManager();
+		menuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		menuManager.setRemoveAllWhenShown(true);
+		this.prePostscanTable.getTable().setMenu(
+			menuManager.createContextMenu(this.prePostscanTable.getTable()));
+		this.parentView.getSite().registerContextMenu(
+			"de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.popup", 
+			menuManager, this.prePostscanTable);
 	}
 	
-	private void createColumns(TableViewer viewer) {
+	private void createPrePostScanTableColumns(TableViewer viewer) {
 		TableViewerColumn deleteColumn = new TableViewerColumn(viewer, SWT.NONE);
 		deleteColumn.getColumn().setWidth(22);
 		
@@ -87,6 +157,44 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 		TableViewerColumn resetColumn = new TableViewerColumn(viewer, SWT.NONE);
 		resetColumn.getColumn().setWidth(100);
 		resetColumn.getColumn().setText("Reset Original");
+	}
+	
+	private void createPositioningTable(Composite parent) {
+		this.positioningTable = new TableViewer(parent, SWT.BORDER);
+		this.positioningTable.getTable().setHeaderVisible(true);
+		this.positioningTable.getTable().setLinesVisible(true);
+		GridData gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.verticalAlignment = GridData.FILL;
+		gridData.minimumHeight = TABLE_MIN_HEIGHT;
+		this.positioningTable.getTable().setLayoutData(gridData);
+		
+		this.createPositioningTableColumns(positioningTable);
+	}
+	
+	private void createPositioningTableColumns(TableViewer viewer) {
+		
+	}
+	
+	private void createPlotTable(Composite parent) {
+		this.plotTable = new TableViewer(parent, SWT.BORDER);
+		this.plotTable.getTable().setHeaderVisible(true);
+		this.plotTable.getTable().setLinesVisible(true);
+		GridData gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.verticalAlignment = GridData.FILL;
+		gridData.minimumHeight = TABLE_MIN_HEIGHT;
+		this.plotTable.getTable().setLayoutData(gridData);
+		
+		this.createPlotTableColumns(plotTable);
+	}
+	
+	private void createPlotTableColumns(TableViewer viewer) {
+		
 	}
 
 	/**
@@ -126,6 +234,8 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 	@Override
 	public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
 		this.prePostscanTable.refresh();
+		this.positioningTable.refresh();
+		this.plotTable.refresh();
 	}
 	
 	/**
@@ -133,7 +243,12 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 	 */
 	@Override
 	public void saveState(IMemento memento) {
-		// TODO Auto-generated method stub
+		// sash weights
+		int[] sashWeights = sashForm.getWeights();
+		memento.putInteger(MEMENTO_PREPOST_SASH_WEIGHT, sashWeights[0]);
+		memento.putInteger(MEMENTO_POSITIONING_SASH_WEIGHT, sashWeights[1]);
+		memento.putInteger(MEMENTO_PLOT_SASH_WEIGHT, sashWeights[2]);
+		// TODO table sort states
 		
 	}
 
@@ -142,6 +257,8 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 	 */
 	@Override
 	public void restoreState(IMemento memento) {
+		// TODO restore sash weights
+		
 		// TODO Auto-generated method stub
 		
 	}
