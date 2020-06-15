@@ -373,7 +373,7 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 		
 		TableViewerColumn nameColumn = new TableViewerColumn(viewer, SWT.NONE);
 		nameColumn.getColumn().setText("Name");
-		nameColumn.getColumn().setWidth(220);
+		nameColumn.getColumn().setWidth(200);
 		nameColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -383,7 +383,7 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 		
 		TableViewerColumn stepfunctionColumn = new TableViewerColumn(viewer, SWT.NONE);
 		stepfunctionColumn.getColumn().setText("Stepfunction");
-		stepfunctionColumn.getColumn().setWidth(110);
+		stepfunctionColumn.getColumn().setWidth(100);
 		stepfunctionColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -509,7 +509,7 @@ public class ClassicComposite extends AxesChannelsViewComposite {
 		
 		TableViewerColumn nameColumn = new TableViewerColumn(viewer, SWT.NONE);
 		nameColumn.getColumn().setText("Name");
-		nameColumn.getColumn().setWidth(220);
+		nameColumn.getColumn().setWidth(200);
 		nameColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public Image getImage(Object element) {
