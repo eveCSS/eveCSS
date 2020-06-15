@@ -161,7 +161,8 @@ public abstract class ValuesDialogCellEditor extends DialogCellEditor {
 			LOGGER.debug("Escape pressed -> Cancel Editing");
 			fireCancelEditor();
 		}
-		if (keyEvent.keyCode == SWT.CR && isCorrect(valuesText.getText())) {
+		if ((keyEvent.keyCode == SWT.CR || keyEvent.keyCode == SWT.KEYPAD_CR) 
+				&& isCorrect(valuesText.getText())) {
 			LOGGER.debug("CR pressed (and valid text); -> Apply Value");
 			setValue();
 			fireApplyEditorValue();
