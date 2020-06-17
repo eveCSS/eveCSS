@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.2.4" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <class id="1" language="java" name="org.eclipse.gef.tools.AbstractTool" project="de.ptb.epics.eve.editor" 
+    file="/home/mmichals/Projects/eveCSS/workspace-2020-03-feature4917b/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.gef_3.9.0.201308190730.jar" 
+    binary="true" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="626" y="348"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="true" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="2" language="java" name="org.eclipse.gef.Tool" project="de.ptb.epics.eve.editor" 
+    file="/home/mmichals/Projects/eveCSS/workspace-2020-03-feature4917b/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.gef_3.9.0.201308190730.jar" 
+    binary="true" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="230" y="357"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="3" language="java" name="org.eclipse.gef.tools.PanningSelectionTool" project="de.ptb.epics.eve.editor" 
+    file="/home/mmichals/Projects/eveCSS/workspace-2020-03-feature4917b/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.gef_3.9.0.201308190730.jar" 
+    binary="true" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1798" y="426"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="org.eclipse.gef.tools.MarqueeSelectionTool" project="de.ptb.epics.eve.editor" 
+    file="/home/mmichals/Projects/eveCSS/workspace-2020-03-feature4917b/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.gef_3.9.0.201308190730.jar" 
+    binary="true" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1036" y="357"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="org.eclipse.gef.tools.SelectionTool" project="de.ptb.epics.eve.editor" 
+    file="/home/mmichals/Projects/eveCSS/workspace-2020-03-feature4917b/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.gef_3.9.0.201308190730.jar" 
+    binary="true" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1419" y="359"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="org.eclipse.gef.tools.TargetingTool" project="de.ptb.epics.eve.editor" 
+    file="/home/mmichals/Projects/eveCSS/workspace-2020-03-feature4917b/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.gef_3.9.0.201308190730.jar" 
+    binary="true" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="995" y="-71"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="true" package="true" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="org.eclipse.gef.tools.CreationTool" project="de.ptb.epics.eve.editor" 
+    file="/home/mmichals/Projects/eveCSS/workspace-2020-03-feature4917b/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.gef_3.9.0.201308190730.jar" 
+    binary="true" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1839" y="-5"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <generalization id="8">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="6"/>  
+  </generalization>  
+  <realization id="9">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="2"/>  
+  </realization>  
+  <generalization id="10">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <generalization id="11">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="6"/>  
+  </generalization>  
+  <generalization id="12">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <generalization id="13">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="5"/>  
+  </generalization>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>
