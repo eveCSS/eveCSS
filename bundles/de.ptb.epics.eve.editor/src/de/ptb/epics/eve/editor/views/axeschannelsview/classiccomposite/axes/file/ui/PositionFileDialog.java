@@ -24,6 +24,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -191,6 +192,8 @@ public class PositionFileDialog extends DialogCellEditorDialog implements Proper
 		GridData gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
+		gridData.grabExcessVerticalSpace = true;
+		gridData.verticalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 3;
 		gridData.heightHint = 40;
 		this.viewer.getTable().setLayoutData(gridData);
@@ -217,12 +220,16 @@ public class PositionFileDialog extends DialogCellEditorDialog implements Proper
 		TableViewerColumn maxColumn = new TableViewerColumn(this.viewer, SWT.RIGHT);
 		maxColumn.getColumn().setText("Maximum");
 		maxColumn.getColumn().setWidth(120);
-
-		TableViewerColumn emptyColumn = new TableViewerColumn(this.viewer, SWT.NONE);
-		emptyColumn.getColumn().setText("");
-		emptyColumn.getColumn().setWidth(10);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected Point getInitialSize() {
+		return new Point(600, 220);
+	}
+	
 	private void createBinding() {
 		DataBindingContext context = new DataBindingContext();
 		IObservableValue filenameInputTargetObservable = WidgetProperties.text(
