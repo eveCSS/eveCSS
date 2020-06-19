@@ -23,23 +23,23 @@ public class FileStats {
 		this.maximum = values.get(values.size()-1);
 	}
 
-	public String getValueCount() {
-		return Integer.toString(valueCount);
+	public int getValueCount() {
+		return valueCount;
 	}
 
-	public String getFirstValue() {
-		return Double.toString(firstValue);
+	public double getFirstValue() {
+		return firstValue;
 	}
 
-	public String getLastValue() {
-		return Double.toString(lastValue);
+	public double getLastValue() {
+		return lastValue;
 	}
 
-	public String getMinimum() {
-		return Double.toString(minimum);
+	public double getMinimum() {
+		return minimum;
 	}
 
-	public String getMaximum() {
-		return Double.toString(maximum);
+	public double getMaximum() {
+		return maximum;
 	}
 }

@@ -117,20 +117,25 @@ public class FileComposite extends MotorAxisViewComposite implements
 		countColumn.getColumn().setText("# points");
 		countColumn.getColumn().setWidth(80);
 		
+		TableViewerColumn firstColumn = new TableViewerColumn(this.viewer, 
+				SWT.RIGHT);
+		firstColumn.getColumn().setText("1st value");
+		firstColumn.getColumn().setWidth(100);
+		
+		TableViewerColumn lastColumn = new TableViewerColumn(this.viewer, 
+				SWT.RIGHT);
+		lastColumn.getColumn().setText("n-th value");
+		lastColumn.getColumn().setWidth(100);
+		
 		TableViewerColumn minColumn = new TableViewerColumn(this.viewer, 
 				SWT.RIGHT);
 		minColumn.getColumn().setText("Minimum");
-		minColumn.getColumn().setWidth(120);
+		minColumn.getColumn().setWidth(100);
 		
 		TableViewerColumn maxColumn = new TableViewerColumn(this.viewer, 
 				SWT.RIGHT);
 		maxColumn.getColumn().setText("Maximum");
-		maxColumn.getColumn().setWidth(120);
-		
-		TableViewerColumn emptyColumn = new TableViewerColumn(this.viewer, 
-				SWT.NONE);
-		emptyColumn.getColumn().setText("");
-		emptyColumn.getColumn().setWidth(10);
+		maxColumn.getColumn().setWidth(100);
 	}
 	
 	/**
