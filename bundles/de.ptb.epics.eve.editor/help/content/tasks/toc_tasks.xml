@@ -10,6 +10,10 @@
    </topic>
    <topic href="help/content/tasks/adddevicetoscanmodule.html" label="Add Devices to a Scan Module">
    </topic>
+   <topic href="help/content/tasks/editaxisproperties.html" label="Edit Properties of an Axis">
+   </topic>
+   <topic href="help/content/tasks/editchannelproperties.html" label="Edit Properties of a Channel">
+   </topic>
    <topic href="help/content/tasks/manipulatepropertiesofdevice.html" label="Manipulate Properties of a Device">
    </topic>
    <topic href="help/content/tasks/addplotwindow.html" label="Add a Plot Window">
