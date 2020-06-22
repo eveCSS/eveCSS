@@ -1,2 +1,60 @@
 h1(eveTopic|#top). SM Axes / Channels View
 
+{toc:style=circle|maxLevel=2}
+
+The content of the ScanModuleView depends on the type of the currently selected scan module. It shows attributes that can be altered and allows adding/deleting devices, actions, events, etc. in certain cases. The different appearances are shown in the following.
+
+h2(eveTopic). Scan Module
+
+p(backToTop). "back to top":#top
+
+p. For a common (a.k.a. classic) scan module the SM Axes / Channels View looks as follows:
+
+p=. !(eveImage)../../img/concepts/SMAxesChannelsView/ClassicComposite.png(sample content for a scan module)!
+
+h3(eveTopic). General Settings
+
+* __No of Measurements__: the number of measurements taken for each motor position
+* __Trigger Delay (in s)__: delay in s before detectors are triggered
+* __Settle Time (in s)__: delay in s after the first motor position is reached
+* __Manual Trigger__: whether setting motor positions and/or triggering detectors should be confirmed
+
+h3(eveTopic). Motor Axes
+
+p. Allows adding/removing of and displays current motor axes. Properties of selected axes can be modified either "directly in the table":../tasks/.html or in the "Motor Axis View":motoraxisview.html.
+
+h3(eveTopic). Detector Channels
+
+p. Allows adding/removing of and displays current detector channels. Properties of selected channels can be modified either "directly in the table":../tasks/.html or in the "Detector Channel View":detectorchannelview.html.
+
+h2(eveTopic). Static Axis Snapshot
+
+p(backToTop). "back to top":#top
+
+p. When a scan module of type "Axis Snapshot (static)" is selected, the view shows a table containing all axes contained in the snapshot. Axes can be added or removed.
+
+p=. !(eveImage)../../img/concepts/SMAxesChannelsView/StaticAxisPositionsComposite.png(sample content for a static axis snapshot scan module)!
+
+h2(eveTopic). Static Channel Snapshot
+
+p(backToTop). "back to top":#top
+
+p. When a scan module of type "Channel Snapshot (static)" is selected the view shows a table containing all channels contained in the snapshot. Channels can be added or removed. 
+
+p=. !(eveImage)../../img/concepts/SMAxesChannelsView/StaticChannelValuesComposite.png(sample content for a static channel snapshot scan module)!
+
+h2(eveTopic). Dynamic Axis Snapshot
+
+p(backToTop). "back to top":#top
+
+p. Scan modules of type "Axis Snapshot (dynamic)" cannot be altered. Their contents is determined during scan execution. The view shows an immutable table showing all axes contained in the snapshot based on the currently loaded device definition.
+
+p=. !(eveImage)../../img/concepts/SMAxesChannelsView/DynamicAxisPositionsComposite.png(sample content for a dynamic axis snapshot scanmodule)!
+
+h2(eveTopic). Dynamic Channel Snapshot
+
+p(backToTop). "back to top":#top
+
+p. Scan modules of type "Channel Snapshot (dynamic)" cannot be altered. Their contents is determined during scan execution. The view shows an immutable table showing all channels contained in the snapshot based on the currently loaded device definition.
+
+p=. !(eveImage)../../img/concepts/SMAxesChannelsView/DynamicChannelValuesComposite.png(sample content for a dynamic channel snapshot scanmodule)!
