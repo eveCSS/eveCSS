@@ -6,16 +6,16 @@
             <channel>
                 <class>${Ch_Class=""}</class>
                 <name>${Name=""}</name>
-                <id>${PV}chan1</id>
+                <id>${PV}</id>
                 <read>
-                    <access monitor="true" method="${Method=GETCB}" transport="ca" type="${Type=double}">${PV}.KI</access>
+                    <access monitor="true" method="${Method=GETCB}" transport="ca" type="${Type=double}">${PV}</access>
                 </read>
                 include "channel_unit_part.xtmpl"
                 <option>
                     <name>refMarkAction</name>
                     <id>${PV}refmark.VAL</id>
                     <value>
-                        <access method="GETPUTCB" transport="ca" type="string">${PV}refmark.VAL</access>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}refMark.VAL</access>
                         <value type="string">no action,start counter,stop counter,clear counter,get datum,get datum @ 2.,clear @ refMark</value>
                     </value>
                     <displaygroup>detail</displaygroup>
@@ -29,5 +29,9 @@
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
+                include "channel_ext_options_part.xtmpl"
+                include "channel_spec_options_part.xtmpl"
+                include "detector_scan_ohne_trigger_part.xtmpl"
+                include "channel_option_part.xtmpl"
             </channel>
         </detector>
