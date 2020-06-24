@@ -25,7 +25,6 @@
 		<antcall target="qnim" />
 		<antcall target="radiometry" />
 		<antcall target="red" />
-		<antcall target="roentgen" />
 		<antcall target="sx700" />
 		<antcall target="test" />
 		<antcall target="thz" />
@@ -35,7 +34,6 @@
 		<antcall target="xrf" />
 
 		<echo message="creation instruments" />
-		<antcall target="akman" />
 		<antcall target="allDevices" />
 		<antcall target="avogadro" />
 		<antcall target="bigref" />
@@ -49,7 +47,6 @@
 		<antcall target="mimo" />
 		<antcall target="newref" />
 		<antcall target="nrfa" />
-		<antcall target="oldref" />
 		<antcall target="pink" />
 		<antcall target="ptgm" />
 		<antcall target="refo" />
@@ -62,13 +59,6 @@
 		<antcall target="vuvref" />
 		<antcall target="vonhamos" />
 		<antcall target="wwl_eez_test" />
-	</target>
-
-	<target name="akman">
-		<antcall target="-xmlmsi">
-			<param name="eve_location" value="akman" />
-			<param name="station.type" value="instrument" />
-		</antcall>
 	</target>
 
 	<target name="allDevices">
@@ -253,13 +243,6 @@
 		</antcall>
 	</target>
 
-	<target name="oldref">
-		<antcall target="-xmlmsi">
-			<param name="eve_location" value="oldref" />
-			<param name="station.type" value="instrument" />
-		</antcall>
-	</target>
-
 	<target name="pgm">
 		<antcall target="-xmlmsi">
 			<param name="eve_location" value="pgm" />
@@ -327,13 +310,6 @@
 		<antcall target="-xmlmsi">
 			<param name="eve_location" value="rfa5" />
 			<param name="station.type" value="instrument" />
-		</antcall>
-	</target>
-
-	<target name="roentgen">
-		<antcall target="-xmlmsi">
-			<param name="eve_location" value="roentgen" />
-			<param name="station.type" value="station" />
 		</antcall>
 	</target>
 

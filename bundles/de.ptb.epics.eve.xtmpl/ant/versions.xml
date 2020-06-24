@@ -18,7 +18,6 @@
 		<loadfile property="qnim" srcFile="/messung/qnim/eve/version.txt"/>
 		<loadfile property="radiometry" srcFile="/messung/radiometry/eve/version.txt"/>
 		<loadfile property="red" srcFile="/messung/red/eve/version.txt"/>
-		<loadfile property="roentgen" srcFile="/messung/roentgen/eve/version.txt"/>
 		<loadfile property="sx700" srcFile="/messung/sx700/eve/version.txt"/>
 		<loadfile property="test" srcFile="/messung/test/eve/version.txt"/>
 		<loadfile property="thz" srcFile="/messung/thz/eve/version.txt"/>
@@ -27,7 +26,6 @@
 		<loadfile property="xpbf2" srcFile="/messung/xpbf2/eve/version.txt"/>
 		<loadfile property="xrf" srcFile="/messung/xrf/eve/version.txt"/>
 		
-		<loadfile property="akman" srcFile="/messung/instruments/akman/eve/version.txt"/>
 		<loadfile property="avogadro" srcFile="/messung/instruments/avogadro/eve/version.txt"/>
 		<loadfile property="bigref" srcFile="/messung/instruments/bigref/eve/version.txt"/>
 		<loadfile property="compton_bessy2" srcFile="/messung/instruments/compton_bessy2/eve/version.txt"/>
@@ -40,7 +38,6 @@
 		<loadfile property="mimo" srcFile="/messung/instruments/mimo/eve/version.txt"/>
 		<loadfile property="newref" srcFile="/messung/instruments/newref/eve/version.txt"/>
 		<loadfile property="nrfa" srcFile="/messung/instruments/nrfa/eve/version.txt"/>
-		<loadfile property="oldref" srcFile="/messung/instruments/oldref/eve/version.txt"/>
 		<loadfile property="pink" srcFile="/messung/instruments/pink/eve/version.txt"/>
 		<loadfile property="ptgm" srcFile="/messung/instruments/ptgm/eve/version.txt"/>
 		<loadfile property="refo" srcFile="/messung/instruments/refo/eve/version.txt"/>
@@ -71,7 +68,6 @@
 		<echo message="qnim:                ${qnim}" />
 		<echo message="radiometry:     	    ${radiometry}" />
 		<echo message="red:                 ${red}" />
-		<echo message="roentgen:            ${roentgen}" />
 		<echo message="sx700:               ${sx700}" />
 		<echo message="test:                ${test}" />
 		<echo message="thz:                 ${thz}" />
@@ -80,7 +76,6 @@
 		<echo message="xpbf2:               ${xpbf2}" />
 		<echo message="xrf:                 ${xrf}" />
 		<echo message=" ${line.separator}" />
-		<echo message="akman:               ${akman}" />
 		<echo message="avogadro:            ${avogadro}" />
 		<echo message="bigref:              ${bigref}" />
 		<echo message="compton_bessy2:      ${compton_bessy2}" />
@@ -93,7 +88,6 @@
 		<echo message="mimo:                ${mimo}" />
 		<echo message="newref:              ${newref}" />
 		<echo message="nrfa:                ${nrfa}" />
-		<echo message="oldref:              ${oldref}" />
 		<echo message="pink:                ${pink}" />
 		<echo message="ptgm:                ${ptgm}" />
 		<echo message="refo:                ${refo}" />
