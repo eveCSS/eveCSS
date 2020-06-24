@@ -23,6 +23,7 @@
 		<antcall target="pgm" />
 		<antcall target="qmp_mls" />
 		<antcall target="qnim" />
+		<antcall target="radiometry" />
 		<antcall target="red" />
 		<antcall target="roentgen" />
 		<antcall target="sx700" />
@@ -31,6 +32,7 @@
 		<antcall target="white" />
 		<antcall target="wlsptb" />
 		<antcall target="xpbf2" />
+		<antcall target="xrf" />
 
 		<echo message="creation instruments" />
 		<antcall target="akman" />
@@ -300,6 +302,13 @@
 		</antcall>
 	</target>
 
+	<target name="radiometry">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="radiometry" />
+			<param name="station.type" value="station" />
+		</antcall>
+	</target>
+
 	<target name="refo">
 		<antcall target="-xmlmsi">
 			<param name="eve_location" value="refo" />
@@ -415,6 +424,13 @@
 	<target name="xpbf2">
 		<antcall target="-xmlmsi">
 			<param name="eve_location" value="xpbf2" />
+			<param name="station.type" value="station" />
+		</antcall>
+	</target>
+
+	<target name="xrf">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="xrf" />
 			<param name="station.type" value="station" />
 		</antcall>
 	</target>

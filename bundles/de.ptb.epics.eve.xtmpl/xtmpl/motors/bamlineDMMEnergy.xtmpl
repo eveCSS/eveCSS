@@ -1,0 +1,186 @@
+            <!-- dmm energy axis, to be included by motor -->
+            substitute "Prefix=eV"
+            <axis>
+                <class>${Class=""}</class>
+                <name>${Name=""}</name>
+                <id>${Prefix}${PV}cff</id>
+                <goto>
+                    <access method="GETPUTCB" transport="ca" type="${Type=double}" timeout="${Timeout=300.0}">${PV}cff</access>
+                </goto>
+                <position>
+                    <access monitor="true" method="GETCB" transport="ca" type="${Type=double}">${PV}rbv</access>
+                </position>
+                <stop>
+                    <access method="PUT" transport="ca" type="int">${PV}stop</access>
+                    <value type="int">1</value>
+                </stop>
+                <movedone>
+                    <access method="GETCB" transport="ca" type="int">${PV}dmov</access>
+                </movedone>
+                <unit>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}rbv.EGU</access>
+                </unit>
+                include "axis_energy_option_part.xtmpl"
+                <option>
+                    <name>beamOffset /mm [B]</name>
+                    <id>${Prefix}${PV}y2.B</id>
+                    <value>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}y2.B</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>2D /nm [C]</name>
+                    <id>${Prefix}${PV}.C</id>
+                    <value>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}.C</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>driveMode</name>
+                    <id>${Prefix}${PV}selectMotors</id>
+                    <value>
+                        <access method="GETPUTCB" type="${Type=string}" transport="ca">${PV}selectMotors</access>
+                        <value type="string">theta only,theta and trans</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>drive DMM_Bender</name>
+                    <id>${Prefix}${PV}trgBender</id>
+                    <value>
+                        <access method="GETPUTCB" type="${Type=string}" transport="ca">${PV}trgBender</access>
+                        <value type="string">No,Yes</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>correction factor [K]</name>
+                    <id>${Prefix}${PV}.K</id>
+                    <value>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}.K</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Theta function [A]</name>
+                    <id>${Prefix}${PV}.CALC</id>
+                    <value>
+                        <access method="GETPUTCB" type="${Type=string}" transport="ca">${PV}.CALC</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>z2 function [L]</name>
+                    <id>${Prefix}${PV}z2.CALC</id>
+                    <value>
+                        <access method="GETPUTCB" type="${Type=string}" transport="ca">${PV}z2.CALC</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>param for polynom [B]</name>
+                    <id>${Prefix}${PV}polynom.B</id>
+                    <value>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}polynom.B</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>param for polynom [C]</name>
+                    <id>${Prefix}${PV}polynom.C</id>
+                    <value>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}polynom.C</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>param for polynom [D]</name>
+                    <id>${Prefix}${PV}polynom.D</id>
+                    <value>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}polynom.D</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>param for polynom [E]</name>
+                    <id>${Prefix}${PV}polynom.E</id>
+                    <value>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}polynom.E</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>param for polynom [F]</name>
+                    <id>${Prefix}${PV}polynom.F</id>
+                    <value>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}polynom.F</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>param for polynom [G]</name>
+                    <id>${Prefix}${PV}polynom.G</id>
+                    <value>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}polynom.G</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>param for polynom [H]</name>
+                    <id>${Prefix}${PV}polynom.H</id>
+                    <value>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}polynom.H</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>polynominal (part1) [B]</name>
+                    <id>${Prefix}${PV}polynom.CALC</id>
+                    <value>
+                        <access method="GETPUTCB" type="${Type=string}" transport="ca">${PV}polynom.CALC</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>param for theta2 [C]</name>
+                    <id>${Prefix}${PV}theta2.C</id>
+                    <value>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}theta2.C</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>param for theta2 [D]</name>
+                    <id>${Prefix}${PV}theta2.D</id>
+                    <value>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}theta2.D</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>theta2 y2 - Corr [E]</name>
+                    <id>${Prefix}${PV}y2Polynom</id>
+                    <value>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}y2Polynom</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>theta2 bender Corr. [F]</name>
+                    <id>${Prefix}${PV}benderPolynom</id>
+                    <value>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}benderPolynom</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>theta2 function</name>
+                    <id>${Prefix}${PV}theta2.CALC</id>
+                    <value>
+                        <access method="GETPUTCB" type="${Type=string}" transport="ca">${PV}theta2.CALC</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+            </axis>

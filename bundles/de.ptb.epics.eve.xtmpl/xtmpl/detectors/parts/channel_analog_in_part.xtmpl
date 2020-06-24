@@ -1,0 +1,73 @@
+                <!-- extended options part for analog in channels -->
+                <option>
+                    <name>LINR</name>
+                    <id>${Prefix=""}${PV}.LINR</id>
+                    <value>
+                        <access method="GETPUTCB" transport="ca" type="double">${PV}.LINR</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>EGUL</name>
+                    <id>${Prefix=""}${PV}.EGUL</id>
+                    <value>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}.EGUL</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>EGUF</name>
+                    <id>${Prefix=""}${PV}.EGUF</id>
+                    <value>
+                        <access method="GETPUTCB" transport="ca" type="double">${PV}.EGUF</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>SMOO</name>
+                    <id>${Prefix=""}${PV}.SMOO</id>
+                    <value>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}.SMOO</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+				<option>
+					<name>ASLO</name>
+					<id>${PV}.ASLO</id>
+					<value>
+						<access method="GETCB" transport="ca" type="double">${PV}.ASLO</access>
+					</value>
+					<displaygroup>detail</displaygroup>
+				</option>
+				<option>
+					<name>AOFF</name>
+					<id>${PV}.AOFF</id>
+					<value>
+						<access method="GETCB" transport="ca" type="double">${PV}.AOFF</access>
+					</value>
+					<displaygroup>detail</displaygroup>
+				</option>
+				<option>
+					<name>ESLO</name>
+					<id>${PV}.ESLO</id>
+					<value>
+						<access method="GETCB" transport="ca" type="double">${PV}.ESLO</access>
+					</value>
+					<displaygroup>detail</displaygroup>
+				</option>
+				<option>
+					<name>EOFF</name>
+					<id>${PV}.EOFF</id>
+					<value>
+						<access method="GETCB" transport="ca" type="double">${PV}.EOFF</access>
+					</value>
+					<displaygroup>detail</displaygroup>
+				</option>
+				<option>
+					<name>PREC</name>
+					<id>${PV}.PREC</id>
+					<value>
+						<access method="GETCB" transport="ca" type="double">${PV}.PREC</access>
+					</value>
+					<displaygroup>detail</displaygroup>
+				</option>
