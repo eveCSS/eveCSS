@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="show_versions" basedir="./">
 	<target name="show_versions">
-		<loadfile property="bam" srcFile="/messung/bam/eve/version.txt"/>
 		<loadfile property="bragg" srcFile="/messung/bragg/eve/version.txt"/>
 		<loadfile property="dekabe" srcFile="/messung/dekabe/eve/version.txt"/>
 		<loadfile property="dwl_ger" srcFile="/messung/dwl_ger/eve/version.txt"/>
@@ -51,7 +50,6 @@
 		<loadfile property="vuvref" srcFile="/messung/instruments/vuvref/eve/version.txt"/>
 		<loadfile property="wwl_eez_test" srcFile="/messung/instruments/wwl_eez_test/eve/version.txt"/>
 		
-		<echo message="bam:                 ${bam}" />
 		<echo message="bragg:               ${bragg}" />
 		<echo message="dekabe:              ${dekabe}" />
 		<echo message="dwl:                 ${dwl}" />

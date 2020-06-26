@@ -8,7 +8,6 @@
 
 	<target name="all">
 		<echo message="creating stations" />
-		<antcall target="bam" />
 		<antcall target="bragg" />
 		<antcall target="dekabe" />
 		<antcall target="dwl" />
@@ -72,13 +71,6 @@
 		<antcall target="-xmlmsi">
 			<param name="eve_location" value="avogadro" />
 			<param name="station.type" value="instrument" />
-		</antcall>
-	</target>
-
-	<target name="bam">
-		<antcall target="-xmlmsi">
-			<param name="eve_location" value="bam" />
-			<param name="station.type" value="station" />
 		</antcall>
 	</target>
 
