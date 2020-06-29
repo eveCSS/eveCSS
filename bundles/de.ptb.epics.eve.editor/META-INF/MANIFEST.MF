@@ -33,6 +33,7 @@ Require-Bundle: de.ptb.epics.eve.data;bundle-version="1.0.0",
  de.ptb.epics.eve.jfxrt.osgi;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: de.ptb.epics.eve.editor,
- de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.intdouble
+ de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.intdouble,
+ de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.file
 Import-Package: org.eclipse.draw2d
 Bundle-ActivationPolicy: lazy
