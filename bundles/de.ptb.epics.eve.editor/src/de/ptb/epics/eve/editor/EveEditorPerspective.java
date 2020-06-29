@@ -49,7 +49,7 @@ public class EveEditorPerspective implements IPerspectiveFactory {
 		layout.getViewLayout(DetectorChannelView.ID).setCloseable(false);
 		
 		layout.addView(PlotWindowView.ID, 
-				IPageLayout.BOTTOM, 0.40f, DetectorChannelView.ID);
+				IPageLayout.BOTTOM, 0.5f, DetectorChannelView.ID);
 		layout.getViewLayout(PlotWindowView.ID).setCloseable(false);
 		
 		IFolderLayout scanModuleViewsFolder = layout.createFolder(
