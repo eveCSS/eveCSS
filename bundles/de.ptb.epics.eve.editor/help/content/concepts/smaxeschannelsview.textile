@@ -21,11 +21,11 @@ h3(eveTopic). General Settings
 
 h3(eveTopic). Motor Axes
 
-p. Allows adding/removing of and displays current motor axes. Properties of selected axes can be modified either "directly in the table":../tasks/editaxisproperties.html or in the "Motor Axis View":motoraxisview.html.
+p. Allows adding/removing of and displays current motor axes. Properties of selected axes can be modified either in the "Motor Axis View":motoraxisview.html or "directly in the table":../tasks/editaxisproperties.html.
 
 h3(eveTopic). Detector Channels
 
-p. Allows adding/removing of and displays current detector channels. Properties of selected channels can be modified either "directly in the table":../tasks/editchannelproperties.html or in the "Detector Channel View":detectorchannelview.html.
+p. Allows adding/removing of and displays current detector channels. Properties of selected channels can be modified either in the "Detector Channel View":detectorchannelview.html or "directly in the table":../tasks/editchannelproperties.html.
 
 h2(eveTopic). Static Axis Snapshot
 
