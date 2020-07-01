@@ -1,1 +1,14 @@
-h1(eveTopic). Edit Properties of a Channel
+h1(eveTopic|#top). Edit Properties of a Channel
+
+{toc:style=circle|maxLevel=2}
+
+p. Several properties of a channel added to a scan module can be modified within the detector channels table of the SM Axes / Channels View. They are explained in detail below.
+
+
+
+
+h2(eveTopic). k
+
+p(backToTop). "back to top":#top
+
+p=. !(eveImage)../../img/tasks/editchannelproperties/editchannelproperties-.png()!
