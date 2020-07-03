@@ -2,7 +2,7 @@ h1(eveTopic|#top). Edit Properties of an Axis
 
 {toc:style=circle|maxLevel=3}
 
-p. Several properties of an axis added to a scan module can be modified within the motor axes table of the SM Axes / Channels View. They are explained in detail below.
+p. Several properties of an axis added to a scan module can be modified within the motor axes table of the SM Axes / Channels View. How is explained in detail below.
 
 h2(eveTopic). Stepfunction
 
@@ -118,6 +118,8 @@ p=. !(eveImage)../../img/tasks/editaxisproperties/file/file-dialog.png!
 
 h3(eveTopic). Plugin
 
+p(backToTop). "back to top":#top
+
 p. For plugins the values column shows "Plugin" with its name in brackets:
 
 p=. !(eveImage)../../img/tasks/editaxisproperties/plugin/plugin-label.png!
@@ -136,11 +138,32 @@ p=. !(eveImage)../../img/tasks/editaxisproperties/plugin/plugin-dialog.png!
 
 h3(eveTopic). Positionlist
 
+p(backToTop). "back to top":#top
+
+p. For positionlists the values column shows a comma separated list of values. Depending on the data type of the motor axis the values could be numeric, strings, etc.:
+
+p=. !(eveImage)../../img/tasks/editaxisproperties/positionlist/positionlist-label.png!
+
+p. To edit the values click inside the label:
+
+p=. !(eveImage)../../img/tasks/editaxisproperties/positionlist/positionlist-text.png!
+
+p. If the list is too long a dialog with a multi line text field can be opened by clicking on the __...__ button:
+
+p=. !(eveImage)../../img/tasks/editaxisproperties/positionlist/positionlist-dialog.png!
+
 h3(eveTopic). Range
-
-
-h2(eveTopic). k
 
 p(backToTop). "back to top":#top
 
-p=. !(eveImage)../../img/tasks/editaxisproperties/editaxisproperties-.png()!
+p. For stepfunction range the values column shows a comma separated list of range definitions. A tooltip shows the resulting positionlist as well as the number of positions:
+
+p=. !(eveImage)../../img/tasks/editaxisproperties/range/range-label.png!
+
+p. To edit the range click inside the label. The tooltip is updated during typing:
+
+p=. !(eveImage)../../img/tasks/editaxisproperties/range/range-text.png!
+
+p. If the current input is invalid the tooltip shows the valid syntax:
+
+p=. !(eveImage)../../img/tasks/editaxisproperties/range/range-error-tooltip.png!
