@@ -6,7 +6,7 @@ p. The Detector Channel View displays (and allows to modify) properties of a cha
 
 p. Generally a channel has one of three modes which determines its behavior. Depending on the channel mode the Detector Channel View will show different properties. These properties are described in detail for each mode in the following subsections.
 
-h2(eveTopic). Standard (Mode) Channel
+h2(eveTopic|#standard). Standard (Mode) Channel
 
 p(backToTop). "back to top":#top
 
@@ -91,7 +91,7 @@ p. max. Attempts = 0 ==&rArr;== __Average__ is calculated from three subsequent 
 p. measured values: {%(green)4.231%, %(green)4.787%, %(green)4.687%} ==&rArr;== __Average__ = 4.568
 
 
-h2(eveTopic). Interval (Mode) Channel
+h2(eveTopic|#interval). Interval (Mode) Channel
 
 p(backToTop). "back to top":#top
 
