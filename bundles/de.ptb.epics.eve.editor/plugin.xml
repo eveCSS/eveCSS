@@ -99,6 +99,13 @@
             name="Batch Update View"
             restorable="true">
       </view>
+      <view
+            category="eveEditorCategory"
+            class="de.ptb.epics.eve.editor.views.axeschannelsview.ui.AxesChannelsView"
+            id="de.ptb.epics.eve.editor.views.AxesChannelsView"
+            name="SM Axes / Channels View"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.newWizards">
@@ -475,7 +482,7 @@
                id="de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.popup.dynamic">
          </dynamic>
          <separator
-               name="de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.popup.spearator"
+               name="de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.popup.separator"
                visible="true">
          </separator>
          <command
@@ -718,6 +725,164 @@
                commandId="de.ptb.epics.eve.editor.command.removeallchannels"
                icon="icons/progress_remall.gif"
                label="Remove All Channels"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
+               </reference>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:de.ptb.epics.eve.editor.views.axeschannelsview.saveaxispositionscomposite.popup">
+         <dynamic
+               class="de.ptb.epics.eve.editor.views.axeschannelsview.AxesMenuContribution"
+               id="popup:de.ptb.epics.eve.editor.views.axeschannelsview.saveaxispositionscomposite.popup.dynamic">
+         </dynamic>
+         <separator
+               name="de.ptb.epics.eve.editor.views.axeschannelsview.motoraxiscomposite.popup.separator"
+               visible="true">
+         </separator>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.scanmodule.removeaxes"
+               icon="icons/rem_co.gif"
+               label="Remove Selected"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <not>
+                  <reference
+                        definitionId="de.ptb.epics.eve.editor.expressions.emptyselection">
+                  </reference>
+               </not>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.scanmodule.removeallaxes"
+               icon="icons/progress_remall.gif"
+               label="Remove All"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
+               </reference>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:de.ptb.epics.eve.editor.views.axeschannelsview.savechannelvaluescomposite.popup">
+         <dynamic
+               class="de.ptb.epics.eve.editor.views.axeschannelsview.ChannelsMenuContribution"
+               id="popup:de.ptb.epics.eve.editor.views.axeschannelsview.savechannelvaluescomposite.popup.dynamic">
+         </dynamic>
+         <separator
+               name="de.ptb.epics.eve.editor.views.axeschannelsview.savechannelvaluescomposite.popup.separator"
+               visible="true">
+         </separator>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.scanmodule.removechannels"
+               icon="icons/rem_co.gif"
+               label="Remove Selected"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <not>
+                  <reference
+                        definitionId="de.ptb.epics.eve.editor.expressions.emptyselection">
+                  </reference>
+               </not>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.scanmodule.removeallchannels"
+               icon="icons/progress_remall.gif"
+               label="Remove All"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
+               </reference>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axestable.popup">
+         <dynamic
+               class="de.ptb.epics.eve.editor.views.axeschannelsview.AxesMenuContribution"
+               id="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axestable.popup.dynamic">
+         </dynamic>
+         <separator
+               name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axestable.popup.separator"
+               visible="true">
+         </separator>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.scanmodule.importcsvaxes"
+               icon="icons/importpref_obj.gif"
+               label="Import CSV..."
+               style="push">
+         </command>
+         <separator
+               name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axestable.remove.separator"
+               visible="true">
+         </separator>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.scanmodule.removeaxes"
+               icon="icons/rem_co.gif"
+               label="Remove Selected"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <not>
+                  <reference
+                        definitionId="de.ptb.epics.eve.editor.expressions.emptyselection">
+                  </reference>
+               </not>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.scanmodule.removeallaxes"
+               icon="icons/progress_remall.gif"
+               label="Remove All"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
+               </reference>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channelstable.popup">
+         <dynamic
+               class="de.ptb.epics.eve.editor.views.axeschannelsview.ChannelsMenuContribution"
+               id="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channelstable.popup.dynamic">
+         </dynamic>
+         <separator
+               name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channelstable.popup.separator"
+               visible="true">
+         </separator>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.scanmodule.removechannels"
+               icon="icons/rem_co.gif"
+               label="Remove Selected"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <not>
+                  <reference
+                        definitionId="de.ptb.epics.eve.editor.expressions.emptyselection">
+                  </reference>
+               </not>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.scanmodule.removeallchannels"
+               icon="icons/progress_remall.gif"
+               label="Remove All"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1351,6 +1516,103 @@
             defaultHandler="de.ptb.epics.eve.editor.handler.changeto.ChangeToChannelSnapshotDynamic"
             id="de.ptb.epics.eve.editor.command.changeto.channelsnapshotdynamic"
             name="Channel Snapshot (dynamic)">
+      </command>
+      <category
+            id="de.ptb.epics.eve.editor.category.axeschannelsview"
+            name="AxesChannelsView">
+      </category>
+      <command
+            categoryId="de.ptb.epics.eve.editor.category.axeschannelsview"
+            defaultHandler="de.ptb.epics.eve.editor.handler.axeschannelsview.AddAxisDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.scanmodule.addaxis"
+            name="Add Axis">
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.scanmodule.addaxis.motoraxisid"
+               name="MotorAxis Id"
+               optional="false">
+         </commandParameter>
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.category.axeschannelsview"
+            defaultHandler="de.ptb.epics.eve.editor.handler.axeschannelsview.ImportAxesFromCSVDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.scanmodule.importcsvaxes"
+            name="Import Axes from csv">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.category.axeschannelsview"
+            defaultHandler="de.ptb.epics.eve.editor.handler.axeschannelsview.RemoveAxesDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.scanmodule.removeaxes"
+            name="Remove Axes">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.category.axeschannelsview"
+            defaultHandler="de.ptb.epics.eve.editor.handler.axeschannelsview.RemoveAllAxesDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.scanmodule.removeallaxes"
+            name="Remove All Axes">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.category.axeschannelsview"
+            defaultHandler="de.ptb.epics.eve.editor.handler.axeschannelsview.AddChannelDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.scanmodule.addchannel"
+            name="Add Channel">
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.scanmodule.addchannel.detectorchannelid"
+               name="DetectorChannel Id"
+               optional="false">
+         </commandParameter>
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.category.axeschannelsview"
+            defaultHandler="de.ptb.epics.eve.editor.handler.axeschannelsview.RemoveChannelsDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.scanmodule.removechannels"
+            name="Remove Channels">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.category.axeschannelsview"
+            defaultHandler="de.ptb.epics.eve.editor.handler.axeschannelsview.RemoveAllChannelsDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.scanmodule.removeallchannels"
+            name="Remove All Channels">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.category.axeschannelsview"
+            defaultHandler="de.ptb.epics.eve.editor.handler.axeschannelsview.AddAbstractDevicesDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.scanmodule.addabstractdevices"
+            name="Add Abstract Devices">
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.scanmodule.addabstractdevices.devicelist"
+               name="Device List"
+               optional="false">
+         </commandParameter>
+      </command>
+      <category
+            id="de.ptb.epics.eve.editor.category.detectorredoevents"
+            name="Detector Redo Events">
+      </category>
+      <command
+            categoryId="de.ptb.epics.eve.editor.category.detectorredoevents"
+            defaultHandler="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.handler.AddChannelRedoEventDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.AddChannelRedoEvent"
+            name="Add Channel Redo Event">
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.AddChannelRedoEvent.ChainId"
+               name="Chain Identifier"
+               optional="false">
+         </commandParameter>
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.AddChannelRedoEvent.ScanModuleId"
+               name="ScanModule Identifier"
+               optional="false">
+         </commandParameter>
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.AddChannelRedoEvent.ChannelId"
+               name="Channel Identifier"
+               optional="false">
+         </commandParameter>
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.AddChannelRedoEvent.EventId"
+               name="Event Identifier"
+               optional="false">
+         </commandParameter>
       </command>
    </extension>
    <extension

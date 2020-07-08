@@ -1,0 +1,169 @@
+h1(eveTopic|#top). Edit Properties of an Axis
+
+{toc:style=circle|maxLevel=3}
+
+p. Several properties of an axis added to a scan module can be modified within the motor axes table of the SM Axes / Channels View. How is explained in detail below.
+
+h2(eveTopic). Stepfunction
+
+p(backToTop). "back to top":#top
+
+p. The stepfunction is editable by a combo box. Note that for axes of specific types (e.g. with a discrete domain) not all stepfunctions are available:
+
+p=. !(eveImage)../../img/tasks/editaxisproperties/editaxisproperties-stepfunction.png(expanded combo box showing available stepfunctions)!
+
+h2(eveTopic). Main Axis
+
+p(backToTop). "back to top":#top
+
+p. By clicking in the Main column an axis could be set as main axis. Previously set Main axis are reset automatically. To unset a main axis, click on the arrow in the Main column (1).
+
+p=. !(eveImage)../../img/tasks/editaxisproperties/editaxisproperties-mainaxis.png(table with multiple axes, one selected as main axis with notes for auto adjusted total points and stepcount)!
+
+p. The total position count (2) and the stepwidth of other axes (3) are adjusted accordingly.
+
+h2(eveTopic). Position Mode
+
+p(backToTop). "back to top":#top
+
+p. The position mode is editable by a combo box. Click the column to open it and select the postion mode of choice.
+
+p=. !(eveImage)../../img/tasks/editaxisproperties/editaxisproperties-positionmode.png(expanded combo box showing the two position modes of choice, absolute and relative)!
+
+h2(eveTopic). Values
+
+p(backToTop). "back to top":#top
+
+p. Editing of positions axes should be actuated to depends on various things, e.g. the selected stepfunction, the data type of the axis and its domain space. the following paragraphs elaborate different scenarios separated by stepfunction.
+
+h3(eveTopic). Add/Multiply (Int/Double)
+
+p(backToTop). "back to top":#top
+
+p. Stepfunctions add and multiply are given by a 4-tupel. For a detailed description also consider the descriptions in the "Motor Axis View":../concepts/motoraxisview.html.
+
+p. An Add/Multiply stepfunction is shown by __start__  &#8594; __stop__ / __stepwidth__:
+
+p=. !(eveImage)../../img/tasks/editaxisproperties/addmultiply/addmultiply-double-label.png!
+
+p. By clicking inside the label the values can be modified. The syntax changed to __start__ / __stop__ / __stepwidth__ / __stepcount__. Exactly one of the values must be set to a dash. It is calculated out of the other three:
+
+p=. !(eveImage)../../img/tasks/editaxisproperties/addmultiply/addmultiply-double-text.png!
+
+p. If a main axis is set (which is not the axis being edited) only three values are shown (stepcount is defined by the main axis):
+
+p=. !(eveImage)../../img/tasks/editaxisproperties/addmultiply/addmultiply-double-text-mainaxis.png!
+
+p. The input can be canceled with __Espace__ or confirmed with __Enter__ if it is a valid input. Otherwise a tooltip hints to the error:
+
+p=. !(eveImage)../../img/tasks/editaxisproperties/addmultiply/addmultiply-double-text-error-type.png!
+
+p=. !(eveImage)../../img/tasks/editaxisproperties/addmultiply/addmultiply-double-text-error-slashes.png!
+
+p=. !(eveImage)../../img/tasks/editaxisproperties/addmultiply/addmultiply-double-text-error-dashes.png!
+
+p=. !(eveImage)../../img/tasks/editaxisproperties/addmultiply/addmultiply-double-text-error-nodash.png!
+
+p. A second option to edit the values is clicking the __...__ button which opens a dialog similar to the content shown in the "Motor Axis View":../concepts/motoraxisview.html:
+
+p=. !(eveImage)../../img/tasks/editaxisproperties/addmultiply/addmultiply-double-dialog.png!
+
+h3(eveTopic). Add/Multiply (Date/Duration)
+
+p(backToTop). "back to top":#top
+
+p. For date type motor axes labels and editing are adjusted accordingly. The __start__  &#8594; __stop__ / __stepwidth__ systax is equal to int/double types but each value is a text input combination of date and time:
+
+p=. !(eveImage)../../img/tasks/editaxisproperties/addmultiply/addmultiply-datetime-text.png!
+
+p. In contrast to int/double axes, date axes can only be modified via dialog by first clicking inside the label and then on the __...__ button:
+
+p=. !(eveImage)../../img/tasks/editaxisproperties/addmultiply/addmultiply-datetime-button.png!
+
+p. The dialog shown is similiar to the content shown in the "Motor Axis View":../concepts/motoraxisview.html:
+
+p=. !(eveImage)../../img/tasks/editaxisproperties/addmultiply/addmultiply-datetime-dialog.png!
+
+p. The active text field shows a content assist icon (light bulp). Clicking on it opens a dialog containing a calendar for easier input:
+
+p=. !(eveImage)../../img/tasks/editaxisproperties/addmultiply/addmultiply-datetime-assist.png!
+
+p. For date type axes with position mode __relative__ so called Durations are defined. Only non zero parts of the duration are shown:
+
+p=. !(eveImage)../../img/tasks/editaxisproperties/addmultiply/addmultiply-duration-text.png!
+
+p. Durations also are editable only via dialog (by clicking on the __...__ button):
+
+p=. !(eveImage)../../img/tasks/editaxisproperties/addmultiply/addmultiply-duration-dialog.png!
+
+p. Content assist is available:
+
+p=. !(eveImage)../../img/tasks/editaxisproperties/addmultiply/addmultiply-duration-assist.png!
+
+h3(eveTopic). File
+
+p(backToTop). "back to top":#top
+
+p. For stepfunction file, the values column shows the filename (the full path is shown via tooltip): 
+
+p=. !(eveImage)../../img/tasks/editaxisproperties/file/file-label.png!
+
+p. By clicking inside the label the full path can be edited (confirm with __Enter__, cancel with __Escape__):
+
+p=. !(eveImage)../../img/tasks/editaxisproperties/file/file-text.png!
+
+p. If the __...__ button is clicked a dialog is shown, allowing to select a file via file dialog and viewing statistics of the file contents:
+
+p=. !(eveImage)../../img/tasks/editaxisproperties/file/file-dialog.png!
+
+h3(eveTopic). Plugin
+
+p(backToTop). "back to top":#top
+
+p. For plugins the values column shows "Plugin" with its name in brackets:
+
+p=. !(eveImage)../../img/tasks/editaxisproperties/plugin/plugin-label.png!
+
+p. The plugin's parameters and their values are shown via tooltip:
+
+p=. !(eveImage)../../img/tasks/editaxisproperties/plugin/plugin-tooltip.png!
+
+p. To adjust the plugin or its parameter values click inside the label and on the __...__ button:
+
+p=. !(eveImage)../../img/tasks/editaxisproperties/plugin/plugin-text.png!
+
+p. A dialog appears showing a combo box to change the plugin and an editable table for its parameters:
+
+p=. !(eveImage)../../img/tasks/editaxisproperties/plugin/plugin-dialog.png!
+
+h3(eveTopic). Positionlist
+
+p(backToTop). "back to top":#top
+
+p. For positionlists the values column shows a comma separated list of values. Depending on the data type of the motor axis the values could be numeric, strings, etc.:
+
+p=. !(eveImage)../../img/tasks/editaxisproperties/positionlist/positionlist-label.png!
+
+p. To edit the values click inside the label:
+
+p=. !(eveImage)../../img/tasks/editaxisproperties/positionlist/positionlist-text.png!
+
+p. If the list is too long a dialog with a multi line text field can be opened by clicking on the __...__ button:
+
+p=. !(eveImage)../../img/tasks/editaxisproperties/positionlist/positionlist-dialog.png!
+
+h3(eveTopic). Range
+
+p(backToTop). "back to top":#top
+
+p. For stepfunction range the values column shows a comma separated list of range definitions. A tooltip shows the resulting positionlist as well as the number of positions:
+
+p=. !(eveImage)../../img/tasks/editaxisproperties/range/range-label.png!
+
+p. To edit the range click inside the label. The tooltip is updated during typing:
+
+p=. !(eveImage)../../img/tasks/editaxisproperties/range/range-text.png!
+
+p. If the current input is invalid the tooltip shows the valid syntax:
+
+p=. !(eveImage)../../img/tasks/editaxisproperties/range/range-error-tooltip.png!

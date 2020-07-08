@@ -15,7 +15,7 @@
 
     <modules>
     	<module>de.ptb.epics.eve.data.tests</module>
-    	<!-- <module>de.ptb.epics.eve.editor.tests</module>-->
+    	<module>de.ptb.epics.eve.editor.tests</module>
     	<module>de.ptb.epics.eve.util.tests</module>
     </modules>
 </project>

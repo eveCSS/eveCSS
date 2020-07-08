@@ -8,21 +8,12 @@ h2(eveTopic). Scan Module
 
 p(backToTop). "back to top":#top
 
-p. For a common scan module the Scan Module View looks as follows:
+p. For a common (a.k.a. classic) scan module the Scan Module View looks as follows:
 
 p=. !(eveImage)../../img/concepts/ScanModuleView/ClassicComposite.png(sample content for a scan module)!
 
-h3(eveTopic). General Settings
-
-* __No of Measurements__: the number of measurements taken for each motor position
-* __Trigger Delay (in s)__: delay in s before detectors are triggered
-* __Settle Time (in s)__: delay in s after the first motor position is reached
-* __Manual Trigger__: whether setting motor positions and/or triggering detectors should be confirmed
-
 h3(eveTopic). Actions
 
-* __Motor Axes__: Allows adding/removing of and displays current motor axes. Properties of selected axes can be viewed or modified in the "Motor Axis View":motoraxisview.html.
-* __Detector Channels__: Allows adding/removing of and displays current detector channels. Properties of selected channels can be viewed or modified in the "Detector Channel View":detectorchannelview.html.
 * __Prescan__: Allows defining actions executed before the main phase.
 * __Postscan__: Allows defining actions executed after the main phase.
 * __Positioning__: Allows moving axes to calculated positions after the main phase.

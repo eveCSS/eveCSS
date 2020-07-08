@@ -10,12 +10,27 @@ import de.ptb.epics.eve.data.measuringstation.Function;
  */
 public class FunctionMother {
 	
-	/**
-	 * 
-	 * @return
-	 */
 	public static Function createNewFunction() {
-		return new Function(AccessMother.createNewAccess(),
-				TypeValueMother.createNewTypeValue());
+		return FunctionMother.createNewIntTypeFunction();
+	}
+	
+	/**
+	 * @since 1.34
+	 */
+	public static Function createNewIntTypeFunction() {
+		return new Function(AccessMother.createNewIntTypeAccess(),
+				TypeValueMother.createNewIntTypeValue());
+	}
+	
+	/**
+	 * @since 1.34
+	 */
+	public static Function createNewDoubleTypeFunction() {
+		return new Function(AccessMother.createNewDoubleTypeAccess(),
+				TypeValueMother.createNewDoubleTypeValue());
+	}
+	
+	private FunctionMother() {
+		// private
 	}
 }

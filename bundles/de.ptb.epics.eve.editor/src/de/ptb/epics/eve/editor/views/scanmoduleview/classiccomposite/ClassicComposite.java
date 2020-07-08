@@ -69,6 +69,8 @@ public class ClassicComposite extends ScanModuleViewComposite implements IModelU
 	private static final Logger LOGGER = Logger.getLogger(
 			ClassicComposite.class.getName());
 	
+	// TODO remove general composite
+	
 	private static final String MEMENTO_ACTIONS_COMPOSITE_MAXIMIZED = 
 			"actionsCompositeMaximized";
 	private static final String MEMENTO_EVENTS_COMPOSITE_MAXIMIZED = 
@@ -77,10 +79,10 @@ public class ClassicComposite extends ScanModuleViewComposite implements IModelU
 			"actionsCompositeWeight";
 	private static final String MEMENTO_EVENTS_COMPOSITE_WEIGHT =
 			"eventsCompositeWeight";
-	private static final String MEMENTO_AXES_SORT_STATE = 
+	/*private static final String MEMENTO_AXES_SORT_STATE = 
 			"AxesSortState";
 	private static final String MEMENTO_CHANNEL_SORT_STATE = 
-			"ChannelSortState";
+			"ChannelSortState";*/
 	private static final String MEMENTO_ACTIONS_TAB_FOLDER_SELECTION_INDEX = 
 			"actionsTabFolderSelectionIndex";
 	private static final String MEMENTO_EVENTS_TAB_FOLDER_SELECTION_INDEX = 
@@ -94,14 +96,14 @@ public class ClassicComposite extends ScanModuleViewComposite implements IModelU
 	Composite top;
 	
 	// general composite
-	private Text valueCountText;
-	private Text triggerDelayText;
-	private Text settleTimeText;
-	private Button triggerConfirmAxisCheckBox;
-	private Button triggerConfirmChannelCheckBox;
-	private Binding valueCountBinding;
-	private Binding triggerDelayBinding;
-	private Binding settleTimeBinding;
+	//private Text valueCountText;
+	//private Text triggerDelayText;
+	//private Text settleTimeText;
+	//private Button triggerConfirmAxisCheckBox;
+	//private Button triggerConfirmChannelCheckBox;
+	//private Binding valueCountBinding;
+	//private Binding triggerDelayBinding;
+	//private Binding settleTimeBinding;
 	
 	private SashForm actionEventSashForm;
 	
@@ -110,14 +112,14 @@ public class ClassicComposite extends ScanModuleViewComposite implements IModelU
 	private Label actionMaxIcon;
 	private boolean actionsCompositeMaximized;
 	private CTabFolder actionsTabFolder;
-	private CTabItem motorAxisTab;
-	private CTabItem detectorChannelTab;
+	//private CTabItem motorAxisTab;
+	//private CTabItem detectorChannelTab;
 	private CTabItem prescanTab;
 	private CTabItem postscanTab;
 	private CTabItem positioningTab;
 	private CTabItem plotTab;
-	private ActionComposite motorAxisComposite;
-	private ActionComposite detectorChannelComposite;
+	//private ActionComposite motorAxisComposite;
+	//private ActionComposite detectorChannelComposite;
 	private ActionComposite prescanComposite;
 	private ActionComposite postscanComposite;
 	private ActionComposite positioningComposite;
@@ -155,12 +157,14 @@ public class ClassicComposite extends ScanModuleViewComposite implements IModelU
 		
 		this.top = new Composite(sc, SWT.NONE);
 		GridLayout gridLayout = new GridLayout();
+		gridLayout.marginWidth = 0;
+		gridLayout.marginHeight = 0;
 		this.top.setLayout(gridLayout);
 		sc.setExpandHorizontal(true);
 		sc.setExpandVertical(true);
 		sc.setContent(top);
 		
-		this.createGeneralComposite(top);
+		// this.createGeneralComposite(top);
 		
 		this.actionEventSashForm = new SashForm(top, SWT.VERTICAL);
 		this.actionEventSashForm.SASH_WIDTH = 4;
@@ -174,10 +178,10 @@ public class ClassicComposite extends ScanModuleViewComposite implements IModelU
 		this.createEventsComposite(this.actionEventSashForm);
 		sc.setMinSize(SWT.DEFAULT, SWT.DEFAULT);
 		
-		this.bindValues();
+		//this.bindValues();
 	}
 
-	private void createGeneralComposite(Composite parent) {
+	/*private void createGeneralComposite(Composite parent) {
 		Composite generalComposite = new Composite(parent, SWT.BORDER);
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
@@ -255,9 +259,7 @@ public class ClassicComposite extends ScanModuleViewComposite implements IModelU
 		this.triggerConfirmChannelCheckBox = new Button(triggerCheckBoxes,
 				SWT.CHECK);
 		this.triggerConfirmChannelCheckBox.setText("Detectors");
-		this.triggerDelayText.addFocusListener(new TextFocusListener(
-				this.triggerDelayText));
-	}
+	}*/
 	
 	private void createActionsComposite(Composite parent) {
 		this.actionsComposite = new Composite(parent, SWT.BORDER);
@@ -296,10 +298,10 @@ public class ClassicComposite extends ScanModuleViewComposite implements IModelU
 		gridData.horizontalSpan = 2;
 		actionsTabFolder.setLayoutData(gridData);
 		
-		this.motorAxisComposite = new MotorAxisComposite(
+		/*this.motorAxisComposite = new MotorAxisComposite(
 				this.parentView, actionsTabFolder, SWT.NONE);
 		this.detectorChannelComposite = new DetectorChannelComposite(
-				this.parentView, actionsTabFolder, SWT.NONE);
+				this.parentView, actionsTabFolder, SWT.NONE);*/
 		this.prescanComposite = new PrescanComposite(
 				this.parentView, actionsTabFolder, SWT.NONE);
 		this.postscanComposite = new PostscanComposite(
@@ -309,17 +311,17 @@ public class ClassicComposite extends ScanModuleViewComposite implements IModelU
 		this.plotComposite = new PlotComposite(
 				this.parentView, actionsTabFolder, SWT.NONE);
 		
-		this.motorAxisTab = new CTabItem(actionsTabFolder, SWT.FLAT);
+		/*this.motorAxisTab = new CTabItem(actionsTabFolder, SWT.FLAT);
 		this.motorAxisTab.setText(" Motor Axes ");
 		this.motorAxisTab.setToolTipText(
 				"Select motor axes to be used in this scan module");
-		this.motorAxisTab.setControl(motorAxisComposite);
+		this.motorAxisTab.setControl(motorAxisComposite);*/
 		
-		this.detectorChannelTab = new CTabItem(this.actionsTabFolder, SWT.FLAT);
+		/*this.detectorChannelTab = new CTabItem(this.actionsTabFolder, SWT.FLAT);
 		this.detectorChannelTab.setText(" Detector Channels ");
 		this.detectorChannelTab
 				.setToolTipText("Select detector channels to be used in this scan module");
-		this.detectorChannelTab.setControl(this.detectorChannelComposite);
+		this.detectorChannelTab.setControl(this.detectorChannelComposite);*/
 
 		this.prescanTab = new CTabItem(this.actionsTabFolder, SWT.FLAT);
 		this.prescanTab.setText(" Prescan ");
@@ -418,13 +420,13 @@ public class ClassicComposite extends ScanModuleViewComposite implements IModelU
 	}
 	
 	private void bindValues() {
-		DataBindingContext context = new DataBindingContext();
+		/*DataBindingContext context = new DataBindingContext();
 		ISelectionProvider selectionProvider = new ScanModuleSelectionProvider(
 				ScanModuleTypes.CLASSIC);
 		IObservableValue selectionObservable = ViewersObservables
-				.observeSingleSelection(selectionProvider);
+				.observeSingleSelection(selectionProvider);*/
 		
-		IObservableValue valueCountTargetObservable = SWTObservables
+		/*IObservableValue valueCountTargetObservable = SWTObservables
 				.observeText(this.valueCountText, SWT.Modify);
 		IObservableValue valueCountModelObservable = BeansObservables.observeDetailValue(
 				selectionObservable, ScanModule.class,
@@ -501,7 +503,7 @@ public class ClassicComposite extends ScanModuleViewComposite implements IModelU
 				channelTriggerTargetObservable, channelTriggerModelObservable,
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE),
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
-		channelTriggerBinding.getClass();
+		channelTriggerBinding.getClass();*/
 	}
 
 	/**
@@ -527,8 +529,8 @@ public class ClassicComposite extends ScanModuleViewComposite implements IModelU
 		this.currentScanModule = scanModule;
 		
 		// tell the action composites about the change
-		this.motorAxisComposite.setScanModule(scanModule);
-		this.detectorChannelComposite.setScanModule(scanModule);
+		//this.motorAxisComposite.setScanModule(scanModule);
+		//this.detectorChannelComposite.setScanModule(scanModule);
 		this.prescanComposite.setScanModule(scanModule);
 		this.postscanComposite.setScanModule(scanModule);
 		this.positioningComposite.setScanModule(scanModule);
@@ -585,25 +587,25 @@ public class ClassicComposite extends ScanModuleViewComposite implements IModelU
 	
 	private void checkForErrors() {
 		// check errors in Actions Tab
-		this.motorAxisTab.setImage(null);
-		this.detectorChannelTab.setImage(null);
+		//this.motorAxisTab.setImage(null);
+		//this.detectorChannelTab.setImage(null);
 		this.prescanTab.setImage(null);
 		this.postscanTab.setImage(null);
 		this.positioningTab.setImage(null);
 		this.plotTab.setImage(null);
-		boolean motorAxisErrors = false;
-		boolean detectorChannelErrors = false;
+		//boolean motorAxisErrors = false;
+		//boolean detectorChannelErrors = false;
 		boolean prescanErrors = false;
 		boolean postscanErrors = false;
 		boolean positioningErrors = false;
 		boolean plotWindowErrors = false;
 
 		for (IModelError error : this.currentScanModule.getModelErrors()) {
-			if (error instanceof AxisError) {
+			/*if (error instanceof AxisError) {
 				motorAxisErrors = true;
 			} else if (error instanceof ChannelError) {
 				detectorChannelErrors = true;
-			} else if (error instanceof PrescanError) {
+			} else  */ if (error instanceof PrescanError) {
 				prescanErrors = true;
 			} else if (error instanceof PostscanError) {
 				postscanErrors = true;
@@ -614,7 +616,7 @@ public class ClassicComposite extends ScanModuleViewComposite implements IModelU
 			}
 		}
 
-		if (motorAxisErrors) {
+		/*if (motorAxisErrors) {
 			this.motorAxisTab.setImage(PlatformUI.getWorkbench()
 					.getSharedImages()
 					.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
@@ -623,7 +625,7 @@ public class ClassicComposite extends ScanModuleViewComposite implements IModelU
 			this.detectorChannelTab.setImage(PlatformUI.getWorkbench()
 					.getSharedImages()
 					.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
-		}
+		}*/
 		if (prescanErrors) {
 			this.prescanTab.setImage(PlatformUI.getWorkbench()
 					.getSharedImages()
@@ -701,10 +703,10 @@ public class ClassicComposite extends ScanModuleViewComposite implements IModelU
 				actionEventSashForm.getWeights()[1]);
 
 		// remember sort state of action composite viewers
-		memento.putInteger(MEMENTO_AXES_SORT_STATE,
+		/*memento.putInteger(MEMENTO_AXES_SORT_STATE,
 				this.motorAxisComposite.getSortState());
 		memento.putInteger(MEMENTO_CHANNEL_SORT_STATE,
-				this.detectorChannelComposite.getSortState());
+				this.detectorChannelComposite.getSortState());*/
 		
 		// remember selected action tab
 		memento.putInteger(MEMENTO_ACTIONS_TAB_FOLDER_SELECTION_INDEX, 
@@ -745,14 +747,14 @@ public class ClassicComposite extends ScanModuleViewComposite implements IModelU
 		actionEventSashForm.setWeights(weights);
 		
 		// restore sort state of action composite viewers
-		if (memento.getInteger(MEMENTO_AXES_SORT_STATE) != null) {
+		/*if (memento.getInteger(MEMENTO_AXES_SORT_STATE) != null) {
 			this.motorAxisComposite.setSortState(memento
 					.getInteger(MEMENTO_AXES_SORT_STATE));
 		}
 		if (memento.getInteger(MEMENTO_CHANNEL_SORT_STATE) != null) {
 			this.detectorChannelComposite.setSortState(memento
 					.getInteger(MEMENTO_CHANNEL_SORT_STATE));
-		}
+		}*/
 		
 		// restore selected tabs of tab folders
 		if (memento.getInteger(MEMENTO_ACTIONS_TAB_FOLDER_SELECTION_INDEX) != null) {
@@ -802,7 +804,7 @@ public class ClassicComposite extends ScanModuleViewComposite implements IModelU
 		}
 	}
 	
-	private class TextFocusListener extends FocusAdapter {
+	/*private class TextFocusListener extends FocusAdapter {
 		private Text widget;
 
 		public TextFocusListener(Text widget) {
@@ -819,5 +821,5 @@ public class ClassicComposite extends ScanModuleViewComposite implements IModelU
 				settleTimeBinding.updateModelToTarget();
 			}
 		}
-	}
+	}*/
 }

@@ -1,0 +1,67 @@
+h1(eveTopic|#top). Edit Properties of a Channel
+
+{toc:style=circle|maxLevel=3}
+
+p. Several properties of a channel added to a scan module can be modified within the detector channels table of the SM Axes / Channels View. How is explained in detail below.
+
+h2(eveTopic). Acquisition Type
+
+p(backToTop). "back to top":#top
+
+p. The acquisition type can be selected by a drop down box. Available values are __Standard__ and __Interval__:
+
+p=. !(eveImage)../../img/tasks/editchannelproperties/acquisitiontype.png!
+
+p. Depending on the chosen selection, different parameters are available (see "below":#parameters ).
+
+h2(eveTopic). Deferred
+
+p(backToTop). "back to top":#top
+
+p. In the main phase of a scan module two detector channel trigger phases exist. To trigger a detector channel in the second phase its deferred property has to be set. This is done by clicking in the column (click again to deactivate, i.e. trigger in the first phase):
+
+p=. !(eveImage)../../img/tasks/editchannelproperties/deferred.png!
+
+h2(eveTopic). Normalized By
+
+p(backToTop). "back to top":#top
+
+p. Normalizing values of a detector channel by another is done by selection in a drop down list:
+
+p=. !(eveImage)../../img/tasks/editchannelproperties/normalizedby.png!
+
+p. Standard type channels as well as Interval type channels can be normalized. Detector channels used for normalization cannot be normalized.
+
+h2(eveTopic|#parameters). Parameters
+
+p(backToTop). "back to top":#top
+
+p. The parameters column shows different parameters, depending on the set acquisition type and the values set (empty values are omitted):
+
+p=. !(eveImage)../../img/tasks/editchannelproperties/parameters-label.png!
+
+p. For Standard acquisition type, redo events are shown in a tooltip:
+
+p=. !(eveImage)../../img/tasks/editchannelproperties/parameters-tooltip.png!
+
+p. To edit the parameters (for either acquisition type) click inside the column and then on the __...__ button:
+
+p=. !(eveImage)../../img/tasks/editchannelproperties/parameters-button.png!
+
+p. Depending on the set acquisition type different dialogs are shown (see below).
+
+h3(eveTopic). Standard Dialog
+
+p. For __Standard__ acquisition type detector channels the following dialog is shown:
+
+p=. !(eveImage)../../img/tasks/editchannelproperties/parameters-dialog-standard.png!
+
+p. Further description on these parameters can be found in "Detector Channel View":../concepts/detectorchannelview.html#standard.
+
+h3(eveTopic). Interval Dialog
+
+p. For __Interval__ acquisition type detector channels the following dialog is shown:
+
+p=. !(eveImage)../../img/tasks/editchannelproperties/parameters-dialog-interval.png!
+
+p. Further description on these parameters can be found in "Detector Channel View":../concepts/detectorchannelview.html#interval.

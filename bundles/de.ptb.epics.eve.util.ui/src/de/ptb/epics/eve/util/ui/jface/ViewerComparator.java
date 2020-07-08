@@ -10,6 +10,7 @@ import org.eclipse.jface.viewers.Viewer;
  * @author Marcus Michalsky
  * @since 1.5
  * @see "http://www.vogella.de/articles/EclipseJFaceTableAdvanced/article.html"
+ * @deprecated use {@link de.ptb.epics.eve.util.ui.AlphabeticalTableViewerSorter} instead.
  */
 public abstract class ViewerComparator extends
 		org.eclipse.jface.viewers.ViewerComparator {

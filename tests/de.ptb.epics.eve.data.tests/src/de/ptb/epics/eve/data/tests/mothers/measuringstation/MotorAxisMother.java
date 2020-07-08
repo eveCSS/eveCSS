@@ -12,22 +12,53 @@ import de.ptb.epics.eve.data.measuringstation.MotorAxis;
  */
 public class MotorAxisMother {
 	
-	/**
-	 * 
-	 * @return
-	 */
 	public static MotorAxis createNewMotorAxis() {
-		MotorAxis motorAxis = new MotorAxis();
+		return MotorAxisMother.createNewIntTypeMotorAxis();
+	}
 	
+	/**
+	 * @since 1.34
+	 */
+	public static MotorAxis createNewIntTypeMotorAxis() {
+		MotorAxis motorAxis = new MotorAxis();
+		
 		String name = "MotorAxis-" + Calendar.getInstance().getTime().getTime();
 		motorAxis.setId(name);
 		motorAxis.setName(name);
 		motorAxis.setClassName("MotorAxisClass");
 		
-		motorAxis.setPosition(FunctionMother.createNewFunction());
+		motorAxis.setPosition(FunctionMother.createNewIntTypeFunction());
 		motorAxis.setStatus(FunctionMother.createNewFunction());
 		motorAxis.setMoveDone(FunctionMother.createNewFunction());
-		motorAxis.setGoto(FunctionMother.createNewFunction());
+		motorAxis.setGoto(FunctionMother.createNewIntTypeFunction());
+		motorAxis.setStop(FunctionMother.createNewFunction());
+		motorAxis.setDeadband(FunctionMother.createNewFunction());
+		motorAxis.setOffset(FunctionMother.createNewFunction());
+		motorAxis.setTweakValue(FunctionMother.createNewFunction());
+		motorAxis.setTweakForward(FunctionMother.createNewFunction());
+		motorAxis.setTweakReverse(FunctionMother.createNewFunction());
+		motorAxis.setSoftHighLimit(FunctionMother.createNewFunction());
+		motorAxis.setSoftLowLimit(FunctionMother.createNewFunction());
+		motorAxis.setLimitViolation(FunctionMother.createNewFunction());
+		
+		return motorAxis;
+	}
+	
+	/**
+	 * @since 1.34
+	 */
+	public static MotorAxis createNewDoubleTypeMotorAxis() {
+		MotorAxis motorAxis = new MotorAxis();
+		
+		String name = "MotorAxis-" + Calendar.getInstance().getTime().getTime();
+		motorAxis.setId(name);
+		motorAxis.setName(name);
+		motorAxis.setClassName("MotorAxisClass");
+		
+		motorAxis.setPosition(FunctionMother.createNewDoubleTypeFunction());
+		motorAxis.setStatus(FunctionMother.createNewFunction());
+		motorAxis.setMoveDone(FunctionMother.createNewFunction());
+		motorAxis.setGoto(FunctionMother.createNewDoubleTypeFunction());
 		motorAxis.setStop(FunctionMother.createNewFunction());
 		motorAxis.setDeadband(FunctionMother.createNewFunction());
 		motorAxis.setOffset(FunctionMother.createNewFunction());
@@ -50,5 +81,9 @@ public class MotorAxisMother {
 	public static MotorAxis addOption(MotorAxis motorAxis) {
 		motorAxis.add(OptionMother.createNewOption());
 		return motorAxis;
+	}
+	
+	private MotorAxisMother() {
+		// private
 	}
 }
