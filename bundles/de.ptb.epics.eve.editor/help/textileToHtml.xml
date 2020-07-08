@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="generate-html" basedir=".">
-	
 	<description>
 		Ant File for Building help documents
 	</description>
@@ -9,13 +8,13 @@
 
 	<path id="wikitext.classpath">
 		<fileset dir="${eclipse_dir}/plugins">
-			<include name="org.eclipse.mylyn.wikitext.*core*.jar"/>
+			<include name="org.eclipse.mylyn.wikitext*.jar"/>
 			<include name="com.google.*.jar"/>
 		</fileset>
 	</path>
 	
 	<taskdef classpathref="wikitext.classpath" 
-	resource="org/eclipse/mylyn/wikitext/core/ant/tasks.properties" />
+		resource="org/eclipse/mylyn/wikitext/ant/tasks.properties" />
   
 	<target name="generate-html" 
 			description="Generate HTML from textile source">

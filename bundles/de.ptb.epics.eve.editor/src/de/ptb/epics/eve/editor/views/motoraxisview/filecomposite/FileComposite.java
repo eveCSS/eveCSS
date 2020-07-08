@@ -16,10 +16,10 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
@@ -117,20 +117,25 @@ public class FileComposite extends MotorAxisViewComposite implements
 		countColumn.getColumn().setText("# points");
 		countColumn.getColumn().setWidth(80);
 		
+		TableViewerColumn firstColumn = new TableViewerColumn(this.viewer, 
+				SWT.RIGHT);
+		firstColumn.getColumn().setText("1st value");
+		firstColumn.getColumn().setWidth(100);
+		
+		TableViewerColumn lastColumn = new TableViewerColumn(this.viewer, 
+				SWT.RIGHT);
+		lastColumn.getColumn().setText("n-th value");
+		lastColumn.getColumn().setWidth(100);
+		
 		TableViewerColumn minColumn = new TableViewerColumn(this.viewer, 
 				SWT.RIGHT);
 		minColumn.getColumn().setText("Minimum");
-		minColumn.getColumn().setWidth(120);
+		minColumn.getColumn().setWidth(100);
 		
 		TableViewerColumn maxColumn = new TableViewerColumn(this.viewer, 
 				SWT.RIGHT);
 		maxColumn.getColumn().setText("Maximum");
-		maxColumn.getColumn().setWidth(120);
-		
-		TableViewerColumn emptyColumn = new TableViewerColumn(this.viewer, 
-				SWT.NONE);
-		emptyColumn.getColumn().setText("");
-		emptyColumn.getColumn().setWidth(10);
+		maxColumn.getColumn().setWidth(100);
 	}
 	
 	/**
@@ -167,6 +172,7 @@ public class FileComposite extends MotorAxisViewComposite implements
 		}
 		this.fileMode = ((FileMode)axis.getMode());
 		this.createBinding();
+		this.fileMode.addPropertyChangeListener(FileMode.FILE_PROP, this);
 		this.fileMode.getAxis().getMotorAxis()
 				.addPropertyChangeListener("highlimit", this);
 		this.fileMode.getAxis().getMotorAxis()
@@ -217,6 +223,7 @@ public class FileComposite extends MotorAxisViewComposite implements
 					.removePropertyChangeListener("highlimit", this);
 			this.fileMode.getAxis().getMotorAxis()
 					.removePropertyChangeListener("lowlimit", this);
+			this.fileMode.removePropertyChangeListener(FileMode.FILE_PROP, this);
 		}
 		this.fileMode = null;
 		this.viewer.setInput(null);
@@ -225,18 +232,7 @@ public class FileComposite extends MotorAxisViewComposite implements
 		this.redraw();
 	}
 
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of 
-	 * <code>searchButton</code>.
-	 */
-	private class SearchButtonSelectionListener implements SelectionListener {
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(final SelectionEvent e) {
-		}
+	private class SearchButtonSelectionListener extends SelectionAdapter {
 		
 		/**
 		 * {@inheritDoc}
@@ -277,14 +273,7 @@ public class FileComposite extends MotorAxisViewComposite implements
 	 * @author Marcus Michalsky
 	 * @since 1.7
 	 */
-	private class FileNameTextFocusListener implements FocusListener {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void focusGained(FocusEvent e) {
-		}
+	private class FileNameTextFocusListener extends FocusAdapter {
 
 		/**
 		 * {@inheritDoc}
@@ -306,6 +295,9 @@ public class FileComposite extends MotorAxisViewComposite implements
 	public void propertyChange(PropertyChangeEvent e) {
 		if (e.getPropertyName().equals("highlimit") || 
 				e.getPropertyName().equals("lowlimit")) {
+			this.filenameBinding.updateTargetToModel();
+		} else if (e.getPropertyName().equals(FileMode.FILE_PROP)) {
+			this.filenameBinding.updateModelToTarget();
 			this.filenameBinding.updateTargetToModel();
 		}
 	}

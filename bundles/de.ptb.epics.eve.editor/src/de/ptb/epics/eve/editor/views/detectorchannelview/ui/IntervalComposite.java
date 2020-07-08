@@ -12,6 +12,7 @@ import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.conversion.NumberToStringConverter;
 import org.eclipse.core.databinding.conversion.StringToNumberConverter;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
@@ -22,6 +23,8 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -37,6 +40,8 @@ import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.channelmode.ChannelModes;
 import de.ptb.epics.eve.data.scandescription.channelmode.IntervalMode;
 import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.editor.views.detectorchannelview.TriggerIntervalTargetToModelValidator;
+
 
 /**
  * @author Marcus Michalsky
@@ -199,6 +204,12 @@ public class IntervalComposite extends DetectorChannelViewComposite
 			this.stoppedByComboControlDecoration.show();
 		}
 		this.setInfos();
+		this.triggerIntervalText.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				triggerIntervalBinding.updateModelToTarget();
+			}
+		});
 	}
 	
 	private void setInfos() {
@@ -256,10 +267,12 @@ public class IntervalComposite extends DetectorChannelViewComposite
 				triggerIntervalModelObservable, 
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).
 				setConverter(StringToNumberConverter.toDouble(
-						NumberFormat.getInstance(Locale.US), false)),
+						NumberFormat.getInstance(Locale.US), false)).
+				setAfterGetValidator(new TriggerIntervalTargetToModelValidator()),
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).
 				setConverter(NumberToStringConverter.fromDouble(
 						NumberFormat.getInstance(Locale.US), false)));
+		ControlDecorationSupport.create(this.triggerIntervalBinding, SWT.LEFT);
 	}
 
 	/**

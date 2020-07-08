@@ -11,6 +11,30 @@
                    <value type="int">1</value>
             	</trigger>
                 <option>
+                    <name>Filepath</name>
+                    <id>Det${PV}Filepath</id>
+                    <value>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}FilePath {"longString":true}</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>Filename</name>
+                    <id>Det${PV}Filename</id>
+                    <value>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}FileName {"longString":true}</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>Filenumber</name>
+                    <id>Det${PV}Filenumber</id>
+                    <value>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}FileNumber</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
                     <name>Severity</name>
                     <id>Det${PV}FileNumber_RBV.SEVR</id>
                     <value>

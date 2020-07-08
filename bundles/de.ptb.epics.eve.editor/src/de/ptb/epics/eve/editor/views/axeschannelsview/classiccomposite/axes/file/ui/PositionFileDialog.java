@@ -5,7 +5,9 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.Binding;
@@ -24,6 +26,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -143,6 +146,7 @@ public class PositionFileDialog extends DialogCellEditorDialog implements Proper
 		this.viewer.setLabelProvider(new ITableLabelProvider() {
 			@Override
 			public void removeListener(ILabelProviderListener listener) {
+				// not used
 			}
 
 			@Override
@@ -152,28 +156,47 @@ public class PositionFileDialog extends DialogCellEditorDialog implements Proper
 
 			@Override
 			public void dispose() {
+				// not used
 			}
 
 			@Override
 			public void addListener(ILabelProviderListener listener) {
+				// not used
 			}
 
 			@Override
 			public String getColumnText(Object element, int columnIndex) {
 				FileStats fileStats = (FileStats) element;
+				Formatter formatter = new Formatter(new Locale(
+						Locale.ENGLISH.getCountry()));
+				final String FORMATTER_STRING = "%12.4g";
+				String result = null;
 				switch (columnIndex) {
 				case 0:
-					return fileStats.getValueCount();
+					result = Integer.toString(fileStats.getValueCount());
+					break;
 				case 1:
-					return fileStats.getFirstValue();
+					result = formatter.format(FORMATTER_STRING, 
+							fileStats.getFirstValue()).toString();
+					break;
 				case 2:
-					return fileStats.getLastValue();
+					result = formatter.format(FORMATTER_STRING, 
+							fileStats.getLastValue()).toString();
+					break;
 				case 3:
-					return fileStats.getMinimum();
+					result = formatter.format(FORMATTER_STRING, 
+							fileStats.getMinimum()).toString();
+					break;
 				case 4:
-					return fileStats.getMaximum();
+					result = formatter.format(FORMATTER_STRING, 
+							fileStats.getMaximum()).toString();
+					break;
+				default:
+					result = null;
+					break;
 				}
-				return null;
+				formatter.close();
+				return result;
 			}
 
 			@Override
@@ -191,6 +214,8 @@ public class PositionFileDialog extends DialogCellEditorDialog implements Proper
 		GridData gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
+		gridData.grabExcessVerticalSpace = true;
+		gridData.verticalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 3;
 		gridData.heightHint = 40;
 		this.viewer.getTable().setLayoutData(gridData);
@@ -217,12 +242,16 @@ public class PositionFileDialog extends DialogCellEditorDialog implements Proper
 		TableViewerColumn maxColumn = new TableViewerColumn(this.viewer, SWT.RIGHT);
 		maxColumn.getColumn().setText("Maximum");
 		maxColumn.getColumn().setWidth(120);
-
-		TableViewerColumn emptyColumn = new TableViewerColumn(this.viewer, SWT.NONE);
-		emptyColumn.getColumn().setText("");
-		emptyColumn.getColumn().setWidth(10);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected Point getInitialSize() {
+		return new Point(600, 220);
+	}
+	
 	private void createBinding() {
 		DataBindingContext context = new DataBindingContext();
 		IObservableValue filenameInputTargetObservable = WidgetProperties.text(

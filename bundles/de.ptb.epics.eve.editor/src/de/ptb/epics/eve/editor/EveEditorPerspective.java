@@ -31,45 +31,36 @@ public class EveEditorPerspective implements IPerspectiveFactory {
 		String editorArea = layout.getEditorArea();
 		layout.setEditorAreaVisible(true);
 		
-		layout.addView(ScanView.ID, IPageLayout.RIGHT, 0.33f, editorArea);
+		IFolderLayout scanChainViewFolder = layout.createFolder(
+				"ScanChainViewFolder", IPageLayout.RIGHT, 0.33f, editorArea);
+		scanChainViewFolder.addView(ScanView.ID);
 		layout.getViewLayout(ScanView.ID).setCloseable(false);
+		scanChainViewFolder.addView(ChainView.ID);
+		layout.getViewLayout(ChainView.ID).setCloseable(false);
 		
 		layout.addView(ErrorView.ID, IPageLayout.BOTTOM , 0.67f, editorArea);
 		layout.getViewLayout(ErrorView.ID).setCloseable(false);
 		
-		layout.addView(ScanModuleView.ID, IPageLayout.RIGHT, 0.55f, ScanView.ID);
-		layout.getViewLayout(ScanModuleView.ID).setCloseable(false);
-		
-		/*layout.addStandaloneView(IPageLayout.ID_OUTLINE, true, IPageLayout.TOP,
-				0.67f, ErrorView.ID);*/
-		
-		layout.addView(ChainView.ID, IPageLayout.BOTTOM, 0.35f, ScanView.ID);
-		layout.getViewLayout(ChainView.ID).setCloseable(false);
-		
-		layout.addView(AxesChannelsView.ID, IPageLayout.BOTTOM, 0.28f, ChainView.ID);
-		layout.getViewLayout(AxesChannelsView.ID).setCloseable(false);
-		
-		layout.addView(PlotWindowView.ID, 
-				IPageLayout.BOTTOM, 0.70f, ScanModuleView.ID);
-		layout.getViewLayout(PlotWindowView.ID).setCloseable(false);
-		
-		IFolderLayout plotViewFolder = layout.createFolder("PlotViewFolder", 
-				IPageLayout.BOTTOM, 0.60f, editorArea);
-		plotViewFolder.addPlaceholder("PlotView:*");
-		
-		/*layout.addView(ScanModuleView.ID, IPageLayout.BOTTOM, 0.28f, ChainView.ID);
-		layout.getViewLayout(ScanModuleView.ID).setCloseable(false);
+		layout.addView(MotorAxisView.ID, IPageLayout.RIGHT, 0.55f, ChainView.ID);
+		layout.getViewLayout(MotorAxisView.ID).setCloseable(false);
 		
 		layout.addView(DetectorChannelView.ID, 
 				IPageLayout.BOTTOM, 0.33f, MotorAxisView.ID);
 		layout.getViewLayout(DetectorChannelView.ID).setCloseable(false);
 		
 		layout.addView(PlotWindowView.ID, 
-				IPageLayout.BOTTOM, 0.40f, DetectorChannelView.ID);
+				IPageLayout.BOTTOM, 0.5f, DetectorChannelView.ID);
 		layout.getViewLayout(PlotWindowView.ID).setCloseable(false);
+		
+		IFolderLayout scanModuleViewsFolder = layout.createFolder(
+				"ScanModuleViews", IPageLayout.BOTTOM, 0.28f, ChainView.ID);
+		scanModuleViewsFolder.addView(AxesChannelsView.ID);
+		layout.getViewLayout(AxesChannelsView.ID).setCloseable(false);
+		scanModuleViewsFolder.addView(ScanModuleView.ID);
+		layout.getViewLayout(ScanModuleView.ID).setCloseable(false);
 		
 		IFolderLayout plotViewFolder = layout.createFolder("PlotViewFolder", 
 				IPageLayout.BOTTOM, 0.60f, editorArea);
-		plotViewFolder.addPlaceholder("PlotView:*");*/
+		plotViewFolder.addPlaceholder("PlotView:*");
 	}
 }

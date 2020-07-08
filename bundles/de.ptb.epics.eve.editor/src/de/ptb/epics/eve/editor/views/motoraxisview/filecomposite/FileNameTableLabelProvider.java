@@ -14,8 +14,8 @@ import de.ptb.epics.eve.util.math.statistics.DescriptiveStats;
  * @since 1.10
  */
 public class FileNameTableLabelProvider implements ITableLabelProvider {
-	
 	private static final String NOT_AVAILABLE = "N/A";
+	private static final String FORMATTER_STRING = "%12.4g";
 	
 	/**
 	 * {@inheritDoc}
@@ -30,24 +30,43 @@ public class FileNameTableLabelProvider implements ITableLabelProvider {
 	 */
 	@Override
 	public String getColumnText(Object element, int columnIndex) {
-		DescriptiveStats stats = (DescriptiveStats)element;
 		Formatter formatter = new Formatter(new Locale(
 				Locale.ENGLISH.getCountry()));
+		DescriptiveStats stats = (DescriptiveStats)element;
+		String result = null;
 		switch(columnIndex) {
 		case 0: // # points
 			return Long.toString(stats.getSampleSize());
-		case 1: // min
+		case 1: // 1st
+			result = formatter.format(FORMATTER_STRING, 
+					stats.getFirstValue()).toString();
+			break;
+		case 2: // last
+			result = formatter.format(FORMATTER_STRING, 
+					stats.getLastValue()).toString();
+			break;
+		case 3: // min
 			if (stats.getMinimum() != null) {
-			return formatter.format("%12.4g", stats.getMinimum()).toString();
-			} 
-			return FileNameTableLabelProvider.NOT_AVAILABLE;
-		case 2: // max
-			if (stats.getMaximum() != null) {
-			return formatter.format("%12.4g", stats.getMaximum()).toString();
+				result = formatter.format(FORMATTER_STRING, 
+					stats.getMinimum()).toString();
+			} else {
+				result = FileNameTableLabelProvider.NOT_AVAILABLE;
 			}
-			return FileNameTableLabelProvider.NOT_AVAILABLE;
+			break;
+		case 4: // max
+			if (stats.getMaximum() != null) {
+				result = formatter.format(FORMATTER_STRING, 
+					stats.getMaximum()).toString();
+			} else {
+				result = FileNameTableLabelProvider.NOT_AVAILABLE;
+			}
+			break;
+		default:
+			result = FileNameTableLabelProvider.NOT_AVAILABLE;
+			break;
 		}
-		return null;
+		formatter.close();
+		return result;
 	}
 
 	/**
@@ -63,6 +82,7 @@ public class FileNameTableLabelProvider implements ITableLabelProvider {
 	 */
 	@Override
 	public void dispose() {
+		// not needed
 	}
 
 	/**
@@ -70,6 +90,7 @@ public class FileNameTableLabelProvider implements ITableLabelProvider {
 	 */
 	@Override
 	public void addListener(ILabelProviderListener listener) {
+		// not needed
 	}
 
 	/**
@@ -77,5 +98,6 @@ public class FileNameTableLabelProvider implements ITableLabelProvider {
 	 */
 	@Override
 	public void removeListener(ILabelProviderListener listener) {
+		// not needed
 	}
 }

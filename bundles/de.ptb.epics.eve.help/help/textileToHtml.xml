@@ -8,14 +8,14 @@
 
 	<path id="wikitext.classpath">
 		<fileset dir="${eclipse_dir}/plugins">
-			<include name="org.eclipse.mylyn.wikitext.*core*.jar"/>
+			<include name="org.eclipse.mylyn.wikitext*.jar"/>
 			<include name="com.google.*.jar"/>
 		</fileset>
 	</path>
-	
+		
 	<taskdef classpathref="wikitext.classpath" 
-	resource="org/eclipse/mylyn/wikitext/core/ant/tasks.properties" />
-  
+		resource="org/eclipse/mylyn/wikitext/ant/tasks.properties" />
+	
 	<target name="generate-html" 
 			description="Generate HTML from textile source">
 		<wikitext-to-html markupLanguage="Textile" multipleOutputFiles="true" 

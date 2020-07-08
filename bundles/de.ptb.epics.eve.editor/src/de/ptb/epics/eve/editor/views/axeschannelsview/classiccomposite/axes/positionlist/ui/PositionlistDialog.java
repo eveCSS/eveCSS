@@ -13,6 +13,7 @@ import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -53,17 +54,15 @@ public class PositionlistDialog extends DialogCellEditorDialog implements Proper
 	protected Control createDialogArea(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NONE);
 		GridLayout gridLayout = new GridLayout();
-		// gridLayout.numColumns = 3;
 		composite.setLayout(gridLayout);
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
+		gridData.verticalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
 		gridData.minimumWidth = 400;
 		composite.setLayoutData(gridData);
 
-		// TODO clear button
-		// TODO reset button (for discrete: clear and fill with default values)
-		
 		positionlistText = new Text(composite, 
 				SWT.BORDER | SWT.V_SCROLL | SWT.WRAP);
 		gridData = new GridData();
@@ -91,6 +90,14 @@ public class PositionlistDialog extends DialogCellEditorDialog implements Proper
 		this.countPositions();
 		
 		return composite;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected Point getInitialSize() {
+		return new Point(450,250);
 	}
 	
 	private void createBinding() {

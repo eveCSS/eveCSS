@@ -2,8 +2,20 @@ h1(eveTopic). Add Devices to a Scan Module
 
 p. To add a device (e.g. a motor axis) to a scan module follow these steps:
 
-# Select the scan module where the device should be added to by (left-)clicking on it. ==<br/>==!(eveImage)../../img/tasks/adddevicetoscanmodule-selectscanmodule.png(select the scan module by clicking on it)! ==<br/>== The previously empty scan module view now shows the scan module just selected.<br/> !(eveImage)../../img/tasks/adddevicetoscanmodule-selectscanmodule2.png(previously empty scan module view gets filled)!
-# Right click in the white area below the "Motor Axes" tab to open a context menu showing all devices (ordered by classes). Navigate to the axis you want to add and click on it. Note that depending on your current location (test site) and configuration (class names) different devices "will be shown":../reference/deviceclasses.html. ==<br/>== !(eveImage)../../img/tasks/adddevicetoscanmodule-rightclickmenu.png(context menu showing available motor axes)!
-# The previously added motor axes is now shown in the table. ==<br/>== !(eveImage)../../img/tasks/adddevicetoscanmodule-done.png(motor axis has been added)!
+p. In the Editor, select the scan module the device should be added to by (left-)clicking on it: 
 
-p. To add a detector channel simply change the active tab in step 2 before right clicking to open the context menu. How to set properties of devices is described "here":manipulatepropertiesofdevice.html.
+p=. !(eveImage)../../img/tasks/adddevicestosm/adddevicestosm-clickonsm.png(select the scan module by clicking on it)!
+
+p. The previously empty SM Axes / Channels View and Scan Module View now show the contents of the scan module just selected.
+
+p=. !(eveImage)../../img/tasks/adddevicestosm/adddevicestosm-views.png(previously empty scan module views get filled)!
+
+p. To add an axis or channel to the selected scan module select the SM Axes / Channels View and (right-)click in the white area of the corresponding table to open a context menu showing all devices (ordered by classes). Navigate to the axis you want to add and click on it (or click on add all to add all devices of the class). Note that depending on the current device definition and configuration (class names) "different devices are shown":../reference/deviceclasses.html.
+
+p=. !(eveImage)../../img/tasks/adddevicestosm/adddevicestosm-addmotor.png(context menu showing available motors which can be selected to add them to the scan module)!
+
+p. To add a pre-/postscan, positioning or plot select the Scan Module View and follow the steps analog to adding an axis or channel.
+
+p=. !(eveImage)../../img/tasks/adddevicestosm/adddevicestosm-adddevice.png(context menu showing avaiable prescans which can be selected to add them to the scan module)!
+
+p. Be sure to checkout the other task entries on how to edit properties of an "axis":editaxisproperties.html, a "channel":editchannelproperties.html and other "devices":manipulatepropertiesofdevice.html.

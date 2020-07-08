@@ -31,7 +31,7 @@ public class DescriptiveStats {
 		this.maximum = null;
 		this.deviation = null;
 		this.median = null;
-		this.size = 0;
+		this.size = sample.size();
 	}
 	
 	/**
@@ -43,7 +43,7 @@ public class DescriptiveStats {
 	 * @param sampleSize the sample size
 	 */
 	public DescriptiveStats(int sampleSize) {
-		this.sample = new ArrayList<Double>();
+		this.sample = new ArrayList<>();
 		this.mean = null;
 		this.minimum = null;
 		this.maximum = null;
@@ -110,5 +110,21 @@ public class DescriptiveStats {
 	 */
 	public Long getSampleSize() {
 		return this.size;
+	}
+	
+	/**
+	 * @return the first value
+	 * @since 1.34
+	 */
+	public Double getFirstValue() {
+		return this.sample.get(0);
+	}
+	
+	/**
+	 * @return the last value
+	 * @since 1.34
+	 */
+	public Double getLastValue() {
+		return this.sample.get(this.sample.size()-1);
 	}
 }

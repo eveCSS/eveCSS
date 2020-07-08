@@ -63,7 +63,7 @@ public class AxesCAComposite extends Composite implements PropertyChangeListener
 		this.progressBar.setMaximum(100);
 		this.progressBar.setSelection(0);
 		GridData gridData = new GridData();
-		gridData.grabExcessHorizontalSpace = true;
+		gridData.widthHint = 520;
 		gridData.grabExcessVerticalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		this.progressBar.setLayoutData(gridData);

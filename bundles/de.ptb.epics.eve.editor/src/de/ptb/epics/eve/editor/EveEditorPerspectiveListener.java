@@ -3,7 +3,9 @@ package de.ptb.epics.eve.editor;
 import org.apache.log4j.Logger;
 import org.eclipse.ui.IPerspectiveDescriptor;
 import org.eclipse.ui.IPerspectiveListener;
+import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
 
 /**
  * <code>EveEditorPerspectiveListener</code> listens to perspective changes of
@@ -39,6 +41,16 @@ public class EveEditorPerspectiveListener implements IPerspectiveListener {
 					+ Activator.getDefault()
 					.getMeasuringStation().getVersion()
 					+ ")");
+			
+			IViewReference[] references = page.getViewReferences();
+			for (IViewReference reference : references) {
+				try {
+					page.showView(reference.getId(), null, 
+							IWorkbenchPage.VIEW_CREATE);
+				} catch (PartInitException e) {
+					logger.error(e.getMessage(), e);
+				}
+			}
 		}
 	}
 

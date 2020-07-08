@@ -2,6 +2,8 @@
 <?NLS TYPE="org.eclipse.help.toc"?>
 
 <toc label="Reference">
+   <topic href="help/content/reference/scanproperties.html" label="Scan Properties">
+   </topic>
    <topic href="help/content/reference/chainproperties.html" label="Chain Properties">
    </topic>
    <topic href="help/content/reference/scanmoduleproperties.html" label="Scan Module Properties">
