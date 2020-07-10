@@ -45,6 +45,12 @@ import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.ui.Dialog
  * @since 1.34
  */
 public class ChannelIntervalDialog extends DialogCellEditorDialog {
+	
+	private static final String TOOLTIP_TRIGGER_INTERVAL = 
+			"The interval/rate measurements are taken in seconds.";
+	private static final String TOOLTIP_STOPPED_BY = 
+			"The channel which when finished stops the mean calculation.";
+	
 	/*
 	 * indentation used for text input layout to leave space for decorators
 	 */
@@ -87,6 +93,7 @@ public class ChannelIntervalDialog extends DialogCellEditorDialog {
 
 		Label triggerIntervalLabel = new Label(composite, SWT.NONE);
 		triggerIntervalLabel.setText("Trigger Interval:");
+		triggerIntervalLabel.setToolTipText(TOOLTIP_TRIGGER_INTERVAL);
 		
 		triggerIntervalText = new Text(composite, SWT.BORDER);
 		gridData = new GridData();
@@ -103,6 +110,7 @@ public class ChannelIntervalDialog extends DialogCellEditorDialog {
 		
 		Label stoppedByLabel = new Label(composite, SWT.NONE);
 		stoppedByLabel.setText("Stopped By:");
+		stoppedByLabel.setToolTipText(TOOLTIP_STOPPED_BY);
 		
 		stoppedByComboViewer = new ComboViewer(composite, 
 				SWT.BORDER | SWT.READ_ONLY);
