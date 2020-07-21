@@ -5,7 +5,7 @@ h2(eveTopic). Version 1.34.0 (2020-XX-YY)
 * [Feature-#5458] template file @bamlineIK342.xtmpl@ renamed to @ik342.xtmpl@, modify xsubst Files
 * [Feature-#5450] new template file @basicAiDetector.xtmpl@ (Ai = analog in) with more Options than a @basicDetector.xtmpl@
 * [Feature-#5447] new template file @ik320.xtmpl@
-* [Feature-#5427] template files @areaDetFileName.xtmpl@ and @areaDetFileNumber.xtmpl@ modified: Filetype removed from template, Filetype must be set in PV variable
+* [Feature-#5427] template files @areaDetFileName.xtmpl@ and @areaDetFileNumber.xtmpl@ modified: Filetype removed from template, Filetype must set in PV variable
 
 <hr/>
 
