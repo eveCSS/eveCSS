@@ -1,6 +1,6 @@
 h1(eveTopic). What's New in EVE
 
-h2(eveTopic). Version 1.34.0 (2020-XX-YY)
+h2(eveTopic). Version 1.34.0 (2020-07-31)
 
 * [Feature-#5458] template file @bamlineIK342.xtmpl@ renamed to @ik342.xtmpl@, modify xsubst Files
 * [Feature-#5450] new template file @basicAiDetector.xtmpl@ (Ai = analog in) with more Options than a @basicDetector.xtmpl@
