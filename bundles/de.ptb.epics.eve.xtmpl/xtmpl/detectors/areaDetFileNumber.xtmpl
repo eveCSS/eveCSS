@@ -12,7 +12,7 @@
             	</trigger>
                 <option>
                     <name>Filepath</name>
-                    <id>Det${PV}Filepath</id>
+                    <id>Det${PV}FilePath</id>
                     <value>
                         <access method="GETPUTCB" transport="ca" type="string">${PV}FilePath {"longString":true}</access>
                     </value>
@@ -20,7 +20,7 @@
                 </option>
                 <option>
                     <name>Filename</name>
-                    <id>Det${PV}Filename</id>
+                    <id>Det${PV}FileName</id>
                     <value>
                         <access method="GETPUTCB" transport="ca" type="string">${PV}FileName {"longString":true}</access>
                     </value>
@@ -28,7 +28,7 @@
                 </option>
                 <option>
                     <name>Filenumber</name>
-                    <id>Det${PV}Filenumber</id>
+                    <id>Det${PV}FileNumber</id>
                     <value>
                         <access method="GETPUTCB" transport="ca" type="string">${PV}FileNumber</access>
                     </value>
