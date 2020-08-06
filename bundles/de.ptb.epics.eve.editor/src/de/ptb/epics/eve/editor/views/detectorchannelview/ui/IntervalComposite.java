@@ -52,6 +52,11 @@ public class IntervalComposite extends DetectorChannelViewComposite
 	private static final Logger LOGGER = Logger.getLogger(
 			IntervalComposite.class.getName());
 	
+	private static final String TOOLTIP_TRIGGER_INTERVAL = 
+			"The interval/rate measurements are taken in seconds.";
+	private static final String TOOLTIP_STOPPED_BY = 
+			"The channel which when finished stops the mean calculation.";
+	
 	private Label triggerIntervalLabel;
 	private Text triggerIntervalText;
 	private Label stoppedByLabel;
@@ -81,6 +86,7 @@ public class IntervalComposite extends DetectorChannelViewComposite
 		
 		this.triggerIntervalLabel = new Label(this, SWT.NONE);
 		this.triggerIntervalLabel.setText("Trigger Interval:");
+		this.triggerIntervalLabel.setToolTipText(TOOLTIP_TRIGGER_INTERVAL);
 		
 		this.triggerIntervalText = new Text(this, SWT.BORDER);
 		GridData gridData = new GridData();
@@ -91,6 +97,7 @@ public class IntervalComposite extends DetectorChannelViewComposite
 		
 		this.stoppedByLabel = new Label(this, SWT.NONE);
 		this.stoppedByLabel.setText("Stopped By:");
+		this.stoppedByLabel.setToolTipText(TOOLTIP_STOPPED_BY);
 		
 		this.stoppedByComboViewer = new ComboViewer(
 				this, SWT.BORDER | SWT.READ_ONLY);

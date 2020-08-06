@@ -4,13 +4,13 @@
                 <name>${Name=""}</name>
                 <id>${PV}${Filetype=""}FullFilename</id>
                 <read>
-     			   <access monitor="true" method="${Method=GETCB}" transport="ca" type="string">${PV}FullFileName_RBV {"longString":true}</access>
+     			   <access monitor="true" method="${Method=GETCB}" transport="ca" type="string">${PV}:FullFileName_RBV {"longString":true}</access>
                 </read>
                 <option>
                     <name>Filepath</name>
-                    <id>Det${PV}Filepath</id>
+                    <id>DetName${PV}Filepath</id>
                     <value>
-                        <access method="GETPUTCB" transport="ca" type="string">${PV}FilePath {"longString":true}</access>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}:FilePath {"longString":true}</access>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
@@ -18,32 +18,32 @@
                     <name>Filename</name>
                     <id>Det${PV}Filename</id>
                     <value>
-                        <access method="GETPUTCB" transport="ca" type="string">${PV}FileName {"longString":true}</access>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}:FileName {"longString":true}</access>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
                 <option>
                     <name>Filenumber</name>
-                    <id>Det${PV}Filenumber</id>
+                    <id>DetName${PV}Filenumber</id>
                     <value>
-                        <access method="GETPUTCB" transport="ca" type="string">${PV}FileNumber</access>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}:FileNumber</access>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
                 <option>
                     <name>Severity</name>
-                    <id>Det${PV}FullFileName_RBV.SEVR</id>
+                    <id>Det${PV}:FullFileName_RBV.SEVR</id>
                     <value>
-                        <access method="GETCB" monitor="true" transport="ca" type="string">${PV}FullFileName_RBV.SEVR</access>
+                        <access method="GETCB" monitor="true" transport="ca" type="string">${PV}:FullFileName_RBV.SEVR</access>
                     	<value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
                 <option>
                     <name>Status</name>
-                    <id>Det${PV}FullFileName_RBV.STAT</id>
+                    <id>Det${PV}:FullFileName_RBV.STAT</id>
                     <value>
-                        <access method="GETCB" monitor="true" transport="ca" type="string">${PV}FullFileName_RBV.STAT</access>
+                        <access method="GETCB" monitor="true" transport="ca" type="string">${PV}:FullFileName_RBV.STAT</access>
                         <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
                     </value>
                     <displaygroup>detail</displaygroup>

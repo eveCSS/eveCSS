@@ -61,6 +61,24 @@ import de.ptb.epics.eve.util.ui.swt.TextSelectAllMouseListener;
  */
 public class ChannelStandardDialog extends DialogCellEditorDialog 
 		implements IModelUpdateListener {
+	
+	private static final String TOOLTIP_AVERAGE = "Determines how many " +
+		"channel readings are taken to calculate the average. ";
+	private static final String TOOLTIP_MAX_DEVIATION = "The deviation of " +
+		"the first two measured values must be less or equal then the given " +
+		"value in percent to be valid. If that constraint ist not fulfilled, " +
+		"the first measured value is discarded and a new value is taken " +
+		"until the condition is met.";
+	private static final String TOOLTIP_MINIMUM = "If the first measured " +
+		"value (absolute) is greater than or equal the given value a " +
+		"tolerance check is conducted. ";
+	private static final String TOOLTIP_MAX_ATTEMPTS = "If the tolerance " +
+		"check failed the given value amount of times, the check is " +
+		"stopped an the next values are used for the average " +
+		"calculation. If Max. Attempts = 0, no tolerance check is conducted.";
+	private static final String TOOLTIP_REDO_EVENTS = "Events which when " +
+		"occurring restart the channel calculation are defined here.";
+	
 	/*
 	 * indentation used for text input layout to leave space for decorators
 	 */
@@ -108,6 +126,7 @@ public class ChannelStandardDialog extends DialogCellEditorDialog
 
 		Label averageLabel = new Label(composite, SWT.NONE);
 		averageLabel.setText("Average:");
+		averageLabel.setToolTipText(TOOLTIP_AVERAGE);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		averageLabel.setLayoutData(gridData);
@@ -124,6 +143,7 @@ public class ChannelStandardDialog extends DialogCellEditorDialog
 
 		Label maxDeviationLabel = new Label(composite, SWT.NONE);
 		maxDeviationLabel.setText("Max. Deviation (%):");
+		maxDeviationLabel.setToolTipText(TOOLTIP_MAX_DEVIATION);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		maxDeviationLabel.setLayoutData(gridData);
@@ -143,7 +163,7 @@ public class ChannelStandardDialog extends DialogCellEditorDialog
 
 		Label minimumLabel = new Label(composite, SWT.NONE);
 		minimumLabel.setText("Minimum:");
-		minimumLabel.setToolTipText("for values < minimum no deviation check");
+		minimumLabel.setToolTipText(TOOLTIP_MINIMUM);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		minimumLabel.setLayoutData(gridData);
@@ -160,7 +180,7 @@ public class ChannelStandardDialog extends DialogCellEditorDialog
 
 		Label maxAttemptsLabel = new Label(composite, SWT.NONE);
 		maxAttemptsLabel.setText("Max. Attempts:");
-		maxAttemptsLabel.setToolTipText("Maximum attempts to calculate deviation");
+		maxAttemptsLabel.setToolTipText(TOOLTIP_MAX_ATTEMPTS);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		maxAttemptsLabel.setLayoutData(gridData);
@@ -179,6 +199,7 @@ public class ChannelStandardDialog extends DialogCellEditorDialog
 
 		Label redoEventsLabel = new Label(composite, SWT.NONE);
 		redoEventsLabel.setText("Redo Events:");
+		redoEventsLabel.setToolTipText(TOOLTIP_REDO_EVENTS);
 		gridData = new GridData();
 		gridData.horizontalSpan = 2;
 		gridData.horizontalAlignment = SWT.LEFT;

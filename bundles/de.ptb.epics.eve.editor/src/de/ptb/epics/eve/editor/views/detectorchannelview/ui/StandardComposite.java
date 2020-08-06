@@ -54,6 +54,24 @@ public class StandardComposite extends DetectorChannelViewComposite
 	private static final Logger LOGGER = Logger.getLogger(
 			StandardComposite.class.getName());
 	
+	private static final String TOOLTIP_AVERAGE = "Determines how many " +
+		"channel readings are taken to calculate the average. ";
+	private static final String TOOLTIP_MAX_DEVIATION = "The deviation of " +
+		"the first two measured values must be less or equal then the given " +
+		"value in percent to be valid. If that constraint ist not fulfilled, " +
+		"the first measured value is discarded and a new value is taken " +
+		"until the condition is met.";
+	private static final String TOOLTIP_MINIMUM = "If the first measured " +
+		"value (absolute) is greater than or equal the given value a " +
+		"tolerance check is conducted. ";
+	private static final String TOOLTIP_MAX_ATTEMPTS = "If the tolerance " +
+		"check failed the given value amount of times, the check is " +
+		"stopped an the next values are used for the average " +
+		"calculation. If Max. Attempts = 0, no tolerance check is conducted.";
+	private static final String TOOLTIP_DEFERRED = "If set, this channel is " + 
+		"triggered after all other channels in the same scan module " + 
+		"(which are not deferred) are read";
+	
 	private Label averageLabel;
 	private Text averageText;
 	private Label maxDeviationLabel;
@@ -97,6 +115,7 @@ public class StandardComposite extends DetectorChannelViewComposite
 		
 		this.averageLabel = new Label(this, SWT.NONE);
 		this.averageLabel.setText("Average:");
+		this.averageLabel.setToolTipText(TOOLTIP_AVERAGE);
 		GridData gridData;
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -114,6 +133,7 @@ public class StandardComposite extends DetectorChannelViewComposite
 		
 		this.maxDeviationLabel = new Label(this, SWT.NONE);
 		this.maxDeviationLabel.setText("Max. Deviation (%):");
+		this.maxDeviationLabel.setToolTipText(TOOLTIP_MAX_DEVIATION);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		this.maxDeviationLabel.setLayoutData(gridData);
@@ -130,7 +150,7 @@ public class StandardComposite extends DetectorChannelViewComposite
 		
 		this.minimumLabel = new Label(this, SWT.NONE);
 		this.minimumLabel.setText("Minimum:");
-		this.minimumLabel.setToolTipText("for values < minimum no deviation check");
+		this.minimumLabel.setToolTipText(TOOLTIP_MINIMUM);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		this.minimumLabel.setLayoutData(gridData);
@@ -147,7 +167,7 @@ public class StandardComposite extends DetectorChannelViewComposite
 		
 		this.maxAttemptsLabel = new Label(this, SWT.NONE);
 		this.maxAttemptsLabel.setText("Max. Attempts:");
-		this.maxAttemptsLabel.setToolTipText("Maximum attemps to calculate deviation:");
+		this.maxAttemptsLabel.setToolTipText(TOOLTIP_MAX_ATTEMPTS);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		this.maxAttemptsLabel.setLayoutData(gridData);
@@ -164,6 +184,7 @@ public class StandardComposite extends DetectorChannelViewComposite
 		
 		this.deferredCheckBox = new Button(this, SWT.CHECK);
 		this.deferredCheckBox.setText("Deferred Trigger");
+		this.deferredCheckBox.setToolTipText(TOOLTIP_DEFERRED);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 2;
