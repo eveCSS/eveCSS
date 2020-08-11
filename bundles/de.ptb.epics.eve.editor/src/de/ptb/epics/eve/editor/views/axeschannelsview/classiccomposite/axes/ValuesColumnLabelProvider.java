@@ -23,6 +23,7 @@ import de.ptb.epics.eve.data.scandescription.errors.IModelError;
  * @since 1.34
  */
 public class ValuesColumnLabelProvider extends ColumnLabelProvider {
+	private static final int POSITIONLIST_COUNT_TOOLTIP_THRESHOLD = 50;
 	
 	/**
 	 * {@inheritDoc}
@@ -117,6 +118,9 @@ public class ValuesColumnLabelProvider extends ColumnLabelProvider {
 			if (axis.getMode() != null) {
 				String positions = ((RangeMode)axis.getMode()).getPositions();
 				int count = positions.split(",").length;
+				if (count > POSITIONLIST_COUNT_TOOLTIP_THRESHOLD) {
+					return count + " positions";
+				}
 				return positions + " (" + count + " positions)";
 			}
 			break;
