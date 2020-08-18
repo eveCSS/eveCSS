@@ -240,6 +240,8 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 		if (this.currentChannel != null) {
 			this.currentChannel.getScanModule().removePropertyChangeListener(
 					ScanModule.REMOVE_CHANNEL_PROP, this);
+			this.currentChannel.removePropertyChangeListener(
+					Channel.CHANNEL_MODE_PROP, this);
 			this.standardComposite.setChannel(null);
 			this.intervalComposite.setChannel(null);
 		}
@@ -250,6 +252,8 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 			this.sc.setVisible(true);
 			this.currentChannel.getScanModule().addPropertyChangeListener(
 					ScanModule.REMOVE_CHANNEL_PROP, this);
+			this.currentChannel.addPropertyChangeListener(
+					Channel.CHANNEL_MODE_PROP, this);
 			this.setPartName(currentChannel.getAbstractDevice().getName());
 			this.acquisitionTypeComboViewer.getCombo().setText(
 					this.currentChannel.getChannelMode().toString());
@@ -384,6 +388,10 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 		if (evt.getPropertyName().equals(ScanModule.REMOVE_CHANNEL_PROP)
 				&& evt.getOldValue().equals(this.currentChannel)) {
 			this.setChannel(null);
+		} else if (evt.getPropertyName().equals(Channel.CHANNEL_MODE_PROP)) {
+			this.acquisitionTypeComboViewer.getCombo().setText(
+					this.currentChannel.getChannelMode().toString());
+			this.setComposite();
 		}
 	}
 	

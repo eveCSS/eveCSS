@@ -35,6 +35,8 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  */
 public class Axis extends AbstractMainPhaseBehavior implements
 		PropertyChangeListener {
+	public static final String STEPFUNCTION_PROP = "stepfunction";
+	
 	private static Logger logger = Logger.getLogger(Axis.class.getName());
 
 	private PropertyChangeSupport propertyChangeSupport;
@@ -156,6 +158,8 @@ public class Axis extends AbstractMainPhaseBehavior implements
 	 * @param stepfunction the step function to set
 	 */
 	public void setStepfunction(Stepfunctions stepfunction) {
+		Stepfunctions oldStepfunction = this.stepfunction;
+		
 		if (this.mode != null) {
 			this.mode.removePropertyChangeListener(this);
 		}
@@ -184,6 +188,8 @@ public class Axis extends AbstractMainPhaseBehavior implements
 			this.propertyChangeSupport.firePropertyChange(
 					AddMultiplyMode.MAIN_AXIS_PROP, this, null);
 		}
+		this.propertyChangeSupport.firePropertyChange(STEPFUNCTION_PROP, 
+				oldStepfunction, stepfunction);
 		updateListeners();
 	}
 
