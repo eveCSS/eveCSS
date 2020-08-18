@@ -4,6 +4,7 @@ h2(eveTopic). Version 1.34.1 (2020-08-17)
 
 * [Bug Fix-#5556] Fixed a bug where the stepfunction could not be changed for discrete motor axes in the Axes Channels View.
 * [Bug Fix-#5544] Fixed a bug where the motor axis and detector channel views did not refresh after changing motor axis stepfunction or detector channel acquisition type.
+* [Bug Fix-#5443] Fixed a bug where the program crashed trying to show a range tooltip with "too much" values (now limited to 50).
 
 h2(eveTopic). Version 1.34.0 (2020-07-31)
 
