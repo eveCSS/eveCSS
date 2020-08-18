@@ -38,6 +38,8 @@ public class ChannelTest implements PropertyChangeListener {
 	private boolean triggerInterval;
 	private boolean stoppedBy;
 	
+	private boolean channelMode;
+	
 	@Test(expected = IllegalStateException.class)
 	public void testStandardModeSetTriggerInterval() {
 		this.channel.setTriggerInterval(2.0);
@@ -216,6 +218,7 @@ public class ChannelTest implements PropertyChangeListener {
 		this.maxDeviation = false;
 		this.minimum = false;
 		this.normalizeChannel = false;
+		this.channelMode = false;
 		
 		// listen to properties
 		this.channel.addPropertyChangeListener(StandardMode.AVERAGE_COUNT_PROP, this);
@@ -223,6 +226,7 @@ public class ChannelTest implements PropertyChangeListener {
 		this.channel.addPropertyChangeListener(StandardMode.MAX_DEVIATION_PROP, this);
 		this.channel.addPropertyChangeListener(StandardMode.MINIMUM_PROP, this);
 		this.channel.addPropertyChangeListener(Channel.NORMALIZE_CHANNEL_PROP, this);
+		this.channel.addPropertyChangeListener(Channel.CHANNEL_MODE_PROP, this);
 		
 		// manipulate properties
 		this.channel.setAverageCount(0);
@@ -230,6 +234,7 @@ public class ChannelTest implements PropertyChangeListener {
 		this.channel.setMaxDeviation(1.0);
 		this.channel.setMinimum(1.0);
 		this.channel.setNormalizeChannel(null);
+		this.channel.setChannelMode(ChannelModes.INTERVAL);
 		
 		// check whether the manipulation was notified
 		assertTrue(this.averageCount);
@@ -237,6 +242,7 @@ public class ChannelTest implements PropertyChangeListener {
 		assertTrue(this.maxDeviation);
 		assertTrue(this.minimum);
 		assertTrue(this.normalizeChannel);
+		assertTrue(this.channelMode);
 	}
 	
 	/**
@@ -278,6 +284,8 @@ public class ChannelTest implements PropertyChangeListener {
 			this.triggerInterval = true;
 		} else if(evt.getPropertyName().equals(IntervalMode.STOPPED_BY_PROP)) {
 			this.stoppedBy = true;
+		} else if (evt.getPropertyName().equals(Channel.CHANNEL_MODE_PROP)) {
+			this.channelMode = true;
 		}
 	}
 	

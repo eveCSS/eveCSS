@@ -29,6 +29,8 @@ import de.ptb.epics.eve.util.math.range.IntegerRange;
  * @since 1.34
  */
 public class RangeTextCellEditor extends TextCellEditor {
+	private static final int POSITIONLIST_COUNT_TOOLTIP_THRESHOLD = 50;
+	
 	private FieldDecorationRegistry registry = 
 			FieldDecorationRegistry.getDefault();
 	private Image errorImage = registry.getFieldDecoration(
@@ -105,11 +107,20 @@ public class RangeTextCellEditor extends TextCellEditor {
 			getControl().setToolTipText(getErrorMessage());
 			return;
 		}
+		
+		// cannot use model, because model is only updated AFTER <enter> is pressed
+		// i.e. value is applied to model
+		// here only a preview of current (not saved to model) input can be used !
 		String positionList = getPositionlist(((Text)getControl()).
 				getText(), axis);
-		int length = positionList.split(",").length;
-		getControl().setToolTipText(positionList + 
-				" (" + length + " positions)");
+		int positionCount = positionList.split(",").length;
+		
+		if (positionCount > POSITIONLIST_COUNT_TOOLTIP_THRESHOLD) {
+			getControl().setToolTipText(positionCount + " positions");
+		} else {
+			getControl().setToolTipText(positionList 
+					+ " (" + positionCount + " positions)");
+		}
 	}
 	
 	/*

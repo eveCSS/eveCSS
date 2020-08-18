@@ -8,8 +8,8 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.SWT;
@@ -241,6 +241,8 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 		
 		if (this.currentAxis != null) {
 			this.scanModule.removePropertyChangeListener("removeAxis", this);
+			this.currentAxis.removePropertyChangeListener(
+					Axis.STEPFUNCTION_PROP, this);
 			this.currentAxis.getMotorAxis().disconnect();
 		}
 		
@@ -254,6 +256,8 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 			
 			this.scanModule = this.currentAxis.getScanModule();
 			this.scanModule.addPropertyChangeListener("removeAxis", this);
+			this.currentAxis.addPropertyChangeListener(
+					Axis.STEPFUNCTION_PROP, this);
 			
 			this.setPartName(
 					this.currentAxis.getMotorAxis().getName());
@@ -409,6 +413,12 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 		if (e.getOldValue().equals(currentAxis)) {
 			// current Axis will be removed
 			setAxis(null);
+		} else if (e.getPropertyName().equals(Axis.STEPFUNCTION_PROP)) {
+			this.stepFunctionCombo.setItems(StringUtil.getStringList(
+					this.currentAxis.getStepfunctions()).toArray(new String[0]));
+			this.stepFunctionCombo.setText(
+					this.currentAxis.getStepfunction().toString());
+			this.setComposite();
 		}
 	}
 	
@@ -432,29 +442,14 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 				positionModeComboSelectionListener);
 	}	
 	
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of StepFunctionCombo.
-	 */
-	private class StepFunctionComboSelectionListener implements 
-					SelectionListener {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
-		
-		/**
-		 * {@inheritDoc}
-		 */
+	private class StepFunctionComboSelectionListener extends 
+					SelectionAdapter {
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			LOGGER.debug("step function modified");
 			if(currentAxis != null) {
 				if (currentAxis.getStepfunction().equals(
 						Stepfunctions.getEnum(stepFunctionCombo.getText()))) {
-					
 					return;
 				}
 				currentAxis.setStepfunction(Stepfunctions.getEnum(
@@ -470,22 +465,8 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 		}
 	}
 	
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of StepFunctionCombo.
-	 */
-	private class PositionModeComboSelectionListener implements 
-					SelectionListener {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
-		
-		/**
-		 * {@inheritDoc}
-		 */
+	private class PositionModeComboSelectionListener extends 
+					SelectionAdapter {
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			LOGGER.debug("position mode modified");

@@ -67,7 +67,16 @@ public class StepfunctionEditingSupport extends EditingSupport {
 	@Override
 	protected void setValue(Object element, Object value) {
 		int index = (Integer)value;
-		Stepfunctions[] stepFunctions = Stepfunctions.values();
-		((Axis)element).setStepfunction(stepFunctions[index]);
+		Axis axis = (Axis)element;
+		if (axis.getMotorAxis().getGoto().isDiscrete()) {
+			Stepfunctions[] stepfunctions = {
+					Stepfunctions.FILE, 
+					Stepfunctions.PLUGIN, 
+					Stepfunctions.POSITIONLIST};
+			axis.setStepfunction(stepfunctions[index]);
+		} else {
+			Stepfunctions[] stepFunctions = Stepfunctions.values();
+			((Axis)element).setStepfunction(stepFunctions[index]);
+		}
 	}
 }
