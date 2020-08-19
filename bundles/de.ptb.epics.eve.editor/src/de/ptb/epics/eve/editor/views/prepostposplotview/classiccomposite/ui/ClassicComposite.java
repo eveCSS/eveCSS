@@ -27,7 +27,7 @@ import de.ptb.epics.eve.editor.views.prepostposplotview.ui.PrePostPosPlotView;
  * @since 1.34
  */
 public class ClassicComposite extends AbstractScanModuleViewComposite {
-	private static final int TABLE_MIN_HEIGHT = 150;
+	private static final int TABLE_MIN_HEIGHT = 120;
 	
 	private static final String MEMENTO_PREPOST_SASH_WEIGHT = 
 			"prePostSashWeight";
@@ -110,6 +110,7 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 		plotLabel.setLayoutData(gridData);
 		this.createPlotTable(plotComposite);
 		
+		sc.setMinSize(sashForm.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		
 		this.parentView.getSite().getWorkbenchWindow().getSelectionService().
 			addSelectionListener(this);
@@ -249,7 +250,6 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 		memento.putInteger(MEMENTO_POSITIONING_SASH_WEIGHT, sashWeights[1]);
 		memento.putInteger(MEMENTO_PLOT_SASH_WEIGHT, sashWeights[2]);
 		// TODO table sort states
-		
 	}
 
 	/**
@@ -258,8 +258,18 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 	@Override
 	public void restoreState(IMemento memento) {
 		// TODO restore sash weights
-		
-		// TODO Auto-generated method stub
+		int[] sashWeights = new int[] {1,1,1};
+		if (memento.getInteger(MEMENTO_PREPOST_SASH_WEIGHT) != null) {
+			sashWeights[0] = memento.getInteger(MEMENTO_PREPOST_SASH_WEIGHT);
+		}
+		if (memento.getInteger(MEMENTO_POSITIONING_SASH_WEIGHT) != null) {
+			sashWeights[1] = memento.getInteger(MEMENTO_POSITIONING_SASH_WEIGHT);
+		}
+		if (memento.getInteger(MEMENTO_PLOT_SASH_WEIGHT) != null) {
+			sashWeights[2] = memento.getInteger(MEMENTO_PLOT_SASH_WEIGHT);
+		}
+		this.sashForm.setWeights(sashWeights);
+		// TODO table sort states
 		
 	}
 }
