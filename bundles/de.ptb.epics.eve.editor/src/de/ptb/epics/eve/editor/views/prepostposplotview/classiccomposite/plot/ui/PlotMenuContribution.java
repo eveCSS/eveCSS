@@ -1,24 +1,23 @@
-package de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite;
+package de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.plot.ui;
 
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.ui.actions.CompoundContributionItem;
 
 /**
  * @author Marcus Michalsky
- * @since 1.34
+ * @since 1.35
  */
-public class PrePostscanMenuContribution extends CompoundContributionItem {
+public class PlotMenuContribution extends CompoundContributionItem {
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected IContributionItem[] getContributionItems() {
-		
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -26,5 +25,4 @@ public class PrePostscanMenuContribution extends CompoundContributionItem {
 	public boolean isDynamic() {
 		return true;
 	}
-
 }

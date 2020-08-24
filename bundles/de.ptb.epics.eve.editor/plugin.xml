@@ -902,10 +902,42 @@
          </command>
       </menuContribution>
       <menuContribution
-            locationURI="popup:de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.popup">
+            locationURI="popup:de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepostscan.popup">
          <dynamic
-               class="de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.PrePostscanMenuContribution"
-               id="de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.popup.dynamic">
+               class="de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepostscan.ui.PrePostscanMenuContribution"
+               id="de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepostscan.popup.dynamic">
+         </dynamic>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positioning.popup">
+         <dynamic
+               class="de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positioning.ui.PositioningMenuContribution"
+               id="de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepost.positioning.popup.dynamic">
+         </dynamic>
+         <separator
+               name="de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positioningtable.remove.separator"
+               visible="true">
+         </separator>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.scanmodule.removepositionings"
+               icon="icons/rem_co.gif"
+               label="Remove Selected"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <not>
+                  <reference
+                        definitionId="de.ptb.epics.eve.editor.expressions.emptyselection">
+                  </reference>
+               </not>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.plot.popup">
+         <dynamic
+               class="de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.plot.ui.PlotMenuContribution"
+               id="de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepost.plot.popup.dynamic">
          </dynamic>
       </menuContribution>
       <menuContribution
@@ -1629,6 +1661,27 @@
                name="Event Identifier"
                optional="false">
          </commandParameter>
+      </command>
+      <category
+            id="de.ptb.epics.eve.editor.category.prepostposplotview"
+            name="PrePostPosPlotView">
+      </category>
+      <command
+            categoryId="de.ptb.epics.eve.editor.category.prepostposplotview"
+            defaultHandler="de.ptb.epics.eve.editor.handler.prepostposplotview.AddPositioningDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.scanmodule.addpositioning"
+            name="Add Positioning">
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.scanmodule.addpositioning.motoraxisid"
+               name="MotorAxis Id"
+               optional="false">
+         </commandParameter>
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.category.prepostposplotview"
+            defaultHandler="de.ptb.epics.eve.editor.handler.prepostposplotview.RemovePositioningsDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.scanmodule.removepositionings"
+            name="Remove Positionings">
       </command>
    </extension>
    <extension

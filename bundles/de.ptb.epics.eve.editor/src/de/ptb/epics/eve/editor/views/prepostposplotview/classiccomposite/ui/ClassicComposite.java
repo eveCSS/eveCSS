@@ -4,9 +4,13 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -16,10 +20,14 @@ import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchActionConstants;
 
+import de.ptb.epics.eve.data.measuringstation.MotorAxis;
+import de.ptb.epics.eve.data.scandescription.Positioning;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
+import de.ptb.epics.eve.editor.handler.prepostposplotview.RemovePositioningsDefaultHandler;
 import de.ptb.epics.eve.editor.views.AbstractScanModuleViewComposite;
+import de.ptb.epics.eve.editor.views.DelColumnEditingSupport;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positioning.ui.ChannelEditingSupport;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positioning.ui.NormalizeEditingSupport;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positioning.ui.PluginEditingSupport;
@@ -122,7 +130,7 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 	}
 	
 	private void createPrePostScanTable(Composite parent) {
-		this.prePostscanTable = new TableViewer(parent, SWT.BORDER);
+		this.prePostscanTable = new TableViewer(parent, SWT.BORDER | SWT.MULTI);
 		this.prePostscanTable.getTable().setHeaderVisible(true);
 		this.prePostscanTable.getTable().setLinesVisible(true);
 		GridData gridData = new GridData();
@@ -140,8 +148,15 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 		this.prePostscanTable.getTable().setMenu(
 			menuManager.createContextMenu(this.prePostscanTable.getTable()));
 		this.parentView.getSite().registerContextMenu(
-			"de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.popup", 
+			"de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepostscan.popup", 
 			menuManager, this.prePostscanTable);
+		
+		this.prePostscanTable.getTable().addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				getParentView().setSelectionProvider(prePostscanTable);
+			}
+		});
 	}
 	
 	private void createPrePostScanTableColumns(TableViewer viewer) {
@@ -166,7 +181,7 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 	}
 	
 	private void createPositioningTable(Composite parent) {
-		this.positioningTable = new TableViewer(parent, SWT.BORDER);
+		this.positioningTable = new TableViewer(parent, SWT.BORDER | SWT.MULTI);
 		this.positioningTable.getTable().setHeaderVisible(true);
 		this.positioningTable.getTable().setLinesVisible(true);
 		GridData gridData = new GridData();
@@ -183,6 +198,32 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 				new PositioningContentProvider());
 		this.positioningTable.setLabelProvider(
 				new PositioningLabelProvider());
+		
+		this.positioningTable.setSorter(new ViewerSorter() {
+			@Override
+			public int compare(Viewer viewer, Object e1, Object e2) {
+				MotorAxis axis1 = ((Positioning)e1).getMotorAxis();
+				MotorAxis axis2 = ((Positioning)e2).getMotorAxis();
+				return axis1.getName().toLowerCase().compareTo(
+						axis2.getName().toLowerCase());
+			}
+		});
+		
+		MenuManager menuManager = new MenuManager();
+		menuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		menuManager.setRemoveAllWhenShown(true);
+		this.positioningTable.getTable().setMenu(
+			menuManager.createContextMenu(this.positioningTable.getTable()));
+		this.parentView.getSite().registerContextMenu(
+			"de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positioning.popup", 
+			menuManager, this.prePostscanTable);
+		
+		this.positioningTable.getTable().addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				getParentView().setSelectionProvider(positioningTable);
+			}
+		});
 	}
 	
 	private void createPositioningTableColumns(TableViewer viewer) {
@@ -190,7 +231,8 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 				viewer, SWT.CENTER);
 		deleteColumn.getColumn().setText("");
 		deleteColumn.getColumn().setWidth(22);
-		// TODO EditingSupport
+		deleteColumn.setEditingSupport(new DelColumnEditingSupport(viewer, 
+				RemovePositioningsDefaultHandler.ID));
 		
 		TableViewerColumn axisColumn = new TableViewerColumn(viewer, SWT.LEFT);
 		axisColumn.getColumn().setText("Motor Axis");
@@ -220,7 +262,7 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 	}
 	
 	private void createPlotTable(Composite parent) {
-		this.plotTable = new TableViewer(parent, SWT.BORDER);
+		this.plotTable = new TableViewer(parent, SWT.BORDER | SWT.MULTI);
 		this.plotTable.getTable().setHeaderVisible(true);
 		this.plotTable.getTable().setLinesVisible(true);
 		GridData gridData = new GridData();
@@ -232,6 +274,22 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 		this.plotTable.getTable().setLayoutData(gridData);
 		
 		this.createPlotTableColumns(plotTable);
+		
+		MenuManager menuManager = new MenuManager();
+		menuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		menuManager.setRemoveAllWhenShown(true);
+		this.plotTable.getTable().setMenu(
+			menuManager.createContextMenu(this.plotTable.getTable()));
+		this.parentView.getSite().registerContextMenu(
+			"de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.plot.popup", 
+			menuManager, this.prePostscanTable);
+		
+		this.plotTable.getTable().addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				getParentView().setSelectionProvider(plotTable);
+			}
+		});
 	}
 	
 	private void createPlotTableColumns(TableViewer viewer) {
@@ -243,7 +301,7 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 	 */
 	@Override
 	public PrePostPosPlotView getParentView() {
-		return this.getParentView();
+		return (PrePostPosPlotView)this.parentView;
 	}
 	
 	/**
