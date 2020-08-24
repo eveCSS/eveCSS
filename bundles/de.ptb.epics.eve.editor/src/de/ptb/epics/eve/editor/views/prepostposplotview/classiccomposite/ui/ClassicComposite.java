@@ -20,6 +20,11 @@ import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.views.AbstractScanModuleViewComposite;
+import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positioning.ui.ChannelEditingSupport;
+import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positioning.ui.NormalizeEditingSupport;
+import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positioning.ui.PluginEditingSupport;
+import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positioning.ui.PositioningContentProvider;
+import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positioning.ui.PositioningLabelProvider;
 import de.ptb.epics.eve.editor.views.prepostposplotview.ui.PrePostPosPlotView;
 
 /**
@@ -173,10 +178,45 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 		this.positioningTable.getTable().setLayoutData(gridData);
 		
 		this.createPositioningTableColumns(positioningTable);
+		
+		this.positioningTable.setContentProvider(
+				new PositioningContentProvider());
+		this.positioningTable.setLabelProvider(
+				new PositioningLabelProvider());
 	}
 	
 	private void createPositioningTableColumns(TableViewer viewer) {
+		TableViewerColumn deleteColumn = new TableViewerColumn(
+				viewer, SWT.CENTER);
+		deleteColumn.getColumn().setText("");
+		deleteColumn.getColumn().setWidth(22);
+		// TODO EditingSupport
 		
+		TableViewerColumn axisColumn = new TableViewerColumn(viewer, SWT.LEFT);
+		axisColumn.getColumn().setText("Motor Axis");
+		axisColumn.getColumn().setWidth(160);
+		
+		TableViewerColumn pluginColumn = new TableViewerColumn(
+				viewer, SWT.LEFT);
+		pluginColumn.getColumn().setText("Plugin");
+		pluginColumn.getColumn().setWidth(120);
+		pluginColumn.setEditingSupport(new PluginEditingSupport(viewer));
+		
+		TableViewerColumn channelColumn = new TableViewerColumn(
+				viewer, SWT.LEFT);
+		channelColumn.getColumn().setText("Detector Channel");
+		channelColumn.getColumn().setWidth(160);
+		channelColumn.setEditingSupport(new ChannelEditingSupport(viewer));
+		
+		TableViewerColumn normalizeColumn = new TableViewerColumn(
+				viewer, SWT.LEFT);
+		normalizeColumn.getColumn().setText("Normalize Channel");
+		normalizeColumn.getColumn().setWidth(160);
+		normalizeColumn.setEditingSupport(new NormalizeEditingSupport(viewer));
+		
+		TableViewerColumn paramColumn = new TableViewerColumn(viewer, SWT.LEFT);
+		paramColumn.getColumn().setText("Parameters");
+		paramColumn.getColumn().setWidth(100);
 	}
 	
 	private void createPlotTable(Composite parent) {
@@ -223,7 +263,7 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 			this.scanModule.removeModelUpdateListener(this);
 		}
 		this.scanModule = scanModule;
-		// TODO set input to table ? model ?
+		this.positioningTable.setInput(scanModule);
 		if (this.scanModule != null) {
 			this.scanModule.addModelUpdateListener(this);
 		}
