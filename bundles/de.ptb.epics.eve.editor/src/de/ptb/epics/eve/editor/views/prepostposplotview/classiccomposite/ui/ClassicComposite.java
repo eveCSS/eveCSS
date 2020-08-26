@@ -2,6 +2,8 @@ package de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.ui;
 
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
@@ -11,16 +13,20 @@ import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IMemento;
+import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.PlatformUI;
 
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
+import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.Positioning;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
@@ -28,6 +34,13 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
 import de.ptb.epics.eve.editor.handler.prepostposplotview.RemovePositioningsDefaultHandler;
 import de.ptb.epics.eve.editor.views.AbstractScanModuleViewComposite;
 import de.ptb.epics.eve.editor.views.DelColumnEditingSupport;
+import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.plot.ui.IdColumnLabelProvider;
+import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.plot.ui.IdEditingSupport;
+import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.plot.ui.NameEditingSupport;
+import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.plot.ui.PlotContentProvider;
+import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.plot.ui.PreInitColumnLabelProvider;
+import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.plot.ui.PreInitEditingSupport;
+import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.plot.ui.XAxisColumnLabelProvider;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positioning.ui.ChannelEditingSupport;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positioning.ui.NormalizeEditingSupport;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positioning.ui.PluginEditingSupport;
@@ -275,6 +288,10 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 		
 		this.createPlotTableColumns(plotTable);
 		
+		this.plotTable.setContentProvider(new PlotContentProvider());
+		
+		ColumnViewerToolTipSupport.enableFor(plotTable);
+		
 		MenuManager menuManager = new MenuManager();
 		menuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 		menuManager.setRemoveAllWhenShown(true);
@@ -293,7 +310,55 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 	}
 	
 	private void createPlotTableColumns(TableViewer viewer) {
+		TableViewerColumn deleteColumn = new TableViewerColumn(viewer, 
+				SWT.CENTER);
+		deleteColumn.getColumn().setText("");
+		deleteColumn.getColumn().setWidth(22);
+		deleteColumn.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				return null;
+			}
+			@Override
+			public Image getImage(Object element) {
+				return PlatformUI.getWorkbench().getSharedImages().getImage(
+						ISharedImages.IMG_TOOL_DELETE);
+			}
+		});
+		// TODO EditingSupport
 		
+		TableViewerColumn idColumn = new TableViewerColumn(viewer, SWT.LEFT);
+		idColumn.getColumn().setText("Id");
+		idColumn.getColumn().setWidth(40);
+		idColumn.setLabelProvider(new IdColumnLabelProvider());
+		idColumn.setEditingSupport(new IdEditingSupport(viewer));
+		
+		TableViewerColumn nameColumn = new TableViewerColumn(viewer, SWT.LEFT);
+		nameColumn.getColumn().setText("Name");
+		nameColumn.getColumn().setWidth(120);
+		nameColumn.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				return ((PlotWindow)element).getName();
+			}
+			@Override
+			public String getToolTipText(Object element) {
+				return this.getText(element);
+			}
+		});
+		nameColumn.setEditingSupport(new NameEditingSupport(viewer));
+		
+		TableViewerColumn preInitColumn = new TableViewerColumn(viewer, 
+				SWT.CENTER);
+		preInitColumn.getColumn().setText("Init");
+		preInitColumn.getColumn().setWidth(35);
+		preInitColumn.setLabelProvider(new PreInitColumnLabelProvider());
+		preInitColumn.setEditingSupport(new PreInitEditingSupport(viewer));
+		
+		TableViewerColumn xAxisColumn = new TableViewerColumn(viewer, SWT.LEFT);
+		xAxisColumn.getColumn().setText("x-Axis");
+		xAxisColumn.getColumn().setWidth(100);
+		xAxisColumn.setLabelProvider(new XAxisColumnLabelProvider());
 	}
 
 	/**
@@ -322,6 +387,7 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 		}
 		this.scanModule = scanModule;
 		this.positioningTable.setInput(scanModule);
+		this.plotTable.setInput(scanModule);
 		if (this.scanModule != null) {
 			this.scanModule.addModelUpdateListener(this);
 		}

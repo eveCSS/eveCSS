@@ -935,10 +935,42 @@
       </menuContribution>
       <menuContribution
             locationURI="popup:de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.plot.popup">
-         <dynamic
-               class="de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.plot.ui.PlotMenuContribution"
-               id="de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepost.plot.popup.dynamic">
-         </dynamic>
+         <separator
+               name="de.ptb.epics.eve.editor.views.scanmoduleview.plotcomposite.popup.separator"
+               visible="true">
+         </separator>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.scanmodule.addplotwindow"
+               icon="icons/devices/plot.gif"
+               label="Add Plot Window"
+               style="push">
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.scanmodule.removeplotwindows"
+               icon="icons/rem_co.gif"
+               label="Remove Selected"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <not>
+                  <reference
+                        definitionId="de.ptb.epics.eve.editor.expressions.emptyselection">
+                  </reference>
+               </not>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.scanmodule.removeallplotwindows"
+               icon="icons/progress_remall.gif"
+               label="Remove All"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
+               </reference>
+            </visibleWhen>
+         </command>
       </menuContribution>
       <menuContribution
             locationURI="popup:de.ptb.epics.eve.editor.gef.GraphicalEditor">
@@ -1682,6 +1714,24 @@
             defaultHandler="de.ptb.epics.eve.editor.handler.prepostposplotview.RemovePositioningsDefaultHandler"
             id="de.ptb.epics.eve.editor.command.scanmodule.removepositionings"
             name="Remove Positionings">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.category.prepostposplotview"
+            defaultHandler="de.ptb.epics.eve.editor.handler.prepostposplotview.AddPlotWindowDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.scanmodule.addplotwindow"
+            name="Add Plot Window">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.category.prepostposplotview"
+            defaultHandler="de.ptb.epics.eve.editor.handler.prepostposplotview.RemovePlotWindowsDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.scanmodule.removeplotwindows"
+            name="Remove Selected">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.category.prepostposplotview"
+            defaultHandler="de.ptb.epics.eve.editor.handler.prepostposplotview.RemoveAllPlotWindowsDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.scanmodule.removeallplotwindows"
+            name="Remove All">
       </command>
    </extension>
    <extension
