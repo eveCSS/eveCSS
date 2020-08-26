@@ -31,6 +31,7 @@ import de.ptb.epics.eve.data.scandescription.Positioning;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
+import de.ptb.epics.eve.editor.handler.prepostposplotview.RemovePlotWindowsDefaultHandler;
 import de.ptb.epics.eve.editor.handler.prepostposplotview.RemovePositioningsDefaultHandler;
 import de.ptb.epics.eve.editor.views.AbstractScanModuleViewComposite;
 import de.ptb.epics.eve.editor.views.DelColumnEditingSupport;
@@ -325,7 +326,8 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 						ISharedImages.IMG_TOOL_DELETE);
 			}
 		});
-		// TODO EditingSupport
+		deleteColumn.setEditingSupport(new DelColumnEditingSupport(viewer, 
+				RemovePlotWindowsDefaultHandler.ID));
 		
 		TableViewerColumn idColumn = new TableViewerColumn(viewer, SWT.LEFT);
 		idColumn.getColumn().setText("Id");
