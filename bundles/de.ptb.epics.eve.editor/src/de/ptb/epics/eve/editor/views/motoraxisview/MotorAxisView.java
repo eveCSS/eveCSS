@@ -414,6 +414,7 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 			// current Axis will be removed
 			setAxis(null);
 		} else if (e.getPropertyName().equals(Axis.STEPFUNCTION_PROP)) {
+			System.out.println(e.getSource());
 			this.stepFunctionCombo.setItems(StringUtil.getStringList(
 					this.currentAxis.getStepfunctions()).toArray(new String[0]));
 			this.stepFunctionCombo.setText(
@@ -452,8 +453,12 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 						Stepfunctions.getEnum(stepFunctionCombo.getText()))) {
 					return;
 				}
+				currentAxis.removePropertyChangeListener(
+						Axis.STEPFUNCTION_PROP, MotorAxisView.this);
 				currentAxis.setStepfunction(Stepfunctions.getEnum(
 						stepFunctionCombo.getText()));
+				currentAxis.addPropertyChangeListener(
+						Axis.STEPFUNCTION_PROP, MotorAxisView.this);
 				DefaultsAxis defMa = Activator.getDefault().getDefaults()
 						.getAxis(currentAxis.getMotorAxis().getID());
 				if (defMa != null && defMa.getStepfunction().equals(
