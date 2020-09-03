@@ -1,5 +1,9 @@
 h1(eveTopic). What's New in EVE Editor
 
+h2(eveTopic). Version 1.34.2 (2020-09-03)
+
+* [Bug Fix-#5596] Fixed a bug where changing the stepfunction in the Motor Axis View caused the cursor to jump to the first position after each (valid) input.
+
 h2(eveTopic). Version 1.34.1 (2020-08-17)
 
 * [Bug Fix-#5556] Fixed a bug where the stepfunction could not be changed for discrete motor axes in the Axes Channels View.
