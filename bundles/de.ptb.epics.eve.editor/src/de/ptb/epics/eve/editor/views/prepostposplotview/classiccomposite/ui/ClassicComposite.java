@@ -42,6 +42,7 @@ import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.plot.ui
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.plot.ui.PreInitColumnLabelProvider;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.plot.ui.PreInitEditingSupport;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.plot.ui.XAxisColumnLabelProvider;
+import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.plot.ui.YAxisLabelProvider;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positioning.ui.ChannelEditingSupport;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positioning.ui.NormalizeEditingSupport;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positioning.ui.PluginEditingSupport;
@@ -359,8 +360,18 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 		
 		TableViewerColumn xAxisColumn = new TableViewerColumn(viewer, SWT.LEFT);
 		xAxisColumn.getColumn().setText("x-Axis");
-		xAxisColumn.getColumn().setWidth(100);
+		xAxisColumn.getColumn().setWidth(130);
 		xAxisColumn.setLabelProvider(new XAxisColumnLabelProvider());
+		
+		TableViewerColumn yAxis1Column = new TableViewerColumn(viewer, SWT.LEFT);
+		yAxis1Column.getColumn().setText("y-Axis 1");
+		yAxis1Column.getColumn().setWidth(260);
+		yAxis1Column.setLabelProvider(new YAxisLabelProvider(0));
+		
+		TableViewerColumn yAxis2Column = new TableViewerColumn(viewer, SWT.LEFT);
+		yAxis2Column.getColumn().setText("y-Axis 2");
+		yAxis2Column.getColumn().setWidth(260);
+		yAxis2Column.setLabelProvider(new YAxisLabelProvider(1));
 	}
 
 	/**
