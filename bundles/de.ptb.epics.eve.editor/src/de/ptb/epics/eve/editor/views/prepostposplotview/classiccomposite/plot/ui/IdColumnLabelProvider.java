@@ -47,6 +47,9 @@ public class IdColumnLabelProvider extends ColumnLabelProvider {
 		List<ScanModule> scanModulesUsingSameId = pw.getScanModule().getChain().
 				getUsedIds().get(pw.getId());
 		scanModulesUsingSameId.remove(pw.getScanModule());
+		if (scanModulesUsingSameId.isEmpty()) {
+			return null;
+		}
 		StringBuilder stringBuilder = new StringBuilder();
 		for (ScanModule sm : scanModulesUsingSameId) {
 			stringBuilder.append(sm.getName() + ", ");
