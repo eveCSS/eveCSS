@@ -116,14 +116,14 @@ public class ClassicComposite extends ScanModuleViewComposite implements IModelU
 	//private CTabItem detectorChannelTab;
 	private CTabItem prescanTab;
 	private CTabItem postscanTab;
-	private CTabItem positioningTab;
-	private CTabItem plotTab;
+	//private CTabItem positioningTab;
+	//private CTabItem plotTab;
 	//private ActionComposite motorAxisComposite;
 	//private ActionComposite detectorChannelComposite;
 	private ActionComposite prescanComposite;
 	private ActionComposite postscanComposite;
-	private ActionComposite positioningComposite;
-	private ActionComposite plotComposite;
+	//private ActionComposite positioningComposite;
+	//private ActionComposite plotComposite;
 	
 	// events composite
 	private Composite eventsComposite;
@@ -306,10 +306,10 @@ public class ClassicComposite extends ScanModuleViewComposite implements IModelU
 				this.parentView, actionsTabFolder, SWT.NONE);
 		this.postscanComposite = new PostscanComposite(
 				this.parentView, actionsTabFolder, SWT.NONE);
-		this.positioningComposite = new PositioningComposite(
-				this.parentView, actionsTabFolder, SWT.NONE);
-		this.plotComposite = new PlotComposite(
-				this.parentView, actionsTabFolder, SWT.NONE);
+		/*this.positioningComposite = new PositioningComposite(
+				this.parentView, actionsTabFolder, SWT.NONE);*/
+		/*this.plotComposite = new PlotComposite(
+				this.parentView, actionsTabFolder, SWT.NONE);*/
 		
 		/*this.motorAxisTab = new CTabItem(actionsTabFolder, SWT.FLAT);
 		this.motorAxisTab.setText(" Motor Axes ");
@@ -334,16 +334,16 @@ public class ClassicComposite extends ScanModuleViewComposite implements IModelU
 		this.postscanTab.setToolTipText("Action to do if scan module is done");
 		this.postscanTab.setControl(this.postscanComposite);
 
-		this.positioningTab = new CTabItem(this.actionsTabFolder, SWT.FLAT);
+		/*this.positioningTab = new CTabItem(this.actionsTabFolder, SWT.FLAT);
 		this.positioningTab.setText(" Positioning ");
 		this.positioningTab
 				.setToolTipText("Move motor to calculated position after scan module is done");
-		this.positioningTab.setControl(this.positioningComposite);
+		this.positioningTab.setControl(this.positioningComposite);*/
 
-		this.plotTab = new CTabItem(this.actionsTabFolder, SWT.FLAT);
+		/*this.plotTab = new CTabItem(this.actionsTabFolder, SWT.FLAT);
 		this.plotTab.setText(" Plot ");
 		this.plotTab.setToolTipText("Plot settings for this scan module");
-		this.plotTab.setControl(this.plotComposite);
+		this.plotTab.setControl(this.plotComposite);*/
 		
 		this.actionsCompositeMaximized = false;
 	}
@@ -533,8 +533,8 @@ public class ClassicComposite extends ScanModuleViewComposite implements IModelU
 		//this.detectorChannelComposite.setScanModule(scanModule);
 		this.prescanComposite.setScanModule(scanModule);
 		this.postscanComposite.setScanModule(scanModule);
-		this.positioningComposite.setScanModule(scanModule);
-		this.plotComposite.setScanModule(scanModule);
+		//this.positioningComposite.setScanModule(scanModule);
+		//this.plotComposite.setScanModule(scanModule);
 		
 		if (this.currentScanModule != null) {
 			// new scan module
@@ -591,8 +591,8 @@ public class ClassicComposite extends ScanModuleViewComposite implements IModelU
 		//this.detectorChannelTab.setImage(null);
 		this.prescanTab.setImage(null);
 		this.postscanTab.setImage(null);
-		this.positioningTab.setImage(null);
-		this.plotTab.setImage(null);
+		//this.positioningTab.setImage(null);
+		//this.plotTab.setImage(null);
 		//boolean motorAxisErrors = false;
 		//boolean detectorChannelErrors = false;
 		boolean prescanErrors = false;
@@ -636,15 +636,15 @@ public class ClassicComposite extends ScanModuleViewComposite implements IModelU
 					.getSharedImages()
 					.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
 		}
-		if (positioningErrors) {
+		/*if (positioningErrors) {
 			this.positioningTab.setImage(PlatformUI.getWorkbench()
 					.getSharedImages()
 					.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
-		}
-		if (plotWindowErrors) {
+		}*/
+		/*if (plotWindowErrors) {
 			this.plotTab.setImage(PlatformUI.getWorkbench().getSharedImages()
 					.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
-		}
+		}*/
 
 		// check errors in Events Tab
 		this.pauseEventsTabItem.setImage(null);
