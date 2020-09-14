@@ -79,7 +79,11 @@ public class PositioningLabelProvider extends CommonLabelProvider {
 		case 4: return (pos.getNormalization() != null)
 				? pos.getNormalization().getName()
 				: EM_DASH;
-		case 5: return EM_DASH;
+		case 5: if (pos.getPluginController().getPlugin() != null && 
+				!pos.getPluginController().getPlugin().getParameters().isEmpty()) {
+					return pos.getPluginController().toString();
+				}
+				return EM_DASH;
 		default: return null;
 		}
 	}
