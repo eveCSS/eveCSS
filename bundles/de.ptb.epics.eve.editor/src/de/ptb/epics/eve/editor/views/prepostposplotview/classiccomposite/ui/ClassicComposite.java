@@ -45,6 +45,7 @@ import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.plot.ui
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.plot.ui.YAxisLabelProvider;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positioning.ui.ChannelEditingSupport;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positioning.ui.NormalizeEditingSupport;
+import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positioning.ui.ParamEditingSupport;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positioning.ui.PluginEditingSupport;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positioning.ui.PositioningContentProvider;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positioning.ui.PositioningLabelProvider;
@@ -274,6 +275,7 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 		TableViewerColumn paramColumn = new TableViewerColumn(viewer, SWT.LEFT);
 		paramColumn.getColumn().setText("Parameters");
 		paramColumn.getColumn().setWidth(100);
+		paramColumn.setEditingSupport(new ParamEditingSupport(viewer));
 	}
 	
 	private void createPlotTable(Composite parent) {
