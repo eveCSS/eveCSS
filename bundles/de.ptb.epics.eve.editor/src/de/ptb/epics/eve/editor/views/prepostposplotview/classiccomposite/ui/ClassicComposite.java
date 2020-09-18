@@ -49,6 +49,8 @@ import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positio
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positioning.ui.PluginEditingSupport;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positioning.ui.PositioningContentProvider;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positioning.ui.PositioningLabelProvider;
+import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepostscan.ui.PrePostscanContentProvider;
+import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepostscan.ui.PrePostscanLabelProvider;
 import de.ptb.epics.eve.editor.views.prepostposplotview.ui.PrePostPosPlotView;
 
 /**
@@ -157,6 +159,10 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 		gridData.minimumHeight = TABLE_MIN_HEIGHT;
 		this.prePostscanTable.getTable().setLayoutData(gridData);
 		this.createPrePostScanTableColumns(prePostscanTable);
+		
+		this.prePostscanTable.setContentProvider(
+				new PrePostscanContentProvider());
+		this.prePostscanTable.setLabelProvider(new PrePostscanLabelProvider());
 		
 		MenuManager menuManager = new MenuManager();
 		menuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
@@ -401,6 +407,7 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 			this.scanModule.removeModelUpdateListener(this);
 		}
 		this.scanModule = scanModule;
+		this.prePostscanTable.setInput(scanModule);
 		this.positioningTable.setInput(scanModule);
 		this.plotTable.setInput(scanModule);
 		if (this.scanModule != null) {
