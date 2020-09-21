@@ -2,6 +2,7 @@ package de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepos
 
 import org.eclipse.swt.graphics.Image;
 
+import de.ptb.epics.eve.data.measuringstation.Device;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.CommonLabelProvider;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepostscan.PrePostscanEntry;
 
@@ -49,6 +50,9 @@ public class PrePostscanLabelProvider extends CommonLabelProvider {
 			}
 			return entry.getPrescan().getValue();
 		case 2: // name column
+			if (entry.getDevice() instanceof Device) {
+				return entry.getDevice().getName();
+			}
 			return entry.getDevice().getParent().getName() + 
 					" " + OPTION_DELIMITER + " " + 
 					entry.getDevice().getName();
