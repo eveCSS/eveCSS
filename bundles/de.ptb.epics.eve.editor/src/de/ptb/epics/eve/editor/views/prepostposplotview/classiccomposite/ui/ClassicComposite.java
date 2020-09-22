@@ -25,6 +25,7 @@ import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PlatformUI;
 
+import de.ptb.epics.eve.data.measuringstation.Device;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.Positioning;
@@ -49,6 +50,7 @@ import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positio
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positioning.ui.PluginEditingSupport;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positioning.ui.PositioningContentProvider;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positioning.ui.PositioningLabelProvider;
+import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepostscan.PrePostscanEntry;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepostscan.ui.PrePostscanContentProvider;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepostscan.ui.PrePostscanLabelProvider;
 import de.ptb.epics.eve.editor.views.prepostposplotview.ui.PrePostPosPlotView;
@@ -163,6 +165,27 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 		this.prePostscanTable.setContentProvider(
 				new PrePostscanContentProvider());
 		this.prePostscanTable.setLabelProvider(new PrePostscanLabelProvider());
+		this.prePostscanTable.setSorter(new ViewerSorter() {
+			@Override
+			public int compare(Viewer viewer, Object e1, Object e2) {
+				PrePostscanEntry entry1 = (PrePostscanEntry) e1;
+				PrePostscanEntry entry2 = (PrePostscanEntry) e2;
+				String e1String;
+				if (entry1.getDevice() instanceof Device) {
+					e1String = entry1.getDevice().getName();
+				} else {
+					e1String = entry1.getDevice().getParent().getName() + 
+							entry1.getDevice().getName();
+				}
+				
+				if (entry2.getDevice() instanceof Device) {
+					return e1String.compareTo(entry2.getDevice().getName());
+				} else {
+					return e1String.compareTo(entry2.getDevice().getParent().
+							getName() + entry2.getDevice().getName());
+				}
+			}
+		});
 		
 		MenuManager menuManager = new MenuManager();
 		menuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));

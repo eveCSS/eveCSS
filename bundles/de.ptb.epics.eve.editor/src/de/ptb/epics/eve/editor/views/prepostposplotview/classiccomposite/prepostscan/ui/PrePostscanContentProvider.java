@@ -1,6 +1,7 @@
 package de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepostscan.ui;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -58,17 +59,45 @@ public class PrePostscanContentProvider implements IStructuredContentProvider {
 	
 	private List<PrePostscanEntry> createEntries(ScanModule scanModule) {
 		List<PrePostscanEntry> entries = new ArrayList<>();
-		// TODO
-		Prescan[] prescans = scanModule.getPrescans();
-		Postscan[] postscans = scanModule.getPostscans();
-		// for now just plain dumb add all (duplicates!)
+		List<Prescan> prescans = Arrays.asList(scanModule.getPrescans());
+		List<Postscan> postscans = Arrays.asList(scanModule.getPostscans());
+		// add all Prescans that are not also Postscans
 		for (Prescan prescan : prescans) {
-			entries.add(new PrePostscanEntry(
-				prescan.getAbstractPrePostscanDevice(), prescan, null));
+			boolean alsoInPostscan = false;
+			for (Postscan postscan : postscans) {
+				if (postscan.getAbstractPrePostscanDevice().equals(
+						prescan.getAbstractPrePostscanDevice())) {
+					alsoInPostscan = true;
+				}
+			}
+			if (!alsoInPostscan) {
+				entries.add(new PrePostscanEntry(
+						prescan.getAbstractPrePostscanDevice(), prescan, null));
+			}
 		}
+		// Add all Prescans that are also Postscans
+		for (Prescan prescan : prescans) {
+			for (Postscan postscan : postscans) {
+				if (postscan.getAbstractPrePostscanDevice().equals(
+						prescan.getAbstractPrePostscanDevice())) {
+					entries.add(new PrePostscanEntry(prescan.
+							getAbstractPrePostscanDevice(), prescan, postscan));
+				}
+			}
+		}
+		// Add all Postscans that are not also Prescans
 		for (Postscan postscan : postscans) {
-			entries.add(new PrePostscanEntry(
-				postscan.getAbstractPrePostscanDevice(), null, postscan));
+			boolean alsoInPrescan = false;
+			for (Prescan prescan : prescans) {
+				if (prescan.getAbstractPrePostscanDevice().equals(
+						postscan.getAbstractPrePostscanDevice())) {
+					alsoInPrescan = true;
+				}
+			}
+			if (!alsoInPrescan) {
+				entries.add(new PrePostscanEntry(postscan.
+						getAbstractPrePostscanDevice(), null, postscan));
+			}
 		}
 		return entries;
 	}
