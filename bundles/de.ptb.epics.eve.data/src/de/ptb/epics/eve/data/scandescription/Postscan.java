@@ -73,6 +73,9 @@ public class Postscan extends AbstractPostscanBehavior {
 		this.reset = reset;
 		if (reset) {
 			super.setValue("");
+		} else {
+			super.setValue(this.getAbstractPrePostscanDevice().getValue().
+					getDefaultValue());
 		}
 		updateListeners();
 	}

@@ -51,8 +51,11 @@ import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positio
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positioning.ui.PositioningContentProvider;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positioning.ui.PositioningLabelProvider;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepostscan.PrePostscanEntry;
+import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepostscan.ui.PostscanEditingSupport;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepostscan.ui.PrePostscanContentProvider;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepostscan.ui.PrePostscanLabelProvider;
+import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepostscan.ui.PrescanEditingSupport;
+import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepostscan.ui.ResetEditingSupport;
 import de.ptb.epics.eve.editor.views.prepostposplotview.ui.PrePostPosPlotView;
 
 /**
@@ -211,6 +214,7 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 		TableViewerColumn prescanColumn = new TableViewerColumn(viewer, SWT.NONE);
 		prescanColumn.getColumn().setWidth(80);
 		prescanColumn.getColumn().setText("Prescan");
+		prescanColumn.setEditingSupport(new PrescanEditingSupport(viewer));
 		
 		TableViewerColumn nameColumn = new TableViewerColumn(viewer, SWT.NONE);
 		nameColumn.getColumn().setWidth(400);
@@ -219,10 +223,12 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 		TableViewerColumn postscanColumn = new TableViewerColumn(viewer, SWT.NONE);
 		postscanColumn.getColumn().setWidth(80);
 		postscanColumn.getColumn().setText("Postscan");
+		postscanColumn.setEditingSupport(new PostscanEditingSupport(viewer));
 		
 		TableViewerColumn resetColumn = new TableViewerColumn(viewer, SWT.NONE);
 		resetColumn.getColumn().setWidth(100);
 		resetColumn.getColumn().setText("Reset Original");
+		resetColumn.setEditingSupport(new ResetEditingSupport(viewer));
 	}
 	
 	private void createPositioningTable(Composite parent) {
