@@ -30,7 +30,7 @@
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
-                    <name>Crystal:</name>
+                    <name>Crystal</name>
                     <id>${Prefix}${PV}selectCrystal</id>
                     <value>
                         <access method="GETPUTCB" type="${Type=string}" transport="ca">${PV}selectCrystal</access>
