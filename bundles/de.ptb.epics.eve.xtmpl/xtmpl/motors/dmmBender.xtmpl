@@ -46,7 +46,7 @@
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option monitor="true">
-                    <name>DMS Readback /V</name>
+                    <name>DMS Readback /Nm</name>
                     <id>${Prefix}${PV}dmsrbv</id>
                     <value>
                         <access method="GETCB" type="${Type=double}" transport="ca">${PV}dmsrbv</access>

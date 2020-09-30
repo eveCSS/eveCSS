@@ -1,5 +1,11 @@
 h1(eveTopic). What's New in EVE
 
+h2(eveTopic). Version 1.34.3 (2020-07-31)
+
+* scan field added to all detector channels
+* selectBand Option added in template dmmEnergy
+* [Feature-#5294] options moved from detector to channel for keithley617 and keysight2985 
+
 h2(eveTopic). Version 1.34.0 (2020-07-31)
 
 * [Feature-#5458] template file @bamlineIK342.xtmpl@ renamed to @ik342.xtmpl@, modify xsubst Files

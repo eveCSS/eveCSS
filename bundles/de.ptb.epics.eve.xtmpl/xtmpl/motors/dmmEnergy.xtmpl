@@ -30,6 +30,15 @@
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
+                    <name>Band</name>
+                    <id>${Prefix}${PV}selectBand</id>
+                    <value>
+                        <access method="GETPUTCB" type="${Type=string}" transport="ca">${PV}selectBand</access>
+                        <value type="string">W/Si,Mo/B4C,Pd</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
                     <name>2D /nm [C]</name>
                     <id>${Prefix}${PV}.C</id>
                     <value>
