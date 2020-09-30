@@ -1700,6 +1700,12 @@
       </category>
       <command
             categoryId="de.ptb.epics.eve.editor.category.prepostposplotview"
+            defaultHandler="de.ptb.epics.eve.editor.handler.prepostposplotview.RemovePrePostscanEntriesDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.scanmodule.removeprepostscanentries"
+            name="Remove PrePostscanEntries">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.category.prepostposplotview"
             defaultHandler="de.ptb.epics.eve.editor.handler.prepostposplotview.AddPositioningDefaultHandler"
             id="de.ptb.epics.eve.editor.command.scanmodule.addpositioning"
             name="Add Positioning">
@@ -1725,13 +1731,13 @@
             categoryId="de.ptb.epics.eve.editor.category.prepostposplotview"
             defaultHandler="de.ptb.epics.eve.editor.handler.prepostposplotview.RemovePlotWindowsDefaultHandler"
             id="de.ptb.epics.eve.editor.command.scanmodule.removeplotwindows"
-            name="Remove Selected">
+            name="Remove PlotWindows">
       </command>
       <command
             categoryId="de.ptb.epics.eve.editor.category.prepostposplotview"
             defaultHandler="de.ptb.epics.eve.editor.handler.prepostposplotview.RemoveAllPlotWindowsDefaultHandler"
             id="de.ptb.epics.eve.editor.command.scanmodule.removeallplotwindows"
-            name="Remove All">
+            name="Remove All PlotWindows">
       </command>
    </extension>
    <extension

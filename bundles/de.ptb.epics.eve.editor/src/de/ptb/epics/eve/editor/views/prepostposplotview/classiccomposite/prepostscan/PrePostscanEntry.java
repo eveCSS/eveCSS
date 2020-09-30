@@ -20,24 +20,23 @@ public class PrePostscanEntry {
 		this.postscan = postscan;
 	}
 
-	/**
-	 * @return the device
-	 */
 	public AbstractPrePostscanDevice getDevice() {
 		return device;
 	}
 
-	/**
-	 * @return the prescan
-	 */
 	public Prescan getPrescan() {
 		return prescan;
 	}
+	
+	public void setPrescan(Prescan prescan) {
+		this.prescan = prescan;
+	}
 
-	/**
-	 * @return the postscan
-	 */
 	public Postscan getPostscan() {
 		return postscan;
+	}
+	
+	public void setPostscan(Postscan postscan) {
+		this.postscan = postscan;
 	}
 }
