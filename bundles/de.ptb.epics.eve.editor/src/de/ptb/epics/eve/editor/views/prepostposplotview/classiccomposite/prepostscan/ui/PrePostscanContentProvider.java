@@ -17,15 +17,13 @@ import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepost
  * @since 1.35
  */
 public class PrePostscanContentProvider implements IStructuredContentProvider {
-	//private ScanModule scanModule;
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-
+		// nothing to do for now
 	}
 
 	/**
@@ -33,14 +31,7 @@ public class PrePostscanContentProvider implements IStructuredContentProvider {
 	 */
 	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-		/*
-		 * Ensure that changes are observed and represented.
-		 * see also #5363
-		 */
-		// TODO unregister listeners from oldInput
-		//this.scanModule = (ScanModule)newInput;
-		// TODO register listeners for newInput
-		// TODO Auto-generated method stub
+		// nothing to do for now
 	}
 
 	/**

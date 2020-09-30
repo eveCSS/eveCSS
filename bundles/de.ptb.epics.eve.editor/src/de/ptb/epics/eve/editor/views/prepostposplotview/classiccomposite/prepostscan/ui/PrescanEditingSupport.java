@@ -1,11 +1,18 @@
 package de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepostscan.ui;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.ui.IWorkbenchPart;
 
 import de.ptb.epics.eve.data.scandescription.Prescan;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.editor.StringLabels;
+import de.ptb.epics.eve.editor.views.AbstractScanModuleView;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepostscan.PrePostscanEntry;
 import de.ptb.epics.eve.util.ui.jface.MyComboBoxCellEditor;
 
@@ -16,7 +23,7 @@ import de.ptb.epics.eve.util.ui.jface.MyComboBoxCellEditor;
 public class PrescanEditingSupport extends EditingSupport {
 	private static final Logger LOGGER = Logger.getLogger(
 			PrescanEditingSupport.class.getName());
-	
+
 	private TableViewer viewer;
 	
 	public PrescanEditingSupport(TableViewer viewer) {
@@ -30,12 +37,16 @@ public class PrescanEditingSupport extends EditingSupport {
 	@Override
 	protected CellEditor getCellEditor(Object element) {
 		PrePostscanEntry entry = (PrePostscanEntry) element;
-		if (entry.getPrescan() != null && entry.getPrescan().
-				getAbstractPrePostscanDevice().isDiscrete()) {
+		Prescan prescan = entry.getPrescan();
+		if (prescan != null && prescan.getAbstractPrePostscanDevice().
+				isDiscrete()) {
 			LOGGER.debug(entry.getDevice().getName() + " is discrete.");
+			List<String> discreteValues = prescan.
+				getAbstractPrePostscanDevice().getValue().getDiscreteValues();
+			// add dummy value (remove existing prescan)
+			discreteValues.add(StringLabels.EM_DASH);
 			return new MyComboBoxCellEditor(this.viewer.getTable(),
-					entry.getPrescan().getAbstractPrePostscanDevice().
-					getValue().getDiscreteValues().toArray(new String[0]));
+					discreteValues.toArray(new String[0]));
 		} else {
 			LOGGER.debug(entry.getDevice().getName() + " is not discrete.");
 			return new PrePostscanTextCellEditor(this.viewer.getTable(), 
@@ -49,7 +60,22 @@ public class PrescanEditingSupport extends EditingSupport {
 	@Override
 	protected boolean canEdit(Object element) {
 		PrePostscanEntry entry = (PrePostscanEntry) element;
-		return entry.getPrescan() != null;
+		if (entry.getPrescan() == null) {
+			LOGGER.info("no prescan present, creating new with default value");
+			IWorkbenchPart part = Activator.getDefault().getWorkbench().
+					getActiveWorkbenchWindow().getPartService().getActivePart();
+			if (!(part instanceof AbstractScanModuleView)) {
+				LOGGER.error("active part is not a scan module view");
+				return false;
+			}
+			ScanModule sm = ((AbstractScanModuleView)part).getScanModule();
+			Prescan prescan = new Prescan(entry.getDevice(), 
+					entry.getDevice().getValue().getDefaultValue());
+			sm.add(prescan);
+			return false;
+		}
+		LOGGER.info("edit existig prescan entry");
+		return true;
 	}
 
 	/**
@@ -67,7 +93,7 @@ public class PrescanEditingSupport extends EditingSupport {
 					getDiscreteValues().indexOf(prescan.getValue());
 			return index == -1 ? 0 : index;
 		} else {
-			return entry.getPrescan().getValue();
+			return prescan.getValue();
 		}
 	}
 
@@ -78,11 +104,30 @@ public class PrescanEditingSupport extends EditingSupport {
 	protected void setValue(Object element, Object value) {
 		PrePostscanEntry entry = (PrePostscanEntry) element;
 		Prescan prescan = entry.getPrescan();
+		IWorkbenchPart part = Activator.getDefault().getWorkbench().
+				getActiveWorkbenchWindow().getPartService().getActivePart();
+		if (!(part instanceof AbstractScanModuleView)) {
+			LOGGER.error("active part is not a scan module view");
+			return;
+		}
+		ScanModule sm = ((AbstractScanModuleView)part).getScanModule();
 		if (prescan.getAbstractPrePostscanDevice().isDiscrete()) {
-			prescan.setValue(prescan.getAbstractPrePostscanDevice().getValue().
-					getDiscreteValues().get((Integer)value));
+			List<String> discreteValues = prescan.
+				getAbstractPrePostscanDevice().getValue().getDiscreteValues();
+			int index = (Integer) value;
+			if (index == discreteValues.size()) {
+				// index is the dummy item -> delete prescan
+				sm.remove(prescan);
+			} else {
+				// index is "real", set the selected value
+				prescan.setValue(discreteValues.get(index));
+			}
 		} else {
-			prescan.setValue(value.toString());
+			if (value.toString().isEmpty()) {
+				sm.remove(prescan);
+			} else {
+				prescan.setValue(value.toString());
+			}
 		}
 	}
 }

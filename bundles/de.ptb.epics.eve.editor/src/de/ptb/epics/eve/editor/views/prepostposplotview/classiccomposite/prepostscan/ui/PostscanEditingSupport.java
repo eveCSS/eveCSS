@@ -1,11 +1,18 @@
 package de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepostscan.ui;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.ui.IWorkbenchPart;
 
 import de.ptb.epics.eve.data.scandescription.Postscan;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.editor.StringLabels;
+import de.ptb.epics.eve.editor.views.AbstractScanModuleView;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepostscan.PrePostscanEntry;
 import de.ptb.epics.eve.util.ui.jface.MyComboBoxCellEditor;
 
@@ -34,9 +41,12 @@ public class PostscanEditingSupport extends EditingSupport {
 		if (postscan != null && postscan.getAbstractPrePostscanDevice().
 				isDiscrete()) {
 			LOGGER.debug(entry.getDevice().getName() + " is discrete.");
+			List<String> discreteValues = postscan.
+				getAbstractPrePostscanDevice().getValue().getDiscreteValues();
+			// add dummy value (remove existing postscan)
+			discreteValues.add(StringLabels.EM_DASH);
 			return new MyComboBoxCellEditor(this.viewer.getTable(), 
-					postscan.getAbstractPrePostscanDevice().getValue().
-					getDiscreteValues().toArray(new String[0]));
+					discreteValues.toArray(new String[0]));
 		} else {
 			LOGGER.debug(entry.getDevice().getName() + " is not discrete.");
 			return new PrePostscanTextCellEditor(this.viewer.getTable(), 
@@ -49,8 +59,27 @@ public class PostscanEditingSupport extends EditingSupport {
 	 */
 	@Override
 	protected boolean canEdit(Object element) {
-		Postscan postscan = ((PrePostscanEntry)element).getPostscan();
-		return postscan != null && !postscan.isReset();
+		PrePostscanEntry entry = (PrePostscanEntry)element;
+		if (entry.getPostscan() == null) {
+			LOGGER.info("no postscan present, creating new with default value");
+			IWorkbenchPart part = Activator.getDefault().getWorkbench().
+				getActiveWorkbenchWindow().getPartService().getActivePart();
+			if (!(part instanceof AbstractScanModuleView)) {
+				LOGGER.error("active part is not a scan module view");
+				return false;
+			}
+			ScanModule sm = ((AbstractScanModuleView)part).getScanModule();
+			Postscan postscan = new Postscan(entry.getDevice(), 
+					entry.getDevice().getValue().getDefaultValue());
+			sm.add(postscan);
+			return false;
+		}
+		if (entry.getPostscan().isReset()) {
+			LOGGER.debug("reset ist set, edit invalid");
+			return false;
+		}
+		LOGGER.debug("edit existing postscan entry");
+		return true;
 	}
 
 	/**
@@ -58,7 +87,8 @@ public class PostscanEditingSupport extends EditingSupport {
 	 */
 	@Override
 	protected Object getValue(Object element) {
-		Postscan postscan = ((PrePostscanEntry)element).getPostscan();
+		PrePostscanEntry entry = (PrePostscanEntry)element;
+		Postscan postscan = entry.getPostscan();
 		if (postscan == null) {
 			return null;
 		}
@@ -76,12 +106,32 @@ public class PostscanEditingSupport extends EditingSupport {
 	 */
 	@Override
 	protected void setValue(Object element, Object value) {
-		Postscan postscan = ((PrePostscanEntry)element).getPostscan();
+		PrePostscanEntry entry = (PrePostscanEntry)element;
+		Postscan postscan = entry.getPostscan();
+		IWorkbenchPart part = Activator.getDefault().getWorkbench().
+				getActiveWorkbenchWindow().getPartService().getActivePart();
+		if (!(part instanceof AbstractScanModuleView)) {
+			LOGGER.error("active part is not a scan module view");
+			return;
+		}
+		ScanModule sm = ((AbstractScanModuleView)part).getScanModule();
 		if (postscan.getAbstractPrePostscanDevice().isDiscrete()) {
-			postscan.setValue(postscan.getAbstractPrePostscanDevice().
-					getValue().getDiscreteValues().get((Integer)value));
+			List<String> discreteValues = postscan.
+				getAbstractPrePostscanDevice().getValue().getDiscreteValues();
+			int index = (Integer) value;
+			if (index == discreteValues.size()) {
+				// index is the dummy item -> delete postscan
+				sm.remove(postscan);
+			} else {
+				// index is "real", set the selected value
+				postscan.setValue(discreteValues.get(index));
+			}
 		} else {
-			postscan.setValue(value.toString());
+			if (value.toString().isEmpty()) {
+				sm.remove(postscan);
+			} else {
+				postscan.setValue(value.toString());
+			}
 		}
 	}
 }

@@ -21,6 +21,10 @@ public class PrePostscanTextCellEditorValidator implements ICellEditorValidator 
 	 */
 	@Override
 	public String isValid(Object value) {
+		if (value.toString().isEmpty()) {
+			// empty string is valid (i.e. existing entry should be removed)
+			return null;
+		}
 		switch (device.getValue().getType()) {
 		case DATETIME:
 			break;
