@@ -19,12 +19,12 @@ import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepost
  * @author Marcus Michalsky
  * @since 1.35
  */
-public class RemovePrePostscanEntriesDefaultHandler extends AbstractHandler {
+public class RemovePrePostscansDefaultHandler extends AbstractHandler {
 	public static String ID = 
 		"de.ptb.epics.eve.editor.command.scanmodule.removeprepostscanentries";
 	
 	public static final Logger LOGGER = Logger.getLogger(
-			RemovePrePostscanEntriesDefaultHandler.class.getName());
+			RemovePrePostscansDefaultHandler.class.getName());
 	
 	/**
 	 * {@inheritDoc}

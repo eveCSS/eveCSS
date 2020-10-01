@@ -1,5 +1,7 @@
 package de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepostscan.ui;
 
+import java.util.ArrayList;
+
 import org.apache.log4j.Logger;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -23,8 +25,10 @@ public class PrePostscanMenuContribution extends CompoundContributionItem {
 	 */
 	@Override
 	protected IContributionItem[] getContributionItems() {
+		ArrayList<IContributionItem> result = new ArrayList<>();
+		
 		// TODO
-		return null;
+		return result.toArray(new IContributionItem[0]);
 	}
 	
 	/**

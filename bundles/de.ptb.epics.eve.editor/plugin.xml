@@ -907,6 +907,32 @@
                class="de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepostscan.ui.PrePostscanMenuContribution"
                id="de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepostscan.popup.dynamic">
          </dynamic>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.scanmodule.removeprepostscanentries"
+               icon="icons/rem_co.gif"
+               label="Remove Selected"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <not>
+                  <reference
+                        definitionId="de.ptb.epics.eve.editor.expressions.emptyselection">
+                  </reference>
+               </not>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.scanmodule.removeallprepostscanentries"
+               icon="icons/progress_remall.gif"
+               label="Remove All"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
+               </reference>
+            </visibleWhen>
+         </command>
       </menuContribution>
       <menuContribution
             locationURI="popup:de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positioning.popup">
@@ -1700,9 +1726,15 @@
       </category>
       <command
             categoryId="de.ptb.epics.eve.editor.category.prepostposplotview"
-            defaultHandler="de.ptb.epics.eve.editor.handler.prepostposplotview.RemovePrePostscanEntriesDefaultHandler"
+            defaultHandler="de.ptb.epics.eve.editor.handler.prepostposplotview.RemovePrePostscansDefaultHandler"
             id="de.ptb.epics.eve.editor.command.scanmodule.removeprepostscanentries"
-            name="Remove PrePostscanEntries">
+            name="Remove PrePostscans">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.category.prepostposplotview"
+            defaultHandler="de.ptb.epics.eve.editor.handler.prepostposplotview.RemoveAllPrePostscansDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.scanmodule.removeallprepostscanentries"
+            name="Remove All PrePostscans">
       </command>
       <command
             categoryId="de.ptb.epics.eve.editor.category.prepostposplotview"

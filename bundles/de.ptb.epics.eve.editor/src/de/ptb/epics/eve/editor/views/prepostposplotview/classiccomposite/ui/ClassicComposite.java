@@ -34,7 +34,7 @@ import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.handler.prepostposplotview.RemovePlotWindowsDefaultHandler;
 import de.ptb.epics.eve.editor.handler.prepostposplotview.RemovePositioningsDefaultHandler;
-import de.ptb.epics.eve.editor.handler.prepostposplotview.RemovePrePostscanEntriesDefaultHandler;
+import de.ptb.epics.eve.editor.handler.prepostposplotview.RemovePrePostscansDefaultHandler;
 import de.ptb.epics.eve.editor.views.AbstractScanModuleViewComposite;
 import de.ptb.epics.eve.editor.views.DelColumnEditingSupport;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.plot.ui.IdColumnLabelProvider;
@@ -212,7 +212,7 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 		TableViewerColumn deleteColumn = new TableViewerColumn(viewer, SWT.NONE);
 		deleteColumn.getColumn().setWidth(22);
 		deleteColumn.setEditingSupport(new DelColumnEditingSupport(viewer, 
-				RemovePrePostscanEntriesDefaultHandler.ID));
+				RemovePrePostscansDefaultHandler.ID));
 		
 		TableViewerColumn prescanColumn = new TableViewerColumn(viewer, SWT.NONE);
 		prescanColumn.getColumn().setWidth(80);
