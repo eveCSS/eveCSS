@@ -7,7 +7,9 @@ package de.ptb.epics.eve.editor;
  * @since 1.35
  */
 public class StringLabels {
+	public static final String ASTERISK = "\u2217";
 	public static final String EM_DASH = "\u2014";
+	public static final String OPTION_DELIMITER = "\u00BB";
 	
 	private StringLabels() {
 		// nothing to do

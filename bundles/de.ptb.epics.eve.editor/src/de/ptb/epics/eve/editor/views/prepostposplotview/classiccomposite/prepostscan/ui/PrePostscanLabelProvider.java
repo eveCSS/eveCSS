@@ -3,6 +3,7 @@ package de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepos
 import org.eclipse.swt.graphics.Image;
 
 import de.ptb.epics.eve.data.measuringstation.Device;
+import de.ptb.epics.eve.editor.StringLabels;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.CommonLabelProvider;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepostscan.PrePostscanEntry;
 
@@ -11,9 +12,6 @@ import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepost
  * @since 1.35
  */
 public class PrePostscanLabelProvider extends CommonLabelProvider {
-	private static final String EM_DASH = "\u2014";
-	private static final String OPTION_DELIMITER = "\u00BB";
-	private static final String ASTERISK = "\u2217";
 
 	/**
 	 * {@inheritDoc}
@@ -46,7 +44,7 @@ public class PrePostscanLabelProvider extends CommonLabelProvider {
 		switch (columnIndex) {
 		case 1: // prescan column
 			if (entry.getPrescan() == null) {
-				return EM_DASH;
+				return StringLabels.EM_DASH;
 			}
 			return entry.getPrescan().getValue();
 		case 2: // name column
@@ -54,19 +52,19 @@ public class PrePostscanLabelProvider extends CommonLabelProvider {
 				return entry.getDevice().getName();
 			}
 			return entry.getDevice().getParent().getName() + 
-					" " + OPTION_DELIMITER + " " + 
+					" " + StringLabels.OPTION_DELIMITER + " " + 
 					entry.getDevice().getName();
 		case 3: // postscan column
 			if (entry.getPostscan() == null) {
-				return EM_DASH;
+				return StringLabels.EM_DASH;
 			}
 			if (entry.getPostscan().isReset()) {
-				return ASTERISK;
+				return StringLabels.ASTERISK;
 			}
 			return entry.getPostscan().getValue();
 		case 4: // reset column
 			if (entry.getPostscan() == null) {
-				return EM_DASH;
+				return StringLabels.EM_DASH;
 			}
 			return Boolean.toString(entry.getPostscan().isReset());
 		default:
