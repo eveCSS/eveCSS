@@ -903,10 +903,20 @@
       </menuContribution>
       <menuContribution
             locationURI="popup:de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepostscan.popup">
-         <dynamic
-               class="de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepostscan.ui.PrePostscanMenuContribution"
-               id="de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepostscan.popup.dynamic">
-         </dynamic>
+         <menu
+               label="Prescan">
+            <dynamic
+                  class="de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepostscan.ui.PrescanMenuContribution"
+                  id="de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prescan.popup.dynamic">
+            </dynamic>
+         </menu>
+         <menu
+               label="Postscan">
+            <dynamic
+                  class="de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepostscan.ui.PostscanMenuContribution"
+                  id="de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.postscan.popup.dynamic">
+            </dynamic>
+         </menu>
          <command
                commandId="de.ptb.epics.eve.editor.command.scanmodule.removeprepostscanentries"
                icon="icons/rem_co.gif"
@@ -1724,6 +1734,28 @@
             id="de.ptb.epics.eve.editor.category.prepostposplotview"
             name="PrePostPosPlotView">
       </category>
+      <command
+            categoryId="de.ptb.epics.eve.editor.category.prepostposplotview"
+            defaultHandler="de.ptb.epics.eve.editor.handler.prepostposplotview.AddPrescanDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.scanmodule.addprescan"
+            name="Add Prescan">
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.scanmodule.addprescan.prescanid"
+               name="Prescan Id"
+               optional="false">
+         </commandParameter>
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.category.prepostposplotview"
+            defaultHandler="de.ptb.epics.eve.editor.handler.prepostposplotview.AddPostscanDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.scanmodule.addpostscan"
+            name="Add Postscan">
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.scanmodule.addpostscan.postscanid"
+               name="Postscan Id"
+               optional="false">
+         </commandParameter>
+      </command>
       <command
             categoryId="de.ptb.epics.eve.editor.category.prepostposplotview"
             defaultHandler="de.ptb.epics.eve.editor.handler.prepostposplotview.RemovePrePostscansDefaultHandler"
