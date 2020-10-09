@@ -39,11 +39,11 @@ import org.eclipse.swt.widgets.Text;
 
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.axismode.FileMode;
+import de.ptb.epics.eve.editor.views.DialogCellEditorDialog;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.file.FileStats;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.file.FilenameModelToTargetConverter;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.file.FilenameTargetToModelConverter;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.file.FilenameValidator;
-import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.ui.DialogCellEditorDialog;
 import de.ptb.epics.eve.util.io.FileUtil;
 import de.ptb.epics.eve.util.io.StringUtil;
 

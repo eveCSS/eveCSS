@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.ui;
+package de.ptb.epics.eve.editor.views;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;

@@ -35,10 +35,10 @@ import com.ibm.icu.text.NumberFormat;
 
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.channelmode.IntervalMode;
+import de.ptb.epics.eve.editor.views.DialogCellEditorDialog;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.interval.StoppedByModelToTargetConverter;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.interval.StoppedByTargetToModelConverter;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.interval.TriggerIntervalTargetToModelValidator;
-import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.ui.DialogCellEditorDialog;
 
 /**
  * @author Marcus Michalsky

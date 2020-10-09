@@ -38,6 +38,7 @@ import de.ptb.epics.eve.data.scandescription.channelmode.StandardMode;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.editor.views.DialogCellEditorDialog;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.AverageTargetToModelConverter;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.AverageTargetToModelValidator;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.ChannelRedoEventMenuContributionMonitor;
@@ -51,7 +52,6 @@ import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.MaxDeviationTargetToModelValidator;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.MinimumTargetToModelValidator;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.OperatorEditingSupport;
-import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.ui.DialogCellEditorDialog;
 import de.ptb.epics.eve.util.ui.swt.TextSelectAllFocusListener;
 import de.ptb.epics.eve.util.ui.swt.TextSelectAllMouseListener;
 

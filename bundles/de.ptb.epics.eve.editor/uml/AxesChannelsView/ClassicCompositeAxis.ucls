@@ -1,19 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.2.4" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
   realizations="true" associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
-  <class id="1" language="java" name="de.ptb.epics.eve.editor.views.axeschannelsview.ui.AxesChannelsViewComposite" 
-    project="de.ptb.epics.eve.editor" 
-    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/ui/AxesChannelsViewComposite.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="205" y="119"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="2" language="java" name="org.eclipse.jface.viewers.TextCellEditor" project="de.ptb.epics.eve.editor" 
-    file="/home/mmichals/Projects/eveCSS/workspace-2020-03-feature4917b/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.jface_3.7.0.v20110928-1505.jar" 
+  <class id="1" language="java" name="org.eclipse.jface.viewers.TextCellEditor" project="de.ptb.epics.eve.editor" 
+    file="/home/mmichals/Projects/eveCSS/workspace-2020-06-feature5363/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.jface_3.7.0.v20110928-1505.jar" 
     binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="868" y="205"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -22,8 +11,8 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="org.eclipse.jface.viewers.DialogCellEditor" project="de.ptb.epics.eve.editor" 
-    file="/home/mmichals/Projects/eveCSS/workspace-2020-03-feature4917b/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.jface_3.7.0.v20110928-1505.jar" 
+  <class id="2" language="java" name="org.eclipse.jface.viewers.DialogCellEditor" project="de.ptb.epics.eve.editor" 
+    file="/home/mmichals/Projects/eveCSS/workspace-2020-06-feature5363/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.jface_3.7.0.v20110928-1505.jar" 
     binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="769" y="625"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -32,7 +21,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" 
+  <class id="3" language="java" 
     name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.ui.ClassicComposite" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/classiccomposite/ui/ClassicComposite.java" 
@@ -44,7 +33,7 @@
       <operations public="true" package="true" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="5" language="java" 
+  <class id="4" language="java" 
     name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.ui.AxesCAComposite" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/classiccomposite/ui/AxesCAComposite.java" 
@@ -56,7 +45,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="6" language="java" 
+  <class id="5" language="java" 
     name="de.ptb.epics.eve.util.ui.jface.viewercomparator.alphabetical.AlphabeticalTableViewerSorter" 
     project="de.ptb.epics.eve.util.ui" 
     file="/de.ptb.epics.eve.util.ui/src/de/ptb/epics/eve/util/ui/jface/viewercomparator/alphabetical/AlphabeticalTableViewerSorter.java" 
@@ -68,8 +57,8 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="7" language="java" name="org.eclipse.swt.custom.SashForm" project="de.ptb.epics.eve.editor" 
-    file="/home/mmichals/Projects/eveCSS/workspace-2020-03-feature4917b/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.swt.gtk.linux.x86_64_3.7.2.v3740f.jar" 
+  <class id="6" language="java" name="org.eclipse.swt.custom.SashForm" project="de.ptb.epics.eve.editor" 
+    file="/home/mmichals/Projects/eveCSS/workspace-2020-06-feature5363/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.swt.gtk.linux.x86_64_3.7.2.v3740f.jar" 
     binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="484" y="301"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -78,7 +67,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="8" language="java" name="de.ptb.epics.eve.editor.views.axeschannelsview.AxesMenuContribution" 
+  <class id="7" language="java" name="de.ptb.epics.eve.editor.views.axeschannelsview.AxesMenuContribution" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/AxesMenuContribution.java" 
     binary="false" corner="BOTTOM_RIGHT">    
@@ -89,7 +78,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="9" language="java" name="de.ptb.epics.eve.editor.views.axeschannelsview.ChannelsMenuContribution" 
+  <class id="8" language="java" name="de.ptb.epics.eve.editor.views.axeschannelsview.ChannelsMenuContribution" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/ChannelsMenuContribution.java" 
     binary="false" corner="BOTTOM_RIGHT">    
@@ -100,11 +89,10 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="10" language="java" 
-    name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.ui.DialogCellEditorDialog" 
+  <class id="9" language="java" name="de.ptb.epics.eve.editor.views.DialogCellEditorDialog" 
     project="de.ptb.epics.eve.editor" 
-    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/classiccomposite/ui/DialogCellEditorDialog.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
+    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/DialogCellEditorDialog.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1925" y="418"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -112,7 +100,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="11" language="java" 
+  <class id="10" language="java" 
     name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.ui.ValuesDialogCellEditor" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/classiccomposite/ui/ValuesDialogCellEditor.java" 
@@ -124,8 +112,8 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="12" language="java" name="org.eclipse.jface.viewers.TableViewer" project="de.ptb.epics.eve.editor" 
-    file="/home/mmichals/Projects/eveCSS/workspace-2020-03-feature4917b/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.jface_3.7.0.v20110928-1505.jar" 
+  <class id="11" language="java" name="org.eclipse.jface.viewers.TableViewer" project="de.ptb.epics.eve.editor" 
+    file="/home/mmichals/Projects/eveCSS/workspace-2020-06-feature5363/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.jface_3.7.0.v20110928-1505.jar" 
     binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="639" y="388"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -134,7 +122,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="13" language="java" 
+  <class id="12" language="java" 
     name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.AxesContentProvider" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/classiccomposite/axes/AxesContentProvider.java" 
@@ -146,7 +134,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="14" language="java" 
+  <class id="13" language="java" 
     name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.ChannelsContentProvider" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/classiccomposite/channels/ChannelsContentProvider.java" 
@@ -158,7 +146,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="15" language="java" 
+  <class id="14" language="java" 
     name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.ValuesEditingSupport" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/classiccomposite/axes/ValuesEditingSupport.java" 
@@ -170,7 +158,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="16" language="java" 
+  <class id="15" language="java" 
     name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.StepfunctionEditingSupport" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/classiccomposite/axes/StepfunctionEditingSupport.java" 
@@ -182,7 +170,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="17" language="java" 
+  <class id="16" language="java" 
     name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.PositionModeEditingSupport" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/classiccomposite/axes/PositionModeEditingSupport.java" 
@@ -194,7 +182,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="18" language="java" 
+  <class id="17" language="java" 
     name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.MainAxisEditingSupport" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/classiccomposite/axes/MainAxisEditingSupport.java" 
@@ -206,7 +194,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="19" language="java" 
+  <class id="18" language="java" 
     name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.range.ui.RangeTextCellEditor" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/classiccomposite/axes/range/ui/RangeTextCellEditor.java" 
@@ -218,7 +206,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="20" language="java" 
+  <class id="19" language="java" 
     name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.positionlist.ui.PositionlistDialogCellEditor" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/classiccomposite/axes/positionlist/ui/PositionlistDialogCellEditor.java" 
@@ -230,7 +218,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="21" language="java" 
+  <class id="20" language="java" 
     name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.positionlist.ui.PositionlistDialog" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/classiccomposite/axes/positionlist/ui/PositionlistDialog.java" 
@@ -242,7 +230,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="22" language="java" 
+  <class id="21" language="java" 
     name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.plugin.ui.PluginDialogCellEditor" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/classiccomposite/axes/plugin/ui/PluginDialogCellEditor.java" 
@@ -254,7 +242,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="23" language="java" 
+  <class id="22" language="java" 
     name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.plugin.ui.PluginDialog" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/classiccomposite/axes/plugin/ui/PluginDialog.java" 
@@ -266,7 +254,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="24" language="java" 
+  <class id="23" language="java" 
     name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.file.ui.FileDialogCellEditor" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/classiccomposite/axes/file/ui/FileDialogCellEditor.java" 
@@ -278,7 +266,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="25" language="java" 
+  <class id="24" language="java" 
     name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.file.ui.PositionFileDialog" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/classiccomposite/axes/file/ui/PositionFileDialog.java" 
@@ -290,7 +278,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="26" language="java" 
+  <class id="25" language="java" 
     name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.ui.AddGenericDialog" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/classiccomposite/axes/addmultiply/ui/AddGenericDialog.java" 
@@ -302,7 +290,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="27" language="java" 
+  <class id="26" language="java" 
     name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.datetime.ui.AddDateTimeDialogCellEditor" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/classiccomposite/axes/addmultiply/datetime/ui/AddDateTimeDialogCellEditor.java" 
@@ -314,7 +302,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="28" language="java" 
+  <class id="27" language="java" 
     name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.datetime.ui.AddDateTimeDialog" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/classiccomposite/axes/addmultiply/datetime/ui/AddDateTimeDialog.java" 
@@ -326,7 +314,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="29" language="java" 
+  <class id="28" language="java" 
     name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.intdouble.ui.AddIntDoubleDialogCellEditor" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/classiccomposite/axes/addmultiply/intdouble/ui/AddIntDoubleDialogCellEditor.java" 
@@ -338,7 +326,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="30" language="java" 
+  <class id="29" language="java" 
     name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.intdouble.ui.AddIntDoubleDialog" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/classiccomposite/axes/addmultiply/intdouble/ui/AddIntDoubleDialog.java" 
@@ -350,7 +338,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="31" language="java" 
+  <class id="30" language="java" 
     name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.AcquisitionTypeEditingSupport" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/classiccomposite/channels/AcquisitionTypeEditingSupport.java" 
@@ -362,7 +350,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="32" language="java" 
+  <class id="31" language="java" 
     name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.DeferredEditingSupport" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/classiccomposite/channels/DeferredEditingSupport.java" 
@@ -374,7 +362,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="33" language="java" 
+  <class id="32" language="java" 
     name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.NormalizeEditingSupport" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/classiccomposite/channels/NormalizeEditingSupport.java" 
@@ -386,7 +374,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="34" language="java" 
+  <class id="33" language="java" 
     name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.ParametersEditingSupport" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/classiccomposite/channels/ParametersEditingSupport.java" 
@@ -398,7 +386,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="35" language="java" 
+  <class id="34" language="java" 
     name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.ui.StandardDialogCellEditor" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/classiccomposite/channels/standard/ui/StandardDialogCellEditor.java" 
@@ -410,7 +398,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="36" language="java" 
+  <class id="35" language="java" 
     name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.ui.ChannelStandardDialog" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/classiccomposite/channels/standard/ui/ChannelStandardDialog.java" 
@@ -422,7 +410,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="37" language="java" 
+  <class id="36" language="java" 
     name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.interval.ui.IntervalDialogCellEditor" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/classiccomposite/channels/interval/ui/IntervalDialogCellEditor.java" 
@@ -434,7 +422,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="38" language="java" 
+  <class id="37" language="java" 
     name="de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.interval.ui.ChannelIntervalDialog" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/axeschannelsview/classiccomposite/channels/interval/ui/ChannelIntervalDialog.java" 
@@ -446,172 +434,176 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
+  <dependency id="38">    
+    <end type="SOURCE" refId="28"/>    
+    <end type="TARGET" refId="29"/>  
+  </dependency>  
   <association id="39">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="40" name="axesTable">        
-        <position height="17" width="54" x="508" y="342"/>      
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="40" name="sashForm">        
+        <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
       <multiplicity id="41" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="12" navigable="true"/>    
+    <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <generalization id="42">    
-    <end type="SOURCE" refId="36"/>    
-    <end type="TARGET" refId="10"/>  
-  </generalization>  
-  <generalization id="43">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="1"/>  
-  </generalization>  
-  <dependency id="44">    
-    <end type="SOURCE" refId="35"/>    
-    <end type="TARGET" refId="36"/>  
-  </dependency>  
-  <generalization id="45">    
-    <end type="SOURCE" refId="25"/>    
-    <end type="TARGET" refId="10"/>  
-  </generalization>  
-  <dependency id="46">    
-    <end type="SOURCE" refId="37"/>    
-    <end type="TARGET" refId="38"/>  
-  </dependency>  
-  <generalization id="47">    
-    <end type="SOURCE" refId="30"/>    
-    <end type="TARGET" refId="26"/>  
-  </generalization>  
-  <generalization id="48">    
-    <end type="SOURCE" refId="38"/>    
-    <end type="TARGET" refId="10"/>  
-  </generalization>  
-  <association id="49">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="50" name="sashForm">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="51" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="7" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <dependency id="52">    
-    <end type="SOURCE" refId="24"/>    
-    <end type="TARGET" refId="25"/>  
-  </dependency>  
-  <generalization id="53">    
-    <end type="SOURCE" refId="19"/>    
-    <end type="TARGET" refId="2"/>  
-  </generalization>  
-  <association id="54">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="55" name="channelsTableSorter">        
-        <position height="17" width="102" x="305" y="405"/>      
-      </attribute>      
-      <multiplicity id="56" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="57">    
-    <end type="SOURCE" refId="24"/>    
-    <end type="TARGET" refId="11"/>  
-  </generalization>  
-  <generalization id="58">    
     <end type="SOURCE" refId="23"/>    
     <end type="TARGET" refId="10"/>  
   </generalization>  
-  <dependency id="59">    
-    <end type="SOURCE" refId="20"/>    
-    <end type="TARGET" refId="21"/>  
+  <dependency id="43">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="22"/>  
   </dependency>  
-  <dependency id="60">    
-    <end type="SOURCE" refId="22"/>    
-    <end type="TARGET" refId="23"/>  
-  </dependency>  
-  <generalization id="61">    
-    <end type="SOURCE" refId="27"/>    
-    <end type="TARGET" refId="3"/>  
+  <generalization id="44">    
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="1"/>  
   </generalization>  
-  <association id="62">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="63" name="axesTableSorter">        
-        <position height="17" width="82" x="338" y="374"/>      
+  <generalization id="45">    
+    <end type="SOURCE" refId="26"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <generalization id="46">    
+    <end type="SOURCE" refId="25"/>    
+    <end type="TARGET" refId="9"/>  
+  </generalization>  
+  <generalization id="47">    
+    <end type="SOURCE" refId="20"/>    
+    <end type="TARGET" refId="9"/>  
+  </generalization>  
+  <association id="48">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="49" name="viewer">        
+        <position height="17" width="37" x="486" y="421"/>      
       </attribute>      
-      <multiplicity id="64" minimum="0" maximum="1">        
+      <multiplicity id="50" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
+    <end type="TARGET" refId="11" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="65">    
-    <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="66" name="viewer">        
+  <dependency id="51">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="35"/>  
+  </dependency>  
+  <association id="52">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="53" name="channelsTableSorter">        
+        <position height="17" width="102" x="305" y="405"/>      
+      </attribute>      
+      <multiplicity id="54" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="55">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="56" name="channelsTable">        
+        <position height="17" width="74" x="462" y="386"/>      
+      </attribute>      
+      <multiplicity id="57" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="58">    
+    <end type="SOURCE" refId="27"/>    
+    <end type="TARGET" refId="25"/>  
+  </generalization>  
+  <association id="59">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="60" name="axesTable">        
+        <position height="17" width="54" x="508" y="342"/>      
+      </attribute>      
+      <multiplicity id="61" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="62">    
+    <end type="SOURCE" refId="29"/>    
+    <end type="TARGET" refId="25"/>  
+  </generalization>  
+  <generalization id="63">    
+    <end type="SOURCE" refId="36"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <generalization id="64">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <association id="65">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="66" name="axesTableSorter">        
+        <position height="17" width="82" x="338" y="374"/>      
       </attribute>      
       <multiplicity id="67" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="12" navigable="true"/>    
+    <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="68">    
-    <end type="SOURCE" refId="28"/>    
-    <end type="TARGET" refId="26"/>  
-  </generalization>  
-  <association id="69">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="70" name="channelsTable">        
-        <position height="17" width="74" x="462" y="386"/>      
+  <association id="68">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="69" name="viewer">        
+        <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="71" minimum="0" maximum="1">        
+      <multiplicity id="70" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="12" navigable="true"/>    
+    <end type="TARGET" refId="11" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
+  <generalization id="71">    
+    <end type="SOURCE" refId="37"/>    
+    <end type="TARGET" refId="9"/>  
+  </generalization>  
   <generalization id="72">    
-    <end type="SOURCE" refId="26"/>    
-    <end type="TARGET" refId="10"/>  
+    <end type="SOURCE" refId="22"/>    
+    <end type="TARGET" refId="9"/>  
   </generalization>  
   <generalization id="73">    
-    <end type="SOURCE" refId="37"/>    
-    <end type="TARGET" refId="3"/>  
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="2"/>  
   </generalization>  
-  <generalization id="74">    
-    <end type="SOURCE" refId="35"/>    
-    <end type="TARGET" refId="3"/>  
-  </generalization>  
-  <dependency id="75">    
-    <end type="SOURCE" refId="27"/>    
-    <end type="TARGET" refId="28"/>  
-  </dependency>  
-  <generalization id="76">    
-    <end type="SOURCE" refId="11"/>    
-    <end type="TARGET" refId="3"/>  
-  </generalization>  
+  <association id="74">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="75" name="axesCAComposite">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="76" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
   <generalization id="77">    
-    <end type="SOURCE" refId="22"/>    
-    <end type="TARGET" refId="3"/>  
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="10"/>  
   </generalization>  
   <generalization id="78">    
-    <end type="SOURCE" refId="29"/>    
-    <end type="TARGET" refId="11"/>  
+    <end type="SOURCE" refId="28"/>    
+    <end type="TARGET" refId="10"/>  
   </generalization>  
-  <dependency id="79">    
-    <end type="SOURCE" refId="29"/>    
-    <end type="TARGET" refId="30"/>  
-  </dependency>  
+  <generalization id="79">    
+    <end type="SOURCE" refId="35"/>    
+    <end type="TARGET" refId="9"/>  
+  </generalization>  
   <association id="80">    
-    <end type="SOURCE" refId="14" navigable="false">      
+    <end type="SOURCE" refId="13" navigable="false">      
       <attribute id="81" name="viewer">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
@@ -619,41 +611,33 @@
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="12" navigable="true"/>    
+    <end type="TARGET" refId="11" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <generalization id="83">    
-    <end type="SOURCE" refId="21"/>    
-    <end type="TARGET" refId="10"/>  
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="2"/>  
   </generalization>  
   <generalization id="84">    
-    <end type="SOURCE" refId="20"/>    
-    <end type="TARGET" refId="11"/>  
+    <end type="SOURCE" refId="24"/>    
+    <end type="TARGET" refId="9"/>  
   </generalization>  
-  <association id="85">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="86" name="axesCAComposite">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="87" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="88">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="89" name="viewer">        
-        <position height="17" width="37" x="486" y="421"/>      
-      </attribute>      
-      <multiplicity id="90" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="12" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
+  <dependency id="85">    
+    <end type="SOURCE" refId="23"/>    
+    <end type="TARGET" refId="24"/>  
+  </dependency>  
+  <dependency id="86">    
+    <end type="SOURCE" refId="26"/>    
+    <end type="TARGET" refId="27"/>  
+  </dependency>  
+  <dependency id="87">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="20"/>  
+  </dependency>  
+  <dependency id="88">    
+    <end type="SOURCE" refId="36"/>    
+    <end type="TARGET" refId="37"/>  
+  </dependency>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="false" package="false" protected="false" private="false" static="true"/>    
