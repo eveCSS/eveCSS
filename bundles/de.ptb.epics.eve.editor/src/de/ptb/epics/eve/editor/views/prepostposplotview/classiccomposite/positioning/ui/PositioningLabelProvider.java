@@ -8,6 +8,7 @@ import de.ptb.epics.eve.data.scandescription.errors.PluginError;
 import de.ptb.epics.eve.data.scandescription.errors.PluginErrorTypes;
 import de.ptb.epics.eve.data.scandescription.errors.PositioningError;
 import de.ptb.epics.eve.data.scandescription.errors.PositioningErrorTypes;
+import de.ptb.epics.eve.editor.StringLabels;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.CommonLabelProvider;
 
 /**
@@ -15,8 +16,7 @@ import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.CommonL
  * @since 1.35
  */
 public class PositioningLabelProvider extends CommonLabelProvider {
-	private static final String EM_DASH = "\u2014";
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -78,12 +78,12 @@ public class PositioningLabelProvider extends CommonLabelProvider {
 				: null;
 		case 4: return (pos.getNormalization() != null)
 				? pos.getNormalization().getName()
-				: EM_DASH;
+				: StringLabels.EM_DASH;
 		case 5: if (pos.getPluginController().getPlugin() != null && 
 				!pos.getPluginController().getPlugin().getParameters().isEmpty()) {
 					return pos.getPluginController().toString();
 				}
-				return EM_DASH;
+				return StringLabels.EM_DASH;
 		default: return null;
 		}
 	}

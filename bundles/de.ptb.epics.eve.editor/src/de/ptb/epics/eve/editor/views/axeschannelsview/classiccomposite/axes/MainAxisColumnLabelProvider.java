@@ -4,13 +4,13 @@ import org.eclipse.jface.viewers.ColumnLabelProvider;
 
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Stepfunctions;
+import de.ptb.epics.eve.editor.StringLabels;
 
 /**
  * @author Marcus Michalsky
  * @since 1.34
  */
 public class MainAxisColumnLabelProvider extends ColumnLabelProvider {
-	private static final String HEAVY_CHECK_MARK = Character.toString('\u2714');
 	
 	/**
 	 * {@inheritDoc}
@@ -20,12 +20,12 @@ public class MainAxisColumnLabelProvider extends ColumnLabelProvider {
 		Axis smAxis = (Axis) element;
 		if (!(Stepfunctions.ADD.equals(smAxis.getStepfunction()) || 
 				Stepfunctions.MULTIPLY.equals(smAxis.getStepfunction()))) {
-			return "n/a";
+			return StringLabels.NOT_AVAILABLE;
 		}
 		if (smAxis.isMainAxis()) {
-			return HEAVY_CHECK_MARK;
+			return StringLabels.HEAVY_CHECK_MARK;
 		} else {
-			return "";
+			return StringLabels.EMPTY;
 		}
 	}
 }

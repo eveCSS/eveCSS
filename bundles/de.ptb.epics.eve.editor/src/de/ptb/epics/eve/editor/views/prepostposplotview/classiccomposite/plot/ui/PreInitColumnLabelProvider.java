@@ -3,13 +3,13 @@ package de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.plot.u
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
+import de.ptb.epics.eve.editor.StringLabels;
 
 /**
  * @author Marcus Michalsky
  * @since 1.35
  */
 public class PreInitColumnLabelProvider extends ColumnLabelProvider {
-	private static final String HEAVY_CHECK_MARK = Character.toString('\u2714');
 	
 	/**
 	 * {@inheritDoc}
@@ -19,7 +19,7 @@ public class PreInitColumnLabelProvider extends ColumnLabelProvider {
 		PlotWindow plotWindow = (PlotWindow)element;
 		
 		if (plotWindow.isInit()) {
-			return HEAVY_CHECK_MARK;
+			return StringLabels.HEAVY_CHECK_MARK;
 		}
 		return "";
 	}

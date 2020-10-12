@@ -4,14 +4,14 @@ import org.eclipse.jface.viewers.ColumnLabelProvider;
 
 import de.ptb.epics.eve.data.PlotModes;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
+import de.ptb.epics.eve.editor.StringLabels;
 
 /**
  * @author Marcus Michalsky
  * @since 1.35
  */
 public class XAxisColumnLabelProvider extends ColumnLabelProvider {
-	private static final String LONG_DASH = "\u2014";
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -19,7 +19,7 @@ public class XAxisColumnLabelProvider extends ColumnLabelProvider {
 	public String getText(Object element) {
 		PlotWindow plotWindow = (PlotWindow)element;
 		if (plotWindow.getXAxis() == null) {
-			return LONG_DASH;
+			return StringLabels.EM_DASH;
 		}
 		StringBuilder sb = new StringBuilder();
 		

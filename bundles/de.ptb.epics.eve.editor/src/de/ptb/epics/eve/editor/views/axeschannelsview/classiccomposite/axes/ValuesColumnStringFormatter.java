@@ -7,15 +7,13 @@ import javax.xml.datatype.Duration;
 
 import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.scandescription.Axis;
+import de.ptb.epics.eve.editor.StringLabels;
 
 /**
  * @author Marcus Michalsky
  * @since 1.34
  */
 public class ValuesColumnStringFormatter {
-	private static final String RIGHT_ARROW = Character.toString('\u2192');
-	private static final String SLASH_WITH_SPACE = " / ";
-	private static final String LONG_DASH = Character.toString('\u2014');
 	
 	public static String getValuesString(Axis axis) {
 		switch (axis.getStepfunction()) {
@@ -23,8 +21,8 @@ public class ValuesColumnStringFormatter {
 			if (axis.getType().equals(DataTypes.DATETIME)) {
 				return getDateString(axis);
 			} else {
-				return axis.getStart().toString() + RIGHT_ARROW +
-						axis.getStop().toString() + SLASH_WITH_SPACE + 
+				return axis.getStart().toString() + StringLabels.RIGHT_ARROW +
+						axis.getStop().toString() + StringLabels.SLASH_WITH_SPACES + 
 						axis.getStepwidth().toString();
 			}
 		case FILE:
@@ -33,8 +31,8 @@ public class ValuesColumnStringFormatter {
 			}
 			return "<no file set>";
 		case MULTIPLY:
-			return axis.getStart().toString() + RIGHT_ARROW +
-					axis.getStop().toString() + SLASH_WITH_SPACE + 
+			return axis.getStart().toString() + StringLabels.RIGHT_ARROW +
+					axis.getStop().toString() + StringLabels.SLASH_WITH_SPACES + 
 					axis.getStepwidth().toString();
 		case PLUGIN:
 			if (axis.getPluginController() == null || 
@@ -51,7 +49,7 @@ public class ValuesColumnStringFormatter {
 			}
 			return axis.getRange();
 		default:
-			return LONG_DASH;
+			return StringLabels.EM_DASH;
 		}
 	}
 	
@@ -62,9 +60,9 @@ public class ValuesColumnStringFormatter {
 			SimpleDateFormat dateFormat = 
 					new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 			sb.append(dateFormat.format((Date)axis.getStart()));
-			sb.append(RIGHT_ARROW);
+			sb.append(StringLabels.RIGHT_ARROW);
 			sb.append(dateFormat.format((Date)axis.getStop()));
-			sb.append(SLASH_WITH_SPACE);
+			sb.append(StringLabels.SLASH_WITH_SPACES);
 			sb.append(new SimpleDateFormat("HH:mm:ss.SSS").format(
 					(Date)axis.getStepwidth()));
 			break;
@@ -84,7 +82,7 @@ public class ValuesColumnStringFormatter {
 			} else {
 				sb.append("0s ");
 			}
-			sb.append(RIGHT_ARROW + " ");
+			sb.append(StringLabels.RIGHT_ARROW + " ");
 			
 			Duration stopDuration = (Duration)axis.getStop();
 			if (stopDuration.getHours() != 0) {
