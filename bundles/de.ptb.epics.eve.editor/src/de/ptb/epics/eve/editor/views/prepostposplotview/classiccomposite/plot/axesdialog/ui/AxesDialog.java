@@ -71,7 +71,6 @@ public class AxesDialog extends DialogCellEditorDialog {
 	protected Control createDialogArea(Composite parent) {
 		this.composite = new Composite(parent, SWT.NONE);
 		GridData gridData = new GridData();
-		gridData.minimumWidth = 400;
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
@@ -161,7 +160,7 @@ public class AxesDialog extends DialogCellEditorDialog {
 		});
 		
 		this.initYAxesTabFolder(composite);
-		
+
 		return composite;
 	}
 	
@@ -169,6 +168,7 @@ public class AxesDialog extends DialogCellEditorDialog {
 		this.yAxesTabFolder = new CTabFolder(parent, SWT.BORDER);
 		GridData gridData = new GridData();
 		gridData.horizontalSpan = 2;
+		gridData.minimumWidth = 400;
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
@@ -177,7 +177,7 @@ public class AxesDialog extends DialogCellEditorDialog {
 		
 		// add a tab for each present y axis
 		for (YAxis yAxis : this.plotWindow.getYAxes()) {
-			this.addTabItem(yAxis);
+			this.addTabItem(yAxis, false);
 		}
 		// if less than two are present, add "+" tab
 		if (this.plotWindow.getYAxes().size() < 2) {
@@ -223,7 +223,7 @@ public class AxesDialog extends DialogCellEditorDialog {
 				// create new y axis, add it to the model and add tab item
 				YAxis newAxis = new YAxis(null);
 				AxesDialog.this.plotWindow.addYAxis(newAxis);
-				AxesDialog.this.addTabItem(newAxis);
+				AxesDialog.this.addTabItem(newAxis, true);
 				// if < 2 axes present, add empty tab
 				if (AxesDialog.this.plotWindow.getYAxes().size() < 2) {
 					AxesDialog.this.addEmptyTabItem();
@@ -235,7 +235,7 @@ public class AxesDialog extends DialogCellEditorDialog {
 		this.yAxesTabFolder.setSelection(0);
 	}
 	
-	private void addTabItem(YAxis yAxis) {
+	private void addTabItem(YAxis yAxis, boolean resize) {
 		int count = this.yAxesTabFolder.getItemCount();
 		final YAxisTabItem yAxisTabItem = new YAxisTabItem(yAxesTabFolder, 
 				SWT.CLOSE, yAxis);
@@ -247,6 +247,10 @@ public class AxesDialog extends DialogCellEditorDialog {
 			}
 		});
 		this.yAxesTabFolder.setSelection(yAxisTabItem);
+		
+		if (resize) {
+			getShell().setSize(getShell().computeSize(SWT.DEFAULT, SWT.DEFAULT));
+		}
 	}
 	
 	private void addEmptyTabItem() {
