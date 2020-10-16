@@ -81,7 +81,7 @@ public class YAxisLabelProvider extends StyledCellLabelProvider {
 	 *  - " (log)" if Plot Mode is LOG
 	 *  and colors Point Style and Mark Style in selected Plot color
 	 */
-	private String getText(YAxis yAxis) {
+	public String getText(YAxis yAxis) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(" ");
 		sb.append(this.getPointStyleText(yAxis));

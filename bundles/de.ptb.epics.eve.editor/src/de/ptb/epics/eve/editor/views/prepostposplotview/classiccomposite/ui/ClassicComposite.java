@@ -37,6 +37,8 @@ import de.ptb.epics.eve.editor.handler.prepostposplotview.RemovePositioningsDefa
 import de.ptb.epics.eve.editor.handler.prepostposplotview.RemovePrePostscansDefaultHandler;
 import de.ptb.epics.eve.editor.views.AbstractScanModuleViewComposite;
 import de.ptb.epics.eve.editor.views.DelColumnEditingSupport;
+import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.plot.ui.XAxisEditingSupport;
+import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.plot.ui.YAxisEditingSupport;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.plot.ui.IdColumnLabelProvider;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.plot.ui.IdEditingSupport;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.plot.ui.NameEditingSupport;
@@ -401,17 +403,26 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 		TableViewerColumn xAxisColumn = new TableViewerColumn(viewer, SWT.LEFT);
 		xAxisColumn.getColumn().setText("x-Axis");
 		xAxisColumn.getColumn().setWidth(130);
-		xAxisColumn.setLabelProvider(new XAxisColumnLabelProvider());
+		ColumnLabelProvider xAxisLabelProvider = new XAxisColumnLabelProvider();
+		xAxisColumn.setLabelProvider(xAxisLabelProvider);
+		xAxisColumn.setEditingSupport(new XAxisEditingSupport(viewer, 
+				xAxisLabelProvider));
 		
 		TableViewerColumn yAxis1Column = new TableViewerColumn(viewer, SWT.LEFT);
 		yAxis1Column.getColumn().setText("y-Axis 1");
 		yAxis1Column.getColumn().setWidth(260);
-		yAxis1Column.setLabelProvider(new YAxisLabelProvider(0));
+		YAxisLabelProvider yAxis1LabelProvider = new YAxisLabelProvider(0);
+		yAxis1Column.setLabelProvider(yAxis1LabelProvider);
+		yAxis1Column.setEditingSupport(new YAxisEditingSupport(viewer, 
+				yAxis1LabelProvider, 0));
 		
 		TableViewerColumn yAxis2Column = new TableViewerColumn(viewer, SWT.LEFT);
 		yAxis2Column.getColumn().setText("y-Axis 2");
 		yAxis2Column.getColumn().setWidth(260);
-		yAxis2Column.setLabelProvider(new YAxisLabelProvider(1));
+		YAxisLabelProvider yAxis2LabelProvider = new YAxisLabelProvider(1);
+		yAxis2Column.setLabelProvider(yAxis2LabelProvider);
+		yAxis2Column.setEditingSupport(new YAxisEditingSupport(viewer, 
+				yAxis2LabelProvider, 1));
 	}
 
 	/**
