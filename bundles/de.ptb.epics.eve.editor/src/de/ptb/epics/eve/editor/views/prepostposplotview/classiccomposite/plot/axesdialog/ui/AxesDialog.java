@@ -238,7 +238,7 @@ public class AxesDialog extends DialogCellEditorDialog {
 	private void addTabItem(YAxis yAxis, boolean resize) {
 		int count = this.yAxesTabFolder.getItemCount();
 		final YAxisTabItem yAxisTabItem = new YAxisTabItem(yAxesTabFolder, 
-				SWT.CLOSE, yAxis);
+				SWT.CLOSE, yAxis, plotWindow);
 		yAxisTabItem.setText("y-Axis " + (count + 1));
 		yAxisTabItem.addDisposeListener(new DisposeListener() {
 			@Override
