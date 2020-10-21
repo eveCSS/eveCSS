@@ -4,6 +4,7 @@ import org.eclipse.core.databinding.conversion.IConverter;
 
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.scandescription.Channel;
+import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.YAxis;
 
 /**
@@ -12,9 +13,11 @@ import de.ptb.epics.eve.data.scandescription.YAxis;
  */
 public class NormalizeComboModelToTargetConverter implements IConverter {
 	private YAxis yAxis;
+	private PlotWindow plotWindow;
 	
-	public NormalizeComboModelToTargetConverter(YAxis yAxis) {
+	public NormalizeComboModelToTargetConverter(YAxis yAxis, PlotWindow plotWindow) {
 		this.yAxis = yAxis;
+		this.plotWindow = plotWindow;
 	}
 	
 	/**
@@ -38,6 +41,14 @@ public class NormalizeComboModelToTargetConverter implements IConverter {
 	 */
 	@Override
 	public Object convert(Object fromObject) {
-		return yAxis.getNormalizeChannel();
+		if (yAxis.getNormalizeChannel() == null) {
+			return null;
+		}
+		for (Channel channel : this.plotWindow.getScanModule().getChannels()) {
+			if (channel.getDetectorChannel().equals(yAxis.getNormalizeChannel())) {
+				return channel;
+			}
+		}
+		return null;
 	}
 }

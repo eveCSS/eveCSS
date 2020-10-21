@@ -42,18 +42,21 @@ import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.plot.ax
  * @author Marcus Michalsky
  * @since 1.35
  */
-public class YAxisTabItem extends CTabItem implements PropertyChangeListener {
+public class YAxisTabItem extends CTabItem implements PropertyChangeListener {	
 	private final YAxis yAxis;
+	private final PlotWindow plotWindow;
 	
 	private ComboViewer normalizeCombo;
 	private ComboViewer predefinedColorsCombo;
 	private ColorFieldEditor colorFieldEditor;
+	private DataBindingContext context;
 	private Binding colorComboBinding;
 	
 	public YAxisTabItem(CTabFolder parent, int style, final YAxis yAxis, 
 			PlotWindow plotWindow) {
 		super(parent, style);
 		this.yAxis = yAxis;
+		this.plotWindow = plotWindow;
 		this.yAxis.addPropertyChangeListener(YAxis.COLOR_PROP, this);
 		Composite top = new Composite(parent, SWT.NONE);
 		GridData gridData = new GridData();
@@ -312,7 +315,7 @@ public class YAxisTabItem extends CTabItem implements PropertyChangeListener {
 	}
 
 	private void bindValues() {
-		DataBindingContext context = new DataBindingContext();
+		context = new DataBindingContext();
 		
 		IObservableValue normalizeComboTargetObservable = ViewerProperties.
 				singleSelection().observe(normalizeCombo);
@@ -323,7 +326,8 @@ public class YAxisTabItem extends CTabItem implements PropertyChangeListener {
 				setConverter(new NormalizeComboTargetToModelConverter());
 		UpdateValueStrategy normalizeComboModelToTargetStrategy = 
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).
-				setConverter(new NormalizeComboModelToTargetConverter(yAxis));
+				setConverter(new NormalizeComboModelToTargetConverter(yAxis, 
+						plotWindow));
 		context.bindValue(normalizeComboTargetObservable, 
 				normalizeComboModelObservable, 
 				normalizeComboTargetToModelStrategy, 
@@ -366,6 +370,7 @@ public class YAxisTabItem extends CTabItem implements PropertyChangeListener {
 	@Override
 	public void dispose() {
 		this.yAxis.removePropertyChangeListener(YAxis.COLOR_PROP, this);
+		this.context.dispose();
 		super.dispose();
 	}
 }
