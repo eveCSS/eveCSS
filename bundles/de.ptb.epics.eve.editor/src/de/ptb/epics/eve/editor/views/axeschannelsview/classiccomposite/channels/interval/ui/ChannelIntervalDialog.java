@@ -63,6 +63,7 @@ public class ChannelIntervalDialog extends DialogCellEditorDialog {
 	
 	private final Image errorImage;
 
+	private DataBindingContext context;
 	private Binding triggerIntervalBinding;
 	
 	public ChannelIntervalDialog(Shell shell, Control control, Channel channel) {
@@ -163,7 +164,7 @@ public class ChannelIntervalDialog extends DialogCellEditorDialog {
 	}
 	
 	private void createBinding() {
-		DataBindingContext context = new DataBindingContext();
+		context = new DataBindingContext();
 		
 		IObservableValue triggerIntervalTargetObservable = 
 				WidgetProperties.text(SWT.Modify).observe(this.triggerIntervalText);
@@ -192,5 +193,14 @@ public class ChannelIntervalDialog extends DialogCellEditorDialog {
 					setConverter(new StoppedByTargetToModelConverter(channel)),
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).
 					setConverter(new StoppedByModelToTargetConverter()));
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean close() {
+		this.context.dispose();
+		return super.close();
 	}
 }

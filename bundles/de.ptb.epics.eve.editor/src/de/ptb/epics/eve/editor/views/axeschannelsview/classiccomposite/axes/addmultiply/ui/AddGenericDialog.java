@@ -143,6 +143,7 @@ public abstract class AddGenericDialog extends DialogCellEditorDialog implements
 	public boolean close() {
 		this.addMultiplyMode.removePropertyChangeListener(
 				AddMultiplyMode.ADJUST_PARAMETER_PROP, this);
+		this.context.dispose();
 		return super.close();
 	}
 	

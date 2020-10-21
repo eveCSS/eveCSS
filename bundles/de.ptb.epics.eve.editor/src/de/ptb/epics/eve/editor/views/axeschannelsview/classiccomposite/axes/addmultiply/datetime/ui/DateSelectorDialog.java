@@ -5,8 +5,6 @@ import java.util.Date;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -53,14 +51,6 @@ public class DateSelectorDialog extends Dialog {
 		timeLabel.setText("Time:");
 		
 		this.time = new DateTime(composite, SWT.TIME);
-		this.time.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				System.out.println(e.data);
-				// TODO Auto-generated method stub
-				super.widgetSelected(e);
-			}
-		});
 		
 		this.setPresetTime();
 		

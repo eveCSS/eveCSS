@@ -92,6 +92,7 @@ public class ChannelStandardDialog extends DialogCellEditorDialog
 	private Text minimumText;
 	private Text maxAttemptsText;
 
+	private DataBindingContext context;
 	private Binding averageBinding;
 	private Binding maxDeviationBinding;
 	private Binding minimumBinding;
@@ -327,7 +328,7 @@ public class ChannelStandardDialog extends DialogCellEditorDialog
 	}
 	
 	private void createBinding() {
-		DataBindingContext context = new DataBindingContext();
+		context = new DataBindingContext();
 
 		IObservableValue averageTargetObservable = 
 				WidgetProperties.text(SWT.Modify).observe(this.averageText);
@@ -391,6 +392,7 @@ public class ChannelStandardDialog extends DialogCellEditorDialog
 		((IMenuService) PlatformUI.getWorkbench().
 			getService(IMenuService.class)).releaseContributions(menuManager);
 		this.channel.getRedoControlEventManager().removeModelUpdateListener(this);
+		this.context.dispose();
 		return super.close();
 	}
 	
