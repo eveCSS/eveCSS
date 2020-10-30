@@ -4,6 +4,12 @@ import de.ptb.epics.eve.data.measuringstation.AbstractPrePostscanDevice;
 import de.ptb.epics.eve.data.scandescription.Postscan;
 import de.ptb.epics.eve.data.scandescription.Prescan;
 
+/**
+ * View Model.
+ * 
+ * @author Marcus Michalsky
+ * @since 1.35
+ */
 public class PrePostscanEntry {
 	private AbstractPrePostscanDevice device;
 	private Prescan prescan;

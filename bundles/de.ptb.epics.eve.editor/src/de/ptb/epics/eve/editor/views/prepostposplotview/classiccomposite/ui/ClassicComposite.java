@@ -473,12 +473,10 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 	 */
 	@Override
 	public void saveState(IMemento memento) {
-		// sash weights
 		int[] sashWeights = sashForm.getWeights();
 		memento.putInteger(MEMENTO_PREPOST_SASH_WEIGHT, sashWeights[0]);
 		memento.putInteger(MEMENTO_POSITIONING_SASH_WEIGHT, sashWeights[1]);
 		memento.putInteger(MEMENTO_PLOT_SASH_WEIGHT, sashWeights[2]);
-		// TODO table sort states
 	}
 
 	/**
@@ -486,7 +484,6 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 	 */
 	@Override
 	public void restoreState(IMemento memento) {
-		// TODO restore sash weights
 		int[] sashWeights = new int[] {1,1,1};
 		if (memento.getInteger(MEMENTO_PREPOST_SASH_WEIGHT) != null) {
 			sashWeights[0] = memento.getInteger(MEMENTO_PREPOST_SASH_WEIGHT);
@@ -498,7 +495,5 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 			sashWeights[2] = memento.getInteger(MEMENTO_PLOT_SASH_WEIGHT);
 		}
 		this.sashForm.setWeights(sashWeights);
-		// TODO table sort states
-		
 	}
 }

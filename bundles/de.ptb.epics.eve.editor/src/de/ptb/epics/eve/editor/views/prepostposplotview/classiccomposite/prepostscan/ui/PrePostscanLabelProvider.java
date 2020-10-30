@@ -18,14 +18,13 @@ public class PrePostscanLabelProvider extends CommonLabelProvider {
 	 */
 	@Override
 	public Image getColumnImage(Object element, int columnIndex) {
-		// TODO Auto-generated method stub
 		switch (columnIndex) {
 		case 0: // delete column
 			return DELETE_IMG;
 		case 1: // prescan column
 			break;
 		case 2: // name column
-			// TODO return info image if neither pre nor post is set ? -> ghost item
+			// return info image if neither pre nor post is set ? -> ghost item
 			break;
 		case 3: // postscan column
 			break;

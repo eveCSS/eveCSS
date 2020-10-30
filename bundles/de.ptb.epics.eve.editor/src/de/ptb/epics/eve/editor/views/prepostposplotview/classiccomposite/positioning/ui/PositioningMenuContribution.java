@@ -34,7 +34,9 @@ public class PositioningMenuContribution extends CompoundContributionItem {
 	private final ImageDescriptor axisImage = ImageDescriptor.createFromImage(
 			Activator.getDefault().getImageRegistry().get("AXIS"));
 	
-	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected IContributionItem[] getContributionItems() {
 		// all axes currently in current scan module should be available
@@ -85,7 +87,6 @@ public class PositioningMenuContribution extends CompoundContributionItem {
 				result.add(item);
 			}
 		}
-		
 		return result.toArray(new IContributionItem[0]);
 	}
 	

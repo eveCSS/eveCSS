@@ -19,7 +19,6 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -34,6 +33,7 @@ import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.YAxis;
 import de.ptb.epics.eve.editor.views.DialogCellEditorDialog;
+import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.plot.axesdialog.PredefinedColors;
 
 /**
  * @author Marcus Michalsky
@@ -227,10 +227,10 @@ public class AxesDialog extends DialogCellEditorDialog {
 				// set color to red if first axis present and blue, else blue
 				if (AxesDialog.this.plotWindow.getYAxes().size() == 2) {
 					if (AxesDialog.this.plotWindow.getYAxes().get(0).
-							getColor().equals(new RGB(0, 0, 255))) {
-						newAxis.setColor(new RGB(255, 0, 0));
+							getColor().equals(PredefinedColors.BLUE.getColor())) {
+						newAxis.setColor(PredefinedColors.RED.getColor());
 					} else {
-						newAxis.setColor(new RGB(0, 0, 255));
+						newAxis.setColor(PredefinedColors.BLUE.getColor());
 					}
 				}
 				AxesDialog.this.addTabItem(newAxis, true);

@@ -94,16 +94,13 @@ public class PrePostPosPlotView extends AbstractScanModuleView {
 		
 		this.setScanModule(null);
 	}
-	
-	
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void setFocus() {
-		// TODO Auto-generated method stub
-	
+		this.contentPanel.setFocus();
 	}
 
 	/**
