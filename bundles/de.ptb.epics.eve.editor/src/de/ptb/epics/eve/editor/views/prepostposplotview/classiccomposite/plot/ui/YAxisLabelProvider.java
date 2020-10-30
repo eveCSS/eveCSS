@@ -15,15 +15,13 @@ import de.ptb.epics.eve.data.scandescription.YAxisModifier;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.errors.PlotWindowError;
 import de.ptb.epics.eve.data.scandescription.errors.PlotWindowErrorTypes;
+import de.ptb.epics.eve.editor.StringLabels;
 
 /**
  * @author Marcus Michalsky
  * @since 1.35
  */
 public class YAxisLabelProvider extends StyledCellLabelProvider {
-	private static final String LONG_DASH = "\u2014";
-	private static final String MULTIPLY_SIGN = "\u00D7";
-	
 	private static final Image ERROR_IMG = PlatformUI.getWorkbench().
 			getSharedImages().getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
 	
@@ -55,7 +53,7 @@ public class YAxisLabelProvider extends StyledCellLabelProvider {
 			StyleRange[] range = {myStyledRange};
 			cell.setStyleRanges(range);
 		} else {
-			cell.setText(LONG_DASH);
+			cell.setText(StringLabels.LONG_DASH);
 		}
 		if (!plotWindow.getModelErrors().isEmpty() && this.yAxisNumber == 0) {
 			for (IModelError error : plotWindow.getModelErrors()) {
@@ -90,7 +88,7 @@ public class YAxisLabelProvider extends StyledCellLabelProvider {
 		sb.append(" ");
 		
 		if (yAxis.getModifier().equals(YAxisModifier.INVERSE)) {
-			sb.append(" -1 " + MULTIPLY_SIGN + " ");
+			sb.append(" -1 " + StringLabels.MULTIPLY_SIGN + " ");
 		}
 		sb.append(yAxis.getNormalizedName());
 		if (yAxis.getMode().equals(PlotModes.LOG)) {
@@ -103,31 +101,31 @@ public class YAxisLabelProvider extends StyledCellLabelProvider {
 	private String getPointStyleText(YAxis yAxis) {
 		switch (yAxis.getMarkstyle()) {
 		case BAR:
-			return "|";
+			return StringLabels.BAR;
 		case CIRCLE:
-			return "\u25CB";
+			return StringLabels.CIRCLE;
 		case CROSS:
-			return "+";
+			return StringLabels.CROSS;
 		case DIAMOND:
-			return "\u25C7";
+			return StringLabels.DIAMOND;
 		case FILLED_DIAMOND:
-			return "\u25C6";
+			return StringLabels.FILLED_DIAMOND;
 		case FILLED_SQUARE:
-			return "\u25A0";
+			return StringLabels.FILLED_SQUARE;
 		case FILLED_TRIANGLE:
-			return "\u25B2";
+			return StringLabels.FILLED_TRIANGLE;
 		case NONE:
-			return " ";
+			return StringLabels.SPACE;
 		case POINT:
-			return "\u25CF";
+			return StringLabels.POINT;
 		case SQUARE:
-			return "\u25A1";
+			return StringLabels.SQUARE;
 		case TRIANGLE:
-			return "\u25B3";
+			return StringLabels.TRIANGLE;
 		case XCROSS:
-			return "\u00D7";
+			return StringLabels.XCROSS;
 		default:
-			return " ";
+			return StringLabels.SPACE;
 		}
 	}
 
@@ -135,21 +133,21 @@ public class YAxisLabelProvider extends StyledCellLabelProvider {
 	private String getLineStyleText(YAxis yAxis) {
 		switch (yAxis.getLinestyle()) {
 		case AREA:
-			return "\u25AE";
+			return StringLabels.BOLD_BAR;
 		case BAR:
-			return "\u2502";
+			return StringLabels.LONG_BAR;
 		case DASH_LINE:
-			return "\u2504";
+			return StringLabels.DASH_LINE;
 		case POINT:
-			return " ";
+			return StringLabels.SPACE;
 		case SOLID_LINE:
-			return "\u2500";
+			return StringLabels.SOLID_LINE;
 		case STEP_HORIZONTALLY:
-			return "\u2500";
+			return StringLabels.SOLID_LINE;
 		case STEP_VERTICALLY:
-			return "\u2500";
+			return StringLabels.SOLID_LINE;
 		default:
-			return " ";
+			return StringLabels.SPACE;
 		}
 	}
 	

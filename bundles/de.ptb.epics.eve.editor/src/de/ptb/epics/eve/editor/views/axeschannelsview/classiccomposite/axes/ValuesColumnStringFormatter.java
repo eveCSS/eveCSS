@@ -96,7 +96,7 @@ public class ValuesColumnStringFormatter {
 			}
 			sb.replace(sb.length()-1, sb.length(), "");
 			
-			sb.append(" / ");
+			sb.append(StringLabels.SLASH_WITH_SPACES);
 			
 			Duration stepwidthDuration = (Duration)axis.getStepwidth();
 			if (stepwidthDuration.getHours() != 0) {

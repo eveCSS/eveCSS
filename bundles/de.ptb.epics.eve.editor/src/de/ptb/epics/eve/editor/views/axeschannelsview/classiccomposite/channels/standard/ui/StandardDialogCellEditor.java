@@ -26,7 +26,7 @@ public class StandardDialogCellEditor extends DialogCellEditor {
 	protected Object openDialogBox(Control cellEditorWindow) {
 		new ChannelStandardDialog(cellEditorWindow.getShell(), getControl(), 
 				this.channel).open();
-		return this.channel; // TODO ???
+		return this.channel;
 	}
 
 }

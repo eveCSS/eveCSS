@@ -38,6 +38,7 @@ import de.ptb.epics.eve.data.scandescription.channelmode.StandardMode;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.editor.StringLabels;
 import de.ptb.epics.eve.editor.views.DialogCellEditorDialog;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.AverageTargetToModelConverter;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.AverageTargetToModelValidator;
@@ -83,7 +84,6 @@ public class ChannelStandardDialog extends DialogCellEditorDialog
 	 * indentation used for text input layout to leave space for decorators
 	 */
 	private static final int TEXT_INDENTATION = 7;
-	private static final String LONG_DASH = Character.toString('\u2014');
 	
 	private Channel channel;
 
@@ -273,7 +273,7 @@ public class ChannelStandardDialog extends DialogCellEditorDialog
 					return ComparisonTypes.typeToString(
 							controlEvent.getLimit().getComparison());
 				} else {
-					return LONG_DASH;
+					return StringLabels.EM_DASH;
 				}
 			}
 		});
@@ -298,7 +298,7 @@ public class ChannelStandardDialog extends DialogCellEditorDialog
 				if (controlEvent.getEvent() instanceof MonitorEvent) {
 					return controlEvent.getLimit().getValue();
 				} else {
-					return LONG_DASH;
+					return StringLabels.EM_DASH;
 				}
 			}
 		});

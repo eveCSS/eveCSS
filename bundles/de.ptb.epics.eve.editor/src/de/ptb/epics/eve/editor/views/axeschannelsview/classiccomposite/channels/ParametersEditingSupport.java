@@ -37,7 +37,6 @@ public class ParametersEditingSupport extends EditingSupport {
 		default:
 			break;
 		}
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -63,7 +62,6 @@ public class ParametersEditingSupport extends EditingSupport {
 	 */
 	@Override
 	protected void setValue(Object element, Object value) {
-		// TODO Auto-generated method stub
-
+		// Parameters are bound in the dialog
 	}
 }

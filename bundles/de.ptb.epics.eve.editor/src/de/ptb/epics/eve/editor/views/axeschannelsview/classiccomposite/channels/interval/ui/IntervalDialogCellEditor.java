@@ -26,6 +26,6 @@ public class IntervalDialogCellEditor extends DialogCellEditor {
 	protected Object openDialogBox(Control cellEditorWindow) {
 		new ChannelIntervalDialog(cellEditorWindow.getShell(), getControl(), 
 				channel).open();
-		return channel; // TODO ?!?
+		return channel;
 	}
 }

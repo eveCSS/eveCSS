@@ -65,6 +65,9 @@ public class AxesChannelsView extends AbstractScanModuleView {
 		this.memento = memento;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void createPartControl(Composite parent) {
 		GridData gridData = new GridData();

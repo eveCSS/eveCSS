@@ -11,6 +11,7 @@ import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.axismode.AddMultiplyMode;
 import de.ptb.epics.eve.data.scandescription.axismode.AdjustParameter;
+import de.ptb.epics.eve.editor.StringLabels;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.datetime.ui.AddDateTimeDialogCellEditor;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.intdouble.AddIntDoubleTextConverter;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.addmultiply.intdouble.AddIntDoubleValues;
@@ -162,13 +163,13 @@ public class ValuesEditingSupport extends EditingSupport {
 			switch (adjustParameter) {
 			case START:
 				return "- / " + 
-				axis.getStop() + " / " + 
+				axis.getStop() + StringLabels.SLASH_WITH_SPACES + 
 				axis.getStepwidth();
 			case STEPWIDTH:
-				return axis.getStart() + " / " + 
+				return axis.getStart() + StringLabels.SLASH_WITH_SPACES + 
 				axis.getStop() + " / -";
 			case STOP:
-				return axis.getStart() + " / " + 
+				return axis.getStart() + StringLabels.SLASH_WITH_SPACES + 
 				"- / " + 
 				axis.getStepwidth();
 			default:
@@ -180,22 +181,22 @@ public class ValuesEditingSupport extends EditingSupport {
 		switch (adjustParameter) {
 		case START:
 			return "- / " + 
-			axis.getStop() + " / " + 
-			axis.getStepwidth() + " / " + 
+			axis.getStop() + StringLabels.SLASH_WITH_SPACES + 
+			axis.getStepwidth() + StringLabels.SLASH_WITH_SPACES + 
 			axis.getStepcount();
 		case STEPCOUNT:
-			return axis.getStart() + " / " + 
-			axis.getStop() + " / " + 
+			return axis.getStart() + StringLabels.SLASH_WITH_SPACES + 
+			axis.getStop() + StringLabels.SLASH_WITH_SPACES + 
 			axis.getStepwidth() + " / -";
 		case STEPWIDTH:
-			return axis.getStart() + " / " + 
-			axis.getStop() + " / " + 
+			return axis.getStart() + StringLabels.SLASH_WITH_SPACES + 
+			axis.getStop() + StringLabels.SLASH_WITH_SPACES + 
 			"- / " + 
 			axis.getStepcount();
 		case STOP:
-			return axis.getStart() + " / " + 
+			return axis.getStart() + StringLabels.SLASH_WITH_SPACES + 
 			"- / " + 
-			axis.getStepwidth() + " / " + 
+			axis.getStepwidth() + StringLabels.SLASH_WITH_SPACES + 
 			axis.getStepcount();
 		default:
 			break;
