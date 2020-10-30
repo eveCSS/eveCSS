@@ -19,6 +19,7 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -223,6 +224,15 @@ public class AxesDialog extends DialogCellEditorDialog {
 				// create new y axis, add it to the model and add tab item
 				YAxis newAxis = new YAxis(null);
 				AxesDialog.this.plotWindow.addYAxis(newAxis);
+				// set color to red if first axis present and blue, else blue
+				if (AxesDialog.this.plotWindow.getYAxes().size() == 2) {
+					if (AxesDialog.this.plotWindow.getYAxes().get(0).
+							getColor().equals(new RGB(0, 0, 255))) {
+						newAxis.setColor(new RGB(255, 0, 0));
+					} else {
+						newAxis.setColor(new RGB(0, 0, 255));
+					}
+				}
 				AxesDialog.this.addTabItem(newAxis, true);
 				// if < 2 axes present, add empty tab
 				if (AxesDialog.this.plotWindow.getYAxes().size() < 2) {
@@ -272,5 +282,18 @@ public class AxesDialog extends DialogCellEditorDialog {
 				tabItem.setText("y-Axis " + index++);
 			}
 		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean close() {
+		for (YAxis yAxis : this.plotWindow.getYAxes()) {
+			if (yAxis.getDetectorChannel() == null) {
+				this.plotWindow.removeYAxis(yAxis);
+			}
+		}
+		return super.close();
 	}
 }

@@ -46,9 +46,15 @@ public class YAxisTabItem extends CTabItem implements PropertyChangeListener {
 	private final YAxis yAxis;
 	private final PlotWindow plotWindow;
 	
+	private ComboViewer channelCombo;
 	private ComboViewer normalizeCombo;
 	private ComboViewer predefinedColorsCombo;
 	private ColorFieldEditor colorFieldEditor;
+	private ComboViewer linestyleCombo;
+	private ComboViewer markstyleCombo;
+	private ComboViewer scaletypeCombo;
+	private ComboViewer modifierCombo;
+	
 	private DataBindingContext context;
 	private Binding colorComboBinding;
 	
@@ -71,7 +77,7 @@ public class YAxisTabItem extends CTabItem implements PropertyChangeListener {
 		Label channelLabel = new Label(top, SWT.NONE);
 		channelLabel.setText("Detector Channel:");
 		
-		ComboViewer channelCombo = new ComboViewer(top);
+		channelCombo = new ComboViewer(top);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
@@ -107,6 +113,7 @@ public class YAxisTabItem extends CTabItem implements PropertyChangeListener {
 						getSelection();
 				yAxis.setDetectorChannel(((Channel)selection.getFirstElement()).
 						getDetectorChannel());
+				YAxisTabItem.this.setEnabledStates();
 			}
 		});
 		
@@ -188,7 +195,7 @@ public class YAxisTabItem extends CTabItem implements PropertyChangeListener {
 		Label linestyleLabel = new Label(top, SWT.NONE);
 		linestyleLabel.setText("Linestyle:");
 		
-		ComboViewer linestyleCombo = new ComboViewer(top);
+		linestyleCombo = new ComboViewer(top);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
@@ -213,7 +220,7 @@ public class YAxisTabItem extends CTabItem implements PropertyChangeListener {
 		Label markstyleLabel = new Label(top, SWT.NONE);
 		markstyleLabel.setText("Markstyle:");
 		
-		ComboViewer markstyleCombo = new ComboViewer(top);
+		markstyleCombo = new ComboViewer(top);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
@@ -238,7 +245,7 @@ public class YAxisTabItem extends CTabItem implements PropertyChangeListener {
 		Label scaletypeLabel = new Label(top, SWT.NONE);
 		scaletypeLabel.setText("Scaletype:");
 		
-		ComboViewer scaletypeCombo = new ComboViewer(top);
+		scaletypeCombo = new ComboViewer(top);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
@@ -269,7 +276,7 @@ public class YAxisTabItem extends CTabItem implements PropertyChangeListener {
 		Label modifierLabel = new Label(top, SWT.NONE);
 		modifierLabel.setText("Modifier:");
 		
-		final ComboViewer modifierCombo = new ComboViewer(top);
+		modifierCombo = new ComboViewer(top);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
@@ -294,6 +301,8 @@ public class YAxisTabItem extends CTabItem implements PropertyChangeListener {
 		this.setControl(top);
 		
 		this.bindValues();
+		
+		this.setEnabledStates();
 		
 		predefinedColorsCombo.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
@@ -353,6 +362,26 @@ public class YAxisTabItem extends CTabItem implements PropertyChangeListener {
 		return this.yAxis;
 	}
 
+	private void setEnabledStates() {
+		if (this.yAxis.getDetectorChannel() == null) {
+			this.normalizeCombo.getCombo().setEnabled(false);
+			this.predefinedColorsCombo.getCombo().setEnabled(false);
+			this.colorFieldEditor.getColorSelector().setEnabled(false);
+			this.linestyleCombo.getCombo().setEnabled(false);
+			this.markstyleCombo.getCombo().setEnabled(false);
+			this.scaletypeCombo.getCombo().setEnabled(false);
+			this.modifierCombo.getCombo().setEnabled(false);
+		} else {
+			this.normalizeCombo.getCombo().setEnabled(true);
+			this.predefinedColorsCombo.getCombo().setEnabled(true);
+			this.colorFieldEditor.getColorSelector().setEnabled(true);
+			this.linestyleCombo.getCombo().setEnabled(true);
+			this.markstyleCombo.getCombo().setEnabled(true);
+			this.scaletypeCombo.getCombo().setEnabled(true);
+			this.modifierCombo.getCombo().setEnabled(true);
+		}
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
