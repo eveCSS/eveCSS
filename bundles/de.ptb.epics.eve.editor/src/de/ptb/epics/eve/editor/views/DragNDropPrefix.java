@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.dragndrop;
+package de.ptb.epics.eve.editor.views;
 
 /**
  * @author Marcus Michalsky

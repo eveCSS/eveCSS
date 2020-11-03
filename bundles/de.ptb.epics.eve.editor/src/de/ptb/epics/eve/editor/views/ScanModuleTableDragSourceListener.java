@@ -8,7 +8,6 @@ import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.widgets.TableItem;
 
 import de.ptb.epics.eve.data.scandescription.AbstractBehavior;
-import de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.dragndrop.DragNDropPrefix;
 
 /**
  * @author Marcus Michalsky
