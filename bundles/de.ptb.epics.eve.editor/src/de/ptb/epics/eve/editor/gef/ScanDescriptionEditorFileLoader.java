@@ -9,7 +9,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -64,18 +63,11 @@ public class ScanDescriptionEditorFileLoader {
 					"eveCSS-" + System.getProperty("user.name")
 							+ scanDescription.getName(), ".tmp");
 			tempFile.deleteOnExit();
-			StreamResult result = new StreamResult(tempFile);
+			StreamResult result = new StreamResult(tempFile.getAbsolutePath());
 			transformer.transform(source, result);
 			return tempFile;
-		} catch (ParserConfigurationException e) {
-			LOGGER.error(e.getMessage(), e);
-		} catch (SAXException e) {
-			LOGGER.error(e.getMessage(), e);
-		} catch (IOException e) {
-			LOGGER.error(e.getMessage(), e);
-		} catch (TransformerConfigurationException e) {
-			LOGGER.error(e.getMessage(), e);
-		} catch (TransformerException e) {
+		} catch (ParserConfigurationException | SAXException | IOException | 
+				TransformerException e) {
 			LOGGER.error(e.getMessage(), e);
 		}
 		return null;
