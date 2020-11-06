@@ -10,6 +10,7 @@ import de.ptb.epics.eve.editor.views.detectorchannelview.ui.DetectorChannelView;
 import de.ptb.epics.eve.editor.views.errorview.ErrorView;
 import de.ptb.epics.eve.editor.views.motoraxisview.MotorAxisView;
 import de.ptb.epics.eve.editor.views.plotwindowview.PlotWindowView;
+import de.ptb.epics.eve.editor.views.prepostposplotview.ui.PrePostPosPlotView;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
 import de.ptb.epics.eve.editor.views.scanview.ui.ScanView;
 
@@ -56,6 +57,8 @@ public class EveEditorPerspective implements IPerspectiveFactory {
 				"ScanModuleViews", IPageLayout.BOTTOM, 0.28f, ChainView.ID);
 		scanModuleViewsFolder.addView(AxesChannelsView.ID);
 		layout.getViewLayout(AxesChannelsView.ID).setCloseable(false);
+		scanModuleViewsFolder.addView(PrePostPosPlotView.ID);
+		layout.getViewLayout(PrePostPosPlotView.ID).setCloseable(false);
 		scanModuleViewsFolder.addView(ScanModuleView.ID);
 		layout.getViewLayout(ScanModuleView.ID).setCloseable(false);
 		

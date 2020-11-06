@@ -12,7 +12,9 @@
    </topic>
    <topic href="help/content/concepts/smaxeschannelsview.html" label="SM Axes / Channels View">
    </topic>
-   <topic href="help/content/concepts/scanmoduleview.html" label="Scan Module View">
+   <topic href="help/content/concepts/smprepostposplotview.html" label="SM Prescan / Postscan / Positioning / Plot View">
+   </topic>
+   <topic href="help/content/concepts/smeventsview.html" label="SM Events View">
    </topic>
    <topic href="help/content/concepts/motoraxisview.html" label="Motor Axis View">
    </topic>

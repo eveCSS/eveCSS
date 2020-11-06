@@ -1,0 +1,7 @@
+h1(eveTopic|#top). Edit Properties of a Plot
+
+{toc:style=circle|maxLevel=3}
+
+p. Several properties of a Plot added to a scan module can be modified within the Plot table of the SM Prescan / Postscan / Positioning / Plot View. Editing the different attributes is explained in detail below.
+
+h2(eveTopic).

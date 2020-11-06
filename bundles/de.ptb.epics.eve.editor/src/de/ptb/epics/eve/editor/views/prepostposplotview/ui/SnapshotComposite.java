@@ -18,7 +18,7 @@ public class SnapshotComposite extends Composite {
 		this.setLayout(new GridLayout());
 		Label label = new Label(this, SWT.WRAP);
 		label.setText(
-			"Pre-/Postscans are only available in Scan Modules of type classic.");
+			"Pre-/Postscans, Positionings and Plots are only available in Scan Modules of type classic.");
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;

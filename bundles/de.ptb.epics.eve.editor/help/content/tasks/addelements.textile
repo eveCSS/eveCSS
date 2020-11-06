@@ -1,0 +1,53 @@
+h1(eveTopic|#top). Add Elements to a Scan Module
+
+{toc:style=circle|maxLevel=2}
+
+p. To add a device (e.g. a motor axis) to a scan module follow these steps:
+
+p. In the Editor, select the scan module the device should be added to by (left-)clicking on it: 
+
+p=. !(eveImage)../../img/tasks/adddevicestosm/adddevicestosm-clickonsm.png(select the scan module by clicking on it)!
+
+p. The previously empty SM Axes / Channels View and Scan Module View now shows the contents of the scan module just selected.
+
+p=. !(eveImage)../../img/tasks/adddevicestosm/adddevicestosm-views.png(previously empty scan module views get filled)!
+
+h2(eveTopic). Add Axis/Channel
+
+p(backToTop). "back to top":#top
+
+p. To add an axis or channel to the selected scan module, select the SM Axes / Channels View and right-click in the white area of the corresponding table to open a context menu showing all devices (ordered by classes). Navigate to the axis you want to add and click on it (or click on add all to add all devices of the class). Note that depending on the current device definition and configuration (class names) "different devices are shown":../reference/deviceclasses.html.
+
+p=. !(eveImage)../../img/tasks/adddevicestosm/adddevicestosm-addmotor.png(context menu showing available motors which can be selected to add them to the scan module)!
+
+p. Afterwards "properties of an axis":editaxisproperties.html and "properties of a channel":editchannelproperties.html can be edited.
+
+h2(eveTopic). Add Pre-/Postscan
+
+p(backToTop). "back to top":#top
+
+p. To add a Pre-/Postscan to the selected scan module, select the SM Prescan / Postscan / Positioning / Plot View and right-click in the white area of the corresponding table to open a context menu. Select either prescan or postscan and navigate to the device/option you want to add.
+
+p=. !(eveImage)../../img/tasks/adddevicestosm/addprepost.png(context menu showing available pre-/postscans which can be selected to add them to the scan module)!
+
+p. Properties of added Pre-/Postscans can be "edited":editprepostscanproperties.html afterwards.
+
+h2(eveTopic). Add Positioning
+
+p(backToTop). "back to top":#top
+
+p. To add a Positioning to the selected scan module, select the SM Prescan / Postscan / Positioning / Plot View and right-click in the white area of the corresponding table to open a context menu. Motor Axes available for positioning are shown and can be selected. Remember that nothing will be shown, if the scan module contains no axes (or every axis is already defined as a positioning).
+
+p=. !(eveImage)../../img/tasks/adddevicestosm/addpositioning.png(context menu showing available positionings which can be selected to add them to the scan module)!
+
+p. Properties of added Positionings can be "edited":editpositioningproperties.html afterwards.
+
+h2(eveTopic). Add Plot Window
+
+p(backToTop). "back to top":#top
+
+p. To add a Plot Window to the selected scan module, select the SM Prescan / Postscan / Positioning / Plot View and right-click in the white area of the corresponding table to open a context menu and click on "Add Plot Window".
+
+p=. !(eveImage)../../img/tasks/adddevicestosm/addplot.png(context menu showing the add plot window option which can be selected to add a plot window to the scan module)!
+
+p. Properties of added Plot Windows can be "edited":editplotproperties.html afterwards.

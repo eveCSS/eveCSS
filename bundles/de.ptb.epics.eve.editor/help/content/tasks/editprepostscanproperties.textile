@@ -1,0 +1,7 @@
+h1(eveTopic|#top). Edit Properties of a Pre-/Postscan
+
+{toc:style=circle|maxLevel=3}
+
+p. Several properties of a Pre-/Postscan added to a scan module can be modified within the Pre-/Postscan table of the SM Prescan / Postscan / Positioning / Plot View. Editing the different attributes is explained in detail below.
+
+h2(eveTopic).

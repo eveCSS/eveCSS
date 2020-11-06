@@ -1,0 +1,7 @@
+h1(eveTopic|#top). Edit Properties of a Positioning
+
+{toc:style=circle|maxLevel=3}
+
+p. Several properties of a Positioning added to a scan module can be modified within the Positioning table of the SM Prescan / Postscan / Positioning / Plot View. Editing the different attributes is explained in detail below.
+
+h2(eveTopic).
