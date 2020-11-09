@@ -4,4 +4,46 @@ h1(eveTopic|#top). Edit Properties of a Positioning
 
 p. Several properties of a Positioning added to a scan module can be modified within the Positioning table of the SM Prescan / Postscan / Positioning / Plot View. Editing the different attributes is explained in detail below.
 
-h2(eveTopic).
+h2(eveTopic). Motor Axis
+
+p. A Positioning can be added by right-clicking in the Positionings table and selecting one of the axes shown in the context menu:
+
+p=. !(eveImage)../../img/tasks/editpositioningproperties/positioning-add.png!
+
+p. Note that only axes present in the currently selected scan module are available for positionings. An existing Entry can be removed later by clicking the "x" in the first column or using the context menu (right-clicking the element to remove):
+
+p=. !(eveImage)../../img/tasks/editpositioningproperties/positioning-remove.png!
+
+h2(eveTopic). Plugin
+
+p. By clicking in the plugin column, the positioning plugin can be selected:
+
+p=. !(eveImage)../../img/tasks/editpositioningproperties/positioning-plugin.png!
+
+p. Some of the available plugins have additional "parameters":#parameters.
+
+h2(eveTopic). Detector Channel
+
+p. The detector channel the plugin calculation is based upon is selected in this column:
+
+p=. !(eveImage)../../img/tasks/editpositioningproperties/positioning-channel.png!
+
+p. Note that only channels present in the currently selected scan module are for available for positionings.
+
+h2(eveTopic). Normalize Channel
+
+p. An optional normalize channel can be selected by editing this column:
+
+p=. !(eveImage)../../img/tasks/editpositioningproperties/positioning-normalize.png!
+
+p. Note that only channels present in the currently selected scan module are for available as normalize channels for positionings.
+
+h2(eveTopic|#parameters). Parameters
+
+p. As mentioned before, some of the plugins have parameters which are shown in this column. The parameters can be edited by clicking in the column:
+
+p=. !(eveImage)../../img/tasks/editpositioningproperties/positioning-parameters.png!
+
+p. After clicking on "..." a dialog opens where the parameters can be edited:
+
+p=. !(eveImage)../../img/tasks/editpositioningproperties/positioning-dialog.png!
