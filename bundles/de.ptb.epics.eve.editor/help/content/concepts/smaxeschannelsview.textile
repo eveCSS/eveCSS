@@ -2,7 +2,7 @@ h1(eveTopic|#top). SM Axes / Channels View
 
 {toc:style=circle|maxLevel=2}
 
-The content of the ScanModuleView depends on the type of the currently selected scan module. It shows attributes that can be altered and allows adding/deleting devices, actions, events, etc. in certain cases. The different appearances are shown in the following.
+p. The content of the SM Axes / Channels View depends on the type of the currently selected scan module. It shows attributes that can be altered and allows adding/deleting devices, actions, events, etc. in certain cases. The different appearances are shown in the following.
 
 h2(eveTopic). Scan Module
 
@@ -21,11 +21,11 @@ h3(eveTopic). General Settings
 
 h3(eveTopic). Motor Axes
 
-p. Allows adding/removing of and displays current motor axes. Properties of selected axes can be modified either in the "Motor Axis View":motoraxisview.html or "directly in the table":../tasks/editaxisproperties.html.
+p. Allows adding/removing of and displays Motor Axes of the currently selected scan module. Properties of selected axes can be modified either in the "Motor Axis View":motoraxisview.html or "directly in the table":../tasks/editaxisproperties.html.
 
 h3(eveTopic). Detector Channels
 
-p. Allows adding/removing of and displays current detector channels. Properties of selected channels can be modified either in the "Detector Channel View":detectorchannelview.html or "directly in the table":../tasks/editchannelproperties.html.
+p. Allows adding/removing of and displays Detector Channels of the currently selected scan module. Properties of selected channels can be modified either in the "Detector Channel View":detectorchannelview.html or "directly in the table":../tasks/editchannelproperties.html.
 
 h2(eveTopic). Static Axis Snapshot
 

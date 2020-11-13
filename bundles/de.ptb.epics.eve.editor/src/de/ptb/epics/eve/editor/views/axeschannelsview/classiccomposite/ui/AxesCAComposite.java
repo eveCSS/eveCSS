@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Text;
 
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.scandescription.Axis;
+import de.ptb.epics.eve.editor.StringLabels;
 
 /**
  * @author Marcus Michalsky
@@ -101,15 +102,15 @@ public class AxesCAComposite extends Composite implements PropertyChangeListener
 		if (this.currentAxis != null && this.currentAxis == axis) {
 			return;
 		}
-		this.lowLimitText.setText("");
-		this.lowLimitText.setToolTipText("");
+		this.lowLimitText.setText(StringLabels.EMPTY);
+		this.lowLimitText.setToolTipText(StringLabels.EMPTY);
 		this.lowLimitText.setEnabled(false);
-		this.highLimitText.setText("");
-		this.highLimitText.setToolTipText("");
+		this.highLimitText.setText(StringLabels.EMPTY);
+		this.highLimitText.setToolTipText(StringLabels.EMPTY);
 		this.highLimitText.setEnabled(false);
-		this.position = Character.toString('\u2014');
+		this.position = StringLabels.EM_DASH;
 		this.progressBar.setSelection(0);
-		this.progressBar.setToolTipText("");
+		this.progressBar.setToolTipText(StringLabels.EMPTY);
 		this.progressBar.setEnabled(false);
 		
 		if (this.currentAxis != null) {

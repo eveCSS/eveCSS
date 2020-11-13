@@ -15,6 +15,7 @@ import org.eclipse.ui.PlatformUI;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.views.AbstractScanModuleView;
+import de.ptb.epics.eve.editor.views.AbstractScanModuleViewComposite;
 import de.ptb.epics.eve.editor.views.EditorViewPerspectiveListener;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.ui.ClassicComposite;
 import de.ptb.epics.eve.util.ui.jface.SelectionProviderWrapper;
@@ -36,11 +37,11 @@ public class AxesChannelsView extends AbstractScanModuleView {
 	private ScanModule currentScanModule;
 
 	private Composite emptyComposite;
-	private AxesChannelsViewComposite classicComposite;
-	private AxesChannelsViewComposite saveAxisPositionsComposite;
-	private AxesChannelsViewComposite saveChannelValuesComposite;
-	private AxesChannelsViewComposite dynamicAxisPositionsComposite;
-	private AxesChannelsViewComposite dynamicChannelValuesComposite;
+	private AbstractScanModuleViewComposite classicComposite;
+	private AbstractScanModuleViewComposite saveAxisPositionsComposite;
+	private AbstractScanModuleViewComposite saveChannelValuesComposite;
+	private AbstractScanModuleViewComposite dynamicAxisPositionsComposite;
+	private AbstractScanModuleViewComposite dynamicChannelValuesComposite;
 	
 	// the selection service only accepts one selection provider per view,
 	// since we have multiple tabs with tables capable of providing selections,
@@ -64,6 +65,9 @@ public class AxesChannelsView extends AbstractScanModuleView {
 		this.memento = memento;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void createPartControl(Composite parent) {
 		GridData gridData = new GridData();

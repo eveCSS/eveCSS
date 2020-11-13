@@ -1,0 +1,33 @@
+h1(eveTopic|#top). SM Prescan / Postscan / Positioning / Plot View
+
+{toc:style=circle|maxLevel=2}
+
+p. The content of the SM Prescan / Postscan / Positioning / Plot View depends on the type of the currently selected scan module. It allows adding/deleting and editing properties of prescans, postscans, positionings and plots in certain cases. The different appearances are shown in the following.
+
+h2(eveTopic). Scan Module
+
+p(backToTop). "back to top":#top
+
+p. For a common (a.k.a. classic) scan module the view looks as follows:
+
+p=. !(eveImage)../../img/concepts/SMPrePostPosPlotView/ClassicComposite.png(sample content for a scan module)!
+
+h3(eveTopic). Pre-/Postscans
+
+p. Allows adding/removing of and displays Pre- and Postscans of the currently selected scan module. Properties of Pre-/Postscans can be modified "directly in the table":../tasks/editprepostscanproperties.html.
+
+h3(eveTopic). Positionings
+
+p. Allows adding/removing of and displays Positionings of the currently selected scan module. Properties of Positionings can be modified "directly in the table":../tasks/editpositioningproperties.html.
+
+h3(eveTopic). Plots
+
+p. Allows adding/removing of and displays Plots of the currently selected scan module. Properties of Plots can be modified "directly in the table":../tasks/editplotproperties.html.
+
+h2(eveTopic). Snapshots
+
+p(backToTop). "back to top":#top
+
+p. Pre-/Postscans, Positionings and Plots are only available in scan modules of type classic. Hence when a scan module of another type is selected, no editing options are available. A hint is shown then:
+
+p=. !(eveImage)../../img/concepts/SMPrePostPosPlotView/SnapshotComposite.png(no content shown for a scan module of type other than classic)!

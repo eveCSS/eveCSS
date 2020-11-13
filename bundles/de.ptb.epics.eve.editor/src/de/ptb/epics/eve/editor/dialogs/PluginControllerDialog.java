@@ -1,5 +1,6 @@
 package de.ptb.epics.eve.editor.dialogs;
 
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 
 import org.eclipse.swt.SWT;
@@ -33,6 +34,10 @@ public class PluginControllerDialog extends TitleAreaDialog {
 		this.pluginController = pluginController;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	protected Control createDialogArea(final Composite parent) {
 		Composite area = (Composite) super.createDialogArea(parent);
 		
@@ -48,5 +53,13 @@ public class PluginControllerDialog extends TitleAreaDialog {
 		this.setMessage("");
 		
 		return area;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void createButtonsForButtonBar(Composite parent) {
+		createButton(parent, IDialogConstants.CANCEL_ID, "Close", true);
 	}
 }

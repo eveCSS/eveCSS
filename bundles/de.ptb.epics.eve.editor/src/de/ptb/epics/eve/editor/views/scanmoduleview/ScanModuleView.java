@@ -31,11 +31,6 @@ import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.tree.ScanModuleTreeEditPart;
 import de.ptb.epics.eve.editor.views.EditorViewPerspectiveListener;
 import de.ptb.epics.eve.editor.views.IEditorView;
-import de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.ClassicComposite;
-import de.ptb.epics.eve.editor.views.scanmoduleview.dynamicaxispositionscomposite.DynamicAxisPositionsComposite;
-import de.ptb.epics.eve.editor.views.scanmoduleview.dynamicchannelvaluescomposite.DynamicChannelValuesComposite;
-import de.ptb.epics.eve.editor.views.scanmoduleview.saveaxispositionscomposite.SaveAxisPositionsComposite;
-import de.ptb.epics.eve.editor.views.scanmoduleview.savechannelvaluescomposite.SaveChannelValuesComposite;
 import de.ptb.epics.eve.util.ui.jface.SelectionProviderWrapper;
 
 /**
@@ -52,11 +47,8 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	private ScanModule currentScanModule;
 
 	private Composite emptyComposite;
-	private ScanModuleViewComposite classicComposite;
-	private ScanModuleViewComposite saveAxisPositionsComposite;
-	private ScanModuleViewComposite saveChannelValuesComposite;
-	private ScanModuleViewComposite dynamicAxisPositionsComposite;
-	private ScanModuleViewComposite dynamicChannelValuesComposite;
+	private Composite snapshotComposite;
+	private ClassicComposite classicComposite;
 
 	// the selection service only accepts one selection provider per view,
 	// since we have multiple tabs with tables capable of providing selections,
@@ -113,11 +105,8 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		stackLayout.marginWidth = 0;
 		contentPanel.setLayout(stackLayout);
 		this.emptyComposite = new Composite(contentPanel, SWT.NONE);
+		this.snapshotComposite = new SnapshotComposite(contentPanel, SWT.NONE);
 		this.classicComposite = new ClassicComposite(this, contentPanel, SWT.NONE);
-		this.saveAxisPositionsComposite = new SaveAxisPositionsComposite(this, contentPanel, SWT.NONE);
-		this.saveChannelValuesComposite = new SaveChannelValuesComposite(this, contentPanel, SWT.NONE);
-		this.dynamicAxisPositionsComposite = new DynamicAxisPositionsComposite(this, contentPanel, SWT.NONE);
-		this.dynamicChannelValuesComposite = new DynamicChannelValuesComposite(this, contentPanel, SWT.NONE);
 		stackLayout.topControl = emptyComposite;
 
 		this.restoreState();
@@ -191,7 +180,7 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 			// new scan module
 			this.currentScanModule.addModelUpdateListener(this);
 
-			this.setPartName("Scan Module: " + this.currentScanModule.getName() 
+			this.setPartName("SM Events: " + this.currentScanModule.getName() 
 					+ " (Id: " + this.currentScanModule.getId() + ")");
 
 			switch (this.currentScanModule.getType()) {
@@ -199,27 +188,20 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 				stackLayout.topControl = this.classicComposite;
 				break;
 			case DYNAMIC_AXIS_POSITIONS:
-				stackLayout.topControl = this.dynamicAxisPositionsComposite;
-				break;
 			case DYNAMIC_CHANNEL_VALUES:
-				stackLayout.topControl = this.dynamicChannelValuesComposite;
-				break;
 			case SAVE_AXIS_POSITIONS:
-				stackLayout.topControl = this.saveAxisPositionsComposite;
-				break;
 			case SAVE_CHANNEL_VALUES:
-				stackLayout.topControl = this.saveChannelValuesComposite;
+				stackLayout.topControl = this.snapshotComposite;
 				break;
 			default:
 				stackLayout.topControl = this.emptyComposite;
 				break;
 			}
 			contentPanel.layout();
-			
 		} else {
 			// no scan module selected -> reset contents
 			selectionProviderWrapper.setSelectionProvider(null);
-			this.setPartName("No Scan Module selected");
+			this.setPartName("SM Events: No Scan Module selected");
 			stackLayout.topControl = this.emptyComposite;
 			contentPanel.layout();
 		}
@@ -285,10 +267,6 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	@Override
 	public void saveState(IMemento memento) {
 		this.classicComposite.saveState(memento);
-		this.saveAxisPositionsComposite.saveState(memento);
-		this.saveChannelValuesComposite.saveState(memento);
-		this.dynamicAxisPositionsComposite.saveState(memento);
-		this.dynamicChannelValuesComposite.saveState(memento);
 	}
 
 	/*
@@ -299,10 +277,6 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 			return;
 		}
 		this.classicComposite.restoreState(memento);
-		this.saveAxisPositionsComposite.restoreState(memento);
-		this.saveChannelValuesComposite.restoreState(memento);
-		this.dynamicAxisPositionsComposite.restoreState(memento);
-		this.dynamicChannelValuesComposite.restoreState(memento);
 	}
 
 	/**
@@ -312,6 +286,5 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	public void reset() {
 		// TODO call setSM(null) on SMViewComposites ?
 		this.setCurrentScanModule(null);
-		// TODO call setSM(null) on SMViewComposites ?
 	}
 }

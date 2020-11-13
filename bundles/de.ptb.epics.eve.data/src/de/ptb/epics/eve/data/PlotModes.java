@@ -11,17 +11,11 @@ public enum PlotModes {
 
 	/**
 	 * Defines that the line will be plotted linear.
-	 *
-	 * @uml.property  name="lINEAR"
-	 * @uml.associationEnd  
 	 */
 	LINEAR,
 	
 	/**
 	 * Defines that the line will be plotted logarithmically.
-	 *
-	 * @uml.property  name="lOG"
-	 * @uml.associationEnd  
 	 */
 	LOG;
 	

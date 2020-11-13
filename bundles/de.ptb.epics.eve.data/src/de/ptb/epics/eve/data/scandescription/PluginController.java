@@ -246,19 +246,21 @@ public class PluginController implements IModelErrorProvider,
 	 */
 	@Override
 	public String toString() {
-		final StringBuffer stringBuffer = new StringBuffer();
+		StringBuilder stringBuilder = new StringBuilder();
+		
 		if (this.plugin != null) {
-			Iterator<PluginParameter> it = this.plugin.getParameters()
-					.iterator();
-			while (it.hasNext()) {
-				final PluginParameter pp = it.next();
-				stringBuffer.append(pp.getName());
-				stringBuffer.append('=');
-				stringBuffer.append(this.values.get(pp.getName()));
-				stringBuffer.append("; ");
+			for (PluginParameter param : this.plugin.getParameters()) {
+				stringBuilder.append(param.getName());
+				stringBuilder.append(" = ");
+				stringBuilder.append(this.values.get(param.getName()));
+				stringBuilder.append("; ");
 			}
 		}
-		return stringBuffer.toString();
+		String result = stringBuilder.toString();
+		if (result.isEmpty()) {
+			return "";
+		}
+		return result.substring(0, result.length() - 2);
 	}
 
 	/**

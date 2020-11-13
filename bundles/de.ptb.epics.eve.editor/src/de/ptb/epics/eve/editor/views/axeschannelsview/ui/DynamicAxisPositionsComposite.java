@@ -22,12 +22,13 @@ import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.editor.views.AbstractScanModuleViewComposite;
 
 /**
  * @author Marcus Michalsky
  * @since 1.34
  */
-public class DynamicAxisPositionsComposite extends AxesChannelsViewComposite {
+public class DynamicAxisPositionsComposite extends AbstractScanModuleViewComposite {
 	private static final Logger LOGGER = Logger.getLogger(
 			DynamicAxisPositionsComposite.class.getName());
 	private TableViewer tableViewer;
@@ -95,13 +96,16 @@ public class DynamicAxisPositionsComposite extends AxesChannelsViewComposite {
 				return ma.isSaveValue();
 			}
 		}});
+		
+		parentView.getSite().getWorkbenchWindow().getSelectionService().
+			addSelectionListener(this);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected ScanModuleTypes getType() {
+	public ScanModuleTypes getType() {
 		return ScanModuleTypes.DYNAMIC_AXIS_POSITIONS;
 	}
 
@@ -109,7 +113,7 @@ public class DynamicAxisPositionsComposite extends AxesChannelsViewComposite {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void setScanModule(ScanModule scanModule) {
+	public void setScanModule(ScanModule scanModule) {
 		if (scanModule == null) {
 			this.tableViewer.setInput(null);
 			return;
@@ -130,7 +134,7 @@ public class DynamicAxisPositionsComposite extends AxesChannelsViewComposite {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void saveState(IMemento memento) {
+	public void saveState(IMemento memento) {
 		// nothing to save for now
 	}
 	
@@ -138,7 +142,7 @@ public class DynamicAxisPositionsComposite extends AxesChannelsViewComposite {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void restoreState(IMemento memento) {
+	public void restoreState(IMemento memento) {
 		// nothing to restore for now
 	}
 }

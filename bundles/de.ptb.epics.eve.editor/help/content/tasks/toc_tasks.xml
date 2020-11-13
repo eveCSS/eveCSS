@@ -8,13 +8,17 @@
    </topic>
    <topic href="help/content/tasks/addscanmodule.html" label="Add a Scan Module">
    </topic>
-   <topic href="help/content/tasks/adddevicetoscanmodule.html" label="Add Devices to a Scan Module">
+   <topic href="help/content/tasks/addelements.html" label="Add Elements to a Scan Module">
    </topic>
    <topic href="help/content/tasks/editaxisproperties.html" label="Edit Properties of an Axis">
    </topic>
    <topic href="help/content/tasks/editchannelproperties.html" label="Edit Properties of a Channel">
    </topic>
-   <topic href="help/content/tasks/addplotwindow.html" label="Add a Plot Window">
+   <topic href="help/content/tasks/editprepostscanproperties.html" label="Edit Properties of a Pre-/Postscan">
+   </topic>
+   <topic href="help/content/tasks/editpositioningproperties.html" label="Edit Properties of a Positioning">
+   </topic>
+   <topic href="help/content/tasks/editplotproperties.html" label="Edit Properties of a Plot">
    </topic>
    <topic href="help/content/tasks/importaxesfromcsv.html" label="Import Axes from CSV">
    </topic>

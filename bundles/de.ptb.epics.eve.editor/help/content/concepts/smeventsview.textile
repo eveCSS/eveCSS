@@ -1,0 +1,23 @@
+h1(eveTopic|#top). SM Events View
+
+{toc:style=circle|maxLevel=2}
+
+p. The content of the SM Events View depends on the type of the currently selected scan module. It allows adding/deleting and editing properties of Pause, Redo, Skip and Trigger Events in certain cases. The different appearances are shown in the following.
+
+h2(eveTopic). Scan Module
+
+p(backToTop). "back to top":#top
+
+p. For a common (a.k.a. classic) scan module the view looks as follows:
+
+p=. !(eveImage)../../img/concepts/SMEventsView/ClassicComposite.png(sample content for a scan module)!
+
+p. A (classic) scan module allows defining different types of events to pause execution, redo the last measurement, etc. More information about events can be found "here":events.html.
+
+h2(eveTopic). Snapshots
+
+p(backToTop). "back to top":#top
+
+p. Events are only available in scan modules of type classic. Hence when a scan module of another type is selected, no editing options are available. A hint is shown then:
+
+p=. !(eveImage)../../img/concepts/SMEventsView/SnapshotComposite.png(no content shown for a scan module of type other than classic)!

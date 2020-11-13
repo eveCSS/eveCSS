@@ -1,7 +1,5 @@
 package de.ptb.epics.eve.editor.views;
 
-import java.util.List;
-
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -9,9 +7,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
-import de.ptb.epics.eve.data.measuringstation.PluginParameter;
 import de.ptb.epics.eve.data.scandescription.PluginController;
-import de.ptb.epics.eve.data.scandescription.ScanModule;
 
 /**
  * 

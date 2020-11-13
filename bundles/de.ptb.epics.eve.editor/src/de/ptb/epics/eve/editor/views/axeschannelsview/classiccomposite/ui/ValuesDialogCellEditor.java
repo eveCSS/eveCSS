@@ -141,7 +141,7 @@ public abstract class ValuesDialogCellEditor extends DialogCellEditor {
 				boolean oldValidState = isValueValid();
 				boolean newValidState = isCorrect(valuesText.getText());
 				LOGGER.debug("modify event - old state: " + oldValidState + 
-						", new state: " + newValidState);;
+						", new state: " + newValidState);
 				if (!newValidState) {
 					setErrorMessage(MessageFormat.format(getErrorMessage(), 
 							valuesText.getText()));

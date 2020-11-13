@@ -1,0 +1,49 @@
+h1(eveTopic|#top). Edit Properties of a Plot
+
+{toc:style=circle|maxLevel=3}
+
+p. Several properties of a Plot added to a scan module can be modified within the Plot table of the SM Prescan / Postscan / Positioning / Plot View. Editing the different attributes is explained in detail below.
+
+h2(eveTopic). Id
+
+p. The Id of the plot can be edited by clicking in the column.
+
+p=. !(eveImage)../../img/tasks/editplotproperties/plot-id.png!
+
+p. Only positive integer values are allowed. If another plot uses the same id, a hint is shown:
+
+p=. !(eveImage)../../img/tasks/editplotproperties/plot-dupid.png!
+
+h2(eveTopic). Name
+
+p. The name of the plot (shown as a title in the Plot View) can be edited by clicking in the column:
+
+p=. !(eveImage)../../img/tasks/editplotproperties/plot-name.png!
+
+h2(eveTopic). Init
+
+p. The init attribute is editable by clicking in the column. Each click toggles the attribute between __true__ and __false__:
+
+p=. !(eveImage)../../img/tasks/editplotproperties/plot-init.png!
+
+h2(eveTopic). Axes Dialog
+
+p. Any of the axes (x-Axis or y-Axes) can be edited by clicking in the corresponding column:
+
+p=. !(eveImage)../../img/tasks/editplotproperties/plot-axes.png!
+
+p. After clicking on the "..." button a dialog appears where all axes can be added, removed and edited:
+
+p=. !(eveImage)../../img/tasks/editplotproperties/plot-dialog.png!
+
+p. As long as there are not two y-Axes, a y-Axis can be added by clicking on the "Add y-Axis" Tab:
+
+p=. !(eveImage)../../img/tasks/editplotproperties/plot-dialog-add.png!
+
+p. After a channel is selected, its attributes can be edited:
+
+p=. !(eveImage)../../img/tasks/editplotproperties/plot-dialog-channel.png!
+
+p. An existing y-Axis can be removed by clicking on "x" in the corresponding tab:
+
+p=. !(eveImage)../../img/tasks/editplotproperties/plot-dialog-remove.png!

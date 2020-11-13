@@ -9,6 +9,7 @@ import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPart;
 
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
+import de.ptb.epics.eve.editor.views.AbstractScanModuleView;
 import de.ptb.epics.eve.util.ui.rcp.SingleSelectionProvider;
 
 /**
@@ -16,7 +17,6 @@ import de.ptb.epics.eve.util.ui.rcp.SingleSelectionProvider;
  * @since 1.12
  */
 public class PlotWindowSelectionProvider extends SingleSelectionProvider {
-
 	private static final Logger LOGGER = Logger
 			.getLogger(PlotWindowSelectionProvider.class.getName());
 	
@@ -29,8 +29,7 @@ public class PlotWindowSelectionProvider extends SingleSelectionProvider {
 		if (!(part instanceof IViewPart)) {
 			return;
 		}
-		if (!((IViewPart) part).getViewSite().getId()
-				.equals("de.ptb.epics.eve.editor.views.ScanModulView")) {
+		if (!(part instanceof AbstractScanModuleView)) {
 			return;
 		}
 		if (!(selection instanceof IStructuredSelection)) {

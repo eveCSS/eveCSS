@@ -1,45 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<class-diagram version="1.2.2" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+<class-diagram version="1.2.4" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
   associations="true" dependencies="true" nesting-relationships="true" router="FAN">  
   <class id="1" language="java" 
-    name="de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.motoraxiscomposite.MotorAxisComposite" 
+    name="de.ptb.epics.eve.editor.views.scanmoduleview.saveaxispositionscomposite.AxisMenuContribution" 
     project="de.ptb.epics.eve.editor" 
-    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/classiccomposite/motoraxiscomposite/MotorAxisComposite.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="276" y="342"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="2" language="java" 
-    name="de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.detectorchannelcomposite.DetectorChannelComposite" 
-    project="de.ptb.epics.eve.editor" 
-    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/classiccomposite/detectorchannelcomposite/DetectorChannelComposite.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="736" y="345"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="3" language="java" 
-    name="de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.prescancomposite.PrescanComposite" 
-    project="de.ptb.epics.eve.editor" 
-    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/classiccomposite/prescancomposite/PrescanComposite.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1167" y="345"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="4" language="java" name="de.ptb.epics.eve.editor.views.scanmoduleview.AxisMenuContribution" 
-    project="de.ptb.epics.eve.editor" 
-    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/AxisMenuContribution.java" 
+    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/saveaxispositionscomposite/AxisMenuContribution.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="203" y="271"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -48,9 +13,10 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="5" language="java" name="de.ptb.epics.eve.editor.views.scanmoduleview.ChannelMenuContribution" 
+  <class id="2" language="java" 
+    name="de.ptb.epics.eve.editor.views.scanmoduleview.savechannelvaluescomposite.ChannelMenuContribution" 
     project="de.ptb.epics.eve.editor" 
-    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/ChannelMenuContribution.java" 
+    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/savechannelvaluescomposite/ChannelMenuContribution.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="702" y="268"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -59,67 +25,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="6" language="java" 
-    name="de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.prescancomposite.MenuContribution" 
-    project="de.ptb.epics.eve.editor" 
-    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/classiccomposite/prescancomposite/MenuContribution.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1162" y="277"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="7" language="java" 
-    name="de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.postscancomposite.PostscanComposite" 
-    project="de.ptb.epics.eve.editor" 
-    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/classiccomposite/postscancomposite/PostscanComposite.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1588" y="351"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="8" language="java" 
-    name="de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.postscancomposite.MenuContribution" 
-    project="de.ptb.epics.eve.editor" 
-    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/classiccomposite/postscancomposite/MenuContribution.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1586" y="279"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="9" language="java" 
-    name="de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.positioningcomposite.PositioningComposite" 
-    project="de.ptb.epics.eve.editor" 
-    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/classiccomposite/positioningcomposite/PositioningComposite.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1582" y="178"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="10" language="java" 
-    name="de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.positioningcomposite.MenuContribution" 
-    project="de.ptb.epics.eve.editor" 
-    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/classiccomposite/positioningcomposite/MenuContribution.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1579" y="110"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="11" language="java" 
+  <class id="3" language="java" 
     name="de.ptb.epics.eve.editor.views.scanmoduleview.saveaxispositionscomposite.SaveAxisPositionsComposite" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/saveaxispositionscomposite/SaveAxisPositionsComposite.java" 
@@ -131,7 +37,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="12" language="java" 
+  <class id="4" language="java" 
     name="de.ptb.epics.eve.editor.views.scanmoduleview.savechannelvaluescomposite.SaveChannelValuesComposite" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/savechannelvaluescomposite/SaveChannelValuesComposite.java" 
@@ -143,7 +49,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="13" language="java" name="de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleFilter" 
+  <class id="5" language="java" name="de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleFilter" 
     project="de.ptb.epics.eve.data" 
     file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/measuringstation/filter/ExcludeDevicesOfScanModuleFilter.java" 
     binary="false" corner="BOTTOM_RIGHT">    
@@ -154,7 +60,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="14" language="java" 
+  <class id="6" language="java" 
     name="de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleFilterManualUpdate" 
     project="de.ptb.epics.eve.data" 
     file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/measuringstation/filter/ExcludeDevicesOfScanModuleFilterManualUpdate.java" 
@@ -166,7 +72,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="15" language="java" name="de.ptb.epics.eve.data.measuringstation.filter.MeasuringStationFilter" 
+  <class id="7" language="java" name="de.ptb.epics.eve.data.measuringstation.filter.MeasuringStationFilter" 
     project="de.ptb.epics.eve.data" 
     file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/measuringstation/filter/MeasuringStationFilter.java" 
     binary="false" corner="BOTTOM_RIGHT">    
@@ -177,7 +83,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="16" language="java" name="de.ptb.epics.eve.data.measuringstation.AbstractMeasuringStation" 
+  <class id="8" language="java" name="de.ptb.epics.eve.data.measuringstation.AbstractMeasuringStation" 
     project="de.ptb.epics.eve.data" 
     file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/measuringstation/AbstractMeasuringStation.java" 
     binary="false" corner="BOTTOM_RIGHT">    
@@ -188,7 +94,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <interface id="17" language="java" name="de.ptb.epics.eve.data.measuringstation.IMeasuringStation" 
+  <interface id="9" language="java" name="de.ptb.epics.eve.data.measuringstation.IMeasuringStation" 
     project="de.ptb.epics.eve.data" 
     file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/measuringstation/IMeasuringStation.java" binary="false" 
     corner="BOTTOM_RIGHT">    
@@ -199,7 +105,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </interface>  
-  <class id="18" language="java" name="de.ptb.epics.eve.data.scandescription.ScanModule" project="de.ptb.epics.eve.data" 
+  <class id="10" language="java" name="de.ptb.epics.eve.data.scandescription.ScanModule" project="de.ptb.epics.eve.data" 
     file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/ScanModule.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="692" y="58"/>    
@@ -209,113 +115,85 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <dependency id="19">    
+  <dependency id="11">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="10"/>  
+  </dependency>  
+  <dependency id="12">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="10"/>  
+  </dependency>  
+  <dependency id="13">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="6"/>  
+  </dependency>  
+  <association id="14">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="15" name="source">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="16" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="17">    
     <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="14"/>  
-  </dependency>  
-  <dependency id="20">    
-    <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="18"/>  
-  </dependency>  
+    <end type="TARGET" refId="9"/>  
+  </realization>  
+  <association id="18">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="19" name="scanModule">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="20" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
   <dependency id="21">    
-    <end type="SOURCE" refId="13"/>    
-    <end type="TARGET" refId="17"/>  
-  </dependency>  
-  <dependency id="22">    
     <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="18"/>  
+    <end type="TARGET" refId="10"/>  
   </dependency>  
-  <dependency id="23">    
+  <generalization id="22">    
     <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="14"/>  
+    <end type="TARGET" refId="7"/>  
+  </generalization>  
+  <dependency id="23">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="10"/>  
   </dependency>  
   <dependency id="24">    
-    <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="18"/>  
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="9"/>  
   </dependency>  
   <dependency id="25">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="18"/>  
-  </dependency>  
-  <dependency id="26">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="17"/>  
-  </dependency>  
-  <generalization id="27">    
-    <end type="SOURCE" refId="15"/>    
-    <end type="TARGET" refId="16"/>  
-  </generalization>  
-  <association id="28">    
-    <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="29" name="scanModule"/>      
-      <multiplicity id="30" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="18" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="31">    
-    <end type="SOURCE" refId="14"/>    
-    <end type="TARGET" refId="13"/>  
-  </generalization>  
-  <dependency id="32">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="14"/>  
-  </dependency>  
-  <dependency id="33">    
-    <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="17"/>  
-  </dependency>  
-  <dependency id="34">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="17"/>  
-  </dependency>  
-  <dependency id="35">    
-    <end type="SOURCE" refId="18"/>    
-    <end type="TARGET" refId="17"/>  
-  </dependency>  
-  <dependency id="36">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="18"/>  
-  </dependency>  
-  <dependency id="37">    
-    <end type="SOURCE" refId="11"/>    
-    <end type="TARGET" refId="18"/>  
-  </dependency>  
-  <dependency id="38">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="17"/>  
-  </dependency>  
-  <dependency id="39">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="18"/>  
-  </dependency>  
-  <dependency id="40">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="14"/>  
-  </dependency>  
-  <generalization id="41">    
-    <end type="SOURCE" refId="13"/>    
-    <end type="TARGET" refId="15"/>  
-  </generalization>  
-  <association id="42">    
-    <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="43" name="source"/>      
-      <multiplicity id="44" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="17" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="45">    
-    <end type="SOURCE" refId="16"/>    
-    <end type="TARGET" refId="17"/>  
-  </realization>  
-  <dependency id="46">    
     <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="18"/>  
+    <end type="TARGET" refId="9"/>  
   </dependency>  
-  <dependency id="47">    
+  <generalization id="26">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="5"/>  
+  </generalization>  
+  <generalization id="27">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="8"/>  
+  </generalization>  
+  <dependency id="28">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="6"/>  
+  </dependency>  
+  <dependency id="29">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="9"/>  
+  </dependency>  
+  <dependency id="30">    
     <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="18"/>  
+    <end type="TARGET" refId="9"/>  
   </dependency>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    

@@ -7,18 +7,13 @@ import de.ptb.epics.eve.data.measuringstation.event.MonitorEvent;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
 import de.ptb.epics.eve.data.scandescription.channelmode.ChannelModes;
+import de.ptb.epics.eve.editor.StringLabels;
 
 /**
  * @author Marcus Michalsky
  * @since 1.34
  */
 public class ParametersColumnLabelProvider extends ColumnLabelProvider {
-	private static final String DASH = Character.toString('\u2014');
-	private static final String STOPPED_BY = Character.toString('\u21E5');
-	private static final String REDO = Character.toString('\u27F2');
-	private static final String SIGMA = Character.toString('\u03C3');
-	private static final String LESS_OR_EQUAL = Character.toString('\u2264');
-	private static final String GREATER_OR_EQUAL = Character.toString('\u2267');
 	
 	/**
 	 * {@inheritDoc}
@@ -28,7 +23,7 @@ public class ParametersColumnLabelProvider extends ColumnLabelProvider {
 		Channel channel = (Channel)element;
 		
 		if (channel.getScanModule().isUsedAsNormalizeChannel(channel)) {
-			return DASH;
+			return StringLabels.EM_DASH;
 		}
 		
 		switch (channel.getChannelMode()) {
@@ -36,7 +31,7 @@ public class ParametersColumnLabelProvider extends ColumnLabelProvider {
 			StringBuilder sbInterval = new StringBuilder();
 			sbInterval.append(channel.getTriggerInterval() + "s");
 			if (channel.getStoppedBy() != null) {
-				sbInterval.append(" " + STOPPED_BY + " " + 
+				sbInterval.append(" " + StringLabels.STOPPED_BY + " " + 
 						channel.getStoppedBy().getName());
 			}
 			return sbInterval.toString();
@@ -44,23 +39,24 @@ public class ParametersColumnLabelProvider extends ColumnLabelProvider {
 			StringBuilder sbStandard = new StringBuilder();
 			sbStandard.append("n = " + channel.getAverageCount());
 			if (channel.getMaxDeviation() != null) {
-				sbStandard.append(", " + SIGMA + " " + LESS_OR_EQUAL + " " + 
+				sbStandard.append(", " + StringLabels.SIGMA + " " + 
+						StringLabels.LESS_OR_EQUAL + " " + 
 						channel.getMaxDeviation() + " %");
 			}
 			if (channel.getMinimum() != null) {
-				sbStandard.append(", x " + GREATER_OR_EQUAL + " " + 
+				sbStandard.append(", x " + StringLabels.GREATER_OR_EQUAL + " " + 
 						channel.getMinimum());
 			}
 			if (channel.getMaxAttempts() != null) {
-				sbStandard.append(", a " + LESS_OR_EQUAL + " " + 
+				sbStandard.append(", a " + StringLabels.LESS_OR_EQUAL + " " + 
 						channel.getMaxAttempts());
 			}
 			if (!channel.getRedoEvents().isEmpty()) {
-				sbStandard.append(", " + REDO);
+				sbStandard.append(", " + StringLabels.REDO);
 			}
 			return sbStandard.toString();
 		default:
-			return DASH;
+			return StringLabels.EM_DASH;
 		}
 	}
 	

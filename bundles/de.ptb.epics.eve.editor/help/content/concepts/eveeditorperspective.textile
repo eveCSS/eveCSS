@@ -11,7 +11,8 @@ table(eveRefTable).
 | 4| Scan View| scan properties|
 | 5| Chain View | chain properties|
 | 6| SM Axes / Channels View| general properties, axes and channels of a scan module|
-| 7| Scan Module View| additional scan module properties|
-| 8| Motor Axis View| motor axis properties|
-| 9| Detector Channel View| detector channel properties|
-| 10| Plot Window View| plot window properties|
+| 7| SM Prescan / Postscan / Positiong / Plot View| prescan, postscan, positioning and plot properties of a scan module|
+| 8| SM Events View| event properties of a scan module|
+| 9| Motor Axis View| motor axis properties|
+| 10| Detector Channel View| detector channel properties|
+| 11| Plot Window View| plot window properties|

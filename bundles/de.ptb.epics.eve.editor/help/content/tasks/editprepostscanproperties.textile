@@ -1,0 +1,63 @@
+h1(eveTopic|#top). Edit Properties of a Pre-/Postscan
+
+{toc:style=circle|maxLevel=3}
+
+p. Several properties of a Pre-/Postscan added to a scan module can be modified within the Pre-/Postscan table of the SM Prescan / Postscan / Positioning / Plot View. Editing the different attributes is explained in detail below.
+
+h2(eveTopic). Add new entry
+
+p(backToTop). "back to top":#top
+
+p. A new entry can be added with the context menu (right-click). After selecting Prescan or Postscan a device or option can be selected:
+
+p=. !(eveImage)../../img/tasks/editprepostproperties/prepostscan-add.png!
+
+p. If an entry of a certain device or option already exists, but no Postscan is set (shown as "-"), a Postscan can be added by clicking in the column:
+
+p=. !(eveImage)../../img/tasks/editprepostproperties/prepostscan-createA.png!
+
+p. After clicking into the column a Postscan with a default value is created (which can be "edited":#edit later):
+
+p=. !(eveImage)../../img/tasks/editprepostproperties/prepostscan-createB.png!
+
+p. Options or devices with discrete values get one of their discrete values as default:
+
+p=. !(eveImage)../../img/tasks/editprepostproperties/prepostscan-creatediscreteB.png!
+
+p. Adding a Prescan works the same way. Existing entries can be "deleted":#delete later.
+
+h2(eveTopic|#edit). Edit existing entry
+
+p(backToTop). "back to top":#top
+
+p. An existing value of a Prescan or Postscan can be edited by clicking in the corresponding column. The edited text is applied with __enter__ or discarded with __escape__:
+
+p=. !(eveImage)../../img/tasks/editprepostproperties/prepostscan-edit.png!
+
+p. If the device or option to be edited is discrete a combo box is opened instead:
+
+p=. !(eveImage)../../img/tasks/editprepostproperties/prepostscan-editdiscrete.png!
+
+p. Postscans have an additional (boolean) attribute __reset original__. The state is toggled between __true__ and __false__ by clicking on the value:
+
+p=. !(eveImage)../../img/tasks/editprepostproperties/prepostscan-resetA.png!
+
+h2(eveTopic|#delete). Remove entry
+
+p(backToTop). "back to top":#top
+
+p. An existing Prescan or Postscan can be removed by clicking in the column (for editing), removing the text and applying with __enter__:
+
+p=. !(eveImage)../../img/tasks/editprepostproperties/prepostscan-delete.png!
+
+p. For discrete values the additional entry "-" in the combo box has to be selected to remove the Prescan or Postscan:
+
+p=. !(eveImage)../../img/tasks/editprepostproperties/prepostscan-deletediscrete.png!
+
+p. If after removing a Pre- or Postscan neither exists, the entry is removed completely:
+
+p=. !(eveImage)../../img/tasks/editprepostproperties/prepostscan-deleteall.png!
+
+p. A complete entry (with Prescan, Postscan or both) can also be removed via context menu:
+
+p=. !(eveImage)../../img/tasks/editprepostproperties/prepostscan-remove.png!

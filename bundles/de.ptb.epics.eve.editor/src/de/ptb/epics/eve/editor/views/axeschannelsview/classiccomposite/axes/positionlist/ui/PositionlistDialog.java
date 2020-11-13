@@ -24,8 +24,8 @@ import org.eclipse.swt.widgets.Text;
 
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.axismode.PositionlistMode;
+import de.ptb.epics.eve.editor.views.DialogCellEditorDialog;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.positionlist.PositionlistValidator;
-import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.ui.DialogCellEditorDialog;
 
 /**
  * @author Marcus Michalsky
@@ -37,6 +37,7 @@ public class PositionlistDialog extends DialogCellEditorDialog implements Proper
 	
 	private Text positionlistText;
 	private Label positionCountLabel;
+	private DataBindingContext context;
 	private Binding positionlistBinding;
 	
 	protected PositionlistDialog(Shell parentShell, Control control, Axis axis) {
@@ -101,7 +102,7 @@ public class PositionlistDialog extends DialogCellEditorDialog implements Proper
 	}
 	
 	private void createBinding() {
-		DataBindingContext context = new DataBindingContext();
+		context = new DataBindingContext();
 		IObservableValue positionlistModelObservable = 
 				BeansObservables.observeValue(this.positionlistMode, 
 						PositionlistMode.POSITIONLIST_PROP);
@@ -155,6 +156,7 @@ public class PositionlistDialog extends DialogCellEditorDialog implements Proper
 	public boolean close() {
 		this.positionlistMode.removePropertyChangeListener(
 				PositionlistMode.POSITIONLIST_PROP, this);
+		this.context.dispose();
 		return super.close();
 	}
 }

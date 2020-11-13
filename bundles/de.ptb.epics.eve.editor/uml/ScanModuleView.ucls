@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<class-diagram version="1.2.2" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+<class-diagram version="1.2.4" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
   realizations="true" associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
   <class id="1" language="java" name="de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView" 
     project="de.ptb.epics.eve.editor" 
@@ -12,151 +12,8 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="2" language="java" name="de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.ActionComposite" 
-    project="de.ptb.epics.eve.editor" 
-    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/classiccomposite/ActionComposite.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1152" y="312"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="3" language="java" 
-    name="de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.motoraxiscomposite.MotorAxisComposite" 
-    project="de.ptb.epics.eve.editor" 
-    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/classiccomposite/motoraxiscomposite/MotorAxisComposite.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1347" y="64"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="4" language="java" 
-    name="de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.detectorchannelcomposite.DetectorChannelComposite" 
-    project="de.ptb.epics.eve.editor" 
-    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/classiccomposite/detectorchannelcomposite/DetectorChannelComposite.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1514" y="156"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="5" language="java" 
-    name="de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.prescancomposite.PrescanComposite" 
-    project="de.ptb.epics.eve.editor" 
-    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/classiccomposite/prescancomposite/PrescanComposite.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="632" y="467"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="6" language="java" 
-    name="de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.postscancomposite.PostscanComposite" 
-    project="de.ptb.epics.eve.editor" 
-    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/classiccomposite/postscancomposite/PostscanComposite.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="988" y="467"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="7" language="java" 
-    name="de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.positioningcomposite.PositioningComposite" 
-    project="de.ptb.epics.eve.editor" 
-    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/classiccomposite/positioningcomposite/PositioningComposite.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1341" y="467"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="8" language="java" 
-    name="de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.plotcomposite.PlotComposite" 
-    project="de.ptb.epics.eve.editor" 
-    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/classiccomposite/plotcomposite/PlotComposite.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1674" y="471"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="9" language="java" 
-    name="de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.prescancomposite.LabelProvider" 
-    project="de.ptb.epics.eve.editor" 
-    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/classiccomposite/prescancomposite/LabelProvider.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="630" y="572"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="10" language="java" 
-    name="de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.postscancomposite.LabelProvider" 
-    project="de.ptb.epics.eve.editor" 
-    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/classiccomposite/postscancomposite/LabelProvider.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="987" y="570"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="11" language="java" 
-    name="de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.positioningcomposite.LabelProvider" 
-    project="de.ptb.epics.eve.editor" 
-    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/classiccomposite/positioningcomposite/LabelProvider.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1340" y="573"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="12" language="java" 
-    name="de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.detectorchannelcomposite.LabelProvider" 
-    project="de.ptb.epics.eve.editor" 
-    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/classiccomposite/detectorchannelcomposite/LabelProvider.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1889" y="157"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="13" language="java" 
-    name="de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.motoraxiscomposite.LabelProvider" 
-    project="de.ptb.epics.eve.editor" 
-    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/classiccomposite/motoraxiscomposite/LabelProvider.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1870" y="67"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <interface id="14" language="java" 
-    name="de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener" project="de.ptb.epics.eve.data" 
+  <interface id="2" language="java" name="de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener" 
+    project="de.ptb.epics.eve.data" 
     file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/scandescription/updatenotification/IModelUpdateListener.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="921" y="70"/>    
@@ -166,7 +23,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <interface id="15" language="java" name="de.ptb.epics.eve.editor.views.IEditorView" project="de.ptb.epics.eve.editor" 
+  <interface id="3" language="java" name="de.ptb.epics.eve.editor.views.IEditorView" project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/IEditorView.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="665" y="69"/>    
@@ -176,8 +33,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <interface id="16" language="java" name="org.eclipse.ui.ISelectionListener" project="de.ptb.epics.eve.editor" 
-    file="/home/mmichals/Projects/eveCSS/workspace-2018-09/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.ui.workbench_3.7.1.v20120104-1859.jar" 
+  <interface id="4" language="java" name="org.eclipse.ui.ISelectionListener" project="de.ptb.epics.eve.editor" 
+    file="/home/mmichals/Projects/eveCSS/workspace-2020-06-feature5363/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.ui.workbench_3.7.1.v20120104-1859.jar" 
     binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="372" y="69"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -186,7 +43,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <class id="17" language="java" name="de.ptb.epics.eve.util.ui.jface.SelectionProviderWrapper" 
+  <class id="5" language="java" name="de.ptb.epics.eve.util.ui.jface.SelectionProviderWrapper" 
     project="de.ptb.epics.eve.util.ui" 
     file="/de.ptb.epics.eve.util.ui/src/de/ptb/epics/eve/util/ui/jface/SelectionProviderWrapper.java" binary="false" 
     corner="BOTTOM_RIGHT">    
@@ -197,7 +54,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="18" language="java" name="de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleSelectionProvider" 
+  <class id="6" language="java" name="de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleSelectionProvider" 
     project="de.ptb.epics.eve.editor" 
     file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/ScanModuleSelectionProvider.java" 
     binary="false" corner="BOTTOM_RIGHT">    
@@ -208,21 +65,9 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="19" language="java" 
-    name="de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.CompositeContentProvider" 
+  <interface id="7" language="java" name="org.eclipse.jface.viewers.IStructuredContentProvider" 
     project="de.ptb.epics.eve.editor" 
-    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/classiccomposite/CompositeContentProvider.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1919" y="670"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <interface id="20" language="java" name="org.eclipse.jface.viewers.IStructuredContentProvider" 
-    project="de.ptb.epics.eve.editor" 
-    file="/home/mmichals/Projects/eveCSS/workspace-2018-09/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.jface_3.7.0.v20110928-1505.jar" 
+    file="/home/mmichals/Projects/eveCSS/workspace-2020-06-feature5363/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.jface_3.7.0.v20110928-1505.jar" 
     binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1666" y="675"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -231,7 +76,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <class id="21" language="java" name="de.ptb.epics.eve.util.ui.rcp.SingleSelectionProvider" 
+  <class id="8" language="java" name="de.ptb.epics.eve.util.ui.rcp.SingleSelectionProvider" 
     project="de.ptb.epics.eve.util.ui" 
     file="/de.ptb.epics.eve.util.ui/src/de/ptb/epics/eve/util/ui/rcp/SingleSelectionProvider.java" binary="false" 
     corner="BOTTOM_RIGHT">    
@@ -242,166 +87,38 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="22" language="java" 
-    name="de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.dragndrop.ActionCompositeDragSourceListener" 
-    project="de.ptb.epics.eve.editor" 
-    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/classiccomposite/dragndrop/ActionCompositeDragSourceListener.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1650" y="276"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="23" language="java" 
-    name="de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.dragndrop.ActionCompositeDropTargetListener" 
-    project="de.ptb.epics.eve.editor" 
-    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/classiccomposite/dragndrop/ActionCompositeDropTargetListener.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1646" y="344"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="24" language="java" 
-    name="de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.detectorchannelcomposite.ContentProvider" 
-    project="de.ptb.epics.eve.editor" 
-    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/classiccomposite/detectorchannelcomposite/ContentProvider.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1890" y="217"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <generalization id="25">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="2"/>  
-  </generalization>  
-  <generalization id="26">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="2"/>  
-  </generalization>  
-  <generalization id="27">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="2"/>  
-  </generalization>  
-  <realization id="28">    
-    <end type="SOURCE" refId="21"/>    
-    <end type="TARGET" refId="16"/>  
-  </realization>  
-  <realization id="29">    
+  <realization id="9">    
     <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="16"/>  
+    <end type="TARGET" refId="4"/>  
   </realization>  
-  <realization id="30">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="14"/>  
-  </realization>  
-  <realization id="31">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="14"/>  
-  </realization>  
-  <realization id="32">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="15"/>  
-  </realization>  
-  <association id="33">    
-    <end type="SOURCE" refId="23" navigable="false">      
-      <attribute id="34" name="actionComposite">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="35" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="36">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="2"/>  
-  </generalization>  
-  <dependency id="37">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="10"/>  
-  </dependency>  
-  <dependency id="38">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="1"/>  
-  </dependency>  
-  <realization id="39">    
-    <end type="SOURCE" refId="19"/>    
-    <end type="TARGET" refId="14"/>  
-  </realization>  
-  <dependency id="40">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="12"/>  
-  </dependency>  
-  <generalization id="41">    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="2"/>  
-  </generalization>  
-  <realization id="42">    
-    <end type="SOURCE" refId="24"/>    
-    <end type="TARGET" refId="20"/>  
-  </realization>  
-  <generalization id="43">    
-    <end type="SOURCE" refId="18"/>    
-    <end type="TARGET" refId="21"/>  
-  </generalization>  
-  <dependency id="44">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="9"/>  
-  </dependency>  
-  <dependency id="45">    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="11"/>  
-  </dependency>  
-  <dependency id="46">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="13"/>  
-  </dependency>  
-  <dependency id="47">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="24"/>  
-  </dependency>  
-  <association id="48">    
-    <end type="SOURCE" refId="22" navigable="false">      
-      <attribute id="49" name="actionComposite">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="50" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="51">    
-    <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="2"/>  
-  </generalization>  
-  <realization id="52">    
-    <end type="SOURCE" refId="19"/>    
-    <end type="TARGET" refId="20"/>  
-  </realization>  
-  <association id="53">    
+  <association id="10">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="54" name="selectionProviderWrapper">        
+      <attribute id="11" name="selectionProviderWrapper">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="55" minimum="0" maximum="1">        
+      <multiplicity id="12" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="17" navigable="true"/>    
+    <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
+  <realization id="13">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="2"/>  
+  </realization>  
+  <realization id="14">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="4"/>  
+  </realization>  
+  <realization id="15">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="3"/>  
+  </realization>  
+  <generalization id="16">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="8"/>  
+  </generalization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    

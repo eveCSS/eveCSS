@@ -39,11 +39,11 @@ import org.eclipse.swt.widgets.Text;
 
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.axismode.FileMode;
+import de.ptb.epics.eve.editor.views.DialogCellEditorDialog;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.file.FileStats;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.file.FilenameModelToTargetConverter;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.file.FilenameTargetToModelConverter;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.axes.file.FilenameValidator;
-import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.ui.DialogCellEditorDialog;
 import de.ptb.epics.eve.util.io.FileUtil;
 import de.ptb.epics.eve.util.io.StringUtil;
 
@@ -61,6 +61,8 @@ public class PositionFileDialog extends DialogCellEditorDialog implements Proper
 	private Axis axis;
 	private FileMode fileMode;
 	
+	private DataBindingContext context;
+	
 	public PositionFileDialog(Shell shell, Control control, Axis axis) {
 		super(shell, control);
 		this.axis = axis;
@@ -74,6 +76,7 @@ public class PositionFileDialog extends DialogCellEditorDialog implements Proper
 	@Override
 	public boolean close() {
 		this.fileMode.removePropertyChangeListener(FileMode.FILE_PROP, this);
+		this.context.dispose();
 		return super.close();
 	}
 	
@@ -253,7 +256,7 @@ public class PositionFileDialog extends DialogCellEditorDialog implements Proper
 	}
 	
 	private void createBinding() {
-		DataBindingContext context = new DataBindingContext();
+		context = new DataBindingContext();
 		IObservableValue filenameInputTargetObservable = WidgetProperties.text(
 				SWT.Modify).observeDelayed(500, this.filenameInput);
 		IObservableValue filenameInputModelObservable = BeanProperties.value(

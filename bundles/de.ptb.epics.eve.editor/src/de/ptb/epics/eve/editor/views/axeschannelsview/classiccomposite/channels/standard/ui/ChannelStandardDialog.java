@@ -38,6 +38,8 @@ import de.ptb.epics.eve.data.scandescription.channelmode.StandardMode;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.editor.StringLabels;
+import de.ptb.epics.eve.editor.views.DialogCellEditorDialog;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.AverageTargetToModelConverter;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.AverageTargetToModelValidator;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.ChannelRedoEventMenuContributionMonitor;
@@ -51,7 +53,6 @@ import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.MaxDeviationTargetToModelValidator;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.MinimumTargetToModelValidator;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.channels.standard.OperatorEditingSupport;
-import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.ui.DialogCellEditorDialog;
 import de.ptb.epics.eve.util.ui.swt.TextSelectAllFocusListener;
 import de.ptb.epics.eve.util.ui.swt.TextSelectAllMouseListener;
 
@@ -83,7 +84,6 @@ public class ChannelStandardDialog extends DialogCellEditorDialog
 	 * indentation used for text input layout to leave space for decorators
 	 */
 	private static final int TEXT_INDENTATION = 7;
-	private static final String LONG_DASH = Character.toString('\u2014');
 	
 	private Channel channel;
 
@@ -92,6 +92,7 @@ public class ChannelStandardDialog extends DialogCellEditorDialog
 	private Text minimumText;
 	private Text maxAttemptsText;
 
+	private DataBindingContext context;
 	private Binding averageBinding;
 	private Binding maxDeviationBinding;
 	private Binding minimumBinding;
@@ -272,7 +273,7 @@ public class ChannelStandardDialog extends DialogCellEditorDialog
 					return ComparisonTypes.typeToString(
 							controlEvent.getLimit().getComparison());
 				} else {
-					return LONG_DASH;
+					return StringLabels.EM_DASH;
 				}
 			}
 		});
@@ -297,7 +298,7 @@ public class ChannelStandardDialog extends DialogCellEditorDialog
 				if (controlEvent.getEvent() instanceof MonitorEvent) {
 					return controlEvent.getLimit().getValue();
 				} else {
-					return LONG_DASH;
+					return StringLabels.EM_DASH;
 				}
 			}
 		});
@@ -327,7 +328,7 @@ public class ChannelStandardDialog extends DialogCellEditorDialog
 	}
 	
 	private void createBinding() {
-		DataBindingContext context = new DataBindingContext();
+		context = new DataBindingContext();
 
 		IObservableValue averageTargetObservable = 
 				WidgetProperties.text(SWT.Modify).observe(this.averageText);
@@ -391,6 +392,7 @@ public class ChannelStandardDialog extends DialogCellEditorDialog
 		((IMenuService) PlatformUI.getWorkbench().
 			getService(IMenuService.class)).releaseContributions(menuManager);
 		this.channel.getRedoControlEventManager().removeModelUpdateListener(this);
+		this.context.dispose();
 		return super.close();
 	}
 	

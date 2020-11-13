@@ -59,9 +59,9 @@
     </display>  
   </class>  
   <class id="6" language="java" 
-    name="de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.ClassicComposite.EventsTabFolderSelectionListener" 
+    name="de.ptb.epics.eve.editor.views.scanmoduleview.ClassicComposite.EventsTabFolderSelectionListener" 
     project="de.ptb.epics.eve.editor" 
-    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/classiccomposite/ClassicComposite.java" 
+    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/ClassicComposite.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="930" y="654"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -70,9 +70,9 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="7" language="java" name="de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.ClassicComposite" 
+  <class id="7" language="java" name="de.ptb.epics.eve.editor.views.scanmoduleview.ClassicComposite" 
     project="de.ptb.epics.eve.editor" 
-    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/classiccomposite/ClassicComposite.java" 
+    file="/de.ptb.epics.eve.editor/src/de/ptb/epics/eve/editor/views/scanmoduleview/ClassicComposite.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="925" y="415"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -181,7 +181,7 @@
     </display>  
   </class>  
   <interface id="17" language="java" name="org.eclipse.core.commands.IHandler" project="de.ptb.epics.eve.editor" 
-    file="/home/mmichals/Projects/eveCSS/workspace-2020-03-feature4917b/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.core.commands_3.6.0.I20110111-0800.jar" 
+    file="/home/mmichals/Projects/eveCSS/workspace-2020-06-feature5363/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.core.commands_3.6.0.I20110111-0800.jar" 
     binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1467" y="204"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -192,7 +192,7 @@
   </interface>  
   <class id="18" language="java" name="org.eclipse.core.commands.AbstractParameterValueConverter" 
     project="de.ptb.epics.eve.editor" 
-    file="/home/mmichals/Projects/eveCSS/workspace-2020-03-feature4917b/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.core.commands_3.6.0.I20110111-0800.jar" 
+    file="/home/mmichals/Projects/eveCSS/workspace-2020-06-feature5363/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.core.commands_3.6.0.I20110111-0800.jar" 
     binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1479" y="550"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -312,7 +312,7 @@
     </display>  
   </class>  
   <class id="29" language="java" name="org.eclipse.jface.viewers.TableViewer" project="de.ptb.epics.eve.editor" 
-    file="/home/mmichals/Projects/eveCSS/workspace-2020-03-feature4917b/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.jface_3.7.0.v20110928-1505.jar" 
+    file="/home/mmichals/Projects/eveCSS/workspace-2020-06-feature5363/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/plugins/org.eclipse.jface_3.7.0.v20110928-1505.jar" 
     binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="816" y="833"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -332,187 +332,191 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <association id="31">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="32" name="stopEventComposite">        
-        <position height="0" width="0" x="0" y="104"/>      
-      </attribute>      
-      <multiplicity id="33" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="104"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="34">    
-    <end type="SOURCE" refId="14"/>    
+  <realization id="31">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="11"/>  
+  </realization>  
+  <realization id="32">    
+    <end type="SOURCE" refId="13"/>    
     <end type="TARGET" refId="17"/>  
   </realization>  
-  <generalization id="35">    
-    <end type="SOURCE" refId="15"/>    
-    <end type="TARGET" refId="18"/>  
-  </generalization>  
-  <generalization id="36">    
-    <end type="SOURCE" refId="9"/>    
-    <end type="TARGET" refId="10"/>  
-  </generalization>  
-  <association id="37">    
+  <association id="33">    
     <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="38" name="pauseEventComposite">        
+      <attribute id="34" name="parentView">        
         <position height="0" width="0" x="0" y="104"/>      
       </attribute>      
-      <multiplicity id="39" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="104"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="40">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="41" name="pauseEventComposite">        
-        <position height="0" width="0" x="0" y="104"/>      
-      </attribute>      
-      <multiplicity id="42" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="104"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="43">    
-    <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="44" name="parentView">        
-        <position height="0" width="0" x="0" y="104"/>      
-      </attribute>      
-      <multiplicity id="45" minimum="0" maximum="1">        
+      <multiplicity id="35" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="104"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <nesting id="46">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="2"/>  
-  </nesting>  
-  <association id="47">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="48" name="tableViewer">        
+  <association id="36">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="37" name="stopEventComposite">        
         <position height="0" width="0" x="0" y="104"/>      
       </attribute>      
-      <multiplicity id="49" minimum="0" maximum="1">        
+      <multiplicity id="38" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="104"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="39">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="17"/>  
+  </realization>  
+  <realization id="40">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="11"/>  
+  </realization>  
+  <association id="41">    
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="42" name="viewer">        
+        <position height="0" width="0" x="0" y="104"/>      
+      </attribute>      
+      <multiplicity id="43" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="104"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="29" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <realization id="50">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="11"/>  
-  </realization>  
+  <nesting id="44">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="3"/>  
+  </nesting>  
+  <association id="45">    
+    <end type="SOURCE" refId="24" navigable="false">      
+      <attribute id="46" name="viewer">        
+        <position height="0" width="0" x="0" y="104"/>      
+      </attribute>      
+      <multiplicity id="47" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="104"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="29" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="48">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="49" name="selectionProviderWrapper">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="50" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="30" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
   <association id="51">    
-    <bendpoint x="502" y="293"/>    
-    <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="52" name="intervalComposite">        
-        <position height="17" width="91" x="406" y="291"/>      
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="52" name="redoEventComposite">        
+        <position height="0" width="0" x="0" y="104"/>      
       </attribute>      
       <multiplicity id="53" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="104"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="10" navigable="true"/>    
+    <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="54">    
+  <realization id="54">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="17"/>  
+  </realization>  
+  <association id="55">    
     <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="55" name="redoEventComposite">        
+      <attribute id="56" name="breakEventComposite">        
         <position height="0" width="0" x="0" y="104"/>      
       </attribute>      
-      <multiplicity id="56" minimum="0" maximum="1">        
+      <multiplicity id="57" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="104"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="57">    
+  <association id="58">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="59" name="tableViewerFocusListener">        
+        <position height="0" width="0" x="0" y="104"/>      
+      </attribute>      
+      <multiplicity id="60" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="104"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="61">    
     <bendpoint x="549" y="293"/>    
     <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="58" name="standardComposite">        
+      <attribute id="62" name="standardComposite">        
         <position height="17" width="99" x="562" y="289"/>      
       </attribute>      
-      <multiplicity id="59" minimum="0" maximum="1">        
+      <multiplicity id="63" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="104"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="10" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="60">    
+  <association id="64">    
     <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="61" name="breakEventComposite">        
+      <attribute id="65" name="triggerEventComposite">        
         <position height="0" width="0" x="0" y="104"/>      
       </attribute>      
-      <multiplicity id="62" minimum="0" maximum="1">        
+      <multiplicity id="66" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="104"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="63">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="64" name="selectionProviderWrapper"/>      
-      <multiplicity id="65" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="30" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="66">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="11"/>  
-  </realization>  
-  <nesting id="67">    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="6"/>  
-  </nesting>  
-  <association id="68">    
-    <end type="SOURCE" refId="24" navigable="false">      
-      <attribute id="69" name="viewer">        
-        <position height="0" width="0" x="0" y="104"/>      
-      </attribute>      
-      <multiplicity id="70" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="104"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="29" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="71">    
-    <end type="SOURCE" refId="21" navigable="false">      
-      <attribute id="72" name="viewer">        
-        <position height="0" width="0" x="0" y="104"/>      
-      </attribute>      
-      <multiplicity id="73" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="104"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="29" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <nesting id="74">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="3"/>  
-  </nesting>  
-  <generalization id="75">    
+  <generalization id="67">    
     <end type="SOURCE" refId="16"/>    
     <end type="TARGET" refId="18"/>  
   </generalization>  
+  <realization id="68">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="11"/>  
+  </realization>  
+  <association id="69">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="70" name="pauseEventComposite">        
+        <position height="0" width="0" x="0" y="104"/>      
+      </attribute>      
+      <multiplicity id="71" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="104"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="72">    
+    <bendpoint x="502" y="293"/>    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="73" name="intervalComposite">        
+        <position height="17" width="91" x="406" y="291"/>      
+      </attribute>      
+      <multiplicity id="74" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="104"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="75">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="6"/>  
+  </nesting>  
   <association id="76">    
     <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="77" name="triggerEventComposite">        
+      <attribute id="77" name="breakEventComposite">        
         <position height="0" width="0" x="0" y="104"/>      
       </attribute>      
       <multiplicity id="78" minimum="0" maximum="1">        
@@ -534,14 +538,14 @@
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <realization id="82">    
-    <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="11"/>  
-  </realization>  
-  <realization id="83">    
-    <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="17"/>  
-  </realization>  
+  <nesting id="82">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="2"/>  
+  </nesting>  
+  <generalization id="83">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="18"/>  
+  </generalization>  
   <association id="84">    
     <end type="SOURCE" refId="23" navigable="false">      
       <attribute id="85" name="viewer">        
@@ -554,56 +558,58 @@
     <end type="TARGET" refId="29" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="87">    
-    <end type="SOURCE" refId="9" navigable="false">      
-      <attribute id="88" name="redoEventComposite">        
-        <position height="0" width="0" x="0" y="104"/>      
-      </attribute>      
-      <multiplicity id="89" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="104"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="90">    
+  <generalization id="87">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="10"/>  
+  </generalization>  
+  <association id="88">    
     <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="91" name="breakEventComposite">        
+      <attribute id="89" name="pauseEventComposite">        
         <position height="0" width="0" x="0" y="104"/>      
       </attribute>      
-      <multiplicity id="92" minimum="0" maximum="1">        
+      <multiplicity id="90" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="104"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="93">    
+  <association id="91">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="92" name="tableViewer">        
+        <position height="0" width="0" x="0" y="104"/>      
+      </attribute>      
+      <multiplicity id="93" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="104"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="29" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="94">    
     <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="94" name="selectionProviderWrapper">        
+      <attribute id="95" name="selectionProviderWrapper">        
         <position height="17" width="129" x="609" y="78"/>      
       </attribute>      
-      <multiplicity id="95" minimum="0" maximum="1"/>    
+      <multiplicity id="96" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="30" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="96">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="97" name="tableViewerFocusListener">        
+  <association id="97">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="98" name="redoEventComposite">        
         <position height="0" width="0" x="0" y="104"/>      
       </attribute>      
-      <multiplicity id="98" minimum="0" maximum="1">        
+      <multiplicity id="99" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="104"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
+    <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <realization id="99">    
-    <end type="SOURCE" refId="13"/>    
-    <end type="TARGET" refId="17"/>  
-  </realization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    

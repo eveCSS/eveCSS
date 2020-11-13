@@ -102,8 +102,17 @@
       <view
             category="eveEditorCategory"
             class="de.ptb.epics.eve.editor.views.axeschannelsview.ui.AxesChannelsView"
+            icon="icons/devices/scanmodule.gif"
             id="de.ptb.epics.eve.editor.views.AxesChannelsView"
             name="SM Axes / Channels View"
+            restorable="true">
+      </view>
+      <view
+            category="eveEditorCategory"
+            class="de.ptb.epics.eve.editor.views.prepostposplotview.ui.PrePostPosPlotView"
+            icon="icons/devices/scanmodule.gif"
+            id="de.ptb.epics.eve.editor.view.PrePostscanView"
+            name="SM Prescan / Postscan / Positioning / Plot View"
             restorable="true">
       </view>
    </extension>
@@ -431,310 +440,6 @@
          </command>
       </menuContribution>
       <menuContribution
-            locationURI="popup:de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.popup">
-         <dynamic
-               class="de.ptb.epics.eve.editor.views.scanmoduleview.AxisMenuContribution"
-               id="de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.popup.dynamic">
-         </dynamic>
-         <separator
-               name="de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.popup.import.separator"
-               visible="true">
-         </separator>
-         <command
-               commandId="de.ptb.epics.eve.editor.command.importcsvaxes"
-               icon="icons/importpref_obj.gif"
-               label="Import CSV..."
-               style="push">
-         </command>
-         <separator
-               name="de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.popup.remove.separator"
-               visible="true">
-         </separator>
-         <command
-               commandId="de.ptb.epics.eve.editor.command.removeaxis"
-               icon="icons/rem_co.gif"
-               label="Remove Axis"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <reference
-                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
-               </reference>
-            </visibleWhen>
-         </command>
-         <command
-               commandId="de.ptb.epics.eve.editor.command.removeallaxis"
-               icon="icons/progress_remall.gif"
-               label="Remove All Axes"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <reference
-                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
-               </reference>
-            </visibleWhen>
-         </command>
-      </menuContribution>
-      <menuContribution
-            locationURI="popup:de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.popup">
-         <dynamic
-               class="de.ptb.epics.eve.editor.views.scanmoduleview.ChannelMenuContribution"
-               id="de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.popup.dynamic">
-         </dynamic>
-         <separator
-               name="de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.popup.separator"
-               visible="true">
-         </separator>
-         <command
-               commandId="de.ptb.epics.eve.editor.command.removechannel"
-               icon="icons/rem_co.gif"
-               label="Remove Channel"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <reference
-                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
-               </reference>
-            </visibleWhen>
-         </command>
-         <command
-               commandId="de.ptb.epics.eve.editor.command.removeallchannels"
-               icon="icons/progress_remall.gif"
-               label="Remove All Channels"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <reference
-                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
-               </reference>
-            </visibleWhen>
-         </command>
-      </menuContribution>
-      <menuContribution
-            locationURI="popup:de.ptb.epics.eve.editor.views.scanmoduleview.prescancomposite.popup">
-         <dynamic
-               class="de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.prescancomposite.MenuContribution"
-               id="de.ptb.epics.eve.editor.views.scanmoduleview.prescancomposite.popup.menucontribution">
-         </dynamic>
-         <separator
-               name="de.ptb.epics.eve.editor.views.scanmoduleview.postscancomposite.popup.separator"
-               visible="true">
-         </separator>
-         <command
-               commandId="de.ptb.epics.eve.editor.command.removeprescan"
-               icon="icons/rem_co.gif"
-               label="Remove Prescan"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <reference
-                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
-               </reference>
-            </visibleWhen>
-         </command>
-         <command
-               commandId="de.ptb.epics.eve.editor.command.removeallprescans"
-               icon="icons/progress_remall.gif"
-               label="Remove All Prescans"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <reference
-                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
-               </reference>
-            </visibleWhen>
-         </command>
-      </menuContribution>
-      <menuContribution
-            locationURI="popup:de.ptb.epics.eve.editor.views.scanmoduleview.postscancomposite.popup">
-         <dynamic
-               class="de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.postscancomposite.MenuContribution"
-               id="de.ptb.epics.eve.editor.views.scanmoduleview.postscancomposite.popup.menucontribution">
-         </dynamic>
-         <separator
-               name="de.ptb.epics.eve.editor.views.scanmoduleview.postscancomposite.popup.separator"
-               visible="true">
-         </separator>
-         <command
-               commandId="de.ptb.epics.eve.editor.command.removepostscan"
-               icon="icons/rem_co.gif"
-               label="Remove Postscan"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <reference
-                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
-               </reference>
-            </visibleWhen>
-         </command>
-         <command
-               commandId="de.ptb.epics.eve.editor.command.removeallpostscans"
-               icon="icons/progress_remall.gif"
-               label="Remove All Postscans"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <reference
-                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
-               </reference>
-            </visibleWhen>
-         </command>
-      </menuContribution>
-      <menuContribution
-            locationURI="popup:de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite.popup">
-         <dynamic
-               class="de.ptb.epics.eve.editor.views.scanmoduleview.classiccomposite.positioningcomposite.MenuContribution"
-               id="de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite.popup.menucontribution">
-         </dynamic>
-         <separator
-               name="de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite.popup.separator"
-               visible="true">
-         </separator>
-         <command
-               commandId="de.ptb.epics.eve.editor.command.removepositioning"
-               icon="icons/rem_co.gif"
-               label="Remove Positioning"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <reference
-                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
-               </reference>
-            </visibleWhen>
-         </command>
-         <command
-               commandId="de.ptb.epics.eve.editor.command.removeallpositionings"
-               icon="icons/progress_remall.gif"
-               label="Remove All Positionings"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <reference
-                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
-               </reference>
-            </visibleWhen>
-         </command>
-      </menuContribution>
-      <menuContribution
-            locationURI="popup:de.ptb.epics.eve.editor.views.scanmoduleview.plotcomposite.popup">
-         <command
-               commandId="de.ptb.epics.eve.editor.command.addplotwindow"
-               icon="icons/devices/plot.gif"
-               label="Add Plot Window"
-               style="push">
-         </command>
-         <command
-               commandId="de.ptb.epics.eve.editor.command.changeplotid"
-               icon="icons/rename.gif"
-               label="Change Plot Id"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <reference
-                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
-               </reference>
-            </visibleWhen>
-         </command>
-         <separator
-               name="de.ptb.epics.eve.editor.views.scanmoduleview.plotcomposite.popup.separator"
-               visible="true">
-         </separator>
-         <command
-               commandId="de.ptb.epics.eve.editor.command.removeplotwindow"
-               icon="icons/rem_co.gif"
-               label="Remove Plot Window"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <reference
-                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
-               </reference>
-            </visibleWhen>
-         </command>
-         <command
-               commandId="de.ptb.epics.eve.editor.command.removeallplotwindows"
-               icon="icons/progress_remall.gif"
-               label="Remove All Plot Windows"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <reference
-                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
-               </reference>
-            </visibleWhen>
-         </command>
-      </menuContribution>
-      <menuContribution
-            locationURI="popup:de.ptb.epics.eve.editor.views.scanmoduleview.saveaxispositionscomposite.popup">
-         <dynamic
-               class="de.ptb.epics.eve.editor.views.scanmoduleview.AxisMenuContribution"
-               id="popup:de.ptb.epics.eve.editor.views.scanmoduleview.saveaxispositionscomposite.popup.dynamic">
-         </dynamic>
-         <separator
-               name="de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.popup.remove.separator"
-               visible="true">
-         </separator>
-         <command
-               commandId="de.ptb.epics.eve.editor.command.removeaxis"
-               icon="icons/rem_co.gif"
-               label="Remove Axis"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <reference
-                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
-               </reference>
-            </visibleWhen>
-         </command>
-         <command
-               commandId="de.ptb.epics.eve.editor.command.removeallaxis"
-               icon="icons/progress_remall.gif"
-               label="Remove All Axes"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <reference
-                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
-               </reference>
-            </visibleWhen>
-         </command>
-      </menuContribution>
-      <menuContribution
-            locationURI="popup:de.ptb.epics.eve.editor.views.scanmoduleview.savechannelvaluescomposite.popup">
-         <dynamic
-               class="de.ptb.epics.eve.editor.views.scanmoduleview.ChannelMenuContribution"
-               id="popup:de.ptb.epics.eve.editor.views.scanmoduleview.savechannelvaluescomposite.popup.dynamic">
-         </dynamic>
-         <separator
-               name="de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.popup.spearator"
-               visible="true">
-         </separator>
-         <command
-               commandId="de.ptb.epics.eve.editor.command.removechannel"
-               icon="icons/rem_co.gif"
-               label="Remove Channel"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <reference
-                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
-               </reference>
-            </visibleWhen>
-         </command>
-         <command
-               commandId="de.ptb.epics.eve.editor.command.removeallchannels"
-               icon="icons/progress_remall.gif"
-               label="Remove All Channels"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <reference
-                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
-               </reference>
-            </visibleWhen>
-         </command>
-      </menuContribution>
-      <menuContribution
             locationURI="popup:de.ptb.epics.eve.editor.views.axeschannelsview.saveaxispositionscomposite.popup">
          <dynamic
                class="de.ptb.epics.eve.editor.views.axeschannelsview.AxesMenuContribution"
@@ -881,6 +586,113 @@
          </command>
          <command
                commandId="de.ptb.epics.eve.editor.command.scanmodule.removeallchannels"
+               icon="icons/progress_remall.gif"
+               label="Remove All"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
+               </reference>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepostscan.popup">
+         <menu
+               label="Prescan">
+            <dynamic
+                  class="de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepostscan.ui.PrescanMenuContribution"
+                  id="de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prescan.popup.dynamic">
+            </dynamic>
+         </menu>
+         <menu
+               label="Postscan">
+            <dynamic
+                  class="de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepostscan.ui.PostscanMenuContribution"
+                  id="de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.postscan.popup.dynamic">
+            </dynamic>
+         </menu>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.scanmodule.removeprepostscanentries"
+               icon="icons/rem_co.gif"
+               label="Remove Selected"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <not>
+                  <reference
+                        definitionId="de.ptb.epics.eve.editor.expressions.emptyselection">
+                  </reference>
+               </not>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.scanmodule.removeallprepostscanentries"
+               icon="icons/progress_remall.gif"
+               label="Remove All"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
+               </reference>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positioning.popup">
+         <dynamic
+               class="de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positioning.ui.PositioningMenuContribution"
+               id="de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepost.positioning.popup.dynamic">
+         </dynamic>
+         <separator
+               name="de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.positioningtable.remove.separator"
+               visible="true">
+         </separator>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.scanmodule.removepositionings"
+               icon="icons/rem_co.gif"
+               label="Remove Selected"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <not>
+                  <reference
+                        definitionId="de.ptb.epics.eve.editor.expressions.emptyselection">
+                  </reference>
+               </not>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.plot.popup">
+         <separator
+               name="de.ptb.epics.eve.editor.views.scanmoduleview.plotcomposite.popup.separator"
+               visible="true">
+         </separator>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.scanmodule.addplotwindow"
+               icon="icons/devices/plot.gif"
+               label="Add Plot Window"
+               style="push">
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.scanmodule.removeplotwindows"
+               icon="icons/rem_co.gif"
+               label="Remove Selected"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <not>
+                  <reference
+                        definitionId="de.ptb.epics.eve.editor.expressions.emptyselection">
+                  </reference>
+               </not>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.scanmodule.removeallplotwindows"
                icon="icons/progress_remall.gif"
                label="Remove All"
                style="push">
@@ -1288,175 +1100,6 @@
             id="de.ptb.epics.eve.editor.command.removeallmonitors"
             name="Remove All Monitors">
       </command>
-      <category
-            id="de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.commands"
-            name="Motor Axis Composite">
-      </category>
-      <command
-            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.commands"
-            defaultHandler="de.ptb.epics.eve.editor.handler.motoraxiscomposite.AddAxis"
-            id="de.ptb.epics.eve.editor.command.addaxis"
-            name="Add Axis">
-         <commandParameter
-               id="de.ptb.epics.eve.editor.command.addaxis.motoraxisid"
-               name="Motor Axis Id"
-               optional="false">
-         </commandParameter>
-      </command>
-      <command
-            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.commands"
-            defaultHandler="de.ptb.epics.eve.editor.handler.motoraxiscomposite.ImportAxesFromCSV"
-            id="de.ptb.epics.eve.editor.command.importcsvaxes"
-            name="Import Axes from csv">
-      </command>
-      <command
-            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.commands"
-            defaultHandler="de.ptb.epics.eve.editor.handler.motoraxiscomposite.RemoveAxis"
-            id="de.ptb.epics.eve.editor.command.removeaxis"
-            name="Remove Axis">
-      </command>
-      <command
-            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.commands"
-            defaultHandler="de.ptb.epics.eve.editor.handler.motoraxiscomposite.RemoveAllAxes"
-            id="de.ptb.epics.eve.editor.command.removeallaxis"
-            name="Remove All Axes">
-      </command>
-      <category
-            id="de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.commands"
-            name="DetectorChannel Composite">
-      </category>
-      <command
-            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.commands"
-            defaultHandler="de.ptb.epics.eve.editor.handler.detectorchannelcomposite.AddChannel"
-            id="de.ptb.epics.eve.editor.command.addchannel"
-            name="Add Channel">
-         <commandParameter
-               id="de.ptb.epics.eve.editor.command.addchannel.detectorchannelid"
-               name="Detector Channel Id"
-               optional="false">
-         </commandParameter>
-      </command>
-      <command
-            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.commands"
-            defaultHandler="de.ptb.epics.eve.editor.handler.detectorchannelcomposite.RemoveChannel"
-            id="de.ptb.epics.eve.editor.command.removechannel"
-            name="Remove Channel">
-      </command>
-      <command
-            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.commands"
-            defaultHandler="de.ptb.epics.eve.editor.handler.detectorchannelcomposite.RemoveAllChannels"
-            id="de.ptb.epics.eve.editor.command.removeallchannels"
-            name="Remove All Channels">
-      </command>
-      <category
-            id="de.ptb.epics.eve.editor.views.scanmoduleview.prescancomposite.commands"
-            name="Prescan Composite">
-      </category>
-      <command
-            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.prescancomposite.commands"
-            defaultHandler="de.ptb.epics.eve.editor.handler.prescancomposite.AddPrescan"
-            id="de.ptb.epics.eve.editor.command.addprescan"
-            name="Add Prescan">
-         <commandParameter
-               id="de.ptb.epics.eve.editor.command.addprescan.prescanid"
-               name="Prescan Id"
-               optional="false">
-         </commandParameter>
-      </command>
-      <command
-            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.prescancomposite.commands"
-            defaultHandler="de.ptb.epics.eve.editor.handler.prescancomposite.RemovePrescan"
-            id="de.ptb.epics.eve.editor.command.removeprescan"
-            name="Remove Prescan">
-      </command>
-      <command
-            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.prescancomposite.commands"
-            defaultHandler="de.ptb.epics.eve.editor.handler.prescancomposite.RemoveAllPrescans"
-            id="de.ptb.epics.eve.editor.command.removeallprescans"
-            name="Remove All Prescans">
-      </command>
-      <category
-            id="de.ptb.epics.eve.editor.views.scanmoduleview.postscancomposite.commands"
-            name="Postscan Composite">
-      </category>
-      <command
-            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.postscancomposite.commands"
-            defaultHandler="de.ptb.epics.eve.editor.handler.postscancomposite.AddPostscan"
-            id="de.ptb.epics.eve.editor.command.addpostscan"
-            name="Add Postscan">
-         <commandParameter
-               id="de.ptb.epics.eve.editor.command.addpostscan.postscanid"
-               name="Postscan Id"
-               optional="false">
-         </commandParameter>
-      </command>
-      <command
-            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.postscancomposite.commands"
-            defaultHandler="de.ptb.epics.eve.editor.handler.postscancomposite.RemovePostscan"
-            id="de.ptb.epics.eve.editor.command.removepostscan"
-            name="Remove Postscan">
-      </command>
-      <command
-            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.postscancomposite.commands"
-            defaultHandler="de.ptb.epics.eve.editor.handler.postscancomposite.RemoveAllPostscans"
-            id="de.ptb.epics.eve.editor.command.removeallpostscans"
-            name="Remove all Postscans">
-      </command>
-      <category
-            id="de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite.commands"
-            name="Positioning Composite">
-      </category>
-      <command
-            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite.commands"
-            defaultHandler="de.ptb.epics.eve.editor.handler.positioningcomposite.AddPositioning"
-            id="de.ptb.epics.eve.editor.command.addpositioning"
-            name="Add Positioning">
-         <commandParameter
-               id="de.ptb.epics.eve.editor.command.addpositioning.motoraxisid"
-               name="MotorAxisId"
-               optional="false">
-         </commandParameter>
-      </command>
-      <command
-            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite.commands"
-            defaultHandler="de.ptb.epics.eve.editor.handler.positioningcomposite.RemovePositioning"
-            id="de.ptb.epics.eve.editor.command.removepositioning"
-            name="Remove Positioning">
-      </command>
-      <command
-            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite.commands"
-            defaultHandler="de.ptb.epics.eve.editor.handler.positioningcomposite.RemoveAllPositionings"
-            id="de.ptb.epics.eve.editor.command.removeallpositionings"
-            name="Remove All Positionings">
-      </command>
-      <category
-            id="de.ptb.epics.eve.editor.views.scanmoduleview.plotcomposite.commands"
-            name="Plot Composite">
-      </category>
-      <command
-            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.plotcomposite.commands"
-            defaultHandler="de.ptb.epics.eve.editor.handler.plotcomposite.AddPlotWindow"
-            id="de.ptb.epics.eve.editor.command.addplotwindow"
-            name="Add Plot Window">
-      </command>
-      <command
-            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.plotcomposite.commands"
-            defaultHandler="de.ptb.epics.eve.editor.handler.plotcomposite.ChangePlotId"
-            id="de.ptb.epics.eve.editor.command.changeplotid"
-            name="Change Plot Id">
-      </command>
-      <command
-            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.plotcomposite.commands"
-            defaultHandler="de.ptb.epics.eve.editor.handler.plotcomposite.RemovePlotWindow"
-            id="de.ptb.epics.eve.editor.command.removeplotwindow"
-            name="Remove Plot Window">
-      </command>
-      <command
-            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.plotcomposite.commands"
-            defaultHandler="de.ptb.epics.eve.editor.handler.plotcomposite.RemoveAllPlotWindows"
-            id="de.ptb.epics.eve.editor.command.removeallplotwindows"
-            name="Remove All Plot Windows">
-      </command>
       <command
             defaultHandler="de.ptb.epics.eve.editor.handler.AddAbstractDevices"
             id="de.ptb.epics.eve.editor.command.addabstractdevices"
@@ -1613,6 +1256,79 @@
                name="Event Identifier"
                optional="false">
          </commandParameter>
+      </command>
+      <category
+            id="de.ptb.epics.eve.editor.category.prepostposplotview"
+            name="PrePostPosPlotView">
+      </category>
+      <command
+            categoryId="de.ptb.epics.eve.editor.category.prepostposplotview"
+            defaultHandler="de.ptb.epics.eve.editor.handler.prepostposplotview.AddPrescanDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.scanmodule.addprescan"
+            name="Add Prescan">
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.scanmodule.addprescan.prescanid"
+               name="Prescan Id"
+               optional="false">
+         </commandParameter>
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.category.prepostposplotview"
+            defaultHandler="de.ptb.epics.eve.editor.handler.prepostposplotview.AddPostscanDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.scanmodule.addpostscan"
+            name="Add Postscan">
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.scanmodule.addpostscan.postscanid"
+               name="Postscan Id"
+               optional="false">
+         </commandParameter>
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.category.prepostposplotview"
+            defaultHandler="de.ptb.epics.eve.editor.handler.prepostposplotview.RemovePrePostscansDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.scanmodule.removeprepostscanentries"
+            name="Remove PrePostscans">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.category.prepostposplotview"
+            defaultHandler="de.ptb.epics.eve.editor.handler.prepostposplotview.RemoveAllPrePostscansDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.scanmodule.removeallprepostscanentries"
+            name="Remove All PrePostscans">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.category.prepostposplotview"
+            defaultHandler="de.ptb.epics.eve.editor.handler.prepostposplotview.AddPositioningDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.scanmodule.addpositioning"
+            name="Add Positioning">
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.scanmodule.addpositioning.motoraxisid"
+               name="MotorAxis Id"
+               optional="false">
+         </commandParameter>
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.category.prepostposplotview"
+            defaultHandler="de.ptb.epics.eve.editor.handler.prepostposplotview.RemovePositioningsDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.scanmodule.removepositionings"
+            name="Remove Positionings">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.category.prepostposplotview"
+            defaultHandler="de.ptb.epics.eve.editor.handler.prepostposplotview.AddPlotWindowDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.scanmodule.addplotwindow"
+            name="Add Plot Window">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.category.prepostposplotview"
+            defaultHandler="de.ptb.epics.eve.editor.handler.prepostposplotview.RemovePlotWindowsDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.scanmodule.removeplotwindows"
+            name="Remove PlotWindows">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.category.prepostposplotview"
+            defaultHandler="de.ptb.epics.eve.editor.handler.prepostposplotview.RemoveAllPlotWindowsDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.scanmodule.removeallplotwindows"
+            name="Remove All PlotWindows">
       </command>
    </extension>
    <extension

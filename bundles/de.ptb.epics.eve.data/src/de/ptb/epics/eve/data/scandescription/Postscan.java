@@ -32,6 +32,21 @@ public class Postscan extends AbstractPostscanBehavior {
 	}
 	
 	/**
+	 * 
+	 * @param device
+	 * @param initialValue
+	 * @since 1.35
+	 */
+	public Postscan(AbstractPrePostscanDevice device, String initialValue) {
+		this(device);
+		if (this.isValuePossible(initialValue)) {
+			this.setValue(initialValue);
+		} else {
+			throw new IllegalArgumentException("value not possible");
+		}
+	}
+	
+	/**
 	 * Copy Constructor.
 	 * 
 	 * @param postscan the postscan to be copied
@@ -73,6 +88,9 @@ public class Postscan extends AbstractPostscanBehavior {
 		this.reset = reset;
 		if (reset) {
 			super.setValue("");
+		} else {
+			super.setValue(this.getAbstractPrePostscanDevice().getValue().
+					getDefaultValue());
 		}
 		updateListeners();
 	}

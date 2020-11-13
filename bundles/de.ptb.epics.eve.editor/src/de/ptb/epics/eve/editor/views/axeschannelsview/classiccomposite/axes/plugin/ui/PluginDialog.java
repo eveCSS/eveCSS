@@ -21,10 +21,10 @@ import de.ptb.epics.eve.data.measuringstation.PlugIn;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.PluginController;
 import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.editor.views.DialogCellEditorDialog;
 import de.ptb.epics.eve.editor.views.PluginControllerContentProvider;
 import de.ptb.epics.eve.editor.views.PluginControllerLabelProvider;
 import de.ptb.epics.eve.editor.views.PluginControllerValueEditingSupport;
-import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.ui.DialogCellEditorDialog;
 
 /**
  * @author Marcus Michalsky

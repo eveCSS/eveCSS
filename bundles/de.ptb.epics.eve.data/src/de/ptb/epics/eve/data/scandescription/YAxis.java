@@ -1,5 +1,7 @@
 package de.ptb.epics.eve.data.scandescription;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -21,7 +23,14 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * @author Marcus Michalsky
  */
 public class YAxis implements IModelUpdateListener, IModelUpdateProvider {
-
+	public static final String CHANNEL_PROP = "detectorChannel";
+	public static final String NORMALIZE_PROP = "normalizeChannel";
+	public static final String MODE_PROP = "mode";
+	public static final String MODIFIER_PROP = "modifier";
+	public static final String LINESTYLE_PROP = "linestyle";
+	public static final String MARKSTYPE_PROP = "markstyle";
+	public static final String COLOR_PROP = "color";
+	
 	// the detector channel of the y axis
 	private DetectorChannel detectorChannel;
 	
@@ -48,6 +57,8 @@ public class YAxis implements IModelUpdateListener, IModelUpdateProvider {
 	 */
 	private List<IModelUpdateListener> updateListener;
 	
+	private PropertyChangeSupport propertyChangeSupport;
+	
 	/**
 	 * Constructs a <code>YAxis</code>.
 	 */
@@ -59,6 +70,7 @@ public class YAxis implements IModelUpdateListener, IModelUpdateProvider {
 		this.markstyle = null;
 		this.color = null;
 		this.updateListener = new ArrayList<>();
+		this.propertyChangeSupport = new PropertyChangeSupport(this);
 	}
 	
 	/**
@@ -110,8 +122,11 @@ public class YAxis implements IModelUpdateListener, IModelUpdateProvider {
 	 * @since 1.28
 	 */
 	public void setModifier(YAxisModifier modifier) {
+		YAxisModifier oldValue = this.modifier;
 		this.modifier = modifier;
 		updateListeners();
+		this.propertyChangeSupport.firePropertyChange(MODIFIER_PROP, oldValue, 
+				modifier);
 	}
 
 	/**
@@ -131,8 +146,11 @@ public class YAxis implements IModelUpdateListener, IModelUpdateProvider {
 	 * @see org.eclipse.swt.graphics.RGB
 	 */
 	public void setColor(final RGB color) {
+		RGB oldValue = this.color;
 		this.color = color;
 		updateListeners();
+		this.propertyChangeSupport.firePropertyChange(COLOR_PROP, oldValue, 
+				color);
 	}
 
 	/**
@@ -152,8 +170,11 @@ public class YAxis implements IModelUpdateListener, IModelUpdateProvider {
 	 * @see org.csstudio.swt.xygraph.figures.Trace.TraceType
 	 */
 	public void setLinestyle(final TraceType linestyle) {
+		TraceType oldValue = this.linestyle;
 		this.linestyle = linestyle;
 		updateListeners();
+		this.propertyChangeSupport.firePropertyChange(LINESTYLE_PROP, oldValue, 
+				linestyle);
 	}
 
 	/**
@@ -173,8 +194,11 @@ public class YAxis implements IModelUpdateListener, IModelUpdateProvider {
 	 * @see org.csstudio.swt.xygraph.figures.Trace.PointStyle
 	 */
 	public void setMarkstyle(final PointStyle markstyle) {
+		PointStyle oldValue = this.markstyle;
 		this.markstyle = markstyle;
 		updateListeners();
+		this.propertyChangeSupport.firePropertyChange(MARKSTYPE_PROP, oldValue, 
+				markstyle);
 	}
 
 	/**
@@ -192,8 +216,10 @@ public class YAxis implements IModelUpdateListener, IModelUpdateProvider {
 	 * @param mode the plot mode of the axis.
 	 */
 	public void setMode(final PlotModes mode) {
+		PlotModes oldValue = this.mode;
 		this.mode = mode;
 		updateListeners();
+		this.propertyChangeSupport.firePropertyChange(MODE_PROP, oldValue, mode);
 	}
 
 	/**
@@ -212,8 +238,11 @@ public class YAxis implements IModelUpdateListener, IModelUpdateProvider {
 	 * 		   axis
 	 */
 	public void setDetectorChannel(final DetectorChannel detectorChannel) {
+		DetectorChannel oldValue = this.detectorChannel;
 		this.detectorChannel = detectorChannel;
 		updateListeners();
+		this.propertyChangeSupport.firePropertyChange(CHANNEL_PROP, oldValue, 
+				detectorChannel);
 	}
 
 	/**
@@ -255,25 +284,17 @@ public class YAxis implements IModelUpdateListener, IModelUpdateProvider {
 	}
 
 	/**
-	 * Clears the detector channel used for normalization. 
-	 * 
-	 * @deprecated use {@link #setNormalizeChannel(DetectorChannel)} with 
-	 * 				<code>null</code> as parameter
-	 */
-	public void clearNormalizeChannel() {
-		this.normalizeChannel = null;
-		updateListeners();
-	}
-
-	/**
 	 * Sets the detector channel used for normalization.
 	 * 
 	 * @param normalizeChannel the detector channel that should be used for 
 	 * 		   normalization
 	 */
 	public void setNormalizeChannel(final DetectorChannel normalizeChannel) {
+		DetectorChannel oldValue = this.normalizeChannel;
 		this.normalizeChannel = normalizeChannel;
 		updateListeners();
+		this.propertyChangeSupport.firePropertyChange(NORMALIZE_PROP, oldValue, 
+				normalizeChannel);
 	}
 
 	/**
@@ -347,5 +368,16 @@ public class YAxis implements IModelUpdateListener, IModelUpdateProvider {
 			return false;
 		}
 		return true;
+	}
+	
+	public void addPropertyChangeListener(String property, 
+			PropertyChangeListener listener) {
+		this.propertyChangeSupport.addPropertyChangeListener(property, listener);
+	}
+	
+	public void removePropertyChangeListener(String property, 
+			PropertyChangeListener listener) {
+		this.propertyChangeSupport.removePropertyChangeListener(property, 
+				listener);
 	}
 }
