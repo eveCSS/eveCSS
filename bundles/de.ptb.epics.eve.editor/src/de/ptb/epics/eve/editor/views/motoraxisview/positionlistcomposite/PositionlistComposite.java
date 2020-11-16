@@ -28,6 +28,8 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -179,6 +181,22 @@ public class PositionlistComposite extends MotorAxisViewComposite implements
 		this.positionlistText.addModifyListener(new ModifyListener() {
 			@Override public void modifyText(ModifyEvent e) {
 					countPositions();
+			}
+		});
+		this.positionlistText.addVerifyListener(new VerifyListener() {
+			@Override
+			public void verifyText(VerifyEvent e) {
+				if (!e.doit) {
+					return;
+				}
+				switch (e.keyCode) {
+				case SWT.CR:
+				case SWT.KEYPAD_CR:
+					e.doit = false;
+					break;
+				default:
+					break;
+				}
 			}
 		});
 		// position count label
