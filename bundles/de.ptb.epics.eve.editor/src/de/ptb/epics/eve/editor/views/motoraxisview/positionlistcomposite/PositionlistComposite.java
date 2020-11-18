@@ -22,8 +22,8 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseAdapter;
@@ -312,6 +312,7 @@ public class PositionlistComposite extends MotorAxisViewComposite implements
 	public void propertyChange(PropertyChangeEvent e) {
 		if (e.getPropertyName().equals(PositionlistMode.POSITIONLIST_PROP)) {
 			this.countPositions();
+			this.positionlistBinding.updateModelToTarget();
 		} else if (e.getPropertyName().equals("highlimit") || 
 				e.getPropertyName().equals("lowlimit")) {
 			this.positionlistBinding.updateTargetToModel();
@@ -351,22 +352,7 @@ public class PositionlistComposite extends MotorAxisViewComposite implements
 		this.positionCountLabel.getParent().layout();
 	}
 	
-	/**
-	 * @author Marcus Michalsky
-	 * @since 1.7
-	 */
-	private class PositionlistTextFocusListener implements FocusListener {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void focusGained(FocusEvent e) {
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
+	private class PositionlistTextFocusListener extends FocusAdapter {
 		@Override
 		public void focusLost(FocusEvent e) {
 				positionlistBinding.updateModelToTarget();
