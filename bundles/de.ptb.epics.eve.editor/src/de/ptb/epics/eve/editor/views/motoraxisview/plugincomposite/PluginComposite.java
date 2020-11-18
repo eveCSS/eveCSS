@@ -1,11 +1,13 @@
 package de.ptb.epics.eve.editor.views.motoraxisview.plugincomposite;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -20,6 +22,7 @@ import de.ptb.epics.eve.data.measuringstation.PlugIn;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.PluginController;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.axismode.PluginMode;
 import de.ptb.epics.eve.data.scandescription.errors.AxisError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.editor.Activator;
@@ -32,10 +35,8 @@ import de.ptb.epics.eve.editor.views.PluginControllerComposite;
  * @author Hartmut Scherr
  * @author Marcus Michalsky
  */
-public class PluginComposite extends Composite {
-	
-	// logging 
-	private static Logger logger = 
+public class PluginComposite extends Composite implements PropertyChangeListener {
+	private static final Logger LOGGER = 
 		Logger.getLogger(PluginComposite.class.getName());
 	
 	private Label pluginLabel;
@@ -69,7 +70,7 @@ public class PluginComposite extends Composite {
 
 		// TODO: Methode List<PlugIn> = getPlugins(PluginTypes)
 		// ist besser als die untere Schleife
-		List<String> pluginNames = new ArrayList<String>();
+		List<String> pluginNames = new ArrayList<>();
 		for (PlugIn plugIn : Activator.getDefault().getMeasuringStation().
 									 getPlugins().toArray(new PlugIn[0])) {
 			if(plugIn.getType() == PluginTypes.POSITION) {
@@ -159,11 +160,7 @@ public class PluginComposite extends Composite {
 		addListeners();
 	}
 	
-	/*
-	 * 
-	 */
-	private void checkForErrors()
-	{
+	private void checkForErrors() {
 		this.pluginErrorLabel.setImage(null);
 		this.pluginErrorLabel.setToolTipText("");
 		
@@ -193,40 +190,21 @@ public class PluginComposite extends Composite {
 		}
 	}
 	
-	/*
-	 * 
-	 */
 	private void addListeners() {
 		pluginCombo.addSelectionListener(pluginComboSelectionListener);
 	}
-	
-	/*
-	 * 
-	 */
+
 	private void removeListeners() {
 		pluginCombo.removeSelectionListener(pluginComboSelectionListener);
 	}
 	
-	/* ********************************************************************* */
-	/* **************************** Listeners ****************************** */
-	/* ********************************************************************* */
-
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener}<code> of 
-	 * <code>pluginCombo</code>.
-	 */
-	class PluginComboSelectionListener implements SelectionListener {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		// TODO Auto-generated method stub
 		
-		/**
-		 * {@inheritDoc}
-		 */
+	}
+	
+	private class PluginComboSelectionListener extends SelectionAdapter {
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			if (axis != null) {
@@ -234,9 +212,9 @@ public class PluginComposite extends Composite {
 						.getPluginByName(pluginCombo.getText());
 
 				if (plugin != null) {
-					logger.debug("Plugin: " + plugin.getName());
+					LOGGER.debug("Plugin: " + plugin.getName());
 				} else {
-					logger.debug("Plugin: null");
+					LOGGER.debug("Plugin: null");
 				}
 
 				axis.setPluginController(new PluginController(plugin));

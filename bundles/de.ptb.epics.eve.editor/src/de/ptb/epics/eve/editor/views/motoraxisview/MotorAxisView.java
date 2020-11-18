@@ -414,7 +414,6 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 			// current Axis will be removed
 			setAxis(null);
 		} else if (e.getPropertyName().equals(Axis.STEPFUNCTION_PROP)) {
-			System.out.println(e.getSource());
 			this.stepFunctionCombo.setItems(StringUtil.getStringList(
 					this.currentAxis.getStepfunctions()).toArray(new String[0]));
 			this.stepFunctionCombo.setText(

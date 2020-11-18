@@ -72,8 +72,8 @@ public class PluginController implements IModelErrorProvider,
 	 */
 	public PluginController(final PlugIn plugin) {
 		this.plugin = plugin;
-		this.values = new HashMap<String, String>();
-		this.modelUpdateListener = new ArrayList<IModelUpdateListener>();
+		this.values = new HashMap<>();
+		this.modelUpdateListener = new ArrayList<>();
 
 		if (this.plugin != null) {
 			this.fillWithDefaults();
@@ -97,7 +97,7 @@ public class PluginController implements IModelErrorProvider,
 		PluginController newPluginController = 
 				new PluginController(pluginController.getPlugin());
 		newPluginController.setScanModule(scanModule);
-		newPluginController.setValues(new HashMap<String, String>(
+		newPluginController.setValues(new HashMap<>(
 				pluginController.getValues()));
 		return newPluginController;
 	}
@@ -287,7 +287,7 @@ public class PluginController implements IModelErrorProvider,
 	 */
 	@Override
 	public List<IModelError> getModelErrors() {
-		final List<IModelError> errorList = new ArrayList<IModelError>();
+		final List<IModelError> errorList = new ArrayList<>();
 		if (this.plugin != null) {
 			final Iterator<PluginParameter> it = this.plugin.getParameters()
 					.iterator();
@@ -342,5 +342,4 @@ public class PluginController implements IModelErrorProvider,
 			PropertyChangeListener listener) {
 		propertyChangeSupport.removePropertyChangeListener(property, listener);
 	}
-
 }
