@@ -36,6 +36,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
 public class Axis extends AbstractMainPhaseBehavior implements
 		PropertyChangeListener {
 	public static final String STEPFUNCTION_PROP = "stepfunction";
+	public static final String PLUGIN_CONTROLLER_PROP = "pluginController";
 	
 	private static Logger logger = Logger.getLogger(Axis.class.getName());
 
@@ -354,9 +355,11 @@ public class Axis extends AbstractMainPhaseBehavior implements
 		if (!this.getStepfunction().equals(Stepfunctions.PLUGIN)) {
 			this.setStepfunction(Stepfunctions.PLUGIN);
 		}
-
+		PluginController oldValue = ((PluginMode)this.mode).getPluginController();
 		((PluginMode)this.mode).setPluginController(plugin);
-
+		this.propertyChangeSupport.firePropertyChange(
+				PLUGIN_CONTROLLER_PROP, oldValue, 
+				((PluginMode)this.mode).getPluginController());
 	}
 	
 	/**

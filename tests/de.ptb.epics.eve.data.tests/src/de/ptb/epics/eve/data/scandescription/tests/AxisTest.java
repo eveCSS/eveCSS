@@ -10,7 +10,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.ptb.epics.eve.data.PluginTypes;
+import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
+import de.ptb.epics.eve.data.measuringstation.PlugIn;
 import de.ptb.epics.eve.data.scandescription.Axis;
+import de.ptb.epics.eve.data.scandescription.PluginController;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.Stepfunctions;
 import de.ptb.epics.eve.data.tests.mothers.measuringstation.MotorAxisMother;
@@ -21,6 +25,7 @@ import de.ptb.epics.eve.data.tests.mothers.measuringstation.MotorAxisMother;
  */
 public class AxisTest {
 	private boolean stepfunction = false;
+	private boolean pluginController = false;
 	private Axis axis;
 	
 	@Test
@@ -43,6 +48,29 @@ public class AxisTest {
 		axis.setStepfunction(Stepfunctions.FILE);
 		assertEquals(Stepfunctions.FILE, axis.getStepfunction());
 		assertTrue(stepfunction);
+	}
+	
+	@Test
+	public void testPluginControllerPropertyChange() {
+		PlugIn plugin = new PlugIn("PluginName", "PluginLocation", 
+				PluginTypes.POSITION, new MeasuringStation());
+		final PluginController initialValue = new PluginController(plugin);
+		PlugIn pluginNew = new PlugIn("PluginNameNew", "PluginLocationNew",
+				PluginTypes.POSITION, new MeasuringStation());
+		final PluginController newValue = new PluginController(pluginNew);
+		axis.setPluginController(initialValue);
+		axis.addPropertyChangeListener(Axis.PLUGIN_CONTROLLER_PROP, 
+				new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				assertEquals(initialValue, evt.getOldValue());
+				assertEquals(newValue, evt.getNewValue());
+				pluginController = true;
+			}
+		});
+		axis.setPluginController(newValue);
+		assertEquals(newValue, axis.getPluginController());
+		assertTrue(pluginController);
 	}
 	
 	@Before

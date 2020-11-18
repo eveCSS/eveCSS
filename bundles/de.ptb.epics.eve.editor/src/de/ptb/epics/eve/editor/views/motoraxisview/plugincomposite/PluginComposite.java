@@ -21,8 +21,6 @@ import de.ptb.epics.eve.data.PluginTypes;
 import de.ptb.epics.eve.data.measuringstation.PlugIn;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.PluginController;
-import de.ptb.epics.eve.data.scandescription.ScanModule;
-import de.ptb.epics.eve.data.scandescription.axismode.PluginMode;
 import de.ptb.epics.eve.data.scandescription.errors.AxisError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.editor.Activator;
@@ -46,7 +44,6 @@ public class PluginComposite extends Composite implements PropertyChangeListener
 	private PluginControllerComposite pluginControllerComposite;
 	
 	private Axis axis;
-	private ScanModule scanModule;
 	
 	/**
 	 * Constructs a <code>MotorAxisPluginComposite</code>.
@@ -130,13 +127,25 @@ public class PluginComposite extends Composite implements PropertyChangeListener
 	 */
 	public void setAxis(final Axis axis) {
 		removeListeners();
-		
+		if (this.axis != null) {
+			this.axis.removePropertyChangeListener(Axis.PLUGIN_CONTROLLER_PROP, 
+					this);
+		}
 		this.axis = axis;
 		
 		if(this.axis != null) {
-			this.scanModule = axis.getScanModule();
-			if(this.axis.getPluginController() != null &&
-			   this.axis.getPluginController().getPlugin() != null) {
+			this.axis.addPropertyChangeListener(Axis.PLUGIN_CONTROLLER_PROP, 
+					this);
+		}
+		addListeners();
+		this.setPluginController();
+	}
+	
+	private void setPluginController() {
+		removeListeners();
+		if (this.axis != null) {
+			if (this.axis.getPluginController() != null && 
+					this.axis.getPluginController().getPlugin() != null) {
 				this.pluginCombo.setText(
 					this.axis.getPluginController().getPlugin().getName());
 				checkForErrors();
@@ -145,13 +154,12 @@ public class PluginComposite extends Composite implements PropertyChangeListener
 			}
 			this.pluginControllerComposite.setPluginController(
 					axis.getPluginController());
-			
+
 			checkForErrors();
-			
+
 			this.pluginCombo.setEnabled(true);
 			this.pluginControllerComposite.setEnabled(true);
-		} else { // axis == null -> reset all
-			this.scanModule = null;
+		} else {
 			this.pluginCombo.deselectAll();
 			this.pluginControllerComposite.setPluginController(null);
 			this.pluginCombo.setEnabled(false);
@@ -198,10 +206,12 @@ public class PluginComposite extends Composite implements PropertyChangeListener
 		pluginCombo.removeSelectionListener(pluginComboSelectionListener);
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		// TODO Auto-generated method stub
-		
+		this.setPluginController();
 	}
 	
 	private class PluginComboSelectionListener extends SelectionAdapter {
