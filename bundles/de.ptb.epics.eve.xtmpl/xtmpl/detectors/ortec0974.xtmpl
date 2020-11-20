@@ -12,6 +12,15 @@
             </status>
 				${includeFile}
             <option>
+                <name>Scan</name>
+                <id>${PV}dataStream.SCAN</id>
+                <value>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}dataStream.SCAN</access>
+                    <value type="string">Passive,Event,I/O Intr,10 second,5 second,2 second,1 second,.5 second,.2 second,.1 second</value>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option>
                 <name>Initialize (SDC)</name>
                 <id>${PV}sdc</id>
                 <value>
@@ -32,15 +41,6 @@
                 <id>${PV}intTime.B</id>
                 <value>
                     <access method="GETPUTCB" transport="ca" type="string">${PV}intTime.B</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Scan</name>
-                <id>${PV}dataStream.SCAN</id>
-                <value>
-                    <access method="GETPUTCB" transport="ca" type="string">${PV}dataStream.SCAN</access>
-                    <value type="string">Passive,Event,I/O Intr,10 second,5 second,2 second,1 second,.5 second,.2 second,.1 second</value>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>

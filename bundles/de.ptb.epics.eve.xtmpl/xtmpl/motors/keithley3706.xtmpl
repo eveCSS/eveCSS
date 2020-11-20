@@ -1,0 +1,61 @@
+        <!-- basic motor (Keithley 3706) with just one axis -->
+        substitute "Prefix=Mot"
+        <motor>
+            <class>${Class=""}</class>
+            <name>${Name=""}</name>
+            <id>${Prefix}${PV}basic</id>
+            <axis>
+                <class>${Ax_Class=""}</class>
+                <name>${Name}</name>
+                <id>${Prefix}${PV}</id>
+                <goto>
+                    <access method="GETPUTCB" transport="ca" type="${Type=string}" timeout="${Timeout=300.0}">${PV}Chan</access>
+                    <value type="${Type=string}" >1001,1002</value>
+                </goto>
+                <position>
+                    <access monitor="true" method="GETCB" transport="ca" type="${Type=string}">${PV}ChanRBV</access>
+                </position>
+                <stop>
+                    <access method="PUT" transport="ca" type="int">${PV}Chan.PROC</access>
+                    <value type="int">1</value>
+                </stop>
+                <status>
+                    <access method="GETCB" transport="ca" type="int">${PV}Chan.STAT</access>
+                </status>
+                <option monitor="true">
+                    <name>Mode</name>
+                    <id>${PV}Mode</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}Mode</access>
+                        <value type="string">AmpereMode,VoltMode</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Mode Value</name>
+                    <id>${PV}</id>
+                    <value>
+                        <access method="GETCB" type="string" transport="ca">${PV}ModeRBV</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Severity</name>
+                    <id>${PV}Chan.SEVR</id>
+                    <value>
+                        <access method="GETCB" monitor="true" type="string" transport="ca">${PV}Chan.SEVR</access>
+                        <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Status</name>
+                    <id>${PV}Chan.STAT</id>
+                    <value>
+                        <access method="GETCB" monitor="true" type="string" transport="ca">${PV}Chan.STAT</access>
+                        <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+            </axis>
+        </motor>

@@ -8,24 +8,7 @@
                 <access method="GETCB" transport="ca" type="string">${PV}trigger.STAT</access>
             </status>
 				${includeFile}
-            <option>
-                <name>Severity</name>
-                <id>${PV}trigger.SEVR</id>
-                <value>
-                    <access method="GETCB" monitor="true" transport="ca" type="string">${PV}trigger.SEVR</access>
-                    <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Status</name>
-                <id>${PV}trigger.STAT</id>
-                <value>
-                    <access method="GETCB" monitor="true" transport="ca" type="string">${PV}trigger.STAT</access>
-                    <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
+            include "detector_scan_mit_trigger_part.xtmpl"
             <option>
                 <name>Initialize (SDC)</name>
                 <id>${PV}sdc</id>
@@ -227,5 +210,22 @@
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
-            include "detector_scan_mit_trigger_part.xtmpl"
+            <option>
+                <name>Severity</name>
+                <id>${PV}trigger.SEVR</id>
+                <value>
+                    <access method="GETCB" monitor="true" transport="ca" type="string">${PV}trigger.SEVR</access>
+                    <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option>
+                <name>Status</name>
+                <id>${PV}trigger.STAT</id>
+                <value>
+                    <access method="GETCB" monitor="true" transport="ca" type="string">${PV}trigger.STAT</access>
+                    <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
         </detector>

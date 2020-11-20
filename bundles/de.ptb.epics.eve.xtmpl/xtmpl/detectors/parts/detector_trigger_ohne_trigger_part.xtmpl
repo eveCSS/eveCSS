@@ -1,4 +1,4 @@
-                <trigger>
-                    <access method="PUTCB" transport="ca" type="int" timeout="${Timeout=25.0}">${PV}.PROC</access>
-                    <value type="int">1</value>
-                </trigger>
+            <trigger>
+                <access method="PUTCB" transport="ca" type="int" timeout="${Timeout=25.0}">${PV}.PROC</access>
+                <value type="int">1</value>
+            </trigger>
