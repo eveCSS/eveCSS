@@ -1,7 +1,0 @@
-        <!-- Deby 3000 with a single channel -->
-        <detector>
-            <class>${Class=""}</class>
-            <name>${Name=""}</name>
-            <id>${PV}</id>
-            include "deby3000Channel.xtmpl"
-        </detector>
