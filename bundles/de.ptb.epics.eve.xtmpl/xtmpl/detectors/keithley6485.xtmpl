@@ -7,7 +7,14 @@
                 <access method="PUTCB" transport="ca" type="int" timeout="${Timeout=25.0}">${PV}rawData.PROC</access>
                 <value type="int">1</value>
             </trigger>
-            include "keithley6485Channel.xtmpl"
+            <channel>
+                <class>${Ch_Class=""}</class>
+                <name>${Name=""}</name>
+                <id>${PV}chan1</id>
+                include "channel_read_part.xtmpl"
+            	<unit>
+                	<access method="GETCB" transport="ca" type="string">${PV}rawData.EGU</access>
+            	</unit>
             <option>
                 <name>Scan</name>
                 <id>${PV}rawData.SCAN</id>
@@ -157,4 +164,7 @@
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
+                include "channel_ext_options_ohne_rval_part.xtmpl"
+            	include "channel_option_part.xtmpl"
+            </channel>
         </detector>
