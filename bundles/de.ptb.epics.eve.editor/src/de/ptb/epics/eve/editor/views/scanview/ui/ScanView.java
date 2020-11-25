@@ -613,6 +613,9 @@ public class ScanView extends ViewPart implements IEditorView,
 		filenameLabelModelObservable.addChangeListener(new IChangeListener() {
 			@Override
 			public void handleChange(ChangeEvent event) {
+				if (currentScanDescription == null) {
+					return;
+				}
 				filenameResolvedLabel.setToolTipText(
 						currentScanDescription.getResolvedFilename());
 			}

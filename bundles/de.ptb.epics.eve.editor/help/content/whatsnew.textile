@@ -2,6 +2,7 @@ h1(eveTopic). What's New in EVE Editor
 
 h2(eveTopic). Version 1.34.3 (2020-YY-XX)
 
+* [Bug Fix-#5752] Fixed a bug where a null pointer exception occurred in the Scan View if the last scan was closed and another opened afterwards 
 * [Bug Fix-#5590] Fixed a bug where line breaks could be inserted into a position list
 
 h2(eveTopic). Version 1.34.2 (2020-09-03)
