@@ -243,6 +243,8 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 			this.scanModule.removePropertyChangeListener("removeAxis", this);
 			this.currentAxis.removePropertyChangeListener(
 					Axis.STEPFUNCTION_PROP, this);
+			this.currentAxis.removePropertyChangeListener(
+					Axis.POSITON_MODE_PROP, this);
 			this.currentAxis.getMotorAxis().disconnect();
 		}
 		
@@ -258,6 +260,8 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 			this.scanModule.addPropertyChangeListener("removeAxis", this);
 			this.currentAxis.addPropertyChangeListener(
 					Axis.STEPFUNCTION_PROP, this);
+			this.currentAxis.addPropertyChangeListener(
+					Axis.POSITON_MODE_PROP, this);
 			
 			this.setPartName(
 					this.currentAxis.getMotorAxis().getName());
@@ -299,47 +303,28 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 	 * in the stepFunctionCombo.
 	 */
 	private void setComposite() {
-		int targetWidth = 100;
-		int targetHeight = 100;
-		int sashX = sashForm.getBounds().x;
-		int sashY = sashForm.getBounds().y;
-		
 		switch (this.currentAxis.getStepfunction()) {
 		case ADD:
 		case MULTIPLY:
 			this.sashForm.setMaximizedControl(
 					addMultipyComposite);
 			this.addMultipyComposite.setAxis(currentAxis);
-			targetWidth = addMultipyComposite.
-					getTargetWidth() + sashX;
-			targetHeight = addMultipyComposite.
-					getTargetHeight() + sashY;
 			break;
 		case FILE:
 			this.sashForm.setMaximizedControl(fileComposite);
 			this.fileComposite.setAxis(currentAxis);
-			targetWidth = fileComposite.getTargetWidth() + sashX;
-			targetHeight = fileComposite.getTargetHeight() + sashY;
 			break;
 		case PLUGIN:
 			this.sashForm.setMaximizedControl(pluginComposite);
 			this.pluginComposite.setAxis(currentAxis);
-			targetWidth = pluginComposite.getTargetWidth() + sashX;
-			targetHeight = pluginComposite.getTargetHeight() + sashY;
 			break;
 		case POSITIONLIST:
 			this.sashForm.setMaximizedControl(positionlistComposite);
 			this.positionlistComposite.setAxis(currentAxis);
-			targetWidth = positionlistComposite.getTargetWidth() 
-							+ sashX;
-			targetHeight = positionlistComposite.getTargetHeight() 
-							+ sashY;
 			break;
 		case RANGE:
 			this.sashForm.setMaximizedControl(rangeComposite);
 			this.rangeComposite.setAxis(currentAxis);
-			targetWidth = rangeComposite.getBounds().width + sashX;
-			targetHeight = rangeComposite.getBounds().height + sashY;
 			break;
 		default:
 			this.sashForm.setMaximizedControl(emptyComposite);
@@ -420,6 +405,9 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 			this.stepFunctionCombo.setText(
 					this.currentAxis.getStepfunction().toString());
 			this.setComposite();
+		} else if (e.getPropertyName().equals(Axis.POSITON_MODE_PROP)) {
+			this.positionModeCombo.setText(
+				PositionMode.typeToString(this.currentAxis.getPositionMode()));
 		}
 	}
 	

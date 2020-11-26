@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.ptb.epics.eve.data.scandescription.Axis;
+import de.ptb.epics.eve.data.scandescription.PositionMode;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.Stepfunctions;
 import de.ptb.epics.eve.data.tests.mothers.measuringstation.MotorAxisMother;
@@ -21,6 +22,7 @@ import de.ptb.epics.eve.data.tests.mothers.measuringstation.MotorAxisMother;
  */
 public class AxisTest {
 	private boolean stepfunction = false;
+	private boolean positionMode = false;
 	private Axis axis;
 	
 	@Test
@@ -43,6 +45,28 @@ public class AxisTest {
 		axis.setStepfunction(Stepfunctions.FILE);
 		assertEquals(Stepfunctions.FILE, axis.getStepfunction());
 		assertTrue(stepfunction);
+	}
+	
+	@Test
+	public void testPositionModePropertyChange() {
+		final PositionMode oldValue = axis.getPositionMode();
+		assertEquals(PositionMode.ABSOLUTE, axis.getPositionMode());
+		axis.addPropertyChangeListener(Axis.POSITON_MODE_PROP, 
+				new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if (evt.getPropertyName().equals(Axis.POSITON_MODE_PROP)) {
+					assertEquals("old positionmode", 
+							oldValue, evt.getOldValue());
+					assertEquals("new positionmode", 
+							PositionMode.RELATIVE, evt.getNewValue());
+					positionMode = true;
+				}
+			}
+		});
+		axis.setPositionMode(PositionMode.RELATIVE);
+		assertEquals(PositionMode.RELATIVE, axis.getPositionMode());
+		assertTrue(positionMode);
 	}
 	
 	@Before
