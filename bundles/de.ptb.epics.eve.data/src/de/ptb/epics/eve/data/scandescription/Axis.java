@@ -37,6 +37,7 @@ public class Axis extends AbstractMainPhaseBehavior implements
 		PropertyChangeListener {
 	public static final String STEPFUNCTION_PROP = "stepfunction";
 	public static final String PLUGIN_CONTROLLER_PROP = "pluginController";
+	public static final String POSITON_MODE_PROP = "positionMode";
 	
 	private static Logger logger = Logger.getLogger(Axis.class.getName());
 
@@ -247,7 +248,7 @@ public class Axis extends AbstractMainPhaseBehavior implements
 		if (this.getType().equals(DataTypes.DATETIME)) {
 			this.setStepfunction(this.getStepfunction());
 		}
-		this.propertyChangeSupport.firePropertyChange("positionMode",
+		this.propertyChangeSupport.firePropertyChange(Axis.POSITON_MODE_PROP,
 				oldValue, this.positionMode);
 		updateListeners();
 	}

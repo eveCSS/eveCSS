@@ -99,12 +99,12 @@ public class RemoveChannelsDefaultHandler extends AbstractHandler {
 		final String message;
 		if (normalizationChannels.size() > 1) {
 			message = "Channel " + ch.getDetectorChannel().getName() +
-					"was also removed as Normalization Channel from Channels " +
+					" was also removed as Normalization Channel from Channels " +
 					StringUtil.buildCommaSeparatedString(normalizationChannels) + 
 					".";
 		} else {
 			message = "Channel " + ch.getDetectorChannel().getName() + 
-					"was also removed as Normalization Channel from Channel " +
+					" was also removed as Normalization Channel from Channel " +
 					StringUtil.buildCommaSeparatedString(normalizationChannels) + 
 					".";
 		}
