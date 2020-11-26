@@ -13,6 +13,7 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.SWT;
@@ -29,6 +30,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.layout.GridData;
 
+import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
@@ -73,6 +75,7 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 
 	private ComboViewer acquisitionTypeComboViewer;
 	private ComboViewer normalizeChannelComboViewer;
+	private ISelectionChangedListener normalizeChannelChangeListener;
 	
 	/**
 	 * {@inheritDoc}
@@ -171,17 +174,10 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 				return ((Channel)element).getAbstractDevice().getName();
 			}
 		});
-		normalizeChannelComboViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-			@Override public void selectionChanged(SelectionChangedEvent event) {
-				LOGGER.debug("Normalize Channel: " + event.getSelection().toString());
-				if (event.getSelection().isEmpty()) {
-					currentChannel.setNormalizeChannel(null);
-				} else {
-					currentChannel.setNormalizeChannel(((Channel)((IStructuredSelection)
-						event.getSelection()).getFirstElement()).getDetectorChannel());
-				}
-			}
-		});
+		this.normalizeChannelChangeListener = 
+				new NormalizedChannelSelectionChangedListener();
+		normalizeChannelComboViewer.addSelectionChangedListener(
+				normalizeChannelChangeListener);
 		
 		this.sashForm = new SashForm(top, SWT.VERTICAL);
 		gridData = new GridData();
@@ -242,6 +238,8 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 					ScanModule.REMOVE_CHANNEL_PROP, this);
 			this.currentChannel.removePropertyChangeListener(
 					Channel.CHANNEL_MODE_PROP, this);
+			this.currentChannel.removePropertyChangeListener(
+					Channel.NORMALIZE_CHANNEL_PROP, this);
 			this.standardComposite.setChannel(null);
 			this.intervalComposite.setChannel(null);
 		}
@@ -254,6 +252,8 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 					ScanModule.REMOVE_CHANNEL_PROP, this);
 			this.currentChannel.addPropertyChangeListener(
 					Channel.CHANNEL_MODE_PROP, this);
+			this.currentChannel.addPropertyChangeListener(
+					Channel.NORMALIZE_CHANNEL_PROP, this);
 			this.setPartName(currentChannel.getAbstractDevice().getName());
 			this.acquisitionTypeComboViewer.getCombo().setText(
 					this.currentChannel.getChannelMode().toString());
@@ -392,6 +392,20 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 			this.acquisitionTypeComboViewer.getCombo().setText(
 					this.currentChannel.getChannelMode().toString());
 			this.setComposite();
+		} else if (evt.getPropertyName().equals(Channel.NORMALIZE_CHANNEL_PROP)) {
+			this.normalizeChannelComboViewer.removeSelectionChangedListener(
+					this.normalizeChannelChangeListener);
+			DetectorChannel normalizeChannel = 
+					this.currentChannel.getNormalizeChannel();
+			if (normalizeChannel == null) {
+				this.normalizeChannelComboViewer.setSelection(
+						StructuredSelection.EMPTY);
+			} else {
+				this.normalizeChannelComboViewer.getCombo().setText(
+						this.currentChannel.getNormalizeChannel().getName());
+			}
+			this.normalizeChannelComboViewer.addSelectionChangedListener(
+					this.normalizeChannelChangeListener);
 		}
 	}
 	
@@ -400,5 +414,19 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 		INTERVAL,
 		NORMALIZED,
 		STANDARD
+	}
+	
+	private class NormalizedChannelSelectionChangedListener implements ISelectionChangedListener {
+		@Override
+		public void selectionChanged(SelectionChangedEvent event) {
+			LOGGER.debug("Normalize Channel: " + event.getSelection().toString());
+			if (event.getSelection().isEmpty()) {
+				currentChannel.setNormalizeChannel(null);
+			} else {
+				currentChannel.setNormalizeChannel(
+					((Channel) ((IStructuredSelection) event.getSelection()).
+							getFirstElement()).getDetectorChannel());
+			}
+		}
 	}
 }
