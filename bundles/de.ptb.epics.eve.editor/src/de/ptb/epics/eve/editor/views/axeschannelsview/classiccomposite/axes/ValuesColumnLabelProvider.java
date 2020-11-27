@@ -111,6 +111,9 @@ public class ValuesColumnLabelProvider extends ColumnLabelProvider {
 				String positions = ((PositionlistMode)axis.getMode()).
 					getPositionList();
 				int count = positions.split(",").length;
+				if (count > POSITIONLIST_COUNT_TOOLTIP_THRESHOLD) {
+					return count + " positions";
+				}
 				return positions + " (" + count + " positions)";
 			}
 			break;

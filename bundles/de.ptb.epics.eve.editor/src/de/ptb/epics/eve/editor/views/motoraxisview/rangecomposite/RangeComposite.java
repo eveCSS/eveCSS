@@ -124,7 +124,7 @@ public class RangeComposite extends MotorAxisViewComposite implements PropertyCh
 		UpdateValueStrategy rangeModelToTarget = new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE);
 		this.rangeTargetDelayedObservable = SWTObservables.observeDelayedValue(
-				500, (ISWTObservableValue) this.rangeTargetObservable);
+				1000, (ISWTObservableValue) this.rangeTargetObservable);
 		this.rangeBinding = context.bindValue(rangeTargetDelayedObservable, 
 				rangeModelObservable, rangeTargetToModel, rangeModelToTarget);
 		this.rangeControlDecoration = ControlDecorationSupport.create(
