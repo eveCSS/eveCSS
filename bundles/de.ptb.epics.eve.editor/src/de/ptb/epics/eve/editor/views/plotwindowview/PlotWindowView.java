@@ -328,9 +328,6 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 		this.createBinding();
 	}
 
-	/*
-	 * initialize contents of the x axis composite
-	 */
 	private void initXAxisComposite() {
 		this.xAxisComposite = new Composite(this.bar, SWT.NONE);
 		GridLayout gridLayout = new GridLayout();
@@ -417,9 +414,6 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 				scaleTypeComboBoxSelectionListener);
 	}
 	
-	/*
-	 * initialize contents of the first y axis composite
-	 */
 	private void initYAxis1Composite() {
 		this.yAxis1Composite = new Composite(this.bar, SWT.NONE);
 		GridLayout gridLayout = new GridLayout();
@@ -593,9 +587,6 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 		});
 	}
 	
-	/*
-	 * initialize contents of the second y axis composite
-	 */
 	private void initYAxis2Composite() {
 		this.yAxis2Composite = new Composite(this.bar, SWT.NONE);
 		GridLayout yAxis2GridLayout = new GridLayout();
@@ -763,9 +754,6 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 		});
 	}
 	
-	/*
-	 * 
-	 */
 	private void createBinding() {
 		this.context = new DataBindingContext();
 
@@ -809,9 +797,6 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
 	}
 
-	/*
-	 * restore memento
-	 */
 	private void restoreState() {
 		if (memento == null) {
 			return;
@@ -888,9 +873,6 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 		return this.plotWindow;
 	}
 	
-	/*
-	 * 
-	 */
 	private void checkForErrors() {
 		this.motorAxisComboControlDecoration.hide();
 		this.yAxis1DetectorChannelComboControlDecoration.hide();
@@ -994,7 +976,7 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 			if(axis == 2) {
 				yAxis2ColorComboBox.select(6);
 			}
-		}	
+		}
 		
 		// change color of color field editor to current RGB value
 		if(axis == 1) {
@@ -1071,9 +1053,6 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 		this.setPlotWindow(null);
 	}
 
-	/*
-	 * 
-	 */
 	private void addListeners() {
 		motorAxisComboBox.addSelectionListener(
 				motorAxisComboBoxSelectionListener);
@@ -1111,9 +1090,6 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 				yAxis2ScaleTypeComboBoxSelectionListener);
 	}
 	
-	/*
-	 * 
-	 */
 	private void removeListeners() {
 		motorAxisComboBox.removeSelectionListener(
 				motorAxisComboBoxSelectionListener);
@@ -1149,17 +1125,11 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 				yAxis2ScaleTypeComboBoxSelectionListener);
 	}
 	
-	/*
-	 * 
-	 */
 	private void suspendModelUpdateListener() {
 		this.scanModule.removeModelUpdateListener(this);
 		this.plotWindow.removeModelUpdateListener(this);
 	}
 	
-	/*
-	 * 
-	 */
 	private void resumeModelUpdateListener() {
 		this.scanModule.addModelUpdateListener(this);
 		this.plotWindow.addModelUpdateListener(this);
@@ -1412,9 +1382,6 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 		this.idBinding.validateTargetToModel();
 	}
 
-	/*
-	 * 
-	 */
 	private void setAvailableMotorAxes() {
 		availableMotorAxes = scanModule.getAxes();
 		String[] axisItems = new String[availableMotorAxes.length];
@@ -1437,10 +1404,6 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 	}
 	
 	private class MotorAxisComboBoxSelectionListener extends SelectionAdapter {
-		
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			plotWindow.setXAxis(availableMotorAxes[motorAxisComboBox
@@ -1449,10 +1412,6 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 	}
 
 	private class ScaleTypeComboBoxSelectionListener extends SelectionAdapter {
-
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public void widgetSelected(final SelectionEvent e) {
 			plotWindow.setMode(
@@ -1462,18 +1421,18 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 	
 	private class YAxis1DetectorChannelComboBoxSelectionListener
 			extends SelectionAdapter {
-
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			suspendModelUpdateListener();
 			if (yAxis1 == null) {
-				// create new axis
-				plotWindow.addYAxis(
+				if (yAxis1DetectorChannelComboBox.getText().equals("none")) {
+					// do nothing
+				} else {
+					// create new axis
+					plotWindow.addYAxis(
 						availableDetectorChannels[yAxis1DetectorChannelComboBox
 								.getSelectionIndex()].getDetectorChannel());
+				}
 			} else {
 				if (yAxis1DetectorChannelComboBox.getText().equals("none")) {
 					// remove axis
@@ -1491,10 +1450,6 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 	
 	private class YAxis1NormalizeChannelComboBoxSelectionListener
 			extends SelectionAdapter {
-		
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			suspendModelUpdateListener();
@@ -1513,12 +1468,6 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 	}
 	
 	private class YAxis1ColorComboBoxSelectionListener extends SelectionAdapter {
-
-		/**
-		 * {@inheritDoc}<br>
-		 * Sets the selected color in the model and shows it in the 
-		 * adjacent color field editor. 
-		 */
 		@Override
 		public void widgetSelected(final SelectionEvent e) {
 			// set the color in the color field to match the selection
@@ -1534,9 +1483,6 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 	
 	private class YAxis1ColorFieldEditorPropertyChangeListener 
 							implements IPropertyChangeListener {
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public void propertyChange(PropertyChangeEvent event) {
 			yAxis1.setColor(
@@ -1547,10 +1493,6 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 	
 	private class YAxis1LineStyleComboBoxSelectionListener
 			extends SelectionAdapter {
-
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public void widgetSelected(final SelectionEvent e) {
 			if(yAxis1 != null) {
@@ -1567,10 +1509,6 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 	
 	private class YAxis1MarkStyleComboBoxSelectionListener
 			extends SelectionAdapter {
-		
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public void widgetSelected(final SelectionEvent e) {
 			PointStyle[] markstyles = PointStyle.values();
@@ -1585,10 +1523,6 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 	
 	private class YAxis1ScaleTypeComboBoxSelectionListener
 			extends SelectionAdapter {
-
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public void widgetSelected(final SelectionEvent e) {
 			yAxis1.setMode(
@@ -1598,20 +1532,20 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 	
 	private class YAxis2DetectorChannelComboBoxSelectionListener
 			extends SelectionAdapter {
-
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			suspendModelUpdateListener();
 			if (yAxis2 == null) {
-				// create new axis
-				plotWindow.addYAxis(
+				if (yAxis2DetectorChannelComboBox.getText().equals("none")) {
+					// do nothing
+				} else {
+					// create new axis
+					plotWindow.addYAxis(
 						availableDetectorChannels[yAxis2DetectorChannelComboBox
 								.getSelectionIndex()].getDetectorChannel());
-				plotWindow.getYAxes().get(plotWindow.getYAxes().size() - 1)
+					plotWindow.getYAxes().get(plotWindow.getYAxes().size() - 1)
 						.setColor(new RGB(255, 0, 0));
+				}
 			} else {
 				if (yAxis2DetectorChannelComboBox.getText().equals("none")) {
 					// remove axis
@@ -1629,10 +1563,6 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 	
 	private class YAxis2NormalizeChannelComboBoxSelectionListener
 			extends SelectionAdapter {
-
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			suspendModelUpdateListener();
@@ -1653,10 +1583,6 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 	
 	private class YAxis2ColorComboBoxSelectionListener
 			extends SelectionAdapter {
-
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public void widgetSelected(final SelectionEvent e) {
 			// set the color in the color field to match the selection
@@ -1672,9 +1598,6 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 	
 	private class YAxis2ColorFieldEditorPropertyChangeListener implements
 			IPropertyChangeListener {
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public void propertyChange(PropertyChangeEvent event) {
 			yAxis2.setColor(yAxis2ColorFieldEditor.getColorSelector()
@@ -1685,10 +1608,6 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 	
 	private class YAxis2LineStyleComboBoxSelectionListener
 			extends SelectionAdapter {
-
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public void widgetSelected(final SelectionEvent e) {
 			TraceType[] tracetypes = TraceType.values();
@@ -1703,10 +1622,6 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 	
 	private class YAxis2MarkStyleComboBoxSelectionListener
 			extends SelectionAdapter {
-
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public void widgetSelected(final SelectionEvent e) {
 			PointStyle[] markstyles = PointStyle.values();
@@ -1721,10 +1636,6 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 
 	private class YAxis2ScaleTypeComboBoxSelectionListener
 			extends SelectionAdapter {
-
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public void widgetSelected(final SelectionEvent e) {
 			if (yAxis2 != null) {
