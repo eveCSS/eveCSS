@@ -15,7 +15,7 @@ import de.ptb.epics.eve.util.math.statistics.DescriptiveStats;
  */
 public class FileNameTableLabelProvider implements ITableLabelProvider {
 	private static final String NOT_AVAILABLE = "N/A";
-	private static final String FORMATTER_STRING = "%12.4g";
+	private static final String FORMATTER_STRING = "%12.7g";
 	
 	/**
 	 * {@inheritDoc}
@@ -36,6 +36,7 @@ public class FileNameTableLabelProvider implements ITableLabelProvider {
 		String result = null;
 		switch(columnIndex) {
 		case 0: // # points
+			formatter.close();
 			return Long.toString(stats.getSampleSize());
 		case 1: // 1st
 			result = formatter.format(FORMATTER_STRING, 
