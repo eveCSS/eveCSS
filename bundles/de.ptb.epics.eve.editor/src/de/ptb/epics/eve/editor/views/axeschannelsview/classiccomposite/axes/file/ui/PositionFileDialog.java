@@ -172,7 +172,7 @@ public class PositionFileDialog extends DialogCellEditorDialog implements Proper
 				FileStats fileStats = (FileStats) element;
 				Formatter formatter = new Formatter(new Locale(
 						Locale.ENGLISH.getCountry()));
-				final String FORMATTER_STRING = "%12.4g";
+				final String FORMATTER_STRING = "%12.7g";
 				String result = null;
 				switch (columnIndex) {
 				case 0:

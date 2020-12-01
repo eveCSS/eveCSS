@@ -1,9 +1,10 @@
 h1(eveTopic). What's New in EVE Editor
 
-h2(eveTopic). Version 1.34.4 (2020-YY-XX)
+h2(eveTopic). Version 1.34.4 (2020-12-XX)
 
 * [Bug Fix-#5761] Fixed a bug where an ArrayOutOfBoundsException occurred when choosing "none" for a detector channel of a plot window when no channel was previously set
 * [Bug Fix-#5752] Fixed a bug where a null pointer exception occurred in the Scan View if the last scan was closed and another opened afterwards 
+* [Bug Fix-#5743] Set the precision of the values in the preview table for positions in a position file to 7 (@12.4g@ -> @12.7g@)
 * [Bug Fix-#5687] Fixed a bug where the position mode combo did not refresh its value in the Motor Axis View when the property was altered within the SM Axes / Channels View
 * [Bug Fix-#5687] Fixed a bug where the normalization channel combo did not refresh its value in the Detector Channel View when the property was altered within the SM Axes / Channels View
 * [Bug Fix-#5590] Fixed a bug where line breaks could be inserted into a position list
