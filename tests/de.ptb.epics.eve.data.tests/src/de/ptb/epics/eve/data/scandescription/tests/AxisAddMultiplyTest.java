@@ -7,9 +7,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.ptb.epics.eve.data.DataTypes;
@@ -128,37 +126,14 @@ public class AxisAddMultiplyTest implements PropertyChangeListener {
 		}
 	}
 	
-	// ***********************************************************************
-	
-	/**
-	 * Initializes logging (Class wide setup 
-	 * method of the test).
-	 */
-	@BeforeClass
-	public static void runBeforeClass() {
-	}
-	
-	/**
-	 * test wide set up method
-	 */
 	@Before
 	public void beforeEveryTest() {
 		ScanModule scanModule = new ScanModule(1);
 		axis = new Axis(scanModule);
 	}
 	
-	/**
-	 * test wide tear down method
-	 */
 	@After
 	public void afterEveryTest() {
 		axis = null;
-	}
-	
-	/**
-	 * class wide tear down method
-	 */
-	@AfterClass
-	public static void afterClass() {
 	}
 }
