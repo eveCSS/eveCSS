@@ -20,9 +20,9 @@ public class AxisAddMultiplyDoubleTest {
 	@Test
 	public void testSetStartAdjustStart() {
 		this.axisMode.setAdjustParameter(AdjustParameter.START);
-		// TODO should fail becaus logic does not forbid setting value for 
-		// which adjust is set ????!!!!
-		// fail();
+		this.axis.setStart(10.0);
+		assertEquals("set start value should have no effect",
+				1.0, (double) this.axis.getStart(), DELTA);
 	}
 	
 	@Test
@@ -60,7 +60,9 @@ public class AxisAddMultiplyDoubleTest {
 	@Test
 	public void testSetStopAdjustStop() {
 		this.axisMode.setAdjustParameter(AdjustParameter.STOP);
-		// TODO ??
+		this.axis.setStop(42.0);
+		assertEquals("set stop value should have no effect",
+				10.0, (double) this.axis.getStop(), DELTA);
 	}
 	
 	@Test
@@ -98,7 +100,9 @@ public class AxisAddMultiplyDoubleTest {
 	@Test
 	public void testSetStepwidthAdjustStepwidth() {
 		this.axisMode.setAdjustParameter(AdjustParameter.STEPWIDTH);
-		// TODO ??!!
+		this.axis.setStepwidth(300.0);
+		assertEquals("set stepwidth value should have no effect",
+				1.0, (double) this.axis.getStepwidth(), DELTA);
 	}
 	
 	@Test
@@ -136,7 +140,9 @@ public class AxisAddMultiplyDoubleTest {
 	@Test
 	public void testSetStepcountAdjustStepcount() {
 		this.axisMode.setAdjustParameter(AdjustParameter.STEPCOUNT);
-		// TODO ??!!
+		this.axis.setStepcount(42.0);
+		assertEquals("set stepcount value should have no effect",
+				9.0, this.axis.getStepcount(), DELTA);
 	}
 	
 	@Before
