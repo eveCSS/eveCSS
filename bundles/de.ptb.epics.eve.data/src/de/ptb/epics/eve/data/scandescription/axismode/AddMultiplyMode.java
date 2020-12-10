@@ -73,16 +73,16 @@ public abstract class AddMultiplyMode<T extends Object> extends AxisMode {
 			this.mainAxis = false;
 		}
 		if (this.isMainAxis()) {
-			this.adjustParameter = AdjustParameter.STEPCOUNT;
 			return;
 		}
 		this.referenceAxis = mainAxis;
 		if (mainAxis == null) {
-			this.adjustParameter = AdjustParameter.STEPCOUNT;
 			// main axis has been reset
 			return;
 		}
-		this.adjustParameter = AdjustParameter.STEPWIDTH;
+		if (this.adjustParameter.equals(AdjustParameter.STEPCOUNT)) {
+			this.setAdjustParameter(AdjustParameter.STEPWIDTH); 
+		}
 		this.stepcount = ((AddMultiplyMode<?>)mainAxis.getMode()).getStepcount();
 		this.adjust();
 	}
