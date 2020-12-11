@@ -29,6 +29,13 @@ public class TypeValueMother {
 		return new TypeValue(DataTypes.DOUBLE);
 	}
 	
+	/**
+	 * @since 1.35
+	 */
+	public static TypeValue createNewDateTypeValue() {
+		return new TypeValue(DataTypes.DATETIME);
+	}
+	
 	private TypeValueMother() {
 		// private
 	}
