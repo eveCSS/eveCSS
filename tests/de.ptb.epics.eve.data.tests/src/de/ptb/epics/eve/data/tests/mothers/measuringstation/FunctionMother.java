@@ -30,6 +30,14 @@ public class FunctionMother {
 				TypeValueMother.createNewDoubleTypeValue());
 	}
 	
+	/**
+	 * @since 1.35
+	 */
+	public static Function createNewDateTypeFunction() {
+		return new Function(AccessMother.createNewDateTypeAccess(),
+				TypeValueMother.createNewDateTypeValue());
+	}
+	
 	private FunctionMother() {
 		// private
 	}

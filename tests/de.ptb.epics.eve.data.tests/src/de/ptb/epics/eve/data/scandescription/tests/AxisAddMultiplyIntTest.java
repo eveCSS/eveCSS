@@ -12,17 +12,19 @@ import de.ptb.epics.eve.data.scandescription.axismode.AddMultiplyModeInt;
 import de.ptb.epics.eve.data.scandescription.axismode.AdjustParameter;
 import de.ptb.epics.eve.data.tests.mothers.measuringstation.MotorAxisMother;
 
+/**
+ * @author Marcus Michalsky
+ * @since 1.35
+ */
 public class AxisAddMultiplyIntTest {
 	private static final Double DELTA = 0.00001;
 	private Axis axis;
 	private AddMultiplyModeInt axisMode;
 	
-	@Test
+	@Test(expected=IllegalStateException.class)
 	public void testSetStartAdjustStart() {
 		this.axisMode.setAdjustParameter(AdjustParameter.START);
 		this.axis.setStart(10);
-		assertEquals("set start value should have no effect",
-				1, (int) this.axis.getStart());
 	}
 	
 	@Test
@@ -57,12 +59,10 @@ public class AxisAddMultiplyIntTest {
 				11, (int) this.axis.getStop());
 	}
 	
-	@Test
+	@Test(expected=IllegalStateException.class)
 	public void testSetStopAdjustStop() {
 		this.axisMode.setAdjustParameter(AdjustParameter.STOP);
 		this.axis.setStop(42);
-		assertEquals("set stop value should have no effect",
-				10, (int) this.axis.getStop());
 	}
 	
 	@Test
@@ -97,12 +97,10 @@ public class AxisAddMultiplyIntTest {
 				2, (int) this.axis.getStepwidth());
 	}
 	
-	@Test
+	@Test(expected=IllegalStateException.class)
 	public void testSetStepwidthAdjustStepwidth() {
 		this.axisMode.setAdjustParameter(AdjustParameter.STEPWIDTH);
 		this.axis.setStepwidth(300);
-		assertEquals("set stepwidth value should have no effect",
-				1, (int) this.axis.getStepwidth());
 	}
 	
 	@Test
@@ -137,12 +135,10 @@ public class AxisAddMultiplyIntTest {
 				4.5, this.axis.getStepcount(), DELTA);
 	}
 	
-	@Test
+	@Test(expected=IllegalStateException.class)
 	public void testSetStepcountAdjustStepcount() {
 		this.axisMode.setAdjustParameter(AdjustParameter.STEPCOUNT);
 		this.axis.setStepcount(42.0);
-		assertEquals("set stepcount value should have no effect",
-				9.0, this.axis.getStepcount(), DELTA);
 	}
 	
 	@Before

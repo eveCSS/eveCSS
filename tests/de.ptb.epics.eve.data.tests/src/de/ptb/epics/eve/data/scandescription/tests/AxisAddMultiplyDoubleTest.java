@@ -12,17 +12,23 @@ import de.ptb.epics.eve.data.scandescription.axismode.AddMultiplyModeDouble;
 import de.ptb.epics.eve.data.scandescription.axismode.AdjustParameter;
 import de.ptb.epics.eve.data.tests.mothers.measuringstation.MotorAxisMother;
 
+/**
+ * @author Marcus Michalsky
+ * @since 1.35
+ */
 public class AxisAddMultiplyDoubleTest {
 	private static final Double DELTA = 0.00001;
 	private Axis axis;
 	private AddMultiplyModeDouble axisMode;
 	
-	@Test
+	/**
+	 * Setting the start property should not be possible if AdjustParameter is 
+	 * set to START.
+	 */
+	@Test(expected=IllegalStateException.class)
 	public void testSetStartAdjustStart() {
 		this.axisMode.setAdjustParameter(AdjustParameter.START);
 		this.axis.setStart(10.0);
-		assertEquals("set start value should have no effect",
-				1.0, (double) this.axis.getStart(), DELTA);
 	}
 	
 	@Test
@@ -57,12 +63,10 @@ public class AxisAddMultiplyDoubleTest {
 				11.0, (double) this.axis.getStop(), DELTA);
 	}
 	
-	@Test
+	@Test(expected=IllegalStateException.class)
 	public void testSetStopAdjustStop() {
 		this.axisMode.setAdjustParameter(AdjustParameter.STOP);
 		this.axis.setStop(42.0);
-		assertEquals("set stop value should have no effect",
-				10.0, (double) this.axis.getStop(), DELTA);
 	}
 	
 	@Test
@@ -97,12 +101,10 @@ public class AxisAddMultiplyDoubleTest {
 				2.0 , (double) this.axis.getStepwidth(), DELTA);
 	}
 	
-	@Test
+	@Test(expected=IllegalStateException.class)
 	public void testSetStepwidthAdjustStepwidth() {
 		this.axisMode.setAdjustParameter(AdjustParameter.STEPWIDTH);
 		this.axis.setStepwidth(300.0);
-		assertEquals("set stepwidth value should have no effect",
-				1.0, (double) this.axis.getStepwidth(), DELTA);
 	}
 	
 	@Test
@@ -137,12 +139,10 @@ public class AxisAddMultiplyDoubleTest {
 				4.5, this.axis.getStepcount(), DELTA);
 	}
 	
-	@Test
+	@Test(expected=IllegalStateException.class)
 	public void testSetStepcountAdjustStepcount() {
 		this.axisMode.setAdjustParameter(AdjustParameter.STEPCOUNT);
 		this.axis.setStepcount(42.0);
-		assertEquals("set stepcount value should have no effect",
-				9.0, this.axis.getStepcount(), DELTA);
 	}
 	
 	@Before

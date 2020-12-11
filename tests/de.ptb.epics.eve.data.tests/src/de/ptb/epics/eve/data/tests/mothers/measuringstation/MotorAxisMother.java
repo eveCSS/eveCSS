@@ -73,6 +73,33 @@ public class MotorAxisMother {
 	}
 	
 	/**
+	 * @since 1.35
+	 */
+	public static MotorAxis createNewDateTypeMotorAxis() {
+		MotorAxis motorAxis = new MotorAxis();
+		
+		String name = "MotorAxis-" + Calendar.getInstance().getTime().getTime();
+		motorAxis.setId(name);
+		motorAxis.setName(name);
+		motorAxis.setClassName("MotorAxisClass");
+		
+		motorAxis.setPosition(FunctionMother.createNewDateTypeFunction());
+		motorAxis.setStatus(FunctionMother.createNewFunction());
+		motorAxis.setMoveDone(FunctionMother.createNewFunction());
+		motorAxis.setGoto(FunctionMother.createNewDateTypeFunction());
+		motorAxis.setStop(FunctionMother.createNewFunction());
+		motorAxis.setDeadband(FunctionMother.createNewFunction());
+		motorAxis.setOffset(FunctionMother.createNewFunction());
+		motorAxis.setTweakValue(FunctionMother.createNewFunction());
+		motorAxis.setTweakForward(FunctionMother.createNewFunction());
+		motorAxis.setTweakReverse(FunctionMother.createNewFunction());
+		motorAxis.setSoftHighLimit(FunctionMother.createNewFunction());
+		motorAxis.setSoftLowLimit(FunctionMother.createNewFunction());
+		motorAxis.setLimitViolation(FunctionMother.createNewFunction());
+		
+		return motorAxis;
+	}
+	/**
 	 * Adds an option to the given motor axis.
 	 * 
 	 * @param motorAxis the motorAxis the option should be added to

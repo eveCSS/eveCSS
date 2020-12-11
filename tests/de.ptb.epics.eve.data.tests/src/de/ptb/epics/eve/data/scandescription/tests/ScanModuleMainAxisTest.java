@@ -20,6 +20,10 @@ import de.ptb.epics.eve.data.scandescription.axismode.AddMultiplyModeDouble;
 import de.ptb.epics.eve.data.scandescription.axismode.AdjustParameter;
 import de.ptb.epics.eve.data.tests.mothers.measuringstation.MotorAxisMother;
 
+/**
+ * @author Marcus Michalsky
+ * @since 1.35
+ */
 public class ScanModuleMainAxisTest {
 	private static final double DELTA = 0.00001;
 	
@@ -134,6 +138,8 @@ public class ScanModuleMainAxisTest {
 		final Axis axis2 = new Axis(this.scanModule);
 		axis2.setMotorAxis(MotorAxisMother.createNewDoubleTypeMotorAxis());
 		axis2.setStepfunction(Stepfunctions.ADD);
+		((AddMultiplyModeDouble)axis2.getMode()).setAdjustParameter(
+				AdjustParameter.STEPCOUNT);
 		axis2.setStart(2.0);
 		axis2.setStop(20.0);
 		axis2.setStepwidth(2.0);
@@ -361,6 +367,34 @@ public class ScanModuleMainAxisTest {
 		assertTrue(this.axisAdjustParameterPropFired);
 		assertEquals(AdjustParameter.STEPWIDTH, 
 				((AddMultiplyModeDouble)axis2.getMode()).getAdjustParameter());
+	}
+	
+	/**
+	 * Tests if an exception is thrown when trying to set a stepcount of an axis
+	 * when another axis of the scan module is set as main axis.
+	 */
+	@Test(expected=IllegalStateException.class)
+	public void testSetStepcountIfMainAxisIsSet() {
+		final Axis axis1 = new Axis(this.scanModule);
+		axis1.setMotorAxis(MotorAxisMother.createNewDoubleTypeMotorAxis());
+		axis1.setStepfunction(Stepfunctions.ADD);
+		((AddMultiplyModeDouble)axis1.getMode()).setAdjustParameter(
+				AdjustParameter.STEPCOUNT);
+		axis1.setStart(0.0);
+		axis1.setStop(100.0);
+		axis1.setStepwidth(10.0);
+		this.scanModule.add(axis1);
+		final Axis axis2 = new Axis(this.scanModule);
+		axis2.setMotorAxis(MotorAxisMother.createNewDoubleTypeMotorAxis());
+		axis2.setStepfunction(Stepfunctions.ADD);
+		((AddMultiplyModeDouble)axis2.getMode()).setAdjustParameter(
+				AdjustParameter.STEPCOUNT);
+		axis2.setStart(0.0);
+		axis2.setStop(20.0);
+		axis2.setStepwidth(1.0);
+		this.scanModule.add(axis2);
+		axis1.setMainAxis(true);
+		axis2.setStepcount(1.0);
 	}
 	
 	/**

@@ -51,6 +51,22 @@ public class AccessMother {
 		return access;
 	}
 	
+	/**
+	 * @since 1.35
+	 */
+	public static Access createNewDateTypeAccess() {
+		Access access = new Access(MethodTypes.GET);
+		access.setVariableID(
+				"Access-" + Calendar.getInstance().getTime().getTime());
+		access.setType(DataTypes.DATETIME);
+		access.setCount(1);
+		access.setTransport(TransportTypes.LOCAL);
+		access.setTimeout(300);
+		access.setMonitor(false);
+		
+		return access;
+	}
+	
 	private AccessMother() {
 		// private
 	}
