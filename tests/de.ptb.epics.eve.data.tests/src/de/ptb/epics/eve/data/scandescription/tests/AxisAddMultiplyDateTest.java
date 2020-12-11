@@ -13,6 +13,10 @@ import de.ptb.epics.eve.data.scandescription.axismode.AddMultiplyModeDate;
 import de.ptb.epics.eve.data.scandescription.axismode.AdjustParameter;
 import de.ptb.epics.eve.data.tests.mothers.measuringstation.MotorAxisMother;
 
+/**
+ * @author Marcus Michalsky
+ * @since 1.35
+ */
 public class AxisAddMultiplyDateTest {
 	private Axis axis;
 	private AddMultiplyModeDate axisMode;

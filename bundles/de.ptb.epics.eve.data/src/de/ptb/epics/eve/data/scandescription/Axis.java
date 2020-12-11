@@ -656,11 +656,12 @@ public class Axis extends AbstractMainPhaseBehavior implements
 		if (((AddMultiplyMode<?>)this.getMode()).getAdjustParameter().equals(
 				AdjustParameter.STEPCOUNT)) {
 			throw new IllegalStateException(
-					"stepcount cannot be set (set as AdjustParameter");
+					"stepcount cannot be set (set as AdjustParameter)");
 		}
 		if ((this.getScanModule().getMainAxis() != null) 
 				&& this.getScanModule().getMainAxis() != this) {
-			// TODO
+			throw new IllegalStateException(
+					"Stepcount is given by main axis of scanmodule.");
 		}
 		if (this.getStepfunction().equals(Stepfunctions.ADD) ||
 				this.getStepfunction().equals(Stepfunctions.MULTIPLY)) {
