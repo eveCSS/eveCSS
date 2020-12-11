@@ -134,6 +134,8 @@ public class ScanModuleMainAxisTest {
 		final Axis axis2 = new Axis(this.scanModule);
 		axis2.setMotorAxis(MotorAxisMother.createNewDoubleTypeMotorAxis());
 		axis2.setStepfunction(Stepfunctions.ADD);
+		((AddMultiplyModeDouble)axis2.getMode()).setAdjustParameter(
+				AdjustParameter.STEPCOUNT);
 		axis2.setStart(2.0);
 		axis2.setStop(20.0);
 		axis2.setStepwidth(2.0);

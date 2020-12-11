@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.scandescription.axismode.AddMultiplyMode;
+import de.ptb.epics.eve.data.scandescription.axismode.AdjustParameter;
 import de.ptb.epics.eve.data.scandescription.axismode.AxisMode;
 import de.ptb.epics.eve.data.scandescription.axismode.FileMode;
 import de.ptb.epics.eve.data.scandescription.axismode.PluginMode;
@@ -37,6 +38,13 @@ public class Axis extends AbstractMainPhaseBehavior implements
 		PropertyChangeListener {
 	public static final String STEPFUNCTION_PROP = "stepfunction";
 	public static final String POSITON_MODE_PROP = "positionMode";
+	
+	private static final String ILLEGAL_STATE_START_MESSAGE = 
+			"start cannot be set (set as AdjustParameter)";
+	private static final String ILLEGAL_STATE_STOP_MESSAGE = 
+			"stop cannot be set (set as AdjustParameter)";
+	private static final String ILLEGAL_STATE_STEPWIDTH_MESSAGE = 
+			"stepwidth cannot be set (set as AdjustParameter)";
 	
 	private static Logger logger = Logger.getLogger(Axis.class.getName());
 
@@ -375,9 +383,14 @@ public class Axis extends AbstractMainPhaseBehavior implements
 	/**
 	 * 
 	 * @param start
+	 * @throws IllegalStateException if AdjustParameter is START
 	 */
 	@SuppressWarnings("unchecked")
 	public void setStart(int start) {
+		if (((AddMultiplyMode<?>)this.getMode()).getAdjustParameter().equals(
+				AdjustParameter.START)) {
+			throw new IllegalStateException(ILLEGAL_STATE_START_MESSAGE);
+		}
 		if (!this.getType().equals(DataTypes.INT)) {
 			return;
 		}
@@ -390,9 +403,14 @@ public class Axis extends AbstractMainPhaseBehavior implements
 	/**
 	 * 
 	 * @param start
+	 * @throws IllegalStateException if AdjustParameter is START
 	 */
 	@SuppressWarnings("unchecked")
 	public void setStart(double start) {
+		if (((AddMultiplyMode<?>)this.getMode()).getAdjustParameter().equals(
+				AdjustParameter.START)) {
+			throw new IllegalStateException(ILLEGAL_STATE_START_MESSAGE);
+		}
 		if (!this.getType().equals(DataTypes.DOUBLE)) {
 			return;
 		}
@@ -405,9 +423,14 @@ public class Axis extends AbstractMainPhaseBehavior implements
 	/**
 	 * 
 	 * @param start
+	 * @throws IllegalStateException if AdjustParameter is START
 	 */
 	@SuppressWarnings("unchecked")
 	public void setStart(Date start) {
+		if (((AddMultiplyMode<?>)this.getMode()).getAdjustParameter().equals(
+				AdjustParameter.START)) {
+			throw new IllegalStateException(ILLEGAL_STATE_START_MESSAGE);
+		}
 		if (!this.getType().equals(DataTypes.DATETIME)) {
 			return;
 		}
@@ -420,9 +443,14 @@ public class Axis extends AbstractMainPhaseBehavior implements
 	/**
 	 * 
 	 * @param start
+	 * @throws IllegalStateException if AdjustParameter is START
 	 */
 	@SuppressWarnings("unchecked")
 	public void setStart(Duration start) {
+		if (((AddMultiplyMode<?>)this.getMode()).getAdjustParameter().equals(
+				AdjustParameter.START)) {
+			throw new IllegalStateException(ILLEGAL_STATE_START_MESSAGE);
+		}
 		if (!this.getType().equals(DataTypes.DATETIME)) {
 			return;
 		}
@@ -450,6 +478,10 @@ public class Axis extends AbstractMainPhaseBehavior implements
 	 */
 	@SuppressWarnings("unchecked")
 	public void setStop(int stop) {
+		if (((AddMultiplyMode<?>)this.getMode()).getAdjustParameter().equals(
+				AdjustParameter.STOP)) {
+			throw new IllegalStateException(ILLEGAL_STATE_STOP_MESSAGE);
+		}
 		if (!this.getType().equals(DataTypes.INT)) {
 			return;
 		}
@@ -465,6 +497,10 @@ public class Axis extends AbstractMainPhaseBehavior implements
 	 */
 	@SuppressWarnings("unchecked")
 	public void setStop(double stop) {
+		if (((AddMultiplyMode<?>)this.getMode()).getAdjustParameter().equals(
+				AdjustParameter.STOP)) {
+			throw new IllegalStateException(ILLEGAL_STATE_STOP_MESSAGE);
+		}
 		if (!this.getType().equals(DataTypes.DOUBLE)) {
 			return;
 		}
@@ -480,6 +516,10 @@ public class Axis extends AbstractMainPhaseBehavior implements
 	 */
 	@SuppressWarnings("unchecked")
 	public void setStop(Date stop) {
+		if (((AddMultiplyMode<?>)this.getMode()).getAdjustParameter().equals(
+				AdjustParameter.STOP)) {
+			throw new IllegalStateException(ILLEGAL_STATE_STOP_MESSAGE);
+		}
 		if (!this.getType().equals(DataTypes.DATETIME)) {
 			return;
 		}
@@ -495,6 +535,10 @@ public class Axis extends AbstractMainPhaseBehavior implements
 	 */
 	@SuppressWarnings("unchecked")
 	public void setStop(Duration stop) {
+		if (((AddMultiplyMode<?>)this.getMode()).getAdjustParameter().equals(
+				AdjustParameter.STOP)) {
+			throw new IllegalStateException(ILLEGAL_STATE_STOP_MESSAGE);
+		}
 		if (!this.getType().equals(DataTypes.DATETIME)) {
 			return;
 		}
@@ -522,6 +566,10 @@ public class Axis extends AbstractMainPhaseBehavior implements
 	 */
 	@SuppressWarnings("unchecked")
 	public void setStepwidth(int stepwidth) {
+		if (((AddMultiplyMode<?>)this.getMode()).getAdjustParameter().equals(
+				AdjustParameter.STEPWIDTH)) {
+			throw new IllegalStateException(ILLEGAL_STATE_STEPWIDTH_MESSAGE);
+		}
 		if (!this.getType().equals(DataTypes.INT)) {
 			return;
 		}
@@ -537,6 +585,10 @@ public class Axis extends AbstractMainPhaseBehavior implements
 	 */
 	@SuppressWarnings("unchecked")
 	public void setStepwidth(double stepwidth) {
+		if (((AddMultiplyMode<?>)this.getMode()).getAdjustParameter().equals(
+				AdjustParameter.STEPWIDTH)) {
+			throw new IllegalStateException(ILLEGAL_STATE_STEPWIDTH_MESSAGE);
+		}
 		if (!this.getType().equals(DataTypes.DOUBLE)) {
 			return;
 		}
@@ -552,6 +604,10 @@ public class Axis extends AbstractMainPhaseBehavior implements
 	 */
 	@SuppressWarnings("unchecked")
 	public void setStepwidth(Date stepwidth) {
+		if (((AddMultiplyMode<?>)this.getMode()).getAdjustParameter().equals(
+				AdjustParameter.STEPWIDTH)) {
+			throw new IllegalStateException(ILLEGAL_STATE_STEPWIDTH_MESSAGE);
+		}
 		if (!this.getType().equals(DataTypes.DATETIME)) {
 			return;
 		}
@@ -567,6 +623,10 @@ public class Axis extends AbstractMainPhaseBehavior implements
 	 */
 	@SuppressWarnings("unchecked")
 	public void setStepwidth(Duration stepwidth) {
+		if (((AddMultiplyMode<?>)this.getMode()).getAdjustParameter().equals(
+				AdjustParameter.STEPWIDTH)) {
+			throw new IllegalStateException(ILLEGAL_STATE_STEPWIDTH_MESSAGE);
+		}
 		if (!this.getType().equals(DataTypes.DATETIME)) {
 			return;
 		}
@@ -593,6 +653,15 @@ public class Axis extends AbstractMainPhaseBehavior implements
 	 * @param stepcount
 	 */
 	public void setStepcount(double stepcount) {
+		if (((AddMultiplyMode<?>)this.getMode()).getAdjustParameter().equals(
+				AdjustParameter.STEPCOUNT)) {
+			throw new IllegalStateException(
+					"stepcount cannot be set (set as AdjustParameter");
+		}
+		if ((this.getScanModule().getMainAxis() != null) 
+				&& this.getScanModule().getMainAxis() != this) {
+			// TODO
+		}
 		if (this.getStepfunction().equals(Stepfunctions.ADD) ||
 				this.getStepfunction().equals(Stepfunctions.MULTIPLY)) {
 			((AddMultiplyMode<?>)this.mode).setStepcount(stepcount);
