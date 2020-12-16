@@ -54,6 +54,7 @@ public class YAxisLabelProvider extends StyledCellLabelProvider {
 			cell.setStyleRanges(range);
 		} else {
 			cell.setText(StringLabels.LONG_DASH);
+			cell.setStyleRanges(null);
 		}
 		if (!plotWindow.getModelErrors().isEmpty() && this.yAxisNumber == 0) {
 			for (IModelError error : plotWindow.getModelErrors()) {
