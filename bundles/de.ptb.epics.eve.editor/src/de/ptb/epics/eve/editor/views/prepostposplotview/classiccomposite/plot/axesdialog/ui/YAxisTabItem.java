@@ -58,6 +58,8 @@ public class YAxisTabItem extends CTabItem implements PropertyChangeListener {
 	private DataBindingContext context;
 	private Binding colorComboBinding;
 	
+	private boolean inColorSelectionLoop;
+	
 	public YAxisTabItem(CTabFolder parent, int style, final YAxis yAxis, 
 			PlotWindow plotWindow) {
 		super(parent, style);
@@ -187,6 +189,7 @@ public class YAxisTabItem extends CTabItem implements PropertyChangeListener {
 		colorFieldEditor.getColorSelector().addListener(new IPropertyChangeListener() {
 			@Override
 			public void propertyChange(org.eclipse.jface.util.PropertyChangeEvent event) {
+				YAxisTabItem.this.inColorSelectionLoop = true;
 				YAxisTabItem.this.yAxis.setColor(YAxisTabItem.this.
 						colorFieldEditor.getColorSelector().getColorValue());
 			}
@@ -304,14 +307,21 @@ public class YAxisTabItem extends CTabItem implements PropertyChangeListener {
 		
 		this.setEnabledStates();
 		
+		this.inColorSelectionLoop = false;
+		
 		predefinedColorsCombo.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
+				if (inColorSelectionLoop) {
+					YAxisTabItem.this.inColorSelectionLoop = false;
+					return;
+				}
 				IStructuredSelection selection = (IStructuredSelection) event.
 						getSelection();
 				PredefinedColors color = (PredefinedColors)selection.
 						getFirstElement();
 				if (color.equals(PredefinedColors.CUSTOM)) {
+					YAxisTabItem.this.inColorSelectionLoop = true;
 					RGB oldColor = yAxis.getColor();
 					YAxisTabItem.this.colorFieldEditor.getColorSelector().open();
 					RGB newColor = yAxis.getColor();
