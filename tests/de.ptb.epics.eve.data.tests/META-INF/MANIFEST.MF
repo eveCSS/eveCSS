@@ -12,3 +12,4 @@ Import-Package: de.ptb.epics.eve.data.measuringstation,
  de.ptb.epics.eve.data.scandescription,
  de.ptb.epics.eve.data.scandescription.axismode
 Bundle-Vendor: PTB
+Export-Package: de.ptb.epics.eve.data.tests.mothers.measuringstation

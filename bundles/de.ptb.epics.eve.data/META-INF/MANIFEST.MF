@@ -3,6 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Data
 Bundle-SymbolicName: de.ptb.epics.eve.data;singleton:=true
 Bundle-Version: 1.34.3
+Eclipse-ExtensibleAPI: true
 Export-Package: de.ptb.epics.eve.data,
  de.ptb.epics.eve.data.measuringstation,
  de.ptb.epics.eve.data.measuringstation.event,
