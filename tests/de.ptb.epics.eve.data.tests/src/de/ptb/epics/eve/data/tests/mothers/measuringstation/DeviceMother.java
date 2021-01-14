@@ -21,6 +21,7 @@ public class DeviceMother {
 		device.setId(name);
 		device.setName(name);
 		device.setClassName("DeviceClass");
+		device.setValue(FunctionMother.createNewDoubleTypeFunction());
 		
 		return device;
 	}

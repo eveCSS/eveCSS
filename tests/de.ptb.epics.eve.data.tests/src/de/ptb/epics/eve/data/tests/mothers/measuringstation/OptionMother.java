@@ -33,6 +33,7 @@ public class OptionMother {
 		option.setName(name);
 		option.setClassName("OptionClass");
 		option.setMonitor(monitor);
+		option.setValue(FunctionMother.createNewDoubleTypeFunction());
 		return option;
 	}
 }
