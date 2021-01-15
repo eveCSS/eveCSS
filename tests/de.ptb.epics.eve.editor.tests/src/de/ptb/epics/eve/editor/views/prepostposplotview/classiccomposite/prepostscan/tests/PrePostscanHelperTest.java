@@ -7,6 +7,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.ptb.epics.eve.data.measuringstation.Device;
+import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.data.scandescription.Postscan;
 import de.ptb.epics.eve.data.scandescription.Prescan;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
@@ -30,7 +32,8 @@ public class PrePostscanHelperTest {
 				createEntries(scanModule);
 		boolean found = false;
 		for (PrePostscanEntry entry : entries) {
-			if (entry.getPrescan().equals(prescan)) {
+			if (entry.getPrescan().getAbstractPrePostscanDevice().equals(
+					prescan.getAbstractPrePostscanDevice())) {
 				found = true;
 			}
 		}
@@ -45,7 +48,8 @@ public class PrePostscanHelperTest {
 				createEntries(scanModule);
 		boolean found = false;
 		for (PrePostscanEntry entry : entries) {
-			if (entry.getPostscan().equals(postscan)) {
+			if (entry.getPostscan().getAbstractPrePostscanDevice().equals(
+					postscan.getAbstractPrePostscanDevice())) {
 				found = true;
 			}
 		}
@@ -54,16 +58,19 @@ public class PrePostscanHelperTest {
 	
 	@Test
 	public void testDevicePrePostscan() {
-		Prescan prescan = new Prescan(DeviceMother.createNewDevice());
+		Device device = DeviceMother.createNewDevice();
+		Prescan prescan = new Prescan(device);
 		scanModule.add(prescan);
-		Postscan postscan = new Postscan(DeviceMother.createNewDevice());
+		Postscan postscan = new Postscan(device);
 		scanModule.add(postscan);
 		List<PrePostscanEntry> entries = PrePostscanHelper.
 				createEntries(scanModule);
 		boolean found = false;
 		for (PrePostscanEntry entry : entries) {
-			if (entry.getPrescan().equals(prescan) &&
-					entry.getPostscan().equals(postscan)) {
+			if (entry.getPrescan().getAbstractPrePostscanDevice().equals(
+						prescan.getAbstractPrePostscanDevice())
+					&& entry.getPostscan().getAbstractPrePostscanDevice()
+							.equals(postscan.getAbstractPrePostscanDevice())) {
 				found = true;
 			}
 		}
@@ -102,16 +109,19 @@ public class PrePostscanHelperTest {
 	
 	@Test
 	public void testOptionPrePostscan() {
-		Prescan prescan = new Prescan(OptionMother.createNewOption());
+		Option option = OptionMother.createNewOption();
+		Prescan prescan = new Prescan(option);
 		scanModule.add(prescan);
-		Postscan postscan = new Postscan(OptionMother.createNewOption());
+		Postscan postscan = new Postscan(option);
 		scanModule.add(postscan);
 		List<PrePostscanEntry> entries = PrePostscanHelper.
 				createEntries(scanModule);
 		boolean found = false;
 		for (PrePostscanEntry entry : entries) {
-			if (entry.getPrescan().equals(prescan) &&
-					entry.getPostscan().equals(postscan)) {
+			if (entry.getPrescan().getAbstractPrePostscanDevice().equals(
+						prescan.getAbstractPrePostscanDevice())
+					&& entry.getPostscan().getAbstractPrePostscanDevice()
+							.equals(postscan.getAbstractPrePostscanDevice())) {
 				found = true;
 			}
 		}
