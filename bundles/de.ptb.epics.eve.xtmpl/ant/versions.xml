@@ -25,6 +25,8 @@
 		<loadfile property="xpbf2" srcFile="/messung/xpbf2/eve/version.txt"/>
 		<loadfile property="xrf" srcFile="/messung/xrf/eve/version.txt"/>
 		
+		<loadfile property="akman" srcFile="/messung/instruments/akman/eve/version.txt"/>
+		<loadfile property="allDevices" srcFile="/messung/instruments/allDevices/eve/version.txt"/>
 		<loadfile property="avogadro" srcFile="/messung/instruments/avogadro/eve/version.txt"/>
 		<loadfile property="bigref" srcFile="/messung/instruments/bigref/eve/version.txt"/>
 		<loadfile property="compton_bessy2" srcFile="/messung/instruments/compton_bessy2/eve/version.txt"/>
@@ -74,6 +76,8 @@
 		<echo message="xpbf2:               ${xpbf2}" />
 		<echo message="xrf:                 ${xrf}" />
 		<echo message=" ${line.separator}" />
+		<echo message="akman:               ${akman}" />
+		<echo message="allDevices:          ${allDevices}" />
 		<echo message="avogadro:            ${avogadro}" />
 		<echo message="bigref:              ${bigref}" />
 		<echo message="compton_bessy2:      ${compton_bessy2}" />
