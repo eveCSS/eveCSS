@@ -3,6 +3,7 @@ h1(eveTopic). What's New in EVE
 h2(eveTopic). Version 1.35.0 (2021-01-XX)
 
 * [Feature-#5448] template File @genericDetector.xtmpl@ removed
+* [Feature-#5294] modifications on several template Files
 
 h2(eveTopic). Version 1.34.4 (2021-XX-XX)
 
