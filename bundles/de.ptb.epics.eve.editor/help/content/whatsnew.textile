@@ -2,6 +2,7 @@ h1(eveTopic). What's New in EVE Editor
 
 h2(eveTopic). Version 1.34.4 (2021-01-22)
 
+* [Bug Fix-#5845] Fixed a bug introduced due to Bug Fix #5739 which forbids setting values of axes set as adjust parameter
 * [Bug Fix-#5761] Fixed a bug where an ArrayOutOfBoundsException occurred when choosing "none" for a detector channel of a plot window when no channel was previously set
 * [Bug Fix-#5752] Fixed a bug where a null pointer exception occurred in the Scan View if the last scan was closed and another opened afterwards 
 * [Bug Fix-#5743] Set the precision of the values in the preview table for positions in a position file to 7 (@12.4g@ -> @12.7g@)

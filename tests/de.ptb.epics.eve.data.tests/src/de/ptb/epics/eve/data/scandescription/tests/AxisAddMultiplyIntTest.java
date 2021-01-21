@@ -21,12 +21,6 @@ public class AxisAddMultiplyIntTest {
 	private Axis axis;
 	private AddMultiplyModeInt axisMode;
 	
-	@Test(expected=IllegalStateException.class)
-	public void testSetStartAdjustStart() {
-		this.axisMode.setAdjustParameter(AdjustParameter.START);
-		this.axis.setStart(10);
-	}
-	
 	@Test
 	public void testSetStopAdjustStart() {
 		this.axisMode.setAdjustParameter(AdjustParameter.START);
@@ -57,12 +51,6 @@ public class AxisAddMultiplyIntTest {
 		this.axis.setStart(2);
 		assertEquals("set start value should adjust stop value",
 				11, (int) this.axis.getStop());
-	}
-	
-	@Test(expected=IllegalStateException.class)
-	public void testSetStopAdjustStop() {
-		this.axisMode.setAdjustParameter(AdjustParameter.STOP);
-		this.axis.setStop(42);
 	}
 	
 	@Test
@@ -97,12 +85,6 @@ public class AxisAddMultiplyIntTest {
 				2, (int) this.axis.getStepwidth());
 	}
 	
-	@Test(expected=IllegalStateException.class)
-	public void testSetStepwidthAdjustStepwidth() {
-		this.axisMode.setAdjustParameter(AdjustParameter.STEPWIDTH);
-		this.axis.setStepwidth(300);
-	}
-	
 	@Test
 	public void testSetStepcountAdjustStepwidth() {
 		this.axisMode.setAdjustParameter(AdjustParameter.STEPWIDTH);
@@ -133,12 +115,6 @@ public class AxisAddMultiplyIntTest {
 		this.axis.setStepwidth(2);
 		assertEquals("set stepwidth value should adjust stepcount value",
 				4.5, this.axis.getStepcount(), DELTA);
-	}
-	
-	@Test(expected=IllegalStateException.class)
-	public void testSetStepcountAdjustStepcount() {
-		this.axisMode.setAdjustParameter(AdjustParameter.STEPCOUNT);
-		this.axis.setStepcount(42.0);
 	}
 	
 	@Before

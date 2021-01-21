@@ -372,7 +372,10 @@ public class ScanModuleMainAxisTest {
 	/**
 	 * Tests if an exception is thrown when trying to set a stepcount of an axis
 	 * when another axis of the scan module is set as main axis.
+	 * 
+	 * inactive due to problems when loading scmls, see #5845
 	 */
+	@Ignore
 	@Test(expected=IllegalStateException.class)
 	public void testSetStepcountIfMainAxisIsSet() {
 		final Axis axis1 = new Axis(this.scanModule);

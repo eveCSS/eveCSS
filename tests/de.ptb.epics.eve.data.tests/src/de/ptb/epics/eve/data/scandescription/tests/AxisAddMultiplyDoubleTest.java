@@ -21,16 +21,6 @@ public class AxisAddMultiplyDoubleTest {
 	private Axis axis;
 	private AddMultiplyModeDouble axisMode;
 	
-	/**
-	 * Setting the start property should not be possible if AdjustParameter is 
-	 * set to START.
-	 */
-	@Test(expected=IllegalStateException.class)
-	public void testSetStartAdjustStart() {
-		this.axisMode.setAdjustParameter(AdjustParameter.START);
-		this.axis.setStart(10.0);
-	}
-	
 	@Test
 	public void testSetStopAdjustStart() {
 		this.axisMode.setAdjustParameter(AdjustParameter.START);
@@ -61,12 +51,6 @@ public class AxisAddMultiplyDoubleTest {
 		this.axis.setStart(2.0);
 		assertEquals("set start value should adjust stop value",
 				11.0, (double) this.axis.getStop(), DELTA);
-	}
-	
-	@Test(expected=IllegalStateException.class)
-	public void testSetStopAdjustStop() {
-		this.axisMode.setAdjustParameter(AdjustParameter.STOP);
-		this.axis.setStop(42.0);
 	}
 	
 	@Test
@@ -101,12 +85,6 @@ public class AxisAddMultiplyDoubleTest {
 				2.0 , (double) this.axis.getStepwidth(), DELTA);
 	}
 	
-	@Test(expected=IllegalStateException.class)
-	public void testSetStepwidthAdjustStepwidth() {
-		this.axisMode.setAdjustParameter(AdjustParameter.STEPWIDTH);
-		this.axis.setStepwidth(300.0);
-	}
-	
 	@Test
 	public void testSetStepcountAdjustStepwidth() {
 		this.axisMode.setAdjustParameter(AdjustParameter.STEPWIDTH);
@@ -137,12 +115,6 @@ public class AxisAddMultiplyDoubleTest {
 		this.axis.setStepwidth(2.0);
 		assertEquals("set stepwidth value should adjust stepcount value",
 				4.5, this.axis.getStepcount(), DELTA);
-	}
-	
-	@Test(expected=IllegalStateException.class)
-	public void testSetStepcountAdjustStepcount() {
-		this.axisMode.setAdjustParameter(AdjustParameter.STEPCOUNT);
-		this.axis.setStepcount(42.0);
 	}
 	
 	@Before
