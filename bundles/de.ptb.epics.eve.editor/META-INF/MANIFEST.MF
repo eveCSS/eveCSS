@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: de.ptb.epics.eve.editor;singleton:=true
-Bundle-Version: 1.34.4
+Bundle-Version: 1.35.0
 Bundle-Activator: de.ptb.epics.eve.editor.Activator
 Bundle-Vendor: PTB
 Require-Bundle: de.ptb.epics.eve.data;bundle-version="1.0.0",
