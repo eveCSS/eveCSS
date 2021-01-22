@@ -1,8 +1,5 @@
 package de.ptb.epics.eve.data.scandescription.tests;
 
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -11,7 +8,6 @@ import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.Stepfunctions;
 import de.ptb.epics.eve.data.scandescription.axismode.AddMultiplyModeDate;
-import de.ptb.epics.eve.data.scandescription.axismode.AdjustParameter;
 import de.ptb.epics.eve.data.tests.mothers.measuringstation.MotorAxisMother;
 
 /**
@@ -21,12 +17,6 @@ import de.ptb.epics.eve.data.tests.mothers.measuringstation.MotorAxisMother;
 public class AxisAddMultiplyDurationTest {
 	private Axis axis;
 	private AddMultiplyModeDate axisMode;
-	
-	@Test(expected=IllegalStateException.class)
-	public void testSetStartAdjustStart() throws DatatypeConfigurationException {
-		this.axisMode.setAdjustParameter(AdjustParameter.START);
-		this.axis.setStart(DatatypeFactory.newInstance().newDuration(0));
-	}
 	
 	@Test
 	@Ignore
@@ -50,12 +40,6 @@ public class AxisAddMultiplyDurationTest {
 	@Ignore
 	public void testSetStartAdjustStop() {
 		// TODO
-	}
-	
-	@Test(expected=IllegalStateException.class)
-	public void testSetStopAdjustStop() throws DatatypeConfigurationException {
-		this.axisMode.setAdjustParameter(AdjustParameter.STOP);
-		this.axis.setStop(DatatypeFactory.newInstance().newDuration(0));
 	}
 	
 	@Test
@@ -82,12 +66,6 @@ public class AxisAddMultiplyDurationTest {
 		// TODO
 	}
 	
-	@Test(expected=IllegalStateException.class)
-	public void testSetStepwidthAdjustStepwidth() throws DatatypeConfigurationException {
-		this.axisMode.setAdjustParameter(AdjustParameter.STEPWIDTH);
-		this.axis.setStepwidth(DatatypeFactory.newInstance().newDuration(0));
-	}
-	
 	@Test
 	@Ignore
 	public void testSetStepcountAdjustStepwidth() {
@@ -110,12 +88,6 @@ public class AxisAddMultiplyDurationTest {
 	@Ignore
 	public void testSetStepwidthAdjustStepcount() {
 		// TODO
-	}
-	
-	@Test(expected=IllegalStateException.class)
-	public void testSetStepcountAdjustStepcount() {
-		this.axisMode.setAdjustParameter(AdjustParameter.STEPCOUNT);
-		this.axis.setStepcount(0);
 	}
 	
 	@Before
