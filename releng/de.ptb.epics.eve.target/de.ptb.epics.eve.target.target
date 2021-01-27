@@ -504,7 +504,7 @@
 <repository location="file:/soft/repo/p2/jfxrtOSGi/"/>
 </location>
 	<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="false" type="InstallableUnit">
-		<repository location="file:/soft/repo/p2/MavenOSGi/1.34/"/>
+		<repository location="file:/soft/repo/p2/MavenOSGi/1.35/"/>
 		<unit id="commons-logging" version="1.1.1"/>
 		<unit id="org.apache.commons.csv" version="1.6.0"/>
 		<unit id="org.apache.commons.lang3" version="3.8.1"/>
