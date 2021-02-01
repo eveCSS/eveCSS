@@ -10,14 +10,14 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.UpdateValueStrategy;
-import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.observable.ChangeEvent;
 import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
-import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
@@ -231,8 +231,8 @@ public class PositionlistComposite extends MotorAxisViewComposite implements
 	 */
 	@Override
 	public void setAxis(final Axis axis) {
+		this.reset();
 		if (axis == null) {
-			this.reset();
 			return;
 		}
 		if (!(axis.getMode() instanceof PositionlistMode)) {
@@ -242,13 +242,13 @@ public class PositionlistComposite extends MotorAxisViewComposite implements
 		this.positionlistMode = (PositionlistMode)axis.getMode();
 		this.positionlistMode.addPropertyChangeListener(
 				PositionlistMode.POSITIONLIST_PROP, this);
-		this.createBinding();
-		this.countPositions();
-		this.refreshSaveButtion();
 		this.positionlistMode.getAxis().getMotorAxis()
 				.addPropertyChangeListener("highlimit", this);
 		this.positionlistMode.getAxis().getMotorAxis()
 				.addPropertyChangeListener("lowlimit", this);
+		this.createBinding();
+		this.countPositions();
+		this.refreshSaveButtion();
 	}
 
 	/**
@@ -256,10 +256,11 @@ public class PositionlistComposite extends MotorAxisViewComposite implements
 	 */
 	@Override
 	protected void createBinding() {
-		this.positionlistModelObservable = BeansObservables.observeValue(
-				this.positionlistMode, PositionlistMode.POSITIONLIST_PROP);
-		this.positionlistGUIObservable = SWTObservables.observeText(
-				this.positionlistText, SWT.Modify);
+		this.positionlistGUIObservable = WidgetProperties.text(SWT.Modify).
+				observe(this.positionlistText);
+		this.positionlistModelObservable = BeanProperties.value(
+				PositionlistMode.POSITIONLIST_PROP, String.class).
+				observe(this.positionlistMode);
 		UpdateValueStrategy targetToModel = new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE);
 		this.positionlistValidator = new PositionlistValidator(
@@ -286,6 +287,8 @@ public class PositionlistComposite extends MotorAxisViewComposite implements
 	protected void reset() {
 		LOGGER.debug("reset");
 		if (this.positionlistMode != null) {
+			this.positionlistMode.removePropertyChangeListener(
+					PositionlistMode.POSITIONLIST_PROP, this);
 			if (this.positionlistControlDecorationSupport != null) {
 				this.positionlistControlDecorationSupport.dispose();
 			}
@@ -312,7 +315,6 @@ public class PositionlistComposite extends MotorAxisViewComposite implements
 	public void propertyChange(PropertyChangeEvent e) {
 		if (e.getPropertyName().equals(PositionlistMode.POSITIONLIST_PROP)) {
 			this.countPositions();
-			this.positionlistBinding.updateModelToTarget();
 		} else if (e.getPropertyName().equals("highlimit") || 
 				e.getPropertyName().equals("lowlimit")) {
 			this.positionlistBinding.updateTargetToModel();
