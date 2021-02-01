@@ -1,5 +1,9 @@
 h1(eveTopic). What's New in EVE Editor
 
+h2(eveTopic). Version 1.35.1 (2021-02-01)
+
+* [Bug Fix-#5858] fixed a bug where the caret jumped to the first position after each typed character
+
 h2(eveTopic). Version 1.35.0 (2021-01-22)
 
 * [Feature-#5363] Revised layout of the "Editor Perspective":concepts/eveeditorperspective.html. __Note__ that if you upgraded from an older version a one time reset of the Editor Perspective is necessary. <br/>Introduced new View "SM Pre-/Post/Positioning/Plot-View":concepts/smprepostposplotview.html replacing "Prescan", "Postscan", Positioning" and "Plot" "Action" tabs of the Scan Module View. Values are editable directly for "Pre-/Postscans":tasks/editprepostscanproperties.html, "Positionings":tasks/editpositioningproperties.html and "Plots":tasks/editplotproperties.html in the table column.
