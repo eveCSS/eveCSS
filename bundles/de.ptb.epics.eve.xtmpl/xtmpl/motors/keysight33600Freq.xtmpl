@@ -1,4 +1,4 @@
-            <!-- Keysight 33600 Frequence axis, to be included by motors -->
+            <!-- Keysight 33600 Frequence axis, to be included by keysight33600 -->
             substitute "Prefix=freq"
             <axis>
                 <class>${Class=""}</class>

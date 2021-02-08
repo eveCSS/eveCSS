@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="show_versions" basedir="./">
 	<target name="show_versions">
+		<loadfile property="black" srcFile="/messung/black/eve/version.txt"/>
 		<loadfile property="bragg" srcFile="/messung/bragg/eve/version.txt"/>
 		<loadfile property="dekabe" srcFile="/messung/dekabe/eve/version.txt"/>
-		<loadfile property="dwl_ger" srcFile="/messung/dwl_ger/eve/version.txt"/>
 		<loadfile property="dwl" srcFile="/messung/dwl/eve/version.txt"/>
 		<loadfile property="dwl20" srcFile="/messung/dwl20/eve/version.txt"/>
+		<loadfile property="dwl_ger" srcFile="/messung/dwl_ger/eve/version.txt"/>
 		<loadfile property="eez" srcFile="/messung/eez/eve/version.txt"/>
 		<loadfile property="euvr" srcFile="/messung/euvr/eve/version.txt"/>
 		<loadfile property="fem" srcFile="/messung/fem/eve/version.txt"/>
@@ -15,15 +16,12 @@
 		<loadfile property="pgm" srcFile="/messung/pgm/eve/version.txt"/>
 		<loadfile property="qmp_mls" srcFile="/messung/qmp_mls/eve/version.txt"/>
 		<loadfile property="qnim" srcFile="/messung/qnim/eve/version.txt"/>
-		<loadfile property="radiometry" srcFile="/messung/radiometry/eve/version.txt"/>
 		<loadfile property="red" srcFile="/messung/red/eve/version.txt"/>
 		<loadfile property="sx700" srcFile="/messung/sx700/eve/version.txt"/>
 		<loadfile property="test" srcFile="/messung/test/eve/version.txt"/>
 		<loadfile property="thz" srcFile="/messung/thz/eve/version.txt"/>
 		<loadfile property="white" srcFile="/messung/white/eve/version.txt"/>
-		<loadfile property="wlsptb" srcFile="/messung/wlsptb/eve/version.txt"/>
 		<loadfile property="xpbf2" srcFile="/messung/xpbf2/eve/version.txt"/>
-		<loadfile property="xrf" srcFile="/messung/xrf/eve/version.txt"/>
 		
 		<loadfile property="akman" srcFile="/messung/instruments/akman/eve/version.txt"/>
 		<loadfile property="allDevices" srcFile="/messung/instruments/allDevices/eve/version.txt"/>
@@ -52,6 +50,7 @@
 		<loadfile property="vuvref" srcFile="/messung/instruments/vuvref/eve/version.txt"/>
 		<loadfile property="wwl_eez_test" srcFile="/messung/instruments/wwl_eez_test/eve/version.txt"/>
 		
+		<echo message="black:               ${black}" />
 		<echo message="bragg:               ${bragg}" />
 		<echo message="dekabe:              ${dekabe}" />
 		<echo message="dwl:                 ${dwl}" />
@@ -66,15 +65,12 @@
 		<echo message="pgm:                 ${pgm}" />
 		<echo message="qmp_mls:             ${qmp_mls}" />
 		<echo message="qnim:                ${qnim}" />
-		<echo message="radiometry:     	    ${radiometry}" />
 		<echo message="red:                 ${red}" />
 		<echo message="sx700:               ${sx700}" />
 		<echo message="test:                ${test}" />
 		<echo message="thz:                 ${thz}" />
 		<echo message="white:               ${white}" />
-		<echo message="wlsptb:              ${wlsptb}" />
 		<echo message="xpbf2:               ${xpbf2}" />
-		<echo message="xrf:                 ${xrf}" />
 		<echo message=" ${line.separator}" />
 		<echo message="akman:               ${akman}" />
 		<echo message="allDevices:          ${allDevices}" />
