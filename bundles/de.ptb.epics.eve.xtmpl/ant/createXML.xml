@@ -8,6 +8,7 @@
 
 	<target name="all">
 		<echo message="creating stations" />
+		<antcall target="black" />
 		<antcall target="bragg" />
 		<antcall target="dekabe" />
 		<antcall target="dwl" />
@@ -28,11 +29,11 @@
 		<antcall target="test" />
 		<antcall target="thz" />
 		<antcall target="white" />
-		<antcall target="wlsptb" />
 		<antcall target="xpbf2" />
 		<antcall target="xrf" />
 
 		<echo message="creation instruments" />
+		<antcall target="akman" />
 		<antcall target="allDevices" />
 		<antcall target="avogadro" />
 		<antcall target="bigref" />
@@ -55,14 +56,21 @@
 		<antcall target="syres1" />
 		<antcall target="syres2" />
 		<antcall target="trfa" />
-		<antcall target="vuvref" />
 		<antcall target="vonhamos" />
+		<antcall target="vuvref" />
 		<antcall target="wwl_eez_test" />
 	</target>
 
 	<target name="allDevices">
 		<antcall target="-xmlmsi">
 			<param name="eve_location" value="allDevices" />
+			<param name="station.type" value="instrument" />
+		</antcall>
+	</target>
+
+	<target name="akman">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="akman" />
 			<param name="station.type" value="instrument" />
 		</antcall>
 	</target>
@@ -78,6 +86,13 @@
 		<antcall target="-xmlmsi">
 			<param name="eve_location" value="bigref" />
 			<param name="station.type" value="instrument" />
+		</antcall>
+	</target>
+
+	<target name="black">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="black" />
+			<param name="station.type" value="station" />
 		</antcall>
 	</target>
 
@@ -270,16 +285,16 @@
 		</antcall>
 	</target>
 
-	<target name="red">
+	<target name="radiometry">
 		<antcall target="-xmlmsi">
-			<param name="eve_location" value="red" />
+			<param name="eve_location" value="radiometry" />
 			<param name="station.type" value="station" />
 		</antcall>
 	</target>
 
-	<target name="radiometry">
+	<target name="red">
 		<antcall target="-xmlmsi">
-			<param name="eve_location" value="radiometry" />
+			<param name="eve_location" value="red" />
 			<param name="station.type" value="station" />
 		</antcall>
 	</target>
@@ -371,13 +386,6 @@
 	<target name="white">
 		<antcall target="-xmlmsi">
 			<param name="eve_location" value="white" />
-			<param name="station.type" value="station" />
-		</antcall>
-	</target>
-
-	<target name="wlsptb">
-		<antcall target="-xmlmsi">
-			<param name="eve_location" value="wlsptb" />
 			<param name="station.type" value="station" />
 		</antcall>
 	</target>

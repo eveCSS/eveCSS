@@ -1,4 +1,4 @@
-            <!-- Keysight 33600 Voltage axis, to be included by motors -->
+            <!-- Keysight 33600 Voltage axis, to be included by keysight33600 -->
             substitute "Prefix=volt"
             <axis>
                 <class>${Class=""}</class>
