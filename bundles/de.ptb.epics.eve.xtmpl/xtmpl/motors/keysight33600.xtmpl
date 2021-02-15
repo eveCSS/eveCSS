@@ -1,4 +1,4 @@
-        <!-- Keysight33600, must include one of keysight33600Freq or keysight33600Volt -->
+        <!-- Keysight33600, must include one of keysight33600 axis templates -->
 		<motor>
             <class>${Class=""}</class>
             <name>${Name=""}</name>
