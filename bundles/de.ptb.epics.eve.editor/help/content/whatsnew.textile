@@ -1,5 +1,9 @@
 h1(eveTopic). What's New in EVE Editor
 
+h2(eveTopic). Version 1.35.2 (2021-02-15)
+
+* [Bug Fix-#5876] fixed a bug where pasting an existing scan module caused to overwrite the postscan value(s) with the default value(s) of the corresponding device
+
 h2(eveTopic). Version 1.35.1 (2021-02-01)
 
 * [Bug Fix-#5858] fixed a bug where the caret jumped to the first position after each typed character

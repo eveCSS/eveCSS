@@ -84,13 +84,10 @@ public class Postscan extends AbstractPostscanBehavior {
 	 * 
 	 * @param reset <code>true</code>if you want that the value will be resetted.
 	 */
-	public void setReset(final boolean reset) { // TODO JavaDoc
+	public void setReset(final boolean reset) {
 		this.reset = reset;
 		if (reset) {
 			super.setValue("");
-		} else {
-			super.setValue(this.getAbstractPrePostscanDevice().getValue().
-					getDefaultValue());
 		}
 		updateListeners();
 	}
@@ -127,7 +124,7 @@ public class Postscan extends AbstractPostscanBehavior {
 	 */
 	private void updateListeners() {
 		final CopyOnWriteArrayList<IModelUpdateListener> list = 
-			new CopyOnWriteArrayList<IModelUpdateListener>(this.modelUpdateListener);
+			new CopyOnWriteArrayList<>(this.modelUpdateListener);
 		
 		for(IModelUpdateListener imul : list) {
 			imul.updateEvent(new ModelUpdateEvent(this, null));
