@@ -53,8 +53,12 @@ public class ResetEditingSupport extends EditingSupport {
 	 */
 	@Override
 	protected void setValue(Object element, Object value) {
+		boolean reset = (Boolean)value;
 		PrePostscanEntry entry = (PrePostscanEntry)element;
 		Postscan postscan = entry.getPostscan();
-		postscan.setReset((Boolean)value);
+		postscan.setReset(reset);
+		if (!reset) {
+			postscan.setValue(entry.getDevice().getValue().getDefaultValue());
+		}
 	}
 }
