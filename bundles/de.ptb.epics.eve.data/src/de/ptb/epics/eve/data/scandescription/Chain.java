@@ -84,6 +84,9 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	// control event manager for pause events
 	private ControlEventManager pauseControlEventManager;
 
+	/* @since 1.36 */
+	private List<PauseCondition> pauseConditions;
+	
 	private Integer positionCount;
 
 	private boolean reserveIds;
@@ -127,6 +130,8 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		this.redoControlEventManager.addModelUpdateListener(this);
 		this.pauseControlEventManager.addModelUpdateListener(this);
 
+		this.pauseConditions = new ArrayList<>();
+		
 		this.positionCount = null;
 
 		this.reserveIds = false;
@@ -754,6 +759,35 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 				|| this.isRedoEventOfTheChain(controlEvent);
 	}
 
+	/**
+	 * 
+	 * @return
+	 * @since 1.36
+	 */
+	public List<PauseCondition> getPauseConditions() {
+		return this.pauseConditions;
+	}
+	
+	/**
+	 * 
+	 * @param pauseCondition
+	 * @since 1.36
+	 */
+	public void addPauseCondition(PauseCondition pauseCondition) {
+		this.pauseConditions.add(pauseCondition);
+		pauseCondition.addModelUpdateListener(this);
+	}
+	
+	/**
+	 * 
+	 * @param pauseCondition
+	 * @since 1.36
+	 */
+	public void removePauseCondition(PauseCondition pauseCondition) {
+		this.pauseConditions.remove(pauseCondition);
+		pauseCondition.removeModelUpdateListener(this);
+	}
+	
 	/**
 	 * Returns a valid id for a plot.
 	 * 

@@ -99,6 +99,63 @@ public class MotorAxisMother {
 		
 		return motorAxis;
 	}
+	
+	/**
+	 * @since 1.36
+	 */
+	public static MotorAxis createNewStringTypeMotorAxis() {
+		MotorAxis motorAxis = new MotorAxis();
+		
+		String name = "MotorAxis-" + Calendar.getInstance().getTime().getTime();
+		motorAxis.setId(name);
+		motorAxis.setName(name);
+		motorAxis.setClassName("MotorAxisClass");
+		
+		motorAxis.setPosition(FunctionMother.createNewStringTypeFunction());
+		motorAxis.setStatus(FunctionMother.createNewFunction());
+		motorAxis.setMoveDone(FunctionMother.createNewFunction());
+		motorAxis.setGoto(FunctionMother.createNewStringTypeFunction());
+		motorAxis.setStop(FunctionMother.createNewFunction());
+		motorAxis.setDeadband(FunctionMother.createNewFunction());
+		motorAxis.setOffset(FunctionMother.createNewFunction());
+		motorAxis.setTweakValue(FunctionMother.createNewFunction());
+		motorAxis.setTweakForward(FunctionMother.createNewFunction());
+		motorAxis.setTweakReverse(FunctionMother.createNewFunction());
+		motorAxis.setSoftHighLimit(FunctionMother.createNewFunction());
+		motorAxis.setSoftLowLimit(FunctionMother.createNewFunction());
+		motorAxis.setLimitViolation(FunctionMother.createNewFunction());
+		
+		return motorAxis;
+	}
+	
+	/**
+	 * @since 1.36
+	 */
+	public static MotorAxis createNewDiscreteStringTypeMotorAxis() {
+		MotorAxis motorAxis = new MotorAxis();
+		
+		String name = "MotorAxis-" + Calendar.getInstance().getTime().getTime();
+		motorAxis.setId(name);
+		motorAxis.setName(name);
+		motorAxis.setClassName("MotorAxisClass");
+		
+		motorAxis.setPosition(FunctionMother.createNewDiscreteStringTypeFunction());
+		motorAxis.setStatus(FunctionMother.createNewFunction());
+		motorAxis.setMoveDone(FunctionMother.createNewFunction());
+		motorAxis.setGoto(FunctionMother.createNewDiscreteStringTypeFunction());
+		motorAxis.setStop(FunctionMother.createNewFunction());
+		motorAxis.setDeadband(FunctionMother.createNewFunction());
+		motorAxis.setOffset(FunctionMother.createNewFunction());
+		motorAxis.setTweakValue(FunctionMother.createNewFunction());
+		motorAxis.setTweakForward(FunctionMother.createNewFunction());
+		motorAxis.setTweakReverse(FunctionMother.createNewFunction());
+		motorAxis.setSoftHighLimit(FunctionMother.createNewFunction());
+		motorAxis.setSoftLowLimit(FunctionMother.createNewFunction());
+		motorAxis.setLimitViolation(FunctionMother.createNewFunction());
+		
+		return motorAxis;
+	}
+	
 	/**
 	 * Adds an option to the given motor axis.
 	 * 

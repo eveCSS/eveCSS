@@ -28,7 +28,6 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import de.ptb.epics.eve.data.ComparisonTypes;
 import de.ptb.epics.eve.data.DataTypes;
-import de.ptb.epics.eve.data.EventActions;
 import de.ptb.epics.eve.data.EventTypes;
 import de.ptb.epics.eve.data.PlotModes;
 import de.ptb.epics.eve.data.PluginTypes;
@@ -48,6 +47,7 @@ import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.Connector;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
 import de.ptb.epics.eve.data.scandescription.MonitorOption;
+import de.ptb.epics.eve.data.scandescription.PauseCondition;
 import de.ptb.epics.eve.data.scandescription.PauseEvent;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.PluginController;
@@ -66,6 +66,8 @@ import de.ptb.epics.eve.data.scandescription.channelmode.ChannelModes;
 import de.ptb.epics.eve.data.scandescription.channelmode.StandardMode;
 import de.ptb.epics.eve.data.scandescription.processors.adaptees.DetectorEventAdaptee;
 import de.ptb.epics.eve.data.scandescription.processors.adaptees.DetectorEventAdapter;
+import de.ptb.epics.eve.data.scandescription.processors.adaptees.PauseConditionAdaptee;
+import de.ptb.epics.eve.data.scandescription.processors.adaptees.PauseConditionAdapter;
 import de.ptb.epics.eve.data.scandescription.processors.adaptees.ScheduleEventAdaptee;
 import de.ptb.epics.eve.data.scandescription.processors.adaptees.ScheduleEventAdapter;
 import de.ptb.epics.eve.util.collection.ListUtil;
@@ -114,6 +116,9 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 	private ScheduleEventAdaptee currentScheduleEventAdaptee;
 	private DetectorEventAdapter detectorEventAdapter;
 	private DetectorEventAdaptee currentDetectorEventAdaptee;
+	
+	private List<PauseConditionAdaptee> pauseConditionList;
+	private PauseConditionAdaptee currentPauseConditionAdaptee;
 	
 	// The currently constructed scan module
 	private ScanModule currentScanModule;
@@ -273,6 +278,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		this.currentDetectorEventAdaptee = null;
 		this.detectorEventPairs = 
 				new ArrayList<Pair<ControlEvent, DetectorEventAdaptee>>();
+		
+		LOGGER.debug("Start Document");
 	}
 
 	/**
@@ -328,6 +335,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.currentChain = new Chain(Integer.parseInt(atts
 						.getValue(Literals.XML_ATTRIBUTE_NAME_ID)));
 				this.chainList.add(this.currentChain);
+				this.pauseConditionList = new ArrayList<>();
+				this.currentPauseConditionAdaptee = null;
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
 			} else if (qName.equals(Literals.XML_ELEMENT_NAME_MONITOROPTIONS)) {
 				if (atts.getValue(Literals.XML_ATTRIBUTE_NAME_TYPE) == null) {
@@ -345,19 +354,42 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		case CHAIN_LOADING:
 			if (qName.equals(Literals.XML_ELEMENT_NAME_STARTEVENT)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_STARTEVENT_LOADING;
-			} else if (qName.equals(Literals.XML_ELEMENT_NAME_PAUSEEVENT)) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_PAUSEEVENT_LOADING;
 			} else if (qName.equals(Literals.XML_ELEMENT_NAME_REDOEVENT)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_REDOEVENT_LOADING;
 			} else if (qName.equals(Literals.XML_ELEMENT_NAME_BREAKEVENT)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_BREAKEVENT_LOADING;
 			} else if (qName.equals(Literals.XML_ELEMENT_NAME_STOPEVENT)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_STOPEVENT_LOADING;
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_PAUSECONDITIONS)) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_PAUSECONDITIONS_LOADING;
 			} else if (qName.equals(Literals.XML_ELEMENT_NAME_SCANMODULES)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULES_LOADING;
 			}
 			break;
-			
+
+		case CHAIN_PAUSECONDITIONS_LOADING:
+			if (qName.equals(Literals.XML_ELEMENT_NAME_PAUSECONDITION)) {
+				this.currentPauseConditionAdaptee = new PauseConditionAdaptee();
+				this.state = ScanDescriptionLoaderStates.CHAIN_PAUSECONDITION_LOADING;
+			}
+			break;
+
+		case CHAIN_PAUSECONDITION_LOADING:
+			if (qName.equals(Literals.XML_ELEMENT_NAME_ID)) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_PAUSECONDITION_ID_NEXT;
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_OPERATOR)) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_PAUSECONDITION_OPERATOR_NEXT;
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_PAUSELIMIT)) {
+				this.currentPauseConditionAdaptee.setPauseType(
+						DataTypes.stringToType(atts.getValue(Literals.XML_ATTRIBUTE_NAME_TYPE)));
+				this.state = ScanDescriptionLoaderStates.CHAIN_PAUSECONDITION_PAUSELIMIT_NEXT;
+			} else if (qName.equals(Literals.XML_ELEMENT_NAME_CONTINUELIMIT)) {
+				this.currentPauseConditionAdaptee.setContinueType(
+						DataTypes.stringToType(atts.getValue(Literals.XML_ATTRIBUTE_NAME_TYPE)));
+				this.state = ScanDescriptionLoaderStates.CHAIN_PAUSECONDITION_CONTINUELIMIT_NEXT;
+			}
+			break;
+
 		case CHAIN_SCANMODULES_LOADING:
 			if (qName.equals(Literals.XML_ELEMENT_NAME_SCANMODULE)) {
 				this.currentScanModule = new ScanModule(Integer.parseInt(atts
@@ -418,8 +450,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_BREAKEVENT_LOADING;
 			} else if (qName.equals(Literals.XML_ELEMENT_NAME_REDOEVENT)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_REDOEVENT_LOADING;
-			} else if (qName.equals(Literals.XML_ELEMENT_NAME_PAUSEEVENT)) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PAUSEEVENT_LOADING;
 			} else if (qName.equals(Literals.XML_ELEMENT_NAME_PRESCAN)) {
 				this.currentPrescan = new Prescan();
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PRESCAN_LOADING;
@@ -610,23 +640,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			}
 			break;
 			
-		case CHAIN_PAUSEEVENT_LOADING:
-		case CHAIN_SCANMODULE_PAUSEEVENT_LOADING:
-			if (qName.equals(Literals.XML_ELEMENT_NAME_DETECTOREVENT)) {
-				this.currentControlEvent = new PauseEvent(EventTypes.DETECTOR);
-				this.currentDetectorEventAdaptee = new DetectorEventAdaptee();
-				this.subState = ScanDescriptionLoaderSubStates.PAUSEDETECTOREVENT_LOADING;
-			} else if (qName.equals(Literals.XML_ELEMENT_NAME_MONITOREVENT)) {
-				this.currentControlEvent = new PauseEvent(EventTypes.MONITOR);
-				this.currentDetectorEventAdaptee = new DetectorEventAdaptee();
-				this.subState = ScanDescriptionLoaderSubStates.PAUSEMONITOREVENT_LOADING;
-			} else if (qName.equals(Literals.XML_ELEMENT_NAME_SCHEDULEEVENT)) {
-				this.currentControlEvent = new PauseEvent(EventTypes.SCHEDULE);
-				this.currentScheduleEventAdaptee = new ScheduleEventAdaptee();
-				this.subState = ScanDescriptionLoaderSubStates.PAUSESCHEDULEEVENT_LOADING;
-			}
-			break;
-			
 		case CHAIN_SCANMODULE_PLOT_LOADING:
 			if (qName.equals(Literals.XML_ELEMENT_NAME_NAME)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PLOT_NAME_NEXT;
@@ -680,39 +693,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			}
 			break;
 
-		case PAUSEDETECTOREVENT_LOADING:
-			if (qName.equals(Literals.XML_ELEMENT_NAME_ID)) {
-				this.subState = ScanDescriptionLoaderSubStates.PAUSEEVENT_ID_NEXT;
-			}
-			break;
-			
-		case PAUSEMONITOREVENT_LOADING:
-			if (qName.equals(Literals.XML_ELEMENT_NAME_ID)) {
-				this.subState = ScanDescriptionLoaderSubStates.PAUSEEVENT_ID_NEXT;
-			} else if (qName.equals(Literals.XML_ELEMENT_NAME_LIMIT)) {
-				this.currentControlEvent.getLimit().setComparison(
-						ComparisonTypes.stringToType(atts
-								.getValue(Literals.XML_ATTRIBUTE_NAME_COMPARISON)));
-				this.currentControlEvent.getLimit().setType(
-						DataTypes.stringToType(atts.getValue(Literals.XML_ATTRIBUTE_NAME_TYPE)));
-				this.subState = ScanDescriptionLoaderSubStates.PAUSEEVENT_LIMIT_NEXT;
-			} else if (qName.equals(Literals.XML_ELEMENT_NAME_ACTION)) {
-				this.subState = ScanDescriptionLoaderSubStates.PAUSEMONITOREVENT_ACTION_NEXT;
-			}
-			break;
-
-		case PAUSESCHEDULEEVENT_LOADING:
-			if (qName.equals(Literals.XML_ELEMENT_NAME_INCIDENT)) {
-				this.subState = ScanDescriptionLoaderSubStates.PAUSEEVENT_INCIDENT_NEXT;
-			} else if (qName.equals(Literals.XML_ELEMENT_NAME_CHAINID)) {
-				this.subState = ScanDescriptionLoaderSubStates.PAUSEEVENT_CHAINID_NEXT;
-			} else if (qName.equals(Literals.XML_ELEMENT_NAME_SMID)) {
-				this.subState = ScanDescriptionLoaderSubStates.PAUSEEVENT_SCANMODULEID_NEXT;
-			} else if (qName.equals(Literals.XML_ELEMENT_NAME_ACTION)) {
-				this.subState = ScanDescriptionLoaderSubStates.PAUSESCHEDULEEVENT_ACTION_NEXT;
-			}
-			break;
-
 		case YAXIS_LOADING:
 			if (qName.equals(Literals.XML_ELEMENT_NAME_ID)) {
 				this.subState = ScanDescriptionLoaderSubStates.YAXIS_ID_NEXT;
@@ -743,6 +723,11 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.subState = ScanDescriptionLoaderSubStates.MONITOROPTIONS_ID_NEXT;
 			}
 			break;
+		}
+		
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Start Element: " + qName + " --> State: " + 
+					this.state + " (Substate: " + this.subState + ")");
 		}
 	}
 
@@ -816,6 +801,26 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 				this.state = ScanDescriptionLoaderStates.SCAN_LOADING;
 			}
+			break;
+
+		case CHAIN_PAUSECONDITION_ID_NEXT:
+			this.currentPauseConditionAdaptee.setId(textBuffer.toString());
+			this.state = ScanDescriptionLoaderStates.CHAIN_PAUSECONDITION_ID_READ;
+			break;
+
+		case CHAIN_PAUSECONDITION_OPERATOR_NEXT:
+			this.currentPauseConditionAdaptee.setOperator(ComparisonTypes.stringToType(textBuffer.toString()));
+			this.state = ScanDescriptionLoaderStates.CHAIN_PAUSECONDITION_OPERATOR_READ;
+			break;
+
+		case CHAIN_PAUSECONDITION_PAUSELIMIT_NEXT:
+			this.currentPauseConditionAdaptee.setPauseLimit(textBuffer.toString());
+			this.state = ScanDescriptionLoaderStates.CHAIN_PAUSECONDITION_PAUSELIMIT_READ;
+			break;
+
+		case CHAIN_PAUSECONDITION_CONTINUELIMIT_NEXT:
+			this.currentPauseConditionAdaptee.setContinueLimit(textBuffer.toString());
+			this.state = ScanDescriptionLoaderStates.CHAIN_PAUSECONDITION_CONTINUELIMIT_READ;
 			break;
 
 		case CHAIN_SCANMODULE_NAME_NEXT:
@@ -1319,54 +1324,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			this.subState = ScanDescriptionLoaderSubStates.EVENT_SCANMODULEID_READ;
 			break;
 
-		case PAUSEEVENT_ID_NEXT:
-			this.currentControlEvent.setId(textBuffer.toString());
-			if (this.currentControlEvent.getEventType().equals(EventTypes.DETECTOR)) {
-				this.currentDetectorEventAdaptee.setId(textBuffer.toString());
-			} else if (this.currentControlEvent.getEventType().equals(
-					EventTypes.MONITOR)) {
-				this.currentControlEvent.setEvent(this.measuringStation.
-						getEventById(textBuffer.toString()));
-			}
-			this.subState = ScanDescriptionLoaderSubStates.PAUSEEVENT_ID_READ;
-			break;
-
-		case PAUSEEVENT_LIMIT_NEXT:
-			((PauseEvent) this.currentControlEvent).getLimit().setValue(
-					textBuffer.toString());
-			this.subState = ScanDescriptionLoaderSubStates.PAUSEEVENT_LIMIT_READ;
-			break;
-
-		case PAUSEEVENT_INCIDENT_NEXT:
-			this.currentScheduleEventAdaptee.setScheduleTime(ScheduleTime
-					.stringToEnum(textBuffer.toString()));
-			this.subState = ScanDescriptionLoaderSubStates.PAUSEEVENT_INCIDENT_READ;
-			break;
-
-		case PAUSEEVENT_CHAINID_NEXT:
-			this.currentScheduleEventAdaptee.setChainId(Integer
-					.parseInt(textBuffer.toString()));
-			this.subState = ScanDescriptionLoaderSubStates.PAUSEEVENT_CHAINID_READ;
-			break;
-
-		case PAUSEEVENT_SCANMODULEID_NEXT:
-			this.currentScheduleEventAdaptee.setScanModuleId(Integer
-					.parseInt(textBuffer.toString()));
-			this.subState = ScanDescriptionLoaderSubStates.PAUSEEVENT_SCANMODULEID_READ;
-			break;
-
-		case PAUSEMONITOREVENT_ACTION_NEXT:
-			((PauseEvent) this.currentControlEvent).setEventAction(EventActions
-					.valueOf(textBuffer.toString()));
-			this.subState = ScanDescriptionLoaderSubStates.PAUSEMONITOREVENT_ACTION_READ;
-			break;
-
-		case PAUSESCHEDULEEVENT_ACTION_NEXT:
-			((PauseEvent) this.currentControlEvent).setEventAction(EventActions
-					.valueOf(textBuffer.toString()));
-			this.subState = ScanDescriptionLoaderSubStates.PAUSESCHEDULEEVENT_ACTION_READ;
-			break;
-
 		case YAXIS_ID_NEXT:
 			if (this.measuringStation.getDetectorChannelById(textBuffer
 					.toString()) != null) {
@@ -1617,6 +1574,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 					}
 				}
 				this.scanDescription.add(this.currentChain);
+				
+				this.marshalPauseConditions();
 			}
 			break;
 
@@ -1655,14 +1614,42 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 			}
 			break;
-				
-		case CHAIN_PAUSEEVENT_LOADING:
-			if (qName.equals(Literals.XML_ELEMENT_NAME_PAUSEEVENT)) {
-				this.currentChain.addPauseEvent((PauseEvent) 
-						this.currentControlEvent);
-				this.createEventPair();
+
+		case CHAIN_PAUSECONDITION_ID_READ:
+			if (qName.equals(Literals.XML_ELEMENT_NAME_ID)) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_PAUSECONDITION_LOADING;
+			}
+			break;
+			
+		case CHAIN_PAUSECONDITION_OPERATOR_READ:
+			if (qName.equals(Literals.XML_ELEMENT_NAME_OPERATOR)) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_PAUSECONDITION_LOADING;
+			}
+			break;
+			
+		case CHAIN_PAUSECONDITION_PAUSELIMIT_READ:
+			if (qName.equals(Literals.XML_ELEMENT_NAME_PAUSELIMIT)) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_PAUSECONDITION_LOADING;
+			}
+			break;
+			
+		case CHAIN_PAUSECONDITION_CONTINUELIMIT_READ:
+			if (qName.equals(Literals.XML_ELEMENT_NAME_CONTINUELIMIT)) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_PAUSECONDITION_LOADING;
+			}
+			break;
+			
+		case CHAIN_PAUSECONDITIONS_LOADING:
+			if (qName.equals(Literals.XML_ELEMENT_NAME_PAUSECONDITIONS)) {
+				// TODO ? convert to real objects OR in endDocument ?
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
-				this.subState = ScanDescriptionLoaderSubStates.NONE;
+			}
+			break;
+			
+		case CHAIN_PAUSECONDITION_LOADING:
+			if (qName.equals(Literals.XML_ELEMENT_NAME_PAUSECONDITION)) {
+				this.pauseConditionList.add(this.currentPauseConditionAdaptee);
+				this.state = ScanDescriptionLoaderStates.CHAIN_PAUSECONDITIONS_LOADING;
 			}
 			break;
 
@@ -1781,16 +1768,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		case CHAIN_SCANMODULE_BREAKEVENT_LOADING:
 			if (qName.equals(Literals.XML_ELEMENT_NAME_BREAKEVENT)) {
 				this.currentScanModule.addBreakEvent(this.currentControlEvent);
-				this.createEventPair();
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_CLASSIC_LOADING;
-				this.subState = ScanDescriptionLoaderSubStates.NONE;
-			}
-			break;
-			
-		case CHAIN_SCANMODULE_PAUSEEVENT_LOADING:
-			if (qName.equals(Literals.XML_ELEMENT_NAME_PAUSEEVENT)) {
-				this.currentScanModule.addPauseEvent((PauseEvent) 
-						this.currentControlEvent);
 				this.createEventPair();
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_CLASSIC_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
@@ -2151,48 +2128,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		}
 
 		switch (this.subState) {
-		case PAUSEEVENT_ID_READ:
-			if (qName.equals(Literals.XML_ELEMENT_NAME_ID)) {
-				this.subState = ScanDescriptionLoaderSubStates.PAUSEMONITOREVENT_LOADING;
-			}
-			break;
-
-		case PAUSEEVENT_LIMIT_READ:
-			if (qName.equals(Literals.XML_ELEMENT_NAME_LIMIT)) {
-				this.subState = ScanDescriptionLoaderSubStates.PAUSEMONITOREVENT_LOADING;
-			}
-			break;
-
-		case PAUSESCHEDULEEVENT_ACTION_READ:
-			if (qName.equals(Literals.XML_ELEMENT_NAME_ACTION)) {
-				this.subState = ScanDescriptionLoaderSubStates.PAUSESCHEDULEEVENT_LOADING;
-			}
-			break;
-
-		case PAUSEMONITOREVENT_ACTION_READ:
-			if (qName.equals(Literals.XML_ELEMENT_NAME_ACTION)) {
-				this.subState = ScanDescriptionLoaderSubStates.PAUSEMONITOREVENT_LOADING;
-			}
-			break;
-
-		case PAUSEEVENT_INCIDENT_READ:
-			if (qName.equals(Literals.XML_ELEMENT_NAME_INCIDENT)) {
-				this.subState = ScanDescriptionLoaderSubStates.PAUSESCHEDULEEVENT_LOADING;
-			}
-			break;
-
-		case PAUSEEVENT_CHAINID_READ:
-			if (qName.equals(Literals.XML_ELEMENT_NAME_CHAINID)) {
-				this.subState = ScanDescriptionLoaderSubStates.PAUSESCHEDULEEVENT_LOADING;
-			}
-			break;
-
-		case PAUSEEVENT_SCANMODULEID_READ:
-			if (qName.equals(Literals.XML_ELEMENT_NAME_SMID)) {
-				this.subState = ScanDescriptionLoaderSubStates.PAUSESCHEDULEEVENT_LOADING;
-			}
-			break;
-
 		case EVENT_ID_READ:
 			if (qName.equals(Literals.XML_ELEMENT_NAME_ID)) {
 				this.subState = ScanDescriptionLoaderSubStates.MONITOREVENT_LOADING;
@@ -2277,6 +2212,10 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			}
 			break;
 }
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("End Element: " + qName + " --> State: " + 
+					this.state + " (Substate: " + this.subState + ")");
+		}
 	}
 
 	/**
@@ -2417,6 +2356,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				}
 			}
 		}
+		
+		LOGGER.debug("End Document");
 	}
 
 	/*
@@ -2733,6 +2674,27 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 		default:
 			break;
+		}
+	}
+	
+	/*
+	 * PauseConditions are saved into a list of java beans (adaptees). Adaptees
+	 * have to be converted and added to the chain as "real" PauseCondition 
+	 * objects.
+	 * 
+	 * @since 1.36
+	 * @see #5742
+	 */
+	private void marshalPauseConditions() {
+		PauseConditionAdapter adapter = new PauseConditionAdapter(this.measuringStation);
+		for (PauseConditionAdaptee adaptee : this.pauseConditionList) {
+			PauseCondition pauseCondition;
+			try {
+				pauseCondition = adapter.marshal(adaptee);
+				this.currentChain.addPauseCondition(pauseCondition);
+			} catch (Exception e) {
+				LOGGER.error(e.getMessage(), e);
+			}
 		}
 	}
 }

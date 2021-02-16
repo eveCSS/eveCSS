@@ -37,6 +37,7 @@ public class Literals {
 	public static final String XML_ELEMENT_NAME_COLOR = "color";
 	public static final String XML_ELEMENT_NAME_COMMENT = "comment";
 	public static final String XML_ELEMENT_NAME_CONFIRMSAVE = "confirmsave";
+	public static final String XML_ELEMENT_NAME_CONTINUELIMIT = "continuelimit";
 	public static final String XML_ELEMENT_NAME_DEFERREDTRIGGER = "deferredtrigger";
 	public static final String XML_ELEMENT_NAME_DETECTORS = "detectors";
 	public static final String XML_ELEMENT_NAME_DETECTOR = "detector";
@@ -67,10 +68,14 @@ public class Literals {
 	public static final String XML_ELEMENT_NAME_NAME = "name";
 	public static final String XML_ELEMENT_NAME_NESTED = "nested";
 	public static final String XML_ELEMENT_NAME_NORMALIZEID = "normalize_id";
+	public static final String XML_ELEMENT_NAME_OPERATOR = "operator";
 	public static final String XML_ELEMENT_NAME_OPTION = "option";
 	public static final String XML_ELEMENT_NAME_PARAMETER = "parameter";
 	public static final String XML_ELEMENT_NAME_PARENT = "parent";
+	public static final String XML_ELEMENT_NAME_PAUSECONDITION = "pausecondition";
+	public static final String XML_ELEMENT_NAME_PAUSECONDITIONS = "pauseconditions";
 	public static final String XML_ELEMENT_NAME_PAUSEEVENT = "pauseevent";
+	public static final String XML_ELEMENT_NAME_PAUSELIMIT = "pauselimit";
 	public static final String XML_ELEMENT_NAME_PLOT = "plot";
 	public static final String XML_ELEMENT_NAME_PLUGINS = "plugins";
 	public static final String XML_ELEMENT_NAME_PLUGIN = "plugin";

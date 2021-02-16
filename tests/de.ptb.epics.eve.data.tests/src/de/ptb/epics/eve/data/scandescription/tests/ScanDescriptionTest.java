@@ -5,14 +5,10 @@ import static org.junit.Assert.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Channel;
@@ -585,20 +581,13 @@ public class ScanDescriptionTest implements IModelUpdateListener, PropertyChange
 	}
 	
 	/**
-	 * Class wide setup method of the test
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() {
-	}
-	
-	/**
 	 * test wide set up method
 	 */
 	@Before
-	public void setUp() {
+	public void before() {
 		this.scanDescription = new ScanDescription(
 				MeasuringStationMother.addDetectorWithChannelAndOptionWithMonitor(
-					((MeasuringStation)MeasuringStationMother.createNewMeasuringStation())));
+					MeasuringStationMother.createNewEmptyMeasuringStation()));
 		Chain myChain = ChainMother.createNewChain();
 		this.scanDescription.add(myChain);
 		ScanModule myScanModule = ScanModuleMother.createNewScanModule();
@@ -606,19 +595,5 @@ public class ScanDescriptionTest implements IModelUpdateListener, PropertyChange
 		Channel myChannel = ChannelMother.createNewChannel(myScanModule);
 		myScanModule.add(myChannel);
 		this.scanDescription.addModelUpdateListener(this);
-	}
-	
-	/**
-	 * test wide tear down method
-	 */
-	@After
-	public void tearDown() {
-	}
-	
-	/**
-	 * class wide tear down method
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() {
 	}
 }
