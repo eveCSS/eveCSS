@@ -2,7 +2,7 @@
 <schema xmlns="http://www.w3.org/2001/XMLSchema" 
   targetNamespace="http://www.ptb.de/epics/SCML"
   xmlns:tns="http://www.ptb.de/epics/SCML" 
-  version="8.0">
+  version="9.0">
 
   <!-- please increase version number on every modification
        If the corresponding XML-file of the previous schema version is still
@@ -47,10 +47,16 @@
   <complexType name="chain">
     <sequence>
       <element name="startevent" type="tns:smevent" minOccurs="0"></element>
-      <element name="pauseevent" type="tns:pauseevent" minOccurs="0" maxOccurs="unbounded"></element>
       <element name="redoevent" type="tns:smevent" minOccurs="0" maxOccurs="unbounded"></element>
       <element name="breakevent" type="tns:smevent" minOccurs="0" maxOccurs="unbounded"></element>
       <element name="stopevent" type="tns:smevent" minOccurs="0" maxOccurs="unbounded"></element>
+      <element name="pauseconditions">
+        <complexType>
+          <sequence>
+            <element name="pausecondition" type="tns:pausecondition" minOccurs="0" maxOccurs="unbounded"></element>
+          </sequence>
+        </complexType>
+      </element> 
       <element name="scanmodules" type="tns:scanmodules"></element>
     </sequence>
   <attribute name="id" type="tns:oneToThousand"></attribute>
@@ -109,26 +115,13 @@
     </restriction>
   </simpleType>
 
-  <complexType name="pauseevent">
-    <sequence>
-      <group ref="tns:smeventGroup"></group>
-      <element name="action" type="tns:eventactions"></element>
-    </sequence>
-  </complexType>
-
   <complexType name="smevent">
-    <sequence>
-      <group ref="tns:smeventGroup"></group>
-    </sequence>
-  </complexType>
-  
-  <group name="smeventGroup">
     <choice>
       <element name="detectorevent" type="tns:detectorevent"></element>
       <element name="monitorevent" type="tns:monitorevent"></element>
       <element name="scheduleevent" type="tns:scheduleevent"></element>
     </choice>
-  </group>
+  </complexType>
 
   <complexType name="detectorevent">
     <sequence>
@@ -151,20 +144,49 @@
     </sequence>
   </complexType>
 
-  <simpleType name="eventactions">
-    <restriction base="string">
-      <enumeration value="ON"></enumeration>
-      <enumeration value="OFF"></enumeration>
-      <enumeration value="ONOFF"></enumeration>
-    </restriction>
-  </simpleType>
-
   <simpleType name="incident">
     <restriction base="string">
       <enumeration value="Start"></enumeration>
       <enumeration value="End"></enumeration>
     </restriction>
   </simpleType>
+  
+  <complexType name="pausecondition">
+    <sequence>
+      <element name="id" type="tns:identifier"></element>
+    </sequence>
+  </complexType>
+  
+  <complexType name="eqcondition">
+    <complexContent>
+      <extension base="tns:pausecondition">
+        <sequence>
+          <element name="operator" type="tns:equality"></element>
+          <element name="pauselimit" type="tns:conditionlimit"></element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  
+  <complexType name="ineqcondition">
+    <complexContent>
+      <extension base="tns:pausecondition">
+        <sequence>
+          <element name="operator" type="tns:inequality"></element>
+          <element name="pauselimit" type="tns:conditionlimit"></element>
+          <element name="continuelimit" type="tns:conditionlimit" minOccurs="0"></element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+
+  <complexType name="conditionlimit">
+    <simpleContent>
+      <extension base="string">
+        <attribute name="type" type="tns:data" use="required"></attribute>
+      </extension>
+    </simpleContent>
+  </complexType>
 
   <complexType name="scanmodules">
     <sequence>
@@ -199,7 +221,6 @@
       <element name="triggerconfirmaxis" type="boolean" minOccurs="0"></element>
       <element name="triggerconfirmchannel" type="boolean" minOccurs="0"></element>
       <element name="triggerevent" type="tns:smevent" minOccurs="0" maxOccurs="unbounded"></element>
-      <element name="pauseevent" type="tns:pauseevent" minOccurs="0" maxOccurs="unbounded"></element>
       <element name="redoevent" type="tns:smevent" minOccurs="0" maxOccurs="unbounded"></element>
       <element name="breakevent" type="tns:smevent" minOccurs="0" maxOccurs="unbounded"></element>
       <element name="prescan" minOccurs="0" maxOccurs="unbounded">
@@ -518,13 +539,23 @@
     </simpleContent>
   </complexType>
 
-  <simpleType name="comparison">
+  <simpleType name="equality">
     <restriction base="string">
       <enumeration value="eq"></enumeration>
       <enumeration value="ne"></enumeration>
+    </restriction>
+  </simpleType>
+
+
+  <simpleType name="inequality">
+    <restriction base="string">
       <enumeration value="gt"></enumeration>
       <enumeration value="lt"></enumeration>
     </restriction>
+  </simpleType>
+
+  <simpleType name="comparison">
+    <union memberTypes="tns:equality tns:inequality"></union>
   </simpleType>
 
   <simpleType name="event">
