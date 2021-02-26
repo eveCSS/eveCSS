@@ -56,9 +56,7 @@ public class RemoveAllEvents implements IHandler {
 				"de.ptb.epics.eve.editor.views.ChainView")) {
 			Chain chain = ((ChainView)HandlerUtil.getActivePart(event)).
 				getCurrentChain();
-			if (eventImpact.equals(EventImpacts.PAUSE)) {
-				chain.removePauseEvents();
-			} else if (eventImpact.equals(EventImpacts.REDO)) {
+			if (eventImpact.equals(EventImpacts.REDO)) {
 				chain.removeRedoEvents();
 			} else if (eventImpact.equals(EventImpacts.BREAK)) {
 				chain.removeBreakEvents();
@@ -69,9 +67,7 @@ public class RemoveAllEvents implements IHandler {
 				"de.ptb.epics.eve.editor.views.ScanModulView")) {
 			ScanModule scanModule = ((ScanModuleView)HandlerUtil.getActivePart(
 				event)).getCurrentScanModule();
-			if (eventImpact.equals(EventImpacts.PAUSE)) {
-				scanModule.removePauseEvents();
-			} else if (eventImpact.equals(EventImpacts.REDO)) {
+			if (eventImpact.equals(EventImpacts.REDO)) {
 				scanModule.removeRedoEvents();
 			} else if (eventImpact.equals(EventImpacts.BREAK)) {
 				scanModule.removeBreakEvents();

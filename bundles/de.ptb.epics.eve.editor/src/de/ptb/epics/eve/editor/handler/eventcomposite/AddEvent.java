@@ -16,7 +16,6 @@ import de.ptb.epics.eve.data.measuringstation.event.Event;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
-import de.ptb.epics.eve.data.scandescription.PauseEvent;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.Activator;
@@ -97,10 +96,7 @@ public class AddEvent implements IHandler {
 		if (activePart.equals("de.ptb.epics.eve.editor.views.ChainView")) {
 			Chain chain = ((ChainView)HandlerUtil.getActivePart(executionEvent)).
 					getCurrentChain();
-			if (eventImpact.equals(EventImpacts.PAUSE)) {
-				chain.addPauseEvent(
-						new PauseEvent(eventType, event, eventId));
-			} else if (eventImpact.equals(EventImpacts.REDO)) {
+			if (eventImpact.equals(EventImpacts.REDO)) {
 				chain.addRedoEvent(
 						new ControlEvent(eventType, event, eventId));
 			} else if (eventImpact.equals(EventImpacts.BREAK)) {
@@ -114,10 +110,7 @@ public class AddEvent implements IHandler {
 				"de.ptb.epics.eve.editor.views.ScanModulView")) {
 			ScanModule scanModule = ((ScanModuleView)HandlerUtil.getActivePart(
 					executionEvent)).getCurrentScanModule();
-			if (eventImpact.equals(EventImpacts.PAUSE)) {
-				scanModule.addPauseEvent(
-						new PauseEvent(eventType, event, eventId));
-			} else if (eventImpact.equals(EventImpacts.REDO)) {
+			if (eventImpact.equals(EventImpacts.REDO)) {
 				scanModule.addRedoEvent(
 						new ControlEvent(eventType, event, eventId));
 			} else if (eventImpact.equals(EventImpacts.BREAK)) {

@@ -134,19 +134,7 @@ public class EventComposite extends Composite implements PropertyChangeListener 
 		TableViewerColumn limitCol = new TableViewerColumn(viewer, SWT.LEFT);
 		limitCol.getColumn().setText("Limit");
 		limitCol.setEditingSupport(new LimitEditingSupport(this.tableViewer));
-		switch (this.eventType) {
-		case CONTROL_EVENT:
-			limitCol.getColumn().setWidth(100);
-			break;
-		case PAUSE_EVENT:
-			limitCol.getColumn().setWidth(60);
-			// column 4: CIF (Continue if false), only for Pause Events
-			TableViewerColumn cifCol = new TableViewerColumn(viewer, SWT.LEFT);
-			cifCol.getColumn().setText("Action");
-			cifCol.getColumn().setWidth(40);
-			cifCol.setEditingSupport(new PauseEditingSupport(this.tableViewer));
-			break;
-		}
+		limitCol.getColumn().setWidth(100);
 	}
 	
 	/**
@@ -162,7 +150,6 @@ public class EventComposite extends Composite implements PropertyChangeListener 
 				return;
 			}
 			this.chain.removePropertyChangeListener(Chain.BREAK_EVENT_PROP, this);
-			this.chain.removePropertyChangeListener(Chain.PAUSE_EVENT_PROP, this);
 			this.chain.removePropertyChangeListener(Chain.REDO_EVENT_PROP, this);
 			this.chain.removePropertyChangeListener(Chain.STOP_EVENT_PROP, this);
 			this.tableViewer.setInput(null);
@@ -174,10 +161,6 @@ public class EventComposite extends Composite implements PropertyChangeListener 
 		case BREAK:
 			this.tableViewer.setInput(chain.getBreakEvents());
 			chain.addPropertyChangeListener(Chain.BREAK_EVENT_PROP, this);
-			break;
-		case PAUSE:
-			this.tableViewer.setInput(chain.getPauseEvents());
-			chain.addPropertyChangeListener(Chain.PAUSE_EVENT_PROP, this);
 			break;
 		case REDO:
 			this.tableViewer.setInput(chain.getRedoEvents());
@@ -208,8 +191,6 @@ public class EventComposite extends Composite implements PropertyChangeListener 
 			this.scanModule.removePropertyChangeListener(
 					ScanModule.BREAK_EVENT_PROP, this);
 			this.scanModule.removePropertyChangeListener(
-					ScanModule.PAUSE_EVENT_PROP, this);
-			this.scanModule.removePropertyChangeListener(
 					ScanModule.REDO_EVENT_PROP, this);
 			this.scanModule.removePropertyChangeListener(
 					ScanModule.TRIGGER_EVENT_PROP, this);
@@ -222,11 +203,6 @@ public class EventComposite extends Composite implements PropertyChangeListener 
 		case BREAK:
 			this.tableViewer.setInput(scanModule.getBreakEvents());
 			scanModule.addPropertyChangeListener(ScanModule.BREAK_EVENT_PROP,
-					this);
-			break;
-		case PAUSE:
-			this.tableViewer.setInput(scanModule.getPauseEvents());
-			scanModule.addPropertyChangeListener(ScanModule.PAUSE_EVENT_PROP,
 					this);
 			break;
 		case REDO:

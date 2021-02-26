@@ -48,7 +48,6 @@ import de.ptb.epics.eve.data.scandescription.Connector;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
 import de.ptb.epics.eve.data.scandescription.MonitorOption;
 import de.ptb.epics.eve.data.scandescription.PauseCondition;
-import de.ptb.epics.eve.data.scandescription.PauseEvent;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.PluginController;
 import de.ptb.epics.eve.data.scandescription.PositionMode;
@@ -2554,14 +2553,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 	private void removeInvalidEvents() {
 		for (Chain chain : this.scanDescription.getChains()) {
 			for (ControlEvent controlEvent : new CopyOnWriteArrayList<ControlEvent>(
-					chain.getPauseEvents())) {
-				if (controlEvent.getEvent() == null) {
-					this.addLostDeviceEventEntry(controlEvent,
-							"Removing Pause Event of Chain " + chain.getId());
-					chain.removePauseEvent((PauseEvent) controlEvent);
-				}
-			}
-			for (ControlEvent controlEvent : new CopyOnWriteArrayList<ControlEvent>(
 					chain.getRedoEvents())) {
 				if (controlEvent.getEvent() == null) {
 					this.addLostDeviceEventEntry(controlEvent,
@@ -2586,17 +2577,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				}
 			}
 			for (ScanModule sm : chain.getScanModules()) {
-				for (ControlEvent controlEvent : new CopyOnWriteArrayList<ControlEvent>(
-						sm.getPauseEvents())) {
-					if (controlEvent.getEvent() == null) {
-						this.addLostDeviceEventEntry(
-								controlEvent,
-								"Removing Pause Event of Scanmodule "
-										+ sm.getName() + " of Chain "
-										+ chain.getId());
-						sm.removePauseEvent((PauseEvent) controlEvent);
-					}
-				}
 				for (ControlEvent controlEvent : new CopyOnWriteArrayList<ControlEvent>(
 						sm.getRedoEvents())) {
 					if (controlEvent.getEvent() == null) {

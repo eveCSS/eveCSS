@@ -22,7 +22,6 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
 import de.ptb.epics.eve.data.tests.mothers.scandescription.ChainMother;
 import de.ptb.epics.eve.data.tests.mothers.scandescription.ChannelMother;
 import de.ptb.epics.eve.data.tests.mothers.scandescription.ControlEventMother;
-import de.ptb.epics.eve.data.tests.mothers.scandescription.PauseEventMother;
 import de.ptb.epics.eve.data.tests.mothers.scandescription.ScanModuleMother;
 
 /**
@@ -135,20 +134,6 @@ public class ScanModuleTest implements IModelUpdateListener {
 		assert(!this.scanModule.getTriggerEvents().isEmpty());
 		this.scanModule.removeTriggerEvents();
 		assert(this.scanModule.getTriggerEvents().isEmpty());
-	}
-	
-	/** @since 1.31 */
-	@Test
-	public void testRemovePauseEvents() {
-		Chain chain = ChainMother.createNewChain();
-		chain.add(this.scanModule);
-		Channel channel = ChannelMother.createNewChannel(scanModule);
-		scanModule.add(channel);
-		this.scanModule.addPauseEvent(
-				PauseEventMother.createNewDetectorReadyEvent(channel));
-		assert(!this.scanModule.getPauseEvents().isEmpty());
-		this.scanModule.removePauseEvents();
-		assert(this.scanModule.getPauseEvents().isEmpty());
 	}
 	
 	@Test

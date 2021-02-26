@@ -111,7 +111,6 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	public static final String TRIGGER_EVENT_PROP = "triggerEvent";
 	public static final String BREAK_EVENT_PROP = "breakEvent";
 	public static final String REDO_EVENT_PROP = "redoEvent";
-	public static final String PAUSE_EVENT_PROP = "pauseEvent";
 	
 	/** */
 	public static final int DEFAULT_WIDTH = 70;
@@ -188,9 +187,6 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	// the control event manager that controls the trigger events
 	private ControlEventManager triggerControlEventManager;
 	
-	// the control event manager that controls the pause events
-	private ControlEventManager pauseControlEventManager;
-	
 	// List that is holding all objects that need to get an update message 
 	// if this object was updated.
 	private List<IModelUpdateListener> updateListener;
@@ -234,14 +230,11 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 				ControlEventTypes.CONTROL_EVENT);
 		this.redoControlEventManager = new ControlEventManager(
 				ControlEventTypes.CONTROL_EVENT);
-		this.pauseControlEventManager = new ControlEventManager(
-				ControlEventTypes.PAUSE_EVENT);
 		this.triggerControlEventManager = new ControlEventManager(
 				ControlEventTypes.CONTROL_EVENT);
 		
 		this.breakControlEventManager.addModelUpdateListener(this);
 		this.redoControlEventManager.addModelUpdateListener(this);
-		this.pauseControlEventManager.addModelUpdateListener(this);
 		this.triggerControlEventManager.addModelUpdateListener(this);
 		
 		this.updateListener = new ArrayList<IModelUpdateListener>();
@@ -1056,68 +1049,6 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	public int getHeight() {
 		return height;
 	}
-
-	/**
-	 * Returns a list of pause events (original list).
-	 * 
-	 * @return a list of pause events (original list)
-	 * @author Marcus Michalsky
-	 * @since 1.19
-	 */
-	public List<ControlEvent> getPauseEvents() {
-		return this.pauseControlEventManager.getEvents();
-	}
-	
-	/**
-	 * Adds a pause event.
-	 * 
-	 * @param pauseEvent the pause event that should be added
-	 * @return <code>true</code> if the event was added, <code>false</code>
-	 * 		otherwise
-	 * @author Marcus Michalsky
-	 * @since 1.19
-	 */
-	public boolean addPauseEvent(final PauseEvent pauseEvent) {
-		if (this.pauseControlEventManager.addControlEvent(pauseEvent)) {
-			this.registerEventValidProperty(pauseEvent);
-			this.propertyChangeSupport.firePropertyChange(
-					ScanModule.PAUSE_EVENT_PROP, null, pauseEvent);
-			return true;
-		}
-		return false;
-	}
-	
-	/**
-	 * Removes a pause event.
-	 * 
-	 * @param pauseEvent the pause event that should be removed 
-	 * @return <code>true</code> if the event was removed, <code>false</code>
-	 * 		otherwise
-	 * @author Marcus Michalsky
-	 * @since 1.19
-	 */
-	public boolean removePauseEvent(final PauseEvent pauseEvent) {
-		if (this.pauseControlEventManager.removeEvent(pauseEvent)) {
-			this.unregisterEventValidProperty(pauseEvent);
-			this.propertyChangeSupport.firePropertyChange(
-					ScanModule.PAUSE_EVENT_PROP, pauseEvent, null);
-			return true;
-		}
-		return false;
-	}
-	
-	/**
-	 * Removes all pause events.
-	 * 
-	 * @author Marcus Michalsky
-	 * @since 1.19
-	 */
-	public void removePauseEvents() {
-		this.pauseControlEventManager.removeAllEvents();
-		this.propertyChangeSupport.firePropertyChange(
-				ScanModule.PAUSE_EVENT_PROP,
-				this.pauseControlEventManager.getEvents(), null);
-	}
 	
 	/**
 	 * Returns a list of break events (original list).
@@ -1306,17 +1237,6 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	}
 	
 	/**
-	 * Checks whether the given pause event is a pause event of the scan module.
-	 * 
-	 * @param controlEvent the pause event that should be checked
-	 * @return <code>true</code> if the given pause event is a pause event of 
-	 * 			the scan module, <code>false</code> otherwise
-	 */
-	public boolean isPauseEventOfScanModule(final PauseEvent controlEvent) {
-		return this.pauseControlEventManager.getEvents().contains(controlEvent);
-	}
-	
-	/**
 	 * Checks whether the given control event is a redo event of the scan 
 	 * module.
 	 * 
@@ -1364,9 +1284,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * 			break event of the scan module
 	 */
 	public boolean isAEventOfTheScanModul(final ControlEvent controlEvent) {
-		return (controlEvent instanceof PauseEvent && 
-				this.isPauseEventOfScanModule((PauseEvent)controlEvent)) || 
-				this.isBreakEventOfScanModule(controlEvent) || 
+		return  this.isBreakEventOfScanModule(controlEvent) || 
 				this.isRedoEventOfScanModule(controlEvent) || 
 				this.isTriggerEventOfScanModule(controlEvent);
 	}
@@ -1455,7 +1373,6 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	public List<IModelError> getModelErrors() {
 		final List<IModelError> errorList = new ArrayList<IModelError>();
 		
-		errorList.addAll(this.pauseControlEventManager.getModelErrors());
 		errorList.addAll(this.breakControlEventManager.getModelErrors());
 		errorList.addAll(this.redoControlEventManager.getModelErrors());
 		errorList.addAll(this.triggerControlEventManager.getModelErrors());
@@ -1769,7 +1686,6 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		this.removeBreakEvents();
 		this.removeRedoEvents();
 		this.removeTriggerEvents();
-		this.removePauseEvents();
 	}
 	
 	/**
@@ -1928,9 +1844,6 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * @see Redmine #1401 Comments #16,#17
 	 */
 	public void registerEventValidProperties() {
-		for (ControlEvent controlEvent : this.getPauseEvents()) {
-			this.registerEventValidProperty(controlEvent);
-		}
 		for (ControlEvent controlEvent : this.getRedoEvents()) {
 			this.registerEventValidProperty(controlEvent);
 		}
@@ -1943,17 +1856,6 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	}
 	
 	private void removeInvalidScanEvents() {
-		for (ControlEvent controlEvent : new CopyOnWriteArrayList<ControlEvent>(
-				this.getPauseEvents())) {
-			if (controlEvent.getEvent() instanceof ScanEvent &&
-					!((ScanEvent)controlEvent.getEvent()).isValid()) {
-				this.removePauseEvent((PauseEvent)controlEvent);
-				logger.debug("Pause Event " + 
-						controlEvent.getEvent().getName() + 
-						" removed from sm " + this.getName() + 
-						" (Chain " + this.getChain().getId() + ") ");
-			}
-		}
 		for (ControlEvent controlEvent : new CopyOnWriteArrayList<ControlEvent>(
 				this.getRedoEvents())) {
 			if (controlEvent.getEvent() instanceof ScanEvent &&

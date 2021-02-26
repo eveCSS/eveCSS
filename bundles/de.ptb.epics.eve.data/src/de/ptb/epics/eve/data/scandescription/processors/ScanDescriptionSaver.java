@@ -42,7 +42,6 @@ import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
-import de.ptb.epics.eve.data.scandescription.PauseEvent;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.PluginController;
 import de.ptb.epics.eve.data.scandescription.Positioning;
@@ -1115,10 +1114,6 @@ public class ScanDescriptionSaver implements
 				this.writeControlEvent(event, "startevent");
 			}
 
-			for (ControlEvent event : chain.getPauseEvents()) {
-				this.writeControlEvent(event, "pauseevent");
-			}
-
 			for (ControlEvent event : chain.getRedoEvents()) {
 				this.writeControlEvent(event, "redoevent");
 			}
@@ -1318,10 +1313,6 @@ public class ScanDescriptionSaver implements
 
 			for (ControlEvent event : scanModule.getTriggerEvents()) {
 				this.writeControlEvent(event, "triggerevent");
-			}
-
-			for (ControlEvent event : scanModule.getPauseEvents()) {
-				this.writeControlEvent(event, "pauseevent");
 			}
 
 			for (ControlEvent event : scanModule.getRedoEvents()) {
@@ -2374,18 +2365,6 @@ public class ScanDescriptionSaver implements
 				break;
 			default:
 				break;
-			}
-			if (name.equals("pauseevent")) {
-				atts.clear();
-				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_ACTION,
-						Literals.XML_ELEMENT_NAME_ACTION, this.atts);
-				this.contentHandler.characters(
-						("" + ((PauseEvent) controlEvent).getEventAction()
-								.toString()).toCharArray(), 0,
-						("" + ((PauseEvent) controlEvent).getEventAction()
-								.toString()).length());
-				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_ACTION,
-						Literals.XML_ELEMENT_NAME_ACTION);
 			}
 			this.atts.clear();
 			this.contentHandler.endElement(Literals.EMPTY_STRING, name, name);

@@ -19,7 +19,6 @@ import de.ptb.epics.eve.data.measuringstation.event.Event;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeFilter;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
-import de.ptb.epics.eve.data.scandescription.PauseEvent;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.tests.internal.Configurator;
 
@@ -504,25 +503,6 @@ public class ExcludeFilterTest {
 		for(IMeasuringStation measuringStation : stations) {
 			assertNotNull(measuringStation);
 			
-			// event in pause event manager of chain
-			for(Event e : measuringStation.getEvents()) {
-				ExcludeFilter filteredMeasuringStation = new ExcludeFilter();
-				filteredMeasuringStation.setSource(measuringStation);
-				assertNotNull(filteredMeasuringStation);
-				
-				ScanDescription sd = Configurator.getBasicScanDescription(
-						measuringStation);
-				
-				sd.getChain(1).addPauseEvent(
-						new PauseEvent(EventTypes.MONITOR, e, 
-								e.getId()));
-				
-				filteredMeasuringStation.excludeUnusedDevices(sd);
-				
-				assertNotNull(filteredMeasuringStation.
-						getAbstractDeviceById(e.getId()));
-			}
-			
 			// event in redo event manager of chain
 			for(Event e : measuringStation.getEvents()) {
 				ExcludeFilter filteredMeasuringStation = new ExcludeFilter();
@@ -572,25 +552,6 @@ public class ExcludeFilterTest {
 				
 				sd.getChain(1).addStopEvent(
 						new ControlEvent(EventTypes.MONITOR, e, 
-								e.getId()));
-				
-				filteredMeasuringStation.excludeUnusedDevices(sd);
-				
-				assertNotNull(filteredMeasuringStation.
-						getAbstractDeviceById(e.getId()));
-			}
-			
-			// event in pause event manager of scan module
-			for(Event e : measuringStation.getEvents()) {
-				ExcludeFilter filteredMeasuringStation = new ExcludeFilter();
-				filteredMeasuringStation.setSource(measuringStation);
-				assertNotNull(filteredMeasuringStation);
-				
-				ScanDescription sd = Configurator.getBasicScanDescription(
-						measuringStation);
-				
-				sd.getChain(1).getScanModuleById(1).addPauseEvent(
-						new PauseEvent(EventTypes.MONITOR, e, 
 								e.getId()));
 				
 				filteredMeasuringStation.excludeUnusedDevices(sd);

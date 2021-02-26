@@ -9,7 +9,6 @@ import org.eclipse.ui.PlatformUI;
 import de.ptb.epics.eve.data.ComparisonTypes;
 import de.ptb.epics.eve.data.measuringstation.event.MonitorEvent;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
-import de.ptb.epics.eve.data.scandescription.PauseEvent;
 
 /**
  * <code>ControlEventLabelProvider</code>.
@@ -67,9 +66,6 @@ public class LabelProvider implements ITableLabelProvider {
 			} else {
 				returnValue = "---";
 			}
-			break;
-		case 4: // Action column
-			returnValue = ((PauseEvent)ce).getEventAction().toString();
 			break;
 		}
 		return returnValue;

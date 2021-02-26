@@ -14,7 +14,6 @@ import de.ptb.epics.eve.data.EventImpacts;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
-import de.ptb.epics.eve.data.scandescription.PauseEvent;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.views.chainview.ChainView;
 import de.ptb.epics.eve.editor.views.detectorchannelview.ui.DetectorChannelView;
@@ -59,9 +58,7 @@ public class RemoveEvent implements IHandler {
 				"de.ptb.epics.eve.editor.views.ChainView")) {
 			Chain chain = ((ChainView)HandlerUtil.getActivePart(event)).
 				getCurrentChain();
-			if (eventImpact.equals(EventImpacts.PAUSE)) {
-				chain.removePauseEvent((PauseEvent)eventToRemove);
-			} else if (eventImpact.equals(EventImpacts.REDO)) {
+			if (eventImpact.equals(EventImpacts.REDO)) {
 				chain.removeRedoEvent(eventToRemove);
 			} else if (eventImpact.equals(EventImpacts.BREAK)) {
 				chain.removeBreakEvent(eventToRemove);
@@ -72,9 +69,7 @@ public class RemoveEvent implements IHandler {
 				"de.ptb.epics.eve.editor.views.ScanModulView")) {
 			ScanModule scanModule = ((ScanModuleView)HandlerUtil.getActivePart(
 				event)).getCurrentScanModule();
-			if (eventImpact.equals(EventImpacts.PAUSE)) {
-				scanModule.removePauseEvent((PauseEvent)eventToRemove);
-			} else if (eventImpact.equals(EventImpacts.REDO)) {
+			if (eventImpact.equals(EventImpacts.REDO)) {
 				scanModule.removeRedoEvent(eventToRemove);
 			} else if (eventImpact.equals(EventImpacts.BREAK)) {
 				scanModule.removeBreakEvent(eventToRemove);

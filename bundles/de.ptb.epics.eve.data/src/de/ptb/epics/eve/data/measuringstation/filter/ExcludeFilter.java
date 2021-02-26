@@ -662,7 +662,6 @@ public class ExcludeFilter extends MeasuringStationFilter {
 				
 				// events of the scan module
 				List<ControlEvent> smEvents = new ArrayList<ControlEvent>();
-				smEvents.addAll(sm.getPauseEvents());
 				smEvents.addAll(sm.getRedoEvents());
 				smEvents.addAll(sm.getBreakEvents());
 				smEvents.addAll(sm.getTriggerEvents());
@@ -684,7 +683,6 @@ public class ExcludeFilter extends MeasuringStationFilter {
 			
 			// events of the chain
 			List<ControlEvent> chainEvents = new ArrayList<ControlEvent>();
-			chainEvents.addAll(chain.getPauseEvents());
 			chainEvents.addAll(chain.getRedoEvents());
 			chainEvents.addAll(chain.getBreakEvents());
 			chainEvents.addAll(chain.getStopEvents());

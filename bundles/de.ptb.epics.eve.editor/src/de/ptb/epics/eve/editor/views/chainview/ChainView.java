@@ -60,8 +60,6 @@ public class ChainView extends ViewPart implements IEditorView,
 	private Composite top;
 
 	public CTabFolder eventsTabFolder;
-	private CTabItem pauseTabItem;
-	private EventComposite pauseEventComposite;
 	private CTabItem redoTabItem;
 	private EventComposite redoEventComposite;
 	private CTabItem breakTabItem;
@@ -124,8 +122,6 @@ public class ChainView extends ViewPart implements IEditorView,
 		gridData.verticalAlignment = GridData.FILL;
 		this.eventsTabFolder.setLayoutData(gridData);
 		
-		pauseEventComposite = new EventComposite(eventsTabFolder, SWT.NONE,
-				ControlEventTypes.PAUSE_EVENT, this);
 		redoEventComposite = new EventComposite(eventsTabFolder, SWT.NONE,
 				ControlEventTypes.CONTROL_EVENT, this);
 		breakEventComposite = new EventComposite(eventsTabFolder, SWT.NONE,
@@ -133,10 +129,6 @@ public class ChainView extends ViewPart implements IEditorView,
 		stopEventComposite = new EventComposite(eventsTabFolder, SWT.NONE,
 				ControlEventTypes.CONTROL_EVENT, this);
 
-		this.pauseTabItem = new CTabItem(eventsTabFolder, SWT.FLAT);
-		this.pauseTabItem.setText(" Pause ");
-		this.pauseTabItem.setControl(pauseEventComposite);
-		this.pauseTabItem.setToolTipText("Event to pause an resume this scan");
 		this.redoTabItem = new CTabItem(eventsTabFolder, SWT.FLAT);
 		this.redoTabItem.setText(" Redo ");
 		this.redoTabItem.setControl(redoEventComposite);
@@ -152,7 +144,7 @@ public class ChainView extends ViewPart implements IEditorView,
 		this.stopTabItem.setControl(stopEventComposite);
 		this.stopTabItem.setToolTipText("Stop this scan");
 
-		this.eventsTabFolder.showItem(this.pauseTabItem);
+		this.eventsTabFolder.showItem(this.redoTabItem);
 		
 		top.setVisible(false);
 
@@ -227,16 +219,9 @@ public class ChainView extends ViewPart implements IEditorView,
 	 */
 	private void checkForErrors() {
 		// reset all
-		this.pauseTabItem.setImage(null);
 		this.breakTabItem.setImage(null);
 		this.redoTabItem.setImage(null);
 		this.stopTabItem.setImage(null);
-
-		for (ControlEvent event : this.currentChain.getPauseEvents()) {
-			if (!event.getModelErrors().isEmpty()) {
-				this.pauseTabItem.setImage(eventErrorImage);
-			}
-		}
 		
 		for (ControlEvent event : this.currentChain.getBreakEvents()) {
 			if (!event.getModelErrors().isEmpty()) {
@@ -314,12 +299,10 @@ public class ChainView extends ViewPart implements IEditorView,
 		if (this.currentChain != null) {
 			this.top.setVisible(true);
 			if (this.eventsTabFolder.getSelection() == null) {
-				this.eventsTabFolder.setSelection(this.pauseTabItem);
+				this.eventsTabFolder.setSelection(this.redoTabItem);
 			}
 			this.setPartName("Chain: " + this.currentChain.getId());
 			
-			this.pauseEventComposite.setEvents(this.currentChain,
-					EventImpacts.PAUSE);
 			this.redoEventComposite.setEvents(this.currentChain,
 					EventImpacts.REDO);
 			this.breakEventComposite.setEvents(this.currentChain,
@@ -329,7 +312,6 @@ public class ChainView extends ViewPart implements IEditorView,
 			
 			checkForErrors();
 		} else { // currentChain == null
-			this.pauseEventComposite.setEvents(this.currentChain, null);
 			this.redoEventComposite.setEvents(this.currentChain, null);
 			this.breakEventComposite.setEvents(this.currentChain, null);
 			this.stopEventComposite.setEvents(this.currentChain, null);
