@@ -11,7 +11,6 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
@@ -67,9 +66,6 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 		sc.setExpandVertical(true);
 		sc.setContent(top);
 
-		Label eventLabel = new Label(top, SWT.NONE);
-		eventLabel.setText("Events:");
-
 		this.eventsTabFolder = new CTabFolder(top, SWT.NONE);
 		this.eventsTabFolder.setSimple(true);
 		this.eventsTabFolder.setBorderVisible(true);
@@ -91,17 +87,17 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 				ControlEventTypes.CONTROL_EVENT, this.parentView);
 
 		this.redoEventsTabItem = new CTabItem(eventsTabFolder, SWT.NONE);
-		this.redoEventsTabItem.setText(" Redo ");
+		this.redoEventsTabItem.setText("Redo Events");
 		this.redoEventsTabItem
 				.setToolTipText("Repeat the last acquisition, if redo event occurs");
 		this.redoEventsTabItem.setControl(redoEventComposite);
 		this.breakEventsTabItem = new CTabItem(eventsTabFolder, SWT.NONE);
-		this.breakEventsTabItem.setText(" Skip ");
+		this.breakEventsTabItem.setText("Skip Events");
 		this.breakEventsTabItem
 				.setToolTipText("Finish this scan module and continue with next");
 		this.breakEventsTabItem.setControl(breakEventComposite);
 		this.triggerEventsTabItem = new CTabItem(eventsTabFolder, SWT.NONE);
-		this.triggerEventsTabItem.setText(" Trigger ");
+		this.triggerEventsTabItem.setText("Trigger Events");
 		this.triggerEventsTabItem
 				.setToolTipText("Wait for trigger event before moving to next position");
 		this.triggerEventsTabItem.setControl(triggerEventComposite);

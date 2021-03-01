@@ -10,8 +10,7 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.SWT;
 import org.eclipse.ui.IViewPart;
@@ -39,11 +38,7 @@ public class EventComposite extends Composite implements PropertyChangeListener 
 		Logger.getLogger(EventComposite.class.getName());
 
 	private IViewPart parentView;
-
-	private ControlEventTypes eventType;
-
 	private TableViewer tableViewer;
-	
 	private TableViewerFocusListener tableViewerFocusListener;
 
 	private Chain chain;
@@ -62,14 +57,17 @@ public class EventComposite extends Composite implements PropertyChangeListener 
 			final ControlEventTypes eventType, final IViewPart parentView) {
 		super(parent, style);
 		
-		this.setLayout(new GridLayout());
+		this.setLayout(new FillLayout());
 		
-		this.eventType = eventType;	
+		// note @since 1.36:
+		// ControlEventTypes is not used anymore but constructor interface
+		// remains unchanged
+		// earlier versions differentiated between CONTROL_EVENT and 
+		// PAUSE_EVENT. Pause events don't exists anymore
 		this.parentView = parentView;
 		
 		this.chain = null;
 		this.scanModule = null;
-		this.chain = null;
 		
 		createViewer();
 	} // end of: Constructor
@@ -78,14 +76,8 @@ public class EventComposite extends Composite implements PropertyChangeListener 
 	 * 
 	 */
 	private void createViewer() {
-		this.tableViewer = new TableViewer(this, SWT.V_SCROLL | SWT.H_SCROLL);
-		GridData gridData = new GridData();
-		//gridData.minimumHeight = 50;
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		this.tableViewer.getTable().setLayoutData(gridData);
+		this.tableViewer = new TableViewer(this, 
+				SWT.V_SCROLL | SWT.H_SCROLL);
 		createColumns(this.tableViewer);
 		this.tableViewer.getTable().setHeaderVisible(true);
 		this.tableViewer.getTable().setLinesVisible(true);

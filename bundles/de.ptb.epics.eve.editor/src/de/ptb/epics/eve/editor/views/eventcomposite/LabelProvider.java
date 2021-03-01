@@ -9,6 +9,7 @@ import org.eclipse.ui.PlatformUI;
 import de.ptb.epics.eve.data.ComparisonTypes;
 import de.ptb.epics.eve.data.measuringstation.event.MonitorEvent;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
+import de.ptb.epics.eve.editor.StringLabels;
 
 /**
  * <code>ControlEventLabelProvider</code>.
@@ -17,9 +18,9 @@ import de.ptb.epics.eve.data.scandescription.ControlEvent;
  * @author Marcus Michalsky
  */
 public class LabelProvider implements ITableLabelProvider {
-	private static Image DELETE_IMG = PlatformUI.getWorkbench().getSharedImages().
+	private static final Image DELETE_IMG = PlatformUI.getWorkbench().getSharedImages().
 			getImage(ISharedImages.IMG_TOOL_DELETE);
-	private static Image ERROR_IMG = PlatformUI.getWorkbench().getSharedImages().
+	private static final Image ERROR_IMG = PlatformUI.getWorkbench().getSharedImages().
 			getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
 	
 	/**
@@ -56,7 +57,7 @@ public class LabelProvider implements ITableLabelProvider {
 						.typeToString(((ControlEvent) controlEvent).getLimit()
 								.getComparison());
 			} else {
-				returnValue = "---";
+				returnValue = StringLabels.LONG_DASH;
 			}
 			break;
 		case 3: // Limit column
@@ -64,7 +65,7 @@ public class LabelProvider implements ITableLabelProvider {
 				returnValue = ((ControlEvent) controlEvent).getLimit()
 						.getValue();
 			} else {
-				returnValue = "---";
+				returnValue = StringLabels.LONG_DASH;
 			}
 			break;
 		}

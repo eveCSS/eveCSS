@@ -11,9 +11,11 @@ import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.AbstractPrePostscanDevice;
 import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
+import de.ptb.epics.eve.data.measuringstation.Device;
 import de.ptb.epics.eve.data.measuringstation.Function;
 import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
+import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateProvider;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
@@ -23,6 +25,8 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * @since 1.36
  */
 public class PauseCondition implements IModelUpdateProvider {
+	private static final String DELIMITER = " \u00BB ";
+	
 	private AbstractDevice device;
 	private ComparisonTypes operator;
 	private String pauseLimit;
@@ -307,5 +311,23 @@ public class PauseCondition implements IModelUpdateProvider {
 	@Override
 	public boolean removeModelUpdateListener(IModelUpdateListener modelUpdateListener) {
 		return this.updateListener.remove(modelUpdateListener);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		if (this.device instanceof MotorAxis) {
+			return device.getName() + DELIMITER + "Position";
+		} else if (this.device instanceof DetectorChannel) {
+			return device.getName() + DELIMITER + "Value";
+		} else if (this.device instanceof Device) {
+			return device.getName() + DELIMITER + "Value";
+		} else if (this.device instanceof Option) {
+			return ((Option)device).getParent().getName() + DELIMITER + 
+					device.getName();
+		}
+		return device.getName();
 	}
 }

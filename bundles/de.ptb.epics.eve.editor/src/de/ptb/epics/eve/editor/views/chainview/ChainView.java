@@ -60,6 +60,8 @@ public class ChainView extends ViewPart implements IEditorView,
 	private Composite top;
 
 	public CTabFolder eventsTabFolder;
+	private CTabItem pauseTabItem;
+	private PauseConditionComposite pauseConditionComposite;
 	private CTabItem redoTabItem;
 	private EventComposite redoEventComposite;
 	private CTabItem breakTabItem;
@@ -101,20 +103,13 @@ public class ChainView extends ViewPart implements IEditorView,
 		sc.setExpandVertical(true);
 		sc.setContent(this.top);
 		
-		Label eventLabel = new Label(top, SWT.NONE);
-		eventLabel.setText("Events:");
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = SWT.LEFT;
-		gridData.verticalAlignment = SWT.CENTER;
-		eventLabel.setLayoutData(gridData);
-		
 		this.eventsTabFolder = new CTabFolder(top, SWT.FLAT);
 		this.eventsTabFolder.setSimple(true);
 		this.eventsTabFolder.setBorderVisible(true);
 		this.eventsTabFolder
 				.addSelectionListener(new EventsTabFolderSelectionListener());
 
-		gridData = new GridData();
+		GridData gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
 		gridData.minimumHeight = 150;
@@ -122,6 +117,8 @@ public class ChainView extends ViewPart implements IEditorView,
 		gridData.verticalAlignment = GridData.FILL;
 		this.eventsTabFolder.setLayoutData(gridData);
 		
+		this.pauseConditionComposite = new PauseConditionComposite(
+				eventsTabFolder, SWT.NONE);
 		redoEventComposite = new EventComposite(eventsTabFolder, SWT.NONE,
 				ControlEventTypes.CONTROL_EVENT, this);
 		breakEventComposite = new EventComposite(eventsTabFolder, SWT.NONE,
@@ -129,22 +126,26 @@ public class ChainView extends ViewPart implements IEditorView,
 		stopEventComposite = new EventComposite(eventsTabFolder, SWT.NONE,
 				ControlEventTypes.CONTROL_EVENT, this);
 
+		this.pauseTabItem = new CTabItem(eventsTabFolder, SWT.FLAT);
+		this.pauseTabItem.setText("Pause Conditions");
+		this.pauseTabItem.setControl(this.pauseConditionComposite);
+		this.pauseTabItem.setToolTipText("conditions for inhibit state");
 		this.redoTabItem = new CTabItem(eventsTabFolder, SWT.FLAT);
-		this.redoTabItem.setText(" Redo ");
+		this.redoTabItem.setText("Redo Events");
 		this.redoTabItem.setControl(redoEventComposite);
 		this.redoTabItem
 				.setToolTipText("Repeat the current scan point, if redo event occurs");
 		this.breakTabItem = new CTabItem(eventsTabFolder, SWT.FLAT);
-		this.breakTabItem.setText(" Skip ");
+		this.breakTabItem.setText("Skip Events");
 		this.breakTabItem.setControl(breakEventComposite);
 		this.breakTabItem
 				.setToolTipText("Finish the current scan module and continue with next");
 		this.stopTabItem = new CTabItem(eventsTabFolder, SWT.FLAT);
-		this.stopTabItem.setText(" Stop ");
+		this.stopTabItem.setText("Stop Events");
 		this.stopTabItem.setControl(stopEventComposite);
 		this.stopTabItem.setToolTipText("Stop this scan");
 
-		this.eventsTabFolder.showItem(this.redoTabItem);
+		this.eventsTabFolder.showItem(this.pauseTabItem);
 		
 		top.setVisible(false);
 
@@ -299,7 +300,7 @@ public class ChainView extends ViewPart implements IEditorView,
 		if (this.currentChain != null) {
 			this.top.setVisible(true);
 			if (this.eventsTabFolder.getSelection() == null) {
-				this.eventsTabFolder.setSelection(this.redoTabItem);
+				this.eventsTabFolder.setSelection(this.pauseTabItem);
 			}
 			this.setPartName("Chain: " + this.currentChain.getId());
 			
@@ -319,6 +320,7 @@ public class ChainView extends ViewPart implements IEditorView,
 			this.setPartName("No Chain selected");
 			this.top.setVisible(false);
 		}
+		this.pauseConditionComposite.setChain(this.currentChain);
 	}
 
 	/**
