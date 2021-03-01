@@ -1,5 +1,9 @@
 h1(eveTopic). What's New in EVE
 
+h2(eveTopic). Version 1.35.3 (2021-03-01)
+
+* [Feature-#5907] Option SCAN, SEVERITY and STATUS  added in template File @basicStringDetector.xtmpl@
+
 h2(eveTopic). Version 1.35.0 (2021-01-22)
 
 * [Feature-#5448] template File @genericDetector.xtmpl@ removed
