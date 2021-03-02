@@ -41,6 +41,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	public static final String SCANMODULE_REMOVED_PROP = 
 			"Chain.SCANMODULE_REMOVED_PROP";
 	public static final String POSITION_COUNT_PROP = "positionCount";
+	public static final String PAUSE_CONDITION_PROP = "pauseConditions";
 
 	/**
 	 * @since 1.19
@@ -683,23 +684,41 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	}
 	
 	/**
-	 * 
-	 * @param pauseCondition
+	 * Adds the given pause condition to the chain.
+	 * @param pauseCondition the pause condition to add
 	 * @since 1.36
 	 */
 	public void addPauseCondition(PauseCondition pauseCondition) {
 		this.pauseConditions.add(pauseCondition);
 		pauseCondition.addModelUpdateListener(this);
+		this.propertyChangeSupport.firePropertyChange(
+				Chain.PAUSE_CONDITION_PROP, null, pauseCondition);
+		this.updateListeners();
 	}
 	
 	/**
-	 * 
-	 * @param pauseCondition
+	 * Removes the given pause condition.
+	 * @param pauseCondition the pause condition to be removed
 	 * @since 1.36
 	 */
 	public void removePauseCondition(PauseCondition pauseCondition) {
-		this.pauseConditions.remove(pauseCondition);
 		pauseCondition.removeModelUpdateListener(this);
+		this.pauseConditions.remove(pauseCondition);
+		this.propertyChangeSupport.firePropertyChange(
+				Chain.PAUSE_CONDITION_PROP, pauseCondition, null);
+		this.updateListeners();
+	}
+	
+	/**
+	 * Removes all pause conditions.
+	 * @since 1.36
+	 */
+	public void removeAllPauseConditions() {
+		CopyOnWriteArrayList<PauseCondition> pauseConditionList = 
+				new CopyOnWriteArrayList<>(this.pauseConditions);
+		for (PauseCondition pauseCondition : pauseConditionList) {
+			this.removePauseCondition(pauseCondition);
+		}
 	}
 	
 	/**

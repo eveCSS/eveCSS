@@ -1,65 +1,67 @@
 package de.ptb.epics.eve.data.scandescription.tests;
 
-import org.junit.After;
-import org.junit.AfterClass;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import de.ptb.epics.eve.data.measuringstation.event.ScheduleEvent;
+import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.data.scandescription.Chain;
-import de.ptb.epics.eve.data.scandescription.ScanModule;
-import de.ptb.epics.eve.data.scandescription.StartEvent;
+import de.ptb.epics.eve.data.scandescription.PauseCondition;
+import de.ptb.epics.eve.data.tests.mothers.measuringstation.OptionMother;
 
 /**
  * 
  * @author Marcus Michalsky
- * @since 1.12
+ * @since 1.36
  */
 public class ChainTest {
 	private Chain chain;
 
-	@Ignore
+	private boolean addPauseConditionPropertyFired;
 	@Test
-	public void noTest() {
-		
+	public void testAddPauseCondition() {
+		this.addPauseConditionPropertyFired = false;
+		Option option = OptionMother.createNewDoubleOption();
+		final PauseCondition pauseCondition = new PauseCondition(option);
+		this.chain.addPropertyChangeListener(Chain.PAUSE_CONDITION_PROP, 
+				new PropertyChangeListener() {
+					@Override
+					public void propertyChange(PropertyChangeEvent e) {
+						assertEquals(pauseCondition, e.getNewValue());
+						addPauseConditionPropertyFired = true;
+					}
+		});
+		chain.addPauseCondition(pauseCondition);
+		assertTrue(this.addPauseConditionPropertyFired);
+	}
+
+	private boolean removePauseConditionPropertyFired;
+	@Test
+	public void testRemovePauseCondition() {
+		this.removePauseConditionPropertyFired = false;
+		Option option = OptionMother.createNewDoubleOption();
+		final PauseCondition pauseCondition = new PauseCondition(option);
+		this.chain.addPauseCondition(pauseCondition);
+		this.chain.addPropertyChangeListener(Chain.PAUSE_CONDITION_PROP, 
+				new PropertyChangeListener() {
+					@Override
+					public void propertyChange(PropertyChangeEvent e) {
+						assertEquals(pauseCondition, e.getOldValue());
+						assertEquals(null, e.getNewValue());
+						removePauseConditionPropertyFired = true;
+					}
+		});
+		chain.removePauseCondition(pauseCondition);
+		assertTrue(removePauseConditionPropertyFired);
 	}
 	
-	/**
-	 * Class wide setup method of the test
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() {
-	}
-	
-	/**
-	 * test wide set up method
-	 */
 	@Before
-	public void setUp() {
+	public void before() {
 		this.chain = new Chain(1);
-		Chain zeroChain = new Chain(0);
-		ScanModule zeroModule = new ScanModule(0);
-		zeroChain.add(zeroModule);
-		this.chain.setStartEvent(new StartEvent(new ScheduleEvent(zeroModule)
-				, chain));
-		ScanModule sm = new ScanModule(1);
-		sm.setName("SM1");
-		this.chain.add(sm);
-	}
-	
-	/**
-	 * test wide tear down method
-	 */
-	@After
-	public void tearDown() {
-	}
-	
-	/**
-	 * class wide tear down method
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() {
 	}
 }
