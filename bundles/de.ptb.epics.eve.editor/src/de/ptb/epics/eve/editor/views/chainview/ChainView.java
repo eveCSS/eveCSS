@@ -118,7 +118,7 @@ public class ChainView extends ViewPart implements IEditorView,
 		this.eventsTabFolder.setLayoutData(gridData);
 		
 		this.pauseConditionComposite = new PauseConditionComposite(
-				eventsTabFolder, SWT.NONE);
+				eventsTabFolder, SWT.NONE, this);
 		redoEventComposite = new EventComposite(eventsTabFolder, SWT.NONE,
 				ControlEventTypes.CONTROL_EVENT, this);
 		breakEventComposite = new EventComposite(eventsTabFolder, SWT.NONE,

@@ -440,6 +440,43 @@
          </command>
       </menuContribution>
       <menuContribution
+            locationURI="popup:de.ptb.epics.eve.editor.views.chainview.pauseconditioncomposite.tablepopup">
+         <dynamic
+               class="de.ptb.epics.eve.editor.views.chainview.PauseConditionsMenuContribution"
+               id="popup:de.ptb.epics.eve.editor.views.chainview.pauseconditionscomposite.popup.dynamic">
+         </dynamic>
+         <separator
+               name="de.ptb.epics.eve.editor.views.chainview.pauseconditioncomposite.popup.separator"
+               visible="true">
+         </separator>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.removepauseconditions"
+               icon="icons/rem_co.gif"
+               label="Remove Selected"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <not>
+                  <reference
+                        definitionId="de.ptb.epics.eve.editor.expressions.emptyselection">
+                  </reference>
+               </not>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.removeallpauseconditions"
+               icon="icons/progress_remall.gif"
+               label="Remove All"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
+               </reference>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
             locationURI="popup:de.ptb.epics.eve.editor.views.axeschannelsview.saveaxispositionscomposite.popup">
          <dynamic
                class="de.ptb.epics.eve.editor.views.axeschannelsview.AxesMenuContribution"
@@ -1043,6 +1080,22 @@
                optional="true"
                values="de.ptb.epics.eve.editor.handler.editor.DoWithCurrent">
          </commandParameter>
+      </command>
+      <category
+            id="de.ptb.epics.eve.editor.views.pauseconditionscomposite.commands"
+            name="Pause Conditions">
+      </category>
+      <command
+            categoryId="de.ptb.epics.eve.editor.views.pauseconditionscomposite.commands"
+            defaultHandler="de.ptb.epics.eve.editor.handler.pauseconditions.RemovePauseConditionsDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.removepauseconditions"
+            name="Remove Pause Conditions">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.views.pauseconditionscomposite.commands"
+            defaultHandler="de.ptb.epics.eve.editor.handler.pauseconditions.RemoveAllPauseConditionsDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.removeallpauseconditions"
+            name="Remove All Pause Conditions">
       </command>
       <category
             id="de.ptb.epics.eve.editor.views.eventcomposite.commands"
