@@ -61,8 +61,12 @@ public class PauseCondition implements IModelUpdateProvider {
 		return device;
 	}
 	
-	/* helper to distinguish device type and make it transparent */
-	private Function getValue() {
+	/**
+	 * Returns the function value.
+	 * 
+	 * helper: distinguishes device type and makes it transparent
+	 */
+	public Function getValue() {
 		if (this.device instanceof MotorAxis) {
 			return ((MotorAxis)device).getPosition();
 		} else if (this.device instanceof DetectorChannel) {
@@ -195,7 +199,7 @@ public class PauseCondition implements IModelUpdateProvider {
 			throw new UnsupportedOperationException(
 				"continue limit is only available for inequality operators.");
 		}
-		if (!this.isValidValue(continueLimit)) {
+		if (continueLimit != null && !this.isValidValue(continueLimit)) {
 			throw new IllegalArgumentException("given value is invalid");
 		}
 		this.continueLimit = continueLimit;

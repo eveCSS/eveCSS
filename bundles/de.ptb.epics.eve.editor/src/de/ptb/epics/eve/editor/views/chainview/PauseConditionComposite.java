@@ -110,6 +110,7 @@ public class PauseConditionComposite extends Composite implements PropertyChange
 				return ((PauseCondition)element).getOperator().toString();
 			}
 		});
+		operatorColumn.setEditingSupport(new OperatorEditingSupport(viewer));
 		
 		TableViewerColumn pauseColumn = new TableViewerColumn(viewer, SWT.LEFT);
 		pauseColumn.getColumn().setText("Pause Limit");
@@ -120,6 +121,7 @@ public class PauseConditionComposite extends Composite implements PropertyChange
 				return ((PauseCondition)element).getPauseLimit();
 			}
 		});
+		pauseColumn.setEditingSupport(new PauseLimitEditingSupport(viewer));
 		
 		TableViewerColumn continueColumn = new TableViewerColumn(viewer, SWT.LEFT);
 		continueColumn.getColumn().setText("Continue Limit");
@@ -136,6 +138,7 @@ public class PauseConditionComposite extends Composite implements PropertyChange
 				}
 			}
 		});
+		continueColumn.setEditingSupport(new ContinueLimitEditingSupport(viewer));
 	}
 	
 	public void setChain(Chain chain) {
