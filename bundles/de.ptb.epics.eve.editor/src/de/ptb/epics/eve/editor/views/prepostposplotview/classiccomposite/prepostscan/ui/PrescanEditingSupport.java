@@ -15,6 +15,7 @@ import de.ptb.epics.eve.editor.StringLabels;
 import de.ptb.epics.eve.editor.views.AbstractScanModuleView;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepostscan.PrePostscanEntry;
 import de.ptb.epics.eve.util.ui.jface.MyComboBoxCellEditor;
+import de.ptb.epics.eve.util.ui.jface.TextCellEditorWithValidator;
 
 /**
  * @author Marcus Michalsky
@@ -40,7 +41,8 @@ public class PrescanEditingSupport extends EditingSupport {
 		Prescan prescan = entry.getPrescan();
 		if (prescan != null && prescan.getAbstractPrePostscanDevice().
 				isDiscrete()) {
-			LOGGER.debug(entry.getDevice().getName() + " is discrete.");
+			LOGGER.debug(entry.getDevice().getName() + " is discrete. " +
+				StringLabels.RIGHT_ARROW + " ComboBoxEditor");
 			List<String> discreteValues = prescan.
 				getAbstractPrePostscanDevice().getValue().getDiscreteValues();
 			// add dummy value (remove existing prescan)
@@ -48,9 +50,10 @@ public class PrescanEditingSupport extends EditingSupport {
 			return new MyComboBoxCellEditor(this.viewer.getTable(),
 					discreteValues.toArray(new String[0]));
 		} else {
-			LOGGER.debug(entry.getDevice().getName() + " is not discrete.");
-			return new PrePostscanTextCellEditor(this.viewer.getTable(), 
-					entry.getDevice());
+			LOGGER.debug(entry.getDevice().getName() + " is not discrete. " +
+				StringLabels.RIGHT_ARROW + " TextEditor");
+			return new TextCellEditorWithValidator(this.viewer.getTable(), 
+					new PrePostscanTextCellEditorValidator(entry.getDevice()));
 		}
 	}
 
