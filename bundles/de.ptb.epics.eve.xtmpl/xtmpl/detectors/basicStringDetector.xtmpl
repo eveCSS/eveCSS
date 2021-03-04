@@ -3,12 +3,13 @@
             <class>${Class=""}</class>
             <name>${Name=""}</name>
             <id>${PV}value</id>
-            <!-- channel without unit, to be included by detetctors, reading PV without .VAL -->
             <channel>
                 <class>${Ch_Class=""}</class>
                 <name>${Name=""}</name>
                 <id>${PV}chan1</id>
                 include "channel_read_string_part.xtmpl"
+                include "detector_scan_ohne_trigger_part.xtmpl"
+                include "channel_option_part.xtmpl"
             </channel>
         </detector>
 
