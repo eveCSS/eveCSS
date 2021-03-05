@@ -2669,11 +2669,17 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		PauseConditionAdapter adapter = new PauseConditionAdapter(this.measuringStation);
 		for (PauseConditionAdaptee adaptee : this.pauseConditionList) {
 			PauseCondition pauseCondition;
-			try {
-				pauseCondition = adapter.marshal(adaptee);
-				this.currentChain.addPauseCondition(pauseCondition);
-			} catch (Exception e) {
-				LOGGER.error(e.getMessage(), e);
+			if (this.measuringStation.getAbstractDeviceById(adaptee.getId()) != null) {
+				try {
+					pauseCondition = adapter.marshal(adaptee);
+					this.currentChain.addPauseCondition(pauseCondition);
+				} catch (Exception e) {
+					LOGGER.error(e.getMessage(), e);
+				}
+			} else {
+				this.deviceMessages.add(new ScanDescriptionLoaderDeviceMessage(
+					ScanDescriptionLoaderMessageType.PAUSECONDITION_DEVICE_NOT_FOUND, 
+					this.nameProvider.translateAbstractDeviceId(adaptee.getId())));
 			}
 		}
 	}

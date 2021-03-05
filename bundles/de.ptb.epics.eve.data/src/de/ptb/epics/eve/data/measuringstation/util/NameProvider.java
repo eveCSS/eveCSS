@@ -8,6 +8,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
+import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.AbstractPrePostscanDevice;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
@@ -99,6 +100,22 @@ public class NameProvider {
 			return id;
 		}
 		AbstractPrePostscanDevice device = measuringStation.getPrePostscanDeviceById(id);
+		if (device == null) {
+			return id;
+		}
+		return device.getName() + " (" + id + ")";
+	}
+	
+	/**
+	 * @since 1.36
+	 * @param id
+	 * @return
+	 */
+	public String translateAbstractDeviceId(String id) {
+		if (this.measuringStation == null) {
+			return id;
+		}
+		AbstractDevice device = measuringStation.getAbstractDeviceById(id);
 		if (device == null) {
 			return id;
 		}
