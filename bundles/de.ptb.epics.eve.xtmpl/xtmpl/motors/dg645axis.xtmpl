@@ -11,7 +11,7 @@
                 </position>
                 <stop>
                     <access method="PUT" transport="local" type="int">no stop available</access>
-                    <value type="OnOff">0</value>
+                    <value type="int">0</value>
                 </stop>
                 <unit>
                     <access method="GETPUTCB" transport="ca" type="string">${PV}DelayAO.EGU</access>
