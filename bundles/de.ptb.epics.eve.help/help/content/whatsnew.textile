@@ -1,5 +1,12 @@
 h1(eveTopic). What's New in EVE
 
+h2(eveTopic). Version 1.35.4 (2021-03-10)
+
+* [BugFix] template File @basicStringDetector.xtmpl@ and @basicTriggerDetector.xtmpl@ modified
+* [Feature-#5907] template Files @basicNoUnitDetector@, @valueDetector@, @pim840axis@, @pim840motor@ removed
+* [BugFix-#5942] template File @deviceMenu.xtmpl@ modified, new template File @basicEnumDetector.xtmpl@
+* [BugFix-#5742] type "OnOff" replaced by "int" in 10 template Files 
+
 h2(eveTopic). Version 1.35.3 (2021-03-01)
 
 * [Feature-#5907] Option SCAN, SEVERITY and STATUS  added in template File @basicStringDetector.xtmpl@
