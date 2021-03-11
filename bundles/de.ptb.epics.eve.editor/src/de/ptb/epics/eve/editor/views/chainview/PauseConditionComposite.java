@@ -7,6 +7,7 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -20,6 +21,7 @@ import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PlatformUI;
 
+import de.ptb.epics.eve.data.ComparisonTypes;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.PauseCondition;
 import de.ptb.epics.eve.editor.StringLabels;
@@ -63,6 +65,7 @@ public class PauseConditionComposite extends Composite implements PropertyChange
 				((ChainView)parentView).setSelectionProvider(tableViewer);
 			}
 		});
+		ColumnViewerToolTipSupport.enableFor(tableViewer);
 		
 		MenuManager menuManager = new MenuManager();
 		menuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
@@ -136,6 +139,20 @@ public class PauseConditionComposite extends Composite implements PropertyChange
 				} else {
 					return StringLabels.LONG_DASH;
 				}
+			}
+			@Override
+			public String getToolTipText(Object element) {
+				PauseCondition pauseCondition = (PauseCondition)element;
+				if (!(pauseCondition.hasContinueLimit())) {
+					if (pauseCondition.isDiscrete()) {
+						return "continue limit not available (device is discrete)";
+					}
+					if (pauseCondition.getOperator().equals(ComparisonTypes.EQ) ||
+							pauseCondition.getOperator().equals(ComparisonTypes.NE)) {
+						return "continue limit not available for operator EQ/NE";
+					}
+				}
+				return null;
 			}
 		});
 		continueColumn.setEditingSupport(new ContinueLimitEditingSupport(viewer));

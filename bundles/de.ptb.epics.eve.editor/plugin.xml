@@ -1087,6 +1087,17 @@
       </category>
       <command
             categoryId="de.ptb.epics.eve.editor.views.pauseconditionscomposite.commands"
+            defaultHandler="de.ptb.epics.eve.editor.handler.pauseconditions.AddPauseConditionDefaultHandler"
+            id="de.ptb.epics.eve.editor.command.addpausecondition"
+            name="Add Pause Condition">
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.addpausecondition.param.id"
+               name="DeviceId"
+               optional="false">
+         </commandParameter>
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.views.pauseconditionscomposite.commands"
             defaultHandler="de.ptb.epics.eve.editor.handler.pauseconditions.RemovePauseConditionsDefaultHandler"
             id="de.ptb.epics.eve.editor.command.removepauseconditions"
             name="Remove Pause Conditions">
