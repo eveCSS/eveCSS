@@ -1,0 +1,4 @@
+                <read>
+                    <access monitor="true" method="${Method=GETCB}" transport="ca" type="${Type=string}">${PV}.VAL</access>
+                    <value type="string">${Menu}</value>
+                </read>
