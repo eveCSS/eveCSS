@@ -581,8 +581,6 @@
  
   <simpleType name="data">
     <restriction base="string">
-      <enumeration value="OnOff"></enumeration>  <!-- value "1 0": display "On" and send "1", display "Off" send "0" -->
-      <enumeration value="OpenClose"></enumeration> <!-- value "0 1": display "Open" and send "0", display "Close" send "1" -->
       <enumeration value="int"></enumeration>
       <enumeration value="double"></enumeration>
       <enumeration value="string"></enumeration> <!-- contains a string list of possible values -->
@@ -592,8 +590,6 @@
   
   <simpleType name="pluginData">
     <restriction base="string">
-      <enumeration value="OnOff"></enumeration>  <!-- value "1 0": display "On" and send "1", display "Off" send "0" -->
-      <enumeration value="OpenClose"></enumeration> <!-- value "0 1": display "Open" and send "0", display "Close" send "1" -->
       <enumeration value="int"></enumeration>
       <enumeration value="double"></enumeration>
       <enumeration value="string"></enumeration> <!-- contains a string list of possible values -->

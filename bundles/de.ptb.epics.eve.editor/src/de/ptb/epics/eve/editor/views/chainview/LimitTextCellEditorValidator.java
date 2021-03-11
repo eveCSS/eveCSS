@@ -41,9 +41,7 @@ public class LimitTextCellEditorValidator implements ICellEditorValidator {
 	public String isValid(Object value) {
 		switch (this.getType()) {
 		case DATETIME:
-		case ONOFF:
-		case OPENCLOSE:
-			LOGGER.debug("datetime, onoff, openclose are not supported");
+			LOGGER.debug("datetime is not supported");
 			return "invalid type";
 		case DOUBLE:
 			try {
