@@ -31,9 +31,10 @@ public class Patch8o0T9o0 extends Patch {
 	private static Patch8o0T9o0 INSTANCE;
 	
 	// contains pause events of found chains
-	private Map<Integer, List<PauseEvent>> chainEvents;
+	private Map<Integer, List<PauseEvent>> chainEventMap;
 	// first hash is the chain and second hash is scan module (id) and its events
-	private Map<Integer, Map<Integer, List<PauseEvent>>> smEvents;
+	private Map<Integer, Map<Integer, List<PauseEvent>>> smEventMap;
+	private List<PseudoPauseCondition> pauseConditions;
 	
 	private Patch8o0T9o0(Version source, Version target, 
 			List<Modification> modifications) {
@@ -108,8 +109,8 @@ public class Patch8o0T9o0 extends Patch {
 	private class Mod2 extends AbstractModification {
 		public Mod2(Patch patch) {
 			super(patch, "collecting pause events from chain(s) and scanmodules");
-			chainEvents = new HashMap<>();
-			smEvents = new HashMap<>();
+			chainEventMap = new HashMap<>();
+			smEventMap = new HashMap<>();
 		}
 		
 		/**
@@ -136,7 +137,7 @@ public class Patch8o0T9o0 extends Patch {
 						scanmodulesNode = child;
 					}
 				}
-				chainEvents.put(chainId, chainPauseEvents);
+				chainEventMap.put(chainId, chainPauseEvents);
 				
 				if (scanmodulesNode == null) {
 					LOGGER.error("scanmodules element of chain " + chainId +
@@ -160,9 +161,8 @@ public class Patch8o0T9o0 extends Patch {
 					}
 					chainSMEventsMap.put(smId, smPauseEvents);
 				}
-				smEvents.put(chainId, chainSMEventsMap);
+				smEventMap.put(chainId, chainSMEventsMap);
 			}
-			Object o = null;
 		}
 	}
 	
@@ -176,6 +176,7 @@ public class Patch8o0T9o0 extends Patch {
 		 */
 		@Override
 		public void modify(Document document) {
+			pauseConditions = new ArrayList<>();
 			// TODO Auto-generated method stub
 			
 		}
