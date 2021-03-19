@@ -2,9 +2,11 @@ package de.ptb.epics.eve.data.scandescription.updater.patches.patch8o0t9o0;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
@@ -13,6 +15,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
+import de.ptb.epics.eve.data.ComparisonTypes;
+import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.scandescription.processors.Literals;
 import de.ptb.epics.eve.data.scandescription.updater.AbstractModification;
 import de.ptb.epics.eve.data.scandescription.updater.Modification;
@@ -34,7 +38,7 @@ public class Patch8o0T9o0 extends Patch {
 	private Map<Integer, List<PauseEvent>> chainEventMap;
 	// first hash is the chain and second hash is scan module (id) and its events
 	private Map<Integer, Map<Integer, List<PauseEvent>>> smEventMap;
-	private List<PseudoPauseCondition> pauseConditions;
+	private Map<Integer, List<PseudoPauseCondition>> pauseConditionMap;
 	
 	private Patch8o0T9o0(Version source, Version target, 
 			List<Modification> modifications) {
@@ -45,7 +49,6 @@ public class Patch8o0T9o0 extends Patch {
 		modifications.add(new Mod3(this));
 		modifications.add(new Mod4(this));
 		modifications.add(new Mod5(this));
-		modifications.add(new Mod6(this));
 	}
 	
 	public static Patch8o0T9o0 getInstance() {
@@ -176,9 +179,38 @@ public class Patch8o0T9o0 extends Patch {
 		 */
 		@Override
 		public void modify(Document document) {
-			pauseConditions = new ArrayList<>();
-			// TODO Auto-generated method stub
-			
+			Patch8o0T9o0Helper helper = new Patch8o0T9o0Helper();
+			pauseConditionMap = new HashMap<>();
+			Set<PauseEvent> usedChainEvents = new HashSet<>();
+			Set<PauseEvent> usedSMEvents = new HashSet<>();
+			for (int chainId : chainEventMap.keySet()) {
+				List<PseudoPauseCondition> chainPauseConditions = new ArrayList<>();
+				pauseConditionMap.put(chainId, chainPauseConditions);
+				usedChainEvents.clear();
+				chainPauseConditions.addAll(helper.findSubsets(
+						chainEventMap.get(chainId), usedChainEvents));
+				chainPauseConditions.addAll(helper.findHysteresis(
+						chainEventMap.get(chainId), usedChainEvents));
+				// TODO if usedChainEvents !empty --> something converted -> report ?
+				for(PauseEvent event : chainEventMap.get(chainId)) {
+					if (!usedChainEvents.contains(event)) {
+						chainPauseConditions.add(helper.convert(event));
+					}
+				}
+				
+				for (int smId : smEventMap.keySet()) {
+					usedSMEvents.clear();
+					chainPauseConditions.addAll(helper.findSubsets(
+							smEventMap.get(chainId).get(smId), usedSMEvents));
+					chainPauseConditions.addAll(helper.findHysteresis(
+							smEventMap.get(chainId).get(smId), usedSMEvents));
+					for (PauseEvent event : smEventMap.get(chainId).get(smId)) {
+						if (!usedSMEvents.contains(event)) {
+							chainPauseConditions.add(helper.convert(event));
+						}
+					}
+				}
+			}
 		}
 	}
 	
@@ -213,7 +245,7 @@ public class Patch8o0T9o0 extends Patch {
 	
 	private class Mod5 extends AbstractModification {
 		public Mod5(Patch patch) {
-			super(patch, "create pause condition element in chain(s)");
+			super(patch, "Insert pause conditions (derived from collected events)");
 		}
 		
 		/**
@@ -231,32 +263,67 @@ public class Patch8o0T9o0 extends Patch {
 						scanmodulesNode = chainChild;
 					}
 				}
+				int chainId = Integer.parseInt(chainNode.getAttributes().getNamedItem(
+						Literals.XML_ATTRIBUTE_NAME_ID).getNodeValue());
 				if (scanmodulesNode == null) {
 					LOGGER.error("scanmodules element of chain " +
-						chainNode.getAttributes().getNamedItem(
-								Literals.XML_ATTRIBUTE_NAME_ID) + 
-						"not found");
+						chainId + "not found");
 					return;
 				}
 				Element pauseconditionsElement = document.createElement(
 						Literals.XML_ELEMENT_NAME_PAUSECONDITIONS);
 				chainNode.insertBefore(pauseconditionsElement, scanmodulesNode);
+				for (PseudoPauseCondition pauseCondition : pauseConditionMap.get(chainId)) {
+					this.insertPauseCondition(pauseconditionsElement, pauseCondition);
+				}
 			}
 		}
-	}
-	
-	private class Mod6 extends AbstractModification {
-		public Mod6(Patch patch) {
-			super(patch, "Insert pause conditions (derived from collected events");
-		}
 		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void modify(Document document) {
-			// TODO Auto-generated method stub
+		private void insertPauseCondition(Element parent, PseudoPauseCondition pauseCondition) {
+			Document document = parent.getOwnerDocument();
 			
+			Element pauseConditionElement = document.createElement(
+					Literals.XML_ELEMENT_NAME_PAUSECONDITION);
+			if (pauseCondition.getOperator().equals(ComparisonTypes.EQ) ||
+				pauseCondition.getOperator().equals(ComparisonTypes.NE)) {
+					pauseConditionElement.setAttributeNS(
+							"http://www.w3.org/2001/XMLSchema-instance", 
+							"xsi:type", "tns:eqcondition");
+			} else {
+					pauseConditionElement.setAttributeNS(
+							"http://www.w3.org/2001/XMLSchema-instance", 
+							"xsi:type", "tns:ineqcondition");
+			}
+			
+			Element idNode = document.createElement(Literals.XML_ELEMENT_NAME_ID);
+			idNode.appendChild(document.createTextNode(pauseCondition.getDeviceId()));
+			pauseConditionElement.appendChild(idNode);
+			
+			Element operatorNode = document.createElement(
+					Literals.XML_ELEMENT_NAME_OPERATOR);
+			operatorNode.appendChild(document.createTextNode(ComparisonTypes.
+					typeToString(pauseCondition.getOperator())));
+			pauseConditionElement.appendChild(operatorNode);
+			
+			Element pauselimitNode = document.createElement(
+					Literals.XML_ELEMENT_NAME_PAUSELIMIT);
+			pauselimitNode.setAttribute(Literals.XML_ATTRIBUTE_NAME_TYPE, 
+					DataTypes.typeToString(pauseCondition.getType()));
+			pauselimitNode.appendChild(document.createTextNode(
+					pauseCondition.getPauseLimit()));
+			pauseConditionElement.appendChild(pauselimitNode);
+			
+			if (pauseCondition.getContinueLimit() != null) {
+				Element continuelimitNode = document.createElement(
+						Literals.XML_ELEMENT_NAME_CONTINUELIMIT);
+				continuelimitNode.setAttribute(Literals.XML_ATTRIBUTE_NAME_TYPE, 
+						DataTypes.typeToString(pauseCondition.getType()));
+				continuelimitNode.appendChild(document.createTextNode(
+						pauseCondition.getContinueLimit()));
+				pauseConditionElement.appendChild(continuelimitNode);
+			}
+			
+			parent.appendChild(pauseConditionElement);
 		}
 	}
 }

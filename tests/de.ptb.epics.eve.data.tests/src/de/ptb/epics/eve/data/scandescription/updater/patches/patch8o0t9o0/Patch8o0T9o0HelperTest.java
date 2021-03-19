@@ -5,6 +5,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,7 +26,38 @@ public class Patch8o0T9o0HelperTest {
 	
 	@Test
 	public void testFindHysteresis() {
-		// TODO
+		Limit limitA = new Limit(DataTypes.INT, ComparisonTypes.LT);
+		limitA.setValue("3");
+		PauseEvent eventA = new PauseEvent("deviceA", limitA, EventAction.OFF);
+		PauseEvent eventB = new PauseEvent("deviceB",
+				new Limit(DataTypes.INT, ComparisonTypes.EQ), EventAction.ONOFF);
+		Limit limitC = new Limit(DataTypes.INT, ComparisonTypes.GT);
+		limitC.setValue("5");
+		PauseEvent eventC = new PauseEvent("deviceA", limitC, EventAction.ON);
+		List<PauseEvent> pauseEvents = new ArrayList<>();
+		pauseEvents.add(eventA);
+		pauseEvents.add(eventB);
+		pauseEvents.add(eventC);
+		Set<PauseEvent> usedSet = new HashSet<>();
+		
+		List<PseudoPauseCondition> pauseConditions = helper.findHysteresis(
+				pauseEvents, usedSet);
+		
+		assertTrue("eventA should be in usedSet", usedSet.contains(eventA));
+		assertFalse("eventB should not be in usedSet", usedSet.contains(eventB));
+		assertTrue("eventC should be in usedSet", usedSet.contains(eventC));
+		// one combined pause event should have be created
+		assertTrue(pauseConditions.size() == 1);
+		PseudoPauseCondition pauseCondition = pauseConditions.get(0);
+		assertEquals("id", eventA.getId(), pauseCondition.getDeviceId());
+		assertEquals("type", eventA.getLimit().getType(), 
+				pauseCondition.getType());
+		assertEquals("operator should be that of eventC", 
+				eventC.getLimit().getComparison(), pauseCondition.getOperator());
+		assertEquals("pause limit should be value of eventC", 
+				eventC.getLimit().getValue(), pauseCondition.getPauseLimit());
+		assertEquals("continue limit should be value of eventA", 
+				eventA.getLimit().getValue(), pauseCondition.getContinueLimit());
 	}
 	
 	@Test
@@ -129,7 +165,38 @@ public class Patch8o0T9o0HelperTest {
 	
 	@Test
 	public void testFindSubsets() {
-		// TODO
+		Limit limitA = new Limit(DataTypes.INT, ComparisonTypes.LT);
+		limitA.setValue("3");
+		PauseEvent eventA = new PauseEvent("deviceA", limitA, EventAction.ONOFF);
+		PauseEvent eventB = new PauseEvent("deviceB",
+				new Limit(DataTypes.INT, ComparisonTypes.EQ), EventAction.ONOFF);
+		Limit limitC = new Limit(DataTypes.INT, ComparisonTypes.LT);
+		limitC.setValue("5");
+		PauseEvent eventC = new PauseEvent("deviceA", limitC, EventAction.ONOFF);
+		List<PauseEvent> pauseEvents = new ArrayList<>();
+		pauseEvents.add(eventA);
+		pauseEvents.add(eventB);
+		pauseEvents.add(eventC);
+		Set<PauseEvent> usedSet = new HashSet<>();
+		
+		List<PseudoPauseCondition> pauseConditions = helper.findSubsets(
+				pauseEvents, usedSet);
+		
+		assertTrue("eventA should be in usedSet", usedSet.contains(eventA));
+		assertFalse("eventB should not be in usedSet", usedSet.contains(eventB));
+		assertTrue("eventC should be in usedSet", usedSet.contains(eventC));
+		// one combined pause event should have be created
+		assertTrue(pauseConditions.size() == 1);
+		PseudoPauseCondition pauseCondition = pauseConditions.get(0);
+		assertEquals("id", eventA.getId(), pauseCondition.getDeviceId());
+		assertEquals("type", eventA.getLimit().getType(), 
+				pauseCondition.getType());
+		assertEquals("operator", eventA.getLimit().getComparison(), 
+				pauseCondition.getOperator());
+		assertEquals("pause limit should be value of eventA", 
+				eventA.getLimit().getValue(), pauseCondition.getPauseLimit());
+		assertNull("continue limit should not be set", 
+				pauseCondition.getContinueLimit());
 	}
 	
 	@Test
@@ -324,6 +391,8 @@ public class Patch8o0T9o0HelperTest {
 				eventA.getId(), pauseCondition.getDeviceId());
 		assertEquals("operator should be that of eventA",
 				eventA.getLimit().getComparison(), pauseCondition.getOperator());
+		assertEquals("type should be that of eventA",
+				eventA.getLimit().getType(), pauseCondition.getType());
 		assertEquals("pause limit should be limit value of eventA",
 				eventA.getLimit().getValue(), pauseCondition.getPauseLimit());
 	}
@@ -340,6 +409,8 @@ public class Patch8o0T9o0HelperTest {
 		assertEquals("id", eventA.getId(), pauseCondition.getDeviceId());
 		assertEquals("operator", eventA.getLimit().getComparison(), 
 				pauseCondition.getOperator());
+		assertEquals("type should be that of eventA",
+				eventA.getLimit().getType(), pauseCondition.getType());
 		assertEquals("limitA value (is lower than B)", 
 				eventA.getLimit().getValue(), pauseCondition.getPauseLimit());
 	}
@@ -356,6 +427,8 @@ public class Patch8o0T9o0HelperTest {
 		assertEquals("id", eventA.getId(), pauseCondition.getDeviceId());
 		assertEquals("operator", eventA.getLimit().getComparison(), 
 				pauseCondition.getOperator());
+		assertEquals("type should be that of eventA",
+				eventA.getLimit().getType(), pauseCondition.getType());
 		assertEquals("limitB value (is higher than A)", 
 				eventB.getLimit().getValue(), pauseCondition.getPauseLimit());
 	}
@@ -372,6 +445,8 @@ public class Patch8o0T9o0HelperTest {
 		assertEquals("id", eventA.getId(), pauseCondition.getDeviceId());
 		assertEquals("operator", eventA.getLimit().getComparison(), 
 				pauseCondition.getOperator());
+		assertEquals("type should be that of eventA",
+				eventA.getLimit().getType(), pauseCondition.getType());
 		assertEquals("limitA value (is lower than B)", 
 				eventA.getLimit().getValue(), pauseCondition.getPauseLimit());
 	}
@@ -388,6 +463,8 @@ public class Patch8o0T9o0HelperTest {
 		assertEquals("id", eventA.getId(), pauseCondition.getDeviceId());
 		assertEquals("operator", eventA.getLimit().getComparison(), 
 				pauseCondition.getOperator());
+		assertEquals("type should be that of eventA",
+				eventA.getLimit().getType(), pauseCondition.getType());
 		assertEquals("limitB value (is higher than A)", 
 				eventB.getLimit().getValue(), pauseCondition.getPauseLimit());
 	}
@@ -403,6 +480,8 @@ public class Patch8o0T9o0HelperTest {
 				eventA.getId(), pauseCondition.getDeviceId());
 		assertEquals("operator should be that of eventA",
 				eventA.getLimit().getComparison(), pauseCondition.getOperator());
+		assertEquals("type should be that of eventA",
+				eventA.getLimit().getType(), pauseCondition.getType());
 		assertEquals("pause limit should be limit value of eventA",
 				eventA.getLimit().getValue(), pauseCondition.getPauseLimit());
 	}
@@ -421,8 +500,25 @@ public class Patch8o0T9o0HelperTest {
 				eventA.getLimit().getComparison(), pauseCondition.getOperator());
 		assertEquals("pause limit should be value of eventA",
 				eventA.getLimit().getValue(), pauseCondition.getPauseLimit());
+		assertEquals("type should be that of eventA",
+				eventA.getLimit().getType(), pauseCondition.getType());
 		assertEquals("continue limit should be value of eventB",
 				eventB.getLimit().getValue(), pauseCondition.getContinueLimit());
+	}
+	
+	@Test
+	public void testConvert() {
+		Limit limit = new Limit(DataTypes.INT, ComparisonTypes.LT);
+		limit.setValue("2");
+		PauseEvent event = new PauseEvent("deviceA", limit, EventAction.ONOFF);
+		PseudoPauseCondition pauseCondition = helper.convert(event);
+		assertEquals("id", event.getId(), pauseCondition.getDeviceId());
+		assertEquals("operator",
+				event.getLimit().getComparison(), pauseCondition.getOperator());
+		assertEquals("type", event.getLimit().getType(), pauseCondition.getType());
+		assertEquals("pause limit",
+				event.getLimit().getValue(), pauseCondition.getPauseLimit());
+		assertNull("continue limit", pauseCondition.getContinueLimit());
 	}
 	
 	@Before

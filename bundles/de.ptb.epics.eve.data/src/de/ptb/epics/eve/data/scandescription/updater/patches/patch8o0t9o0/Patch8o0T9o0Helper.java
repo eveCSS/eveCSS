@@ -63,6 +63,9 @@ public class Patch8o0T9o0Helper {
 			Set<PauseEvent> usedSet) {
 		List<PseudoPauseCondition> pauseConditions = new ArrayList<>();
 		for (PauseEvent eventA : eventList) {
+			if (usedSet.contains(eventA)) {
+				continue;
+			}
 			for (PauseEvent eventB : eventList) {
 				if (eventA != eventB &&
 						isOperatorCompatibleSubset(eventA, eventB) &&
@@ -117,6 +120,7 @@ public class Patch8o0T9o0Helper {
 			PseudoPauseCondition pauseCondition = new PseudoPauseCondition();
 			pauseCondition.setDeviceId(eventA.getId());
 			pauseCondition.setOperator(eventA.getLimit().getComparison());
+			pauseCondition.setType(eventA.getLimit().getType());
 			switch (eventA.getLimit().getType()) {
 			case DATETIME:
 				pauseCondition.setPauseLimit(eventA.getLimit().getValue());
@@ -151,9 +155,22 @@ public class Patch8o0T9o0Helper {
 			PseudoPauseCondition pauseCondition = new PseudoPauseCondition();
 			pauseCondition.setDeviceId(eventA.getId());
 			pauseCondition.setOperator(eventA.getLimit().getComparison());
+			pauseCondition.setType(eventA.getLimit().getType());
 			pauseCondition.setPauseLimit(eventA.getLimit().getValue());
 			pauseCondition.setContinueLimit(eventB.getLimit().getValue());
 			return pauseCondition;
 		}
+	}
+	
+	protected PseudoPauseCondition convert(PauseEvent pauseEvent) {
+		if (pauseEvent.getAction().equals(EventAction.OFF)) {
+			return null;
+		}
+		PseudoPauseCondition pauseCondition = new PseudoPauseCondition();
+		pauseCondition.setDeviceId(pauseEvent.getId());
+		pauseCondition.setType(pauseEvent.getLimit().getType());
+		pauseCondition.setOperator(pauseEvent.getLimit().getComparison());
+		pauseCondition.setPauseLimit(pauseEvent.getLimit().getValue());
+		return pauseCondition;
 	}
 }
