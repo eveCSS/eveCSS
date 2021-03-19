@@ -183,33 +183,77 @@ public class Patch8o0T9o0 extends Patch {
 			pauseConditionMap = new HashMap<>();
 			Set<PauseEvent> usedChainEvents = new HashSet<>();
 			Set<PauseEvent> usedSMEvents = new HashSet<>();
+			boolean foundChainSubsets = false;
+			boolean foundChainHysteresis = false;
+			boolean foundDuplicate = false;
+			boolean foundSMSubsets = false;
+			boolean foundSMHysteresis = false;
 			for (int chainId : chainEventMap.keySet()) {
 				List<PseudoPauseCondition> chainPauseConditions = new ArrayList<>();
 				pauseConditionMap.put(chainId, chainPauseConditions);
 				usedChainEvents.clear();
-				chainPauseConditions.addAll(helper.findSubsets(
-						chainEventMap.get(chainId), usedChainEvents));
-				chainPauseConditions.addAll(helper.findHysteresis(
-						chainEventMap.get(chainId), usedChainEvents));
-				// TODO if usedChainEvents !empty --> something converted -> report ?
+				List<PseudoPauseCondition> chainPauseSubsets = helper.findSubsets(
+						chainEventMap.get(chainId), usedChainEvents);
+				if (!chainPauseSubsets.isEmpty()) {
+					foundChainSubsets = true;
+				}
+				chainPauseConditions.addAll(chainPauseSubsets);
+				List<PseudoPauseCondition> chainPauseHysteresis = helper.
+					findHysteresis(chainEventMap.get(chainId), usedChainEvents);
+				if(!chainPauseHysteresis.isEmpty()) {
+					foundChainHysteresis = true;
+				}
+				chainPauseConditions.addAll(chainPauseHysteresis);
 				for(PauseEvent event : chainEventMap.get(chainId)) {
 					if (!usedChainEvents.contains(event)) {
-						chainPauseConditions.add(helper.convert(event));
+						boolean added = chainPauseConditions.add(
+								helper.convert(event));
+						if(!added) {
+							foundDuplicate = true;
+						}
 					}
 				}
 				
 				for (int smId : smEventMap.keySet()) {
 					usedSMEvents.clear();
-					chainPauseConditions.addAll(helper.findSubsets(
-							smEventMap.get(chainId).get(smId), usedSMEvents));
-					chainPauseConditions.addAll(helper.findHysteresis(
-							smEventMap.get(chainId).get(smId), usedSMEvents));
+					List<PseudoPauseCondition> smPauseSubsets = helper.findSubsets(
+							smEventMap.get(chainId).get(smId), usedSMEvents);
+					if (!smPauseSubsets.isEmpty()) {
+						foundSMSubsets = true;
+					}
+					chainPauseConditions.addAll(smPauseSubsets);
+					List<PseudoPauseCondition> smPauseHysteresis = helper.findHysteresis(
+							smEventMap.get(chainId).get(smId), usedSMEvents);
+					if (!smPauseHysteresis.isEmpty()) {
+						foundSMHysteresis = true;
+					}
+					chainPauseConditions.addAll(smPauseHysteresis);
 					for (PauseEvent event : smEventMap.get(chainId).get(smId)) {
 						if (!usedSMEvents.contains(event)) {
 							chainPauseConditions.add(helper.convert(event));
 						}
 					}
 				}
+			}
+			
+			if (foundChainSubsets) {
+				this.appendMessage(
+						"ATTENTION: combined chain pause events (subset)");
+			}
+			if (foundChainHysteresis) {
+				this.appendMessage(
+						"ATTENTION: combined chain pause events (hysteresis)");
+			}
+			if (foundSMSubsets) {
+				this.appendMessage(
+					"ATTENTION: combined scan module pause events (subset)");
+			}
+			if (foundSMHysteresis) {
+				this.appendMessage(
+					"ATTENTION: combined scan module pause events (hysteresis)");
+			}
+			if (foundDuplicate) {
+				this.appendMessage("ATTENTION: duplicate(s) found and removed");
 			}
 		}
 	}

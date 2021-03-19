@@ -22,4 +22,11 @@ public interface Modification {
 	 * @param document the document that should be modified
 	 */
 	void modify(Document document);
+	
+	/**
+	 * Appends a message to the changelog as a new line.
+	 * @param message the message to append
+	 * @since 1.36
+	 */
+	void appendMessage(String message);
 }

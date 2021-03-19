@@ -6,7 +6,7 @@ package de.ptb.epics.eve.data.scandescription.updater;
  */
 public abstract class AbstractModification implements Modification {
 	private final Patch belongsTo;
-	private final String changeLog;
+	private String changeLog;
 	
 	/**
 	 * Constructor.
@@ -32,5 +32,13 @@ public abstract class AbstractModification implements Modification {
 	@Override
 	public Patch belongsTo() {
 		return this.belongsTo;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void appendMessage(String message) {
+		this.changeLog = changeLog + "\n" + message;
 	}
 }
