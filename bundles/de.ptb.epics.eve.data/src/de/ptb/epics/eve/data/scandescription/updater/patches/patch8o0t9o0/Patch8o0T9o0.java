@@ -87,23 +87,40 @@ public class Patch8o0T9o0 extends Patch {
 		 */
 		@Override
 		public void modify(Document document) {
+			int counter = 0;
 			NodeList motorNodes = document.getElementsByTagName(
 					Literals.XML_ELEMENT_NAME_MOTOR);
 			for (Node motorNode : asList(motorNodes)) {
-				for (Node axisNode : asList(motorNode.getChildNodes())) {
-					if (axisNode.getNodeType() != Node.ELEMENT_NODE) {
-						continue;
-					}
-					if (axisNode.getNodeName().equals(Literals.XML_ELEMENT_NAME_STOP)) {
-						for (Node stopNode : asList(axisNode.getChildNodes())) {
-							if (stopNode.getNodeName().equals(
-									Literals.XML_ELEMENT_NAME_VALUE)) {
-								stopNode.getAttributes().getNamedItem(
-									Literals.XML_ATTRIBUTE_NAME_TYPE).
-										setNodeValue("int");
+				NodeList axisNodes = ((Element)motorNode).
+							getElementsByTagName(Literals.XML_ELEMENT_NAME_AXIS);
+				for (Node axisNode : asList(axisNodes)) {
+					for (Node childNode : asList(axisNode.getChildNodes())) {
+						if (childNode.getNodeType() != Node.ELEMENT_NODE) {
+							continue;
+						}
+						if (childNode.getNodeName().equals(Literals.XML_ELEMENT_NAME_STOP)) {
+							for (Node stopNode : asList(childNode.getChildNodes())) {
+								if (stopNode.getNodeType() != Node.ELEMENT_NODE) {
+									continue;
+								}
+								if (stopNode.getNodeName().equals(
+										Literals.XML_ELEMENT_NAME_VALUE)) {
+									stopNode.getAttributes().getNamedItem(
+											Literals.XML_ATTRIBUTE_NAME_TYPE).
+											setNodeValue("int");
+									counter++;
+								}
 							}
 						}
 					}
+				}
+			}
+			if (counter != 0) {
+				if (counter == 1) {
+					this.appendMessage("(1 entry found and converted)");
+				} else {
+					this.appendMessage(
+						"(" + counter + " entries found and converted)");
 				}
 			}
 		}
