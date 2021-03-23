@@ -167,7 +167,10 @@ public class Patch8o0T9o0 extends Patch {
 					NodeList smPauseEventsList = ((Element)child).
 						getElementsByTagName(Literals.XML_ELEMENT_NAME_PAUSEEVENT);
 					for (Node pauseChild : asList(smPauseEventsList)) {
-						smPauseEvents.add(PauseEvent.readPauseEvent(pauseChild));
+						PauseEvent pauseEvent = PauseEvent.readPauseEvent(pauseChild);
+						LOGGER.debug("found Chain (id: " + chainId + ") - " + 
+								"SM (id: " + smId + ") - " + pauseEvent.toString());
+						smPauseEvents.add(pauseEvent);
 					}
 					chainSMEventsMap.put(smId, smPauseEvents);
 				}
