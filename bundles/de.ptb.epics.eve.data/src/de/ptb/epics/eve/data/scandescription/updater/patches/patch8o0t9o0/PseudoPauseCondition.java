@@ -87,4 +87,59 @@ public class PseudoPauseCondition {
 	public void setContinueLimit(String continueLimit) {
 		this.continueLimit = continueLimit;
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean equals(Object other) {
+		if (this == other) {
+			return true;
+		}
+		if (other == null) {
+			return false;
+		}
+		if (other.getClass() != getClass()) {
+			return false;
+		}
+		if (!this.deviceId.equals(((PseudoPauseCondition)other).getDeviceId())) {
+			return false;
+		}
+		if (!this.type.equals(((PseudoPauseCondition)other).getType())) {
+			return false;
+		}
+		if (!this.operator.equals(((PseudoPauseCondition)other).getOperator())) {
+			return false;
+		}
+		if (!this.pauseLimit.equals(((PseudoPauseCondition)other).getPauseLimit())) {
+			return false;
+		}
+		if (this.continueLimit == null) {
+			if (((PseudoPauseCondition)other).getContinueLimit() != null) {
+				return false;
+			}
+		} else {
+			if (!continueLimit.equals(((PseudoPauseCondition)other).getContinueLimit())) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int hashCode() {
+		int result = deviceId.hashCode();
+		result = 31 * result + type.hashCode();
+		result = 31 * result + operator.hashCode();
+		result = 31 * result + pauseLimit.hashCode();
+		if (continueLimit == null) {
+			result = 31 * result + 0;
+		} else {
+			result = 31 * result + continueLimit.hashCode();
+		}
+		return result;
+	}
 }
