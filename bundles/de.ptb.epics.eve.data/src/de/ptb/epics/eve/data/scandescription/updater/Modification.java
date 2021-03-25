@@ -24,6 +24,12 @@ public interface Modification {
 	void modify(Document document);
 	
 	/**
+	 * Resets the message to its initial state.
+	 * @since 1.36
+	 */
+	void resetMessage();
+	
+	/**
 	 * Appends a message to the changelog as a new line.
 	 * @param message the message to append
 	 * @since 1.36
