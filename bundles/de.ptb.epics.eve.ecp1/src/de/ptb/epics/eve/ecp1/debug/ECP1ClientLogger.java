@@ -10,6 +10,7 @@ import de.ptb.epics.eve.ecp1.client.interfaces.IEngineVersionListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IErrorListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IMeasurementDataListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.INewXMLFileListener;
+import de.ptb.epics.eve.ecp1.client.interfaces.IPauseStatusListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IPlayListController;
 import de.ptb.epics.eve.ecp1.client.interfaces.IPlayListListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IRequestListener;
@@ -17,6 +18,7 @@ import de.ptb.epics.eve.ecp1.client.model.Error;
 import de.ptb.epics.eve.ecp1.client.model.MeasurementData;
 import de.ptb.epics.eve.ecp1.client.model.Request;
 import de.ptb.epics.eve.ecp1.commands.ChainStatusCommand;
+import de.ptb.epics.eve.ecp1.commands.PauseStatusCommand;
 import de.ptb.epics.eve.ecp1.commands.ChainProgressCommand;
 import de.ptb.epics.eve.ecp1.types.EngineStatus;
 
@@ -27,7 +29,7 @@ import de.ptb.epics.eve.ecp1.types.EngineStatus;
 public class ECP1ClientLogger implements IEngineStatusListener, IEngineVersionListener,
 		IChainStatusListener, IChainProgressListener, IErrorListener, IMeasurementDataListener,
 		IRequestListener, INewXMLFileListener, IConnectionStateListener,
-		IPlayListListener {
+		IPlayListListener, IPauseStatusListener {
 	
 	private static final Logger LOGGER = Logger
 			.getLogger(ECP1ClientLogger.class.getName());
@@ -188,5 +190,15 @@ public class ECP1ClientLogger implements IEngineStatusListener, IEngineVersionLi
 				" | Type: " + request.getRequestType() + 
 				" | " + request.getRequestText()
 			);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void pauseStatusChangedListener(PauseStatusCommand pauseStatus) {
+		LOGGER.debug("Pause Status: ");
+		// TODO Auto-generated method stub
+		
 	}
 }

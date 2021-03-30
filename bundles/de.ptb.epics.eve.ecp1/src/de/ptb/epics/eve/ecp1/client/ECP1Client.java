@@ -26,6 +26,7 @@ import de.ptb.epics.eve.ecp1.client.interfaces.IEngineStatusListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IEngineVersionListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IErrorListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IMeasurementDataListener;
+import de.ptb.epics.eve.ecp1.client.interfaces.IPauseStatusListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IPlayController;
 import de.ptb.epics.eve.ecp1.client.interfaces.IPlayListController;
 import de.ptb.epics.eve.ecp1.client.interfaces.IRequestListener;
@@ -41,6 +42,7 @@ import de.ptb.epics.eve.ecp1.commands.ErrorCommand;
 import de.ptb.epics.eve.ecp1.commands.GenericRequestCommand;
 import de.ptb.epics.eve.ecp1.commands.IECP1Command;
 import de.ptb.epics.eve.ecp1.commands.MeasurementDataCommand;
+import de.ptb.epics.eve.ecp1.commands.PauseStatusCommand;
 import de.ptb.epics.eve.ecp1.commands.PlayListCommand;
 
 /**
@@ -100,6 +102,7 @@ public class ECP1Client {
 	private final Queue<IEngineVersionListener> engineVersionListener;
 	private final Queue<IChainStatusListener> chainStatusListener;
 	private final Queue<IChainProgressListener> chainProgressListener;
+	private final Queue<IPauseStatusListener> pauseStatusListener;
 	private final Queue<IErrorListener> errorListener;
 	private final Queue<IMeasurementDataListener> measurementDataListener;
 	private final Queue<IRequestListener> requestListener;
@@ -119,32 +122,27 @@ public class ECP1Client {
 	public ECP1Client() {
 		this.ecp1Client = this;
 
-		this.inQueue = new ConcurrentLinkedQueue<byte[]>();
-		this.outQueue = new ConcurrentLinkedQueue<IECP1Command>();
+		this.inQueue = new ConcurrentLinkedQueue<>();
+		this.outQueue = new ConcurrentLinkedQueue<>();
 
 		this.playController = new PlayController(this);
 		this.playListController = new PlayListController(this);
 
-		this.engineStatusListener = 
-				new ConcurrentLinkedQueue<IEngineStatusListener>();
-		this.engineVersionListener = 
-				new ConcurrentLinkedQueue<IEngineVersionListener>();
-		this.chainStatusListener = 
-				new ConcurrentLinkedQueue<IChainStatusListener>();
-		this.chainProgressListener = 
-				new ConcurrentLinkedQueue<IChainProgressListener>();
-		this.errorListener = new ConcurrentLinkedQueue<IErrorListener>();
-		this.measurementDataListener = 
-				new ConcurrentLinkedQueue<IMeasurementDataListener>();
-		this.requestListener = new ConcurrentLinkedQueue<IRequestListener>();
-		this.connectionStateListener = 
-				new ConcurrentLinkedQueue<IConnectionStateListener>();
+		this.engineStatusListener = new ConcurrentLinkedQueue<>();
+		this.engineVersionListener = new ConcurrentLinkedQueue<>();
+		this.chainStatusListener = 	new ConcurrentLinkedQueue<>();
+		this.chainProgressListener = new ConcurrentLinkedQueue<>();
+		this.pauseStatusListener = new ConcurrentLinkedQueue<>();
+		this.errorListener = new ConcurrentLinkedQueue<>();
+		this.measurementDataListener = new ConcurrentLinkedQueue<>();
+		this.requestListener = new ConcurrentLinkedQueue<>();
+		this.connectionStateListener = new ConcurrentLinkedQueue<>();
 
 		/* ****************************************************** */
 		// TODO following code has to be documented/explained
-		this.requestMap = new HashMap<Integer, Request>();
+		this.requestMap = new HashMap<>();
 
-		this.classNames = new ArrayList<String>();
+		this.classNames = new ArrayList<>();
 		final String packageName = "de.ptb.epics.eve.ecp1.commands.";
 
 		this.classNames.add(packageName + "AddToPlayListCommand");
@@ -172,8 +170,9 @@ public class ECP1Client {
 		this.classNames.add(packageName + "StartCommand");
 		this.classNames.add(packageName + "StopCommand");
 		this.classNames.add(packageName + "ChainProgressCommand");
+		this.classNames.add(packageName + "PauseStatusCommand");
 
-		this.commands = new HashMap<Character, Constructor<? extends IECP1Command>>();
+		this.commands = new HashMap<>();
 		
 		final Iterator<String> it = this.classNames.iterator();
 		final Class<IECP1Command> ecp1CommandInterface = IECP1Command.class;
@@ -457,6 +456,28 @@ public class ECP1Client {
 	}
 
 	/**
+	 * Adds the given listener
+	 * @param pauseStatusListener the listener to be removed
+	 * @return <code>true</code> if listener added, <code>false</code> otherwise
+	 * @since 1.36
+	 */
+	public boolean addPauseStatusListener(
+			final IPauseStatusListener pauseStatusListener) {
+		return this.pauseStatusListener.add(pauseStatusListener);
+	}
+	
+	/**
+	 * Removes the given listener
+	 * @param pauseStatusListener the listener to be removed
+	 * @return <code>true</code> if listener removed, <code>false</code> otherwise
+	 * @since 1.36
+	 */
+	public boolean removePauseStatusListener(
+			final IPauseStatusListener pauseStatusListener) {
+		return this.pauseStatusListener.remove(pauseStatusListener);
+	}
+	
+	/**
 	 * Adds the given 
 	 * {@link de.ptb.epics.eve.ecp1.client.interfaces.IErrorListener}.
 	 * 
@@ -556,10 +577,6 @@ public class ECP1Client {
 		return this.connectionStateListener.remove(requestListener);
 	}
 
-	/* ********************************************************************* */
-	/* ********************************************************************* */
-	/* ********************************************************************* */
-
 	/**
 	 * @author ?
 	 * @since 1.0
@@ -605,6 +622,12 @@ public class ECP1Client {
 										(ChainStatusCommand) command;
 								for (IChainStatusListener csl : chainStatusListener) {
 									csl.chainStatusChanged(chainStatusCommand);
+								}
+							} else if (command instanceof PauseStatusCommand) {
+								final PauseStatusCommand pauseStatus = 
+										(PauseStatusCommand) command;
+								for (IPauseStatusListener psl : pauseStatusListener) {
+									psl.pauseStatusChangedListener(pauseStatus);
 								}
 							} else if (command instanceof EngineVersionCommand) {
 								final EngineVersionCommand engineVersionCommand = 
