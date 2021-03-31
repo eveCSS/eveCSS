@@ -59,8 +59,8 @@ public class PauseStatusCommand implements IECP1Command {
 		
 		this.pauseStatusList = new ArrayList<>();
 		while (length > 0) {
-			PauseStatus pauseStatus = PauseStatus.charToPauseStatus(
-					dataInputStream.readChar());
+			PauseStatus pauseStatus = PauseStatus.intToPauseStatus(
+					dataInputStream.readUnsignedByte());
 			int nameLength = dataInputStream.readInt();
 			String name = "";
 			if (nameLength != 0xffffffff) {

@@ -24,7 +24,7 @@ public enum PauseStatus {
 	 * @param pauseStatus
 	 * @return 
 	 */
-	public static char pauseStatusToChar(final PauseStatus pauseStatus) {
+	public static int pauseStatusToInt(final PauseStatus pauseStatus) {
 		switch (pauseStatus) {
 		case PAUSE_ACTIVATED:
 			return 0x01;
@@ -41,7 +41,7 @@ public enum PauseStatus {
 	 * @param status
 	 * @return
 	 */
-	public static PauseStatus charToPauseStatus(final char status) {
+	public static PauseStatus intToPauseStatus(final int status) {
 		switch (status) {
 		case 0x01: 
 			return PauseStatus.PAUSE_ACTIVATED;
