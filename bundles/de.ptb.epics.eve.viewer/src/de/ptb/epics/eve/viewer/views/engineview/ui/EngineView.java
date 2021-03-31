@@ -30,9 +30,13 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -40,6 +44,7 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
@@ -79,24 +84,32 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 		IEngineVersionListener, IEngineStatusListener, IChainStatusListener, IPlayListListener, 
 		PropertyChangeListener {
 	public static final String REPEAT_COUNT_PROP = "repeatCount";
-
+	
 	/** the public identifier of the view */
 	public static final String id = "EngineView";
 	
 	private static Logger logger = Logger.getLogger(EngineView.class.getName());
 
+	private static final String ENGINE_GROUP_LABEL = " Engine ";
+	private static final String ENGINE_GROUP_NOT_CONNECTED_LABEL = 
+			" Engine (not connected) ";
+	private static final String SCAN_GROUP_NO_SCAN_LABEL = " Scan ";
+	private static final String FILENAME_LABEL = "Filename: ";
+	
 	private Composite top = null;
 	private ScrolledComposite sc = null;
 
-	private Label engineLabel;
+	private Group engineGroup;
+	//private Label engineLabel;
 	private Composite engineComposite;
 	private Button startButton;
 	private Button killButton;
 	private Button connectButton;
 	private Button disconnectButton;
-	private Label statusLabel;
+	//private Label statusLabel;
 
-	private Label scanLabel;
+	private Group scanGroup;
+	//private Label scanLabel;
 	private Composite scanComposite;
 	private Button playButton;
 	private Button pauseButton;
@@ -113,11 +126,11 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 	private ISWTObservableValue repeatCountGUIDelayedObservable;
 	private ControlDecorationSupport repeatCountTextControlDecoration;
 
-	private Label loadedScmlLabel;
-	private Text loadedScmlText;
+	//private Label loadedScmlLabel;
+	//private Text loadedScmlText;
 
 	private Label chainFilenameLabel;
-	private Text filenameText;
+	//private Text filenameText;
 
 	private Label commentLabel;
 	private Text commentText;
@@ -143,6 +156,7 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 	
 	private int playListSize;
 	private EngineStatus engineStatus;
+
 	
 	/**
 	 * {@inheritDoc}
@@ -170,14 +184,25 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 		sc.setExpandHorizontal(true);
 		sc.setExpandVertical(true);
 		
-		this.engineLabel = new Label(this.top, SWT.NONE);
-		this.engineLabel.setText("ENGINE:");
+		engineGroup = new Group(top, SWT.SHADOW_OUT);
+		engineGroup.setText(" Engine (not connected) ");
+		GridData gridData = new GridData();
+		gridData.horizontalSpan = 4;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalAlignment = GridData.FILL;
+		engineGroup.setLayoutData(gridData);
+		gridLayout = new GridLayout();
+		gridLayout.numColumns = 3;
+		engineGroup.setLayout(gridLayout);
 		
-		this.engineComposite = new Composite(this.top, SWT.NONE);
+		// this.engineLabel = new Label(this.top, SWT.NONE);
+		// this.engineLabel.setText("ENGINE:");
+		
+		this.engineComposite = new Composite(engineGroup, SWT.NONE);
 		gridLayout = new GridLayout();
 		gridLayout.numColumns = 4;
+		gridLayout.makeColumnsEqualWidth = true;
 		this.engineComposite.setLayout(gridLayout);
-		GridData gridData;
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 3;
@@ -186,45 +211,69 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 		this.startButton = new Button(this.engineComposite, SWT.PUSH);
 		this.startButton.setText("start");
 		this.startButton.setToolTipText("Start engine");
+		gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		this.startButton.setLayoutData(gridData);
 		this.startButton.addSelectionListener(new StartButtonSelectionListener());
 		
 		this.killButton = new Button(this.engineComposite, SWT.PUSH);
 		this.killButton.setText("kill");
 		this.killButton.setToolTipText("Kill engine");
+		gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		this.killButton.setLayoutData(gridData);
 		this.killButton.addSelectionListener(new KillButtonSelectionListener());
 		
 		this.connectButton = new Button(this.engineComposite, SWT.PUSH);
 		this.connectButton.setText("connect");
 		this.connectButton.setToolTipText("Connect to Engine");
+		gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		this.connectButton.setLayoutData(gridData);
 		this.connectButton.addSelectionListener(
 				new ConnectButtonSelectionListener());
 		
 		this.disconnectButton = new Button(this.engineComposite, SWT.PUSH);
 		this.disconnectButton.setText("disconnect");
 		this.disconnectButton.setToolTipText("Disconnect Engine");
+		gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		this.disconnectButton.setLayoutData(gridData);
 		this.disconnectButton.addSelectionListener(
 				new DisconnectButtonSelectionListener());
 		
-		this.statusLabel = new Label(this.engineComposite, SWT.NONE);
+		/*this.statusLabel = new Label(this.engineComposite, SWT.NONE);
 		this.statusLabel.setText("not connected");
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 4;
-		this.statusLabel.setLayoutData(gridData);
+		this.statusLabel.setLayoutData(gridData);*/
 		
-		this.scanLabel = new Label(this.top, SWT.NONE);
-		this.scanLabel.setText("SCAN:");
+		scanGroup = new Group(top, SWT.SHADOW_NONE);
+		scanGroup.setText(SCAN_GROUP_NO_SCAN_LABEL);
 		gridData = new GridData();
+		gridData.horizontalSpan = 4;
+		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
-		this.scanLabel.setLayoutData(gridData);
+		scanGroup.setLayoutData(gridData);
+		gridLayout = new GridLayout();
+		gridLayout.numColumns = 4;
+		scanGroup.setLayout(gridLayout);
 		
-		this.scanComposite = new Composite(this.top, SWT.NONE);
+		//this.scanLabel = new Label(this.top, SWT.NONE);
+		//this.scanLabel.setText("SCAN:");
+		//gridData = new GridData();
+		//gridData.horizontalAlignment = GridData.FILL;
+		//this.scanLabel.setLayoutData(gridData);
+		
+		this.scanComposite = new Composite(scanGroup, SWT.NONE);
 		gridLayout = new GridLayout();
 		gridLayout.numColumns = 3;
 		this.scanComposite.setLayout(gridLayout);
 		gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
-		gridData.horizontalSpan = 3;
+		gridData.horizontalSpan = 4;
 		this.scanComposite.setLayoutData(gridData);
 		
 		Composite scanButtonComposite = new Composite(this.scanComposite, SWT.NONE);
@@ -390,50 +439,50 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 			}
 		});
 		
-		this.loadedScmlLabel = new Label(this.top, SWT.NONE);
+		/*this.loadedScmlLabel = new Label(this.top, SWT.NONE);
 		this.loadedScmlLabel.setText("Loaded File:");
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 2;
-		this.loadedScmlLabel.setLayoutData(gridData);
+		this.loadedScmlLabel.setLayoutData(gridData);*/
 		
-		this.loadedScmlText = new Text(this.top, SWT.BORDER);
+		/*this.loadedScmlText = new Text(this.top, SWT.BORDER);
 		this.loadedScmlText.setEditable(false);
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 2;
-		this.loadedScmlText.setLayoutData(gridData);
+		this.loadedScmlText.setLayoutData(gridData);*/
 		
-		this.chainFilenameLabel = new Label(this.top, SWT.NONE);
-		this.chainFilenameLabel.setText("Filename:");
+		this.chainFilenameLabel = new Label(scanGroup, SWT.NONE);
+		this.chainFilenameLabel.setText(FILENAME_LABEL);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
-		gridData.horizontalSpan = 2;
+		gridData.horizontalSpan = 4;
 		this.chainFilenameLabel.setLayoutData(gridData);
 		
-		this.filenameText = new Text(this.top, SWT.BORDER | SWT.TRAIL);
+		/*this.filenameText = new Text(scanGroup, SWT.BORDER | SWT.TRAIL);
 		this.filenameText.setEditable(false);
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 2;
-		this.filenameText.setLayoutData(gridData);
+		this.filenameText.setLayoutData(gridData);*/
 		
-		this.commentLabel = new Label(this.top, SWT.NONE);
+		this.commentLabel = new Label(scanGroup, SWT.NONE);
 		this.commentLabel.setText("Log Message:");
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 2;
 		this.commentLabel.setLayoutData(gridData);
 		
-		this.commentText = new Text( this.top, SWT.BORDER);
+		this.commentText = new Text(scanGroup, SWT.BORDER);
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		this.commentText.setLayoutData(gridData);
 		
-		this.commentSendButton = new Button(this.top, SWT.NONE);
+		this.commentSendButton = new Button(scanGroup, SWT.NONE);
 		this.commentSendButton.setText("Send to File");
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -442,7 +491,7 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 		this.commentSendButton.addSelectionListener(
 				new CommentSendButtonSelectionListener());
 		
-		this.progressBarComposite = new ProgressBarComposite(top, SWT.BORDER, 
+		this.progressBarComposite = new ProgressBarComposite(scanGroup, SWT.BORDER, 
 				Activator.getDefault().getEcp1Client().isRunning());
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -547,14 +596,21 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 	 * @param filename
 	 */
 	public void setActualFilename(final String filename) {
+		this.chainFilenameLabel.getDisplay().syncExec(new Runnable() {
+			@Override
+			public void run() {
+				chainFilenameLabel.setText(FILENAME_LABEL + filename);
+			}
+		});
+		
 		// der Name des geladenen scml-Files wird angezeigt
-		this.filenameText.getDisplay().syncExec(new Runnable() {
+		/*this.filenameText.getDisplay().syncExec(new Runnable() {
 			@Override public void run() {
 				filenameText.setText(filename);
 				int lastSign = filename.length();
 				filenameText.setSelection(lastSign);
 			}
-		});
+		});*/
 	}
 
 
@@ -585,39 +641,48 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 				.getInt(PreferenceConstants.P_DEFAULT_ENGINE_PORT);
 		switch(status) {
 			case CONNECTED:		// engine stuff
-								this.statusLabel.setText("connected to " + 
+								/*this.statusLabel.setText("connected to " + 
 										engineHost + ":" + 
-										Integer.toString(enginePort));
+										Integer.toString(enginePort));*/
+								this.engineGroup.setText(ENGINE_GROUP_LABEL + 
+										"(" + engineHost + ":" +
+										Integer.toString(enginePort) + ")");
 								// scan stuff
-								this.scanLabel.setEnabled(true);
+								//this.scanLabel.setEnabled(true);
 								this.autoPlayToggleButton.setEnabled(true);
 								this.repeatCountLabel.setEnabled(true);
 								this.repeatCountText.setEnabled(true);
 								this.repeatCountText.setText(String.valueOf(
 										this.repeatCount));
 								
-								this.loadedScmlLabel.setEnabled(true);
-								this.loadedScmlText.setEnabled(true);
+								this.scanGroup.setEnabled(true);
+								//this.loadedScmlLabel.setEnabled(true);
+								//this.loadedScmlText.setEnabled(true);
 								this.chainFilenameLabel.setEnabled(true);
-								this.filenameText.setEnabled(true);
+								//this.filenameText.setEnabled(true);
 								this.commentLabel.setEnabled(true);
 								this.commentText.setEnabled(true);
 								break;
 			case DISCONNECTED:	// engine stuff
-								this.statusLabel.setText("not connected");
+								//this.statusLabel.setText("not connected");
+								this.engineGroup.setText(
+										ENGINE_GROUP_NOT_CONNECTED_LABEL);
 								// scan stuff
-								this.scanLabel.setEnabled(false);
+								//this.scanLabel.setEnabled(false);
 								this.autoPlayToggleButton.setEnabled(false);
 								this.repeatCountLabel.setEnabled(false);
 								this.repeatCountText.setText("");
 								this.repeatCountText.setEnabled(false);
 								
-								this.loadedScmlLabel.setEnabled(false);
-								this.loadedScmlText.setText("");
-								this.loadedScmlText.setEnabled(false);
+								//this.loadedScmlLabel.setEnabled(false);
+								this.scanGroup.setText(SCAN_GROUP_NO_SCAN_LABEL);
+								this.scanGroup.setEnabled(false);
+								//this.loadedScmlText.setText("");
+								//this.loadedScmlText.setEnabled(false);
+								this.chainFilenameLabel.setText(FILENAME_LABEL);
 								this.chainFilenameLabel.setEnabled(false);
-								this.filenameText.setText("");
-								this.filenameText.setEnabled(false);
+								//this.filenameText.setText("");
+								//this.filenameText.setEnabled(false);
 								this.commentLabel.setEnabled(false);
 								this.commentText.setText("");
 								this.commentText.setEnabled(false);
@@ -781,11 +846,17 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 		if (!EngineStatus.LOADING_XML.equals(engineStatus)) {
 			this.setCurrentRepeatCount(repeatCount);
 			logger.debug("loaded scml File: " + xmlName);
-			this.loadedScmlText.getDisplay().syncExec( new Runnable() {
+			this.scanGroup.getDisplay().syncExec(new Runnable() {
+				@Override
+				public void run() {
+					scanGroup.setText(SCAN_GROUP_NO_SCAN_LABEL + "(" + xmlName + ")");
+				}
+			});
+			/*this.loadedScmlText.getDisplay().syncExec( new Runnable() {
 				@Override public void run() {
 					loadedScmlText.setText(xmlName);
 				}
-			});
+			});*/
 		}
 	}
 	
