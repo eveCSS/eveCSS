@@ -30,13 +30,9 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -184,15 +180,15 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 		sc.setExpandHorizontal(true);
 		sc.setExpandVertical(true);
 		
-		engineGroup = new Group(top, SWT.SHADOW_OUT);
+		engineGroup = new Group(top, SWT.SHADOW_NONE);
 		engineGroup.setText(" Engine (not connected) ");
 		GridData gridData = new GridData();
-		gridData.horizontalSpan = 4;
+		gridData.horizontalSpan = 2;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		engineGroup.setLayoutData(gridData);
 		gridLayout = new GridLayout();
-		gridLayout.numColumns = 3;
+		//gridLayout.numColumns = 3;
 		engineGroup.setLayout(gridLayout);
 		
 		// this.engineLabel = new Label(this.top, SWT.NONE);
@@ -204,8 +200,8 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 		gridLayout.makeColumnsEqualWidth = true;
 		this.engineComposite.setLayout(gridLayout);
 		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.horizontalSpan = 3;
+		gridData.horizontalAlignment = GridData.CENTER;
+		gridData.grabExcessHorizontalSpace = true;
 		this.engineComposite.setLayoutData(gridData);
 		
 		this.startButton = new Button(this.engineComposite, SWT.PUSH);
@@ -242,12 +238,45 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 		this.disconnectButton.addSelectionListener(
 				new DisconnectButtonSelectionListener());
 		
-		/*this.statusLabel = new Label(this.engineComposite, SWT.NONE);
-		this.statusLabel.setText("not connected");
+		Group engineStatusGroup = new Group(top, SWT.SHADOW_IN);
+		engineStatusGroup.setText(" Engine State ");
 		gridData = new GridData();
+		gridData.widthHint = 100;
 		gridData.horizontalAlignment = GridData.FILL;
-		gridData.horizontalSpan = 4;
-		this.statusLabel.setLayoutData(gridData);*/
+		gridData.verticalAlignment = GridData.FILL;
+		engineStatusGroup.setLayoutData(gridData);
+		gridLayout = new GridLayout();
+		gridLayout.marginHeight = 2;
+		gridLayout.marginWidth = 2;
+		engineStatusGroup.setLayout(gridLayout);
+		EngineGroupComposite statusGroupComposite = 
+				new EngineStatusGroupComposite(engineStatusGroup, SWT.NONE);
+		gridData = new GridData();
+		gridData.verticalAlignment = GridData.FILL;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
+		statusGroupComposite.setLayoutData(gridData);
+		
+		Group engineInhibitStateGroup = new Group(top, SWT.SHADOW_IN);
+		engineInhibitStateGroup.setText(" Inhibit State ");
+		gridData = new GridData();
+		gridData.widthHint = 100;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.verticalAlignment = GridData.FILL;
+		engineInhibitStateGroup.setLayoutData(gridData);
+		gridLayout = new GridLayout();
+		gridLayout.marginHeight = 2;
+		gridLayout.marginWidth = 2;
+		engineInhibitStateGroup.setLayout(gridLayout);
+		EngineGroupComposite inhibitStateGroupComposite = 
+			new EngineInhibitStateGroupComposite(engineInhibitStateGroup, SWT.NONE);
+		gridData = new GridData();
+		gridData.verticalAlignment = GridData.FILL;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
+		inhibitStateGroupComposite.setLayoutData(gridData);
 		
 		scanGroup = new Group(top, SWT.SHADOW_NONE);
 		scanGroup.setText(SCAN_GROUP_NO_SCAN_LABEL);
