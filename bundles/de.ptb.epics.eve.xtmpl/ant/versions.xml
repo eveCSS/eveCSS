@@ -46,6 +46,7 @@
 		<loadfile property="syres1" srcFile="/messung/instruments/syres1/eve/version.txt"/>
 		<loadfile property="syres2" srcFile="/messung/instruments/syres2/eve/version.txt"/>
 		<loadfile property="trfa" srcFile="/messung/instruments/trfa/eve/version.txt"/>
+		<loadfile property="vls_wds" srcFile="/messung/instruments/vls_wds/eve/version.txt"/>
 		<loadfile property="vonhamos" srcFile="/messung/instruments/vonhamos/eve/version.txt"/>
 		<loadfile property="vuvref" srcFile="/messung/instruments/vuvref/eve/version.txt"/>
 		<loadfile property="wwl_eez_test" srcFile="/messung/instruments/wwl_eez_test/eve/version.txt"/>
@@ -95,6 +96,7 @@
 		<echo message="syres1:              ${syres1}" />
 		<echo message="syres2:              ${syres2}" />
 		<echo message="trfa:                ${trfa}" />
+		<echo message="vls_wds:             ${vls_wds}" />
 		<echo message="vonhamos:            ${vonhamos}" />
 		<echo message="vuvref:              ${vuvref}" />
 		<echo message="wwl_eez_test:        ${wwl_eez_test}" />

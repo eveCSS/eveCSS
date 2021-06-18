@@ -22,19 +22,19 @@
                 </unit>
                 include "axis_energy_option_part.xtmpl"
                 <option>
-                    <name>beamOffset /mm [B]</name>
-                    <id>${Prefix}${PV}z2.B</id>
-                    <value>
-                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}z2.B</access>
-                    </value>
-                    <displaygroup>summary</displaygroup>
-                </option>
-                <option>
-                    <name>Crystal</name>
+                    <name>Orientation</name>
                     <id>${Prefix}${PV}selectCrystal</id>
                     <value>
                         <access method="GETPUTCB" type="${Type=string}" transport="ca">${PV}selectCrystal</access>
                         <value type="string">Si 111,Si 311,Si 333</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>hc/e (keV/nm) [A]</name>
+                    <id>${Prefix}${PV}.A</id>
+                    <value>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}.A</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -51,6 +51,38 @@
                     <id>${Prefix}${PV}.C</id>
                     <value>
                         <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}.C</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Theta function [A]</name>
+                    <id>${Prefix}${PV}.CALC</id>
+                    <value>
+                        <access method="GETPUTCB" type="${Type=string}" transport="ca">${PV}.CALC</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>beamOffset /mm [B]</name>
+                    <id>${Prefix}${PV}z2.B</id>
+                    <value>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}z2.B</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>z2 function</name>
+                    <id>${Prefix}${PV}z2.CALC</id>
+                    <value>
+                        <access method="GETPUTCB" type="${Type=string}" transport="ca">${PV}z2.CALC</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>y2 function</name>
+                    <id>${Prefix}${PV}y2.CALC</id>
+                    <value>
+                        <access method="GETPUTCB" type="${Type=string}" transport="ca">${PV}y2.CALC</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -77,30 +109,6 @@
                     <value>
                         <access method="GETPUTCB" type="${Type=string}" transport="ca">${PV}trgBender</access>
                         <value type="string">No,Yes</value>
-                    </value>
-                    <displaygroup>summary</displaygroup>
-                </option>
-                <option>
-                    <name>A=Theta function</name>
-                    <id>${Prefix}${PV}.CALC</id>
-                    <value>
-                        <access method="GETPUTCB" type="${Type=string}" transport="ca">${PV}.CALC</access>
-                    </value>
-                    <displaygroup>summary</displaygroup>
-                </option>
-                <option>
-                    <name>G=z2 function</name>
-                    <id>${Prefix}${PV}z2.CALC</id>
-                    <value>
-                        <access method="GETPUTCB" type="${Type=string}" transport="ca">${PV}z2.CALC</access>
-                    </value>
-                    <displaygroup>summary</displaygroup>
-                </option>
-                <option>
-                    <name>y2 function</name>
-                    <id>${Prefix}${PV}y2.CALC</id>
-                    <value>
-                        <access method="GETPUTCB" type="${Type=string}" transport="ca">${PV}y2.CALC</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
