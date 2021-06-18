@@ -22,19 +22,10 @@
                 </unit>
                 include "axis_energy_option_part.xtmpl"
                 <option>
-                    <name>beamOffset /mm [B]</name>
-                    <id>${Prefix}${PV}y2.B</id>
+                    <name>hc/e (keV/nm) [A]</name>
+                    <id>${Prefix}${PV}.A</id>
                     <value>
-                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}y2.B</access>
-                    </value>
-                    <displaygroup>summary</displaygroup>
-                </option>
-                <option>
-                    <name>Band</name>
-                    <id>${Prefix}${PV}selectBand</id>
-                    <value>
-                        <access method="GETPUTCB" type="${Type=string}" transport="ca">${PV}selectBand</access>
-                        <value type="string">W/Si,Mo/B4C,Pd</value>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}.A</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -43,24 +34,6 @@
                     <id>${Prefix}${PV}.C</id>
                     <value>
                         <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}.C</access>
-                    </value>
-                    <displaygroup>summary</displaygroup>
-                </option>
-                <option>
-                    <name>driveMode</name>
-                    <id>${Prefix}${PV}selectMotors</id>
-                    <value>
-                        <access method="GETPUTCB" type="${Type=string}" transport="ca">${PV}selectMotors</access>
-                        <value type="string">theta only,theta and trans</value>
-                    </value>
-                    <displaygroup>summary</displaygroup>
-                </option>
-                <option>
-                    <name>drive DMM_Bender</name>
-                    <id>${Prefix}${PV}trgBender</id>
-                    <value>
-                        <access method="GETPUTCB" type="${Type=string}" transport="ca">${PV}trgBender</access>
-                        <value type="string">No,Yes</value>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -81,10 +54,53 @@
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
-                    <name>z2 function [L]</name>
+                    <name>beamOffset /mm [B]</name>
+                    <id>${Prefix}${PV}y2.B</id>
+                    <value>
+                        <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}y2.B</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>z2 function</name>
                     <id>${Prefix}${PV}z2.CALC</id>
                     <value>
                         <access method="GETPUTCB" type="${Type=string}" transport="ca">${PV}z2.CALC</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>theta2 function</name>
+                    <id>${Prefix}${PV}theta2.CALC</id>
+                    <value>
+                        <access method="GETPUTCB" type="${Type=string}" transport="ca">${PV}theta2.CALC</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Band</name>
+                    <id>${Prefix}${PV}selectBand</id>
+                    <value>
+                        <access method="GETPUTCB" type="${Type=string}" transport="ca">${PV}selectBand</access>
+                        <value type="string">W/Si,Mo/B4C,Pd</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>driveMode</name>
+                    <id>${Prefix}${PV}selectMotors</id>
+                    <value>
+                        <access method="GETPUTCB" type="${Type=string}" transport="ca">${PV}selectMotors</access>
+                        <value type="string">theta only,theta and trans</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>drive DMM_Bender</name>
+                    <id>${Prefix}${PV}trgBender</id>
+                    <value>
+                        <access method="GETPUTCB" type="${Type=string}" transport="ca">${PV}trgBender</access>
+                        <value type="string">No,Yes</value>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -181,14 +197,6 @@
                     <id>${Prefix}${PV}benderPolynom</id>
                     <value>
                         <access method="GETPUTCB" type="${Type=double}" transport="ca">${PV}benderPolynom</access>
-                    </value>
-                    <displaygroup>summary</displaygroup>
-                </option>
-                <option>
-                    <name>theta2 function</name>
-                    <id>${Prefix}${PV}theta2.CALC</id>
-                    <value>
-                        <access method="GETPUTCB" type="${Type=string}" transport="ca">${PV}theta2.CALC</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
