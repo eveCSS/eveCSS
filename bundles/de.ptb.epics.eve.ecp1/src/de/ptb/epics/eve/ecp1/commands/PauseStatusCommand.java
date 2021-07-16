@@ -59,16 +59,18 @@ public class PauseStatusCommand implements IECP1Command {
 		
 		this.pauseStatusList = new ArrayList<>();
 		while (length > 0) {
-			PauseStatus pauseStatus = PauseStatus.intToPauseStatus(
-					dataInputStream.readUnsignedByte());
+			PauseStatus pauseStatus = PauseStatus.byteToPauseStatus(
+					dataInputStream.readByte());
 			int nameLength = dataInputStream.readInt();
 			String name = "";
 			if (nameLength != 0xffffffff) {
 				final byte[] nameByteArray = new byte[nameLength];
 				dataInputStream.readFully(nameByteArray);
 				name = new String(nameByteArray, IECP1Command.STRING_ENCODING);
+				length -= nameLength;
 			}
 			this.pauseStatusList.add(new PauseStatusEntry(name, pauseStatus));
+			length -= 5;
 		}
 	}
 	
@@ -77,7 +79,7 @@ public class PauseStatusCommand implements IECP1Command {
 	 */
 	@Override
 	public byte[] getByteArray() throws IOException {
-		// TODO Auto-generated method stub
+		// nothing to be done here. Engine to Viewer only
 		return null;
 	}
 	

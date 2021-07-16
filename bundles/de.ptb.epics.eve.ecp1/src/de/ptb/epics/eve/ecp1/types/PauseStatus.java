@@ -41,7 +41,7 @@ public enum PauseStatus {
 	 * @param status
 	 * @return
 	 */
-	public static PauseStatus intToPauseStatus(final int status) {
+	public static PauseStatus byteToPauseStatus(final byte status) {
 		switch (status) {
 		case 0x01: 
 			return PauseStatus.PAUSE_ACTIVATED;
@@ -50,6 +50,6 @@ public enum PauseStatus {
 		default: 
 			break;
 		}
-		throw new IllegalArgumentException("no pause type matching given int");
+		throw new IllegalArgumentException("no pause type matching given byte: " + status);
 	}
 }

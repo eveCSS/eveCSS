@@ -197,16 +197,16 @@ public class ECP1ClientLogger implements IEngineStatusListener, IEngineVersionLi
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void pauseStatusChangedListener(PauseStatusCommand pauseStatus) {
+	public void pauseStatusChanged(PauseStatusCommand pauseStatus) {
 		StringBuilder stati = new StringBuilder();
 		for (PauseStatusEntry entry : pauseStatus.getPauseStatusList()) {
-			stati.append(" | - Pause Status Entry:");
-			stati.append("     | deviceId: " + entry.getDeviceId());
-			stati.append("     | status: " + entry.getPauseStatus().toString());
+			stati.append("\n | - Pause Status Entry:");
+			stati.append("\n     | deviceId: " + entry.getDeviceId());
+			stati.append("\n     | status: " + entry.getPauseStatus().toString());
 		}
 		LOGGER.debug("Pause Status: " +
-				" | ChainId: " + pauseStatus.getChainId() +
-				" | Timestamp: " + pauseStatus.getTimestamp() +
+				"\n | ChainId: " + pauseStatus.getChainId() +
+				"\n | Timestamp: " + pauseStatus.getTimestamp() +
 				stati.toString());
 	}
 }

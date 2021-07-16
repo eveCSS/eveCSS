@@ -627,7 +627,7 @@ public class ECP1Client {
 								final PauseStatusCommand pauseStatus = 
 										(PauseStatusCommand) command;
 								for (IPauseStatusListener psl : pauseStatusListener) {
-									psl.pauseStatusChangedListener(pauseStatus);
+									psl.pauseStatusChanged(pauseStatus);
 								}
 							} else if (command instanceof EngineVersionCommand) {
 								final EngineVersionCommand engineVersionCommand = 

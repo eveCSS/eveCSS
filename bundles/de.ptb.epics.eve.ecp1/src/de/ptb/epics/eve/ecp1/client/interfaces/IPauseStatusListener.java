@@ -13,5 +13,5 @@ public interface IPauseStatusListener {
 	 * 
 	 * @param pauseStatus contains properties of the pause status
 	 */
-	public void pauseStatusChangedListener(PauseStatusCommand pauseStatus);
+	public void pauseStatusChanged(PauseStatusCommand pauseStatus);
 }
