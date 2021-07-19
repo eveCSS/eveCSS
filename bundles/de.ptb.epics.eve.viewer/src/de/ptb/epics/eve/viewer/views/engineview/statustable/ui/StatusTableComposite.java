@@ -48,6 +48,7 @@ public class StatusTableComposite extends Composite implements IConnectionStateL
 		engine.addEngineStatusListener(selectionListener);
 		this.tableViewer.getTable().addSelectionListener(
 				selectionListener);
+		this.tableViewer.getTable().setEnabled(false);
 	}
 	
 	private void createViewer() {

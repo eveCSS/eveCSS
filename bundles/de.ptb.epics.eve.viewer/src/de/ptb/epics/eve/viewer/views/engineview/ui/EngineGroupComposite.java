@@ -40,6 +40,9 @@ public abstract class EngineGroupComposite extends Composite {
 		this.text.setLayoutData(gridData);
 	}
 	
+	public abstract void enable();
+	public abstract void disable();
+	
 	protected void setText(String text) {
 		this.text.setText(text);
 	}
