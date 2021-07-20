@@ -53,10 +53,12 @@ import de.ptb.epics.eve.ecp1.client.interfaces.IConnectionStateListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IEngineStatusListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IEngineVersionListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IErrorListener;
+import de.ptb.epics.eve.ecp1.client.interfaces.IPauseStatusListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IPlayListController;
 import de.ptb.epics.eve.ecp1.client.interfaces.IPlayListListener;
 import de.ptb.epics.eve.ecp1.client.model.Error;
 import de.ptb.epics.eve.ecp1.commands.ChainStatusCommand;
+import de.ptb.epics.eve.ecp1.commands.PauseStatusCommand;
 import de.ptb.epics.eve.ecp1.types.ChainStatus;
 import de.ptb.epics.eve.ecp1.types.EngineStatus;
 import de.ptb.epics.eve.ecp1.types.ErrorType;
@@ -78,7 +80,7 @@ import de.ptb.epics.eve.viewer.views.messagesview.ViewerMessage;
  */
 public final class EngineView extends ViewPart implements IConnectionStateListener, IErrorListener,
 		IEngineVersionListener, IEngineStatusListener, IChainStatusListener, IPlayListListener, 
-		PropertyChangeListener {
+		IPauseStatusListener, PropertyChangeListener {
 	public static final String REPEAT_COUNT_PROP = "repeatCount";
 	
 	/** the public identifier of the view */
@@ -514,6 +516,7 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 		
 		Activator.getDefault().getEcp1Client().addEngineStatusListener(this);
 		Activator.getDefault().getEcp1Client().addChainStatusListener(this);
+		Activator.getDefault().getEcp1Client().addPauseStatusListener(this);
 		Activator.getDefault().getEcp1Client().getPlayListController().
 				addPlayListListener(this);
 		Activator.getDefault().getEcp1Client().addErrorListener(this);
@@ -824,9 +827,16 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 	 * {@inheritDoc}
 	 */
 	@Override
-	public synchronized void engineStatusChanged(EngineStatus engineStatus, 
+	public synchronized void engineStatusChanged(final EngineStatus engineStatus, 
 			final String xmlName, int repeatCount) {
 		this.engineStatus = engineStatus;
+		this.statusGroupComposite.getDisplay().syncExec(new Runnable() {
+			@Override
+			public void run() {
+				EngineView.this.statusGroupComposite.setEngineStatus(engineStatus);
+				EngineView.this.inhibitStateGroupComposite.setEngineStatus(engineStatus);
+			}
+		});
 		if (!EngineStatus.LOADING_XML.equals(engineStatus)) {
 			this.setCurrentRepeatCount(repeatCount);
 			logger.debug("loaded scml File: " + xmlName);
@@ -837,6 +847,22 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 				}
 			});
 		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 * @since 1.36
+	 */
+	@Override
+	public void pauseStatusChanged(final PauseStatusCommand pauseStatus) {
+		// TODO Auto-generated method stub
+		this.inhibitStateGroupComposite.getDisplay().syncExec(new Runnable() {
+			@Override
+			public void run() {
+				EngineView.this.statusGroupComposite.setPauseStatus(pauseStatus);
+				EngineView.this.inhibitStateGroupComposite.setPauseStatus(pauseStatus);
+			}
+		});
 	}
 	
 	/**
