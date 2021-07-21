@@ -8,6 +8,9 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
+import de.ptb.epics.eve.ecp1.commands.PauseStatusCommand;
+import de.ptb.epics.eve.ecp1.types.EngineStatus;
+
 /**
  * @author Marcus Michalsky
  * @since 1.36
@@ -18,6 +21,8 @@ public abstract class EngineGroupComposite extends Composite {
 	protected final Color yellow;
 	protected final Color green;
 	protected final Color grey;
+	protected final Color white;
+	protected final Color black;
 	
 	public EngineGroupComposite(Composite parent, int style) {
 		super(parent, style);
@@ -26,6 +31,8 @@ public abstract class EngineGroupComposite extends Composite {
 		this.yellow = new Color(this.getDisplay(), new RGB(0xff, 0xff, 0));
 		this.green = new Color(this.getDisplay(), new RGB(0, 0xd0, 0));
 		this.grey = new Color(this.getDisplay(), new RGB(127, 127, 127));
+		this.white = new Color(this.getDisplay(), new RGB(255, 255, 255));
+		this.black = new Color(this.getDisplay(), new RGB(0, 0, 0));
 		
 		GridLayout gridLayout = new GridLayout();
 		this.setLayout(gridLayout);
@@ -42,9 +49,15 @@ public abstract class EngineGroupComposite extends Composite {
 	
 	public abstract void enable();
 	public abstract void disable();
+	public abstract void setEngineStatus(EngineStatus engineStatus);
+	public abstract void setPauseStatus(PauseStatusCommand pauseStatus);
 	
 	protected void setText(String text) {
 		this.text.setText(text);
+	}
+	
+	protected void setFGColor(Color color) {
+		this.text.setForeground(color);
 	}
 	
 	protected void setBGColor(Color color) {

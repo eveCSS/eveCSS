@@ -17,6 +17,13 @@ public enum PauseStatus {
 		public String toString() {
 			return "pause override";
 		}
+	},
+	
+	PAUSE_TEMPORARY_FAKE_VALUE {
+		@Override
+		public String toString() {
+			return "temp fake value to prevent crashes";
+		}
 	};
 	
 	/**
@@ -30,6 +37,8 @@ public enum PauseStatus {
 			return 0x01;
 		case PAUSE_OVERRIDE:
 			return 0x02;
+		case PAUSE_TEMPORARY_FAKE_VALUE:
+			return 0x00;
 		default:
 			break;
 		}
@@ -47,6 +56,8 @@ public enum PauseStatus {
 			return PauseStatus.PAUSE_ACTIVATED;
 		case 0x02: 
 			return PauseStatus.PAUSE_OVERRIDE;
+		case 0x00: 
+			return PauseStatus.PAUSE_TEMPORARY_FAKE_VALUE;
 		default: 
 			break;
 		}
