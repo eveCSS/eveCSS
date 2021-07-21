@@ -16,6 +16,7 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.IMemento;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchActionConstants;
@@ -27,17 +28,25 @@ import de.ptb.epics.eve.data.scandescription.PauseCondition;
 import de.ptb.epics.eve.editor.StringLabels;
 import de.ptb.epics.eve.editor.handler.pauseconditions.RemovePauseConditionsDefaultHandler;
 import de.ptb.epics.eve.editor.views.DelColumnEditingSupport;
+import de.ptb.epics.eve.editor.views.IEditorViewCompositeMemento;
+import de.ptb.epics.eve.util.ui.jface.viewercomparator.alphabetical.AlphabeticalTableViewerSorter;
+import de.ptb.epics.eve.util.ui.jface.viewercomparator.alphabetical.SortOrder;
 
 /**
  * @author Marcus Michalsky
  * @since 1.36
  */
-public class PauseConditionComposite extends Composite implements PropertyChangeListener {
+public class PauseConditionComposite extends Composite implements 
+		IEditorViewCompositeMemento, PropertyChangeListener {
 	private static final Image DELETE_IMG = PlatformUI.getWorkbench().
 			getSharedImages().getImage(ISharedImages.IMG_TOOL_DELETE);
 	
+	private static final String MEMENTO_PAUSE_CONDITIONS_SORT_ORDER = 
+			"pauseConditionsSortState";
+	
 	private IViewPart parentView;
 	private TableViewer tableViewer;
+	private AlphabeticalTableViewerSorter tableSorter;
 	
 	private Chain currentChain;
 	
@@ -66,6 +75,10 @@ public class PauseConditionComposite extends Composite implements PropertyChange
 			}
 		});
 		ColumnViewerToolTipSupport.enableFor(tableViewer);
+		
+		this.tableSorter = new AlphabeticalTableViewerSorter(tableViewer, 
+				tableViewer.getTable().getColumn(1), 
+				new PauseConditionTableComparator());
 		
 		MenuManager menuManager = new MenuManager();
 		menuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
@@ -180,6 +193,28 @@ public class PauseConditionComposite extends Composite implements PropertyChange
 	public void propertyChange(PropertyChangeEvent e) {
 		if (e.getPropertyName().equals(Chain.PAUSE_CONDITION_PROP)) {
 			this.tableViewer.refresh();
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void saveState(IMemento memento) {
+		// table sort state
+		memento.putInteger(MEMENTO_PAUSE_CONDITIONS_SORT_ORDER,
+				tableSorter.getSortOrder().ordinal());
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void restoreState(IMemento memento) {
+		// restore table sort state
+		if (memento.getInteger(MEMENTO_PAUSE_CONDITIONS_SORT_ORDER) != null) {
+			this.tableSorter.setSortOrder(SortOrder.values()
+					[memento.getInteger(MEMENTO_PAUSE_CONDITIONS_SORT_ORDER)]);
 		}
 	}
 }

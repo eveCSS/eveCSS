@@ -17,9 +17,12 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.ui.IMemento;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
@@ -71,10 +74,21 @@ public class ChainView extends ViewPart implements IEditorView,
 
 	private Image eventErrorImage;
 
+	private IMemento memento;
+	
 	// Delegates
 	private EditorViewPerspectiveListener perspectiveListener;
 	private SelectionProviderWrapper selectionProviderWrapper;
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void init(IViewSite site, IMemento memento) throws PartInitException {
+		init(site);
+		this.memento = memento;
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -149,6 +163,8 @@ public class ChainView extends ViewPart implements IEditorView,
 		
 		top.setVisible(false);
 
+		this.restoreState();
+		
 		// the selection service only accepts one selection provider per view,
 		// since we have four tables capable of providing selections a wrapper
 		// handles them and registers the active one with the global selection
@@ -323,6 +339,22 @@ public class ChainView extends ViewPart implements IEditorView,
 		this.pauseConditionComposite.setChain(this.currentChain);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void saveState(IMemento memento) {
+		this.pauseConditionComposite.saveState(memento);
+		super.saveState(memento);
+	}
+	
+	private void restoreState() {
+		if (memento == null) {
+			return;
+		}
+		this.pauseConditionComposite.restoreState(this.memento);
+	}
+	
 	/**
 	 * {@link org.eclipse.swt.events.SelectionListener} of
 	 * <code>eventsTabFolder</code>.
