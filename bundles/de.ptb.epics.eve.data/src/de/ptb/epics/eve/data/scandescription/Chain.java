@@ -35,7 +35,8 @@ import de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider;
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @author Marcus Michalsky
  */
-public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModelErrorProvider, PropertyChangeListener {
+public class Chain implements IModelUpdateProvider, IModelUpdateListener, 
+		IModelErrorProvider, PropertyChangeListener, ListChangeListener<PauseCondition> {
 	public static final String SCANMODULE_ADDED_PROP = 
 			"Chain.SCANMODULE_ADDED_PROP";
 	public static final String SCANMODULE_REMOVED_PROP = 
@@ -82,7 +83,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	private ControlEventManager redoControlEventManager;
 
 	/* @since 1.36 */
-	private List<PauseCondition> pauseConditions;
+	private ObservableList<PauseCondition> pauseConditions;
 	
 	private Integer positionCount;
 
@@ -106,8 +107,8 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		this.id = id;
 		this.scanModules = FXCollections
 				.observableList(new ArrayList<ScanModule>());
-		this.scanModuleMap = new HashMap<Integer, ScanModule>();
-		this.updateListener = new ArrayList<IModelUpdateListener>();
+		this.scanModuleMap = new HashMap<>();
+		this.updateListener = new ArrayList<>();
 		
 		this.startEvent = null;
 		this.breakControlEventManager = new ControlEventManager(
@@ -124,12 +125,14 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		this.stopControlEventManager.addModelUpdateListener(this);
 		this.redoControlEventManager.addModelUpdateListener(this);
 
-		this.pauseConditions = new ArrayList<>();
+		this.pauseConditions = FXCollections.observableList(
+				new ArrayList<PauseCondition>());
+		this.pauseConditions.addListener(this);
 		
 		this.positionCount = null;
 
 		this.reserveIds = false;
-		this.reservedIds = new LinkedList<Integer>();
+		this.reservedIds = new LinkedList<>();
 
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
 
@@ -1004,6 +1007,22 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 				logger.debug("Redo Event " + 
 						controlEvent.getEvent().getName() + 
 						" removed from chain " + this.getId());
+			}
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void onChanged(Change<? extends PauseCondition> change) {
+		while (change.next()) {
+			if (change.wasPermutated()) {
+				updateListeners();
+			} else if (change.wasUpdated()) {
+				updateListeners();
+			} else {
+				updateListeners();
 			}
 		}
 	}

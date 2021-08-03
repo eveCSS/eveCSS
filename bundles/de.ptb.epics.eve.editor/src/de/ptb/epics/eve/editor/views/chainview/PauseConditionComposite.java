@@ -2,7 +2,9 @@ package de.ptb.epics.eve.editor.views.chainview;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -11,11 +13,15 @@ import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IViewPart;
@@ -29,6 +35,8 @@ import de.ptb.epics.eve.editor.StringLabels;
 import de.ptb.epics.eve.editor.handler.pauseconditions.RemovePauseConditionsDefaultHandler;
 import de.ptb.epics.eve.editor.views.DelColumnEditingSupport;
 import de.ptb.epics.eve.editor.views.IEditorViewCompositeMemento;
+import de.ptb.epics.eve.editor.views.ViewerTableDragSourceListener;
+import de.ptb.epics.eve.editor.views.ViewerTableDropTargetListener;
 import de.ptb.epics.eve.util.ui.jface.viewercomparator.alphabetical.AlphabeticalTableViewerSorter;
 import de.ptb.epics.eve.util.ui.jface.viewercomparator.alphabetical.SortOrder;
 
@@ -38,6 +46,8 @@ import de.ptb.epics.eve.util.ui.jface.viewercomparator.alphabetical.SortOrder;
  */
 public class PauseConditionComposite extends Composite implements 
 		IEditorViewCompositeMemento, PropertyChangeListener {
+	private static final Logger LOGGER = Logger.getLogger(
+			PauseConditionComposite.class.getName());
 	private static final Image DELETE_IMG = PlatformUI.getWorkbench().
 			getSharedImages().getImage(ISharedImages.IMG_TOOL_DELETE);
 	
@@ -58,6 +68,8 @@ public class PauseConditionComposite extends Composite implements
 		this.setLayout(new FillLayout());
 		
 		this.createViewer();
+		
+		this.initDragAndDrop();
 	}
 	
 	private void createViewer() {
@@ -194,6 +206,62 @@ public class PauseConditionComposite extends Composite implements
 		if (e.getPropertyName().equals(Chain.PAUSE_CONDITION_PROP)) {
 			this.tableViewer.refresh();
 		}
+	}
+
+	private void initDragAndDrop() {
+		Transfer[] pauseConditionTransfers = 
+				new Transfer[] {TextTransfer.getInstance()};
+		this.tableViewer.addDragSupport(DND.DROP_MOVE, pauseConditionTransfers, 
+				new ViewerTableDragSourceListener(tableViewer) {
+
+			@Override
+			public Logger getLogger() {
+				return LOGGER;
+			}
+
+			@Override
+			public String getModelName(TableItem item) {
+				if (item.getData() instanceof PauseCondition) {
+					PauseCondition pauseCondition = 
+						(PauseCondition)item.getData();
+					return pauseCondition.toString();
+				}
+				return "";
+			}
+
+			@Override
+			public String getModelId(TableItem item) {
+				if (item.getData() instanceof PauseCondition) {
+					PauseCondition pauseCondition = 
+							(PauseCondition)item.getData();
+					return pauseCondition.getDevice().getID();
+				}
+				return "";
+			}
+		});
+		
+		this.tableViewer.addDropSupport(DND.DROP_MOVE, pauseConditionTransfers, 
+				new ViewerTableDropTargetListener(tableViewer) {
+			
+			@Override
+			public String getModelName(Object item) {
+				if (item instanceof PauseCondition) {
+					PauseCondition pauseCondition = (PauseCondition)item;
+					return pauseCondition.toString();
+				}
+				return "";
+			}
+			
+			@Override
+			public List<? extends Object> getModel() {
+				return currentChain.getPauseConditions();
+			}
+			
+			@Override
+			public Logger getLogger() {
+				return LOGGER;
+			}
+		});
 	}
 
 	/**

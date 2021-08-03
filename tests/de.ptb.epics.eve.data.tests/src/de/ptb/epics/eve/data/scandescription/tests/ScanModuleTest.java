@@ -23,6 +23,7 @@ import de.ptb.epics.eve.data.tests.mothers.scandescription.ChainMother;
 import de.ptb.epics.eve.data.tests.mothers.scandescription.ChannelMother;
 import de.ptb.epics.eve.data.tests.mothers.scandescription.ControlEventMother;
 import de.ptb.epics.eve.data.tests.mothers.scandescription.ScanModuleMother;
+import de.ptb.epics.eve.util.collection.ListUtil;
 
 /**
  * ScanModule related Unit Testing.
@@ -219,6 +220,31 @@ public class ScanModuleTest implements IModelUpdateListener {
 		
 		channel1.setStoppedBy(null);
 		assertFalse(scanModule.isUsedAsStoppedByChannel(channel2));
+	}
+	
+	private boolean channelListModelUpdate;
+	@Test
+	public void testModelUpdateChannelListChange() {
+		this.scanModule.addModelUpdateListener(new IModelUpdateListener() {
+			@Override
+			public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
+				channelListModelUpdate = true;
+			}
+		});
+		channelListModelUpdate = false;
+		Channel channel1 = ChannelMother.createNewChannel(scanModule);
+		this.scanModule.add(channel1);
+		assertTrue("channel added", channelListModelUpdate);
+		
+		Channel channel2 = ChannelMother.createNewChannel(scanModule);
+		this.scanModule.add(channel2);
+		channelListModelUpdate = false;
+		ListUtil.move(this.scanModule.getChannelList(), 0, 1);
+		assertTrue("switched elements", channelListModelUpdate);
+		
+		channelListModelUpdate = false;
+		this.scanModule.remove(channel1);
+		assertTrue("channel removed", channelListModelUpdate);
 	}
 	
 	/*
