@@ -236,6 +236,17 @@ public class ScanModuleTest implements IModelUpdateListener {
 		this.scanModule.add(channel1);
 		assertTrue("channel added", channelListModelUpdate);
 		
+		// wait because the channel mockup created by the object mother uses
+		// a timestamp as id. if they are created too fast successively they 
+		// get the same id and the second one is not added to the scan module
+		// resulting in an ArrayOutOfBounds Exception when trying to switch the 
+		// elements.
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// do nothing
+		}
+		
 		Channel channel2 = ChannelMother.createNewChannel(scanModule);
 		this.scanModule.add(channel2);
 		channelListModelUpdate = false;
