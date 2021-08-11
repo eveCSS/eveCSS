@@ -225,7 +225,6 @@ public class Patch8o0T9o0 extends Patch {
 							foundDuplicate = true;
 							LOGGER.debug("duplicate chain event ignored");
 						} else {
-							adoptedSMEvents = true;
 							LOGGER.debug("added chain event (not used as subset or hysteresis)");
 						}
 					}
@@ -257,6 +256,7 @@ public class Patch8o0T9o0 extends Patch {
 								foundDuplicate = true;
 								LOGGER.debug("duplicate SM event ignored");
 							} else {
+								adoptedSMEvents = true;
 								LOGGER.debug("added SM event (not used as subset or hysteresis)");
 							}
 						}
