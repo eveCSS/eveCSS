@@ -63,17 +63,17 @@ public class PauseConditionComposite extends Composite implements
 	public PauseConditionComposite(Composite parent, int style, 
 			final IViewPart parentView) {
 		super(parent, style);
-		this.parentView = parentView;
 		
 		this.setLayout(new FillLayout());
 		
+		this.parentView = parentView;
+
 		this.createViewer();
-		
-		this.initDragAndDrop();
 	}
 	
 	private void createViewer() {
-		tableViewer = new TableViewer(this, SWT.MULTI);
+		tableViewer = new TableViewer(this, 
+				SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 		tableViewer.getTable().setHeaderVisible(true);
 		tableViewer.getTable().setLinesVisible(true);
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
@@ -91,6 +91,8 @@ public class PauseConditionComposite extends Composite implements
 		this.tableSorter = new AlphabeticalTableViewerSorter(tableViewer, 
 				tableViewer.getTable().getColumn(1), 
 				new PauseConditionTableComparator());
+		
+		this.initDragAndDrop();
 		
 		MenuManager menuManager = new MenuManager();
 		menuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));

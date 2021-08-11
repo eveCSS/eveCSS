@@ -9,8 +9,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -111,50 +109,53 @@ public class ChainView extends ViewPart implements IEditorView,
 		
 		// top composite
 		this.top = new Composite(sc, SWT.NONE);
-		this.top.setLayout(new GridLayout());
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.marginWidth = 0;
+		gridLayout.marginHeight = 0;
+		this.top.setLayout(gridLayout);
 
 		sc.setExpandHorizontal(true);
 		sc.setExpandVertical(true);
 		sc.setContent(this.top);
 		
-		this.eventsTabFolder = new CTabFolder(top, SWT.FLAT);
+		this.eventsTabFolder = new CTabFolder(top, SWT.NONE);
 		this.eventsTabFolder.setSimple(true);
 		this.eventsTabFolder.setBorderVisible(true);
-		this.eventsTabFolder
-				.addSelectionListener(new EventsTabFolderSelectionListener());
 
 		GridData gridData = new GridData();
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		gridData.minimumHeight = 150;
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
+		//gridData.minimumHeight = 150;
 		this.eventsTabFolder.setLayoutData(gridData);
-		
+
 		this.pauseConditionComposite = new PauseConditionComposite(
 				eventsTabFolder, SWT.NONE, this);
-		redoEventComposite = new EventComposite(eventsTabFolder, SWT.NONE,
-				ControlEventTypes.CONTROL_EVENT, this);
-		breakEventComposite = new EventComposite(eventsTabFolder, SWT.NONE,
-				ControlEventTypes.CONTROL_EVENT, this);
-		stopEventComposite = new EventComposite(eventsTabFolder, SWT.NONE,
-				ControlEventTypes.CONTROL_EVENT, this);
-
-		this.pauseTabItem = new CTabItem(eventsTabFolder, SWT.FLAT);
+		this.pauseTabItem = new CTabItem(eventsTabFolder, SWT.NONE);
 		this.pauseTabItem.setText("Pause Conditions");
 		this.pauseTabItem.setControl(this.pauseConditionComposite);
 		this.pauseTabItem.setToolTipText("conditions for inhibit state");
-		this.redoTabItem = new CTabItem(eventsTabFolder, SWT.FLAT);
+
+		redoEventComposite = new EventComposite(eventsTabFolder, SWT.NONE,
+				ControlEventTypes.CONTROL_EVENT, this);
+		this.redoTabItem = new CTabItem(eventsTabFolder, SWT.NONE);
 		this.redoTabItem.setText("Redo Events");
 		this.redoTabItem.setControl(redoEventComposite);
-		this.redoTabItem
-				.setToolTipText("Repeat the current scan point, if redo event occurs");
-		this.breakTabItem = new CTabItem(eventsTabFolder, SWT.FLAT);
+		this.redoTabItem.setToolTipText(
+				"Repeat the current scan point, if redo event occurs");
+
+		breakEventComposite = new EventComposite(eventsTabFolder, SWT.NONE,
+				ControlEventTypes.CONTROL_EVENT, this);
+		this.breakTabItem = new CTabItem(eventsTabFolder, SWT.NONE);
 		this.breakTabItem.setText("Skip Events");
 		this.breakTabItem.setControl(breakEventComposite);
-		this.breakTabItem
-				.setToolTipText("Finish the current scan module and continue with next");
-		this.stopTabItem = new CTabItem(eventsTabFolder, SWT.FLAT);
+		this.breakTabItem.setToolTipText(
+				"Finish the current scan module and continue with next");
+
+		stopEventComposite = new EventComposite(eventsTabFolder, SWT.NONE,
+				ControlEventTypes.CONTROL_EVENT, this);
+		this.stopTabItem = new CTabItem(eventsTabFolder, SWT.NONE);
 		this.stopTabItem.setText("Stop Events");
 		this.stopTabItem.setControl(stopEventComposite);
 		this.stopTabItem.setToolTipText("Stop this scan");
@@ -353,25 +354,5 @@ public class ChainView extends ViewPart implements IEditorView,
 			return;
 		}
 		this.pauseConditionComposite.restoreState(this.memento);
-	}
-	
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of
-	 * <code>eventsTabFolder</code>.
-	 * 
-	 * @author Marcus Michalsky
-	 * @since 1.1
-	 */
-	private class EventsTabFolderSelectionListener extends SelectionAdapter {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetSelected(SelectionEvent e) {
-			selectionProviderWrapper
-					.setSelectionProvider(((EventComposite) eventsTabFolder
-							.getSelection().getControl()).getTableViewer());
-		}
 	}
 }
