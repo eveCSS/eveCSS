@@ -21,6 +21,8 @@ public class PauseStatusCommand implements IECP1Command {
 
 	private long timestamp;
 	private int chainId;
+	private int generalTimeStamp;
+	private int nanoseconds;
 	private List<PauseStatusEntry> pauseStatusList;
 	
 	
@@ -52,7 +54,8 @@ public class PauseStatusCommand implements IECP1Command {
 		
 		int length = dataInputStream.readInt();
 		
-		this.timestamp = dataInputStream.readLong();
+		this.generalTimeStamp = dataInputStream.readInt();
+		this.nanoseconds = dataInputStream.readInt();
 		this.chainId = dataInputStream.readInt();
 		
 		length -= 12;
@@ -82,10 +85,6 @@ public class PauseStatusCommand implements IECP1Command {
 		// nothing to be done here. Engine to Viewer only
 		return null;
 	}
-	
-	public long getTimestamp() {
-		return timestamp;
-	}
 
 	public int getChainId() {
 		return chainId;
@@ -93,5 +92,13 @@ public class PauseStatusCommand implements IECP1Command {
 
 	public List<PauseStatusEntry> getPauseStatusList() {
 		return pauseStatusList;
+	}
+	
+	public int getTimeStampSeconds() {
+		return this.generalTimeStamp;
+	}
+
+	public int getTimeStampNanoSeconds() {
+		return this.nanoseconds;
 	}
 }

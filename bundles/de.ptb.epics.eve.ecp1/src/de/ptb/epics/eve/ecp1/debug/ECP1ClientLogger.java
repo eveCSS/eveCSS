@@ -1,5 +1,8 @@
 package de.ptb.epics.eve.ecp1.debug;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import org.apache.log4j.Logger;
 
 import de.ptb.epics.eve.ecp1.client.interfaces.IChainStatusListener;
@@ -204,9 +207,14 @@ public class ECP1ClientLogger implements IEngineStatusListener, IEngineVersionLi
 			stati.append("\n     | deviceId: " + entry.getDeviceId());
 			stati.append("\n     | status: " + entry.getPauseStatus().toString());
 		}
+		
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(pauseStatus.getTimeStampSeconds() * 1000l);
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
 		LOGGER.debug("Pause Status: " +
 				"\n | ChainId: " + pauseStatus.getChainId() +
-				"\n | Timestamp: " + pauseStatus.getTimestamp() +
+				"\n | Timestamp: " + formatter.format(calendar.getTime()) +
 				stati.toString());
 	}
 }
