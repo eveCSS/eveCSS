@@ -1,14 +1,21 @@
 package de.ptb.epics.eve.viewer.views.engineview.ui;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
 
+import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
+import de.ptb.epics.eve.data.scandescription.PauseCondition;
 import de.ptb.epics.eve.ecp1.commands.PauseStatusCommand;
 import de.ptb.epics.eve.ecp1.commands.PauseStatusEntry;
 import de.ptb.epics.eve.ecp1.types.EngineStatus;
 import de.ptb.epics.eve.ecp1.types.PauseStatus;
+import de.ptb.epics.eve.viewer.Activator;
 
 /**
  * @author Marcus Michalsky
@@ -38,18 +45,15 @@ public class EngineInhibitStateGroupComposite extends EngineGroupComposite {
 	@Override
 	public void setEngineStatus(EngineStatus engineStatus) {
 		switch (engineStatus) {
-		case EXECUTING:
-			this.setFGColor(black);
-			this.setText("false");
-			this.setBGColor(green);
-			break;
 		case HALTED:
 		case STOPPED:
 		case INVALID:
 		case IDLE_NO_XML_LOADED:
 			this.setText("");
 			this.setBGColor(grey);
+			this.setToolTipText(null);
 			break;
+		case EXECUTING:
 		case IDLE_XML_LOADED:
 		case LOADING_XML:
 		case PAUSED:
@@ -65,7 +69,8 @@ public class EngineInhibitStateGroupComposite extends EngineGroupComposite {
 			this.setText("true");
 			this.setBGColor(red);
 			this.setToolTipText(this.getTooltip(pauseStatus));
-		} else if (isOverridden(pauseStatus.getPauseStatusList())) {
+		} else if (!isPause(pauseStatus.getPauseStatusList()) && 
+				isOverridden(pauseStatus.getPauseStatusList())) {
 			this.setFGColor(black);
 			this.setText("overriden");
 			this.setBGColor(yellow);
@@ -83,7 +88,7 @@ public class EngineInhibitStateGroupComposite extends EngineGroupComposite {
 	 */
 	private boolean isPause(List<PauseStatusEntry> entries) {
 		for (PauseStatusEntry entry : entries) {
-			if (entry.getPauseStatus().equals(PauseStatus.PAUSE_ACTIVATED)) {
+			if (entry.getPauseStatus().equals(PauseStatus.PAUSE_ACTIVE_NOT_OVERRIDDEN)) {
 				return true;
 			}
 		}
@@ -95,7 +100,7 @@ public class EngineInhibitStateGroupComposite extends EngineGroupComposite {
 	 */
 	private boolean isOverridden(List<PauseStatusEntry> entries) {
 		for (PauseStatusEntry entry : entries) {
-			if (entry.getPauseStatus().equals(PauseStatus.PAUSE_OVERRIDE)) {
+			if (entry.getPauseStatus().equals(PauseStatus.PAUSE_ACTIVE_OVERRIDDEN)) {
 				return true;
 			}
 		}
@@ -104,10 +109,32 @@ public class EngineInhibitStateGroupComposite extends EngineGroupComposite {
 	
 	private String getTooltip(PauseStatusCommand pauseStatus) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("Timestamp: " + pauseStatus.getTimestamp() + "\n");
+		
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(pauseStatus.getTimeStampSeconds() * 1000l);
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		sb.append("Timestamp: " + formatter.format(calendar.getTime()) + "\n");
+		
+		List<String> pausedList = new ArrayList<>();
+		List<String> overriddenList = new ArrayList<>();
+		List<String> inactiveList = new ArrayList<>();
+		
+		List<PauseCondition> pauseConditions = Activator.getDefault().
+				getCurrentScanDescription().getChain(1).getPauseConditions();
+		
 		for (PauseStatusEntry entry : pauseStatus.getPauseStatusList()) {
-			sb.append(entry.getDeviceId() + " : " + entry.getPauseStatus());
+			AbstractDevice device = Activator.getDefault().getMeasuringStation().
+					getAbstractDeviceById(entry.getDeviceId());
+			
+			sb.append("\n" + device.getName() + " : " + entry.getPauseStatus());
 		}
+		
+		sb.append("\n\ndefined conditions are:");
+		for(PauseCondition pauseCondition : pauseConditions) {
+			sb.append("\n"+pauseCondition.toString() + pauseCondition.getOperator());
+		}
+		
 		return sb.toString();
 	}
 }

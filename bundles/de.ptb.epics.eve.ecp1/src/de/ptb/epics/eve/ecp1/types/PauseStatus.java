@@ -5,24 +5,31 @@ package de.ptb.epics.eve.ecp1.types;
  * @since 1.36
  */
 public enum PauseStatus {
-	PAUSE_ACTIVATED {
+	PAUSE_INACTIVE_NOT_OVERRIDDEN {
 		@Override
 		public String toString() {
-			return "pause activated";
-		}
-	}, 
-	
-	PAUSE_OVERRIDE {
-		@Override
-		public String toString() {
-			return "pause override";
+			return "pause inactive, not overridden";
 		}
 	},
 	
-	PAUSE_TEMPORARY_FAKE_VALUE {
+	PAUSE_ACTIVE_NOT_OVERRIDDEN {
 		@Override
 		public String toString() {
-			return "temp fake value to prevent crashes";
+			return "pause active, not overridden";
+		}
+	},
+	
+	PAUSE_INACTIVE_OVERRIDDEN {
+		@Override
+		public String toString() {
+			return "you should not be able to read this. invalid state";
+		}
+	},
+	
+	PAUSE_ACTIVE_OVERRIDDEN {
+		@Override
+		public String toString() {
+			return "pause active, overridden";
 		}
 	};
 	
@@ -33,12 +40,14 @@ public enum PauseStatus {
 	 */
 	public static int pauseStatusToInt(final PauseStatus pauseStatus) {
 		switch (pauseStatus) {
-		case PAUSE_ACTIVATED:
-			return 0x01;
-		case PAUSE_OVERRIDE:
-			return 0x02;
-		case PAUSE_TEMPORARY_FAKE_VALUE:
+		case PAUSE_INACTIVE_NOT_OVERRIDDEN:
 			return 0x00;
+		case PAUSE_ACTIVE_NOT_OVERRIDDEN:
+			return 0x01;
+		case PAUSE_INACTIVE_OVERRIDDEN:
+			return 0x02;
+		case PAUSE_ACTIVE_OVERRIDDEN:
+			return 0x03;
 		default:
 			break;
 		}
@@ -52,12 +61,14 @@ public enum PauseStatus {
 	 */
 	public static PauseStatus byteToPauseStatus(final byte status) {
 		switch (status) {
-		case 0x01: 
-			return PauseStatus.PAUSE_ACTIVATED;
-		case 0x02: 
-			return PauseStatus.PAUSE_OVERRIDE;
 		case 0x00: 
-			return PauseStatus.PAUSE_TEMPORARY_FAKE_VALUE;
+			return PauseStatus.PAUSE_INACTIVE_NOT_OVERRIDDEN;
+		case 0x01: 
+			return PauseStatus.PAUSE_ACTIVE_NOT_OVERRIDDEN;
+		case 0x02: 
+			return PauseStatus.PAUSE_INACTIVE_OVERRIDDEN;
+		case 0x03:
+			return PauseStatus.PAUSE_ACTIVE_OVERRIDDEN;
 		default: 
 			break;
 		}

@@ -251,8 +251,6 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
 		statusGroupComposite.setLayoutData(gridData);
-		//Activator.getDefault().getEcp1Client().addEngineStatusListener(
-				//(EngineStatusGroupComposite)statusGroupComposite);
 		
 		engineInhibitStateGroup = new Group(top, SWT.SHADOW_IN);
 		engineInhibitStateGroup.setText(" Inhibit State ");
@@ -597,38 +595,14 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 				chainFilenameLabel.setText(FILENAME_LABEL + filename);
 			}
 		});
-		
-		// der Name des geladenen scml-Files wird angezeigt
-		/*this.filenameText.getDisplay().syncExec(new Runnable() {
-			@Override public void run() {
-				filenameText.setText(filename);
-				int lastSign = filename.length();
-				filenameText.setSelection(lastSign);
-			}
-		});*/
 	}
 
-
-	/*
-	 * 
-	 */
 	private void setCurrentRepeatCount(final int repeatCount) {
-	//	if (this.repeatCount != repeatCount) {
-			//this.repeatCount = repeatCount;
-			this.propertyChangeSupport.firePropertyChange(
-					EngineView.REPEAT_COUNT_PROP, this.repeatCount,
+		this.propertyChangeSupport.firePropertyChange(
+				EngineView.REPEAT_COUNT_PROP, this.repeatCount,
 					this.repeatCount = repeatCount);
-			/*this.repeatCountText.getDisplay().syncExec(new Runnable() {
-				@Override public void run() {
-					repeatCountText.setText(String.valueOf(repeatCount));
-				}
-			});*/
-		//}
 	}
-	
-	/*
-	 * 
-	 */
+
 	private void setConnectionStatus(ConnectionStatus status) {
 		final String engineHost = Activator.getDefault().getPreferenceStore().
 				getString(PreferenceConstants.P_DEFAULT_ENGINE_ADDRESS);
@@ -839,13 +813,17 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 		});
 		if (!EngineStatus.LOADING_XML.equals(engineStatus)) {
 			this.setCurrentRepeatCount(repeatCount);
-			logger.debug("loaded scml File: " + xmlName);
-			this.scanGroup.getDisplay().syncExec(new Runnable() {
-				@Override
-				public void run() {
-					scanGroup.setText(SCAN_GROUP_NO_SCAN_LABEL + "(" + xmlName + ") ");
-				}
-			});
+			if (!EngineStatus.IDLE_NO_XML_LOADED.equals(engineStatus)) {
+				logger.debug("loaded scml File: " + xmlName);
+				this.scanGroup.getDisplay().syncExec(new Runnable() {
+					@Override
+					public void run() {
+						scanGroup.setText(SCAN_GROUP_NO_SCAN_LABEL + "(" + xmlName + ") ");
+					}
+				});
+			} else {
+				scanGroup.setText(SCAN_GROUP_NO_SCAN_LABEL);
+			}
 		}
 	}
 	

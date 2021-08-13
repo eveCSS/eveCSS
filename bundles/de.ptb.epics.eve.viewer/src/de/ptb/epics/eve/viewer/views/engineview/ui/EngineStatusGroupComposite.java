@@ -5,7 +5,6 @@ import org.eclipse.swt.widgets.Composite;
 
 import de.ptb.epics.eve.ecp1.commands.PauseStatusCommand;
 import de.ptb.epics.eve.ecp1.types.EngineStatus;
-import de.ptb.epics.eve.ecp1.types.PauseStatus;
 
 /**
  * @author Marcus Michalsky
