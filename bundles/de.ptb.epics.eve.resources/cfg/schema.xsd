@@ -153,8 +153,9 @@
   
   <complexType name="pausecondition">
     <sequence>
-      <element name="id" type="tns:identifier"></element>
+      <element name="deviceid" type="tns:identifier"></element>
     </sequence>
+    <attribute name="id" type="integer"/>
   </complexType>
   
   <complexType name="eqcondition">
