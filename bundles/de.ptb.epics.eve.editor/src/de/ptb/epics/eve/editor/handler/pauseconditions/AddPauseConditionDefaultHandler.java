@@ -49,7 +49,8 @@ public class AddPauseConditionDefaultHandler extends AbstractHandler {
 			LOGGER.error(message);
 			throw new ExecutionException(message);
 		}
-		chain.addPauseCondition(new PauseCondition(device));
+		chain.addPauseCondition(new PauseCondition(
+				chain.getAvailablePauseConditionId(), device));
 		return null;
 	}
 }

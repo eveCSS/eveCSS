@@ -369,13 +369,15 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		case CHAIN_PAUSECONDITIONS_LOADING:
 			if (qName.equals(Literals.XML_ELEMENT_NAME_PAUSECONDITION)) {
 				this.currentPauseConditionAdaptee = new PauseConditionAdaptee();
+				this.currentPauseConditionAdaptee.setId(Integer.parseInt(
+						atts.getValue(Literals.XML_ATTRIBUTE_NAME_ID)));
 				this.state = ScanDescriptionLoaderStates.CHAIN_PAUSECONDITION_LOADING;
 			}
 			break;
 
 		case CHAIN_PAUSECONDITION_LOADING:
-			if (qName.equals(Literals.XML_ELEMENT_NAME_ID)) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_PAUSECONDITION_ID_NEXT;
+			if (qName.equals(Literals.XML_ELEMENT_NAME_DEVICEID)) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_PAUSECONDITION_DEVICEID_NEXT;
 			} else if (qName.equals(Literals.XML_ELEMENT_NAME_OPERATOR)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_PAUSECONDITION_OPERATOR_NEXT;
 			} else if (qName.equals(Literals.XML_ELEMENT_NAME_PAUSELIMIT)) {
@@ -802,9 +804,9 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			}
 			break;
 
-		case CHAIN_PAUSECONDITION_ID_NEXT:
-			this.currentPauseConditionAdaptee.setId(textBuffer.toString());
-			this.state = ScanDescriptionLoaderStates.CHAIN_PAUSECONDITION_ID_READ;
+		case CHAIN_PAUSECONDITION_DEVICEID_NEXT:
+			this.currentPauseConditionAdaptee.setDeviceId(textBuffer.toString());
+			this.state = ScanDescriptionLoaderStates.CHAIN_PAUSECONDITION_DEVICEID_READ;
 			break;
 
 		case CHAIN_PAUSECONDITION_OPERATOR_NEXT:
@@ -1614,8 +1616,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			}
 			break;
 
-		case CHAIN_PAUSECONDITION_ID_READ:
-			if (qName.equals(Literals.XML_ELEMENT_NAME_ID)) {
+		case CHAIN_PAUSECONDITION_DEVICEID_READ:
+			if (qName.equals(Literals.XML_ELEMENT_NAME_DEVICEID)) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_PAUSECONDITION_LOADING;
 			}
 			break;
@@ -1640,7 +1642,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			
 		case CHAIN_PAUSECONDITIONS_LOADING:
 			if (qName.equals(Literals.XML_ELEMENT_NAME_PAUSECONDITIONS)) {
-				// TODO ? convert to real objects OR in endDocument ?
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
 			}
 			break;
@@ -2669,7 +2670,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		PauseConditionAdapter adapter = new PauseConditionAdapter(this.measuringStation);
 		for (PauseConditionAdaptee adaptee : this.pauseConditionList) {
 			PauseCondition pauseCondition;
-			if (this.measuringStation.getAbstractDeviceById(adaptee.getId()) != null) {
+			if (this.measuringStation.getAbstractDeviceById(adaptee.getDeviceId()) != null) {
 				try {
 					pauseCondition = adapter.marshal(adaptee);
 					this.currentChain.addPauseCondition(pauseCondition);
@@ -2679,7 +2680,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			} else {
 				this.deviceMessages.add(new ScanDescriptionLoaderDeviceMessage(
 					ScanDescriptionLoaderMessageType.PAUSECONDITION_DEVICE_NOT_FOUND, 
-					this.nameProvider.translateAbstractDeviceId(adaptee.getId())));
+					this.nameProvider.translateAbstractDeviceId(adaptee.getDeviceId())));
 			}
 		}
 	}

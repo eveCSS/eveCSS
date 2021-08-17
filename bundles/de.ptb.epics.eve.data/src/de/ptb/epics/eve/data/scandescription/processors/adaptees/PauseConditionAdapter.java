@@ -24,7 +24,8 @@ public class PauseConditionAdapter extends
 	public PauseConditionAdaptee unmarshal(PauseCondition pauseCondition) 
 			throws Exception {
 		PauseConditionAdaptee adaptee = new PauseConditionAdaptee();
-		adaptee.setId(pauseCondition.getDevice().getID());
+		adaptee.setId(pauseCondition.getId());
+		adaptee.setDeviceId(pauseCondition.getDevice().getID());
 		adaptee.setOperator(pauseCondition.getOperator());
 		adaptee.setPauseType(pauseCondition.getType());
 		adaptee.setPauseLimit(pauseCondition.getPauseLimit());
@@ -43,8 +44,8 @@ public class PauseConditionAdapter extends
 	 */
 	@Override
 	public PauseCondition marshal(PauseConditionAdaptee adaptee) throws Exception {
-		PauseCondition pauseCondition = new PauseCondition(
-			this.measuringStation.getAbstractDeviceById(adaptee.getId()));
+		PauseCondition pauseCondition = new PauseCondition(adaptee.getId(),
+			this.measuringStation.getAbstractDeviceById(adaptee.getDeviceId()));
 		pauseCondition.setOperator(adaptee.getOperator());
 		pauseCondition.setPauseLimit(adaptee.getPauseLimit());
 		if (adaptee.getContinueLimit() != null) {

@@ -348,17 +348,20 @@ public class Patch8o0T9o0 extends Patch {
 				Element pauseconditionsElement = document.createElement(
 						Literals.XML_ELEMENT_NAME_PAUSECONDITIONS);
 				chainNode.insertBefore(pauseconditionsElement, scanmodulesNode);
+				int conditionId = 1;
 				for (PseudoPauseCondition pauseCondition : pauseConditionMap.get(chainId)) {
-					this.insertPauseCondition(pauseconditionsElement, pauseCondition);
+					this.insertPauseCondition(pauseconditionsElement, pauseCondition, conditionId++);
 				}
 			}
 		}
 		
-		private void insertPauseCondition(Element parent, PseudoPauseCondition pauseCondition) {
+		private void insertPauseCondition(Element parent, PseudoPauseCondition pauseCondition, int conditionId) {
 			Document document = parent.getOwnerDocument();
 			
 			Element pauseConditionElement = document.createElement(
 					Literals.XML_ELEMENT_NAME_PAUSECONDITION);
+			pauseConditionElement.setAttribute(Literals.XML_ATTRIBUTE_NAME_ID, 
+					Integer.toString(conditionId));
 			if (pauseCondition.getOperator().equals(ComparisonTypes.EQ) ||
 				pauseCondition.getOperator().equals(ComparisonTypes.NE)) {
 					pauseConditionElement.setAttributeNS(
@@ -370,7 +373,7 @@ public class Patch8o0T9o0 extends Patch {
 							"xsi:type", "tns:ineqcondition");
 			}
 			
-			Element idNode = document.createElement(Literals.XML_ELEMENT_NAME_ID);
+			Element idNode = document.createElement(Literals.XML_ELEMENT_NAME_DEVICEID);
 			idNode.appendChild(document.createTextNode(pauseCondition.getDeviceId()));
 			pauseConditionElement.appendChild(idNode);
 			

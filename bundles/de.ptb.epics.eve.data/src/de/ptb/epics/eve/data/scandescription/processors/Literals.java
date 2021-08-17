@@ -43,6 +43,7 @@ public class Literals {
 	public static final String XML_ELEMENT_NAME_DETECTOR = "detector";
 	public static final String XML_ELEMENT_NAME_DETECTOREVENT = "detectorevent";
 	public static final String XML_ELEMENT_NAME_DEVICE = "device";
+	public static final String XML_ELEMENT_NAME_DEVICEID = "deviceid";
 	public static final String XML_ELEMENT_NAME_DEVICES = "devices";
 	public static final String XML_ELEMENT_NAME_DISPLAYGROUP = "displaygroup";
 	public static final String XML_ELEMENT_NAME_EVENTS = "events";

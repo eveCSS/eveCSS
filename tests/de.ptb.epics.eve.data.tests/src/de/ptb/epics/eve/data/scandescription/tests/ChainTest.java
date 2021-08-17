@@ -29,12 +29,42 @@ import de.ptb.epics.eve.util.collection.ListUtil;
 public class ChainTest {
 	private Chain chain;
 
+	@Test
+	public void testGetAvailablePlotId() {
+		assertEquals(1, this.chain.getAvailablePlotId());
+		// TODO
+	}
+	
+	@Test
+	public void testGetAvailablePauseConditionId() {
+		assertEquals("no pause conditions", 
+				1, this.chain.getAvailablePauseConditionId());
+		PauseCondition pauseCondition1 = new PauseCondition(1, 
+				OptionMother.createNewOption());
+		this.chain.addPauseCondition(pauseCondition1);
+		assertEquals("1 pause condition", 
+				2, this.chain.getAvailablePauseConditionId());
+		PauseCondition pauseCondition2 = new PauseCondition(2, 
+				OptionMother.createNewOption());
+		this.chain.addPauseCondition(pauseCondition2);
+		assertEquals("2 pause conditions", 
+				3, this.chain.getAvailablePauseConditionId());
+		PauseCondition pauseCondition3 = new PauseCondition(3, 
+				OptionMother.createNewOption());
+		this.chain.addPauseCondition(pauseCondition3);
+		assertEquals("3 pause conditions", 
+				4, this.chain.getAvailablePauseConditionId());
+		this.chain.removePauseCondition(pauseCondition2);
+		assertEquals("ids 1 and 3 used, 2 unused", 
+				2, this.chain.getAvailablePauseConditionId());
+	}
+	
 	private boolean addPauseConditionPropertyFired;
 	@Test
 	public void testAddPauseCondition() {
 		this.addPauseConditionPropertyFired = false;
 		Option option = OptionMother.createNewDoubleOption();
-		final PauseCondition pauseCondition = new PauseCondition(option);
+		final PauseCondition pauseCondition = new PauseCondition(1, option);
 		this.chain.addPropertyChangeListener(Chain.PAUSE_CONDITION_PROP, 
 				new PropertyChangeListener() {
 					@Override
@@ -52,7 +82,7 @@ public class ChainTest {
 	public void testRemovePauseCondition() {
 		this.removePauseConditionPropertyFired = false;
 		Option option = OptionMother.createNewDoubleOption();
-		final PauseCondition pauseCondition = new PauseCondition(option);
+		final PauseCondition pauseCondition = new PauseCondition(1, option);
 		this.chain.addPauseCondition(pauseCondition);
 		this.chain.addPropertyChangeListener(Chain.PAUSE_CONDITION_PROP, 
 				new PropertyChangeListener() {
@@ -71,11 +101,11 @@ public class ChainTest {
 	@Test
 	public void testModelUpdatePauseConditionListChange() {
 		MotorAxis motorAxis = MotorAxisMother.createNewIntTypeMotorAxis();
-		PauseCondition pauseCondition1 = new PauseCondition(motorAxis);
+		PauseCondition pauseCondition1 = new PauseCondition(1, motorAxis);
 		this.chain.addPauseCondition(pauseCondition1);
 		DetectorChannel channel = DetectorChannelMother.
 				createNewIntTypeDetectorChannel();
-		PauseCondition pauseCondition2 = new PauseCondition(channel);
+		PauseCondition pauseCondition2 = new PauseCondition(2, channel);
 		this.chain.addPauseCondition(pauseCondition2);
 		this.pauseConditionModelUpdate = false;
 		this.chain.addModelUpdateListener(new IModelUpdateListener() {

@@ -2397,19 +2397,24 @@ public class ScanDescriptionSaver implements
 				this.atts.addAttribute("http://www.w3.org/2001/XMLSchema-instance", 
 						"type", "xsi:type", "", "tns:ineqcondition");
 			}
+			this.atts.addAttribute(Literals.EMPTY_STRING, 
+					Literals.XML_ATTRIBUTE_NAME_ID, 
+					Literals.XML_ATTRIBUTE_NAME_ID, 
+					Literals.CHARACTER_DATA, Integer.toString(
+							pauseCondition.getId()));
 			this.contentHandler.startElement(Literals.EMPTY_STRING, 
 					Literals.XML_ELEMENT_NAME_PAUSECONDITION, 
 					Literals.XML_ELEMENT_NAME_PAUSECONDITION, this.atts);
 			
 			this.atts.clear();
 			this.contentHandler.startElement(Literals.EMPTY_STRING, 
-					Literals.XML_ELEMENT_NAME_ID, Literals.XML_ELEMENT_NAME_ID, 
+					Literals.XML_ELEMENT_NAME_DEVICEID, Literals.XML_ELEMENT_NAME_DEVICEID, 
 					this.atts);
 			this.contentHandler.characters(
 					pauseCondition.getDevice().getID().toCharArray(), 0, 
 					pauseCondition.getDevice().getID().length());
 			this.contentHandler.endElement(Literals.EMPTY_STRING, 
-					Literals.XML_ELEMENT_NAME_ID, Literals.XML_ELEMENT_NAME_ID);
+					Literals.XML_ELEMENT_NAME_DEVICEID, Literals.XML_ELEMENT_NAME_DEVICEID);
 			
 			this.atts.clear();
 			this.contentHandler.startElement(Literals.EMPTY_STRING, 

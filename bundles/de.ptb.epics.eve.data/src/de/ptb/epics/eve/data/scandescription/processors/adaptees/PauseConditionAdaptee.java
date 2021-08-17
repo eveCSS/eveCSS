@@ -8,7 +8,8 @@ import de.ptb.epics.eve.data.DataTypes;
  * @since 1.36
  */
 public class PauseConditionAdaptee {
-	private String id;
+	private int id;
+	private String deviceId;
 	private ComparisonTypes operator;
 	private DataTypes pauseType;
 	private String pauseLimit;
@@ -18,15 +19,29 @@ public class PauseConditionAdaptee {
 	/**
 	 * @return the id
 	 */
-	public String getId() {
+	public int getId() {
 		return id;
 	}
-	
+
 	/**
 	 * @param id the id to set
 	 */
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
+	}
+
+	/**
+	 * @return the device id
+	 */
+	public String getDeviceId() {
+		return deviceId;
+	}
+	
+	/**
+	 * @param deviceId the device id to set
+	 */
+	public void setDeviceId(String deviceId) {
+		this.deviceId = deviceId;
 	}
 	
 	/**

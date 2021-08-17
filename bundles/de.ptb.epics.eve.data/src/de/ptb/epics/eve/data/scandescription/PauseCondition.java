@@ -27,6 +27,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
 public class PauseCondition implements IModelUpdateProvider {
 	private static final String DELIMITER = " \u00BB ";
 	
+	private int id;
 	private AbstractDevice device;
 	private ComparisonTypes operator;
 	private String pauseLimit;
@@ -35,17 +36,24 @@ public class PauseCondition implements IModelUpdateProvider {
 	private List<IModelUpdateListener> updateListener;
 	
 	/**
-	 * Constructs a pause condition with the given device.
-	 * @param device the device the pause condition should be based upon 
+	 * Constructs a pause condition with the given id and device
+	 * <br><br>
+	 * Use {@link Chain#getAvailablePauseConditionId()} to obtain an unused id.
+	 * 
+	 * @param id a unique identifier
+	 * @param device the device the pause condition should be based on
 	 * 		(must not be <code>null</code>)
+	 * @throws IllegalArgumentException if device is <code>null</code> or an 
+	 * 	instance of {@link Detector} or {@link Motor}
 	 */
-	public PauseCondition(AbstractDevice device) {
+	public PauseCondition(int id, AbstractDevice device) {
 		if (device == null) {
 			throw new IllegalArgumentException("device is mandatory");
 		}
 		if (device instanceof Detector || device instanceof Motor) {
 			throw new  IllegalArgumentException("device not supported");
 		}
+		this.id = id;
 		this.device = device;
 		this.operator = ComparisonTypes.EQ;
 		
@@ -54,6 +62,14 @@ public class PauseCondition implements IModelUpdateProvider {
 		this.updateListener = new ArrayList<>();
 	}
 
+	/**
+	 * Returns the (unique) identifier of the pause condition.
+	 * @return the (unique) identifier of the pause condition
+	 */
+	public int getId() {
+		return this.id;
+	}
+	
 	/**
 	 * @return the device
 	 */
@@ -255,6 +271,9 @@ public class PauseCondition implements IModelUpdateProvider {
 		if (other.getClass() != getClass()) {
 			return false;
 		}
+		if (id != ((PauseCondition)other).getId()) {
+			return false;
+		}
 		if (!(device.equals(((PauseCondition)other).getDevice()))) {
 			return false;
 		}
@@ -281,7 +300,8 @@ public class PauseCondition implements IModelUpdateProvider {
 	 */
 	@Override
 	public int hashCode() {
-		int result = operator.hashCode();
+		int result = id;
+		result = 31 * result + operator.hashCode();
 		result = 31 * result + device.hashCode();
 		result = 31 * result + pauseLimit.hashCode();
 		if (continueLimit == null) {

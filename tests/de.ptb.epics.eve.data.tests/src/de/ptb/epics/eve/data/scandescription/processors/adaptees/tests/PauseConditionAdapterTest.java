@@ -28,10 +28,11 @@ public class PauseConditionAdapterTest {
 	@Test
 	public void testUnmarshal() {
 		Option option = OptionMother.createNewDoubleOption();
-		PauseCondition pauseCondition = new PauseCondition(option);
+		PauseCondition pauseCondition = new PauseCondition(1, option);
 		try {
 			PauseConditionAdaptee adaptee = adapter.unmarshal(pauseCondition);
-			assertEquals(option.getID(), adaptee.getId());
+			assertEquals(1, adaptee.getId());
+			assertEquals(option.getID(), adaptee.getDeviceId());
 			assertEquals(pauseCondition.getOperator(), adaptee.getOperator());
 			assertEquals(pauseCondition.getType(), adaptee.getPauseType());
 			assertEquals(pauseCondition.getPauseLimit(), adaptee.getPauseLimit());
@@ -53,14 +54,16 @@ public class PauseConditionAdapterTest {
 		measuringStation.registerOption(option);
 		
 		PauseConditionAdaptee adaptee = new PauseConditionAdaptee();
-		adaptee.setId(option.getID());
+		adaptee.setId(1);
+		adaptee.setDeviceId(option.getID());
 		adaptee.setOperator(ComparisonTypes.EQ);
 		adaptee.setPauseType(option.getValue().getType());
 		adaptee.setPauseLimit("1.1");
 		
 		try {
 			PauseCondition pauseCondition = adapter.marshal(adaptee);
-			assertEquals(adaptee.getId(), pauseCondition.getDevice().getID());
+			assertEquals(adaptee.getId(), pauseCondition.getId());
+			assertEquals(adaptee.getDeviceId(), pauseCondition.getDevice().getID());
 			assertEquals(adaptee.getOperator(), pauseCondition.getOperator());
 			assertEquals(adaptee.getPauseType(), pauseCondition.getType());
 			assertEquals(adaptee.getPauseLimit(), pauseCondition.getPauseLimit());

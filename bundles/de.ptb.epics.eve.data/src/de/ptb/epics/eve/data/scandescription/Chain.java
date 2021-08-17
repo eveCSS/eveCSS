@@ -745,6 +745,23 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener,
 	}
 
 	/**
+	 * Returns a valid (unused) id for a pause condition.
+	 * @return a valid (unused) id for a pause condition
+	 */
+	public int getAvailablePauseConditionId() {
+		List<Integer> pcIds = new ArrayList<>();
+		for (PauseCondition pc : this.pauseConditions) {
+			pcIds.add(pc.getId());
+		}
+		Collections.sort(pcIds);
+		int i = 1;
+		while (pcIds.contains(i)) {
+			i++;
+		}
+		return i;
+	}
+	
+	/**
 	 * Returns a map which keys are plot window ids and values are lists of 
 	 * scan modules which contain plot windows using this id.
 	 * 
