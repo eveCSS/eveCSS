@@ -195,6 +195,7 @@ public class Patch8o0T9o0 extends Patch {
 			Set<PauseEvent> usedSMEvents = new HashSet<>();
 			boolean foundChainSubsets = false;
 			boolean foundChainHysteresis = false;
+			boolean foundExclusiveOffEvent = false;
 			boolean foundDuplicate = false;
 			boolean foundSMSubsets = false;
 			boolean foundSMHysteresis = false;
@@ -219,8 +220,12 @@ public class Patch8o0T9o0 extends Patch {
 				chainPauseConditions.addAll(chainPauseHysteresis);
 				for(PauseEvent event : chainEventMap.get(chainId)) {
 					if (!usedChainEvents.contains(event)) {
-						boolean added = chainPauseConditions.add(
-								helper.convert(event));
+						PseudoPauseCondition pc = helper.convert(event);
+						if (pc == null) {
+							foundExclusiveOffEvent = true;
+							continue;
+						}
+						boolean added = chainPauseConditions.add(pc);
 						if(!added) {
 							foundDuplicate = true;
 							LOGGER.debug("duplicate chain event ignored");
@@ -250,8 +255,12 @@ public class Patch8o0T9o0 extends Patch {
 					chainPauseConditions.addAll(smPauseHysteresis);
 					for (PauseEvent event : smEventMap.get(chainId).get(smId)) {
 						if (!usedSMEvents.contains(event)) {
-							boolean added = chainPauseConditions.add(
-									helper.convert(event));
+							PseudoPauseCondition pc = helper.convert(event);
+							if (pc == null) {
+								foundExclusiveOffEvent = true;
+								continue;
+							}
+							boolean added = chainPauseConditions.add(pc);
 							if (!added) {
 								foundDuplicate = true;
 								LOGGER.debug("duplicate SM event ignored");
@@ -282,6 +291,9 @@ public class Patch8o0T9o0 extends Patch {
 			}
 			if (foundDuplicate) {
 				this.appendMessage("ATTENTION: duplicate(s) found and removed");
+			}
+			if (foundExclusiveOffEvent) {
+				this.appendMessage("ATTENTION: exclusive OFF event(s) ignored");
 			}
 			if (adoptedSMEvents) {
 				this.appendMessage("ATTENTION: SM pause event(s) adopted to chain");
