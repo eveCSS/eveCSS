@@ -822,7 +822,12 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 					}
 				});
 			} else {
-				scanGroup.setText(SCAN_GROUP_NO_SCAN_LABEL);
+				this.scanGroup.getDisplay().syncExec(new Runnable() {
+					@Override
+					public void run() {
+						scanGroup.setText(SCAN_GROUP_NO_SCAN_LABEL);
+					}
+				});
 			}
 		}
 	}
