@@ -64,15 +64,8 @@ public class PauseStatusCommand implements IECP1Command {
 		while (length > 0) {
 			PauseStatus pauseStatus = PauseStatus.byteToPauseStatus(
 					dataInputStream.readByte());
-			int nameLength = dataInputStream.readInt();
-			String name = "";
-			if (nameLength != 0xffffffff) {
-				final byte[] nameByteArray = new byte[nameLength];
-				dataInputStream.readFully(nameByteArray);
-				name = new String(nameByteArray, IECP1Command.STRING_ENCODING);
-				length -= nameLength;
-			}
-			this.pauseStatusList.add(new PauseStatusEntry(name, pauseStatus));
+			int pauseId = dataInputStream.readInt();
+			this.pauseStatusList.add(new PauseStatusEntry(pauseId, pauseStatus));
 			length -= 5;
 		}
 	}

@@ -204,7 +204,7 @@ public class ECP1ClientLogger implements IEngineStatusListener, IEngineVersionLi
 		StringBuilder stati = new StringBuilder();
 		for (PauseStatusEntry entry : pauseStatus.getPauseStatusList()) {
 			stati.append("\n | - Pause Status Entry:");
-			stati.append("\n     | deviceId: " + entry.getDeviceId());
+			stati.append("\n     | Id: " + entry.getId());
 			stati.append("\n     | status: " + entry.getPauseStatus().toString());
 		}
 		

@@ -338,7 +338,14 @@ public class PauseCondition implements IModelUpdateProvider {
 	}
 	
 	/**
-	 * {@inheritDoc}
+	 * Returns a (human readable) String representation of the pause condition
+	 * in the form:
+	 * 
+	 * <ul>
+	 * <li>&lt;device-name&gt; + {@link #DELIMITER} + "Position" if device is a motor axis</li>
+	 * <li>&lt;device-name&gt; + {@link #DELIMITER} + "Value" if device is a detector channel or device</li>
+	 * <li>&lt;parent-device-name&gt; + {@link #DELIMITER} + &lt;device-name&gt; if device is an option</li>
+	 * </ul>
 	 */
 	@Override
 	public String toString() {

@@ -124,10 +124,12 @@ public class EngineInhibitStateGroupComposite extends EngineGroupComposite {
 				getCurrentScanDescription().getChain(1).getPauseConditions();
 		
 		for (PauseStatusEntry entry : pauseStatus.getPauseStatusList()) {
-			AbstractDevice device = Activator.getDefault().getMeasuringStation().
-					getAbstractDeviceById(entry.getDeviceId());
-			
-			sb.append("\n" + device.getName() + " : " + entry.getPauseStatus());
+			for (PauseCondition pauseCondition : pauseConditions) {
+				if (pauseCondition.getId() == entry.getId()) {
+					sb.append("\n" + pauseCondition.toString() + 
+							" : " + entry.getPauseStatus());
+				}
+			}
 		}
 		
 		sb.append("\n\ndefined conditions are:");

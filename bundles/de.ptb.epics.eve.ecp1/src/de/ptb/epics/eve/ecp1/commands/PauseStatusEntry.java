@@ -8,15 +8,15 @@ import de.ptb.epics.eve.ecp1.types.PauseStatus;
  */
 public class PauseStatusEntry {
 	private PauseStatus pauseStatus;
-	private String deviceId;
+	private int id;
 	
-	public PauseStatusEntry(String deviceId, PauseStatus pauseStatus) {
-		this.deviceId = deviceId;
+	public PauseStatusEntry(int id, PauseStatus pauseStatus) {
+		this.id = id;
 		this.pauseStatus = pauseStatus;
 	}
 	
-	public String getDeviceId() {
-		return deviceId;
+	public int getId() {
+		return this.id;
 	}
 	
 	public PauseStatus getPauseStatus() {
