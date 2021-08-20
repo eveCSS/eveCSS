@@ -1,6 +1,8 @@
 package de.ptb.epics.eve.viewer.views.engineview.ui;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -18,11 +20,17 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 
 import de.ptb.epics.eve.data.scandescription.PauseCondition;
+import de.ptb.epics.eve.ecp1.commands.PauseStatusCommand;
 import de.ptb.epics.eve.ecp1.commands.PauseStatusEntry;
 import de.ptb.epics.eve.editor.StringLabels;
 import de.ptb.epics.eve.viewer.Activator;
 
 /**
+ * The Tooltip shows a timestamp label and a table of pause conditions.
+ * Initialize with the widget of interest (tooltip shown when hovering it).
+ * Set the content of the table with {@link #setPauseConditions(List)} and the 
+ * states with {@link #setPauseStatus(PauseStatusCommand)}.
+ * 
  * @author Marcus Michalsky
  * @since 1.36
  */
@@ -33,12 +41,16 @@ public class InhibitStateTooltip extends ToolTip {
 	private Image yellowImage;
 	private Image greenImage;
 	
+	private List<PauseCondition> pauseConditions;
 	private List<PauseStatusEntry> pauseStates;
+	private String timeStampLabelString = StringLabels.LONG_DASH;
+	
+	private TableViewer viewer;
 	
 	public InhibitStateTooltip(Control control) {
-		super(control, ToolTip.RECREATE, true); // TODO true no effect ? if activate ? recreate necessary ?
+		super(control, ToolTip.RECREATE, true);
 		
-		this.redImage = Activator.getDefault().getImageRegistry().get("FATAL");
+		this.redImage = Activator.getDefault().getImageRegistry().get("ERROR");
 		this.yellowImage = Activator.getDefault().getImageRegistry().get("WARNING2");
 		this.greenImage = Activator.getDefault().getImageRegistry().get("RUN");
 		
@@ -56,7 +68,7 @@ public class InhibitStateTooltip extends ToolTip {
 		top.setLayout(gridLayout);
 		
 		Label timestamp = new Label(top, SWT.NONE);
-		timestamp.setText(TIMESTAMP_PREFIX + " ---");
+		timestamp.setText(this.timeStampLabelString);
 		
 		this.createTable(top);
 
@@ -64,7 +76,7 @@ public class InhibitStateTooltip extends ToolTip {
 	}
 	
 	private void createTable(Composite parent) {
-		TableViewer viewer = new TableViewer(parent, SWT.BORDER);
+		viewer = new TableViewer(parent, SWT.BORDER);
 		viewer.getTable().setHeaderVisible(true);
 		viewer.getTable().setLinesVisible(true);
 		
@@ -78,12 +90,13 @@ public class InhibitStateTooltip extends ToolTip {
 		viewer.getTable().setLayoutData(gridData);
 		
 		viewer.setContentProvider(ArrayContentProvider.getInstance());
+		viewer.setInput(this.pauseConditions);
 	}
 	
 	private void createColumns(TableViewer viewer) {
-		TableViewerColumn stateColumn = new TableViewerColumn(viewer, SWT.NONE);
-		stateColumn.getColumn().setText("State");
-		stateColumn.getColumn().setWidth(50);
+		TableViewerColumn stateColumn = new TableViewerColumn(viewer, SWT.CENTER);
+		stateColumn.getColumn().setText("");
+		stateColumn.getColumn().setWidth(22);
 		stateColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public Image getImage(Object element) {
@@ -118,10 +131,10 @@ public class InhibitStateTooltip extends ToolTip {
 			@Override
 			public String getText(Object element) {
 				return ((PauseCondition)element).toString();
-			};
+			}
 		});
 		
-		TableViewerColumn operatorColumn = new TableViewerColumn(viewer, SWT.NONE);
+		TableViewerColumn operatorColumn = new TableViewerColumn(viewer, SWT.CENTER);
 		operatorColumn.getColumn().setText("Operator");
 		operatorColumn.getColumn().setWidth(80);
 		operatorColumn.setLabelProvider(new ColumnLabelProvider() {
@@ -167,5 +180,29 @@ public class InhibitStateTooltip extends ToolTip {
 				}
 			}
 		});
+	}
+	
+	/**
+	 * Sets the pause conditions which should be shown in the table.
+	 * @param pauseConditions the pause conditions which should be shown in the 
+	 * 		table or <code>null</code> to show an empty table
+	 */
+	public void setPauseConditions(List<PauseCondition> pauseConditions) {
+		this.pauseConditions = pauseConditions;
+	}
+	
+	/**
+	 * Sets the pause status command containing the timestamp and the states of 
+	 *    the defined pause conditions.
+	 * @param pauseStatus the pause status command containing the timestamp and 
+	 * 		the states of the defined pause conditions
+	 */
+	public void setPauseStatus(PauseStatusCommand pauseStatus) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(pauseStatus.getTimeStampSeconds() * 1000l);
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		this.timeStampLabelString = TIMESTAMP_PREFIX + 
+				formatter.format(calendar.getTime());
+		this.pauseStates = pauseStatus.getPauseStatusList();
 	}
 }

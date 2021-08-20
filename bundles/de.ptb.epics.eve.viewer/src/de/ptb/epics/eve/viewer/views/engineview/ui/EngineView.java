@@ -787,7 +787,7 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void chainStatusChanged(ChainStatusCommand chainStatusCommand) {
+	public void chainStatusChanged(final ChainStatusCommand chainStatusCommand) {
 		if (ChainStatus.STORAGE_DONE.equals(chainStatusCommand.getChainStatus())) {
 			this.commentSendButton.getDisplay().syncExec(new Runnable() {
 				@Override public void run() {
@@ -795,6 +795,13 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 				}
 			});
 		}
+		this.statusGroupComposite.getDisplay().syncExec(new Runnable() {
+			@Override
+			public void run() {
+				EngineView.this.statusGroupComposite.setChainStatus(chainStatusCommand);
+				EngineView.this.inhibitStateGroupComposite.setChainStatus(chainStatusCommand);
+			}
+		});
 	}
 
 	/**
@@ -838,7 +845,6 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 	 */
 	@Override
 	public void pauseStatusChanged(final PauseStatusCommand pauseStatus) {
-		// TODO Auto-generated method stub
 		this.inhibitStateGroupComposite.getDisplay().syncExec(new Runnable() {
 			@Override
 			public void run() {

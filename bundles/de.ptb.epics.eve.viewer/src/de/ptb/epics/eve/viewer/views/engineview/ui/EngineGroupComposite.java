@@ -8,6 +8,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
+import de.ptb.epics.eve.ecp1.commands.ChainStatusCommand;
 import de.ptb.epics.eve.ecp1.commands.PauseStatusCommand;
 import de.ptb.epics.eve.ecp1.types.EngineStatus;
 
@@ -30,7 +31,7 @@ public abstract class EngineGroupComposite extends Composite {
 		this.red = new Color(this.getDisplay(), new RGB(0xff, 0, 0));
 		this.yellow = new Color(this.getDisplay(), new RGB(0xff, 0xff, 0));
 		this.green = new Color(this.getDisplay(), new RGB(0, 0xd0, 0));
-		this.grey = new Color(this.getDisplay(), new RGB(127, 127, 127));
+		this.grey = new Color(this.getDisplay(), new RGB(190, 190, 190));
 		this.white = new Color(this.getDisplay(), new RGB(255, 255, 255));
 		this.black = new Color(this.getDisplay(), new RGB(0, 0, 0));
 		
@@ -51,6 +52,7 @@ public abstract class EngineGroupComposite extends Composite {
 	public abstract void disable();
 	public abstract void setEngineStatus(EngineStatus engineStatus);
 	public abstract void setPauseStatus(PauseStatusCommand pauseStatus);
+	public abstract void setChainStatus(ChainStatusCommand chainStatus);
 	
 	protected void setText(String text) {
 		this.text.setText(text);

@@ -1,16 +1,11 @@
 package de.ptb.epics.eve.viewer.views.engineview.ui;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
 
-import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
-import de.ptb.epics.eve.data.scandescription.PauseCondition;
+import de.ptb.epics.eve.ecp1.commands.ChainStatusCommand;
 import de.ptb.epics.eve.ecp1.commands.PauseStatusCommand;
 import de.ptb.epics.eve.ecp1.commands.PauseStatusEntry;
 import de.ptb.epics.eve.ecp1.types.EngineStatus;
@@ -24,24 +19,38 @@ import de.ptb.epics.eve.viewer.Activator;
 public class EngineInhibitStateGroupComposite extends EngineGroupComposite {
 	private final String initText = "";
 	private final Color initColor = grey;
+	private InhibitStateTooltip tooltip;
 	
 	public EngineInhibitStateGroupComposite(Composite parent, int style) {
 		super(parent, style);
+		this.tooltip = new InhibitStateTooltip(this);
+		this.tooltip.setHideDelay(0);
 		this.disable();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void enable() {
 		this.setText(initText);
 		this.setBGColor(initColor);
+		this.tooltip.activate();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void disable() {
 		this.setText("");
 		this.setBGColor(null);
+		this.tooltip.deactivate();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setEngineStatus(EngineStatus engineStatus) {
 		switch (engineStatus) {
@@ -51,10 +60,16 @@ public class EngineInhibitStateGroupComposite extends EngineGroupComposite {
 		case IDLE_NO_XML_LOADED:
 			this.setText("");
 			this.setBGColor(grey);
-			this.setToolTipText(null);
+			this.tooltip.setPauseConditions(null);
+			this.tooltip.hide();
+			this.tooltip.deactivate();
+			break;
+		case IDLE_XML_LOADED:
+			this.tooltip.setPauseConditions(Activator.getDefault().
+				getCurrentScanDescription().getChain(1).getPauseConditions());
+			this.tooltip.activate();
 			break;
 		case EXECUTING:
-		case IDLE_XML_LOADED:
 		case LOADING_XML:
 		case PAUSED:
 		default:
@@ -62,27 +77,35 @@ public class EngineInhibitStateGroupComposite extends EngineGroupComposite {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setPauseStatus(PauseStatusCommand pauseStatus) {
 		if (isPause(pauseStatus.getPauseStatusList())) {
 			this.setFGColor(white);
 			this.setText("true");
 			this.setBGColor(red);
-			this.setToolTipText(this.getTooltip(pauseStatus));
 		} else if (!isPause(pauseStatus.getPauseStatusList()) && 
 				isOverridden(pauseStatus.getPauseStatusList())) {
 			this.setFGColor(black);
 			this.setText("overriden");
 			this.setBGColor(yellow);
-			this.setToolTipText(this.getTooltip(pauseStatus));
 		} else {
 			this.setFGColor(black);
 			this.setText("");
 			this.setBGColor(green);
-			this.setToolTipText(null);
 		}
+		this.tooltip.setPauseStatus(pauseStatus);
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setChainStatus(ChainStatusCommand chainStatus) {
+		// not interested in those messages
+	}
 	/*
 	 * Checks whether the given list contains an entry with status pause activated
 	 */
@@ -105,38 +128,5 @@ public class EngineInhibitStateGroupComposite extends EngineGroupComposite {
 			}
 		}
 		return false;
-	}
-	
-	private String getTooltip(PauseStatusCommand pauseStatus) {
-		StringBuilder sb = new StringBuilder();
-		
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTimeInMillis(pauseStatus.getTimeStampSeconds() * 1000l);
-		
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		sb.append("Timestamp: " + formatter.format(calendar.getTime()) + "\n");
-		
-		List<String> pausedList = new ArrayList<>();
-		List<String> overriddenList = new ArrayList<>();
-		List<String> inactiveList = new ArrayList<>();
-		
-		List<PauseCondition> pauseConditions = Activator.getDefault().
-				getCurrentScanDescription().getChain(1).getPauseConditions();
-		
-		for (PauseStatusEntry entry : pauseStatus.getPauseStatusList()) {
-			for (PauseCondition pauseCondition : pauseConditions) {
-				if (pauseCondition.getId() == entry.getId()) {
-					sb.append("\n" + pauseCondition.toString() + 
-							" : " + entry.getPauseStatus());
-				}
-			}
-		}
-		
-		sb.append("\n\ndefined conditions are:");
-		for(PauseCondition pauseCondition : pauseConditions) {
-			sb.append("\n"+pauseCondition.toString() + pauseCondition.getOperator());
-		}
-		
-		return sb.toString();
 	}
 }
