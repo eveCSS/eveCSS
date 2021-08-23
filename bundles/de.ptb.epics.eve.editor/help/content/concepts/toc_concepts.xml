@@ -28,5 +28,7 @@
    </topic>
    <topic href="help/content/concepts/events.html" label="Events">
    </topic>
+   <topic href="help/content/concepts/inhibitstate.html" label="Pause Conditions (Inhibit-State)">
+   </topic>
 
 </toc>

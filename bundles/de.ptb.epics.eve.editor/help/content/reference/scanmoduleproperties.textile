@@ -6,4 +6,4 @@ table(eveRefTable).
 | __Trigger Delay__ | delay time before trigger| float|
 | __Settle Time__ | delay time after prescan| float|
 | __Manual Trigger__ | indicates whether triggering of __Motors__ or __Detectors__ should be confirmed| boolean|
-| __Events__| One or more of Pause, Redo, Break or Trigger Event|  |
+| __Events__| Redo, Break or Trigger Events to manipulate scan execution. |  |

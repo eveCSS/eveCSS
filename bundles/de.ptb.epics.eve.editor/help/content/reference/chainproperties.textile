@@ -2,4 +2,5 @@ h1(eveTopic). Chain Properties
 
 table(eveRefTable).
 |_. Property |_. Description|_. Domain|
-| __Events__| One or more of Pause, Redo, Break or Stop Event. See also "Events Concepts page":../concepts/events.html. |  |
+| __Pause Conditions__ | Conditions defining an inhibit state pausing the scan if at least one of them is true. See also "Pause Conditions Concept page":../concepts/inhibitstate.html. |  |
+| __Events__| Redo, Break or Stop Events to manipulate scan execution. See also "Events Concepts page":../concepts/events.html. |  |
