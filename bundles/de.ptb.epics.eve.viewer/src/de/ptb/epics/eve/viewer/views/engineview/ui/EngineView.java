@@ -200,24 +200,24 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 		this.engineComposite.setLayoutData(gridData);
 		
 		this.startButton = new Button(this.engineComposite, SWT.PUSH);
-		this.startButton.setText("start");
-		this.startButton.setToolTipText("Start engine");
+		this.startButton.setText("Start");
+		this.startButton.setToolTipText("Start a new engine process (and connect to it)");
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		this.startButton.setLayoutData(gridData);
 		this.startButton.addSelectionListener(new StartButtonSelectionListener());
 		
 		this.killButton = new Button(this.engineComposite, SWT.PUSH);
-		this.killButton.setText("kill");
-		this.killButton.setToolTipText("Kill engine");
+		this.killButton.setText("Kill");
+		this.killButton.setToolTipText("Kill the engine process currently connected to");
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		this.killButton.setLayoutData(gridData);
 		this.killButton.addSelectionListener(new KillButtonSelectionListener());
 		
 		this.connectButton = new Button(this.engineComposite, SWT.PUSH);
-		this.connectButton.setText("connect");
-		this.connectButton.setToolTipText("Connect to Engine");
+		this.connectButton.setText("Connect");
+		this.connectButton.setToolTipText("Connect to the engine with host and port set in the preferences");
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		this.connectButton.setLayoutData(gridData);
@@ -225,8 +225,8 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 				new ConnectButtonSelectionListener());
 		
 		this.disconnectButton = new Button(this.engineComposite, SWT.PUSH);
-		this.disconnectButton.setText("disconnect");
-		this.disconnectButton.setToolTipText("Disconnect Engine");
+		this.disconnectButton.setText("Disconnect");
+		this.disconnectButton.setToolTipText("Disconnect from the engine process currently connected to");
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		this.disconnectButton.setLayoutData(gridData);

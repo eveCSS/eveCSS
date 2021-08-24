@@ -1,16 +1,48 @@
-h1(eveTopic). Pause Conditions (Inhibit-State)
+h1(eveTopic|#top). Pause Conditions (Inhibit-State)
+
+{toc:style=circle|maxLevel=2}
+
+h2(eveTopic). Introduction
+
+p(backToTop). "back to top":#top
 
 p. Each chain can have zero or more pause conditions. A pause condition is a definition based on a device, an operator and a limit evaluating to __true__ or __false__, e.g. a value of a device is equal to a given constant. All pause conditions in a chain define an __inhibit-state__, i.e. if any of the definitions evaluates to __true__, execution is inhibited (the chain is paused) until +all+ definitions evaluate to __false__.
 
-h2(eveTopic). Manual Override
+h3(eveTopic). Example 1 (Pause Condition)
 
-p. Any client connected to an engine executing a scan which currently is paused due to an inhibit state evaluated to __true__, can override that state by pressing the __Play__-Button. Any pause condition which evaluated to __true__ is now in an __overridden__ state as long as it becomes __false__ again. If there are only false and overridden pause conditions the chain resumes execution.
+p. Consider the following definition of a device value with operator lt (less than) and pause limit:
 
-h2(eveTopic). Pause Button (User-Pause)
+p=. !(eveImage)../../img/concepts/InhibitState/pausecondition-example1.png(Example 1: device with operator less than and pause limit five)!
 
-p. Keep in mind, that by pressing the pause button, the whole scan is paused, i.e. each chain is paused. The user pause overrules any inhibit states. A scan paused by the user can only be resumed by pressing the __Play__-Button (even is all pause conditions suddenly evaluate to __false__).
+p. A chain containing the above definition will execute as long as the value of the given device is greater than or equal to five. If it drops below five, the chain will pause as long as it stays below five.
+
+h3(eveTopic). Example 2 (Inhibit State)
+
+p. Consider the following definition of a device value with operator lt (less than) and pause limit and another device severity with operator eq (equals) and (discrete) pause limit __INVALID__:
+
+p=. !(eveImage)../../img/concepts/InhibitState/pausecondition-example2.png(Example 2: device with operator less than and pause limit five and another device with status equal to INVALID)!
+
+p. A chain containing the above definitions will execute as long as neither the device value is less than five nor the other device severity is equal to __INVALID__. Since the conditions define an inhibit state, one violation (i.e. one condition evaluating to __true__) is sufficient for the chain to be paused. Only if all defined conditions (re-)evaluate to __false__ the chain will execute/continue execution.
+
+h3(eveTopic). Example 3 (Interval)
+
+p. It is possible to add multiple definitions for the same device. To define an interval a certain value should be in where the chain executes and pauses otherwise, consider the following definition:
+
+p=. !(eveImage)../../img/concepts/InhibitState/pausecondition-example3.png(Example 3: device with operator less than and pause limit 150 and another definition of the same device with operator greater than and pause limit 220, i.e. a range or interval)!
+
+p. Only if the value of the defined device is within 150 and 220 the chain executes. If it is less than 150 or greater than 220 the chain pauses.
+
+h3(eveTopic). Example 4 (Excluding Discrete States)
+
+p. Another use case where adding multiple definitions for the same device would be if the device is discrete, has more than three values and two or more should be excluded. Consider the following definition:
+
+p=. !(eveImage)../../img/concepts/InhibitState/pausecondition-example4.png(Example 4: device with operator equals and pause limit MAJOR and another definition of the same device with operator equals and pause limit INVALID)!
+
+p. If the value of the defined device gets __MAJOR__ or __INVALID__ the chain will pause. An EPICS severity also has the possible values of __NO_ALARM__ and __MINOR__, which in this case result to executing the chain.
 
 h2(eveTopic). Hysteresis
+
+p(backToTop). "back to top":#top
 
 p. For any pause condition a hysteresis can be defined, i.e. besides the pause limit which alongside the operator defines when the condition evaluates to __true__ (induce pause state) a second value, the __continue limit__ can be set to enforce the expression to evaluate to __false__ regarding that value. 
 
