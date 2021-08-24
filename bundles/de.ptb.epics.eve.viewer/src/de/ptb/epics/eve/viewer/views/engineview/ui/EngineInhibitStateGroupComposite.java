@@ -75,6 +75,7 @@ public class EngineInhibitStateGroupComposite extends EngineGroupComposite {
 		default:
 			break;
 		}
+		this.layout();
 	}
 
 	/**
@@ -93,9 +94,10 @@ public class EngineInhibitStateGroupComposite extends EngineGroupComposite {
 			this.setBGColor(yellow);
 		} else {
 			this.setFGColor(black);
-			this.setText("");
+			this.setText("false");
 			this.setBGColor(green);
 		}
+		this.layout();
 		this.tooltip.setPauseStatus(pauseStatus);
 	}
 	

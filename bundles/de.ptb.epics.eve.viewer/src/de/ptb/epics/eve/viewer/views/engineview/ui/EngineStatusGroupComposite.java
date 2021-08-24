@@ -6,14 +6,15 @@ import org.eclipse.swt.widgets.Composite;
 import de.ptb.epics.eve.ecp1.commands.ChainStatusCommand;
 import de.ptb.epics.eve.ecp1.commands.PauseStatusCommand;
 import de.ptb.epics.eve.ecp1.types.EngineStatus;
+import de.ptb.epics.eve.ecp1.types.ScanModuleReason;
 
 /**
  * @author Marcus Michalsky
  * @since 1.36
  */
 public class EngineStatusGroupComposite extends EngineGroupComposite {
-	private final String initText = "unknown";
-	private final Color initColor = red;
+	private final String initText = "";
+	private final Color initColor = grey;
 	
 	public EngineStatusGroupComposite(Composite parent, int style) {
 		super(parent, style);
@@ -27,6 +28,7 @@ public class EngineStatusGroupComposite extends EngineGroupComposite {
 	public void enable() {
 		this.setText(initText);
 		this.setBGColor(initColor);
+		this.layout();
 	}
 	
 	/**
@@ -45,13 +47,13 @@ public class EngineStatusGroupComposite extends EngineGroupComposite {
 	public void setEngineStatus(EngineStatus engineStatus) {
 		switch (engineStatus) {
 		case EXECUTING:
-			this.setText("Executing");
+			this.setText("executing");
 			this.setFGColor(black);
 			this.setBGColor(green);
 			break;
 		case PAUSED:
 			this.setFGColor(black);
-			this.setText("Paused");
+			this.setText("paused");
 			this.setBGColor(yellow);
 			break;
 		case HALTED:
@@ -59,16 +61,18 @@ public class EngineStatusGroupComposite extends EngineGroupComposite {
 			this.setFGColor(black);
 			this.setText("");
 			this.setBGColor(grey);
+			break;
 		case IDLE_XML_LOADED:
 		case INVALID:
 		case LOADING_XML:
 		case STOPPED:
 		default:
 			this.setFGColor(white);
-			this.setText("");
+			this.setText("stopped");
 			this.setBGColor(red);
 			break;
 		}
+		this.layout();
 	}
 
 	/**
@@ -87,12 +91,15 @@ public class EngineStatusGroupComposite extends EngineGroupComposite {
 		for (int i : chainStatus.getAllScanModuleIds()) {
 			switch (chainStatus.getScanModuleStatus(i)) {
 			case PAUSED:
-				this.setFGColor(white);
-				this.setText("");
-				this.setBGColor(red);
+				if (chainStatus.getScanModuleReason(i).equals(
+						ScanModuleReason.CHAIN_PAUSE)) {
+					this.setFGColor(white);
+					this.setText("paused");
+					this.setBGColor(red);
+				}
 				break;
 			case EXECUTING:
-				this.setText("Executing");
+				this.setText("executing");
 				this.setFGColor(black);
 				this.setBGColor(green);
 				break;
@@ -106,5 +113,6 @@ public class EngineStatusGroupComposite extends EngineGroupComposite {
 				break;
 			}
 		}
+		this.layout();
 	}
 }

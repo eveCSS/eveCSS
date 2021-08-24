@@ -56,14 +56,17 @@ public abstract class EngineGroupComposite extends Composite {
 	
 	protected void setText(String text) {
 		this.text.setText(text);
+		//this.text.getParent().layout();
 	}
 	
 	protected void setFGColor(Color color) {
 		this.text.setForeground(color);
+		//this.text.getParent().layout();
 	}
 	
 	protected void setBGColor(Color color) {
 		this.setBackground(color);
 		this.text.setBackground(color);
+		//this.text.getParent().layout();
 	}
 }
