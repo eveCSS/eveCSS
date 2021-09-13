@@ -39,14 +39,12 @@ p. Several buttons are available to influence the execution of a scan. Their fun
 
 table(eveRefTable).
 |_. Button |_. Description|
-|_. Play | Starts (or continues a paused) scan. |
-|_. Pause | Pauses the scan. |
+|_. Play | Starts (or continues a paused) scan. An active inhibit state will be overwritten. Any pause condition which evaluated to __true__ is now in an __overridden__ state as long as it becomes __false__ again. |
+|_. Pause | Pauses the whole scan, i.e. each chain is paused. Overrules any inhibit states. A scan paused this way can only be resumed by pressing the __Play__-Button (even if all pause conditions suddenly evaluate to __false__). |
 |_. Stop | Stops the scan after finishing the current scan point. While pending positionings are ignored, post scan actions of the current scan module (and the parents if nested) are still executed. |
 |_. Skip | Finishes the current scan point, skips the remaining scan points of the current scan module, executes post scan actions and continues with the next scan module (if any) |
 |_. Halt | Stops the scan and immediately stops all motor axes. |
 |_. AutoPlay | if activated (toggle button) loaded scans (and iterations if repeat count > 0) start automatically |
-
-p. TODO Play Button 
 
 p. Besides the available buttons there are some status fields as well as options to repeat the currently loaded scan and add comments to it. See details below:
 
@@ -74,44 +72,45 @@ h2(eveTopic). Engine State Indicator
 
 p(backToTop). "back to top":#top
 
-p. 
+p. The Engine State Indicator shows the current status of the (connected) engine (if any). The table below shows all possible states and their meaning:
 
 table(eveRefTable).
-|_. state |_. Description|
-| !../../img/concepts/engineview/enginestate-grey.png(engine state with grey background)! | |
-| !../../img/concepts/engineview/enginestate-red2.png(engine state with grey background)! | |
-| !../../img/concepts/engineview/enginestate-green.png(engine state with grey background)! | |
-| !../../img/concepts/engineview/enginestate-yellow.png(engine state with grey background)! | |
-| !../../img/concepts/engineview/enginestate-red.png(engine state with grey background)! | |
+|_. State |_. Description|
+| !../../img/concepts/engineview/enginestate-disabled.png(engine state with no background)! | The GUI (Engine View) is not connected to an engine process. |
+| !../../img/concepts/engineview/enginestate-grey.png(engine state with grey background)! | No scan is currently loaded in the (connected) engine process. |
+| !../../img/concepts/engineview/enginestate-red2.png(engine state with red background and white text 'stopped')! | A scan is loaded in the (connected) engine process but not started yet. |
+| !../../img/concepts/engineview/enginestate-green.png(engine state with green background and black text 'running')! | A scan is currently executing in the (connected) engine process. |
+| !../../img/concepts/engineview/enginestate-yellow.png(engine state with yellow background and black text 'paused')! | The currently executing scan in the (connected) engine process was paused by a connected client (with the Pause button). |
+| !../../img/concepts/engineview/enginestate-red.png(engine state with red background and white text 'paused')! | The currently executing scan in the (connected) engine process was paused due to a pause condition. For details see below (inhibit state). |
 
 h2(eveTopic). Inhibit State Indicator
 
 p(backToTop). "back to top":#top
 
-p. 
+p. Shows the current status of the inhibit state defined in the currently loaded scan (if any). The table below shows all possible states and their meaning:
 
 table(eveRefTable).
-|_. state |_. Description|
-| !../../img/concepts/engineview/inhibitstate-grey.png(inhibit state with grey background)! | |
-| !../../img/concepts/engineview/inhibitstate-green.png(inhibit state with green background and black text false)! | |
-| !../../img/concepts/engineview/inhibitstate-red.png(inhibit state with red background and white text true)! | |
-| !../../img/concepts/engineview/inhibitstate-yellow.png(inhibit state with yellow background and black test overridden)! | |
+|_. State |_. Description|
+| !../../img/concepts/engineview/inhibitstate-disabled.png(inhibit state with no background)! | The GUI (Engine View) is not connected to an engine process. |
+| !../../img/concepts/engineview/inhibitstate-grey.png(inhibit state with grey background)! | There either is no scan loaded in the (connected) engine process or the currently loaded scan does not have any pause conditions defined. |
+| !../../img/concepts/engineview/inhibitstate-green.png(inhibit state with green background and black text false)! | The inhibit state of the currently loaded/executing scan evaluates to @false@ (no pause condition is satisfied). |
+| !../../img/concepts/engineview/inhibitstate-red.png(inhibit state with red background and white text true)! | The inhibit state of the currently loaded/executing scan evaluates to @true@. |
+| !../../img/concepts/engineview/inhibitstate-yellow.png(inhibit state with yellow background and black test overridden)! | The inhibit state of the currently loaded/executing scan evaluated to @false@ but was overridden by the user (by pressing the Play button). |
 
-
-TODO Tooltip
-
-
-
-% TODO
-
-h2(eveTopic). Manual Override (Play Button)
+h2(eveTopic). Inhibit State Tooltip
 
 p(backToTop). "back to top":#top
 
-p. Any client connected to an engine executing a scan which currently is paused due to an inhibit state evaluated to __true__, can override that state by pressing the __Play__-Button. Any pause condition which evaluated to __true__ is now in an __overridden__ state as long as it becomes __false__ again. If there are only false and overridden pause conditions the chain resumes execution.
+p. The inhibit state indicator only shows the result (logical or) of all defined pause conditions of a scan. In order to identify which pause condition was responsible a mouse over tooltip of the indicator shows the states of each pause condition:
 
-h2(eveTopic). User-Pause (Pause Button)
+p=. !(eveImage)../../img/concepts/engineview/inhibitstatepopup.png(inhibit state tooltip with three entries, one of each state: true, overriden, false)!
 
-p(backToTop). "back to top":#top
+p. The status of each condition is shown as symbols with the following meaning:
 
-p. Keep in mind, that by pressing the pause button, the whole scan is paused, i.e. each chain is paused. The user pause overrules any inhibit states. A scan paused by the user can only be resumed by pressing the __Play__-Button (even if all pause conditions suddenly evaluate to __false__).
+table(eveRefTable).
+|_. State |_. Description|
+|_. !../../img/concepts/engineview/inhibitstatetooltip-false.gif(White Play symbol above a green circle)! | Inhibit state evaluates to @false@. |
+|_. !../../img/concepts/engineview/inhibitstatetooltip-true.gif(White Cross symbol above a red circle)! | Inhibit state evaluates to @true@. |
+|_. !../../img/concepts/engineview/inhibitstatetooltip-overridden.gif(Black exclamation mark above yellow triangle)! | Inhibit state evaluated to @true@ but was overridden. |
+
+p. If any pause condition evaluates to @true@ the scan is paused. If all pause conditions are either @false@ or @overridden@ the scan resumes/executes.
