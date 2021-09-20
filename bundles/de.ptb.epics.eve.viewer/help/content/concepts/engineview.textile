@@ -97,6 +97,8 @@ table(eveRefTable).
 | !../../img/concepts/engineview/inhibitstate-red.png(inhibit state with red background and white text true)! | The inhibit state of the currently loaded/executing scan evaluates to @true@. |
 | !../../img/concepts/engineview/inhibitstate-yellow.png(inhibit state with yellow background and black test overridden)! | The inhibit state of the currently loaded/executing scan evaluated to @false@ but was overridden by the user (by pressing the Play button). |
 
+p. To learn more about Pause Conditions / Inhibit-State see "here":/help/topic/de.ptb.epics.eve.editor/help/content/concepts/inhibitstate.html.
+
 h2(eveTopic). Inhibit State Tooltip
 
 p(backToTop). "back to top":#top
@@ -114,3 +116,5 @@ table(eveRefTable).
 |_. !../../img/concepts/engineview/inhibitstatetooltip-overridden.gif(Black exclamation mark above yellow triangle)! | Inhibit state evaluated to @true@ but was overridden. |
 
 p. If any pause condition evaluates to @true@ the scan is paused. If all pause conditions are either @false@ or @overridden@ the scan resumes/executes.
+
+p. To learn more about Pause Conditions / Inhibit-State see "here":/help/topic/de.ptb.epics.eve.editor/help/content/concepts/inhibitstate.html.
