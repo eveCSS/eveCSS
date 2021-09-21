@@ -929,15 +929,41 @@
          </command>
       </menuContribution>
       <menuContribution
+            locationURI="toolbar:de.ptb.epics.eve.editor.view.PrePostscanView">
+         <command
+               commandId="org.eclipse.ui.help.displayHelp"
+               icon="icons/help_contents.gif"
+               label="Click to learn more about the SM Prescan / Postscan / Positioning / Plot View"
+               style="push">
+            <parameter
+                  name="href"
+                  value="/de.ptb.epics.eve.editor/help/content/concepts/smprepostposplotview.html">
+            </parameter>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:de.ptb.epics.eve.editor.views.AxesChannelsView">
+         <command
+               commandId="org.eclipse.ui.help.displayHelp"
+               icon="icons/help_contents.gif"
+               label="Click to learn more about the SM Axes / Channels View"
+               style="push">
+            <parameter
+                  name="href"
+                  value="/de.ptb.epics.eve.editor/help/content/concepts/smaxeschannelsview.html">
+            </parameter>
+         </command>
+      </menuContribution>
+      <menuContribution
             locationURI="toolbar:de.ptb.epics.eve.editor.views.ScanModulView">
          <command
                commandId="org.eclipse.ui.help.displayHelp"
                icon="icons/help_contents.gif"
-               label="Click to learn more about the Scan Module View"
+               label="Click to learn more about the SM Events View"
                style="push">
             <parameter
                   name="href"
-                  value="/de.ptb.epics.eve.editor/help/content/concepts/scanmoduleview.html">
+                  value="/de.ptb.epics.eve.editor/help/content/concepts/smeventsview.html">
             </parameter>
          </command>
       </menuContribution>
