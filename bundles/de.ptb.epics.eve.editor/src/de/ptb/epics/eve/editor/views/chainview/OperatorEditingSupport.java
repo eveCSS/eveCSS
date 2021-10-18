@@ -40,10 +40,10 @@ public class OperatorEditingSupport extends EditingSupport {
 	protected CellEditor getCellEditor(Object element) {
 		PauseCondition pauseCondition = (PauseCondition)element;
 		if (pauseCondition.isDiscrete()) {
-			return new MyComboBoxCellEditor(viewer.getTable().getParent(), 
+			return new MyComboBoxCellEditor(viewer.getTable(), 
 					discreteItems);
 		} else {
-			return new MyComboBoxCellEditor(viewer.getTable().getParent(), 
+			return new MyComboBoxCellEditor(viewer.getTable(), 
 					items);
 		}
 	}

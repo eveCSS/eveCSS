@@ -74,11 +74,11 @@ public class PauseConditionComposite extends Composite implements
 	private void createViewer() {
 		tableViewer = new TableViewer(this, 
 				SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
+		this.createColumns(tableViewer);
 		tableViewer.getTable().setHeaderVisible(true);
 		tableViewer.getTable().setLinesVisible(true);
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-		
-		this.createColumns(tableViewer);
+		tableViewer.setInput(null);
 		
 		tableViewer.getTable().addFocusListener(new FocusAdapter() {
 			@Override
