@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:scml xsi:schemaLocation="http://www.ptb.de/epics/SCML scml.xsd"
+    xmlns:tns="http://www.ptb.de/epics/SCML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <!-- infos section -->
+    <location>TEST</location>
+    <version>9.0</version>
+    <!-- plugin section -->
+    <plugins>
+        <!-- (dummy) plugin to save data in ascii format -->
+        <plugin type="save">
+            <name>ASCII</name>
+            <location></location>
+            <parameter name="format" datatype="string" default="ASCII"></parameter>
+            <parameter name="suffix" datatype="string" default="txt"></parameter>
+            <parameter name="extent" datatype="int" default="0"></parameter>
+        </plugin>
+        <!-- plugin to save data in hdf5 format -->
+        <plugin type="save">
+            <name>HDF5</name>
+            <location>/messung/eve/lib/linux-x86_64/libhdf5plugin.so</location>
+            <parameter name="format" datatype="string" default="HDF5"></parameter>
+            <parameter name="suffix" datatype="string" default="h5"></parameter>
+            <parameter name="extent" datatype="int" default="1"></parameter>
+        </plugin>
+        <!-- plugin to not save data -->
+        <plugin type="save">
+            <name>Do not save</name>
+            <location>nosave</location>
+        </plugin>
+        <!-- position plugin -->
+	<plugin type="position">
+		<name>MotionDisabled</name>
+		<location>/path/to/referenceadd</location>
+	</plugin>
+        <!-- position plugin -->
+	<plugin type="position">
+		<name>ReferenceAdd</name>
+		<location>/path/to/referenceadd</location>
+		<parameter name="summand" datatype="double" mandatory="true"></parameter>
+		<parameter name="referenceaxis" datatype="axisid" mandatory="true"></parameter>
+	</plugin>
+        <!-- position plugin -->
+	<plugin type="position">
+		<name>ReferenceMultiply</name>
+		<location>/path/to/referenceadd</location>
+		<parameter name="factor" datatype="double" mandatory="true"></parameter>
+		<parameter name="referenceaxis" datatype="axisid" mandatory="true"></parameter>
+	</plugin>
+        <!-- positioning plugin goto peak-->
+	<plugin type="postscanpositioning">
+		<name>PEAK</name>
+		<location>/path/to/plugin3</location>
+		<!-- <parameter name="threshold" datatype="double" default="100" mandatory="false"></parameter> -->
+	</plugin>
+        <!-- positioning plugin goto center-->
+	<plugin type="postscanpositioning">
+		<name>CENTER</name>
+		<location>/path/to/plugin3</location>
+		<parameter name="threshold" datatype="double" default="50" mandatory="false"></parameter>
+	</plugin>
+        <!-- positioning plugin goto maximum-->
+	<plugin type="postscanpositioning">
+		<name>MAX</name>
+		<location>/path/to/plugin3</location>
+		<!-- <parameter name="threshold" datatype="double" default="100" mandatory="false"></parameter> -->
+	</plugin>
+        <!-- positioning plugin goto minimum-->
+	<plugin type="postscanpositioning">
+		<name>MIN</name>
+		<location>/path/to/plugin3</location>
+		<!-- <parameter name="threshold" datatype="double" default="100" mandatory="false"></parameter> -->
+	</plugin>
+        <!-- positioning plugin goto edge-->
+	<plugin type="postscanpositioning">
+		<name>EDGE</name>
+		<location>/path/to/plugin3</location>
+		<parameter name="number from left" datatype="int" default="1" mandatory="false"></parameter>
+	</plugin>
+    </plugins>
+    <!-- detector section -->
+    <detectors>
+        <detector>
+            <class>Detector Class</class>
+            <name>Detector with Class</name>
+            <id>detectorWithClass</id>
+             <channel>
+                <class>Channel Class</class>
+                <name>Channel with Class (in Detector with Class)</name>
+                <id>channelWithClassInDetectorWithClass</id>
+                <read><access monitor="false" method="GETCB" transport="local" type="double">foobar</access></read>
+                <option>
+                    <name>Channel Option (of Channel with Class in Detector with Class)</name>
+                    <id>channelOptionChannelWithClassDetectorWithClass</id>
+                    <value><access method="GETCB" type="double" transport="local">foobar</access></value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+            </channel>
+             <channel>
+                <class></class>
+                <name>Channel without Class (in Detector with Class)</name>
+                <id>channelWithoutClassInDetectorWithClass</id>
+                <read><access monitor="false" method="GETCB" transport="local" type="double">foobar</access></read>
+                <option>
+                    <name>Channel Option (of Channel without Class in Detector with Class)</name>
+                    <id>channelOptionChannelWithoutClassDetectorWithClass</id>
+                    <value><access method="GETCB" type="double" transport="local">foobar</access></value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+            </channel>
+            <option>
+                <name>Detector Option (of Detector with Class)</name>
+                <id>detectorOptionDetectorWithClass</id>
+                <value><access method="GETCB" type="double" transport="local">foobar</access></value>
+                <displaygroup>summary</displaygroup>
+            </option>
+        </detector>
+        <detector>
+            <class></class>
+            <name>Detector without Class</name>
+            <id>detectorWithoutClass</id>
+             <channel>
+                <class>Channel Class</class>
+                <name>Channel with Class (in Detector without Class)</name>
+                <id>channelWithClassInDetectorWithoutClass</id>
+                <read><access monitor="false" method="GETCB" transport="local" type="double">foobar</access></read>
+                <option>
+                    <name>Channel Option (of Channel with Class in Detector without Class)</name>
+                    <id>channelOptionChannelWithClassDetectorWithoutClass</id>
+                    <value><access method="GETCB" type="double" transport="local">foobar</access></value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+            </channel>
+            <channel>
+                <class></class>
+                <name>Channel without Class (in Detector without Class)</name>
+                <id>channelWithoutClassInDetectorWithourClass</id>
+                <read><access monitor="false" method="GETCB" transport="local" type="double">foobar</access></read>
+                <option>
+                    <name>Channel Option (of Channel without Class in Detector without Class)</name>
+                    <id>channelOptionChannelWithoutClassDetectorWithoutClass</id>
+                    <value><access method="GETCB" type="double" transport="local">foobar</access></value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+            </channel>
+            <option>
+                <name>Detector Option (of Detector without Class)</name>
+                <id>detectorOptionDetectorWithoutClass</id>
+                <value><access method="GETCB" type="double" transport="local">foobar</access></value>
+                <displaygroup>summary</displaygroup>
+            </option>
+        </detector>
+    </detectors>
+    <!-- motor section -->
+    <motors>
+        <motor>
+            <class>Motor Class</class>
+            <name>Motor with Class</name>
+            <id>motorWithClass</id>
+            <axis>
+                <class>Axis Class</class>
+                <name>Axis with Class (in Motor with Class)</name>
+                <id>axisWithClassInMotorWithClass</id>
+                <goto><access method="GETPUTCB" transport="ca" type="double" timeout="333.0">foobar</access></goto><position><access monitor="true" method="GETCB" transport="ca" type="double">foobar</access></position>
+                <stop><access method="PUT" transport="ca" type="int">foobar</access><value type="int">1</value></stop>
+                <option>
+                    <name>MotorAxis Option (of Axis with Class in Motor with Class)</name>
+                    <id>motorAxisOptionAxisWithClassMotorWithClass</id>
+                    <value><access method="GETCB" type="double" transport="local">foobar</access></value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+            </axis>
+            <axis>
+                <class></class>
+                <name>Axis without Class (in Motor with Class)</name>
+                <id>axisWithoutClassInMotorWithClass</id>
+                <goto><access method="GETPUTCB" transport="ca" type="double" timeout="333.0">foobar</access></goto><position><access monitor="true" method="GETCB" transport="ca" type="double">foobar</access></position>
+                <stop><access method="PUT" transport="ca" type="int">foobar</access><value type="int">1</value></stop>
+                <option>
+                    <name>MotorAxis Option (of Axis without Class in Motor with Class)</name>
+                    <id>motorAxisOptionAxisWithoutClassMotorWithClass</id>
+                    <value><access method="GETCB" type="double" transport="local">foobar</access></value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+            </axis>
+            <option>
+                <name>Motor Option (of Motor with Class)</name>
+                <id>motorOptionMotorWithClass</id>
+                <value><access method="GETCB" type="double" transport="local">foobar</access></value>
+                <displaygroup>summary</displaygroup>
+            </option>
+        </motor>
+        <motor>
+            <class></class>
+            <name>Motor without Class</name>
+            <id>motorWithoutClass</id>
+            <axis>
+                <class>Axis Class</class>
+                <name>Axis with Class (in Motor without Class)</name>
+                <id>axisWithClassInMotorWithoutClass</id>
+                <goto><access method="GETPUTCB" transport="ca" type="double" timeout="333.0">foobar</access></goto><position><access monitor="true" method="GETCB" transport="ca" type="double">foobar</access></position>
+                <stop><access method="PUT" transport="ca" type="int">foobar</access><value type="int">1</value></stop>
+                <option>
+                    <name>MotorAxis Option (of Axis with Class in Motor without Class)</name>
+                    <id>motorAxisOptionAxisWithClassMotorWithoutClass</id>
+                    <value><access method="GETCB" type="double" transport="local">foobar</access></value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+            </axis>
+            <axis>
+                <class></class>
+                <name>Axis without Class (in Motor without Class)</name>
+                <id>axisWithoutClassInMotorWithoutClass</id>
+                <goto><access method="GETPUTCB" transport="ca" type="double" timeout="333.0">foobar</access></goto><position><access monitor="true" method="GETCB" transport="ca" type="double">foobar</access></position>
+                <stop><access method="PUT" transport="ca" type="int">foobar</access><value type="int">1</value></stop>
+                <option>
+                    <name>MotorAxis Option (of Axis without Class in Motor without Class)</name>
+                    <id>motorAxisOptionAxisWithoutClassMotorWithoutClass</id>
+                    <value><access method="GETCB" type="double" transport="local">foobar</access></value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+            </axis>
+            <option>
+                <name>Motor Option (of Motor without Class)</name>
+                <id>motorOptionMotorWithoutClass</id>
+                <value><access method="GETCB" type="double" transport="local">foobar</access></value>
+                <displaygroup>summary</displaygroup>
+            </option>
+        </motor>
+    </motors>
+    <!-- device section -->
+    <devices>
+        <device>
+            <class>Device Class</class>
+            <name>Device with Class</name>
+            <id>deviceWithClass</id>
+            <value>
+                <access monitor="true" method="GETCB" transport="ca" type="string">foobar</access>
+                <value type="string">decay,topup,topupACK</value>
+            </value>
+            <option>
+                <name>Device Option (of Device with Class)</name>
+                <id>deviceOptionDeviceWithClass</id>
+                <value><access method="GETCB" type="double" transport="local">foobar</access></value>
+                <displaygroup>summary</displaygroup>
+            </option>
+        </device>
+        <device>
+            <class></class>
+            <name>Device without Class</name>
+            <id>deviceWithoutClass</id>
+            <value>
+                <access monitor="true" method="GETCB" transport="ca" type="string">foobar</access>
+                <value type="string">decay,topup,topupACK</value>
+            </value>
+            <option>
+                <name>Device Option (of Device without Class)</name>
+                <id>deviceOptionDeviceWithoutClass</id>
+                <value><access method="GETCB" type="double" transport="local">foobar</access></value>
+                <displaygroup>summary</displaygroup>
+            </option>
+        </device>
+    </devices>
+    <!-- closing tag -->
+</tns:scml>
+

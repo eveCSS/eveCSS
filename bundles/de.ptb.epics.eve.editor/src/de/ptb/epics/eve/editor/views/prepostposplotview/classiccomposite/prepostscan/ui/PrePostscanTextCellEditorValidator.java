@@ -42,12 +42,6 @@ public class PrePostscanTextCellEditorValidator implements ICellEditorValidator 
 				return "Input is not a valid integer.";
 			}
 			break;
-		case ONOFF:
-			// ??
-			break;
-		case OPENCLOSE:
-			// ??
-			break;
 		case STRING:
 			// strings for non-discrete values are always valid
 			break;

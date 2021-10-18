@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?NLS TYPE="org.eclipse.help.toc"?>
 
-<toc label="EVE" link_to="PLUGINS_ROOT/org.csstudio.ui.help/tocApps.xml#other">
-   <topic label="EVE">
+<toc label="eveCSS">
+   <topic label="General">
       <topic label="Concepts">
          <link toc="help/content/concepts/toc_concepts.xml"/>
       </topic>
@@ -17,5 +17,6 @@
       <topic href="help/content/whatsnewarchive.html" label="What&apos;s New Archive">
       </topic>
    </topic>
+   <anchor id="eveCSS"/>
 
 </toc>

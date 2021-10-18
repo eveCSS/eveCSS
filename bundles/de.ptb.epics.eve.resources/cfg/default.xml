@@ -2,7 +2,7 @@
 <tns:scml xsi:schemaLocation="http://www.ptb.de/epics/SCML scml.xsd"
 	xmlns:tns="http://www.ptb.de/epics/SCML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<location>DEFAULT</location>
-	<version>8.0</version>
+	<version>9.0</version>
 	<plugins>
 		<plugin type="save">
 			<name>ASCII</name>
@@ -324,7 +324,7 @@
 				</position>
 				<stop>
 					<access method="PUT" transport="local" type="int">Timer</access>
-					<value type="OnOff">0</value>
+					<value type="int">0</value>
 				</stop>
 			</axis>
 		</motor>
@@ -344,7 +344,7 @@
 				</position>
 				<stop>
 					<access method="PUT" transport="local" type="int">Timer</access>
-					<value type="OnOff">0</value>
+					<value type="int">0</value>
 				</stop>
 			</axis>
 		</motor>
@@ -367,7 +367,7 @@
 				</position>
 				<stop>
 					<access method="PUT" transport="local" type="int">Counter</access>
-					<value type="OnOff">0</value>
+					<value type="int">0</value>
 				</stop>
 			</axis>
 		</motor>
@@ -1825,8 +1825,8 @@
 			<name>eveBoot</name>
 			<id>eve:bootdev</id>
 			<value>
-				<access method="GETPUT" transport="ca" type="OnOff">eve:boot</access>
-				<value type="OnOff">On,Off</value>
+				<access method="GETPUT" transport="ca" type="string">eve:boot</access>
+				<value type="string">On,Off</value>
 			</value>
 		</device>
 		<device>
@@ -1834,9 +1834,9 @@
 			<name>eveBooty</name>
 			<id>eve:bootydev</id>
 			<value>
-				<access method="GETPUTCB" transport="ca" type="OnOff">eve:booty
+				<access method="GETPUTCB" transport="ca" type="string">eve:booty
 				</access>
-				<value type="OnOff">On,Off</value>
+				<value type="string">On,Off</value>
 			</value>
 		</device>
 	</devices>

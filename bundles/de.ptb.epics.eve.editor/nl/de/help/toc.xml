@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?NLS TYPE="org.eclipse.help.toc"?>
 
-<toc label="EVE Editor" link_to="PLUGINS_ROOT/org.csstudio.ui.help/tocApps.xml#editors">
-   <topic label="EVE Editor">
+<toc label="EVE Editor" link_to="PLUGINS_ROOT/de.ptb.epics.eve.help/help/toc.xml#eveCSS">
+   <topic label="Editor">
       <topic href="help/content/overview.html" label="Overview">
       </topic>
       <topic href="help/content/gettingstarted.html" label="Getting Started">

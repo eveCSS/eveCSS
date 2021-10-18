@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?NLS TYPE="org.eclipse.help.toc"?>
 
-<toc label="EVE Viewer" link_to="../org.csstudio.ui.help/tocApps.xml#display">
-   <topic label="EVE Viewer">
+<toc label="EVE Viewer" link_to="PLUGINS_ROOT/de.ptb.epics.eve.help/help/toc.xml#eveCSS">
+   <topic label="Viewer">
       <topic href="help/content/overview.html" label="Overview">
       </topic>
       <topic href="help/content/gettingstarted.html" label="Getting Started">

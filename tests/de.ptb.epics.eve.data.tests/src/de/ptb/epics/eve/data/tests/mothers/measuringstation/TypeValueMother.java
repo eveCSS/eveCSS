@@ -35,6 +35,20 @@ public class TypeValueMother {
 	public static TypeValue createNewDateTypeValue() {
 		return new TypeValue(DataTypes.DATETIME);
 	}
+
+	/**
+	 * @since 1.36
+	 */
+	public static TypeValue createNewStringTypeValue() {
+		return new TypeValue(DataTypes.STRING);
+	}
+	
+	/**
+	 * @since 1.36
+	 */
+	public static TypeValue createNewDiscreteStringTypeValue() {
+		return new TypeValue(DataTypes.STRING, "Value1, Value2, Value3");
+	}
 	
 	private TypeValueMother() {
 		// private

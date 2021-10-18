@@ -36,4 +36,60 @@ public class OptionMother {
 		option.setValue(FunctionMother.createNewDoubleTypeFunction());
 		return option;
 	}
+	
+	/**
+	 * @since 1.36
+	 */
+	public static Option createNewIntegerOption() {
+		Option option = new Option();
+		String name = "Option-" + Calendar.getInstance().getTime().getTime();
+		option.setId(name);
+		option.setName(name);
+		option.setClassName("OptionClass");
+		option.setMonitor(false);
+		option.setValue(FunctionMother.createNewIntTypeFunction());
+		return option;
+	}
+	
+	/**
+	 * @since 1.36
+	 */
+	public static Option createNewDoubleOption() {
+		Option option = new Option();
+		String name = "Option-" + Calendar.getInstance().getTime().getTime();
+		option.setId(name);
+		option.setName(name);
+		option.setClassName("OptionClass");
+		option.setMonitor(false);
+		option.setValue(FunctionMother.createNewDoubleTypeFunction());
+		return option;
+	}
+	
+	/**
+	 * @since 1.36
+	 */
+	public static Option createNewStringOption() {
+		Option option = new Option();
+		String name = "Option-" + Calendar.getInstance().getTime().getTime();
+		option.setId(name);
+		option.setName(name);
+		option.setClassName("OptionClass");
+		option.setMonitor(false);
+		option.setValue(FunctionMother.createNewStringTypeFunction());
+		return option;
+	}
+	
+	/**
+	 * @since 1.36
+	 */
+	public static Option createNewDiscreteStringOption() {
+		Option option = new Option();
+		String name = "Option-" + Calendar.getInstance().getTime().getTime();
+		option.setId(name);
+		option.setName(name);
+		option.setClassName("OptionClass");
+		option.setMonitor(false);
+		option.setValue(FunctionMother.createNewDiscreteStringTypeFunction());
+		return option;
+	}
 }

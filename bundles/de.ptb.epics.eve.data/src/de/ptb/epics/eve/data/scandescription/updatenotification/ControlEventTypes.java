@@ -9,10 +9,5 @@ public enum ControlEventTypes {
 	/**
 	 * 
 	 */
-	CONTROL_EVENT,
-	
-	/**
-	 * 
-	 */
-	PAUSE_EVENT
+	CONTROL_EVENT
 }

@@ -42,7 +42,7 @@ import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
-import de.ptb.epics.eve.data.scandescription.PauseEvent;
+import de.ptb.epics.eve.data.scandescription.PauseCondition;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.PluginController;
 import de.ptb.epics.eve.data.scandescription.Positioning;
@@ -1115,10 +1115,6 @@ public class ScanDescriptionSaver implements
 				this.writeControlEvent(event, "startevent");
 			}
 
-			for (ControlEvent event : chain.getPauseEvents()) {
-				this.writeControlEvent(event, "pauseevent");
-			}
-
 			for (ControlEvent event : chain.getRedoEvents()) {
 				this.writeControlEvent(event, "redoevent");
 			}
@@ -1133,6 +1129,16 @@ public class ScanDescriptionSaver implements
 
 			this.atts.clear();
 
+			this.contentHandler.startElement(Literals.EMPTY_STRING, 
+					Literals.XML_ELEMENT_NAME_PAUSECONDITIONS, 
+					Literals.XML_ELEMENT_NAME_PAUSECONDITIONS, this.atts);
+			for (PauseCondition pauseCondition : chain.getPauseConditions()) {
+				this.writePauseCondition(pauseCondition);
+			}
+			this.contentHandler.endElement(Literals.EMPTY_STRING, 
+					Literals.XML_ELEMENT_NAME_PAUSECONDITIONS, 
+					Literals.XML_ELEMENT_NAME_PAUSECONDITIONS);
+			
 			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_SCANMODULES,
 					Literals.XML_ELEMENT_NAME_SCANMODULES, this.atts);
 			for(ScanModule sm : chain.getScanModules()) {
@@ -1318,10 +1324,6 @@ public class ScanDescriptionSaver implements
 
 			for (ControlEvent event : scanModule.getTriggerEvents()) {
 				this.writeControlEvent(event, "triggerevent");
-			}
-
-			for (ControlEvent event : scanModule.getPauseEvents()) {
-				this.writeControlEvent(event, "pauseevent");
 			}
 
 			for (ControlEvent event : scanModule.getRedoEvents()) {
@@ -2375,20 +2377,96 @@ public class ScanDescriptionSaver implements
 			default:
 				break;
 			}
-			if (name.equals("pauseevent")) {
-				atts.clear();
-				this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_ACTION,
-						Literals.XML_ELEMENT_NAME_ACTION, this.atts);
-				this.contentHandler.characters(
-						("" + ((PauseEvent) controlEvent).getEventAction()
-								.toString()).toCharArray(), 0,
-						("" + ((PauseEvent) controlEvent).getEventAction()
-								.toString()).length());
-				this.contentHandler.endElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_ACTION,
-						Literals.XML_ELEMENT_NAME_ACTION);
-			}
 			this.atts.clear();
 			this.contentHandler.endElement(Literals.EMPTY_STRING, name, name);
+		} catch (SAXException e) {
+			logger.error(e.getMessage(), e);
+			return false;
+		}
+		return true;
+	}
+	
+	private boolean writePauseCondition(PauseCondition pauseCondition) {
+		this.atts.clear();
+		try {
+			if (pauseCondition.getOperator().equals(ComparisonTypes.EQ) || 
+					pauseCondition.getOperator().equals(ComparisonTypes.NE)) {
+				this.atts.addAttribute("http://www.w3.org/2001/XMLSchema-instance", 
+						"type", "xsi:type", "", "tns:eqcondition");
+			} else {
+				this.atts.addAttribute("http://www.w3.org/2001/XMLSchema-instance", 
+						"type", "xsi:type", "", "tns:ineqcondition");
+			}
+			this.atts.addAttribute(Literals.EMPTY_STRING, 
+					Literals.XML_ATTRIBUTE_NAME_ID, 
+					Literals.XML_ATTRIBUTE_NAME_ID, 
+					Literals.CHARACTER_DATA, Integer.toString(
+							pauseCondition.getId()));
+			this.contentHandler.startElement(Literals.EMPTY_STRING, 
+					Literals.XML_ELEMENT_NAME_PAUSECONDITION, 
+					Literals.XML_ELEMENT_NAME_PAUSECONDITION, this.atts);
+			
+			this.atts.clear();
+			this.contentHandler.startElement(Literals.EMPTY_STRING, 
+					Literals.XML_ELEMENT_NAME_DEVICEID, Literals.XML_ELEMENT_NAME_DEVICEID, 
+					this.atts);
+			this.contentHandler.characters(
+					pauseCondition.getDevice().getID().toCharArray(), 0, 
+					pauseCondition.getDevice().getID().length());
+			this.contentHandler.endElement(Literals.EMPTY_STRING, 
+					Literals.XML_ELEMENT_NAME_DEVICEID, Literals.XML_ELEMENT_NAME_DEVICEID);
+			
+			this.atts.clear();
+			this.contentHandler.startElement(Literals.EMPTY_STRING, 
+					Literals.XML_ELEMENT_NAME_OPERATOR, 
+					Literals.XML_ELEMENT_NAME_OPERATOR, this.atts);
+			String operator = ComparisonTypes.typeToString(
+					pauseCondition.getOperator());
+			this.contentHandler.characters(operator.toCharArray(), 0, 
+					operator.length());
+			this.contentHandler.endElement(Literals.EMPTY_STRING, 
+					Literals.XML_ELEMENT_NAME_OPERATOR, 
+					Literals.XML_ELEMENT_NAME_OPERATOR);
+			
+			this.atts.clear();
+			this.atts.addAttribute(Literals.EMPTY_STRING, 
+					Literals.XML_ATTRIBUTE_NAME_TYPE,
+					Literals.XML_ATTRIBUTE_NAME_TYPE, 
+					Literals.CHARACTER_DATA, 
+					DataTypes.typeToString(pauseCondition.getType()));
+			this.contentHandler.startElement(Literals.EMPTY_STRING, 
+					Literals.XML_ELEMENT_NAME_PAUSELIMIT, 
+					Literals.XML_ELEMENT_NAME_PAUSELIMIT, this.atts);
+			this.contentHandler.characters(
+					pauseCondition.getPauseLimit().toCharArray(), 0, 
+					pauseCondition.getPauseLimit().length());
+			this.contentHandler.endElement(Literals.EMPTY_STRING, 
+					Literals.XML_ELEMENT_NAME_PAUSELIMIT, 
+					Literals.XML_ELEMENT_NAME_PAUSELIMIT);
+			
+			if (pauseCondition.hasContinueLimit() && 
+					pauseCondition.getContinueLimit() != null) {
+				this.atts.clear();
+				this.atts.addAttribute(Literals.EMPTY_STRING, 
+						Literals.XML_ATTRIBUTE_NAME_TYPE,
+						Literals.XML_ATTRIBUTE_NAME_TYPE, 
+						Literals.CHARACTER_DATA, 
+						DataTypes.typeToString(pauseCondition.getType()));
+				this.contentHandler.startElement(Literals.EMPTY_STRING, 
+					Literals.XML_ELEMENT_NAME_CONTINUELIMIT, 
+					Literals.XML_ELEMENT_NAME_CONTINUELIMIT, this.atts);
+				this.contentHandler.characters(
+						pauseCondition.getContinueLimit().toCharArray(), 0, 
+						pauseCondition.getContinueLimit().length());
+				this.contentHandler.endElement(Literals.EMPTY_STRING, 
+					Literals.XML_ELEMENT_NAME_CONTINUELIMIT, 
+					Literals.XML_ELEMENT_NAME_CONTINUELIMIT);
+			}
+			
+			this.atts.clear();
+			this.contentHandler.endElement(Literals.EMPTY_STRING, 
+					Literals.XML_ELEMENT_NAME_PAUSECONDITION, 
+					Literals.XML_ELEMENT_NAME_PAUSECONDITION);
 		} catch (SAXException e) {
 			logger.error(e.getMessage(), e);
 			return false;

@@ -35,18 +35,19 @@ import de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider;
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @author Marcus Michalsky
  */
-public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModelErrorProvider, PropertyChangeListener {
+public class Chain implements IModelUpdateProvider, IModelUpdateListener, 
+		IModelErrorProvider, PropertyChangeListener, ListChangeListener<PauseCondition> {
 	public static final String SCANMODULE_ADDED_PROP = 
 			"Chain.SCANMODULE_ADDED_PROP";
 	public static final String SCANMODULE_REMOVED_PROP = 
 			"Chain.SCANMODULE_REMOVED_PROP";
 	public static final String POSITION_COUNT_PROP = "positionCount";
+	public static final String PAUSE_CONDITION_PROP = "pauseConditions";
 
 	/**
 	 * @since 1.19
 	 */
 	public static final String BREAK_EVENT_PROP = "breakEvent";
-	public static final String PAUSE_EVENT_PROP = "pauseEvent";
 	public static final String REDO_EVENT_PROP =  "redoEvent";
 	public static final String STOP_EVENT_PROP =  "stopEvent";
 
@@ -81,9 +82,9 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	// control event manager for redo events
 	private ControlEventManager redoControlEventManager;
 
-	// control event manager for pause events
-	private ControlEventManager pauseControlEventManager;
-
+	/* @since 1.36 */
+	private ObservableList<PauseCondition> pauseConditions;
+	
 	private Integer positionCount;
 
 	private boolean reserveIds;
@@ -106,8 +107,8 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		this.id = id;
 		this.scanModules = FXCollections
 				.observableList(new ArrayList<ScanModule>());
-		this.scanModuleMap = new HashMap<Integer, ScanModule>();
-		this.updateListener = new ArrayList<IModelUpdateListener>();
+		this.scanModuleMap = new HashMap<>();
+		this.updateListener = new ArrayList<>();
 		
 		this.startEvent = null;
 		this.breakControlEventManager = new ControlEventManager(
@@ -118,19 +119,20 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 				ControlEventTypes.CONTROL_EVENT);
 		this.redoControlEventManager = new ControlEventManager(
 				ControlEventTypes.CONTROL_EVENT);
-		this.pauseControlEventManager = new ControlEventManager(
-				ControlEventTypes.PAUSE_EVENT);
 
 		this.breakControlEventManager.addModelUpdateListener(this);
 		this.startControlEventManager.addModelUpdateListener(this);
 		this.stopControlEventManager.addModelUpdateListener(this);
 		this.redoControlEventManager.addModelUpdateListener(this);
-		this.pauseControlEventManager.addModelUpdateListener(this);
 
+		this.pauseConditions = FXCollections.observableList(
+				new ArrayList<PauseCondition>());
+		this.pauseConditions.addListener(this);
+		
 		this.positionCount = null;
 
 		this.reserveIds = false;
-		this.reservedIds = new LinkedList<Integer>();
+		this.reservedIds = new LinkedList<>();
 
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
 
@@ -409,68 +411,6 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	}
 
 	/**
-	 * Returns a list of pause events (original list).
-	 * 
-	 * @return a list of pause events (original list)
-	 */
-	public List<ControlEvent> getPauseEvents() {
-		return this.pauseControlEventManager.getEvents();
-	}
-
-	/**
-	 * Adds the given {@link de.ptb.epics.eve.data.scandescription.PauseEvent}.
-	 * 
-	 * @param pauseEvent the 
-	 * 		{@link de.ptb.epics.eve.data.scandescription.PauseEvent} that 
-	 * 		should be added
-	 * @return <code>true</code> if successful, <code>false</code> otherwise
-	 * @author Marcus Michalsky
-	 * @since 1.19
-	 */
-	public boolean addPauseEvent(final PauseEvent pauseEvent) {
-		if (this.pauseControlEventManager.addControlEvent(pauseEvent)) {
-			this.registerEventValidProperty(pauseEvent);
-			this.propertyChangeSupport.firePropertyChange(Chain.PAUSE_EVENT_PROP,
-					null, pauseEvent);
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Removes the given 
-	 * {@link de.ptb.epics.eve.data.scandescription.PauseEvent}.
-	 * 
-	 * @param pauseEvent the 
-	 * 		{@link de.ptb.epics.eve.data.scandescription.PauseEvent} that 
-	 * 		should be removed
-	 * @return <code>true</code> if successful, <code>false</code> otherwise
-	 * @author Marcus Michalsky
-	 * @since 1.19
-	 */
-	public boolean removePauseEvent(final PauseEvent pauseEvent) {
-		if (this.pauseControlEventManager.removeEvent(pauseEvent)) {
-			this.unregisterEventValidProperty(pauseEvent);
-			this.propertyChangeSupport.firePropertyChange(Chain.PAUSE_EVENT_PROP,
-					pauseEvent, null);
-			return true;
-		}
-		return false;
-	}
-	
-	/**
-	 * Removes all pause events.
-	 * 
-	 * @author Marcus Michalsky
-	 * @since 1.19
-	 */
-	public void removePauseEvents() {
-		this.pauseControlEventManager.removeAllEvents();
-		this.propertyChangeSupport.firePropertyChange(Chain.PAUSE_EVENT_PROP,
-				this.pauseControlEventManager.getEvents(), null);
-	}
-
-	/**
 	 * Returns a list of break events (original list).
 	 * 
 	 * @return a list of break events (original list)
@@ -691,21 +631,6 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 
 	/**
 	 * Checks whether the given 
-	 * {@link de.ptb.epics.eve.data.scandescription.PauseEvent} exists.
-	 * 
-	 * @param pauseEvent the 
-	 * 		{@link de.ptb.epics.eve.data.scandescription.PauseEvent} that 
-	 * 		should be checked
-	 * @return <code>true</code> if the given 
-	 * 			{@link de.ptb.epics.eve.data.scandescription.PauseEvent} exists,
-	 * 			<code>false</code> otherwise
-	 */
-	public boolean isPauseEventOfTheChain(final PauseEvent pauseEvent) {
-		return this.pauseControlEventManager.getEvents().contains(pauseEvent);
-	}
-
-	/**
-	 * Checks whether the given 
 	 * {@link de.ptb.epics.eve.data.scandescription.ControlEvent} exists as 
 	 * as a redo event.
 	 * 
@@ -748,12 +673,57 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 * 		<code>false</code> otherwise
 	 */
 	public boolean isAEventOfTheChain(final ControlEvent controlEvent) {
-		return (controlEvent instanceof PauseEvent 
-				&& this.isPauseEventOfTheChain((PauseEvent) controlEvent)) 
-				|| this.isBreakEventOfTheChain(controlEvent) 
+		return this.isBreakEventOfTheChain(controlEvent) 
 				|| this.isRedoEventOfTheChain(controlEvent);
 	}
 
+	/**
+	 * 
+	 * @return
+	 * @since 1.36
+	 */
+	public List<PauseCondition> getPauseConditions() {
+		return this.pauseConditions;
+	}
+	
+	/**
+	 * Adds the given pause condition to the chain.
+	 * @param pauseCondition the pause condition to add
+	 * @since 1.36
+	 */
+	public void addPauseCondition(PauseCondition pauseCondition) {
+		this.pauseConditions.add(pauseCondition);
+		pauseCondition.addModelUpdateListener(this);
+		this.propertyChangeSupport.firePropertyChange(
+				Chain.PAUSE_CONDITION_PROP, null, pauseCondition);
+		this.updateListeners();
+	}
+	
+	/**
+	 * Removes the given pause condition.
+	 * @param pauseCondition the pause condition to be removed
+	 * @since 1.36
+	 */
+	public void removePauseCondition(PauseCondition pauseCondition) {
+		pauseCondition.removeModelUpdateListener(this);
+		this.pauseConditions.remove(pauseCondition);
+		this.propertyChangeSupport.firePropertyChange(
+				Chain.PAUSE_CONDITION_PROP, pauseCondition, null);
+		this.updateListeners();
+	}
+	
+	/**
+	 * Removes all pause conditions.
+	 * @since 1.36
+	 */
+	public void removeAllPauseConditions() {
+		CopyOnWriteArrayList<PauseCondition> pauseConditionList = 
+				new CopyOnWriteArrayList<>(this.pauseConditions);
+		for (PauseCondition pauseCondition : pauseConditionList) {
+			this.removePauseCondition(pauseCondition);
+		}
+	}
+	
 	/**
 	 * Returns a valid id for a plot.
 	 * 
@@ -774,6 +744,23 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		return i;
 	}
 
+	/**
+	 * Returns a valid (unused) id for a pause condition.
+	 * @return a valid (unused) id for a pause condition
+	 */
+	public int getAvailablePauseConditionId() {
+		List<Integer> pcIds = new ArrayList<>();
+		for (PauseCondition pc : this.pauseConditions) {
+			pcIds.add(pc.getId());
+		}
+		Collections.sort(pcIds);
+		int i = 1;
+		while (pcIds.contains(i)) {
+			i++;
+		}
+		return i;
+	}
+	
 	/**
 	 * Returns a map which keys are plot window ids and values are lists of 
 	 * scan modules which contain plot windows using this id.
@@ -849,7 +836,6 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	public List<IModelError> getModelErrors() {
 		final List<IModelError> errorList = new ArrayList<>();
 
-		errorList.addAll(this.pauseControlEventManager.getModelErrors());
 		errorList.addAll(this.breakControlEventManager.getModelErrors());
 		errorList.addAll(this.redoControlEventManager.getModelErrors());
 		errorList.addAll(this.stopControlEventManager.getModelErrors());
@@ -983,9 +969,6 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 * @see Redmine #1401 Comments #16,#17
 	 */
 	public void registerEventValidProperties() {
-		for (ControlEvent controlEvent : this.getPauseEvents()) {
-			this.registerEventValidProperty(controlEvent);
-		}
 		for (ControlEvent controlEvent : this.getRedoEvents()) {
 			this.registerEventValidProperty(controlEvent);
 		}
@@ -1014,16 +997,6 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	
 	private void removeInvalidScanEvents() {
 		for (ControlEvent controlEvent : new CopyOnWriteArrayList<ControlEvent>(
-				this.getPauseEvents())) {
-			if (controlEvent.getEvent() instanceof ScanEvent 
-					&& !((ScanEvent) controlEvent.getEvent()).isValid()) {
-				this.removePauseEvent((PauseEvent) controlEvent);
-				logger.debug("Pause Event " + 
-						controlEvent.getEvent().getName() + 
-						" removed from chain " + this.getId());
-			}
-		}
-		for (ControlEvent controlEvent : new CopyOnWriteArrayList<ControlEvent>(
 				this.getBreakEvents())) {
 			if (controlEvent.getEvent() instanceof ScanEvent 
 					&& !((ScanEvent) controlEvent.getEvent()).isValid()) {
@@ -1051,6 +1024,22 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 				logger.debug("Redo Event " + 
 						controlEvent.getEvent().getName() + 
 						" removed from chain " + this.getId());
+			}
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void onChanged(Change<? extends PauseCondition> change) {
+		while (change.next()) {
+			if (change.wasPermutated()) {
+				updateListeners();
+			} else if (change.wasUpdated()) {
+				updateListeners();
+			} else {
+				updateListeners();
 			}
 		}
 	}

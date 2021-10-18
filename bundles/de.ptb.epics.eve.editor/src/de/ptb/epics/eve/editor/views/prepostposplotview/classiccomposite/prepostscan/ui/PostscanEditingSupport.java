@@ -15,6 +15,7 @@ import de.ptb.epics.eve.editor.StringLabels;
 import de.ptb.epics.eve.editor.views.AbstractScanModuleView;
 import de.ptb.epics.eve.editor.views.prepostposplotview.classiccomposite.prepostscan.PrePostscanEntry;
 import de.ptb.epics.eve.util.ui.jface.MyComboBoxCellEditor;
+import de.ptb.epics.eve.util.ui.jface.TextCellEditorWithValidator;
 
 /**
  * @author Marcus Michalsky
@@ -49,8 +50,8 @@ public class PostscanEditingSupport extends EditingSupport {
 					discreteValues.toArray(new String[0]));
 		} else {
 			LOGGER.debug(entry.getDevice().getName() + " is not discrete.");
-			return new PrePostscanTextCellEditor(this.viewer.getTable(), 
-					entry.getDevice());
+			return new TextCellEditorWithValidator(this.viewer.getTable(), 
+					new PrePostscanTextCellEditorValidator(entry.getDevice())); 
 		}
 	}
 

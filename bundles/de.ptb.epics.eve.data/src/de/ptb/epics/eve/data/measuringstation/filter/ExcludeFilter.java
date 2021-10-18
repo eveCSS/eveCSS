@@ -20,6 +20,7 @@ import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
+import de.ptb.epics.eve.data.scandescription.PauseCondition;
 import de.ptb.epics.eve.data.scandescription.Positioning;
 import de.ptb.epics.eve.data.scandescription.Postscan;
 import de.ptb.epics.eve.data.scandescription.Prescan;
@@ -586,11 +587,11 @@ public class ExcludeFilter extends MeasuringStationFilter {
 		List<Device> allDevices = getSource().getDevices();
 		
 		// Sets to add used devices to
-		HashSet<MotorAxis> usedMotorAxes = new HashSet<MotorAxis>();
+		HashSet<MotorAxis> usedMotorAxes = new HashSet<>();
 		HashSet<DetectorChannel> usedDetectorChannels = 
-				new HashSet<DetectorChannel>();
-		HashSet<Device> usedDevices = new HashSet<Device>();
-		HashSet<Option> usedOptions = new HashSet<Option>();
+				new HashSet<>();
+		HashSet<Device> usedDevices = new HashSet<>();
+		HashSet<Option> usedOptions = new HashSet<>();
 		
 		
 		// iterate through chains to identify used devices
@@ -610,7 +611,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 						continue;
 					}
 					
-					List<ControlEvent> chEvents = new ArrayList<ControlEvent>();
+					List<ControlEvent> chEvents = new ArrayList<>();
 					chEvents.addAll(ch.getRedoEvents());
 					
 					for(ControlEvent ce : chEvents) {
@@ -661,8 +662,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 				}
 				
 				// events of the scan module
-				List<ControlEvent> smEvents = new ArrayList<ControlEvent>();
-				smEvents.addAll(sm.getPauseEvents());
+				List<ControlEvent> smEvents = new ArrayList<>();
 				smEvents.addAll(sm.getRedoEvents());
 				smEvents.addAll(sm.getBreakEvents());
 				smEvents.addAll(sm.getTriggerEvents());
@@ -683,8 +683,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 			}
 			
 			// events of the chain
-			List<ControlEvent> chainEvents = new ArrayList<ControlEvent>();
-			chainEvents.addAll(chain.getPauseEvents());
+			List<ControlEvent> chainEvents = new ArrayList<>();
 			chainEvents.addAll(chain.getRedoEvents());
 			chainEvents.addAll(chain.getBreakEvents());
 			chainEvents.addAll(chain.getStopEvents());
@@ -700,6 +699,20 @@ public class ExcludeFilter extends MeasuringStationFilter {
 					usedDevices.add((Device)dev);
 				} else if (dev instanceof Option) {
 					usedOptions.add((Option)dev);
+				}
+			}
+			
+			// pause conditions of the chain
+			for (PauseCondition pauseCondition : chain.getPauseConditions()) {
+				AbstractDevice device = pauseCondition.getDevice();
+				if (device instanceof MotorAxis) {
+					usedMotorAxes.add((MotorAxis)device);
+				} else if (device instanceof DetectorChannel) {
+					usedDetectorChannels.add((DetectorChannel)device);
+				} else if (device instanceof Device) {
+					usedDevices.add((Device)device);
+				} else if (device instanceof Option) {
+					usedOptions.add((Option)device);
 				}
 			}
 		}

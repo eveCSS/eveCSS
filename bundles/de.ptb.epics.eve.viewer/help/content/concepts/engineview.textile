@@ -1,44 +1,56 @@
-h1(eveTopic). Engine View
+h1(eveTopic|#top). Engine View
+
+{toc:style=circle|maxLevel=2}
+
+h2(eveTopic). Introduction
 
 p. The Engine View allows monitoring and control of scans running in an engine process.
 
-p=. !(eveImage)../../img/concepts/engineview.png(engine view overview)!
+p=. !(eveImage)../../img/concepts/engineview/engineview.png(engine view overview)!
 
-p. The first button row (ENGINE) controls the engine process itself while the second row (SCAN) controls the scan currently loaded. Below them several other informations are shown. The following subsections contain a detailed description of them.
+p. It is divided into an Engine group for the engine process, Scan group for the currently loaded scan with Status Table and State indicators for Engine and Inhibit state.
 
-h2(eveTopic). ENGINE section
+h2(eveTopic). Engine Group
 
-p. There are four buttons whose function is described in the following table. Below them is a status label showing the host and port of the engine the Engine View is connected to.
+p(backToTop). "back to top":#top
 
-table(eveRefTable).
-|_. Button |_. Description|
-|_. start | Creates an engine process with the parameters (e.g. the port) specified in the preferences and connects to it. |
-|_. kill | Sends a request to the engine to terminate itself. |
-|_. connect | Connects to an existing engine process at __host__:__port__ as specified in the preferences |
-|_. disconnect | Disconnects from the currently connected engine process. |
+p=. !(eveImage)../../img/concepts/engineview/engineview-enginegroup.png(engine view - engine group with host:port label and start, kill, connect and disconnect buttons)!
 
-h2(eveTopic). SCAN section
+p. Following the Engine text label the host and port of the engine process connected to (if any) is shown inside of brackets. Depending on the connection state, several other areas are enabled/disabled.
 
-p. Several buttons are available to influence the execution of a scan. Their function is described in the following table.
+p. Inside the engine group there are buttons to control the engine process. Their function is described in the table below:
 
 table(eveRefTable).
 |_. Button |_. Description|
-|_. Play | Starts (or continues a paused) scan. |
-|_. Pause | Pauses the scan. |
-|_. Stop | stops the scan after finishing the current scan point. while pending positionings are ignored, post scan actions of the current scan module (and the parents if nested) are still executed. |
-|_. Skip | finishes the current scan point, skips the remaining scan points of the current scan module, executes post scan actions and continues with the next scan module (if any) |
+|_. Start | Creates an engine process with the parameters (i.e. host and port) specified in the preferences and connects to it. |
+|_. Kill | Sends a request to the engine to terminate itself. |
+|_. Connect | Connects to an existing engine process at __host__:__port__ as specified in the preferences |
+|_. Disconnect | Disconnects from the currently connected engine process. |
+
+h2(eveTopic). Scan Group
+
+p(backToTop). "back to top":#top
+
+p=. !(eveImage)../../img/concepts/engineview/engineview-scangroup.png(engine view - scan group with buttons, repeat count, filename, log message, progress bar and status table)!
+
+p. If a scan is currently loaded in the engine the controls inside the scan group become active and the name of the loaded file is shown as a suffix of the Scan label of the group.
+
+p. Several buttons are available to influence the execution of a scan. Their function is described in the table below:
+
+table(eveRefTable).
+|_. Button |_. Description|
+|_. Play | Starts (or continues a paused) scan. An active inhibit state will be overwritten. Any pause condition which evaluated to __true__ is now in an __overridden__ state as long as it becomes __false__ again. |
+|_. Pause | Pauses the whole scan, i.e. each chain is paused. Overrules any inhibit states. A scan paused this way can only be resumed by pressing the __Play__-Button (even if all pause conditions suddenly evaluate to __false__). |
+|_. Stop | Stops the scan after finishing the current scan point. While pending positionings are ignored, post scan actions of the current scan module (and the parents if nested) are still executed. |
+|_. Skip | Finishes the current scan point, skips the remaining scan points of the current scan module, executes post scan actions and continues with the next scan module (if any) |
 |_. Halt | Stops the scan and immediately stops all motor axes. |
 |_. AutoPlay | if activated (toggle button) loaded scans (and iterations if repeat count > 0) start automatically |
 
-p. Besides the available buttons there are some status fields as well as an option to repeat scans and to comment described below.
+p. Besides the available buttons there are some status fields as well as options to repeat the currently loaded scan and add comments to it. See details below:
 
 h3(eveTopic). repeat count
 
 p. The __Repeat Count__ displays the number of times the scan should be repeated. As long as the scan is not finished the repeat count is editable.
-
-h3(eveTopic). loaded File
-
-p. Shows the path and name of the scan file currently loaded/executing.
 
 h3(eveTopic). Filename
 
@@ -46,12 +58,63 @@ p. Shows the path and name of the file the measuring data is written to.
 
 h3(eveTopic). live Comment
 
-p. Allows writing (multiple) comments to current data file. When pressing the button "Send to File" the entered text is send to the engine (which saves it in the file).
+p. Allows writing (multiple) comments to the current data file. When pressing the button "Send to File" the entered text is send to the engine (which saves it in the file with a timestamp).
 
-h2(eveTopic). Progress Bar
+h3(eveTopic). Progress Bar
 
 p. Shows the progress of the current scan by showing the absolute and relative ratio of finished positions to the number of total positions. The background color fill also represents the relative ratio.
 
-h2(eveTopic). Status Table
+h3(eveTopic). Status Table
 
-p. Shows the chains, scan modules and their states of the currently loaded scan. A remaining time as well as additional event infos (if any) are also shown.
+p. Shows the chains, scan modules and their states of the currently loaded scan. A remaining time as well as additional event information (if any) are also shown.
+
+h2(eveTopic). Engine State Indicator
+
+p(backToTop). "back to top":#top
+
+p. The Engine State Indicator shows the current status of the (connected) engine (if any). The table below shows all possible states and their meaning:
+
+table(eveRefTable).
+|_. State |_. Description|
+| !../../img/concepts/engineview/enginestate-disabled.png(engine state with no background)! | The GUI (Engine View) is not connected to an engine process. |
+| !../../img/concepts/engineview/enginestate-grey.png(engine state with grey background)! | No scan is currently loaded in the (connected) engine process. |
+| !../../img/concepts/engineview/enginestate-red2.png(engine state with red background and white text 'stopped')! | A scan is loaded in the (connected) engine process but not started yet. |
+| !../../img/concepts/engineview/enginestate-green.png(engine state with green background and black text 'running')! | A scan is currently executing in the (connected) engine process. |
+| !../../img/concepts/engineview/enginestate-yellow.png(engine state with yellow background and black text 'paused')! | The currently executing scan in the (connected) engine process was paused by a connected client (with the Pause button). |
+| !../../img/concepts/engineview/enginestate-red.png(engine state with red background and white text 'paused')! | The currently executing scan in the (connected) engine process was paused due to a pause condition. For details see below (inhibit state). |
+
+h2(eveTopic). Inhibit State Indicator
+
+p(backToTop). "back to top":#top
+
+p. Shows the current status of the inhibit state defined in the currently loaded scan (if any). The table below shows all possible states and their meaning:
+
+table(eveRefTable).
+|_. State |_. Description|
+| !../../img/concepts/engineview/inhibitstate-disabled.png(inhibit state with no background)! | The GUI (Engine View) is not connected to an engine process. |
+| !../../img/concepts/engineview/inhibitstate-grey.png(inhibit state with grey background)! | There either is no scan loaded in the (connected) engine process or the currently loaded scan does not have any pause conditions defined. |
+| !../../img/concepts/engineview/inhibitstate-green.png(inhibit state with green background and black text false)! | The inhibit state of the currently loaded/executing scan evaluates to @false@ (no pause condition is satisfied). |
+| !../../img/concepts/engineview/inhibitstate-red.png(inhibit state with red background and white text true)! | The inhibit state of the currently loaded/executing scan evaluates to @true@. |
+| !../../img/concepts/engineview/inhibitstate-yellow.png(inhibit state with yellow background and black test overridden)! | The inhibit state of the currently loaded/executing scan evaluated to @false@ but was overridden by the user (by pressing the Play button). |
+
+p. To learn more about Pause Conditions / Inhibit-State see "here":/help/topic/de.ptb.epics.eve.editor/help/content/concepts/inhibitstate.html.
+
+h2(eveTopic). Inhibit State Tooltip
+
+p(backToTop). "back to top":#top
+
+p. The inhibit state indicator only shows the result (logical or) of all defined pause conditions of a scan. In order to identify which pause condition was responsible a mouse over tooltip of the indicator shows the states of each pause condition:
+
+p=. !(eveImage)../../img/concepts/engineview/inhibitstatepopup.png(inhibit state tooltip with three entries, one of each state: true, overriden, false)!
+
+p. The status of each condition is shown as symbols with the following meaning:
+
+table(eveRefTable).
+|_. State |_. Description|
+|_. !../../img/concepts/engineview/inhibitstatetooltip-false.gif(White Play symbol above a green circle)! | Inhibit state evaluates to @false@. |
+|_. !../../img/concepts/engineview/inhibitstatetooltip-true.gif(White Cross symbol above a red circle)! | Inhibit state evaluates to @true@. |
+|_. !../../img/concepts/engineview/inhibitstatetooltip-overridden.gif(Black exclamation mark above yellow triangle)! | Inhibit state evaluated to @true@ but was overridden. |
+
+p. If any pause condition evaluates to @true@ the scan is paused. If all pause conditions are either @false@ or @overridden@ the scan resumes/executes.
+
+p. To learn more about Pause Conditions / Inhibit-State see "here":/help/topic/de.ptb.epics.eve.editor/help/content/concepts/inhibitstate.html.

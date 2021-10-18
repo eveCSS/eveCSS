@@ -22,8 +22,8 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
 import de.ptb.epics.eve.data.tests.mothers.scandescription.ChainMother;
 import de.ptb.epics.eve.data.tests.mothers.scandescription.ChannelMother;
 import de.ptb.epics.eve.data.tests.mothers.scandescription.ControlEventMother;
-import de.ptb.epics.eve.data.tests.mothers.scandescription.PauseEventMother;
 import de.ptb.epics.eve.data.tests.mothers.scandescription.ScanModuleMother;
+import de.ptb.epics.eve.util.collection.ListUtil;
 
 /**
  * ScanModule related Unit Testing.
@@ -137,20 +137,6 @@ public class ScanModuleTest implements IModelUpdateListener {
 		assert(this.scanModule.getTriggerEvents().isEmpty());
 	}
 	
-	/** @since 1.31 */
-	@Test
-	public void testRemovePauseEvents() {
-		Chain chain = ChainMother.createNewChain();
-		chain.add(this.scanModule);
-		Channel channel = ChannelMother.createNewChannel(scanModule);
-		scanModule.add(channel);
-		this.scanModule.addPauseEvent(
-				PauseEventMother.createNewDetectorReadyEvent(channel));
-		assert(!this.scanModule.getPauseEvents().isEmpty());
-		this.scanModule.removePauseEvents();
-		assert(this.scanModule.getPauseEvents().isEmpty());
-	}
-	
 	@Test
 	public void testIModelUpdateListenerNoOfMeasurements() {
 		this.modelUpdate = false;
@@ -234,6 +220,42 @@ public class ScanModuleTest implements IModelUpdateListener {
 		
 		channel1.setStoppedBy(null);
 		assertFalse(scanModule.isUsedAsStoppedByChannel(channel2));
+	}
+	
+	private boolean channelListModelUpdate;
+	@Test
+	public void testModelUpdateChannelListChange() {
+		this.scanModule.addModelUpdateListener(new IModelUpdateListener() {
+			@Override
+			public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
+				channelListModelUpdate = true;
+			}
+		});
+		channelListModelUpdate = false;
+		Channel channel1 = ChannelMother.createNewChannel(scanModule);
+		this.scanModule.add(channel1);
+		assertTrue("channel added", channelListModelUpdate);
+		
+		// wait because the channel mockup created by the object mother uses
+		// a timestamp as id. if they are created too fast successively they 
+		// get the same id and the second one is not added to the scan module
+		// resulting in an ArrayOutOfBounds Exception when trying to switch the 
+		// elements.
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// do nothing
+		}
+		
+		Channel channel2 = ChannelMother.createNewChannel(scanModule);
+		this.scanModule.add(channel2);
+		channelListModelUpdate = false;
+		ListUtil.move(this.scanModule.getChannelList(), 0, 1);
+		assertTrue("switched elements", channelListModelUpdate);
+		
+		channelListModelUpdate = false;
+		this.scanModule.remove(channel1);
+		assertTrue("channel removed", channelListModelUpdate);
 	}
 	
 	/*

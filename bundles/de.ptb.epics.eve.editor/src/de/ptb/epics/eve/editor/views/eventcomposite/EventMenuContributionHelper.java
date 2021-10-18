@@ -50,7 +50,6 @@ public final class EventMenuContributionHelper {
 			int index = ((ChainView)activePart).eventsTabFolder.
 					getSelectionIndex();
 			switch(index) {
-				case 0: return EventImpacts.PAUSE;
 				case 1: return EventImpacts.REDO;
 				case 2: return EventImpacts.BREAK;
 				case 3: return EventImpacts.STOP;
@@ -58,10 +57,9 @@ public final class EventMenuContributionHelper {
 		} else if(activePart instanceof ScanModuleView) {
 			int index = ((ScanModuleView) activePart).getEventsTabFolderSelectionIndex();
 			switch(index) {
-				case 0: return EventImpacts.PAUSE;
-				case 1: return EventImpacts.REDO;
-				case 2: return EventImpacts.BREAK;
-				case 3: return EventImpacts.TRIGGER;
+				case 0: return EventImpacts.REDO;
+				case 1: return EventImpacts.BREAK;
+				case 2: return EventImpacts.TRIGGER;
 			}
 		} else if(activePart instanceof DetectorChannelView) {
 				return EventImpacts.REDO;

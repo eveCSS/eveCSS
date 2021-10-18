@@ -661,15 +661,13 @@ public class ScanDescription implements IModelUpdateProvider,
 	 */
 	public boolean isUsedAsEvent(Channel channel) {
 		for (Chain chain : this.chains) {
-			if (isEventOfList(channel, chain.getPauseEvents()) ||
-					isEventOfList(channel, chain.getRedoEvents()) ||
+			if (isEventOfList(channel, chain.getRedoEvents()) ||
 					isEventOfList(channel, chain.getBreakEvents()) ||
 					isEventOfList(channel, chain.getStopEvents())) {
 				return true;
 			}
 			for (ScanModule sm : chain.getScanModules()) {
-				if (isEventOfList(channel, sm.getPauseEvents()) ||
-						isEventOfList(channel, sm.getRedoEvents()) ||
+				if (isEventOfList(channel, sm.getRedoEvents()) ||
 						isEventOfList(channel, sm.getBreakEvents()) ||
 						isEventOfList(channel, sm.getTriggerEvents())) {
 					return true;

@@ -38,6 +38,22 @@ public class FunctionMother {
 				TypeValueMother.createNewDateTypeValue());
 	}
 	
+	/**
+	 * @since 1.36
+	 */
+	public static Function createNewStringTypeFunction() {
+		return new Function(AccessMother.createNewStringTypeAccess(),
+				TypeValueMother.createNewStringTypeValue());
+	}
+	
+	/**
+	 * @since 1.36
+	 */
+	public static Function createNewDiscreteStringTypeFunction() {
+		return new Function(AccessMother.createNewStringTypeAccess(),
+				TypeValueMother.createNewDiscreteStringTypeValue());
+	}
+	
 	private FunctionMother() {
 		// private
 	}

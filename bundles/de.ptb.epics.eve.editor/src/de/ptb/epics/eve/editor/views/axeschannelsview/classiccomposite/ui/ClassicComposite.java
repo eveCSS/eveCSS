@@ -2,6 +2,7 @@ package de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.ui;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
@@ -56,7 +57,7 @@ import de.ptb.epics.eve.editor.handler.axeschannelsview.RemoveChannelsDefaultHan
 import de.ptb.epics.eve.editor.views.AbstractScanModuleViewComposite;
 import de.ptb.epics.eve.editor.views.DelColumnEditingSupport;
 import de.ptb.epics.eve.editor.views.ScanModuleTableDragSourceListener;
-import de.ptb.epics.eve.editor.views.ScanModuleTableDropTargetListener;
+import de.ptb.epics.eve.editor.views.ViewerTableDropTargetListener;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.ScanModuleSelectionProvider;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.TriggerDelaySettleTimeModelToTargetConverter;
 import de.ptb.epics.eve.editor.views.axeschannelsview.classiccomposite.TriggerDelaySettleTimeTargetToModelConverter;
@@ -89,6 +90,8 @@ import de.ptb.epics.eve.util.ui.swt.TextSelectAllMouseListener;
  * @since 1.34
  */
 public class ClassicComposite extends AbstractScanModuleViewComposite {
+	private static final Logger LOGGER = Logger.getLogger(
+			ClassicComposite.class.getName());
 	private static final int TABLE_MIN_HEIGHT = 150;
 	
 	private static final String MEMENTO_AXES_SASH_WEIGHT = "axesSashWeight";
@@ -690,17 +693,45 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 		this.axesTable.addDragSupport(DND.DROP_MOVE, axesTransfers, 
 				new ScanModuleTableDragSourceListener(this.axesTable));
 		this.axesTable.addDropSupport(DND.DROP_MOVE, axesTransfers, 
-				new ScanModuleTableDropTargetListener(this.axesTable) {
+				new ViewerTableDropTargetListener(this.axesTable) {
+			@Override
+			public Logger getLogger() {
+				return LOGGER;
+			}
+
+			@Override
+			public String getModelName(Object item) {
+				if (item instanceof Axis) {
+					return ((Axis)item).getMotorAxis().getName();
+				}
+				return "";
+			}
+
 			@Override
 			public List<? extends AbstractBehavior> getModel() {
 				return scanModule.getAxesList();
 			}
 		});
+		
 		Transfer[] channelsTransfers = new Transfer[] {TextTransfer.getInstance()};
 		this.channelsTable.addDragSupport(DND.DROP_MOVE, channelsTransfers, 
 				new ScanModuleTableDragSourceListener(this.channelsTable));
 		this.channelsTable.addDropSupport(DND.DROP_MOVE, channelsTransfers, 
-				new ScanModuleTableDropTargetListener(this.channelsTable) {
+				new ViewerTableDropTargetListener(this.channelsTable) {
+
+			@Override
+			public Logger getLogger() {
+				return LOGGER;
+			}
+
+			@Override
+			public String getModelName(Object item) {
+				if (item instanceof Channel) {
+					return ((Channel)item).getDetectorChannel().getName();
+				}
+				return "";
+			}
+			
 			@Override
 			public List<? extends AbstractBehavior> getModel() {
 				return scanModule.getChannelList();

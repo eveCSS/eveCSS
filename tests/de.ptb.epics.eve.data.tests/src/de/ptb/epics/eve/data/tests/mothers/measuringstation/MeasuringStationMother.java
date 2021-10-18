@@ -10,26 +10,28 @@ import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
  * @since 1.27
  */
 public class MeasuringStationMother {
-
-	public static IMeasuringStation createNewMeasuringStation() {
+	private MeasuringStationMother() {
+	}
+	
+	public static MeasuringStation createNewEmptyMeasuringStation() {
 		return new MeasuringStation();
 	}
 
-	public static IMeasuringStation addMotorWithAxis(
+	public static MeasuringStation addMotorWithAxis(
 			MeasuringStation measuringStation) {
 		measuringStation.add(MotorMother.addMotorAxis(
 				MotorMother.createNewMotor()));
 		return measuringStation;
 	}
 
-	public static IMeasuringStation addDetectorWithChannel(
+	public static MeasuringStation addDetectorWithChannel(
 			MeasuringStation measuringStation) {
 		measuringStation.add(DetectorMother.addDetectorChannel(
 				DetectorMother.createNewDetector()));
 		return measuringStation;
 	}
 
-	public static IMeasuringStation addDetectorWithChannelAndOptionWithMonitor(
+	public static MeasuringStation addDetectorWithChannelAndOptionWithMonitor(
 			MeasuringStation measuringStation) {
 		measuringStation.add(DetectorMother.addDetectorChannel(
 				DetectorMother.addOptionWithMonitor(

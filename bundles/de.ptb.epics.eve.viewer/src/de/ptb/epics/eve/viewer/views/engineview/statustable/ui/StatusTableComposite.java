@@ -26,7 +26,8 @@ public class StatusTableComposite extends Composite implements IConnectionStateL
 	public StatusTableComposite(Composite parent, int style) {
 		super(parent, style);
 		GridLayout gridLayout = new GridLayout();
-		gridLayout.marginWidth = 3;
+		gridLayout.marginWidth = 0;
+		gridLayout.marginHeight = 0;
 		this.setLayout(gridLayout);
 		
 		this.createViewer();
@@ -47,10 +48,11 @@ public class StatusTableComposite extends Composite implements IConnectionStateL
 		engine.addEngineStatusListener(selectionListener);
 		this.tableViewer.getTable().addSelectionListener(
 				selectionListener);
+		this.tableViewer.getTable().setEnabled(false);
 	}
 	
 	private void createViewer() {
-		tableViewer = new TableViewer(this, SWT.FULL_SELECTION | SWT.BORDER);
+		tableViewer = new TableViewer(this, SWT.FULL_SELECTION);
 		createColumns(tableViewer);
 		tableViewer.getTable().setHeaderVisible(true);
 		tableViewer.getTable().setLinesVisible(true);

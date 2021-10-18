@@ -9,17 +9,18 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.ui.IMemento;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
@@ -61,7 +62,7 @@ public class ChainView extends ViewPart implements IEditorView,
 
 	public CTabFolder eventsTabFolder;
 	private CTabItem pauseTabItem;
-	private EventComposite pauseEventComposite;
+	private PauseConditionComposite pauseConditionComposite;
 	private CTabItem redoTabItem;
 	private EventComposite redoEventComposite;
 	private CTabItem breakTabItem;
@@ -71,10 +72,21 @@ public class ChainView extends ViewPart implements IEditorView,
 
 	private Image eventErrorImage;
 
+	private IMemento memento;
+	
 	// Delegates
 	private EditorViewPerspectiveListener perspectiveListener;
 	private SelectionProviderWrapper selectionProviderWrapper;
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void init(IViewSite site, IMemento memento) throws PartInitException {
+		init(site);
+		this.memento = memento;
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -97,58 +109,54 @@ public class ChainView extends ViewPart implements IEditorView,
 		
 		// top composite
 		this.top = new Composite(sc, SWT.NONE);
-		this.top.setLayout(new GridLayout());
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.marginWidth = 0;
+		gridLayout.marginHeight = 0;
+		this.top.setLayout(gridLayout);
 
 		sc.setExpandHorizontal(true);
 		sc.setExpandVertical(true);
 		sc.setContent(this.top);
 		
-		Label eventLabel = new Label(top, SWT.NONE);
-		eventLabel.setText("Events:");
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = SWT.LEFT;
-		gridData.verticalAlignment = SWT.CENTER;
-		eventLabel.setLayoutData(gridData);
-		
-		this.eventsTabFolder = new CTabFolder(top, SWT.FLAT);
+		this.eventsTabFolder = new CTabFolder(top, SWT.NONE);
 		this.eventsTabFolder.setSimple(true);
 		this.eventsTabFolder.setBorderVisible(true);
-		this.eventsTabFolder
-				.addSelectionListener(new EventsTabFolderSelectionListener());
 
-		gridData = new GridData();
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		gridData.minimumHeight = 150;
+		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
+		//gridData.minimumHeight = 150;
 		this.eventsTabFolder.setLayoutData(gridData);
-		
-		pauseEventComposite = new EventComposite(eventsTabFolder, SWT.NONE,
-				ControlEventTypes.PAUSE_EVENT, this);
+
+		this.pauseConditionComposite = new PauseConditionComposite(
+				eventsTabFolder, SWT.NONE, this);
+		this.pauseTabItem = new CTabItem(eventsTabFolder, SWT.NONE);
+		this.pauseTabItem.setText("Pause Conditions");
+		this.pauseTabItem.setControl(this.pauseConditionComposite);
+		this.pauseTabItem.setToolTipText("conditions for inhibit state");
+
 		redoEventComposite = new EventComposite(eventsTabFolder, SWT.NONE,
 				ControlEventTypes.CONTROL_EVENT, this);
+		this.redoTabItem = new CTabItem(eventsTabFolder, SWT.NONE);
+		this.redoTabItem.setText("Redo Events");
+		this.redoTabItem.setControl(redoEventComposite);
+		this.redoTabItem.setToolTipText(
+				"Repeat the current scan point, if redo event occurs");
+
 		breakEventComposite = new EventComposite(eventsTabFolder, SWT.NONE,
 				ControlEventTypes.CONTROL_EVENT, this);
+		this.breakTabItem = new CTabItem(eventsTabFolder, SWT.NONE);
+		this.breakTabItem.setText("Skip Events");
+		this.breakTabItem.setControl(breakEventComposite);
+		this.breakTabItem.setToolTipText(
+				"Finish the current scan module and continue with next");
+
 		stopEventComposite = new EventComposite(eventsTabFolder, SWT.NONE,
 				ControlEventTypes.CONTROL_EVENT, this);
-
-		this.pauseTabItem = new CTabItem(eventsTabFolder, SWT.FLAT);
-		this.pauseTabItem.setText(" Pause ");
-		this.pauseTabItem.setControl(pauseEventComposite);
-		this.pauseTabItem.setToolTipText("Event to pause an resume this scan");
-		this.redoTabItem = new CTabItem(eventsTabFolder, SWT.FLAT);
-		this.redoTabItem.setText(" Redo ");
-		this.redoTabItem.setControl(redoEventComposite);
-		this.redoTabItem
-				.setToolTipText("Repeat the current scan point, if redo event occurs");
-		this.breakTabItem = new CTabItem(eventsTabFolder, SWT.FLAT);
-		this.breakTabItem.setText(" Skip ");
-		this.breakTabItem.setControl(breakEventComposite);
-		this.breakTabItem
-				.setToolTipText("Finish the current scan module and continue with next");
-		this.stopTabItem = new CTabItem(eventsTabFolder, SWT.FLAT);
-		this.stopTabItem.setText(" Stop ");
+		this.stopTabItem = new CTabItem(eventsTabFolder, SWT.NONE);
+		this.stopTabItem.setText("Stop Events");
 		this.stopTabItem.setControl(stopEventComposite);
 		this.stopTabItem.setToolTipText("Stop this scan");
 
@@ -156,6 +164,8 @@ public class ChainView extends ViewPart implements IEditorView,
 		
 		top.setVisible(false);
 
+		this.restoreState();
+		
 		// the selection service only accepts one selection provider per view,
 		// since we have four tables capable of providing selections a wrapper
 		// handles them and registers the active one with the global selection
@@ -227,16 +237,9 @@ public class ChainView extends ViewPart implements IEditorView,
 	 */
 	private void checkForErrors() {
 		// reset all
-		this.pauseTabItem.setImage(null);
 		this.breakTabItem.setImage(null);
 		this.redoTabItem.setImage(null);
 		this.stopTabItem.setImage(null);
-
-		for (ControlEvent event : this.currentChain.getPauseEvents()) {
-			if (!event.getModelErrors().isEmpty()) {
-				this.pauseTabItem.setImage(eventErrorImage);
-			}
-		}
 		
 		for (ControlEvent event : this.currentChain.getBreakEvents()) {
 			if (!event.getModelErrors().isEmpty()) {
@@ -318,8 +321,6 @@ public class ChainView extends ViewPart implements IEditorView,
 			}
 			this.setPartName("Chain: " + this.currentChain.getId());
 			
-			this.pauseEventComposite.setEvents(this.currentChain,
-					EventImpacts.PAUSE);
 			this.redoEventComposite.setEvents(this.currentChain,
 					EventImpacts.REDO);
 			this.breakEventComposite.setEvents(this.currentChain,
@@ -329,7 +330,6 @@ public class ChainView extends ViewPart implements IEditorView,
 			
 			checkForErrors();
 		} else { // currentChain == null
-			this.pauseEventComposite.setEvents(this.currentChain, null);
 			this.redoEventComposite.setEvents(this.currentChain, null);
 			this.breakEventComposite.setEvents(this.currentChain, null);
 			this.stopEventComposite.setEvents(this.currentChain, null);
@@ -337,25 +337,22 @@ public class ChainView extends ViewPart implements IEditorView,
 			this.setPartName("No Chain selected");
 			this.top.setVisible(false);
 		}
+		this.pauseConditionComposite.setChain(this.currentChain);
 	}
 
 	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of
-	 * <code>eventsTabFolder</code>.
-	 * 
-	 * @author Marcus Michalsky
-	 * @since 1.1
+	 * {@inheritDoc}
 	 */
-	private class EventsTabFolderSelectionListener extends SelectionAdapter {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetSelected(SelectionEvent e) {
-			selectionProviderWrapper
-					.setSelectionProvider(((EventComposite) eventsTabFolder
-							.getSelection().getControl()).getTableViewer());
+	@Override
+	public void saveState(IMemento memento) {
+		this.pauseConditionComposite.saveState(memento);
+		super.saveState(memento);
+	}
+	
+	private void restoreState() {
+		if (memento == null) {
+			return;
 		}
+		this.pauseConditionComposite.restoreState(this.memento);
 	}
 }

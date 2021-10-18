@@ -7,11 +7,6 @@ package de.ptb.epics.eve.data;
  * @since 1.1
  */
 public enum EventImpacts {
-	/** Pauses and eventually resumes the scan (see 
-	 * {@link de.ptb.epics.eve.data.scandescription.PauseEvent#isContinueIfFalse()}). 
-	 */
-	PAUSE,
-	
 	/** Repeats the current scan point, when redo event occurs. */
 	REDO,
 	

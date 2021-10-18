@@ -11,7 +11,6 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
@@ -43,11 +42,9 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 	Composite top;
 	
 	public CTabFolder eventsTabFolder;
-	private CTabItem pauseEventsTabItem;
 	private CTabItem redoEventsTabItem;
 	private CTabItem breakEventsTabItem;
 	private CTabItem triggerEventsTabItem;
-	private EventComposite pauseEventComposite;
 	private EventComposite redoEventComposite;
 	private EventComposite breakEventComposite;
 	private EventComposite triggerEventComposite;
@@ -69,9 +66,6 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 		sc.setExpandVertical(true);
 		sc.setContent(top);
 
-		Label eventLabel = new Label(top, SWT.NONE);
-		eventLabel.setText("Events:");
-
 		this.eventsTabFolder = new CTabFolder(top, SWT.NONE);
 		this.eventsTabFolder.setSimple(true);
 		this.eventsTabFolder.setBorderVisible(true);
@@ -85,8 +79,6 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 		gridData.horizontalSpan = 2;
 		this.eventsTabFolder.setLayoutData(gridData);
 		
-		pauseEventComposite = new EventComposite(eventsTabFolder, SWT.NONE,
-				ControlEventTypes.PAUSE_EVENT, this.parentView);
 		redoEventComposite = new EventComposite(eventsTabFolder, SWT.NONE,
 				ControlEventTypes.CONTROL_EVENT, this.parentView);
 		breakEventComposite = new EventComposite(eventsTabFolder, SWT.NONE,
@@ -94,23 +86,18 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 		triggerEventComposite = new EventComposite(eventsTabFolder, SWT.NONE,
 				ControlEventTypes.CONTROL_EVENT, this.parentView);
 
-		this.pauseEventsTabItem = new CTabItem(eventsTabFolder, SWT.NONE);
-		this.pauseEventsTabItem.setText(" Pause ");
-		this.pauseEventsTabItem
-				.setToolTipText("Configure event to pause and resume this scan module");
-		this.pauseEventsTabItem.setControl(pauseEventComposite);
 		this.redoEventsTabItem = new CTabItem(eventsTabFolder, SWT.NONE);
-		this.redoEventsTabItem.setText(" Redo ");
+		this.redoEventsTabItem.setText("Redo Events");
 		this.redoEventsTabItem
 				.setToolTipText("Repeat the last acquisition, if redo event occurs");
 		this.redoEventsTabItem.setControl(redoEventComposite);
 		this.breakEventsTabItem = new CTabItem(eventsTabFolder, SWT.NONE);
-		this.breakEventsTabItem.setText(" Skip ");
+		this.breakEventsTabItem.setText("Skip Events");
 		this.breakEventsTabItem
 				.setToolTipText("Finish this scan module and continue with next");
 		this.breakEventsTabItem.setControl(breakEventComposite);
 		this.triggerEventsTabItem = new CTabItem(eventsTabFolder, SWT.NONE);
-		this.triggerEventsTabItem.setText(" Trigger ");
+		this.triggerEventsTabItem.setText("Trigger Events");
 		this.triggerEventsTabItem
 				.setToolTipText("Wait for trigger event before moving to next position");
 		this.triggerEventsTabItem.setControl(triggerEventComposite);
@@ -168,31 +155,19 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 					EventImpacts.BREAK);
 			this.redoEventComposite.setEvents(this.currentScanModule,
 					EventImpacts.REDO);
-			this.pauseEventComposite.setEvents(this.currentScanModule,
-					EventImpacts.PAUSE);
 			
 			checkForErrors();
 		} else {
 			triggerEventComposite.setEvents(this.currentScanModule, null);
 			breakEventComposite.setEvents(this.currentScanModule, null);
 			redoEventComposite.setEvents(this.currentScanModule, null);
-			pauseEventComposite.setEvents(this.currentScanModule, null);
 		}
 	}
 	
 	private void checkForErrors() {
-		this.pauseEventsTabItem.setImage(null);
 		this.redoEventsTabItem.setImage(null);
 		this.breakEventsTabItem.setImage(null);
 		this.triggerEventsTabItem.setImage(null);
-
-		for (ControlEvent event : this.currentScanModule.getPauseEvents()) {
-			if (!event.getModelErrors().isEmpty()) {
-				this.pauseEventsTabItem.setImage(PlatformUI.getWorkbench()
-						.getSharedImages()
-						.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
-			}
-		}
 
 		for (ControlEvent event : this.currentScanModule.getRedoEvents()) {
 			if (!event.getModelErrors().isEmpty()) {
@@ -256,17 +231,13 @@ public class ClassicComposite extends AbstractScanModuleViewComposite {
 			switch (eventsTabFolder.getSelectionIndex()) {
 			case 0:
 				parentView.setSelectionProvider(
-						pauseEventComposite.getTableViewer());
+						redoEventComposite.getTableViewer());
 				break;
 			case 1:
 				parentView.setSelectionProvider(
-						redoEventComposite.getTableViewer());
-				break;
-			case 2:
-				parentView.setSelectionProvider(
 						breakEventComposite.getTableViewer());
 				break;
-			case 3:
+			case 2:
 				parentView.setSelectionProvider(
 						triggerEventComposite.getTableViewer());
 				break;

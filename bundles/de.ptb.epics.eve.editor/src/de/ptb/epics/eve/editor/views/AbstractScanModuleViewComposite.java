@@ -33,7 +33,7 @@ import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
  * @since 1.34
  */
 public abstract class AbstractScanModuleViewComposite extends Composite 
-		implements ISelectionListener, IModelUpdateListener {
+		implements IEditorViewCompositeMemento, ISelectionListener, IModelUpdateListener {
 	private IViewPart parentView;
 	
 	public AbstractScanModuleViewComposite(IViewPart parentView, 
@@ -89,18 +89,4 @@ public abstract class AbstractScanModuleViewComposite extends Composite
 	 * @param scanModule the currently selected scan module
 	 */
 	public abstract void setScanModule(ScanModule scanModule);
-	
-	/**
-	 * Called by the parentView when saving memento. Composites should save the 
-	 * configuration that should be persisted here. 
-	 * @param memento the memento interface
-	 */
-	public abstract void saveState(IMemento memento);
-	
-	/**
-	 * Called by the parentView to indicate that persisted states can be 
-	 * retrieved now. Only called if memento is not <code>null</code>.
-	 * @param memento the memento interface
-	 */
-	public abstract void restoreState(IMemento memento);
 }

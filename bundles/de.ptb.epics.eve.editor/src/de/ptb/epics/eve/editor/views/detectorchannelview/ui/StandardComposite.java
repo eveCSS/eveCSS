@@ -207,7 +207,7 @@ public class StandardComposite extends DetectorChannelViewComposite
 				this.getParentView());
 
 		CTabItem redoEventTabItem = new CTabItem(eventsTabFolder, SWT.FLAT);
-		redoEventTabItem.setText("Redo");
+		redoEventTabItem.setText("Redo Events");
 		redoEventTabItem.setToolTipText("Repeat the current reading " + "of the channel, if redo event occurs");
 		redoEventTabItem.setControl(redoEventComposite);
 		

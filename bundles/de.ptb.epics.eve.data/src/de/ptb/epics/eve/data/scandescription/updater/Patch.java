@@ -37,6 +37,9 @@ public class Patch {
 	 */
 	public void execute(Document document) {
 		for (Modification mod : this.modifications) {
+			// since subclasses are defined as Singletons, appended messages
+			// must be reset
+			mod.resetMessage();
 			mod.modify(document);
 		}
 	}

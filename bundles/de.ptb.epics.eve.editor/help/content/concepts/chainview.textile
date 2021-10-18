@@ -1,9 +1,11 @@
 h1(eveTopic). Chain View
 
-p. The Chain View contains properties concerning a chain. The Chain shown is the one selected. A chain is also "selected" if its start event or one of its scan modules is selected.
+p. The Chain View contains properties concerning a chain. The Chain shown is the one selected in the (graphical) editor. A chain is also "selected" if its start event or one of its scan modules is selected.
 
-p. For each chain events could be defined which influence execution of the scan (by pausing it, redoing it, etc.).
+p. For each chain pause conditions and events could be defined which influence execution of the scan (by pausing/redoing it, etc.).
 
 p=. !(eveImage)../../img/concepts/ChainView/ChainView.png(ChainView example with pause event)!
 
 p. To learn more about events, see "here":events.html.
+
+p. To learn more about pause conditions, see "here":inhibitstate.html.

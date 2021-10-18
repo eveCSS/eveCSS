@@ -138,6 +138,7 @@ public class Activator extends AbstractUIPlugin {
 			this.ecp1Client.addErrorListener(ecpLogger);
 			this.ecp1Client.addMeasurementDataListener(ecpLogger);
 			this.ecp1Client.addRequestListener(ecpLogger);
+			this.ecp1Client.addPauseStatusListener(ecpLogger);
 		} else {
 			this.ecpLogger = new ECP1ClientLogger();
 			this.ecp1Client.addErrorListener(ecpLogger);
@@ -468,5 +469,9 @@ public class Activator extends AbstractUIPlugin {
 				PLUGIN_ID, "icons/warning_obj.gif").createImage());
 		imagereg.put("SORTARROW", imageDescriptorFromPlugin(
 				PLUGIN_ID, "icons/view_menu.gif").createImage());
+		imagereg.put("RUN", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/run.gif").createImage());
+		imagereg.put("WARNING2", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/showwarn_tsk.gif").createImage());
 	}
 }

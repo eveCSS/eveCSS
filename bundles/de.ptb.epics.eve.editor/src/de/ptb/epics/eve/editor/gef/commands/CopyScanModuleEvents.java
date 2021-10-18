@@ -3,7 +3,6 @@ package de.ptb.epics.eve.editor.gef.commands;
 import org.eclipse.gef.commands.Command;
 
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
-import de.ptb.epics.eve.data.scandescription.PauseEvent;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 
 /**
@@ -32,9 +31,6 @@ public class CopyScanModuleEvents extends Command {
 	 */
 	@Override
 	public void execute() {
-		for (ControlEvent event : from.getPauseEvents()) {
-			to.addPauseEvent(PauseEvent.newInstance((PauseEvent)event));
-		}
 		for (ControlEvent event : from.getRedoEvents()) {
 			to.addRedoEvent(ControlEvent.newInstance(event));
 		}
@@ -51,9 +47,6 @@ public class CopyScanModuleEvents extends Command {
 	 */
 	@Override
 	public void undo() {
-		for (ControlEvent event : from.getPauseEvents()) {
-			to.removePauseEvent((PauseEvent)event);
-		}
 		for (ControlEvent event : from.getRedoEvents()) {
 			to.removeRedoEvent(event);
 		}

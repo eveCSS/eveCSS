@@ -153,7 +153,44 @@ public class Limit implements IModelUpdateProvider {
 	}
 
 	/**
-	 * {@inheritDoc}	 
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean equals(Object other) {
+		if (this == other) {
+			return true;
+		}
+		if (other == null) {
+			return false;
+		}
+		if (other.getClass() != getClass()) {
+			return false;
+		}
+		if (!this.type.equals(((Limit)other).getType())) {
+			return false;
+		}
+		if (!this.comparison.equals(((Limit)other).getComparison())) {
+			return false;
+		}
+		if (!this.value.equals(((Limit)other).getValue())) {
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int hashCode() {
+		int result = type.hashCode();
+		result = 31 * result + comparison.hashCode();
+		result = 31 * result + value.hashCode();
+		return result;
+	}
+	
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean addModelUpdateListener(

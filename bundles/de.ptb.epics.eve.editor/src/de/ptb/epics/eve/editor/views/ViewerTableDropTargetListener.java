@@ -9,55 +9,46 @@ import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.TransferData;
 
-import de.ptb.epics.eve.data.scandescription.AbstractBehavior;
 import de.ptb.epics.eve.util.collection.ListUtil;
 
 /**
  * @author Marcus Michalsky
- * @since 1.34
+ * @since 1.36
  */
-public abstract class ScanModuleTableDropTargetListener extends ViewerDropAdapter {
-	private static final Logger LOGGER = Logger.getLogger(
-			ScanModuleTableDropTargetListener.class.getName());
-	
+public abstract class ViewerTableDropTargetListener extends ViewerDropAdapter {
 	private TableViewer viewer;
 	
-	public ScanModuleTableDropTargetListener(TableViewer viewer) {
+	protected ViewerTableDropTargetListener(TableViewer viewer) {
 		super(viewer);
 		this.viewer = viewer;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean validateDrop(Object target, int operation, 
-			TransferData transferType) {
+	public boolean validateDrop(Object target, int operation, TransferData transferType) {
 		if (!TextTransfer.getInstance().isSupportedType(transferType) ||
 				operation != DND.DROP_MOVE) {
 			return false;
 		}
-		if (LOGGER.isDebugEnabled()) {
-			String targetName = "";
-			if (target instanceof AbstractBehavior) {
-				targetName = ((AbstractBehavior)target).
-						getAbstractDevice().getName();
-			}
+		if (getLogger().isDebugEnabled()) {
+			String targetName = getModelName(target);
 			switch (this.getCurrentLocation()) {
 			case ViewerDropAdapter.LOCATION_BEFORE:
-				LOGGER.debug("DnD before " + targetName);
+				getLogger().debug("DnD before " + targetName);
 				break;
 			case ViewerDropAdapter.LOCATION_ON:
-				LOGGER.debug("DnD on " + targetName);
+				getLogger().debug("DnD on " + targetName);
 				break;
 			case ViewerDropAdapter.LOCATION_AFTER:
-				LOGGER.debug("DnD after " + targetName);
+				getLogger().debug("DnD after " + targetName);
 				break;
 			}
 		}
 		return true;
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -66,34 +57,52 @@ public abstract class ScanModuleTableDropTargetListener extends ViewerDropAdapte
 		Object target = this.getCurrentTarget();
 		int location = this.getCurrentLocation();
 		
-		LOGGER.debug("Drop data is: " + data.toString());
+		getLogger().debug("Drop data is: " + data.toString());
 		
-		AbstractBehavior dragItem = (AbstractBehavior) viewer.getTable().
-				getSelection()[0].getData();
+		Object dragItem = viewer.getTable().getSelection()[0].getData();
 		int sourceIndex = getModel().indexOf(dragItem);
 		int targetIndex = getModel().indexOf(target);
 		
 		if (sourceIndex == -1) {
-			LOGGER.error("drag item not found");
+			getLogger().error("drag item not found");
 			return false;
 		} else if (targetIndex == -1) {
-			LOGGER.error("target not found");
+			getLogger().error("target not found");
 			return false;
 		}
 		
-		LOGGER.debug("perform drop: source index = " + sourceIndex + 
+		getLogger().debug("perform drop: source index = " + sourceIndex + 
 				", target index = " + targetIndex);
 		
 		if (location == ViewerDropAdapter.LOCATION_AFTER || 
 				location == ViewerDropAdapter.LOCATION_ON) {
-			LOGGER.debug("perform drop: insert source after target");
+			getLogger().debug("perform drop: insert source after target");
 			ListUtil.move(getModel(), sourceIndex, targetIndex);
 		} else if (location == ViewerDropAdapter.LOCATION_BEFORE) {
-			LOGGER.debug("perform drop: insert source before target");
+			getLogger().debug("perform drop: insert source berfore target");
 			ListUtil.move(getModel(), sourceIndex, targetIndex - 1);
 		}
 		return false;
 	}
+
+	/**
+	 * Returns a logger instance logs should be written to.
+	 * 
+	 * @return a logger instance logs should be written to
+	 */
+	public abstract Logger getLogger();
 	
-	public abstract List<? extends AbstractBehavior> getModel();
+	/**
+	 * Returns a human readable name of the element used for drag and drop.
+	 * 
+	 * @param item the item to be moved
+	 * @return a human readable name of the element used for drag and drop
+	 */
+	public abstract String getModelName(Object item);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public abstract List<? extends Object> getModel();
 }

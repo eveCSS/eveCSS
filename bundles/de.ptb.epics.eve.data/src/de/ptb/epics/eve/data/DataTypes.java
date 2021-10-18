@@ -19,18 +19,6 @@ import javax.xml.bind.annotation.XmlEnumValue;
  * @author Hartmut Scherr
  */
 public enum DataTypes {
-
-	// TODO correct Datatypes onoff and openclose
-	/**
-	 * Used to display On or Off for data of type integer.
-	 */
-	@XmlEnumValue("OnOff")
-	ONOFF,
-	/**
-	 * Used to display Open or Close for data of type integer.
-	 */
-	@XmlEnumValue("OpenClose")
-	OPENCLOSE,
 	/**
 	 * Normal integer data type.
 	 */
@@ -84,19 +72,6 @@ public enum DataTypes {
 		}
 
 		switch (type) {
-
-		// TODO : ONOFF and OPENCLOSE always true ?
-		// TODO : Delete Comments ?
-		// case ONOFF: return ( value.toUpperCase().equals( "ON" ) ||
-		// value.toUpperCase().equals( "OFF" ) );
-		case ONOFF:
-			return true;
-
-			// case OPENCLOSE: return ( value.toUpperCase().equals( "OPEN" ) ||
-			// value.toUpperCase().equals( "CLOSE" ) );
-		case OPENCLOSE:
-			return true;
-
 		case INT:
 			try {
 				Integer.parseInt(value);
@@ -168,10 +143,6 @@ public enum DataTypes {
 
 		// TODO: first 3 if statements can be converted to one with ||
 		if (type == DataTypes.STRING) {
-			returnString = value;
-		} else if (type == DataTypes.ONOFF) {
-			returnString = value;
-		} else if (type == DataTypes.OPENCLOSE) {
 			returnString = value;
 		} else if (type == DataTypes.INT) {
 			Integer intval = Integer.parseInt(value.trim());
@@ -281,11 +252,6 @@ public enum DataTypes {
 	public static String getDefaultValue(final DataTypes type) {
 
 		switch (type) {
-
-		case ONOFF:
-			return "OFF";
-		case OPENCLOSE:
-			return "CLOSE";
 		case INT:
 			return "0";
 		case DOUBLE:
@@ -316,11 +282,7 @@ public enum DataTypes {
 					"The parameter 'name' must not be null!");
 		}
 
-		if (name.equals("OnOff")) {
-			return DataTypes.ONOFF;
-		} else if (name.equals("OpenClose")) {
-			return DataTypes.OPENCLOSE;
-		} else if (name.equals("int")) {
+		if (name.equals("int")) {
 			return DataTypes.INT;
 		} else if (name.equals("double")) {
 			return DataTypes.DOUBLE;
@@ -348,10 +310,6 @@ public enum DataTypes {
 					"The parameter 'type' must not be null!");
 		}
 		switch (type) {
-		case ONOFF:
-			return "OnOff";
-		case OPENCLOSE:
-			return "OpenClose";
 		case INT:
 			return "int";
 		case DOUBLE:
@@ -383,8 +341,6 @@ public enum DataTypes {
 					"The parameter 'type' must not be null!");
 		}
 		switch (type) {
-		case ONOFF:
-		case OPENCLOSE:
 		case STRING:
 			return new ComparisonTypes[] { ComparisonTypes.EQ,
 					ComparisonTypes.NE };
