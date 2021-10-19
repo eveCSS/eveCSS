@@ -2,6 +2,8 @@ h1(eveTopic). What's New Archive (EVE Viewer)
 
 p(backToTop). "back to What's New":whatsnew.html
 
+h2(eveTopic). Version 1.35.0 (2021-01-22)
+
 h2(eveTopic). Version 1.34.0 (2020-07-31)
 
 h2(eveTopic). Version 1.33.0 (2020-01-22)

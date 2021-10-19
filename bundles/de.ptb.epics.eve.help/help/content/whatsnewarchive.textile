@@ -2,6 +2,22 @@ h1(eveTopic). What's New Archive (EVE)
 
 p(backToTop). "back to What's New":whatsnew.html
 
+h2(eveTopic). Version 1.35.4 (2021-03-10)
+
+* [BugFix] template File @basicStringDetector.xtmpl@ and @basicTriggerDetector.xtmpl@ modified
+* [Feature-#5907] template Files @basicNoUnitDetector@, @valueDetector@, @pim840axis@, @pim840motor@ removed
+* [BugFix-#5942] template File @deviceMenu.xtmpl@ modified, new template File @basicEnumDetector.xtmpl@
+* [BugFix-#5742] type "OnOff" replaced by "int" in 10 template Files 
+
+h2(eveTopic). Version 1.35.3 (2021-03-01)
+
+* [Feature-#5907] Option SCAN, SEVERITY and STATUS  added in template File @basicStringDetector.xtmpl@
+
+h2(eveTopic). Version 1.35.0 (2021-01-22)
+
+* [Feature-#5448] template File @genericDetector.xtmpl@ removed
+* [Feature-#5294] modifications on several template Files
+
 h2(eveTopic). Version 1.34.4 (2021-01-20)
 
 * [Bug Fix-#5787] added broadcast addresses of new sub nets (172.24.1.255 172.24.3.255) to EPICS_CA_ADDR_LIST default value

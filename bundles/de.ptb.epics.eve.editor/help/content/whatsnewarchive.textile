@@ -2,6 +2,20 @@ h1(eveTopic). What's New Archive (EVE Editor)
 
 p(backToTop). "back to What's New":whatsnew.html
 
+h2(eveTopic). Version 1.35.2 (2021-02-15)
+
+* [Bug Fix-#5876] fixed a bug where pasting an existing scan module caused to overwrite the postscan value(s) with the default value(s) of the corresponding device
+
+h2(eveTopic). Version 1.35.1 (2021-02-01)
+
+* [Bug Fix-#5858] fixed a bug where the caret jumped to the first position after each typed character
+
+h2(eveTopic). Version 1.35.0 (2021-01-22)
+
+* [Feature-#5363] Revised layout of the "Editor Perspective":concepts/eveeditorperspective.html. __Note__ that if you upgraded from an older version a one time reset of the Editor Perspective is necessary. <br/>Introduced new View "SM Pre-/Post/Positioning/Plot-View":concepts/smprepostposplotview.html replacing "Prescan", "Postscan", Positioning" and "Plot" "Action" tabs of the Scan Module View. Values are editable directly for "Pre-/Postscans":tasks/editprepostscanproperties.html, "Positionings":tasks/editpositioningproperties.html and "Plots":tasks/editplotproperties.html in the table column.
+
+p=. !(eveImage)../img/whatsnew/135/f5363-classiccomposite.png!
+
 h2(eveTopic). Version 1.34.4 (2021-01-20)
 
 * [Bug Fix-#5761] Fixed a bug where an ArrayOutOfBoundsException occurred when choosing "none" for a detector channel of a plot window when no channel was previously set
