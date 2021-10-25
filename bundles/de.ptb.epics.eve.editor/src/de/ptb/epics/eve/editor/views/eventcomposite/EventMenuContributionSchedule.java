@@ -117,7 +117,7 @@ public class EventMenuContributionSchedule extends CompoundContributionItem {
 						PlatformUI.getWorkbench().getActiveWorkbenchWindow(),
 						"", "de.ptb.epics.eve.editor.command.addevent",
 						SWT.PUSH);
-				p.label = "Schedule " + "( " + eventId + " )";
+				p.label = sm.getName() + " ( " + eventId + " )";
 				p.parameters = params;
 				CommandContributionItem item = new CommandContributionItem(p);
 				item.setVisible(true);

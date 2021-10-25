@@ -121,7 +121,8 @@ public class EventMenuContributionDetector extends CompoundContributionItem {
 						PlatformUI.getWorkbench().getActiveWorkbenchWindow(),
 						"", "de.ptb.epics.eve.editor.command.addevent",
 						SWT.PUSH);
-				p.label = event.getName();
+				p.label = ((DetectorEvent)event).getChannel().getScanModule().
+						getName() + " " + (char)187 + " " + event.getName(); 
 				p.parameters = params;
 				CommandContributionItem item = new CommandContributionItem(p);
 				item.setVisible(true);
