@@ -1,16 +1,21 @@
 package de.ptb.epics.eve.util.math.range;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.log4j.Logger;
 
 /**
  * @author Marcus Michalsky
  * @since 1.28
  */
 public class BigDecimalRange extends Range<BigDecimal> {
-
+	private static final Logger LOGGER = Logger.getLogger(
+			BigDecimalRange.class.getName());
+	
 	public BigDecimalRange(String expression) {
 		if (expression.split("/").length == 1) {
 			// expression is either j:i:k or j:k
@@ -34,10 +39,19 @@ public class BigDecimalRange extends Range<BigDecimal> {
 			String[] jk = jkN[0].split(":");
 			this.from = new BigDecimal(jk[0]);
 			this.to = new BigDecimal(jk[1]);
-			if (from.compareTo(to) < 0) {
-				this.step = to.subtract(from).divide(n);
-			} else {
-				this.step = from.subtract(to).divide(n, RoundingMode.HALF_UP);
+			try {
+				if (from.compareTo(to) < 0) {
+					this.step = to.subtract(from).divide(n);
+				} else {
+					this.step = from.subtract(to).divide(n, RoundingMode.HALF_UP);
+				}
+			} catch(ArithmeticException e) {
+				LOGGER.warn(e.getMessage() + ", rounding");
+				if (from.compareTo(to) < 0) {
+					this.step = to.subtract(from).divide(n, MathContext.DECIMAL64);
+				} else {
+					this.step = from.subtract(to).divide(n, MathContext.DECIMAL64);
+				}
 			}
 		}
 		if (this.isInfinite()) {
