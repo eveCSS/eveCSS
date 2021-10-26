@@ -1,6 +1,6 @@
 h1(eveTopic). What's New in EVE Viewer
 
-h2(eveTopic). Version 1.36.0 (2021-XX-YY)
+h2(eveTopic). Version 1.36.0 (2021-11-05)
 
 * [Feature-#5742] The Engine View has a new layout. An engine state indicator shows if the connected engine currently executes a scan (or not). The newly introduced pause conditions are visualized as an inhibit state in the "Engine View":/help/topic/de.ptb.epics.eve.viewer/help/content/concepts/engineview.html:
 

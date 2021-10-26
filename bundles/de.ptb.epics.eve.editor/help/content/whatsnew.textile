@@ -1,12 +1,18 @@
 h1(eveTopic). What's New in EVE Editor
 
-h2(eveTopic). Version 1.36.0 (2021-XX-YY)
+h2(eveTopic). Version 1.36.0 (2021-11-05)
+
+* [Feature-#6154] To better distinguish detector events of different scan modules with the same detector channel, the name of the scanmodule is prepended to the selection menu:
+
+p=. !(eveImage)../img/whatsnew/136/f6154-detectorevent.png!
 
 * [Feature-#5742] Scanmodule and chain pause events are no longer available. Old scans containing those are transformed into newly introduced pause conditions a.k.a. "inhibit state":concepts/inhibitstate.html. The pause event tab in the "SM Events View":concepts/smeventsview.html has been removed. Pause conditions can be added, removed and edited in the "Chain View":concepts/chainview.html:
 
 p=. !(eveImage)../img/whatsnew/136/f5742-chainview.png!
 
 p(((. When loading scml files of prior versions, events are transformed as follows: Scanmodule pause events and chain pause events are transformed into chain pause conditions. Hysteresis definitions are detected and combined (using the new continue limit). Duplicates are eliminated. 
+
+* [Bug Fix-#5935] fixed several broken links for help topics.
 
 <hr/>
 

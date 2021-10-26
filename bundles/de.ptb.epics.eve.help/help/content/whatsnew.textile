@@ -1,6 +1,6 @@
 h1(eveTopic). What's New in EVE
 
-h2(eveTopic). Version 1.36.0 (2021-XX-YY)
+h2(eveTopic). Version 1.36.0 (2021-11-05)
 
 * [Feature-#6297] Help topics haven been reorganized. All topics concerning EVE are now reachable from the root and are no longer inside the CSS Applications topic:
 
