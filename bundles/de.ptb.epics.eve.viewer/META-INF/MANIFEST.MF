@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: de.ptb.epics.eve.viewer; singleton:=true
-Bundle-Version: 1.35.4
+Bundle-Version: 1.36.0
 Bundle-Activator: de.ptb.epics.eve.viewer.Activator
 Bundle-Vendor: PTB
 Bundle-Localization: plugin
