@@ -734,6 +734,9 @@ public class ExcludeFilter extends MeasuringStationFilter {
 				break;
 		}
 		
+		// mark options with autoAcquire != "no" as used
+		usedOptions.addAll(this.getSource().getAutoAcquireOptions());
+		
 		// *******************************************************************
 		
 		// remove unused by iterating all available devices and check if they 

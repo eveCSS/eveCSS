@@ -253,4 +253,13 @@ public interface IMeasuringStation extends IModelUpdateProvider {
 	 * @return all options marked with monitor=true
 	 */
 	List<Option> getMonitorOptions();
+	
+	/**
+	 * Returns all options marked with autoacquire attribute set (i.e. not equal 
+	 * to "no")
+	 * 
+	 * @return Returns all options marked with autoacquire attribute set (i.e. not equal to "no")
+	 * @since 1.37
+	 */
+	List<Option> getAutoAcquireOptions();
 }

@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import de.ptb.epics.eve.data.AutoAcquireTypes;
 import de.ptb.epics.eve.data.measuringstation.event.Event;
 
 /**
@@ -108,6 +109,52 @@ public abstract class AbstractMeasuringStation implements IMeasuringStation {
 		List<Option> monitorList = new ArrayList<Option>(monitors);
 		Collections.sort(monitorList);
 		return monitorList;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public List<Option> getAutoAcquireOptions() {
+		Set<Option> autoacqOptions = new HashSet<>();
+		
+		for(Detector d : this.getDetectors()) {
+			for(Option o : d.getOptions()) {
+				if(!o.getAutoAcquire().equals(AutoAcquireTypes.NO)) {
+					autoacqOptions.add(o);
+				}
+			}
+			for(DetectorChannel ch : d.getChannels()) {
+				for(Option o : ch.getOptions()) {
+					if(!o.getAutoAcquire().equals(AutoAcquireTypes.NO)) {
+						autoacqOptions.add(o);
+					}
+				}
+			}
+		}
+		for(Motor m : this.getMotors()) {
+			for(Option o : m.getOptions()) {
+				if(!o.getAutoAcquire().equals(AutoAcquireTypes.NO)) {
+					autoacqOptions.add(o);
+				}
+			}
+			for(MotorAxis ma : m.getAxes()) {
+				for(Option o : ma.getOptions()) {
+					if(!o.getAutoAcquire().equals(AutoAcquireTypes.NO)) {
+						autoacqOptions.add(o);
+					}
+				}
+			}
+		}
+		for(Device dev : this.getDevices()) {
+			for(Option o : dev.getOptions()) {
+				if(!o.getAutoAcquire().equals(AutoAcquireTypes.NO)) {
+					autoacqOptions.add(o);
+				}
+			}
+		}
+		List<Option> acquireList = new ArrayList<>(autoacqOptions);
+		Collections.sort(acquireList); // TODO necessary ?
+		return acquireList;
 	}
 	
 	/**

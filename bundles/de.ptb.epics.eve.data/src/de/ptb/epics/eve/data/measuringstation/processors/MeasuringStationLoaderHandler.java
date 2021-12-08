@@ -4,6 +4,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import de.ptb.epics.eve.data.AutoAcquireTypes;
 import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.PluginDataType;
 import de.ptb.epics.eve.data.MethodTypes;
@@ -160,12 +161,14 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			} else if (qName.equals(Literals.XML_ELEMENT_NAME_NAME)) {
 				this.state = MeasuringStationLoaderStates.DETECTOR_NAME_NEXT;
 			} else if (qName.equals(Literals.XML_ELEMENT_NAME_OPTION)) {
+				boolean monitor = false;
 				if (atts.getValue(Literals.XML_ATTRIBUTE_NAME_MONITOR) != null) {
-					this.currentOption = new Option(Boolean.parseBoolean(atts
-							.getValue(Literals.XML_ATTRIBUTE_NAME_MONITOR)));
-				} else {
-					this.currentOption = new Option();
+					monitor = Boolean.parseBoolean(atts.getValue(
+							Literals.XML_ATTRIBUTE_NAME_MONITOR));
 				}
+				this.currentOption = new Option(monitor, 
+						AutoAcquireTypes.getEnum(atts.getValue(
+							Literals.XML_ATTRIBUTE_NAME_AUTOACQUIRE)));
 				this.state = MeasuringStationLoaderStates.DETECTOR_OPTION;
 				this.subState = MeasuringStationLoaderSubStates.OPTION_LOADING;
 			} else if (qName.equals(Literals.XML_ELEMENT_NAME_UNIT)) {
@@ -212,12 +215,14 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				this.state = MeasuringStationLoaderStates.DETECTOR_CHANNEL_READ_LOADING;
 				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
 			} else if (qName.equals(Literals.XML_ELEMENT_NAME_OPTION)) {
+				boolean monitor = false;
 				if (atts.getValue(Literals.XML_ATTRIBUTE_NAME_MONITOR) != null) {
-					this.currentOption = new Option(Boolean.parseBoolean(atts
-							.getValue(Literals.XML_ATTRIBUTE_NAME_MONITOR)));
-				} else {
-					this.currentOption = new Option();
+					monitor = Boolean.parseBoolean(atts.getValue(
+							Literals.XML_ATTRIBUTE_NAME_MONITOR));
 				}
+				this.currentOption = new Option(monitor, 
+						AutoAcquireTypes.getEnum(atts.getValue(
+							Literals.XML_ATTRIBUTE_NAME_AUTOACQUIRE)));
 				this.state = MeasuringStationLoaderStates.DETECTOR_CHANNEL_OPTION;
 				this.subState = MeasuringStationLoaderSubStates.OPTION_LOADING;
 			} else if (qName.equals(Literals.XML_ELEMENT_NAME_UNIT)) {
@@ -259,12 +264,14 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				this.state = MeasuringStationLoaderStates.MOTOR_UNIT;
 				this.subState = MeasuringStationLoaderSubStates.UNIT_LOADING;
 			} else if (qName.equals(Literals.XML_ELEMENT_NAME_OPTION)) {
+				boolean monitor = false;
 				if (atts.getValue(Literals.XML_ATTRIBUTE_NAME_MONITOR) != null) {
-					this.currentOption = new Option(Boolean.parseBoolean(atts
-							.getValue(Literals.XML_ATTRIBUTE_NAME_MONITOR)));
-				} else {
-					this.currentOption = new Option();
+					monitor = Boolean.parseBoolean(atts.getValue(
+							Literals.XML_ATTRIBUTE_NAME_MONITOR));
 				}
+				this.currentOption = new Option(monitor, 
+						AutoAcquireTypes.getEnum(atts.getValue(
+							Literals.XML_ATTRIBUTE_NAME_AUTOACQUIRE)));
 				this.state = MeasuringStationLoaderStates.MOTOR_OPTION;
 				this.subState = MeasuringStationLoaderSubStates.OPTION_LOADING;
 			} else if (qName.equals(Literals.XML_ELEMENT_NAME_TRIGGER)) {
@@ -318,12 +325,14 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_TRIGGER_LOADING;
 				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
 			} else if (qName.equals(Literals.XML_ELEMENT_NAME_OPTION)) {
+				boolean monitor = false;
 				if (atts.getValue(Literals.XML_ATTRIBUTE_NAME_MONITOR) != null) {
-					this.currentOption = new Option(Boolean.parseBoolean(atts
-							.getValue(Literals.XML_ATTRIBUTE_NAME_MONITOR)));
-				} else {
-					this.currentOption = new Option();
+					monitor = Boolean.parseBoolean(atts.getValue(
+							Literals.XML_ATTRIBUTE_NAME_MONITOR));
 				}
+				this.currentOption = new Option(monitor, 
+						AutoAcquireTypes.getEnum(atts.getValue(
+							Literals.XML_ATTRIBUTE_NAME_AUTOACQUIRE)));
 				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_OPTION;
 				this.subState = MeasuringStationLoaderSubStates.OPTION_LOADING;
 			} else if (qName.equals(Literals.XML_ELEMENT_NAME_UNIT)) {
@@ -387,12 +396,14 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				this.subState = MeasuringStationLoaderSubStates.UNIT_LOADING;
 				this.state = MeasuringStationLoaderStates.DEVICE_UNIT;
 			} else if (qName.equals(Literals.XML_ELEMENT_NAME_OPTION)) {
+				boolean monitor = false;
 				if (atts.getValue(Literals.XML_ATTRIBUTE_NAME_MONITOR) != null) {
-					this.currentOption = new Option(Boolean.parseBoolean(atts
-							.getValue(Literals.XML_ATTRIBUTE_NAME_MONITOR)));
-				} else {
-					this.currentOption = new Option();
+					monitor = Boolean.parseBoolean(atts.getValue(
+							Literals.XML_ATTRIBUTE_NAME_MONITOR));
 				}
+				this.currentOption = new Option(monitor, 
+						AutoAcquireTypes.getEnum(atts.getValue(
+							Literals.XML_ATTRIBUTE_NAME_AUTOACQUIRE)));
 				this.subState = MeasuringStationLoaderSubStates.OPTION_LOADING;
 				this.state = MeasuringStationLoaderStates.DEVICE_OPTION;
 			}

@@ -18,6 +18,7 @@ import org.xml.sax.helpers.AttributesImpl;
 
 import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.PluginDataType;
+import de.ptb.epics.eve.data.AutoAcquireTypes;
 import de.ptb.epics.eve.data.ComparisonTypes;
 import de.ptb.epics.eve.data.PlotModes;
 import de.ptb.epics.eve.data.PluginTypes;
@@ -873,6 +874,12 @@ public class ScanDescriptionSaver implements
 	private boolean writeOption(final Option option) {
 		try {
 			this.atts.clear();
+			if (!option.getAutoAcquire().equals(AutoAcquireTypes.NO)) {
+				this.atts.addAttribute(Literals.EMPTY_STRING, 
+						Literals.XML_ATTRIBUTE_NAME_AUTOACQUIRE, 
+						Literals.XML_ATTRIBUTE_NAME_AUTOACQUIRE, 
+					Literals.CHARACTER_DATA, option.getAutoAcquire().toString());
+			}
 			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_OPTION,
 					Literals.XML_ELEMENT_NAME_OPTION, this.atts);
 

@@ -1,6 +1,7 @@
 package de.ptb.epics.eve.data.measuringstation.processors;
 
 final class Literals {
+	public static final String XML_ATTRIBUTE_NAME_AUTOACQUIRE = "autoacquire";
 	public static final String XML_ATTRIBUTE_NAME_COUNT = "count";
 	public static final String XML_ATTRIBUTE_NAME_DEFERRED = "deferred";
 	public static final String XML_ATTRIBUTE_NAME_MONITOR = "monitor";

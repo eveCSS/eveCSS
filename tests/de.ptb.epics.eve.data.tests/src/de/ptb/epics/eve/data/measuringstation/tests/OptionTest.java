@@ -27,11 +27,6 @@ import de.ptb.epics.eve.data.tests.internal.Configurator;
 public class OptionTest {
 	private static List<IMeasuringStation> stations;
 	
-	/**
-	 * Test method for 
-	 * {@link de.ptb.epics.eve.data.measuringstation.Option#clone()} and 
-	 * {@link de.ptb.epics.eve.data.measuringstation.AbstractPrePostscanDevice#equals(java.lang.Object)}.
-	 */
 	@Test
 	public final void testCloneEquals() {
 		for(IMeasuringStation measuringStation : stations) {
@@ -47,14 +42,6 @@ public class OptionTest {
 		}
 	}
 
-	// **********************************************************************
-	// **************************** Setup ***********************************
-	// **********************************************************************
-	
-	/**
-	 * Initializes logging and loads the measuring station (Class wide setup 
-	 * method of the test).
-	 */
 	@BeforeClass
 	public static void setUpBeforeClass() {
 		stations = Configurator.getMeasuringStations();
@@ -63,23 +50,14 @@ public class OptionTest {
 		}
 	}
 
-	/**
-	 * Class wide tear down method.
-	 */
 	@AfterClass
 	public static void tearDownAfterClass() {
 	}
 
-	/**
-	 * Test wide set up method.
-	 */
 	@Before
 	public void setUp() {
 	}
 
-	/**
-	 * Test wide tear down method.
-	 */
 	@After
 	public void tearDown() {
 	}

@@ -77,7 +77,7 @@ public class Save extends Job {
 			// do the filtering
 			monitor.subTask("running filter");
 			ExcludeFilter measuringStation = new ExcludeFilter();
-			measuringStation.setSource(scanDescription.getMeasuringStation());
+			measuringStation.setSource(Activator.getDefault().getDeviceDefinition());
 			measuringStation.excludeUnusedDevices(scanDescription);
 			monitor.worked(1);
 			

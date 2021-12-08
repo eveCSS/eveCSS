@@ -9,6 +9,7 @@ public class Literals {
 	
 	public static final String EMPTY_STRING = "";
 	
+	public static final String XML_ATTRIBUTE_NAME_AUTOACQUIRE = "autoacquire";
 	public static final String XML_ATTRIBUTE_NAME_COMPARISON = "comparison";
 	public static final String XML_ATTRIBUTE_NAME_COUNT = "count";
 	public static final String XML_ATTRIBUTE_NAME_DATATYPE = "datatype";
