@@ -63,6 +63,11 @@ public enum ScanDescriptionLoaderMessageType {
 	SCANMODULE_OF_SCHEDULEEVENT_NOT_FOUND,
 	
 	/**
+	 * @since 1.36.1
+	 */
+	DEVICE_OF_MONITOREVENT_NOT_FOUND,
+	
+	/**
 	 * @since 1.36
 	 */
 	PAUSECONDITION_DEVICE_NOT_FOUND
