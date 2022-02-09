@@ -2646,6 +2646,11 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 							ScanDescriptionLoaderMessageType.DETECTOR_OF_DETECTOREVENT_NOT_FOUND,
 							"Channel of Detector Event is missing. " + message));
 			break;
+		case MONITOR:
+			this.deviceMessages.add(new ScanDescriptionLoaderDeviceMessage(
+					ScanDescriptionLoaderMessageType.DEVICE_OF_MONITOREVENT_NOT_FOUND, 
+					"Device of Monitor Event is missing. " + message));
+			break;
 		case SCHEDULE:
 			this.deviceMessages
 					.add(new ScanDescriptionLoaderDeviceMessage(
