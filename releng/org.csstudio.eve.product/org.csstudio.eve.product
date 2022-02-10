@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Css" uid="eveCSS" id="de.ptb.epics.eve.rcp.product" application="de.ptb.epics.eve.rcp.application" version="1.36.0" useFeatures="true" includeLaunchers="true">
+<product name="Css" uid="eveCSS" id="de.ptb.epics.eve.rcp.product" application="de.ptb.epics.eve.rcp.application" version="1.36.1" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/de.ptb.epics.eve.rcp/icons/about.gif"/>
@@ -66,9 +66,9 @@ See http://ics-web.sns.ornl.gov/css
    </plugins>
 
    <features>
-      <feature id="org.csstudio.eve.applications.feature" version="1.36.0"/>
-      <feature id="org.csstudio.eve.core.feature" version="1.36.0"/>
-      <feature id="org.csstudio.eve.eclipse.feature" version="1.36.0"/>
+      <feature id="org.csstudio.eve.applications.feature" version="1.36.1"/>
+      <feature id="org.csstudio.eve.core.feature" version="1.36.1"/>
+      <feature id="org.csstudio.eve.eclipse.feature" version="1.36.1"/>
    </features>
 
    <configurations>

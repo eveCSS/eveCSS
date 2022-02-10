@@ -1,5 +1,9 @@
 h1(eveTopic). What's New in EVE Editor
 
+h2(eveTopic). Version 1.36.1 (2022-02-09)
+
+* [Bug Fix-#6500] detect missing device/option of used monitor event when loading a SCML into the Editor.
+
 h2(eveTopic). Version 1.36.0 (2021-11-05)
 
 * [Feature-#6154] To better distinguish detector events of different scan modules with the same detector channel, the name of the scanmodule is prepended to the selection menu:
