@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Editor Tests
 Bundle-SymbolicName: de.ptb.epics.eve.editor.tests
-Bundle-Version: 1.36.0
+Bundle-Version: 1.36.1
 Bundle-Vendor: PTB
 Automatic-Module-Name: de.ptb.epics.eve.editor.tests
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
