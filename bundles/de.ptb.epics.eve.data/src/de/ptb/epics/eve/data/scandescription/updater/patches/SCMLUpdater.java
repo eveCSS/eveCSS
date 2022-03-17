@@ -25,5 +25,6 @@ public class SCMLUpdater extends Updater {
 		this.addPatch(Patch6o0T7o0.getInstance());
 		this.addPatch(Patch7o0T8o0.getInstance());
 		this.addPatch(Patch8o0T9o0.getInstance());
+		this.addPatch(Patch9o0t9o1.getInstance());
 	}
 }

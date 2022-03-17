@@ -121,7 +121,7 @@ public class ChangeLogDialog extends TitleAreaDialog {
 		
 		TableViewerColumn toColumn = new TableViewerColumn(viewer, SWT.LEFT);
 		toColumn.getColumn().setText("To");
-		toColumn.getColumn().setWidth(35);
+		toColumn.getColumn().setWidth(40);
 		toColumn.setLabelProvider(new ToColumnLabelProvider());
 		
 		TableViewerColumn changeColumn = new TableViewerColumn(viewer, SWT.LEFT);
