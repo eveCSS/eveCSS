@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -11,6 +12,7 @@ import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.Device;
+import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.Option;
@@ -26,6 +28,7 @@ import de.ptb.epics.eve.data.scandescription.Postscan;
 import de.ptb.epics.eve.data.scandescription.Prescan;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
 import de.ptb.epics.eve.data.scandescription.channelmode.ChannelModes;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
@@ -734,6 +737,9 @@ public class ExcludeFilter extends MeasuringStationFilter {
 				break;
 		}
 		
+		usedOptions.addAll(this.getUsedAutoAcquireOptions(
+				this.getSource(), scandescription));
+		
 		// *******************************************************************
 		
 		// remove unused by iterating all available devices and check if they 
@@ -1019,5 +1025,61 @@ public class ExcludeFilter extends MeasuringStationFilter {
 				devices.add(device);
 			}
 		}
+	}
+	
+	/*
+	 * @since 1.37
+	 */
+	private List<Option> getUsedAutoAcquireOptions(
+			IMeasuringStation measuringStation, ScanDescription scanDescription) {
+		List<Option> usedOptions = new ArrayList<>();
+		
+		Set<String> snapshotChannels = new HashSet<>();
+		Set<String> snapshotDetectors = new HashSet<>();
+		Set<String> measurementChannels = new HashSet<>();
+		Set<String> measurementDetectors = new HashSet<>();
+		
+		for(Chain chain : scanDescription.getChains()) {
+			for(ScanModule sm : chain.getScanModules()) {
+				if(sm.getType().equals(ScanModuleTypes.SAVE_CHANNEL_VALUES)) {
+					for(Channel channel : sm.getChannels()) {
+						snapshotChannels.add(channel.getDetectorChannel().
+								getID());
+						snapshotDetectors.add(channel.getDetectorChannel().
+								getDetector().getID());
+					}
+				} else if (sm.getType().equals(ScanModuleTypes.CLASSIC)) {
+					for(Channel channel : sm.getChannels()) {
+						measurementChannels.add(channel.getDetectorChannel().
+								getID());
+						measurementDetectors.add(channel.getDetectorChannel().
+								getDetector().getID());
+					}
+				}
+			}
+		}
+
+		for(Option o : measuringStation.getAutoAcquireOptions()) {
+			switch(o.getAutoAcquire()) {
+			case MEASUREMENT:
+				if(measurementChannels.contains(o.getParent().getID()) || 
+						measurementDetectors.contains(o.getParent().getID())) {
+					usedOptions.add(o);
+				}
+				break;
+			case NO:
+				break;
+			case SNAPSHOT:
+				if(snapshotChannels.contains(o.getParent().getID()) ||
+						snapshotDetectors.contains(o.getParent().getID())) {
+					usedOptions.add(o);
+				}
+				break;
+			default:
+				break;
+			}
+		}
+
+		return usedOptions;
 	}
 }

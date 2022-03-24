@@ -2,6 +2,7 @@ package de.ptb.epics.eve.data.tests.mothers.measuringstation;
 
 import java.util.Calendar;
 
+import de.ptb.epics.eve.data.AutoAcquireTypes;
 import de.ptb.epics.eve.data.measuringstation.Option;
 
 /**
@@ -84,6 +85,35 @@ public class OptionMother {
 	 */
 	public static Option createNewDiscreteStringOption() {
 		Option option = new Option();
+		String name = "Option-" + Calendar.getInstance().getTime().getTime();
+		option.setId(name);
+		option.setName(name);
+		option.setClassName("OptionClass");
+		option.setMonitor(false);
+		option.setValue(FunctionMother.createNewDiscreteStringTypeFunction());
+		return option;
+	}
+	
+	/**
+	 * @since 1.37
+	 */
+	public static Option createNewSnapshotAcquireOption() {
+		Option option = new Option(AutoAcquireTypes.SNAPSHOT);
+		String name = "Option-" + Calendar.getInstance().getTime().getTime();
+		option.setId(name);
+		option.setName(name);
+		option.setClassName("OptionClass");
+		option.setMonitor(false);
+		option.setValue(FunctionMother.createNewDiscreteStringTypeFunction());
+		return option;
+	}
+	
+	/**
+	 * 
+	 * @since 1.37
+	 */
+	public static Option createNewMeasurementAcquireOption() {
+		Option option = new Option(AutoAcquireTypes.MEASUREMENT);
 		String name = "Option-" + Calendar.getInstance().getTime().getTime();
 		option.setId(name);
 		option.setName(name);
