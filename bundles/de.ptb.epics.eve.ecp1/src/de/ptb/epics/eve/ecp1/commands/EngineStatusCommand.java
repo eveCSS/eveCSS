@@ -7,7 +7,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import de.ptb.epics.eve.ecp1.intern.exceptions.AbstractRestoreECP1CommandException;
-import de.ptb.epics.eve.ecp1.intern.exceptions.BrokenByteArrayException;
 import de.ptb.epics.eve.ecp1.intern.exceptions.WrongStartTagException;
 import de.ptb.epics.eve.ecp1.intern.exceptions.WrongTypeIdException;
 import de.ptb.epics.eve.ecp1.intern.exceptions.WrongVersionException;
@@ -22,6 +21,8 @@ public class EngineStatusCommand implements IECP1Command {
 	private int repeatCount;
 	private EngineStatus engineStatus;
 	private boolean autoplay;
+	private boolean simulationButtonEnabled;
+	private boolean simulation;
 	private String xmlName;
 
 	public EngineStatusCommand(final int generalTimeStamp,
@@ -69,16 +70,11 @@ public class EngineStatusCommand implements IECP1Command {
 		if (repeatCount < 0) {
 			repeatCount = 0xffff + repeatCount;
 		}
-		byte autoplayByte = dataInputStream.readByte();
-		if (autoplayByte == 0) {
-			this.autoplay = false;
-		} else if (autoplayByte == 1) {
-			this.autoplay = true;
-		} else {
-			throw new BrokenByteArrayException(byteArray,
-					"Wrong value for autoplay. Expected 0 or 1, got "
-							+ autoplay + "!");
-		}
+		
+		byte statusByte = dataInputStream.readByte();
+		this.autoplay = (statusByte & 1) != 0;
+		this.simulationButtonEnabled = (statusByte & 2) != 0;
+		this.simulation = (statusByte & 8) != 0;
 
 		this.engineStatus = EngineStatus.byteToEngineStatus(dataInputStream
 				.readByte());
@@ -115,6 +111,8 @@ public class EngineStatusCommand implements IECP1Command {
 		dataOutputStream.writeInt(this.gerenalTimeStamp);
 		dataOutputStream.writeInt(this.nanoseconds);
 		dataOutputStream.writeShort((short) this.repeatCount);
+		// TODO build byte from three values
+		// not necessary ? since this command is direction Engine -> ECP only ?!
 		dataOutputStream.writeByte(this.autoplay ? 1 : 0);
 		dataOutputStream.writeByte(EngineStatus
 				.engineStatusToByte(this.engineStatus));
@@ -163,6 +161,14 @@ public class EngineStatusCommand implements IECP1Command {
 		this.autoplay = autoplay;
 	}
 
+	public boolean isSimulationButtonEnabled() {
+		return this.simulationButtonEnabled;
+	}
+	
+	public boolean isSimulation() {
+		return this.simulation;
+	}
+	
 	public EngineStatus getEngineStatus() {
 		return this.engineStatus;
 	}

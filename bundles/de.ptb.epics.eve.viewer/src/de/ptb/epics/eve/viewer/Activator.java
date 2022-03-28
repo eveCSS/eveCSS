@@ -139,6 +139,7 @@ public class Activator extends AbstractUIPlugin {
 			this.ecp1Client.addMeasurementDataListener(ecpLogger);
 			this.ecp1Client.addRequestListener(ecpLogger);
 			this.ecp1Client.addPauseStatusListener(ecpLogger);
+			this.ecp1Client.addSimulationStatusListener(ecpLogger);
 		} else {
 			this.ecpLogger = new ECP1ClientLogger();
 			this.ecp1Client.addErrorListener(ecpLogger);
