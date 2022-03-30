@@ -116,6 +116,7 @@ public class ECP1Client {
 	private Map<Character, Constructor<? extends IECP1Command>> commands;
 
 	private boolean running;
+	private boolean simulation;
 
 	/**
 	 * Constructor.
@@ -170,7 +171,7 @@ public class ECP1Client {
 		this.classNames.add(packageName + "RemoveFromPlayListCommand");
 		this.classNames.add(packageName + "ReorderPlayListCommand");
 		this.classNames.add(packageName + "RepeatCountCommand");
-		this.classNames.add(packageName + "Simulation;Command");
+		this.classNames.add(packageName + "SimulationCommand");
 		this.classNames.add(packageName + "StartCommand");
 		this.classNames.add(packageName + "StopCommand");
 
@@ -250,6 +251,7 @@ public class ECP1Client {
 		this.outQueue.clear();
 
 		this.running = true;
+		this.simulation = false;
 
 		this.inHandler = new InHandler(this, this.socket.getInputStream(),
 				this.inQueue);
@@ -289,6 +291,7 @@ public class ECP1Client {
 			this.inHandler.quit();
 			this.outHandler.quit();
 			this.running = false;
+			this.simulation = false;
 			this.socket.shutdownInput();
 			this.socket.shutdownOutput();
 			this.socket.close();
@@ -325,6 +328,13 @@ public class ECP1Client {
 	 */
 	public boolean isRunning() {
 		return this.running;
+	}
+	
+	/**
+	 * @since 1.37
+	 */
+	public boolean isSimulation() {
+		return this.simulation;
 	}
 	
 	/**
@@ -638,6 +648,7 @@ public class ECP1Client {
 										engineStatusCommand.isSimulationButtonEnabled(), 
 										engineStatusCommand.isSimulation());
 								}
+								simulation = engineStatusCommand.isSimulation();
 								playListController.reportAutoplay(
 										engineStatusCommand.isAutoplay());
 							} else if (command instanceof ChainStatusCommand) {
