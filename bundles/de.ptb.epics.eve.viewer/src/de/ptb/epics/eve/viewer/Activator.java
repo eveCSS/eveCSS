@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ColorRegistry;
 import org.eclipse.jface.resource.FontRegistry;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -18,12 +17,10 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.IPerspectiveListener;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.Version;
 
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
@@ -49,9 +46,7 @@ public class Activator extends AbstractUIPlugin {
 	
 	private static Logger logger = Logger.getLogger(Activator.class.getName());
 	
-	private IPerspectiveListener eveViewerPerspectiveListener;
 	private WorkbenchListener workbenchListener;
-	private String defaultWindowTitle;
 	
 	private final IMessageList messageList;
 	private final XMLDispatcher xmlFileDispatcher;
@@ -79,20 +74,12 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public Activator() {
 		plugin = this;
-		try {
-			Version version = Platform.getProduct().getDefiningBundle()
-					.getVersion();
-			this.defaultWindowTitle = "eveCSS v" + version.getMajor() + "."
-					+ version.getMinor() + "." + version.getMicro();
-		} catch (NullPointerException e) {
-			this.defaultWindowTitle = "eveCSS";
-		}
+
 		this.ecp1Client = new ECP1Client();
 		this.messageList = new MessageList(Realm.getDefault());
 		this.xmlFileDispatcher = new XMLDispatcher();
 		this.plotDispatcher = new PlotDispatcher();
 		
-		this.eveViewerPerspectiveListener = new EveViewerPerspectiveListener();
 		this.workbenchListener = new WorkbenchListener();
 	}
 
@@ -145,8 +132,6 @@ public class Activator extends AbstractUIPlugin {
 			this.ecp1Client.addErrorListener(ecpLogger);
 		}
 		
-		PlatformUI.getWorkbench().getActiveWorkbenchWindow().
-			 addPerspectiveListener(this.eveViewerPerspectiveListener);
 		PlatformUI.getWorkbench().addWorkbenchListener(workbenchListener);
 		
 		if (logger.isDebugEnabled()) {
@@ -161,6 +146,8 @@ public class Activator extends AbstractUIPlugin {
 			});
 			this.pollInQueueSizeThread.start();
 		}
+		
+		new WindowTitleUpdater(ecp1Client);
 	}
 
 	/**
@@ -183,14 +170,6 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public static Activator getDefault() {
 		return plugin;
-	}
-
-	/**
-	 * 
-	 * @return windowTitle
-	 */
-	public String getDefaultWindowTitle() {
-		return this.defaultWindowTitle;
 	}
 	
 	/**
