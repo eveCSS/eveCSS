@@ -637,6 +637,7 @@ public class ECP1Client {
 							if (command instanceof EngineStatusCommand) {
 								final EngineStatusCommand engineStatusCommand = 
 										(EngineStatusCommand) command;
+								simulation = engineStatusCommand.isSimulation();
 								for (IEngineStatusListener esl : engineStatusListener) {
 									esl.engineStatusChanged(
 										engineStatusCommand.getEngineStatus(), 
@@ -648,7 +649,6 @@ public class ECP1Client {
 										engineStatusCommand.isSimulationButtonEnabled(), 
 										engineStatusCommand.isSimulation());
 								}
-								simulation = engineStatusCommand.isSimulation();
 								playListController.reportAutoplay(
 										engineStatusCommand.isAutoplay());
 							} else if (command instanceof ChainStatusCommand) {
