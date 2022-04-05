@@ -74,7 +74,7 @@ public class EngineStatusCommand implements IECP1Command {
 		byte statusByte = dataInputStream.readByte();
 		this.autoplay = (statusByte & 1) != 0;
 		this.simulationButtonEnabled = (statusByte & 2) != 0;
-		this.simulation = (statusByte & 8) != 0;
+		this.simulation = (statusByte & 4) != 0;
 
 		this.engineStatus = EngineStatus.byteToEngineStatus(dataInputStream
 				.readByte());

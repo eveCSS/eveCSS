@@ -538,6 +538,7 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 				addPlayListListener(this);
 		Activator.getDefault().getEcp1Client().addErrorListener(this);
 		Activator.getDefault().getEcp1Client().addConnectionStateListener(this);
+		Activator.getDefault().getEcp1Client().addSimulationStatusListener(this);
 
 		this.sc.setMinSize(this.top.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		
@@ -852,6 +853,7 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 							scanGroup.setForeground(scanGroup.getDisplay().getSystemColor(SWT.COLOR_RED));
 							scanGroup.setText(SCAN_GROUP_SIMULATION_LABEL + "(" + xmlName + ") ");
 						} else {
+							scanGroup.setForeground(scanGroup.getDisplay().getSystemColor(SWT.COLOR_BLACK));
 							scanGroup.setText(SCAN_GROUP_NO_SCAN_LABEL + "(" + xmlName + ") ");
 						}
 					}
@@ -860,8 +862,13 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 				this.scanGroup.getDisplay().syncExec(new Runnable() {
 					@Override
 					public void run() {
-						scanGroup.setForeground(scanGroup.getDisplay().getSystemColor(SWT.COLOR_BLACK));
-						scanGroup.setText(SCAN_GROUP_NO_SCAN_LABEL);
+						if(Activator.getDefault().getEcp1Client().isSimulation()) {
+							scanGroup.setForeground(scanGroup.getDisplay().getSystemColor(SWT.COLOR_RED));
+							scanGroup.setText(SCAN_GROUP_SIMULATION_LABEL);
+						} else {
+							scanGroup.setForeground(scanGroup.getDisplay().getSystemColor(SWT.COLOR_BLACK));
+							scanGroup.setText(SCAN_GROUP_NO_SCAN_LABEL);
+						}
 					}
 				});
 			}
@@ -1132,12 +1139,24 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 	}
 
 	@Override
-	public void simulationStatusChanged(boolean simulationButtonEnabled, boolean simulation) {
-		this.simulationCheckBox.setSelection(simulationButtonEnabled);
-		if (simulation) {
-			scanGroup.setForeground(scanGroup.getDisplay().getSystemColor(SWT.COLOR_RED));
-		} else {
-			scanGroup.setForeground(scanGroup.getDisplay().getSystemColor(SWT.COLOR_BLACK));
-		}
+	public void simulationStatusChanged(final boolean simulationButtonEnabled, final boolean simulation) {
+		logger.debug("EngineView simulationChanged: button: " + 
+				simulationButtonEnabled + ", Sim " + simulation);
+		this.simulationCheckBox.getDisplay().asyncExec(new Runnable() {
+			
+			@Override
+			public void run() {
+				simulationCheckBox.setSelection(simulationButtonEnabled);
+				if (simulation) {
+					scanGroup.setForeground(scanGroup.getDisplay().
+							getSystemColor(SWT.COLOR_RED));
+				} else {
+					scanGroup.setForeground(scanGroup.getDisplay().
+							getSystemColor(SWT.COLOR_BLACK));
+				}
+			}
+		});
+		
+		
 	}
 }

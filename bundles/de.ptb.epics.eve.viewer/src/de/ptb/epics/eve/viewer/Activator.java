@@ -147,7 +147,8 @@ public class Activator extends AbstractUIPlugin {
 			this.pollInQueueSizeThread.start();
 		}
 		
-		new WindowTitleUpdater(ecp1Client);
+		new WindowTitleUpdater(ecp1Client, PlatformUI.getWorkbench().
+				getActiveWorkbenchWindow().getShell());
 	}
 
 	/**

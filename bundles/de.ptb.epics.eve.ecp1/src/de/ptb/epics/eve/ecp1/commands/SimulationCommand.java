@@ -61,10 +61,10 @@ public class SimulationCommand implements IECP1Command {
 			throw new WrongLengthException(byteArray, length, 4);
 		}
 		
-		final int simulation = dataInputStream.readInt();
-		if (simulation == 0) {
+		final int sim = dataInputStream.readInt();
+		if (sim == 0) {
 			this.simulation = false;
-		} else if (simulation == 1) {
+		} else if (sim == 1) {
 			this.simulation = true;
 		} else {
 			throw new BrokenByteArrayException(byteArray, 
