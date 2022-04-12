@@ -16,7 +16,7 @@ p(backToTop). "back to top":#top
 
 p=. !(eveImage)../../img/concepts/engineview/engineview-enginegroup.png(engine view - engine group with host:port label and start, kill, connect and disconnect buttons)!
 
-p. Following the Engine text label the host and port of the engine process connected to (if any) is shown inside of brackets. Depending on the connection state, several other areas are enabled/disabled.
+p. Following the Engine text label the host and port of the engine process connected to (if any) is shown inside of brackets. Depending on the connection state, certain buttons are enabled/disabled.
 
 p. Inside the engine group there are buttons to control the engine process. Their function is described in the table below:
 
@@ -26,6 +26,10 @@ table(eveRefTable).
 |_. Kill | Sends a request to the engine to terminate itself. |
 |_. Connect | Connects to an existing engine process at __host__:__port__ as specified in the preferences |
 |_. Disconnect | Disconnects from the currently connected engine process. |
+
+p. A checkbox controls whether scans arriving at the Engine will be simulated or executed normally (with Channel Access). In Simulation mode neither motor axis are actuated nor channels are triggered/measured but a data file with pseudo constants will be created.
+
+p. Keep in mind that the simulation setting only applies to subsequent scans, i.e. the mode of a scan already loaded into the engine cannot be changed anymore.
 
 h2(eveTopic). Scan Group
 
@@ -67,6 +71,14 @@ p. Shows the progress of the current scan by showing the absolute and relative r
 h3(eveTopic). Status Table
 
 p. Shows the chains, scan modules and their states of the currently loaded scan. A remaining time as well as additional event information (if any) are also shown.
+
+h3(eveTopic). Simulation
+
+p. If simulation is active the scan group title shows a modified title and is colored in red:
+
+p=. !(eveImage)../../img/concepts/engineview/engineview-scangroup-simulation.png(engine view - scan group with red colored title with prefix in simulation mode)!
+
+p. Additionally the window title of the application (and its title in the task bar) will be prefixed with "SIM: ".
 
 h2(eveTopic). Engine State Indicator
 

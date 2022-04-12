@@ -30,6 +30,7 @@ import de.ptb.epics.eve.ecp1.client.interfaces.IPauseStatusListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IPlayController;
 import de.ptb.epics.eve.ecp1.client.interfaces.IPlayListController;
 import de.ptb.epics.eve.ecp1.client.interfaces.IRequestListener;
+import de.ptb.epics.eve.ecp1.client.interfaces.ISimulationStatusListener;
 import de.ptb.epics.eve.ecp1.client.model.MeasurementData;
 import de.ptb.epics.eve.ecp1.client.model.Request;
 import de.ptb.epics.eve.ecp1.commands.CancelRequestCommand;
@@ -106,6 +107,7 @@ public class ECP1Client {
 	private final Queue<IErrorListener> errorListener;
 	private final Queue<IMeasurementDataListener> measurementDataListener;
 	private final Queue<IRequestListener> requestListener;
+	private final Queue<ISimulationStatusListener> simulationStatusListener;
 
 	private final Queue<IConnectionStateListener> connectionStateListener;
 
@@ -114,6 +116,7 @@ public class ECP1Client {
 	private Map<Character, Constructor<? extends IECP1Command>> commands;
 
 	private boolean running;
+	private boolean simulation;
 
 	/**
 	 * Constructor.
@@ -136,6 +139,7 @@ public class ECP1Client {
 		this.errorListener = new ConcurrentLinkedQueue<>();
 		this.measurementDataListener = new ConcurrentLinkedQueue<>();
 		this.requestListener = new ConcurrentLinkedQueue<>();
+		this.simulationStatusListener = new ConcurrentLinkedQueue<>();
 		this.connectionStateListener = new ConcurrentLinkedQueue<>();
 
 		/* ****************************************************** */
@@ -150,27 +154,26 @@ public class ECP1Client {
 		this.classNames.add(packageName + "AutoPlayCommand");
 		this.classNames.add(packageName + "BreakCommand");
 		this.classNames.add(packageName + "CancelRequestCommand");
-
+		this.classNames.add(packageName + "ChainProgressCommand");
 		this.classNames.add(packageName + "ChainStatusCommand");
 		this.classNames.add(packageName + "CurrentXMLCommand");
 		this.classNames.add(packageName + "EndProgramCommand");
 		this.classNames.add(packageName + "EngineStatusCommand");
 		this.classNames.add(packageName + "EngineVersionCommand");
 		this.classNames.add(packageName + "ErrorCommand");
-
 		this.classNames.add(packageName + "GenericRequestCommand");
 		this.classNames.add(packageName + "HaltCommand");
 		this.classNames.add(packageName + "LiveDescriptionCommand");
 		this.classNames.add(packageName + "MeasurementDataCommand");
 		this.classNames.add(packageName + "PauseCommand");
+		this.classNames.add(packageName + "PauseStatusCommand");;
 		this.classNames.add(packageName + "PlayListCommand");
 		this.classNames.add(packageName + "RemoveFromPlayListCommand");
 		this.classNames.add(packageName + "ReorderPlayListCommand");
 		this.classNames.add(packageName + "RepeatCountCommand");
+		this.classNames.add(packageName + "SimulationCommand");
 		this.classNames.add(packageName + "StartCommand");
 		this.classNames.add(packageName + "StopCommand");
-		this.classNames.add(packageName + "ChainProgressCommand");
-		this.classNames.add(packageName + "PauseStatusCommand");
 
 		this.commands = new HashMap<>();
 		
@@ -248,6 +251,7 @@ public class ECP1Client {
 		this.outQueue.clear();
 
 		this.running = true;
+		this.simulation = false;
 
 		this.inHandler = new InHandler(this, this.socket.getInputStream(),
 				this.inQueue);
@@ -287,6 +291,7 @@ public class ECP1Client {
 			this.inHandler.quit();
 			this.outHandler.quit();
 			this.running = false;
+			this.simulation = false;
 			this.socket.shutdownInput();
 			this.socket.shutdownOutput();
 			this.socket.close();
@@ -323,6 +328,13 @@ public class ECP1Client {
 	 */
 	public boolean isRunning() {
 		return this.running;
+	}
+	
+	/**
+	 * @since 1.37
+	 */
+	public boolean isSimulation() {
+		return this.simulation;
 	}
 	
 	/**
@@ -578,6 +590,22 @@ public class ECP1Client {
 	}
 
 	/**
+	 * @since 1.37
+	 */
+	public boolean addSimulationStatusListener(
+			final ISimulationStatusListener listener) {
+		return this.simulationStatusListener.add(listener);
+	}
+	
+	/**
+	 * @since 1.37
+	 */
+	public boolean removeSimulationStatusListener(
+			final ISimulationStatusListener listener) {
+		return this.simulationStatusListener.remove(listener);
+	}
+	
+	/**
 	 * @author ?
 	 * @since 1.0
 	 */
@@ -609,11 +637,17 @@ public class ECP1Client {
 							if (command instanceof EngineStatusCommand) {
 								final EngineStatusCommand engineStatusCommand = 
 										(EngineStatusCommand) command;
+								simulation = engineStatusCommand.isSimulation();
 								for (IEngineStatusListener esl : engineStatusListener) {
 									esl.engineStatusChanged(
 										engineStatusCommand.getEngineStatus(), 
 										engineStatusCommand.getXmlName(), 
 										engineStatusCommand.getRepeatCount());
+								}
+								for (ISimulationStatusListener isl : simulationStatusListener) {
+									isl.simulationStatusChanged(
+										engineStatusCommand.isSimulationButtonEnabled(), 
+										engineStatusCommand.isSimulation());
 								}
 								playListController.reportAutoplay(
 										engineStatusCommand.isAutoplay());
