@@ -1,12 +1,6 @@
 h1(eveTopic). What's New in EVE
 
-h2(eveTopic). Version 1.36.0 (2021-11-05)
-
-* [Feature-#6297] Help topics haven been reorganized. All topics concerning EVE are now reachable from the root and are no longer inside the CSS Applications topic:
-
-p=. !(eveImage)../img/whatsnew/136/f6297-helptopics.png!
-
-* [Feature-#5742] Removed pause events in favor of "pause conditions":/help/topic/de.ptb.epics.eve.editor/help/content/concepts/inhibitstate.html, a.k.a. __inhibit state__. Besides "changes in the Editor":/help/topic/de.ptb.epics.eve.editor/help/content/whatsnew.html, concerning the "Chain View":/help/topic/de.ptb.epics.eve.editor/help/content/concepts/chainview.html, the "Engine View":/help/topic/de.ptb.epics.eve.viewer/help/content/concepts/engineview.html of the "Viewer changed":/help/topic/de.ptb.epics.eve.viewer/help/content/whatsnew.html its layout and added elements to visualize the inhibit state.
+h2(eveTopic). Version 1.37.0 (2022-XX-YY)
 
 <hr/>
 
