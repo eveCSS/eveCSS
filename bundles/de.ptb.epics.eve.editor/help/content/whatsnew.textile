@@ -1,5 +1,9 @@
 h1(eveTopic). What's New in EVE Editor
 
+h2(eveTopic). Version 1.36.2 (2022-04-20)
+
+* [Bug Fix-#6597] Fixed a bug where using a numeric position file for a discrete string motor caused an exception in the motor axis view statistics table.
+
 h2(eveTopic). Version 1.36.1 (2022-02-09)
 
 * [Bug Fix-#6500] detect missing device/option of used monitor event when loading a SCML into the Editor.
