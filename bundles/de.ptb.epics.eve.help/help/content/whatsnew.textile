@@ -1,6 +1,6 @@
 h1(eveTopic). What's New in EVE
 
-h2(eveTopic). Version 1.37.0 (2022-XX-YY)
+h2(eveTopic). Version 1.37.0 (2022-04-20)
 
 <hr/>
 

@@ -3,13 +3,13 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.ptb.epics.eve</groupId>
     <artifactId>de.ptb.epics.eve.releng</artifactId>
-    <version>1.36.1</version>
+    <version>1.36.2</version>
     <packaging>pom</packaging>
 
     <parent>
         <groupId>de.ptb.epics.eve</groupId>
         <artifactId>de.ptb.epics.eve.root</artifactId>
-        <version>1.36.1</version>
+        <version>1.36.2</version>
     </parent>
 
     <modules>
