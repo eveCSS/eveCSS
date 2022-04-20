@@ -1,5 +1,6 @@
 package org.csstudio.eve.product;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.application.ActionBarAdvisor;
@@ -8,6 +9,9 @@ import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 import org.osgi.framework.Version;
 
+import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
+import de.ptb.epics.eve.resources.init.Startup;
+
 /**
  * <code>ApplicationWorkbenchWindowAdvisor</code>.
  * 
@@ -15,7 +19,9 @@ import org.osgi.framework.Version;
  * @since 1.1
  */
 public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
-
+	private static Logger LOGGER = Logger.getLogger(
+			ApplicationWorkbenchWindowAdvisor.class.getName());
+	
 	/**
 	 * @param configurer
 	 */
@@ -44,7 +50,21 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		configurer.setShowFastViewBars(true);
 		configurer.setShowProgressIndicator(true);
 		Version version = Platform.getProduct().getDefiningBundle().getVersion();
-		configurer.setTitle("eveCSS v" + version.getMajor() + "."
-				+ version.getMinor());
+		StringBuilder sb = new StringBuilder();
+		sb.append("eveCSS v" + version.getMajor() + "." + version.getMinor());
+		try {
+			IMeasuringStation measuringStation = Startup.loadMeasuringStation(LOGGER);
+			String name = measuringStation.getName();
+			String xmlVersion = measuringStation.getVersion();
+			sb.append(" - " 
+					+ name
+					+ " (XML v"
+					+ xmlVersion
+					+ ")");
+		} catch (Exception e) {
+			LOGGER.error("device definition file could not be loaded.");
+			
+		}
+		configurer.setTitle(sb.toString());
 	}
 }

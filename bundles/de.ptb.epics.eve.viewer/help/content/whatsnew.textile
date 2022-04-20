@@ -1,14 +1,8 @@
 h1(eveTopic). What's New in EVE Viewer
 
-h2(eveTopic). Version 1.36.0 (2021-11-05)
+h2(eveTopic). Version 1.37.0 (2022-04-20)
 
-* [Feature-#5742] The Engine View has a new layout. An engine state indicator shows if the connected engine currently executes a scan (or not). The newly introduced pause conditions are visualized as an inhibit state in the "Engine View":/help/topic/de.ptb.epics.eve.viewer/help/content/concepts/engineview.html:
-
-p=. !(eveImage)../img/whatsnew/136/f5742-engineview.png!
-
-p. A tooltip shows details (states of the individual pause conditions, if any) of the inhibit state of the currently executing scan:
-
-p=. !(eveImage)../img/whatsnew/136/f5742-inhibitstatepopup.png!
+* [Feature-#2767] The Engine now supports a simulation mode, i. e. no connections via channel access are made but the measurement sequence is simulated by constants such that a "normal" looking data file is created for validation up front. See the "Engine View":/help/topic/de.ptb.epics.eve.viewer/help/content/concepts/engineview.html description on how to enable/disable simulation mode and how it is visualized.
 
 <hr/>
 

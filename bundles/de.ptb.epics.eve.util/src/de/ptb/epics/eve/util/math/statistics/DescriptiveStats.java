@@ -113,18 +113,24 @@ public class DescriptiveStats {
 	}
 	
 	/**
-	 * @return the first value
+	 * @return the first value or <code>null</code> if none
 	 * @since 1.34
 	 */
 	public Double getFirstValue() {
+		if (this.sample.isEmpty()) {
+			return null;
+		}
 		return this.sample.get(0);
 	}
 	
 	/**
-	 * @return the last value
+	 * @return the last value or <code>null</code> if none
 	 * @since 1.34
 	 */
 	public Double getLastValue() {
+		if (this.sample.isEmpty()) {
+			return null;
+		}
 		return this.sample.get(this.sample.size()-1);
 	}
 }

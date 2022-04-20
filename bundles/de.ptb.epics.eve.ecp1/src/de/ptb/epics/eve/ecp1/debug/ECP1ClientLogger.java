@@ -17,6 +17,7 @@ import de.ptb.epics.eve.ecp1.client.interfaces.IPauseStatusListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IPlayListController;
 import de.ptb.epics.eve.ecp1.client.interfaces.IPlayListListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IRequestListener;
+import de.ptb.epics.eve.ecp1.client.interfaces.ISimulationStatusListener;
 import de.ptb.epics.eve.ecp1.client.model.Error;
 import de.ptb.epics.eve.ecp1.client.model.MeasurementData;
 import de.ptb.epics.eve.ecp1.client.model.Request;
@@ -33,7 +34,7 @@ import de.ptb.epics.eve.ecp1.types.EngineStatus;
 public class ECP1ClientLogger implements IEngineStatusListener, IEngineVersionListener,
 		IChainStatusListener, IChainProgressListener, IErrorListener, IMeasurementDataListener,
 		IRequestListener, INewXMLFileListener, IConnectionStateListener,
-		IPlayListListener, IPauseStatusListener {
+		IPlayListListener, IPauseStatusListener, ISimulationStatusListener {
 	
 	private static final Logger LOGGER = Logger
 			.getLogger(ECP1ClientLogger.class.getName());
@@ -216,5 +217,15 @@ public class ECP1ClientLogger implements IEngineStatusListener, IEngineVersionLi
 				"\n | ChainId: " + pauseStatus.getChainId() +
 				"\n | Timestamp: " + formatter.format(calendar.getTime()) +
 				stati.toString());
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void simulationStatusChanged(boolean simulationButtonEnabled, boolean simulation) {
+		LOGGER.debug("Simulation Status:" +
+				" | SimulationButtonEnabled: " + simulationButtonEnabled + 
+				" | Simulation mode: " + simulation);
 	}
 }

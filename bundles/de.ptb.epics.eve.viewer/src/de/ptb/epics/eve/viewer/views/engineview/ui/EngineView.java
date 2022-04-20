@@ -56,9 +56,11 @@ import de.ptb.epics.eve.ecp1.client.interfaces.IErrorListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IPauseStatusListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IPlayListController;
 import de.ptb.epics.eve.ecp1.client.interfaces.IPlayListListener;
+import de.ptb.epics.eve.ecp1.client.interfaces.ISimulationStatusListener;
 import de.ptb.epics.eve.ecp1.client.model.Error;
 import de.ptb.epics.eve.ecp1.commands.ChainStatusCommand;
 import de.ptb.epics.eve.ecp1.commands.PauseStatusCommand;
+import de.ptb.epics.eve.ecp1.commands.SimulationCommand;
 import de.ptb.epics.eve.ecp1.types.ChainStatus;
 import de.ptb.epics.eve.ecp1.types.EngineStatus;
 import de.ptb.epics.eve.ecp1.types.ErrorType;
@@ -80,7 +82,7 @@ import de.ptb.epics.eve.viewer.views.messagesview.ViewerMessage;
  */
 public final class EngineView extends ViewPart implements IConnectionStateListener, IErrorListener,
 		IEngineVersionListener, IEngineStatusListener, IChainStatusListener, IPlayListListener, 
-		IPauseStatusListener, PropertyChangeListener {
+		IPauseStatusListener, PropertyChangeListener, ISimulationStatusListener {
 	public static final String REPEAT_COUNT_PROP = "repeatCount";
 	
 	/** the public identifier of the view */
@@ -92,6 +94,7 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 	private static final String ENGINE_GROUP_NOT_CONNECTED_LABEL = 
 			" Engine (not connected) ";
 	private static final String SCAN_GROUP_NO_SCAN_LABEL = " Scan ";
+	private static final String SCAN_GROUP_SIMULATION_LABEL = " Scan Simulation ";
 	private static final String FILENAME_LABEL = "Filename: ";
 	
 	private Composite top = null;
@@ -152,6 +155,8 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 	
 	private int playListSize;
 	private EngineStatus engineStatus;
+
+	private Button simulationCheckBox;
 	
 	/**
 	 * {@inheritDoc}
@@ -232,6 +237,20 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 		this.disconnectButton.setLayoutData(gridData);
 		this.disconnectButton.addSelectionListener(
 				new DisconnectButtonSelectionListener());
+		
+		simulationCheckBox = new Button(this.engineComposite, SWT.CHECK);
+		simulationCheckBox.setText("Simulation (setting for subsequent scans)");
+		gridData = new GridData();
+		gridData.horizontalSpan = 4;
+		simulationCheckBox.setLayoutData(gridData);
+		simulationCheckBox.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				SimulationCommand simulationCmd = new SimulationCommand(
+						simulationCheckBox.getSelection());
+				Activator.getDefault().getEcp1Client().addToOutQueue(simulationCmd);
+			}
+		});
 		
 		engineStatusGroup = new Group(top, SWT.SHADOW_IN);
 		engineStatusGroup.setText(" Engine State ");
@@ -519,6 +538,7 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 				addPlayListListener(this);
 		Activator.getDefault().getEcp1Client().addErrorListener(this);
 		Activator.getDefault().getEcp1Client().addConnectionStateListener(this);
+		Activator.getDefault().getEcp1Client().addSimulationStatusListener(this);
 
 		this.sc.setMinSize(this.top.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		
@@ -618,6 +638,8 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 								this.repeatCountText.setText(String.valueOf(
 										this.repeatCount));
 								
+								this.simulationCheckBox.setEnabled(true);
+								
 								this.engineStatusGroup.setEnabled(true);
 								this.statusGroupComposite.enable();
 								this.engineInhibitStateGroup.setEnabled(true);
@@ -634,6 +656,8 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 								this.repeatCountLabel.setEnabled(false);
 								this.repeatCountText.setText("");
 								this.repeatCountText.setEnabled(false);
+								
+								this.simulationCheckBox.setEnabled(false);
 								
 								this.engineStatusGroup.setEnabled(false);
 								this.statusGroupComposite.disable();
@@ -825,14 +849,26 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 				this.scanGroup.getDisplay().syncExec(new Runnable() {
 					@Override
 					public void run() {
-						scanGroup.setText(SCAN_GROUP_NO_SCAN_LABEL + "(" + xmlName + ") ");
+						if(Activator.getDefault().getEcp1Client().isSimulation()) {
+							scanGroup.setForeground(scanGroup.getDisplay().getSystemColor(SWT.COLOR_RED));
+							scanGroup.setText(SCAN_GROUP_SIMULATION_LABEL + "(" + xmlName + ") ");
+						} else {
+							scanGroup.setForeground(scanGroup.getDisplay().getSystemColor(SWT.COLOR_BLACK));
+							scanGroup.setText(SCAN_GROUP_NO_SCAN_LABEL + "(" + xmlName + ") ");
+						}
 					}
 				});
 			} else {
 				this.scanGroup.getDisplay().syncExec(new Runnable() {
 					@Override
 					public void run() {
-						scanGroup.setText(SCAN_GROUP_NO_SCAN_LABEL);
+						if(Activator.getDefault().getEcp1Client().isSimulation()) {
+							scanGroup.setForeground(scanGroup.getDisplay().getSystemColor(SWT.COLOR_RED));
+							scanGroup.setText(SCAN_GROUP_SIMULATION_LABEL);
+						} else {
+							scanGroup.setForeground(scanGroup.getDisplay().getSystemColor(SWT.COLOR_BLACK));
+							scanGroup.setText(SCAN_GROUP_NO_SCAN_LABEL);
+						}
 					}
 				});
 			}
@@ -1100,5 +1136,27 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 				.getVersion();
 		return platform.getMajor() == target.getMajor()
 				&& platform.getMinor() == target.getMinor();
+	}
+
+	@Override
+	public void simulationStatusChanged(final boolean simulationButtonEnabled, final boolean simulation) {
+		logger.debug("EngineView simulationChanged: button: " + 
+				simulationButtonEnabled + ", Sim " + simulation);
+		this.simulationCheckBox.getDisplay().asyncExec(new Runnable() {
+			
+			@Override
+			public void run() {
+				simulationCheckBox.setSelection(simulationButtonEnabled);
+				if (simulation) {
+					scanGroup.setForeground(scanGroup.getDisplay().
+							getSystemColor(SWT.COLOR_RED));
+				} else {
+					scanGroup.setForeground(scanGroup.getDisplay().
+							getSystemColor(SWT.COLOR_BLACK));
+				}
+			}
+		});
+		
+		
 	}
 }

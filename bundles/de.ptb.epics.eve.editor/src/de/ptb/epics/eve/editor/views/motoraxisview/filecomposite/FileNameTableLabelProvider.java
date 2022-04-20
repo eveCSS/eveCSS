@@ -39,12 +39,20 @@ public class FileNameTableLabelProvider implements ITableLabelProvider {
 			formatter.close();
 			return Long.toString(stats.getSampleSize());
 		case 1: // 1st
-			result = formatter.format(FORMATTER_STRING, 
+			if (stats.getFirstValue() != null) {
+				result = formatter.format(FORMATTER_STRING, 
 					stats.getFirstValue()).toString();
+			} else {
+				result = FileNameTableLabelProvider.NOT_AVAILABLE;
+			}
 			break;
 		case 2: // last
-			result = formatter.format(FORMATTER_STRING, 
+			if (stats.getLastValue() != null) {
+				result = formatter.format(FORMATTER_STRING, 
 					stats.getLastValue()).toString();
+			} else {
+				result = FileNameTableLabelProvider.NOT_AVAILABLE;
+			}
 			break;
 		case 3: // min
 			if (stats.getMinimum() != null) {
