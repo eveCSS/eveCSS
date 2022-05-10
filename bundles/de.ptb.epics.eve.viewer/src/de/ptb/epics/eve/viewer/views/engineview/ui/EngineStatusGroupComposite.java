@@ -7,6 +7,7 @@ import de.ptb.epics.eve.ecp1.commands.ChainStatusCommand;
 import de.ptb.epics.eve.ecp1.commands.PauseStatusCommand;
 import de.ptb.epics.eve.ecp1.types.EngineStatus;
 import de.ptb.epics.eve.ecp1.types.ScanModuleReason;
+import de.ptb.epics.eve.ecp1.types.ScanModuleStatus;
 
 /**
  * @author Marcus Michalsky
@@ -47,14 +48,8 @@ public class EngineStatusGroupComposite extends EngineGroupComposite {
 	public void setEngineStatus(EngineStatus engineStatus) {
 		switch (engineStatus) {
 		case EXECUTING:
-			this.setText("executing");
-			this.setFGColor(black);
-			this.setBGColor(green);
 			break;
 		case PAUSED:
-			this.setFGColor(black);
-			this.setText("paused");
-			this.setBGColor(yellow);
 			break;
 		case HALTED:
 		case IDLE_NO_XML_LOADED:
@@ -88,31 +83,38 @@ public class EngineStatusGroupComposite extends EngineGroupComposite {
 	 */
 	@Override
 	public void setChainStatus(ChainStatusCommand chainStatus) {
+		boolean allExecuting = true;
+		boolean smPaused = false;
+		boolean userPause = false;
+		
 		for (int i : chainStatus.getAllScanModuleIds()) {
-			switch (chainStatus.getScanModuleStatus(i)) {
-			case PAUSED:
-				if (chainStatus.getScanModuleReason(i).equals(
-						ScanModuleReason.CHAIN_PAUSE)) {
-					this.setFGColor(white);
-					this.setText("paused");
-					this.setBGColor(red);
-				}
-				break;
-			case EXECUTING:
-				this.setText("executing");
-				this.setFGColor(black);
-				this.setBGColor(green);
-				break;
-			case DONE:
-			case DONE_APPENDED:
-			case INITIALIZING:
-			case NOT_STARTED:
-			case TRIGGER_WAIT:
-			case UNKNOWN:
-			default:
-				break;
+			if (!chainStatus.getScanModuleStatus(i).equals(ScanModuleStatus.EXECUTING)) {
+				allExecuting = false;
+			}
+			if (chainStatus.getScanModuleStatus(i).equals(ScanModuleStatus.PAUSED)) {
+				smPaused = true;
+			}
+			if (chainStatus.getScanModuleReason(i).equals(ScanModuleReason.USER_PAUSE)) {
+				userPause = true;
 			}
 		}
+		
+		if (allExecuting) {
+			this.setText("executing");
+			this.setFGColor(black);
+			this.setBGColor(green);
+		}
+		if (smPaused && !userPause) {
+			this.setFGColor(white);
+			this.setText("paused");
+			this.setBGColor(red);
+		}
+		if (smPaused && userPause) {
+			this.setFGColor(black);
+			this.setText("paused");
+			this.setBGColor(yellow);
+		}
+		
 		this.layout();
 	}
 }
