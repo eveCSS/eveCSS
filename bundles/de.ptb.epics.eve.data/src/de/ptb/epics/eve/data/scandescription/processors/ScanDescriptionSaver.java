@@ -874,12 +874,12 @@ public class ScanDescriptionSaver implements
 	private boolean writeOption(final Option option) {
 		try {
 			this.atts.clear();
-			/*if (!option.getAutoAcquire().equals(AutoAcquireTypes.NO)) {
+			if (!option.getAutoAcquire().equals(AutoAcquireTypes.NO)) {
 				this.atts.addAttribute(Literals.EMPTY_STRING, 
 						Literals.XML_ATTRIBUTE_NAME_AUTOACQUIRE, 
 						Literals.XML_ATTRIBUTE_NAME_AUTOACQUIRE, 
 					Literals.CHARACTER_DATA, option.getAutoAcquire().toString());
-			}*/
+			}
 			this.contentHandler.startElement(Literals.EMPTY_STRING, Literals.XML_ELEMENT_NAME_OPTION,
 					Literals.XML_ELEMENT_NAME_OPTION, this.atts);
 
