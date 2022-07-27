@@ -7,56 +7,56 @@
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
-            <option>
-                <name>Lifetime</name>
+            <option autoacquire="measurement">
+                <name>lifeTime</name>
                 <id>${Prefix=""}${PV}.ELTM</id>
                 <value>
                     <access method="GETPUTCB" transport="ca" type="double">${PV}.ELTM</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
-            <option>
-                <name>Realtime</name>
+            <option autoacquire="measurement">
+                <name>realTime</name>
                 <id>${Prefix=""}${PV}.ERTM</id>
                 <value>
                     <access method="GETPUTCB" transport="ca" type="double">${PV}.ERTM</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
-            <option monitor="true">
-                <name>Preset Lifetime</name>
+            <option monitor="true" autoacquire="snapshot">
+                <name>prelifeTime</name>
                 <id>${Prefix=""}${PV}.PLTM</id>
                 <value>
                     <access method="GETPUTCB" transport="ca" type="double">${PV}.PLTM</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
-            <option monitor="true">
-                <name>Preset Realtime</name>
+            <option monitor="true" autoacquire="snapshot">
+                <name>prerealTime</name>
                 <id>${Prefix=""}${PV}.PRTM</id>
                 <value>
                     <access method="GETPUTCB" transport="ca" type="double">${PV}.PRTM</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
-            <option monitor="true">
-                <name>CAL O</name>
+            <option monitor="true" autoacquire="snapshot">
+                <name>CalO</name>
                 <id>${Prefix=""}${PV}.CALO</id>
                 <value>
                     <access method="GETPUTCB" transport="ca" type="double">${PV}.CALO</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
-            <option monitor="true">
-                <name>CAL S</name>
+            <option monitor="true" autoacquire="snapshot">
+                <name>CalS</name>
                 <id>${Prefix=""}${PV}.CALS</id>
                 <value>
                     <access method="GETPUTCB" transport="ca" type="double">${PV}.CALS</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
-            <option monitor="true">
-                <name>CAL Q</name>
+            <option monitor="true" autoacquire="snapshot">
+                <name>CalQ</name>
                 <id>${Prefix=""}${PV}.CALQ</id>
                 <value>
                     <access method="GETPUTCB" transport="ca" type="double">${PV}.CALQ</access>

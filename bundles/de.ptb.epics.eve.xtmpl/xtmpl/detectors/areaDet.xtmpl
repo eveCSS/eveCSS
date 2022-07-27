@@ -8,15 +8,15 @@
                 <value type="string">Done</value>
             </stop>
 			${includeFile}
-            <option monitor="true">
-                <name>Exposure time</name>
+            <option monitor="true" autoacquire="snapshot">
+                <name>ExposureTime</name>
                 <id>${PV}Time</id>
                 <value>
                     <access method="GETPUTCB" transport="ca" type="double">${PV}AcquireTime</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
-            <option monitor="true">
+            <option monitor="true" autoacquire="snapshot">
                 <name>Temperature</name>
                 <id>${PV}Temperature</id>
                 <value>

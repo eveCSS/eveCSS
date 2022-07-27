@@ -1,0 +1,75 @@
+            <!-- channel for area Detecor -->
+            <channel deferred="true" saveValue="false">
+                <class>${Ch_Class=""}</class>
+                <name>${Name=""}</name>
+                <id>${PV}Total_RBV</id>
+                <read>
+                    <access monitor="false" method="${Method=GETCB}" transport="ca" type="${Type=double}">${PV}Total_RBV</access>
+                </read>
+            	<option autoacquire="measurement">
+                	<name>Min</name>
+                	<id>${PV}Min</id>
+                	<value>
+                    	<access method="GETPUTCB" transport="ca" type="string">${PV}MinValue_RBV</access>
+                	</value>
+                	<displaygroup>detail</displaygroup>
+            	</option>
+                <option autoacquire="measurement">
+                    <name>Max</name>
+                    <id>${PV}Max</id>
+                    <value>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}MaxValue_RBV</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option autoacquire="measurement">
+                    <name>Xpos</name>
+                    <id>${PV}Xpos</id>
+                    <value>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}CentroidX_RBV</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option autoacquire="measurement">
+                    <name>Ypos</name>
+                    <id>${PV}Ypos</id>
+                    <value>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}CentroidY_RBV</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option autoacquire="measurement">
+                    <name>SigmaX</name>
+                    <id>${PV}SigmaX</id>
+                    <value>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}SigmaX_RBV</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option autoacquire="measurement">
+                    <name>SigmaY</name>
+                    <id>${PV}SigmaY</id>
+                    <value>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}SigmaY_RBV</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>Severity</name>
+                    <id>${PV}Total_RBV.SEVR</id>
+                    <value>
+                        <access method="GETCB" monitor="true" transport="ca" type="string">${PV}Total_RBV.SEVR</access>
+                        <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>Status</name>
+                    <id>${PV}Total_RBV.STAT</id>
+                    <value>
+                        <access method="GETCB" monitor="true" transport="ca" type="string">${PV}Total_RBV.STAT</access>
+                        <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+            </channel>

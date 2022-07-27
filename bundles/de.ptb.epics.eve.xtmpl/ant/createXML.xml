@@ -20,6 +20,7 @@
 		<antcall target="id13" />
 		<antcall target="idb" />
 		<antcall target="kmc" />
+		<antcall target="mifo" />
 		<antcall target="pgm" />
 		<antcall target="qmp_mls" />
 		<antcall target="qnim" />
@@ -28,9 +29,11 @@
 		<antcall target="sx700" />
 		<antcall target="test" />
 		<antcall target="thz" />
+		<antcall target="vuvr" />
 		<antcall target="white" />
 		<antcall target="xpbf2" />
 		<antcall target="xrf" />
+		<antcall target="x-test" />
 
 		<echo message="creation instruments" />
 		<antcall target="akman" />
@@ -230,6 +233,13 @@
 		</antcall>
 	</target>
 	
+	<target name="mifo">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="mifo" />
+			<param name="station.type" value="station" />
+		</antcall>
+	</target>
+
 	<target name="mimo">
 		<antcall target="-xmlmsi">
 			<param name="eve_location" value="mimo" />
@@ -384,6 +394,13 @@
 		</antcall>
 	</target>
 
+	<target name="vuvr">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="vuvr" />
+			<param name="station.type" value="station" />
+		</antcall>
+	</target>
+
 	<target name="vuvref">
 		<antcall target="-xmlmsi">
 			<param name="eve_location" value="vuvref" />
@@ -415,6 +432,13 @@
 	<target name="xrf">
 		<antcall target="-xmlmsi">
 			<param name="eve_location" value="xrf" />
+			<param name="station.type" value="station" />
+		</antcall>
+	</target>
+
+	<target name="x-test">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="x-test" />
 			<param name="station.type" value="station" />
 		</antcall>
 	</target>

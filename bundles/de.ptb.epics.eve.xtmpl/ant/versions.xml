@@ -13,6 +13,7 @@
 		<loadfile property="id13" srcFile="/messung/id13/eve/version.txt"/>
 		<loadfile property="idb" srcFile="/messung/idb/eve/version.txt"/>
 		<loadfile property="kmc" srcFile="/messung/kmc/eve/version.txt"/>
+		<loadfile property="mifo" srcFile="/messung/mifo/eve/version.txt"/>
 		<loadfile property="pgm" srcFile="/messung/pgm/eve/version.txt"/>
 		<loadfile property="qmp_mls" srcFile="/messung/qmp_mls/eve/version.txt"/>
 		<loadfile property="qnim" srcFile="/messung/qnim/eve/version.txt"/>
@@ -20,8 +21,10 @@
 		<loadfile property="sx700" srcFile="/messung/sx700/eve/version.txt"/>
 		<loadfile property="test" srcFile="/messung/test/eve/version.txt"/>
 		<loadfile property="thz" srcFile="/messung/thz/eve/version.txt"/>
+		<loadfile property="vuvr" srcFile="/messung/vuvr/eve/version.txt"/>
 		<loadfile property="white" srcFile="/messung/white/eve/version.txt"/>
 		<loadfile property="xpbf2" srcFile="/messung/xpbf2/eve/version.txt"/>
+		<loadfile property="x-test" srcFile="/messung/x-test/eve/version.txt"/>
 		
 		<loadfile property="akman" srcFile="/messung/instruments/akman/eve/version.txt"/>
 		<loadfile property="allDevices" srcFile="/messung/instruments/allDevices/eve/version.txt"/>
@@ -63,6 +66,7 @@
 		<echo message="id13:                ${id13}" />
 		<echo message="idb:                 ${idb}" />
 		<echo message="kmc:                 ${kmc}" />
+		<echo message="mifo:                ${mifo}" />
 		<echo message="pgm:                 ${pgm}" />
 		<echo message="qmp_mls:             ${qmp_mls}" />
 		<echo message="qnim:                ${qnim}" />
@@ -70,8 +74,10 @@
 		<echo message="sx700:               ${sx700}" />
 		<echo message="test:                ${test}" />
 		<echo message="thz:                 ${thz}" />
+		<echo message="vuvr:                ${vuvr}" />
 		<echo message="white:               ${white}" />
 		<echo message="xpbf2:               ${xpbf2}" />
+		<echo message="x-test:              ${x-test}" />
 		<echo message=" ${line.separator}" />
 		<echo message="akman:               ${akman}" />
 		<echo message="allDevices:          ${allDevices}" />

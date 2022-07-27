@@ -1,0 +1,121 @@
+            <!-- file number channel for area detector -->
+            <channel saveValue="false">
+                <class>${Ch_Class=""}</class>
+                <name>${Name=""}</name>
+                <id>${PV}chan1</id>
+                <read>
+                    <access monitor="true" method="${Method=GETCB}" transport="ca" type="double">${PV}lastFileNr</access>
+                </read>
+            	<trigger>
+                   <access method="PUTCB" transport="ca" type="int" timeout="${Timeout=5000.0}">${Trigger=${PV}Acquire}</access>
+                   <value type="int">1</value>
+            	</trigger>
+                <option>
+                    <name>Filepath</name>
+                    <id>${PV}FilePath</id>
+                    <value>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}FilePath {"longString":true}</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>Filename</name>
+                    <id>${PV}FileName</id>
+                    <value>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}FileName {"longString":true}</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>Filenumber</name>
+                    <id>${PV}FileNumber</id>
+                    <value>
+                        <access method="GETPUTCB" transport="ca" type="int">${PV}FileNumber</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option autoacquire="measurement">
+                    <name>FullFilename</name>
+                    <id>${PV}FullFileName</id>
+                    <value>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}FullFileName_RBV {"longString":true}</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option autoacquire="snapshot">
+                    <name>GainMode</name>
+                    <id>${PV}GainMode</id>
+                    <value>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}GainMenu</access>
+                        <value type="string">7-30KeV/Fast/LowG;5-18KeV/Med/MedG;3-6KeV/Slow/HighG;2-5KeV/Slow/UltraG</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option autoacquire="snapshot">
+                    <name>Temp0</name>
+                    <id>${PV}Temp0_RBV</id>
+                    <value>
+                        <access method="GETPUTCB" transport="ca" type="double">${PV}Temp0_RBV</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option autoacquire="snapshot">
+                    <name>Temp1</name>
+                    <id>${PV}Temp1_RBV</id>
+                    <value>
+                        <access method="GETPUTCB" transport="ca" type="double">${PV}Temp1_RBV</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option autoacquire="snapshot">
+                    <name>Temp2</name>
+                    <id>${PV}Temp2_RBV</id>
+                    <value>
+                        <access method="GETPUTCB" transport="ca" type="double">${PV}Temp2_RBV</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option autoacquire="snapshot">
+                    <name>Humid0</name>
+                    <id>${PV}Humid0_RBV</id>
+                    <value>
+                        <access method="GETPUTCB" transport="ca" type="double">${PV}Humid0_RBV</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option autoacquire="snapshot">
+                    <name>Humid1</name>
+                    <id>${PV}Humid1_RBV</id>
+                    <value>
+                        <access method="GETPUTCB" transport="ca" type="double">${PV}Humid1_RBV</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option autoacquire="snapshot">
+                    <name>Humid2</name>
+                    <id>${PV}Humid2_RBV</id>
+                    <value>
+                        <access method="GETPUTCB" transport="ca" type="double">${PV}Humid2_RBV</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>Severity</name>
+                    <id>${PV}FileNumber_RBV.SEVR</id>
+                    <value>
+                        <access method="GETCB" monitor="true" transport="ca" type="string">${PV}FileNumber_RBV.SEVR</access>
+                        <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>Status</name>
+                    <id>${PV}FileNumber_RBV.STAT</id>
+                    <value>
+                        <access method="GETCB" monitor="true" transport="ca" type="string">${PV}FileNumber_RBV.STAT</access>
+                        <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+            </channel>
+            

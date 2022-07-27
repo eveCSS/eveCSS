@@ -4,7 +4,7 @@
                 <name>${Name=""}</name>
                 <id>${PV}</id>
                 include "channel_read_ohne_val_monitor_false_part.xtmpl"
-            	<option>
+            	<option autoacquire="snapshot">
                 	<name>Label</name>
                 	<id>${PV}NM</id>
                 	<value>
@@ -12,7 +12,7 @@
                 	</value>
                 	<displaygroup>detail</displaygroup>
             	</option>
-	            <option monitor="true">
+	            <option monitor="true" autoacquire="snapshot">
     	            <name>leftMarker</name>
         	        <id>${PV}LO</id>
             	    <value>
@@ -20,7 +20,7 @@
                 	</value>
                 	<displaygroup>detail</displaygroup>
             	</option>
-	            <option monitor="true">
+	            <option monitor="true" autoacquire="snapshot">
     	            <name>rightMarker</name>
         	        <id>${PV}HI</id>
             	    <value>

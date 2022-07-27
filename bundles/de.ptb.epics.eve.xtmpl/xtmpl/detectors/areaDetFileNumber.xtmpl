@@ -18,7 +18,7 @@
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
-                <option>
+                <option autoacquire="measurement">
                     <name>Filename</name>
                     <id>Det${PV}FileName</id>
                     <value>
@@ -31,6 +31,14 @@
                     <id>Det${PV}FileNumber</id>
                     <value>
                         <access method="GETPUTCB" transport="ca" type="string">${PV}FileNumber</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option autoacquire="measurement">
+                    <name>Tiff</name>
+                    <id>Det${PV}Tiff</id>
+                    <value>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}lastFileNr</access>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
