@@ -3,24 +3,20 @@
             <class>${Class=""}</class>
             <name>${Name=""}</name>
             <id>${PV}</id>
+          	<trigger>
+               <access method="PUTCB" transport="ca" type="int" timeout="${Timeout=5000.0}">${Trigger=${PV}Acquire}</access>
+               <value type="int">1</value>
+           	</trigger>
             <stop>
                 <access method="GETPUTCB" transport="ca" type="string">${PV}Acquire</access>
                 <value type="string">Done</value>
             </stop>
 			${includeFile}
-            <option monitor="true" autoacquire="snapshot">
+            <option autoacquire="measurement">
                 <name>ExposureTime</name>
                 <id>${PV}Time</id>
                 <value>
                     <access method="GETPUTCB" transport="ca" type="double">${PV}AcquireTime</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option monitor="true" autoacquire="snapshot">
-                <name>Temperature</name>
-                <id>${PV}Temperature</id>
-                <value>
-                    <access method="GETPUTCB" transport="ca" type="double">${PV}Temperature</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -32,6 +28,64 @@
                     <value type="string">Done,Acquire</value>
                 </value>
                 <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true" autoacquire="snapshot">
+   	            <name>Temperature</name>
+       	        <id>${PV}Temperature</id>
+           	    <value>
+                   	<access method="GETPUTCB" transport="ca" type="double">${PV}Temperature</access>
+               	</value>
+   	            <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true" autoacquire="snapshot">
+   	            <name>TemperatureActual</name>
+       	        <id>${PV}TemperatureActual</id>
+           	    <value>
+               	    <access method="GETCB" transport="ca" type="double">${PV}TemperatureActual</access>
+       	        </value>
+   	            <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true" autoacquire="measurement">
+                <name>AcquireTime</name>
+                <id>${PV}AcquireTime_RBV</id>
+                <value>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}AcquireTime_RBV</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option autoacquire="measurement">
+                <name>ReverseX</name>
+                <id>${PV}ReverseX_RBV</id>
+                <value>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}ReverseX_RBV</access>
+                    <value type="string">No,Yes</value>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option autoacquire="measurement">
+                <name>ReverseY</name>
+                <id>${PV}ReverseY_RBV</id>
+                <value>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}ReverseY_RBV</access>
+                    <value type="string">No,Yes</value>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option autoacquire="measurement">
+   	            <name>Gain</name>
+       	        <id>${PV}Gain_RBV</id>
+           	    <value>
+               	    <access method="GETCB" transport="ca" type="double">${PV}Gain_RBV</access>
+       	        </value>
+   	            <displaygroup>detail</displaygroup>
+            </option>
+            <option autoacquire="measurement">
+   	            <name>TemperatureRBV</name>
+       	        <id>${PV}Temperature_RBV</id>
+           	    <value>
+               	    <access method="GETCB" transport="ca" type="double">${PV}Temperature_RBV</access>
+       	        </value>
+   	            <displaygroup>detail</displaygroup>
             </option>
             <option>
                 <name>Severity</name>

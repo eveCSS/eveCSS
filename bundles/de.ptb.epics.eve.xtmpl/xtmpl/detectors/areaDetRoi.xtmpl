@@ -1,0 +1,51 @@
+            <!-- channel to read ROI PV's of an area Detecor -->
+            <channel deferred="true" saveValue="false">
+                <class>${Ch_Class=""}</class>
+                <name>${Name=""}</name>
+                <id>${PV}MinX_RBV</id>
+                <read>
+                    <access monitor="false" method="${Method=GETCB}" transport="ca" type="${Type=int}">${PV}MinX_RBV</access>
+                </read>
+            	<option autoacquire="measurement">
+                	<name>MinY</name>
+                	<id>${PV}MinY_RBV</id>
+                	<value>
+                    	<access method="GETPUTCB" transport="ca" type="int">${PV}MinY_RBV</access>
+                	</value>
+                	<displaygroup>detail</displaygroup>
+            	</option>
+            	<option autoacquire="measurement">
+                	<name>SizeX</name>
+                	<id>${PV}SizeX_RBV</id>
+                	<value>
+                    	<access method="GETPUTCB" transport="ca" type="int">${PV}SizeX_RBV</access>
+                	</value>
+                	<displaygroup>detail</displaygroup>
+            	</option>
+            	<option autoacquire="measurement">
+                	<name>SizeY</name>
+                	<id>${PV}SizeY_RBV</id>
+                	<value>
+                    	<access method="GETPUTCB" transport="ca" type="int">${PV}SizeY_RBV</access>
+                	</value>
+                	<displaygroup>detail</displaygroup>
+            	</option>
+                <option>
+                    <name>Severity</name>
+                    <id>${PV}MinX_RBV.SEVR</id>
+                    <value>
+                        <access method="GETCB" monitor="true" transport="ca" type="string">${PV}MinX_RBV.SEVR</access>
+                        <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>Status</name>
+                    <id>${PV}MinX_RBV.STAT</id>
+                    <value>
+                        <access method="GETCB" monitor="true" transport="ca" type="string">${PV}MinX_RBV.STAT</access>
+                        <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+            </channel>

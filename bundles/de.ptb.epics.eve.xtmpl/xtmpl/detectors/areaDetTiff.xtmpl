@@ -1,0 +1,51 @@
+            <!-- channel to read TIFF1 PV's of an area Detecor -->
+            <channel deferred="true" saveValue="false">
+                <class>${Ch_Class=""}</class>
+                <name>${Name=""}</name>
+                <id>${PV}chan1</id>
+                <read>
+     			   <access monitor="true" method="${Method=GETCB}" transport="ca" type="string">${PV}FullFileName_RBV {"longString":true}</access>
+                </read>
+                <option>
+                    <name>FilePath</name>
+                    <id>Det${PV}FilePath</id>
+                    <value>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}FilePath {"longString":true}</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option autoacquire="measurement">
+                    <name>FileName</name>
+                    <id>Det${PV}FileName</id>
+                    <value>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}FileName {"longString":true}</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option autoacquire="measurement">
+                    <name>FileNumber</name>
+                    <id>Det${PV}FileNumber</id>
+                    <value>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}FileNumber</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>Severity</name>
+                    <id>${PV}FullFileName_RBV.SEVR</id>
+                    <value>
+                        <access method="GETCB" monitor="true" transport="ca" type="string">${PV}FullFileName_RBV.SEVR</access>
+                    	<value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>Status</name>
+                    <id>${PV}FullFileName_RBV.STAT</id>
+                    <value>
+                        <access method="GETCB" monitor="true" transport="ca" type="string">${PV}FullFileName_RBV.STAT</access>
+                        <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+            </channel>
