@@ -31,7 +31,7 @@
                     <displaygroup>detail</displaygroup>
                 </option>
                 <option autoacquire="measurement">
-                    <name>FullFilename</name>
+                    <name>FullFileName</name>
                     <id>${PV}FullFileName</id>
                     <value>
                         <access method="GETPUTCB" transport="ca" type="string">${PV}FullFileName_RBV {"longString":true}</access>
