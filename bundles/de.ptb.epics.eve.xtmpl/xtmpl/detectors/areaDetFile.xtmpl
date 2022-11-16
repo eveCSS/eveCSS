@@ -1,5 +1,5 @@
-            <!-- channel to read TIFF1 PV's of an area Detecor -->
-            <channel deferred="false" saveValue="false">
+            <!-- channel for area Detector to trigger and read File PV's -->
+            <channel saveValue="false">
                 <class>${Ch_Class=""}</class>
                 <name>${Name=""}</name>
                 <id>${PV}chan1</id>
@@ -30,15 +30,7 @@
                     <name>FileNumber</name>
                     <id>Det${PV}FileNumber</id>
                     <value>
-                        <access method="GETPUTCB" transport="ca" type="int">${PV}FileNumber</access>
-                    </value>
-                    <displaygroup>detail</displaygroup>
-                </option>
-                <option autoacquire="measurement">
-                    <name>FileNumberRBV</name>
-                    <id>Det${PV}FileNumber_RBV</id>
-                    <value>
-                        <access method="GETCB" transport="ca" type="int">${PV}FileNumber_RBV</access>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}FileNumber</access>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
@@ -47,7 +39,7 @@
                     <id>${PV}FullFileName_RBV.SEVR</id>
                     <value>
                         <access method="GETCB" monitor="true" transport="ca" type="string">${PV}FullFileName_RBV.SEVR</access>
-                    	<value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
+                        <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>

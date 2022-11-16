@@ -1,0 +1,116 @@
+        <!-- uvc detector -->
+        <detector>
+            <class>${Class=""}</class>
+            <name>${Name=""}</name>
+            <id>${PV}uvc</id>
+            <channel saveValue="false">
+                <class>${Ch_Class=""}</class>
+                <name>${Name=""}</name>
+                <id>${PV}FullFileName</id>
+                <read>
+                    <access monitor="true" method="${Method=GETCB}" transport="ca" type="${Type=string}">${PV}FullFileName_RBV {"longString":true}</access>
+				</read>
+				<trigger>
+					<access method="PUTCB" transport="ca" type="int" timeout="${Timeout=50000.0}">${PV}Acquire</access>
+					<value type="int">1</value>
+				</trigger>
+                <option autoacquire="measurement">
+                	<name>BeamX</name>
+                    <id>${PV}BeamX</id>
+                	<value>
+                    	<access method="GETPUTCB" transport="ca" type="double">${PV}BeamX</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option autoacquire="measurement">
+                	<name>BeamY</name>
+                    <id>${PV}BeamY</id>
+                	<value>
+                    	<access method="GETPUTCB" transport="ca" type="double">${PV}BeamY</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option autoacquire="measurement">
+                	<name>FileNumberRBV</name>
+                    <id>${PV}FileNumber_RBV</id>
+                	<value>
+                    	<access method="GETPUTCB" transport="ca" type="int">${PV}FileNumber_RBV</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+				<option>
+                    <name>FractionalXPosition</name>
+                    <id>${PV}BeamXfrac</id>
+                    <value>
+                        <access method="GETPUTCB" transport="ca" type="double">${PV}BeamXfrac</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+				<option>
+                    <name>FractionalYPosition</name>
+                    <id>${PV}BeamYfrac</id>
+                    <value>
+                        <access method="GETPUTCB" transport="ca" type="double">${PV}BeamYfrac</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                	<name>Skip Frames</name>
+                    <id>${PV}SkipFrames</id>
+                	<value>
+                    	<access method="GETPUTCB" transport="ca" type="int">${PV}SkipFrames</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                	<name>Average Frames</name>
+                    <id>${PV}AvgFrames</id>
+                	<value>
+                    	<access method="GETPUTCB" transport="ca" type="int">${PV}AvgFrames</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>FileTemplate</name>
+                    <id>${PV}FileTemplate</id>
+                    <value>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}FileTemplate {"longString":true}</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>FileName</name>
+                    <id>${PV}FileName</id>
+                    <value>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}FileName {"longString":true}</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>FilePath</name>
+                    <id>${PV}FilePath</id>
+                    <value>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}FilePath {"longString":true}</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>Severity</name>
+                    <id>${PV}FullFileName_RBV.SEVR</id>
+                    <value>
+                        <access method="GETCB" monitor="true" transport="ca" type="string">${PV}FullFileName_RBV.SEVR</access>
+                        <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>Status</name>
+                    <id>${PV}FullFileName_RBV.STAT</id>
+                    <value>
+                        <access method="GETCB" monitor="true" transport="ca" type="string">${PV}FullFileName_RBV.STAT</access>
+                        <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+			</channel>
+         </detector>

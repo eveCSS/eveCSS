@@ -1,4 +1,4 @@
-        <!-- areaDetector (must include at least one of areaDetector or areaDetChannel-->
+        <!-- areaDetector (must include at least one of areaDetCam, areaDetTiff or pilatus-->
         <detector>
             <class>${Class=""}</class>
             <name>${Name=""}</name>
@@ -41,7 +41,7 @@
        	        </value>
    	            <displaygroup>detail</displaygroup>
             </option>
-            <option monitor="true" autoacquire="measurement">
+            <option autoacquire="measurement">
                 <name>AcquireTime</name>
                 <id>${PV}AcquireTime_RBV</id>
                 <value>
@@ -49,7 +49,7 @@
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
-            <option autoacquire="measurement">
+            <option monitor="true" autoacquire="snapshot">
                 <name>ReverseX</name>
                 <id>${PV}ReverseX_RBV</id>
                 <value>
@@ -58,7 +58,7 @@
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
-            <option autoacquire="measurement">
+            <option monitor="true" autoacquire="snapshot">
                 <name>ReverseY</name>
                 <id>${PV}ReverseY_RBV</id>
                 <value>

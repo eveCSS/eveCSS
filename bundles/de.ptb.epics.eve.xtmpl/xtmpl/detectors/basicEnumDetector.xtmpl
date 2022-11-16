@@ -12,4 +12,3 @@
                 include "channel_option_part.xtmpl"
             </channel>
         </detector>
-

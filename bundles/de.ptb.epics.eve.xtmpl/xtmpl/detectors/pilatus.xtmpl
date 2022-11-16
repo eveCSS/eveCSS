@@ -1,4 +1,4 @@
-            <!-- file number channel for area detector -->
+            <!-- channel for area Detector to read pilatus PV's -->
             <channel saveValue="false">
                 <class>${Ch_Class=""}</class>
                 <name>${Name=""}</name>
@@ -42,7 +42,7 @@
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
-                <option autoacquire="snapshot">
+                <option autoacquire="measurement">
                     <name>GainMode</name>
                     <id>${PV}GainMode</id>
                     <value>
@@ -101,21 +101,21 @@
                 </option>
                 <option>
                     <name>Severity</name>
-                    <id>${PV}FileNumber_RBV.SEVR</id>
+                    <id>${PV}lastFileNr.SEVR</id>
                     <value>
-                        <access method="GETCB" monitor="true" transport="ca" type="string">${PV}FileNumber_RBV.SEVR</access>
+                        <access method="GETCB" monitor="true" transport="ca" type="string">${PV}lastFileNr.SEVR</access>
                         <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
                 <option>
                     <name>Status</name>
-                    <id>${PV}FileNumber_RBV.STAT</id>
+                    <id>${PV}lastFileNr.STAT</id>
                     <value>
-                        <access method="GETCB" monitor="true" transport="ca" type="string">${PV}FileNumber_RBV.STAT</access>
+                        <access method="GETCB" monitor="true" transport="ca" type="string">${PV}lastFileNr.STAT</access>
                         <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
             </channel>
-            
+   

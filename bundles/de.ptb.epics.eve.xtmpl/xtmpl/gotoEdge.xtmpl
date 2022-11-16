@@ -1,6 +1,6 @@
         <!-- positioning plugin goto edge-->
-	<plugin type="postscanpositioning">
-		<name>EDGE</name>
-		<location>/path/to/plugin3</location>
-		<parameter name="number from left" datatype="int" default="1" mandatory="false"></parameter>
-	</plugin>
+		<plugin type="postscanpositioning">
+			<name>EDGE</name>
+			<location>/path/to/plugin3</location>
+			<parameter name="number from left" datatype="int" default="1" mandatory="false"></parameter>
+		</plugin>

@@ -1,6 +1,6 @@
         <!-- positioning plugin goto center-->
-	<plugin type="postscanpositioning">
-		<name>CENTER</name>
-		<location>/path/to/plugin3</location>
-		<parameter name="threshold" datatype="double" default="50" mandatory="false"></parameter>
-	</plugin>
+		<plugin type="postscanpositioning">
+			<name>CENTER</name>
+			<location>/path/to/plugin3</location>
+			<parameter name="threshold" datatype="double" default="50" mandatory="false"></parameter>
+		</plugin>
