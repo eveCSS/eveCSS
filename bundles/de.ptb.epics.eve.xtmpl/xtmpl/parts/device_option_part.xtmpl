@@ -27,7 +27,7 @@
                     <name>High / s</name>
                     <id>${PV}.HIGH</id>
                     <value>
-                        <access method="GETPUTCB" type="double" transport="ca">${PV}_Mnu.HIGH</access>
+                        <access method="GETPUTCB" type="double" transport="ca">${PV}.HIGH</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
