@@ -2,6 +2,8 @@ h1(eveTopic). What's New Archive (EVE)
 
 p(backToTop). "back to What's New":whatsnew.html
 
+h2(eveTopic). Version 1.37.0 (2022-05-12)
+
 h2(eveTopic). Version 1.36.0 (2021-11-05)
 
 * [Feature-#6297] Help topics haven been reorganized. All topics concerning EVE are now reachable from the root and are no longer inside the CSS Applications topic:
