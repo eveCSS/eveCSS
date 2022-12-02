@@ -2,10 +2,18 @@
             <channel deferred="true" saveValue="false">
                 <class>${Ch_Class=""}</class>
                 <name>${Name=""}</name>
-                <id>${PV}MinX_RBV</id>
+                <id>${PV}chan1</id>
                 <read>
                     <access monitor="false" method="${Method=GETCB}" transport="ca" type="${Type=int}">${PV}MinX_RBV</access>
                 </read>
+            	<option>
+                	<name>MinX</name>
+                	<id>${PV}MinX_RBV</id>
+                	<value>
+                    	<access method="GETPUTCB" transport="ca" type="int">${PV}MinX_RBV</access>
+                	</value>
+                	<displaygroup>detail</displaygroup>
+            	</option>
             	<option autoacquire="measurement">
                 	<name>MinY</name>
                 	<id>${PV}MinY_RBV</id>

@@ -1,6 +1,6 @@
 h1(eveTopic). What's New in EVE
 
-h2(eveTopic). Version 1.38.0 (2022-11-29)
+h2(eveTopic). Version 1.38.0 (2022-12-02)
 
 * [Feature-#4771] automtic reading and writing of detector properties. To use this feature, use the modified template File @areaDet.xtmpl@ and the new template files @areaDetCam.xtmpl@, @areaDetTiff.xtmpl@, @pilatus.xtmpl@, @areaDetStats.xtmpl@ and @areaDetRoi.xtmpl@
 

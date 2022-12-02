@@ -34,6 +34,14 @@
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
+                <option>
+                    <name>LastFileNumber</name>
+                    <id>${PV}lastFileNr</id>
+                    <value>
+                        <access method="GETPUTCB" transport="ca" type="int">${PV}lastFileNr</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
                 <option autoacquire="measurement">
                     <name>FullFileName</name>
                     <id>${PV}FullFileName</id>
