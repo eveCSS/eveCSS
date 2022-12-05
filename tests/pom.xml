@@ -3,13 +3,13 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.ptb.epics.eve</groupId>
     <artifactId>de.ptb.epics.eve.tests</artifactId>
-    <version>1.37.0</version>
+    <version>1.38.0</version>
     <packaging>pom</packaging>
 
     <parent>
         <groupId>de.ptb.epics.eve</groupId>
         <artifactId>de.ptb.epics.eve.root</artifactId>
-        <version>1.37.0</version>
+        <version>1.38.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
