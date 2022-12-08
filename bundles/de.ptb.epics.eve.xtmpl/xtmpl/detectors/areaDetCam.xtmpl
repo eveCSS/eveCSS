@@ -35,6 +35,14 @@
                     <displaygroup>detail</displaygroup>
                 </option>
                 <option>
+                    <name>FullFileName</name>
+                    <id>Det${PV}FullFileName</id>
+                    <value>
+                        <access method="GETPUTCB" transport="ca" type="string">${PV}FullFileName_RBV {"longString":true}</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
                     <name>Severity</name>
                     <id>${PV}FullFileName_RBV.SEVR</id>
                     <value>

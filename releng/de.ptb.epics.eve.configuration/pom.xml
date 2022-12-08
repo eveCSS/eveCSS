@@ -53,7 +53,7 @@
    	<version>3.2.0</version>
    	<configuration>
    		<additionalparam>-Xdoclint:all</additionalparam>
-   		<doctitle><![CDATA[<h1>eveCSS 1.37</h1>]]></doctitle>
+   		<doctitle><![CDATA[<h1>eveCSS 1.38</h1>]]></doctitle>
    		<windowtitle>eveCSS API</windowtitle>
    		<failOnError>false</failOnError>
    		<groups>

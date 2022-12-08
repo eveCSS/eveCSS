@@ -62,6 +62,14 @@
                 	</value>
                 	<displaygroup>detail</displaygroup>
             	</option>
+            	<option>
+                	<name>Net</name>
+                	<id>${PV}Net_RBV</id>
+                	<value>
+                    	<access method="GETPUTCB" transport="ca" type="double">${PV}Net_RBV</access>
+                	</value>
+                	<displaygroup>detail</displaygroup>
+            	</option>
             	<option autoacquire="measurement">
                 	<name>Mean</name>
                 	<id>${PV}MeanValue_RBV</id>
