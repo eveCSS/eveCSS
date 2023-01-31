@@ -86,7 +86,7 @@ public class EngineStopped extends AbstractEngineState {
 	 */
 	@Override
 	public boolean isHalt() {
-		return false;
+		return true;
 	}
 
 	/**

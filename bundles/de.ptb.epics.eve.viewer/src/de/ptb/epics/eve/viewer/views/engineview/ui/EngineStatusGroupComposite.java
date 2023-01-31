@@ -6,8 +6,6 @@ import org.eclipse.swt.widgets.Composite;
 import de.ptb.epics.eve.ecp1.commands.ChainStatusCommand;
 import de.ptb.epics.eve.ecp1.commands.PauseStatusCommand;
 import de.ptb.epics.eve.ecp1.types.EngineStatus;
-import de.ptb.epics.eve.ecp1.types.ScanModuleReason;
-import de.ptb.epics.eve.ecp1.types.ScanModuleStatus;
 
 /**
  * @author Marcus Michalsky
@@ -48,8 +46,21 @@ public class EngineStatusGroupComposite extends EngineGroupComposite {
 	public void setEngineStatus(EngineStatus engineStatus) {
 		switch (engineStatus) {
 		case EXECUTING:
+			this.setText("executing");
+			this.setFGColor(black);
+			this.setBGColor(green);
 			break;
 		case PAUSED:
+			break;
+		case GUI_PAUSE:
+			this.setFGColor(black);
+			this.setText("paused");
+			this.setBGColor(yellow);
+			break;
+		case CHAIN_PAUSE:
+			this.setFGColor(white);
+			this.setText("paused");
+			this.setBGColor(red);
 			break;
 		case HALTED:
 		case IDLE_NO_XML_LOADED:
@@ -83,38 +94,6 @@ public class EngineStatusGroupComposite extends EngineGroupComposite {
 	 */
 	@Override
 	public void setChainStatus(ChainStatusCommand chainStatus) {
-		boolean allExecuting = true;
-		boolean smPaused = false;
-		boolean userPause = false;
-		
-		for (int i : chainStatus.getAllScanModuleIds()) {
-			if (!chainStatus.getScanModuleStatus(i).equals(ScanModuleStatus.EXECUTING)) {
-				allExecuting = false;
-			}
-			if (chainStatus.getScanModuleStatus(i).equals(ScanModuleStatus.PAUSED)) {
-				smPaused = true;
-			}
-			if (chainStatus.getScanModuleReason(i).equals(ScanModuleReason.USER_PAUSE)) {
-				userPause = true;
-			}
-		}
-		
-		if (allExecuting) {
-			this.setText("executing");
-			this.setFGColor(black);
-			this.setBGColor(green);
-		}
-		if (smPaused && !userPause) {
-			this.setFGColor(white);
-			this.setText("paused");
-			this.setBGColor(red);
-		}
-		if (smPaused && userPause) {
-			this.setFGColor(black);
-			this.setText("paused");
-			this.setBGColor(yellow);
-		}
-		
-		this.layout();
+		// not interested (anymore since 1.38 bugfix) -> nothing to do
 	}
 }
