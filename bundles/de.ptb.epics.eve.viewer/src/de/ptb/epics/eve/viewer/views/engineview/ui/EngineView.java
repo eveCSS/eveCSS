@@ -666,6 +666,7 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 								
 								this.scanGroup.setText(SCAN_GROUP_NO_SCAN_LABEL);
 								this.scanGroup.setEnabled(false);
+								this.scanComposite.setBackground(null);
 								this.chainFilenameLabel.setText(FILENAME_LABEL);
 								this.chainFilenameLabel.setEnabled(false);
 								this.commentLabel.setEnabled(false);
@@ -1150,9 +1151,12 @@ public final class EngineView extends ViewPart implements IConnectionStateListen
 				if (simulation) {
 					scanGroup.setForeground(scanGroup.getDisplay().
 							getSystemColor(SWT.COLOR_RED));
+					scanComposite.setBackground(scanComposite.getDisplay().
+							getSystemColor(SWT.COLOR_RED));
 				} else {
 					scanGroup.setForeground(scanGroup.getDisplay().
 							getSystemColor(SWT.COLOR_BLACK));
+					scanComposite.setBackground(null);
 				}
 			}
 		});
