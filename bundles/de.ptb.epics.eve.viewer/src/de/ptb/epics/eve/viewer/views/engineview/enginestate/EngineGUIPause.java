@@ -2,19 +2,19 @@ package de.ptb.epics.eve.viewer.views.engineview.enginestate;
 
 /**
  * @author Marcus Michalsky
- * @since 1.25
+ * @since 1.38.1
  */
-public class EnginePausedEvent extends AbstractEngineState {
+public class EngineGUIPause extends AbstractEngineState {
 	private static EngineState instance;
 	
-	private EnginePausedEvent() {
+	private EngineGUIPause() {
 	}
 	
 	public static EngineState getInstance() {
-		if (EnginePausedEvent.instance == null) {
-			EnginePausedEvent.instance = new EnginePausedEvent();
+		if (EngineGUIPause.instance == null) {
+			EngineGUIPause.instance = new EngineGUIPause();
 		}
-		return EnginePausedEvent.instance;
+		return EngineGUIPause.instance;
 	}
 	
 	/**
@@ -62,7 +62,7 @@ public class EnginePausedEvent extends AbstractEngineState {
 	 */
 	@Override
 	public boolean isPause() {
-		return true;
+		return false;
 	}
 
 	/**

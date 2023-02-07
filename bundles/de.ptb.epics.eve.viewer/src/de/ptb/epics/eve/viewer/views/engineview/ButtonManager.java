@@ -11,14 +11,14 @@ import de.ptb.epics.eve.ecp1.client.interfaces.IEngineStatusListener;
 import de.ptb.epics.eve.ecp1.commands.ChainStatusCommand;
 import de.ptb.epics.eve.ecp1.types.EngineStatus;
 import de.ptb.epics.eve.viewer.Activator;
+import de.ptb.epics.eve.viewer.views.engineview.enginestate.EngineChainPause;
 import de.ptb.epics.eve.viewer.views.engineview.enginestate.EngineDisconnected;
 import de.ptb.epics.eve.viewer.views.engineview.enginestate.EngineExecuting;
+import de.ptb.epics.eve.viewer.views.engineview.enginestate.EngineGUIPause;
 import de.ptb.epics.eve.viewer.views.engineview.enginestate.EngineHalted;
 import de.ptb.epics.eve.viewer.views.engineview.enginestate.EngineIdleNoXMLLoaded;
 import de.ptb.epics.eve.viewer.views.engineview.enginestate.EngineIdleXMLLoaded;
 import de.ptb.epics.eve.viewer.views.engineview.enginestate.EngineInvalid;
-import de.ptb.epics.eve.viewer.views.engineview.enginestate.EnginePausedEvent;
-import de.ptb.epics.eve.viewer.views.engineview.enginestate.EnginePausedUser;
 import de.ptb.epics.eve.viewer.views.engineview.enginestate.EngineState;
 import de.ptb.epics.eve.viewer.views.engineview.enginestate.EngineStopped;
 import de.ptb.epics.eve.viewer.views.engineview.enginestate.EngineTryingToConnect;
@@ -58,13 +58,7 @@ public class ButtonManager implements IEngineStatusListener,
 	 */
 	@Override
 	public void chainStatusChanged(ChainStatusCommand chainStatusCommand) {
-		if (chainStatusCommand.isAnyScanModulePaused()) {
-			EngineState oldValue = this.engineState;
-			this.engineState = EnginePausedEvent.getInstance();
-			this.logStateChange(oldValue, engineState);
-			this.propertyChangeSupport.firePropertyChange(
-					ButtonManager.ENGINE_STATE_PROP, oldValue, this.engineState);
-		}
+		// nothing to do here (anymore since 1.38.1, see #6939)
 	}
 
 	/**
@@ -109,7 +103,12 @@ public class ButtonManager implements IEngineStatusListener,
 			this.engineState = EngineIdleNoXMLLoaded.getInstance();
 			break;
 		case PAUSED:
-			this.engineState = EnginePausedUser.getInstance();
+			break;
+		case GUI_PAUSE:
+			this.engineState = EngineGUIPause.getInstance();
+			break;
+		case CHAIN_PAUSE:
+			this.engineState = EngineChainPause.getInstance();
 			break;
 		case STOPPED:
 			this.engineState = EngineStopped.getInstance();
@@ -127,6 +126,8 @@ public class ButtonManager implements IEngineStatusListener,
 	 */
 	@Override
 	public void stackConnected() {
+		// nothing to do here, after a successful connection, an engine state 
+		// will be sent, setting the status
 	}
 
 	/**

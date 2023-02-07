@@ -28,6 +28,12 @@ public enum EngineStatus {
 	/** halt has been activated */
 	HALTED,
 	
+	/** Pause initiated by a user (pause button) */
+	GUI_PAUSE,
+	
+	/** Pause initiated by an event used in a pause condition */
+	CHAIN_PAUSE,
+	
 	/** engine is in an undefined state */
 	INVALID;
 	
@@ -55,6 +61,10 @@ public enum EngineStatus {
 				return 0x06;
 			case HALTED:
 				return 0x07;
+			case GUI_PAUSE:
+				return 0x08;
+			case CHAIN_PAUSE:
+				return 0x09;
 			case INVALID:
 				return 0x00;
 		}
@@ -84,8 +94,13 @@ public enum EngineStatus {
 			case 0x06:
 				return EngineStatus.STOPPED;
 			case 0x07:
-				return EngineStatus.HALTED;	
+				return EngineStatus.HALTED;
+			case 0x08:
+				return EngineStatus.GUI_PAUSE;
+			case 0x09:
+				return EngineStatus.CHAIN_PAUSE;
+			default:
+				return EngineStatus.INVALID;
 		}
-		return EngineStatus.INVALID;
 	}
 }

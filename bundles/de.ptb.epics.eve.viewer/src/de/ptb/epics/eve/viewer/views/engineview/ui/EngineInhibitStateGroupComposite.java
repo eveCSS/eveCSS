@@ -72,6 +72,8 @@ public class EngineInhibitStateGroupComposite extends EngineGroupComposite {
 		case EXECUTING:
 		case LOADING_XML:
 		case PAUSED:
+		case GUI_PAUSE:
+		case CHAIN_PAUSE:
 		default:
 			break;
 		}
