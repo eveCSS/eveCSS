@@ -9,7 +9,7 @@
             </stop>
 			${includeFile}
             <option autoacquire="measurement">
-                <name>ExposureTime</name>
+                <name>AcquireTime</name>
                 <id>${PV}Time</id>
                 <value>
                     <access method="GETPUTCB" transport="ca" type="double">${PV}AcquireTime</access>
@@ -17,7 +17,7 @@
                 <displaygroup>detail</displaygroup>
             </option>
             <option>
-                <name>Acquire/Stop</name>
+                <name>Acquire</name>
                 <id>${PV}stop</id>
                 <value>
                     <access method="GETPUTCB" transport="ca" type="string">${PV}Acquire</access>
@@ -42,7 +42,7 @@
    	            <displaygroup>detail</displaygroup>
             </option>
             <option autoacquire="measurement">
-                <name>AcquireTime</name>
+                <name>AcquireTime_RBV</name>
                 <id>${PV}AcquireTime_RBV</id>
                 <value>
                     <access method="GETPUTCB" transport="ca" type="double">${PV}AcquireTime_RBV</access>
@@ -50,7 +50,7 @@
                 <displaygroup>detail</displaygroup>
             </option>
             <option monitor="true" autoacquire="snapshot">
-                <name>ReverseX</name>
+                <name>ReverseX_RBV</name>
                 <id>${PV}ReverseX_RBV</id>
                 <value>
                     <access method="GETPUTCB" transport="ca" type="string">${PV}ReverseX_RBV</access>
@@ -59,7 +59,7 @@
                 <displaygroup>detail</displaygroup>
             </option>
             <option monitor="true" autoacquire="snapshot">
-                <name>ReverseY</name>
+                <name>ReverseY_RBV</name>
                 <id>${PV}ReverseY_RBV</id>
                 <value>
                     <access method="GETPUTCB" transport="ca" type="string">${PV}ReverseY_RBV</access>
@@ -68,7 +68,7 @@
                 <displaygroup>detail</displaygroup>
             </option>
             <option autoacquire="measurement">
-   	            <name>Gain</name>
+   	            <name>Gain_RBV</name>
        	        <id>${PV}Gain_RBV</id>
            	    <value>
                	    <access method="GETCB" transport="ca" type="double">${PV}Gain_RBV</access>
@@ -76,7 +76,7 @@
    	            <displaygroup>detail</displaygroup>
             </option>
             <option autoacquire="measurement">
-   	            <name>TemperatureRBV</name>
+   	            <name>Temperature_RBV</name>
        	        <id>${PV}Temperature_RBV</id>
            	    <value>
                	    <access method="GETCB" transport="ca" type="double">${PV}Temperature_RBV</access>

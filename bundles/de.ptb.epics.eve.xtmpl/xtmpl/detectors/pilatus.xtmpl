@@ -27,7 +27,7 @@
                     <displaygroup>detail</displaygroup>
                 </option>
                 <option>
-                    <name>NextFileNumber</name>
+                    <name>FileNumber</name>
                     <id>${PV}FileNumber</id>
                     <value>
                         <access method="GETPUTCB" transport="ca" type="int">${PV}FileNumber</access>
@@ -35,7 +35,7 @@
                     <displaygroup>detail</displaygroup>
                 </option>
                 <option>
-                    <name>LastFileNumber</name>
+                    <name>lastFileNr</name>
                     <id>${PV}lastFileNr</id>
                     <value>
                         <access method="GETPUTCB" transport="ca" type="int">${PV}lastFileNr</access>
@@ -43,7 +43,7 @@
                     <displaygroup>detail</displaygroup>
                 </option>
                 <option autoacquire="measurement">
-                    <name>FullFileName</name>
+                    <name>FullFileName_RBV</name>
                     <id>${PV}FullFileName</id>
                     <value>
                         <access method="GETPUTCB" transport="ca" type="string">${PV}FullFileName_RBV {"longString":true}</access>
@@ -51,16 +51,16 @@
                     <displaygroup>detail</displaygroup>
                 </option>
                 <option autoacquire="measurement">
-                    <name>GainMode</name>
+                    <name>GainMenu</name>
                     <id>${PV}GainMode</id>
                     <value>
                         <access method="GETPUTCB" transport="ca" type="string">${PV}GainMenu</access>
-                        <value type="string">7-30KeV/Fast/LowG;5-18KeV/Med/MedG;3-6KeV/Slow/HighG;2-5KeV/Slow/UltraG</value>
+                        <value type="string">7-30KeV/Fast/LowG,5-18KeV/Med/MedG,3-6KeV/Slow/HighG,2-5KeV/Slow/UltraG</value>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
                 <option autoacquire="snapshot">
-                    <name>Temp0</name>
+                    <name>Temp0_RBV</name>
                     <id>${PV}Temp0_RBV</id>
                     <value>
                         <access method="GETPUTCB" transport="ca" type="double">${PV}Temp0_RBV</access>
@@ -68,7 +68,7 @@
                     <displaygroup>detail</displaygroup>
                 </option>
                 <option autoacquire="snapshot">
-                    <name>Temp1</name>
+                    <name>Temp1_RBV</name>
                     <id>${PV}Temp1_RBV</id>
                     <value>
                         <access method="GETPUTCB" transport="ca" type="double">${PV}Temp1_RBV</access>
@@ -76,7 +76,7 @@
                     <displaygroup>detail</displaygroup>
                 </option>
                 <option autoacquire="snapshot">
-                    <name>Temp2</name>
+                    <name>Temp2_RBV</name>
                     <id>${PV}Temp2_RBV</id>
                     <value>
                         <access method="GETPUTCB" transport="ca" type="double">${PV}Temp2_RBV</access>
@@ -84,7 +84,7 @@
                     <displaygroup>detail</displaygroup>
                 </option>
                 <option autoacquire="snapshot">
-                    <name>Humid0</name>
+                    <name>Humid0_RBV</name>
                     <id>${PV}Humid0_RBV</id>
                     <value>
                         <access method="GETPUTCB" transport="ca" type="double">${PV}Humid0_RBV</access>
@@ -92,7 +92,7 @@
                     <displaygroup>detail</displaygroup>
                 </option>
                 <option autoacquire="snapshot">
-                    <name>Humid1</name>
+                    <name>Humid1_RBV</name>
                     <id>${PV}Humid1_RBV</id>
                     <value>
                         <access method="GETPUTCB" transport="ca" type="double">${PV}Humid1_RBV</access>
@@ -100,7 +100,7 @@
                     <displaygroup>detail</displaygroup>
                 </option>
                 <option autoacquire="snapshot">
-                    <name>Humid2</name>
+                    <name>Humid2_RBV</name>
                     <id>${PV}Humid2_RBV</id>
                     <value>
                         <access method="GETPUTCB" transport="ca" type="double">${PV}Humid2_RBV</access>

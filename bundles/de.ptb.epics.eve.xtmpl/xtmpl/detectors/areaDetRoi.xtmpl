@@ -7,7 +7,7 @@
                     <access monitor="false" method="${Method=GETCB}" transport="ca" type="${Type=int}">${PV}MinX_RBV</access>
                 </read>
             	<option>
-                	<name>MinX</name>
+                	<name>MinX_RBV</name>
                 	<id>${PV}MinX_RBV</id>
                 	<value>
                     	<access method="GETPUTCB" transport="ca" type="int">${PV}MinX_RBV</access>
@@ -15,7 +15,7 @@
                 	<displaygroup>detail</displaygroup>
             	</option>
             	<option autoacquire="measurement">
-                	<name>MinY</name>
+                	<name>MinY_RBV</name>
                 	<id>${PV}MinY_RBV</id>
                 	<value>
                     	<access method="GETPUTCB" transport="ca" type="int">${PV}MinY_RBV</access>
@@ -23,7 +23,7 @@
                 	<displaygroup>detail</displaygroup>
             	</option>
             	<option autoacquire="measurement">
-                	<name>SizeX</name>
+                	<name>SizeX_RBV</name>
                 	<id>${PV}SizeX_RBV</id>
                 	<value>
                     	<access method="GETPUTCB" transport="ca" type="int">${PV}SizeX_RBV</access>
@@ -31,7 +31,7 @@
                 	<displaygroup>detail</displaygroup>
             	</option>
             	<option autoacquire="measurement">
-                	<name>SizeY</name>
+                	<name>SizeY_RBV</name>
                 	<id>${PV}SizeY_RBV</id>
                 	<value>
                     	<access method="GETPUTCB" transport="ca" type="int">${PV}SizeY_RBV</access>

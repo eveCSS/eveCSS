@@ -51,6 +51,7 @@
 		<loadfile property="trfa" srcFile="/messung/instruments/trfa/eve/version.txt"/>
 		<loadfile property="vls_wds" srcFile="/messung/instruments/vls_wds/eve/version.txt"/>
 		<loadfile property="vonhamos" srcFile="/messung/instruments/vonhamos/eve/version.txt"/>
+		<loadfile property="vuvelli" srcFile="/messung/instruments/vuvelli/eve/version.txt"/>
 		<loadfile property="vuvref" srcFile="/messung/instruments/vuvref/eve/version.txt"/>
 		<loadfile property="wwl_eez_test" srcFile="/messung/instruments/wwl_eez_test/eve/version.txt"/>
 		
@@ -104,6 +105,7 @@
 		<echo message="trfa:                ${trfa}" />
 		<echo message="vls_wds:             ${vls_wds}" />
 		<echo message="vonhamos:            ${vonhamos}" />
+		<echo message="vuvelli:             ${vuvelli}" />
 		<echo message="vuvref:              ${vuvref}" />
 		<echo message="wwl_eez_test:        ${wwl_eez_test}" />
 	</target>

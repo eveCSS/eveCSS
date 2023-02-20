@@ -7,7 +7,7 @@
                     <access monitor="false" method="${Method=GETCB}" transport="ca" type="${Type=double}">${PV}Net_RBV</access>
                 </read>
             	<option autoacquire="measurement">
-                	<name>Min</name>
+                	<name>MinValue_RBV</name>
                 	<id>${PV}MinValue_RBV</id>
                 	<value>
                     	<access method="GETPUTCB" transport="ca" type="double">${PV}MinValue_RBV</access>
@@ -15,7 +15,7 @@
                 	<displaygroup>detail</displaygroup>
             	</option>
                 <option autoacquire="measurement">
-                    <name>Max</name>
+                    <name>MaxValue_RBV</name>
                     <id>${PV}MaxValue_RBV</id>
                     <value>
                         <access method="GETPUTCB" transport="ca" type="double">${PV}MaxValue_RBV</access>
@@ -23,7 +23,7 @@
                     <displaygroup>detail</displaygroup>
                 </option>
                 <option autoacquire="measurement">
-                    <name>Xpos</name>
+                    <name>CentroidX_RBV</name>
                     <id>${PV}CentroidX_RBV</id>
                     <value>
                         <access method="GETPUTCB" transport="ca" type="double">${PV}CentroidX_RBV</access>
@@ -31,7 +31,7 @@
                     <displaygroup>detail</displaygroup>
                 </option>
                 <option autoacquire="measurement">
-                    <name>Ypos</name>
+                    <name>CentroidY_RBV</name>
                     <id>${PV}CentroidY_RBV</id>
                     <value>
                         <access method="GETPUTCB" transport="ca" type="double">${PV}CentroidY_RBV</access>
@@ -39,7 +39,7 @@
                     <displaygroup>detail</displaygroup>
                 </option>
                 <option autoacquire="measurement">
-                    <name>SigmaX</name>
+                    <name>SigmaX_RBV</name>
                     <id>${PV}SigmaX_RBV</id>
                     <value>
                         <access method="GETPUTCB" transport="ca" type="double">${PV}SigmaX_RBV</access>
@@ -47,7 +47,7 @@
                     <displaygroup>detail</displaygroup>
                 </option>
                 <option autoacquire="measurement">
-                    <name>SigmaY</name>
+                    <name>SigmaY_RBV</name>
                     <id>${PV}SigmaY_RBV</id>
                     <value>
                         <access method="GETPUTCB" transport="ca" type="double">${PV}SigmaY_RBV</access>
@@ -55,7 +55,7 @@
                     <displaygroup>detail</displaygroup>
                 </option>
             	<option autoacquire="measurement">
-                	<name>Total</name>
+                	<name>Total_RBV</name>
                 	<id>${PV}Total_RBV</id>
                 	<value>
                     	<access method="GETPUTCB" transport="ca" type="double">${PV}Total_RBV</access>
@@ -63,7 +63,7 @@
                 	<displaygroup>detail</displaygroup>
             	</option>
             	<option>
-                	<name>Net</name>
+                	<name>Net_RBV</name>
                 	<id>${PV}Net_RBV</id>
                 	<value>
                     	<access method="GETPUTCB" transport="ca" type="double">${PV}Net_RBV</access>
@@ -71,7 +71,7 @@
                 	<displaygroup>detail</displaygroup>
             	</option>
             	<option autoacquire="measurement">
-                	<name>Mean</name>
+                	<name>MeanValue_RBV</name>
                 	<id>${PV}MeanValue_RBV</id>
                 	<value>
                     	<access method="GETPUTCB" transport="ca" type="double">${PV}MeanValue_RBV</access>
@@ -79,7 +79,7 @@
                 	<displaygroup>detail</displaygroup>
             	</option>
             	<option autoacquire="measurement">
-                	<name>BckRimwidth</name>
+                	<name>BgdWidth_RBV</name>
                 	<id>${PV}BgdWidth_RBV</id>
                 	<value>
                     	<access method="GETPUTCB" transport="ca" type="int">${PV}BgdWidth_RBV</access>
@@ -87,7 +87,7 @@
                 	<displaygroup>detail</displaygroup>
             	</option>
             	<option autoacquire="measurement">
-                	<name>CenterThres</name>
+                	<name>CentroidThreshold_RBV</name>
                 	<id>${PV}CentroidThreshold_RBV</id>
                 	<value>
                     	<access method="GETPUTCB" transport="ca" type="double">${PV}CentroidThreshold_RBV</access>
@@ -95,7 +95,7 @@
                 	<displaygroup>detail</displaygroup>
             	</option>
             	<option autoacquire="measurement">
-                	<name>MaxX</name>
+                	<name>MaxX_RBV</name>
                 	<id>${PV}MaxX_RBV</id>
                 	<value>
                     	<access method="GETPUTCB" transport="ca" type="double">${PV}MaxX_RBV</access>
@@ -103,7 +103,7 @@
                 	<displaygroup>detail</displaygroup>
             	</option>
             	<option autoacquire="measurement">
-                	<name>MaxY</name>
+                	<name>MaxY_RBV</name>
                 	<id>${PV}MaxY_RBV</id>
                 	<value>
                     	<access method="GETPUTCB" transport="ca" type="double">${PV}MaxY_RBV</access>
@@ -111,7 +111,7 @@
                 	<displaygroup>detail</displaygroup>
             	</option>
             	<option autoacquire="measurement">
-                	<name>MinX</name>
+                	<name>MinX_RBV</name>
                 	<id>${PV}MinX_RBV</id>
                 	<value>
                     	<access method="GETPUTCB" transport="ca" type="double">${PV}MinX_RBV</access>
@@ -119,7 +119,7 @@
                 	<displaygroup>detail</displaygroup>
             	</option>
             	<option autoacquire="measurement">
-                	<name>MinY</name>
+                	<name>MinY_RBV</name>
                 	<id>${PV}MinY_RBV</id>
                 	<value>
                     	<access method="GETPUTCB" transport="ca" type="double">${PV}MinY_RBV</access>
@@ -127,7 +127,7 @@
                 	<displaygroup>detail</displaygroup>
             	</option>
             	<option autoacquire="measurement">
-                	<name>SigmaXY</name>
+                	<name>SigmaXY_RBV</name>
                 	<id>${PV}SigmaXY_RBV</id>
                 	<value>
                     	<access method="GETPUTCB" transport="ca" type="double">${PV}SigmaXY_RBV</access>
@@ -135,7 +135,7 @@
                 	<displaygroup>detail</displaygroup>
             	</option>
             	<option autoacquire="measurement">
-                	<name>Sigma</name>
+                	<name>Sigma_RBV</name>
                 	<id>${PV}Sigma_RBV</id>
                 	<value>
                     	<access method="GETPUTCB" transport="ca" type="double">${PV}Sigma_RBV</access>
