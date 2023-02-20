@@ -2,6 +2,8 @@ h1(eveTopic). What's New Archive (EVE Editor)
 
 p(backToTop). "back to What's New":whatsnew.html
 
+h2(eveTopic). Version 1.38.0 (2022-12-02)
+
 h2(eveTopic). Version 1.37.0 (2022-05-12)
 
 h2(eveTopic). Version 1.36.2 (2022-04-20)

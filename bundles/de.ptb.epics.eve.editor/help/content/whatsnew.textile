@@ -1,6 +1,6 @@
 h1(eveTopic). What's New in EVE Editor
 
-h2(eveTopic). Version 1.38.0 (2022-12-02)
+h2(eveTopic). Version 1.38.0 (2023-02-20)
 
 <hr/>
 

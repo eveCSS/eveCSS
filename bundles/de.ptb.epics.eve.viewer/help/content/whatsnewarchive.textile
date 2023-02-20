@@ -2,6 +2,8 @@ h1(eveTopic). What's New Archive (EVE Viewer)
 
 p(backToTop). "back to What's New":whatsnew.html
 
+h2(eveTopic). Version 1.38.0 (2022-12-02)
+
 h2(eveTopic). Version 1.37.0 (2022-05-12)
 
 * [Feature-#2767] The Engine now supports a simulation mode, i. e. no connections via channel access are made but the measurement sequence is simulated by constants such that a "normal" looking data file is created for validation up front. See the "Engine View":/help/topic/de.ptb.epics.eve.viewer/help/content/concepts/engineview.html description on how to enable/disable simulation mode and how it is visualized.
