@@ -1,6 +1,6 @@
 h1(eveTopic). What's New in EVE Viewer
 
-h2(eveTopic). Version 1.39.0 (2023-02-20)
+h2(eveTopic). Version 1.39.0 (2023-03-10)
 
 * [Feature-#6939] fixed several Engine State and Inhibit State bugs
 
@@ -9,6 +9,8 @@ h2(eveTopic). Version 1.39.0 (2023-02-20)
 * [Feature-#6923] better view of simulation mode
 
 * [BugFix-#6792] Press Halt Button after pressed Stop Button
+
+* [BugFix-#6178] fixed redo event for sdd
 
 
 <hr/>
