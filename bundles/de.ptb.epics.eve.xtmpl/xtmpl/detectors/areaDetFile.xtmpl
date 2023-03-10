@@ -12,31 +12,31 @@
            		</trigger>
                 <option>
                     <name>FilePath</name>
-                    <id>Det${PV}FilePath</id>
+                    <id>${PV}FilePath</id>
                     <value>
                         <access method="GETPUTCB" transport="ca" type="string">${PV}FilePath {"longString":true}</access>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
-                <option autoacquire="measurement">
+                <option autoacquire="snapshot">
                     <name>FileName</name>
-                    <id>Det${PV}FileName</id>
+                    <id>${PV}FileName</id>
                     <value>
                         <access method="GETPUTCB" transport="ca" type="string">${PV}FileName {"longString":true}</access>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
-                <option autoacquire="measurement">
+                <option>
                     <name>FileNumber</name>
-                    <id>Det${PV}FileNumber</id>
+                    <id>${PV}FileNumber</id>
                     <value>
                         <access method="GETPUTCB" transport="ca" type="int">${PV}FileNumber</access>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
-                <option autoacquire="measurement">
+                <option>
                     <name>FileNumber_RBV</name>
-                    <id>Det${PV}FileNumber_RBV</id>
+                    <id>${PV}FileNumber_RBV</id>
                     <value>
                         <access method="GETCB" transport="ca" type="int">${PV}FileNumber_RBV</access>
                     </value>
@@ -44,7 +44,7 @@
                 </option>
                 <option>
                     <name>FullFileName_RBV</name>
-                    <id>Det${PV}FullFileName</id>
+                    <id>${PV}FullFileName</id>
                     <value>
                         <access method="GETPUTCB" transport="ca" type="string">${PV}FullFileName_RBV {"longString":true}</access>
                     </value>

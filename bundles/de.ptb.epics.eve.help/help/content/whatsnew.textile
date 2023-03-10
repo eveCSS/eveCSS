@@ -1,8 +1,8 @@
 h1(eveTopic). What's New in EVE
 
-h2(eveTopic). Version 1.39.0 (2023-02-20)
+h2(eveTopic). Version 1.39.0 (2023-03-10)
 
-* [BugFix-#6985] Option Names of areaDetectors. Option Name = PV Name.  The modified template Files area @areaDet.xtmpl@ (modified), @areaDetFile.xtmpl@ (new),  @areaDetCam.xtmpl@ (deleted), @areaDetTiff.xtmpl@ (deleted), @pilatus.xtmpl@ (modified), @areaDetStats.xtmpl@ (modified) and @areaDetRoi.xtmpl@ (modified)
+* [BugFix-#6985 and #7041] Option Names of areaDetectors. Option Name = PV Name.  The modified template Files area @areaDet.xtmpl@ (modified), @areaDetFile.xtmpl@ (new),  @areaDetCam.xtmpl@ (deleted), @areaDetTiff.xtmpl@ (deleted), @pilatus.xtmpl@ (modified), @areaDetStats.xtmpl@ (modified) and @areaDetRoi.xtmpl@ (deleted)
 
 * [BugFix-#6638] Scan with MotorStatus Undefined is visual OK, but has NaNs in Datafile
 
