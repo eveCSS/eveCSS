@@ -2,160 +2,200 @@
             <channel deferred="true" saveValue="false">
                 <class>${Ch_Class=""}</class>
                 <name>${Name=""}</name>
-                <id>${PV}chan1</id>
+                <id>${PV}Stats${Number=1}:chan1</id>
                 <read>
-                    <access monitor="false" method="${Method=GETCB}" transport="ca" type="${Type=double}">${PV}Net_RBV</access>
+                    <access monitor="false" method="${Method=GETCB}" transport="ca" type="${Type=double}">${PV}Stats${Number=1}:Net_RBV</access>
                 </read>
             	<option autoacquire="measurement">
-                	<name>MinValue_RBV</name>
-                	<id>${PV}MinValue_RBV</id>
+                	<name>Stats_MinValue_RBV</name>
+                	<id>${PV}Stats${Number=1}:MinValue_RBV</id>
                 	<value>
-                    	<access method="GETPUTCB" transport="ca" type="double">${PV}MinValue_RBV</access>
+                    	<access method="GETPUTCB" transport="ca" type="double">${PV}Stats${Number=1}:MinValue_RBV</access>
                 	</value>
                 	<displaygroup>detail</displaygroup>
             	</option>
                 <option autoacquire="measurement">
-                    <name>MaxValue_RBV</name>
-                    <id>${PV}MaxValue_RBV</id>
+                    <name>Stats_MaxValue_RBV</name>
+                    <id>${PV}Stats${Number=1}:MaxValue_RBV</id>
                     <value>
-                        <access method="GETPUTCB" transport="ca" type="double">${PV}MaxValue_RBV</access>
+                        <access method="GETPUTCB" transport="ca" type="double">${PV}Stats${Number=1}:MaxValue_RBV</access>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
                 <option autoacquire="measurement">
-                    <name>CentroidX_RBV</name>
-                    <id>${PV}CentroidX_RBV</id>
+                    <name>Stats_CentroidX_RBV</name>
+                    <id>${PV}Stats${Number=1}:CentroidX_RBV</id>
                     <value>
-                        <access method="GETPUTCB" transport="ca" type="double">${PV}CentroidX_RBV</access>
+                        <access method="GETPUTCB" transport="ca" type="double">${PV}Stats${Number=1}:CentroidX_RBV</access>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
                 <option autoacquire="measurement">
-                    <name>CentroidY_RBV</name>
-                    <id>${PV}CentroidY_RBV</id>
+                    <name>Stats_CentroidY_RBV</name>
+                    <id>${PV}Stats${Number=1}:CentroidY_RBV</id>
                     <value>
-                        <access method="GETPUTCB" transport="ca" type="double">${PV}CentroidY_RBV</access>
+                        <access method="GETPUTCB" transport="ca" type="double">${PV}Stats${Number=1}:CentroidY_RBV</access>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
                 <option autoacquire="measurement">
-                    <name>SigmaX_RBV</name>
-                    <id>${PV}SigmaX_RBV</id>
+                    <name>Stats_SigmaX_RBV</name>
+                    <id>${PV}Stats${Number=1}:SigmaX_RBV</id>
                     <value>
-                        <access method="GETPUTCB" transport="ca" type="double">${PV}SigmaX_RBV</access>
+                        <access method="GETPUTCB" transport="ca" type="double">${PV}Stats${Number=1}:SigmaX_RBV</access>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
                 <option autoacquire="measurement">
-                    <name>SigmaY_RBV</name>
-                    <id>${PV}SigmaY_RBV</id>
+                    <name>Stats_SigmaY_RBV</name>
+                    <id>${PV}Stats${Number=1}:SigmaY_RBV</id>
                     <value>
-                        <access method="GETPUTCB" transport="ca" type="double">${PV}SigmaY_RBV</access>
+                        <access method="GETPUTCB" transport="ca" type="double">${PV}Stats${Number=1}:SigmaY_RBV</access>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
             	<option autoacquire="measurement">
-                	<name>Total_RBV</name>
-                	<id>${PV}Total_RBV</id>
+                	<name>Stats_Total_RBV</name>
+                	<id>${PV}Stats${Number=1}:Total_RBV</id>
                 	<value>
-                    	<access method="GETPUTCB" transport="ca" type="double">${PV}Total_RBV</access>
+                    	<access method="GETPUTCB" transport="ca" type="double">${PV}Stats${Number=1}:Total_RBV</access>
                 	</value>
                 	<displaygroup>detail</displaygroup>
             	</option>
             	<option>
-                	<name>Net_RBV</name>
-                	<id>${PV}Net_RBV</id>
+                	<name>Stats_Net_RBV</name>
+                	<id>${PV}Stats${Number=1}:Net_RBV</id>
                 	<value>
-                    	<access method="GETPUTCB" transport="ca" type="double">${PV}Net_RBV</access>
+                    	<access method="GETPUTCB" transport="ca" type="double">${PV}Stats${Number=1}:Net_RBV</access>
                 	</value>
                 	<displaygroup>detail</displaygroup>
             	</option>
             	<option autoacquire="measurement">
-                	<name>MeanValue_RBV</name>
-                	<id>${PV}MeanValue_RBV</id>
+                	<name>Stats_MeanValue_RBV</name>
+                	<id>${PV}Stats${Number=1}:MeanValue_RBV</id>
                 	<value>
-                    	<access method="GETPUTCB" transport="ca" type="double">${PV}MeanValue_RBV</access>
+                    	<access method="GETPUTCB" transport="ca" type="double">${PV}Stats${Number=1}:MeanValue_RBV</access>
                 	</value>
                 	<displaygroup>detail</displaygroup>
             	</option>
             	<option autoacquire="measurement">
-                	<name>BgdWidth_RBV</name>
-                	<id>${PV}BgdWidth_RBV</id>
+                	<name>Stats_BgdWidth_RBV</name>
+                	<id>${PV}Stats${Number=1}:BgdWidth_RBV</id>
                 	<value>
-                    	<access method="GETPUTCB" transport="ca" type="int">${PV}BgdWidth_RBV</access>
+                    	<access method="GETPUTCB" transport="ca" type="int">${PV}Stats${Number=1}:BgdWidth_RBV</access>
                 	</value>
                 	<displaygroup>detail</displaygroup>
             	</option>
             	<option autoacquire="measurement">
-                	<name>CentroidThreshold_RBV</name>
-                	<id>${PV}CentroidThreshold_RBV</id>
+                	<name>Stats_CentroidThreshold_RBV</name>
+                	<id>${PV}Stats${Number=1}:CentroidThreshold_RBV</id>
                 	<value>
-                    	<access method="GETPUTCB" transport="ca" type="double">${PV}CentroidThreshold_RBV</access>
+                    	<access method="GETPUTCB" transport="ca" type="double">${PV}Stats${Number=1}:CentroidThreshold_RBV</access>
                 	</value>
                 	<displaygroup>detail</displaygroup>
             	</option>
             	<option autoacquire="measurement">
-                	<name>MaxX_RBV</name>
-                	<id>${PV}MaxX_RBV</id>
+                	<name>Stats_MaxX_RBV</name>
+                	<id>${PV}Stats${Number=1}:MaxX_RBV</id>
                 	<value>
-                    	<access method="GETPUTCB" transport="ca" type="double">${PV}MaxX_RBV</access>
+                    	<access method="GETPUTCB" transport="ca" type="double">${PV}Stats${Number=1}:MaxX_RBV</access>
                 	</value>
                 	<displaygroup>detail</displaygroup>
             	</option>
             	<option autoacquire="measurement">
-                	<name>MaxY_RBV</name>
-                	<id>${PV}MaxY_RBV</id>
+                	<name>Stats_MaxY_RBV</name>
+                	<id>${PV}Stats${Number=1}:MaxY_RBV</id>
                 	<value>
-                    	<access method="GETPUTCB" transport="ca" type="double">${PV}MaxY_RBV</access>
+                    	<access method="GETPUTCB" transport="ca" type="double">${PV}Stats${Number=1}:MaxY_RBV</access>
                 	</value>
                 	<displaygroup>detail</displaygroup>
             	</option>
             	<option autoacquire="measurement">
-                	<name>MinX_RBV</name>
-                	<id>${PV}MinX_RBV</id>
+                	<name>Stats_MinX_RBV</name>
+                	<id>${PV}Stats${Number=1}:MinX_RBV</id>
                 	<value>
-                    	<access method="GETPUTCB" transport="ca" type="double">${PV}MinX_RBV</access>
+                    	<access method="GETPUTCB" transport="ca" type="double">${PV}Stats${Number=1}:MinX_RBV</access>
                 	</value>
                 	<displaygroup>detail</displaygroup>
             	</option>
             	<option autoacquire="measurement">
-                	<name>MinY_RBV</name>
-                	<id>${PV}MinY_RBV</id>
+                	<name>Stats_MinY_RBV</name>
+                	<id>${PV}Stats${Number=1}:MinY_RBV</id>
                 	<value>
-                    	<access method="GETPUTCB" transport="ca" type="double">${PV}MinY_RBV</access>
+                    	<access method="GETPUTCB" transport="ca" type="double">${PV}Stats${Number=1}:MinY_RBV</access>
                 	</value>
                 	<displaygroup>detail</displaygroup>
             	</option>
             	<option autoacquire="measurement">
-                	<name>SigmaXY_RBV</name>
-                	<id>${PV}SigmaXY_RBV</id>
+                	<name>Stats_SigmaXY_RBV</name>
+                	<id>${PV}Stats${Number=1}:SigmaXY_RBV</id>
                 	<value>
-                    	<access method="GETPUTCB" transport="ca" type="double">${PV}SigmaXY_RBV</access>
+                    	<access method="GETPUTCB" transport="ca" type="double">${PV}Stats${Number=1}:SigmaXY_RBV</access>
                 	</value>
                 	<displaygroup>detail</displaygroup>
             	</option>
             	<option autoacquire="measurement">
-                	<name>Sigma_RBV</name>
-                	<id>${PV}Sigma_RBV</id>
+                	<name>Stats_Sigma_RBV</name>
+                	<id>${PV}Stats${Number=1}:Sigma_RBV</id>
                 	<value>
-                    	<access method="GETPUTCB" transport="ca" type="double">${PV}Sigma_RBV</access>
+                    	<access method="GETPUTCB" transport="ca" type="double">${PV}Stats${Number=1}:Sigma_RBV</access>
+                	</value>
+                	<displaygroup>detail</displaygroup>
+            	</option>
+            	<option autoacquire="measurement">
+                	<name>Stats_SizeX_RBV</name>
+                	<id>${PV}Stats${Number=1}:SizeX_RBV</id>
+                	<value>
+                    	<access method="GETPUTCB" transport="ca" type="int">${PV}Stats${Number=1}:SizeX_RBV</access>
+                	</value>
+                	<displaygroup>detail</displaygroup>
+            	</option>
+            	<option autoacquire="measurement">
+                	<name>ROI_MinX_RBV</name>
+                	<id>${PV}ROI${Number=1}:MinX_RBV</id>
+                	<value>
+                    	<access method="GETPUTCB" transport="ca" type="int">${PV}ROI${Number=1}:MinX_RBV</access>
+                	</value>
+                	<displaygroup>detail</displaygroup>
+            	</option>
+            	<option autoacquire="measurement">
+                	<name>ROI_MinY_RBV</name>
+                	<id>${PV}ROI${Number=1}:MinY_RBV</id>
+                	<value>
+                    	<access method="GETPUTCB" transport="ca" type="int">${PV}ROI${Number=1}:MinY_RBV</access>
+                	</value>
+                	<displaygroup>detail</displaygroup>
+            	</option>
+            	<option autoacquire="measurement">
+                	<name>ROI_SizeX_RBV</name>
+                	<id>${PV}ROI${Number=1}:SizeX_RBV</id>
+                	<value>
+                    	<access method="GETPUTCB" transport="ca" type="int">${PV}ROI${Number=1}:SizeX_RBV</access>
+                	</value>
+                	<displaygroup>detail</displaygroup>
+            	</option>
+            	<option autoacquire="measurement">
+                	<name>ROI_SizeY_RBV</name>
+                	<id>${PV}ROI${Number=1}:SizeY_RBV</id>
+                	<value>
+                    	<access method="GETPUTCB" transport="ca" type="int">${PV}ROI${Number=1}:SizeY_RBV</access>
                 	</value>
                 	<displaygroup>detail</displaygroup>
             	</option>
                 <option>
                     <name>Severity</name>
-                    <id>${PV}Net_RBV.SEVR</id>
+                    <id>${PV}Stats${Number=1}:Net_RBV.SEVR</id>
                     <value>
-                        <access method="GETCB" monitor="true" transport="ca" type="string">${PV}Net_RBV.SEVR</access>
+                        <access method="GETCB" monitor="true" transport="ca" type="string">${PV}Stats${Number=1}:Net_RBV.SEVR</access>
                         <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
                 <option>
                     <name>Status</name>
-                    <id>${PV}Net_RBV.STAT</id>
+                    <id>${PV}Stats${Number=1}:Net_RBV.STAT</id>
                     <value>
-                        <access method="GETCB" monitor="true" transport="ca" type="string">${PV}Net_RBV.STAT</access>
+                        <access method="GETCB" monitor="true" transport="ca" type="string">${PV}Stats${Number=1}:Net_RBV.STAT</access>
                         <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
                     </value>
                     <displaygroup>detail</displaygroup>
