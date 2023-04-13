@@ -461,6 +461,8 @@
 			<arg value="-I${basedir}/../xtmpl/parts" />
 			<arg value="-I${basedir}/../xtmpl/detectors" />
 			<arg value="-I${basedir}/../xtmpl/detectors/parts" />
+			<arg value="-I${basedir}/../xtmpl/devices" />
+			<arg value="-I${basedir}/../xtmpl/devices/parts" />
 			<arg value="-I${basedir}/../xtmpl/motors" />
 			<arg value="-I${basedir}/../xtmpl/motors/parts" />
 			<arg value="-X${xsubst_dir}" />
