@@ -5,7 +5,7 @@
                 <id>${PV}chan1</id>
                 include "channel_read_part.xtmpl"
             	<trigger>
-                	<access method="PUTCB" transport="ca" type="int" timeout="${Timeout=5000.0}">${PV}EraseStart.PROC</access>
+                	<access method="GETPUTCB" transport="ca" type="int" timeout="${Timeout=5000.0}">${PV}EraseStart.PROC</access>
                 	<value type="int">1</value>
             	</trigger>
             </channel>

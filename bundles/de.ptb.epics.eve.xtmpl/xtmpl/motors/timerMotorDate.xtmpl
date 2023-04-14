@@ -7,7 +7,7 @@
                 <name>date Timer</name>
                 <id>Timer1-mot-date</id>
                 <goto>
-                    <access method="PUTCB" transport="local" type="datetime">Timer</access>
+                    <access method="GETPUTCB" transport="local" type="datetime">Timer</access>
                 </goto>
                 <position>
                     <access method="GETCB" transport="local" type="datetime">Timer</access>

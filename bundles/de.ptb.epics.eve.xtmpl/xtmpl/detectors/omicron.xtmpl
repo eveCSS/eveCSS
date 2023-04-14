@@ -4,10 +4,10 @@
             <class>${Class=""}</class>
             <name>${Name=""}</name>
             <id>${Prefix}${PV}basic</id>
-                <trigger>
-                    <access method="PUTCB" transport="ca" type="string" timeout="${Timeout=3600.0}">${PV}Trigger</access>
-                    <value type="string">Acquire</value>
-                </trigger>
+            <trigger>
+                <access method="GETPUTCB" transport="ca" type="string" timeout="${Timeout=3600.0}">${PV}Trigger</access>
+                <value type="string">Acquire</value>
+            </trigger>
             <stop>
                 <access method="GETPUTCB" transport="ca" type="int">${PV}Execute_Region</access>
                 <value type="int">0</value>
@@ -149,7 +149,7 @@
                     <name>Trigger</name>
                     <id>${PV}Trigger</id>
                     <value>
-                        <access method="PUTCB" transport="ca" type="string" timeout="${Timeout=3600.0}">${PV}Trigger</access>
+                        <access method="GETPUTCB" transport="ca" type="string" timeout="${Timeout=3600.0}">${PV}Trigger</access>
                         <value type="string">Done,Acquire</value>
                     </value>
                     <displaygroup>detail</displaygroup>

@@ -4,7 +4,7 @@
             <name>${Name=""}</name>
             <id>${PV}basic</id>
             <trigger>
-                <access method="PUTCB" transport="ca" type="int" timeout="${Timeout=50000.0}">${PV}Trigger.PROC</access>
+                <access method="GETPUTCB" transport="ca" type="int" timeout="${Timeout=50000.0}">${PV}Trigger.PROC</access>
                 <value type="int">1</value>
             </trigger>
             <channel deferred="true" saveValue="false">

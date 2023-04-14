@@ -13,9 +13,9 @@
                 </status>
                 <movedone>
                     <access method="GETCB" transport="ca" type="int">${PV}.DMOV</access>
-               </movedone>
+                </movedone>
                 <trigger>
-                    <access method="PUTCB" transport="ca" type="int" timeout="${Timeout=20.0}">${PV}.SPMG</access>
+                    <access method="GETPUTCB" transport="ca" type="int" timeout="${Timeout=20.0}">${PV}.SPMG</access>
                     <value type="int">2</value>
                 </trigger>
                 <unit>

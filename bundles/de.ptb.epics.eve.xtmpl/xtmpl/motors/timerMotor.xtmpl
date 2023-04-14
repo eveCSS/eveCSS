@@ -7,7 +7,7 @@
                 <name>Timer</name>
                 <id>Timer1-mot-double</id>
                 <goto>
-                    <access method="PUTCB" transport="local" type="double">Timer</access>
+                    <access method="GETPUTCB" transport="local" type="double">Timer</access>
                 </goto>
                 <position>
                     <access method="GETCB" transport="local" type="double">Timer</access>

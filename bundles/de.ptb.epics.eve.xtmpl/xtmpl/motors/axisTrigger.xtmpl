@@ -10,7 +10,7 @@
                     <name>Trigger</name>
                     <id>${PV}.SPMG</id>
                     <value>
-                        <access method="PUTCB" transport="ca" type="string" timeout="${Timeout=20.0}">${PV}.SPMG</access>
+                        <access method="GETPUTCB" transport="ca" type="string" timeout="${Timeout=20.0}">${PV}.SPMG</access>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>

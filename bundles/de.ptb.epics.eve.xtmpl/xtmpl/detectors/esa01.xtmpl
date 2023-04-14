@@ -7,7 +7,7 @@
                 <access method="GETPUTCB" transport="ca" type="string">${PV}ROI1:0:MaxValue_RBV.EGU</access>
             </unit>
             <trigger>
-                <access method="PUTCB" transport="ca" type="int" timeout="${Timeout=5000.0}">${PV}cam1:trigger.PROC</access>
+                <access method="GETPUTCB" transport="ca" type="int" timeout="${Timeout=5000.0}">${PV}cam1:trigger.PROC</access>
                 <value type="int">1</value>
             </trigger>
 			${includeFile}

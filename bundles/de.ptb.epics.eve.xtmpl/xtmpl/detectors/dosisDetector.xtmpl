@@ -5,7 +5,7 @@
             <name>${Name=""}</name>
             <id>${Prefix}${PV}</id>
             <trigger>
-                <access method="PUTCB" transport="ca" type="int" timeout="${Timeout=2419200.0}">${Prefix}${PV}start</access>
+                <access method="GETPUTCB" transport="ca" type="int" timeout="${Timeout=2419200.0}">${Prefix}${PV}start</access>
                 <value type="int">1</value>
             </trigger>
             <stop>

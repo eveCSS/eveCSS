@@ -8,7 +8,7 @@
                 <name>Counter</name>
                 <id>Counter-mot</id>
                 <goto>
-                    <access method="PUTCB" transport="local" type="int">Counter</access>
+                    <access method="GETPUTCB" transport="local" type="int">Counter</access>
                 </goto>
                 <position>
                     <access method="GETCB" transport="local" type="int">Counter</access>
