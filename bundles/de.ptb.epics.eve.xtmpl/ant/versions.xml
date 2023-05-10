@@ -3,7 +3,6 @@
 	<target name="show_versions">
 		<loadfile property="black" srcFile="/messung/black/eve/version.txt"/>
 		<loadfile property="bragg" srcFile="/messung/bragg/eve/version.txt"/>
-		<loadfile property="dekabe" srcFile="/messung/dekabe/eve/version.txt"/>
 		<loadfile property="dwl" srcFile="/messung/dwl/eve/version.txt"/>
 		<loadfile property="dwl20" srcFile="/messung/dwl20/eve/version.txt"/>
 		<loadfile property="dwl_ger" srcFile="/messung/dwl_ger/eve/version.txt"/>
@@ -57,7 +56,6 @@
 		
 		<echo message="black:               ${black}" />
 		<echo message="bragg:               ${bragg}" />
-		<echo message="dekabe:              ${dekabe}" />
 		<echo message="dwl:                 ${dwl}" />
 		<echo message="dwl20:               ${dwl20}" />
 		<echo message="dwl_ger:             ${dwl_ger}" />
