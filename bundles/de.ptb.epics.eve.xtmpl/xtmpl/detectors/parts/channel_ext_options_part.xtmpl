@@ -11,7 +11,8 @@
                     <name>Hi Error Severity</name>
                     <id>${Prefix=""}${PV}.HHSV</id>
                     <value>
-                        <access method="GETPUTCB" transport="ca" type="string">${PV}.HHSV</access>
+                        <access method="GETCB" transport="ca" type="string">${PV}.HHSV</access>
+                        <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
@@ -27,7 +28,8 @@
                     <name>Hi Warn Severity</name>
                     <id>${Prefix=""}${PV}.HSV</id>
                     <value>
-                        <access method="GETPUTCB" transport="ca" type="string">${PV}.HSV</access>
+                        <access method="GETCB" transport="ca" type="string">${PV}.HSV</access>
+                        <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
@@ -51,7 +53,8 @@
                     <name>Low Warn Severity</name>
                     <id>${Prefix=""}${PV}.LSV</id>
                     <value>
-                        <access method="GETPUTCB" transport="ca" type="string">${PV}.LSV</access>
+                        <access method="GETCB" transport="ca" type="string">${PV}.LSV</access>
+                        <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
@@ -67,7 +70,8 @@
                     <name>Low Error Severity</name>
                     <id>${Prefix=""}${PV}.LLSV</id>
                     <value>
-                        <access method="GETPUTCB" transport="ca" type="string">${PV}.LLSV</access>
+                        <access method="GETCB" transport="ca" type="string">${PV}.LLSV</access>
+                        <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>

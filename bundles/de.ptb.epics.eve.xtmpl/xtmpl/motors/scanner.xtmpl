@@ -12,7 +12,7 @@
                     <access method="GETPUTCB" transport="ca" type="${Type=double}" timeout="${Timeout=300.0}">${PV}</access>
                 </goto>
                 <position>
-                    <access monitor="true" method="GETCB" transport="ca" type="${Type=double}">${PV}.RVAL</access>
+                    <access monitor="true" method="GETCB" transport="ca" type="${Type=int}">${PV}.RVAL</access>
                 </position>
                 <stop>
                     <access method="PUT" transport="ca" type="int">${PV}.PROC</access>
