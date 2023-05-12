@@ -1,0 +1,30 @@
+        <!--  simulation detector with integration time -->
+        <detector>
+            <class>${Class=""}</class>
+            <name>${Name=""}</name>
+            <id>${PV}</id>
+            <trigger>
+                <access method="PUTCB" transport="ca" type="int" timeout="3600.0">${PV}count.PROC</access>
+                <value type="int">1</value>
+            </trigger>
+            <!-- channel to be included by detetctors -->
+            <channel saveValue="false">
+                <class>${Ch_Class=""}</class>
+                <name>${Name=""}</name>
+                <id>${PV}chan1</id>
+                <read>
+                    <access monitor="true" method="GETCB" transport="ca" type="double">${PV}value</access>
+                </read>
+                <unit>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}value.EGU</access>
+                </unit>
+                <option>
+                    <name>IntegrationTime</name>
+                    <id>${PV}count</id>
+                    <value>
+                        <access method="GETCB" monitor="true" transport="ca" type="string">${PV}count</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+            </channel>
+		</detector>
