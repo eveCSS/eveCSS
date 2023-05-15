@@ -22,7 +22,7 @@
                     <name>IntegrationTime</name>
                     <id>${PV}count</id>
                     <value>
-                        <access method="GETCB" monitor="true" transport="ca" type="string">${PV}count</access>
+                        <access method="GETPUTCB" monitor="true" transport="ca" type="string">${PV}count</access>
                     </value>
                     <displaygroup>detail</displaygroup>
                 </option>
