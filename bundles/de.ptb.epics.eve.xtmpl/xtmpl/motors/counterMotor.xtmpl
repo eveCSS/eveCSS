@@ -1,16 +1,17 @@
-        <motor>
-            <class>Timer</class>
+       <!-- counter as motor -->
+       <motor>
+            <class>Counter</class>
             <name></name>
-            <id>motSecTimer</id>
+            <id>Counter1</id>
             <axis saveValue="false">
                 <class></class>
-                <name>Timer</name>
-                <id>Timer1-mot-double</id>
+                <name>Counter</name>
+                <id>Counter-mot</id>
                 <goto>
-                    <access method="PUTCB" transport="local" type="double">Timer</access>
+                    <access method="GETPUTCB" transport="local" type="int">Counter</access>
                 </goto>
                 <position>
-                    <access method="GETCB" transport="local" type="double">Timer</access>
+                    <access method="GETCB" transport="local" type="int">Counter</access>
                 </position>
                 <stop>
                     <access method="PUT" transport="local" type="int">no stop available</access>

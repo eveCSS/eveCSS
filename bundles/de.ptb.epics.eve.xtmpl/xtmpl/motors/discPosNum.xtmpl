@@ -28,7 +28,7 @@
                     <name>Move Done</name>
                     <id>DiscPosNum${PV}.DMOV</id>
                     <value>
-                        <access method="GETCB" type="${Type=double}" transport="ca">${PV}.DMOV</access>
+                        <access method="GETCB" type="${Type=int}" transport="ca">${PV}.DMOV</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -64,6 +64,7 @@
                     <id>DiscPosNum${PV}_Mnu.OMSL</id>
                     <value>
                         <access method="GETPUTCB" type="string" transport="ca">${PV}_Mnu.OMSL</access>
+                        <value type="string">supervisory,closed_loop</value>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -79,7 +80,7 @@
                     <name>miss</name>
                     <id>DiscPosNum${PV}.MISS</id>
                     <value>
-                        <access method="GETPUTCB" type="string" transport="ca">${PV}.MISS</access>
+                        <access method="GETPUTCB" type="int" transport="ca">${PV}.MISS</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -87,7 +88,7 @@
                     <name>rlls</name>
                     <id>DiscPosNum${PV}.RLLS</id>
                     <value>
-                        <access method="GETPUTCB" type="string" transport="ca">${PV}.RLLS</access>
+                        <access method="GETPUTCB" type="int" transport="ca">${PV}.RLLS</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -95,7 +96,7 @@
                     <name>rhls</name>
                     <id>DiscPosNum${PV}.RHLS</id>
                     <value>
-                        <access method="GETPUTCB" type="string" transport="ca">${PV}.RHLS</access>
+                        <access method="GETPUTCB" type="int" transport="ca">${PV}.RHLS</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>

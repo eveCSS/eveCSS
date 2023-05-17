@@ -42,7 +42,7 @@
                     <name>Goto Steps</name>
                     <id>${Prefix=""}${PV}.RVAL</id>
                     <value>
-                        <access method="GETPUTCB" type="double" transport="ca">${PV}.RVAL</access>
+                        <access method="GETPUTCB" type="int" transport="ca">${PV}.RVAL</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -50,7 +50,7 @@
                     <name>Readback Steps</name>
                     <id>${Prefix=""}${PV}.RRBV</id>
                     <value>
-                        <access method="GETCB" type="double" transport="ca">${PV}.RRBV</access>
+                        <access method="GETCB" type="int" transport="ca">${PV}.RRBV</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -58,33 +58,7 @@
                     <name>Motor Steps</name>
                     <id>${Prefix=""}${PV}.RMP</id>
                     <value>
-                        <access method="GETCB" type="double" transport="ca">${PV}.RMP</access>
-                    </value>
-                    <displaygroup>summary</displaygroup>
-                </option>
-                <option>
-                    <name>Store Position</name>
-                    <id>${Prefix=""}${PV}:stoPos</id>
-                    <value>
-                        <access method="GETCB" type="int" transport="ca">${PV}:stoPos.PROC</access>
-                        <value type="int">1</value>
-                    </value>
-                    <displaygroup>summary</displaygroup>
-                </option>
-                <option>
-                    <name>Recall Position</name>
-                    <id>${Prefix=""}${PV}:rclPos</id>
-                    <value>
-                        <access method="GETCB" type="int" transport="ca">${PV}:rclPos.PROC</access>
-                        <value type="int">1</value>
-                    </value>
-                    <displaygroup>summary</displaygroup>
-                </option>
-                <option monitor="true">
-                    <name>Memory Position</name>
-                    <id>${Prefix=""}${PV}:memPos</id>
-                    <value>
-                        <access method="GETCB" type="${Type=double}" transport="ca">${PV}:memPos</access>
+                        <access method="GETCB" type="int" transport="ca">${PV}.RMP</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -92,7 +66,7 @@
                     <name>Encoder Steps</name>
                     <id>${Prefix=""}${PV}.REP</id>
                     <value>
-                        <access method="GETCB" type="double" transport="ca">${PV}.REP</access>
+                        <access method="GETCB" type="int" transport="ca">${PV}.REP</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -272,7 +246,7 @@
                     <name>Motor Status</name>
                     <id>${Prefix=""}${PV}.MSTA</id>
                     <value>
-                        <access method="GETCB" type="double" transport="ca">${PV}.MSTA</access>
+                        <access method="GETCB" type="int" transport="ca">${PV}.MSTA</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>

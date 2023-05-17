@@ -10,7 +10,6 @@
 		<echo message="creating stations" />
 		<antcall target="black" />
 		<antcall target="bragg" />
-		<antcall target="dekabe" />
 		<antcall target="dwl" />
 		<antcall target="dwl20" />
 		<antcall target="dwl_ger" />
@@ -24,7 +23,6 @@
 		<antcall target="pgm" />
 		<antcall target="qmp_mls" />
 		<antcall target="qnim" />
-		<antcall target="radiometry" />
 		<antcall target="red" />
 		<antcall target="sx700" />
 		<antcall target="test" />
@@ -32,7 +30,6 @@
 		<antcall target="vuvr" />
 		<antcall target="white" />
 		<antcall target="xpbf2" />
-		<antcall target="xrf" />
 		<antcall target="x-test" />
 
 		<echo message="creation instruments" />
@@ -61,6 +58,7 @@
 		<antcall target="trfa" />
 		<antcall target="vls_wds" />
 		<antcall target="vonhamos" />
+		<antcall target="vuvelli" />
 		<antcall target="vuvref" />
 		<antcall target="wwl_eez_test" />
 	</target>
@@ -118,13 +116,6 @@
 		<antcall target="-xmlmsi">
 			<param name="eve_location" value="compton_mls" />
 			<param name="station.type" value="instrument" />
-		</antcall>
-	</target>
-
-	<target name="dekabe">
-		<antcall target="-xmlmsi">
-			<param name="eve_location" value="dekabe" />
-			<param name="station.type" value="station" />
 		</antcall>
 	</target>
 
@@ -296,13 +287,6 @@
 		</antcall>
 	</target>
 
-	<target name="radiometry">
-		<antcall target="-xmlmsi">
-			<param name="eve_location" value="radiometry" />
-			<param name="station.type" value="station" />
-		</antcall>
-	</target>
-
 	<target name="red">
 		<antcall target="-xmlmsi">
 			<param name="eve_location" value="red" />
@@ -401,6 +385,13 @@
 		</antcall>
 	</target>
 
+	<target name="vuvelli">
+		<antcall target="-xmlmsi">
+			<param name="eve_location" value="vuvelli" />
+			<param name="station.type" value="instrument" />
+		</antcall>
+	</target>
+
 	<target name="vuvref">
 		<antcall target="-xmlmsi">
 			<param name="eve_location" value="vuvref" />
@@ -429,13 +420,6 @@
 		</antcall>
 	</target>
 
-	<target name="xrf">
-		<antcall target="-xmlmsi">
-			<param name="eve_location" value="xrf" />
-			<param name="station.type" value="station" />
-		</antcall>
-	</target>
-
 	<target name="x-test">
 		<antcall target="-xmlmsi">
 			<param name="eve_location" value="x-test" />
@@ -458,9 +442,10 @@
 		<exec executable="${msi_home}/xmlmsi" dir="${workspace}" failonerror="true">
 			<arg value="-V" />
 			<arg value="-I${basedir}/../xtmpl/" />
-			<arg value="-I${basedir}/../xtmpl/parts" />
 			<arg value="-I${basedir}/../xtmpl/detectors" />
 			<arg value="-I${basedir}/../xtmpl/detectors/parts" />
+			<arg value="-I${basedir}/../xtmpl/devices" />
+			<arg value="-I${basedir}/../xtmpl/devices/parts" />
 			<arg value="-I${basedir}/../xtmpl/motors" />
 			<arg value="-I${basedir}/../xtmpl/motors/parts" />
 			<arg value="-X${xsubst_dir}" />

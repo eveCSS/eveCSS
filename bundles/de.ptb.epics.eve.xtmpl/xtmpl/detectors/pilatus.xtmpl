@@ -7,7 +7,7 @@
                     <access monitor="true" method="${Method=GETCB}" transport="ca" type="double">${PV}lastFileNr</access>
                 </read>
              	<trigger>
-                	<access method="PUTCB" transport="ca" type="int" timeout="${Timeout=5000.0}">${Trigger=${PV}Acquire}</access>
+                	<access method="GETPUTCB" transport="ca" type="int" timeout="${Timeout=5000.0}">${Trigger=${PV}Acquire}</access>
                		<value type="int">1</value>
            		</trigger>
                 <option>

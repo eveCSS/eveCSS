@@ -11,7 +11,7 @@
                     <access monitor="true" method="${Method=GETCB}" transport="ca" type="${Type=string}">${PV}FullFileName_RBV {"longString":true}</access>
 				</read>
 				<trigger>
-					<access method="PUTCB" transport="ca" type="int" timeout="${Timeout=50000.0}">${PV}Acquire</access>
+					<access method="GETPUTCB" transport="ca" type="int" timeout="${Timeout=50000.0}">${PV}Acquire</access>
 					<value type="int">1</value>
 				</trigger>
                 <option autoacquire="measurement">

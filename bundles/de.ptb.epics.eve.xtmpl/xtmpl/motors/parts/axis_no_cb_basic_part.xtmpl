@@ -1,5 +1,5 @@
                 <goto>
-                    <access method="GETPUT" transport="ca" type="${Type=double}" timeout="${Timeout=300.0}">${PV}</access>
+                    <access method="PUT" transport="ca" type="${Type=double}" timeout="${Timeout=300.0}">${PV}</access>
                 </goto>
                 <position>
                     <access monitor="true" method="GETCB" transport="ca" type="${Type=double}">${PV}.RBV</access>

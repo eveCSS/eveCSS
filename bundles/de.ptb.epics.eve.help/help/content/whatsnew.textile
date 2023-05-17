@@ -1,5 +1,14 @@
 h1(eveTopic). What's New in EVE
 
+h2(eveTopic). Version 1.39.1 (2023-05-15)
+
+* [BugFix-#7096] new template file @deviceNoCb.xtmpl@ for Devices without Callback in goto PV.
+
+* [BugFix-#6525] new template file @simuIntTimeDetector.xtmpl@ for simulation detector with variable integration time.
+
+* [BugFix-#5947] new template file @axisNoStoPos.xtmpl@ for axis without stoPos, rclPos and memPos PV's and correction of various type declaration of PV's.
+
+  
 h2(eveTopic). Version 1.39.0 (2023-03-10)
 
 * [BugFix-#6985 and #7041] Option Names of areaDetectors. Option Name = PV Name.  The modified template Files area @areaDet.xtmpl@ (modified), @areaDetFile.xtmpl@ (new),  @areaDetCam.xtmpl@ (deleted), @areaDetTiff.xtmpl@ (deleted), @pilatus.xtmpl@ (modified), @areaDetStats.xtmpl@ (modified) and @areaDetRoi.xtmpl@ (deleted)

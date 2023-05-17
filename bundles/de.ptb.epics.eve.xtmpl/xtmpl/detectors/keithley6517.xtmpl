@@ -4,7 +4,7 @@
             <name>${Name=""}</name>
             <id>${PV}</id>
             <trigger>
-                <access method="PUTCB" transport="ca" type="int" timeout="${Timeout=25.0}">${PV}00.PROC</access>
+                <access method="GETPUTCB" transport="ca" type="int" timeout="${Timeout=25.0}">${PV}00.PROC</access>
                 <value type="int">1</value>
             </trigger>
 			${includeFile}
