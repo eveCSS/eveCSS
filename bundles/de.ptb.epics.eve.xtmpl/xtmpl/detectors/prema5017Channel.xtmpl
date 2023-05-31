@@ -6,6 +6,7 @@
                 include "channel_read_part.xtmpl"
                 include "channel_unit_part.xtmpl"
                 include "detector_trigger_ohne_trigger_part.xtmpl"
+                include "detector_scan_ohne_trigger_part.xtmpl"
             	<option monitor="true">
                 	<name>function</name>
                 	<id>${PV}function</id>
@@ -33,8 +34,7 @@
                 	</value>
                 	<displaygroup>summary</displaygroup>
             	</option>
-				include "channel_ext_options_part.xtmpl"
             	include "channel_spec_options_part.xtmpl"
+				include "channel_ext_options_part.xtmpl"
 				include "channel_option_part.xtmpl"
-                include "detector_scan_ohne_trigger_part.xtmpl"
             </channel>

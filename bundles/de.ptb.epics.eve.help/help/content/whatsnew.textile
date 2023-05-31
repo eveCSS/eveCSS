@@ -1,5 +1,9 @@
 h1(eveTopic). What's New in EVE
 
+h2(eveTopic). Version 1.39.2 (2023-xx-xx)
+
+* [BugFix-#5294] revision of options in detector template files.
+
 h2(eveTopic). Version 1.39.1 (2023-05-15)
 
 * [BugFix-#7096] new template file @deviceNoCb.xtmpl@ for Devices without Callback in goto PV.

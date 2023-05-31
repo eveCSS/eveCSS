@@ -5,6 +5,6 @@
                 <id>${PV}</id>
                 include "channel_read_part.xtmpl"
                 include "channel_unit_part.xtmpl"
-                include "channel_option_part.xtmpl"
 				include "channel_ext_options_part.xtmpl"
+                include "channel_option_part.xtmpl"
             </channel>
