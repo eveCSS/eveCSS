@@ -4,4 +4,7 @@
             <name>${Name=""}</name>
             <id>${PV}basic</id>
             include "channel.xtmpl"
+            include "detector_scan_ohne_trigger_part.xtmpl"
+            include "channel_ext_options_part.xtmpl"
+            include "channel_option_part.xtmpl"
         </detector>

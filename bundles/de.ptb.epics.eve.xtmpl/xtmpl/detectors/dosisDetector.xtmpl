@@ -12,7 +12,6 @@
                 <access method="PUT" transport="ca" type="int">${Prefix}${PV}halt</access>
                 <value type="int">1</value>
             </stop>
-            <!-- channel without unit, to be included by detetctors -->
             <channel saveValue="false">
                 <class>${Ch_Class=""}</class>
                 <name>${Name=""}</name>
@@ -23,23 +22,23 @@
                 <unit>
                     <access method="GETPUTCB" transport="ca" type="string">${Prefix}${PV}dose.EGU</access>
                 </unit>
-                <option>
-                    <name>Severity</name>
-                    <id>${Prefix}${PV}.SEVR</id>
-                    <value>
-                        <access method="GETCB" monitor="true" transport="ca" type="string">${Prefix}${PV}.SEVR</access>
-                        <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
-                    </value>
-                    <displaygroup>detail</displaygroup>
-                </option>
-                <option>
-                    <name>Status</name>
-                    <id>${Prefix}${PV}.STAT</id>
-                    <value>
-                        <access method="GETCB" monitor="true" transport="ca" type="string">${Prefix}${PV}.STAT</access>
-                        <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
-                    </value>
-                    <displaygroup>detail</displaygroup>
-                </option>
             </channel>
+            <option>
+                <name>Severity</name>
+                <id>${Prefix}${PV}.SEVR</id>
+                <value>
+                    <access method="GETCB" monitor="true" transport="ca" type="string">${Prefix}${PV}.SEVR</access>
+                    <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option>
+                <name>Status</name>
+                <id>${Prefix}${PV}.STAT</id>
+                <value>
+                    <access method="GETCB" monitor="true" transport="ca" type="string">${Prefix}${PV}.STAT</access>
+                    <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
         </detector>

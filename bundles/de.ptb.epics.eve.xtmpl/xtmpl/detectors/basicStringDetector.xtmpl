@@ -8,8 +8,8 @@
                 <name>${Name=""}</name>
                 <id>${PV}chan1</id>
                 include "channel_read_string_part.xtmpl"
-                include "detector_scan_ohne_trigger_part.xtmpl"
-                include "channel_option_part.xtmpl"
             </channel>
+            include "detector_scan_ohne_trigger_part.xtmpl"
+            include "channel_option_part.xtmpl"
         </detector>
 
