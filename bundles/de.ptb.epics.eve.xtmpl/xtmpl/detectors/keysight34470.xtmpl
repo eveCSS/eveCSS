@@ -10,72 +10,72 @@
                 <id>${PV}chan1</id>
                 include "channel_read_part.xtmpl"
                 include "channel_unit_part.xtmpl"
-          		include "detector_scan_ohne_trigger_part.xtmpl"
-	            <option monitor="true">
-	                <name>function</name>
-	                <id>${PV}function</id>
-	                <value>
-	                    <access method="GETPUTCB" transport="ca" type="string">${PV}function</access>
-	                    <value type="string">DCV /V,DCV Ratio/1,ACV /V,DCI /A,ACI /A,2WO /Ohms,4WO /Ohms</value>
-	                </value>
-	                <displaygroup>summary</displaygroup>
-	            </option>
-	            <option monitor="true">
-	                <name>range</name>
-	                <id>${PV}range</id>
-	                <value>
-	                    <access method="GETPUTCB" transport="ca" type="string">${PV}range</access>
-	                    <value type="string">Auto On,Auto Off,Min,Max,0.1 V; .1 kOhm,1. V;   1 kOhm,10 V;  10 kOhm,100 V; 100 kOhm,1000 V; 1 MOhm,10 MOhm,100 MOhm</value>
-	                </value>
-	                <displaygroup>summary</displaygroup>
-	            </option>
-	            <option monitor="true">
-	                <name>intTime</name>
-	                <id>${PV}intTime</id>
-	                <value>
-	                    <access method="GETPUTCB" transport="ca" type="string">${PV}intTime</access>
-						<value type="string">Min,Max,0.02 PLC,0.20 PLC,1.00 PLC,10 PLC,100 PLC</value>
-	                </value>
-	                <displaygroup>detail</displaygroup>
-	            </option>
-	            <option>
-	                <name>Initialize (SDC)</name>
-	                <id>${PV}sdc</id>
-	                <value>
-	                    <access method="GETPUTCB" transport="ca" type="string">${PV}sdc</access>
-	                    <value type="string">Init only,SDC+Init</value>
-	                </value>
-	                <displaygroup>detail</displaygroup>
-	            </option>
-	            <option monitor="true">
-	                <name>zero</name>
-	                <id>${PV}zero</id>
-	                <value>
-	                    <access method="GETPUTCB" transport="ca" type="string">${PV}zero</access>
-	                    <value type="string">Off,On,Once</value>
-	                </value>
-	                <displaygroup>summary</displaygroup>
-	            </option>
-	            <option monitor="true">
-	                <name>display</name>
-	                <id>${PV}display</id>
-	                <value>
-	                    <access method="GETPUTCB" transport="ca" type="string">${PV}display</access>
-	                    <value type="string">Off,On</value>
-	                </value>
-	                <displaygroup>summary</displaygroup>
-	            </option>
-	            <option monitor="true">
-	                <name>Filter</name>
-	                <id>${PV}filter</id>
-	                <value>
-	                    <access method="GETPUTCB" transport="ca" type="string">${PV}filter</access>
-	                    <value type="string">Max,Min,Slow 3 Hz,Medium 20 Hz,Fast 200 Hz</value>
-	                </value>
-	                <displaygroup>detail</displaygroup>
-	            </option>
-            	include "channel_spec_options_part.xtmpl"
-				include "channel_ext_options_part.xtmpl"
-				include "channel_option_part.xtmpl"
             </channel>
+       		include "detector_scan_ohne_trigger_part.xtmpl"
+            <option monitor="true">
+                <name>function</name>
+                <id>${PV}function</id>
+                <value>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}function</access>
+                    <value type="string">DCV /V,DCV Ratio/1,ACV /V,DCI /A,ACI /A,2WO /Ohms,4WO /Ohms</value>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>range</name>
+                <id>${PV}range</id>
+                <value>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}range</access>
+                    <value type="string">Auto On,Auto Off,Min,Max,0.1 V; .1 kOhm,1. V;   1 kOhm,10 V;  10 kOhm,100 V; 100 kOhm,1000 V; 1 MOhm,10 MOhm,100 MOhm</value>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>intTime</name>
+                <id>${PV}intTime</id>
+                <value>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}intTime</access>
+					<value type="string">Min,Max,0.02 PLC,0.20 PLC,1.00 PLC,10 PLC,100 PLC</value>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option>
+                <name>Initialize (SDC)</name>
+                <id>${PV}sdc</id>
+                <value>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}sdc</access>
+                    <value type="string">Init only,SDC+Init</value>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>zero</name>
+                <id>${PV}zero</id>
+                <value>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}zero</access>
+                    <value type="string">Off,On,Once</value>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>display</name>
+                <id>${PV}display</id>
+                <value>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}display</access>
+                    <value type="string">Off,On</value>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Filter</name>
+                <id>${PV}filter</id>
+                <value>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}filter</access>
+                    <value type="string">Max,Min,Slow 3 Hz,Medium 20 Hz,Fast 200 Hz</value>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+           	include "channel_spec_options_part.xtmpl"
+			include "channel_ext_options_part.xtmpl"
+			include "channel_option_part.xtmpl"
         </detector>

@@ -9,27 +9,27 @@
                 <id>${PV}chan1</id>
                 include "channel_read_part.xtmpl"
                 include "channel_unit_part.xtmpl"
-          		include "detector_scan_ohne_trigger_part.xtmpl"
-            	<option monitor="true">
-                	<name>function</name>
-                	<id>${PV}function</id>
-                	<value>
-                    	<access method="GETPUTCB" transport="ca" type="string">${PV}function</access>
-                    	<value type="string">Idle,POST,Group Trigger,Reference X1,Reference X1/X2</value>
-                	</value>
-                	<displaygroup>summary</displaygroup>
-            	</option>
-            	<option monitor="true">
-                	<name>direction</name>
-                	<id>${PV}direction</id>
-                	<value>
-                    	<access method="GETPUTCB" transport="ca" type="string">${PV}direction</access>
-                    	<value type="string">Pos,Neg</value>
-                	</value>
-                	<displaygroup>summary</displaygroup>
-            	</option>
-            	include "channel_spec_options_part.xtmpl"
-				include "channel_ext_options_part.xtmpl"
-				include "channel_option_part.xtmpl"
             </channel>
+       		include "detector_scan_ohne_trigger_part.xtmpl"
+           	<option monitor="true">
+               	<name>function</name>
+               	<id>${PV}function</id>
+               	<value>
+                   	<access method="GETPUTCB" transport="ca" type="string">${PV}function</access>
+                   	<value type="string">Idle,POST,Group Trigger,Reference X1,Reference X1/X2</value>
+               	</value>
+               	<displaygroup>summary</displaygroup>
+           	</option>
+           	<option monitor="true">
+               	<name>direction</name>
+               	<id>${PV}direction</id>
+               	<value>
+                   	<access method="GETPUTCB" transport="ca" type="string">${PV}direction</access>
+                   	<value type="string">Pos,Neg</value>
+               	</value>
+               	<displaygroup>summary</displaygroup>
+           	</option>
+           	include "channel_spec_options_part.xtmpl"
+			include "channel_ext_options_part.xtmpl"
+			include "channel_option_part.xtmpl"
         </detector>
