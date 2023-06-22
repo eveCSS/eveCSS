@@ -17,32 +17,32 @@
                     <access method="GETPUTCB" transport="ca" type="int" timeout="${Timeout=25.0}">${PV}:getWfFPB.PROC</access>
                     <value type="int">1</value>
                 </trigger>
-                <option>
-                    <name>setState</name>
-                    <id>${PV}setState</id>
-                    <value>
-                        <access method="GETPUTCB" transport="ca" type="string">${PV}:setState.VAL</access>
-                        <value type="string">STOP,RUN</value>
-                    </value>
-                    <displaygroup>detail</displaygroup>
-                </option>
-                <option>
-                    <name>Severity</name>
-                    <id>Det${PV}.SEVR</id>
-                    <value>
-                        <access method="GETCB" monitor="true" transport="ca" type="string">${PV}:getWfFPB.SEVR</access>
-                        <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
-                    </value>
-                    <displaygroup>detail</displaygroup>
-                </option>
-                <option>
-                    <name>Status</name>
-                    <id>Det${PV}.STAT</id>
-                    <value>
-                        <access method="GETCB" monitor="true" transport="ca" type="string">${PV}:getWfFPB.STAT</access>
-                        <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
-                    </value>
-                    <displaygroup>detail</displaygroup>
-                </option>
             </channel>
+            <option>
+                <name>setState</name>
+                <id>${PV}setState</id>
+                <value>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}:setState.VAL</access>
+                    <value type="string">STOP,RUN</value>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option>
+                <name>Severity</name>
+                <id>Det${PV}.SEVR</id>
+                <value>
+                    <access method="GETCB" monitor="true" transport="ca" type="string">${PV}:getWfFPB.SEVR</access>
+                    <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option>
+                <name>Status</name>
+                <id>Det${PV}.STAT</id>
+                <value>
+                    <access method="GETCB" monitor="true" transport="ca" type="string">${PV}:getWfFPB.STAT</access>
+                    <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
         </detector>
