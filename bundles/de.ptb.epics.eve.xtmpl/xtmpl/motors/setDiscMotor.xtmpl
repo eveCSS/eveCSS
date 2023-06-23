@@ -19,7 +19,6 @@
                     <access method="PUT" transport="ca" type="int">${PV}.PROC</access>
                     <value type="int">1</value>
                 </stop>
-	   			include "channel_ext_options_part.xtmpl"
-	    		include "channel_option_part.xtmpl"
             </axis>
+    		include "channel_option_part.xtmpl"
         </motor>
