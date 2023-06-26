@@ -2,6 +2,6 @@
 		<motor>
             <class>${Class=""}</class>
             <name>${Name=""}</name>
-            <id>${Id}</id>
+            <id>${PV}</id>
             ${includeFile}
         </motor>
