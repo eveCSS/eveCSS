@@ -4,6 +4,15 @@
             <name>${Name=""}</name>
             <id>${PV}</id>
 	    	${includeFile}
+            <option>
+                <name>Initialize (SDC)</name>
+                <id>${PV}sdc</id>
+                <value>
+                    <access method="GETPUTCB" transport="ca" type="string">${PV}sdc</access>
+                    <value type="string">Init only,SDC+Init</value>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
             <option monitor="true">
                 <name>function</name>
                 <id>${PV}function</id>
@@ -36,15 +45,6 @@
                 <id>${PV}channel</id>
                 <value>
                     <access method="GETPUTCB" transport="ca" type="int">${PV}channel</access>
-                </value>
-                <displaygroup>summary</displaygroup>
-            </option>
-            <option>
-                <name>Initialize (SDC)</name>
-                <id>${PV}sdc</id>
-                <value>
-                    <access method="GETPUTCB" transport="ca" type="string">${PV}sdc</access>
-                    <value type="string">Init only,SDC+Init</value>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>

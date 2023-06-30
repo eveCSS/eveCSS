@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="all" basedir="./">
-	<property name="eve_arch" value="x86" />
+	<property name="eve_arch" value="x86_64" />
 	<property name="xsubst_dir" value="/messung/eve/xml/xsubst" />
 	<property name="workspace" value="/tmp/xsubst" />
 	<property name="msi_home" 

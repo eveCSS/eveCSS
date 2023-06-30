@@ -1,49 +1,49 @@
-                <!-- special options par for detectors / detectorchannels -->
-                <option>
-                    <name>Raw Offset</name>
-                    <id>${Prefix=""}${PV}.ROFF</id>
-                    <value>
-                        <access method="GETPUTCB" transport="ca" type="int">${PV}.ROFF</access>
-                    </value>
-                    <displaygroup>detail</displaygroup>
-                </option>
-                <option>
-                    <name>Scale</name>
-                    <id>${Prefix=""}${PV}.ASLO</id>
-                    <value>
-                        <access method="GETPUTCB" transport="ca" type="double">${PV}.ASLO</access>
-                    </value>
-                    <displaygroup>detail</displaygroup>
-                </option>
-                <option>
-                    <name>Offset</name>
-                    <id>${Prefix=""}${PV}.AOFF</id>
-                    <value>
-                        <access method="GETPUTCB" transport="ca" type="double">${PV}.AOFF</access>
-                    </value>
-                    <displaygroup>detail</displaygroup>
-                </option>
-                <option>
-                    <name>Smoothing</name>
-                    <id>${Prefix=""}${PV}.SMOO</id>
-                    <value>
-                        <access method="GETPUTCB" transport="ca" type="double">${PV}.SMOO</access>
-                    </value>
-                    <displaygroup>detail</displaygroup>
-                </option>
-                <option>
-                    <name>Hi Full Scale Value</name>
-                    <id>${Prefix=""}${PV}.EGUF</id>
-                    <value>
-                        <access method="GETPUTCB" transport="ca" type="double">${PV}.EGUF</access>
-                    </value>
-                    <displaygroup>detail</displaygroup>
-                </option>
-                <option>
-                    <name>Lo Full Scale Value</name>
-                    <id>${Prefix=""}${PV}.EGUL</id>
-                    <value>
-                        <access method="GETPUTCB" transport="ca" type="double">${PV}.EGUL</access>
-                    </value>
-                    <displaygroup>detail</displaygroup>
-                </option>
+            <!-- special options part for detectors / detectorchannels -->
+            <option>
+                <name>Raw Offset</name>
+                <id>${Prefix=""}${PV}.ROFF</id>
+                <value>
+                    <access method="GETPUTCB" transport="ca" type="int">${PV}.ROFF</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option>
+                <name>Scale</name>
+                <id>${Prefix=""}${PV}.ASLO</id>
+                <value>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}.ASLO</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option>
+                <name>Offset</name>
+                <id>${Prefix=""}${PV}.AOFF</id>
+                <value>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}.AOFF</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option>
+                <name>Smoothing</name>
+                <id>${Prefix=""}${PV}.SMOO</id>
+                <value>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}.SMOO</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option>
+                <name>Hi Full Scale Value</name>
+                <id>${Prefix=""}${PV}.EGUF</id>
+                <value>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}.EGUF</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option>
+                <name>Lo Full Scale Value</name>
+                <id>${Prefix=""}${PV}.EGUL</id>
+                <value>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}.EGUL</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>

@@ -21,7 +21,7 @@
                 <unit>
                     <access method="GETPUTCB" transport="ca" type="string">${PV}.EGU</access>
                 </unit>
-	   			include "channel_ext_options_part.xtmpl"
-	    		include "channel_option_part.xtmpl"
             </axis>
+   			include "channel_ext_options_part.xtmpl"
+    		include "channel_option_part.xtmpl"
         </motor>

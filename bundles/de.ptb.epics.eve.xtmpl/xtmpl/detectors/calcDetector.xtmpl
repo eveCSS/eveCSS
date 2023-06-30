@@ -4,7 +4,7 @@
             <name>${Name=""}</name>
             <id>${PV}basic</id>
             include "channelTriggerScan.xtmpl"
-            include "channel_option_part.xtmpl"
+          	include "detector_scan_ohne_trigger_part.xtmpl"
             <option>
                 <name>Expression</name>
                 <id>${PV}.CALC</id>
@@ -213,4 +213,5 @@
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
+            include "channel_option_part.xtmpl"
         </detector>

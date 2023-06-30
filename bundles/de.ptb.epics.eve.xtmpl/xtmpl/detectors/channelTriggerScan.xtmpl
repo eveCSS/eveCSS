@@ -6,5 +6,4 @@
                 include "channel_read_part.xtmpl"
                 include "channel_unit_part.xtmpl"
             	include "detector_trigger_ohne_trigger_part.xtmpl"
-            	include "detector_scan_ohne_trigger_part.xtmpl"
             </channel>

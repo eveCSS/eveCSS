@@ -1,5 +1,14 @@
 h1(eveTopic). What's New in EVE
 
+h2(eveTopic). Version 1.39.2 (2023-06-30)
+
+* [BugFix-#5294] revision of options in detector template files.
+
+* [BugFix-#5844] revision of options in motor template files.
+
+* [BugFix-#5199] using <PV> instead of <Id> in motor template files.
+
+
 h2(eveTopic). Version 1.39.1 (2023-05-15)
 
 * [BugFix-#7096] new template file @deviceNoCb.xtmpl@ for Devices without Callback in goto PV.

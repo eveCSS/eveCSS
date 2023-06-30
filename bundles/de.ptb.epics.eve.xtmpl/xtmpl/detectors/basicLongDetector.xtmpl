@@ -1,7 +1,0 @@
-        <!-- basic long detector (must include a channel) -->
-        <detector>
-            <class>${Class=""}</class>
-            <name>${Name=""}</name>
-            <id>${PV}basicLong</id>
-            include "channel.xtmpl"
-        </detector>

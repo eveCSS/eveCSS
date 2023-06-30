@@ -30,82 +30,82 @@
                 <unit>
                     <access method="GETPUTCB" transport="ca" type="string">${PV}current.EGU</access>
                 </unit>
-                <option monitor="true">
-                    <name>Position Readback</name>
-                    <id>${PV}.VAL</id>
-                    <value>
-                        <access method="GETCB" type="${Type=double}" transport="ca">${PV}.VAL</access>
-                    </value>
-                    <displaygroup>summary</displaygroup>
-                </option>
-                <option monitor="true">
-                    <name>Soft High Limit</name>
-                    <id>${PV}current.DRVH</id>
-                    <value>
-                        <access method="GETPUTCB" type="double" transport="ca">${PV}current.DRVH</access>
-                    </value>
-                    <displaygroup>summary</displaygroup>
-                </option>
-                <option monitor="true">
-                    <name>Soft Low Limit</name>
-                    <id>${PV}current.DRVL</id>
-                    <value>
-                        <access method="GETPUTCB" type="double" transport="ca">${PV}current.DRVL</access>
-                    </value>
-                    <displaygroup>summary</displaygroup>
-                </option>
-                <option monitor="true">
-                    <name>Output</name>
-                    <id>${PV}output</id>
-                    <value>
-                        <access method="GETPUTCB" type="string" transport="ca">${PV}output</access>
-                        <value type="string">Standby,Operate</value>
-                    </value>
-                    <displaygroup>summary</displaygroup>
-                </option>
-                <option monitor="true">
-                    <name>Range</name>
-                    <id>${PV}range</id>
-                    <value>
-                        <access method="GETPUTCB" type="string" transport="ca">${PV}range</access>
-                        <value type="string">autoRange,2.0e-9 A,2.0e-8 A,2.0e-7 A,2.0e-6 A,2.0e-5 A,2.0e-4 A,2.0e-3 A,2.0e-2 A,2.0e-1 A</value>
-                    </value>
-                    <displaygroup>summary</displaygroup>
-                </option>
-                <option monitor="true">
-                    <name>voltageLimit</name>
-                    <id>${PV}voltageLimit</id>
-                    <value>
-                        <access method="GETPUTCB" type="double" transport="ca">${PV}voltageLimit</access>
-                    </value>
-                    <displaygroup>summary</displaygroup>
-                </option>
-                <option>
-                    <name>Severity</name>
-                    <id>${PV}.SEVR</id>
-                    <value>
-                        <access method="GETCB" monitor="true" type="string" transport="ca">${PV}.SEVR</access>
-                        <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
-                    </value>
-                    <displaygroup>summary</displaygroup>
-                </option>
-                <option>
-                    <name>Status</name>
-                    <id>${PV}.STAT</id>
-                    <value>
-                        <access method="GETCB" monitor="true" type="string" transport="ca">${PV}.STAT</access>
-                        <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
-                    </value>
-                    <displaygroup>summary</displaygroup>
-                </option>
-                <option>
-                    <name>Readback Value</name>
-                    <id>${PV}</id>
-                    <value>
-                        <access method="GETCB" type="double" transport="ca">${PV}</access>
-                    </value>
-                    <displaygroup>summary</displaygroup>
-                </option>
             </axis>
+            <option monitor="true">
+                <name>Position Readback</name>
+                <id>${PV}.VAL</id>
+                <value>
+                    <access method="GETCB" type="${Type=double}" transport="ca">${PV}.VAL</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Soft High Limit</name>
+                <id>${PV}current.DRVH</id>
+                <value>
+                    <access method="GETPUTCB" type="double" transport="ca">${PV}current.DRVH</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Soft Low Limit</name>
+                <id>${PV}current.DRVL</id>
+                <value>
+                    <access method="GETPUTCB" type="double" transport="ca">${PV}current.DRVL</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Output</name>
+                <id>${PV}output</id>
+                <value>
+                    <access method="GETPUTCB" type="string" transport="ca">${PV}output</access>
+                    <value type="string">Standby,Operate</value>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Range</name>
+                <id>${PV}range</id>
+                <value>
+                    <access method="GETPUTCB" type="string" transport="ca">${PV}range</access>
+                    <value type="string">autoRange,2.0e-9 A,2.0e-8 A,2.0e-7 A,2.0e-6 A,2.0e-5 A,2.0e-4 A,2.0e-3 A,2.0e-2 A,2.0e-1 A</value>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>voltageLimit</name>
+                <id>${PV}voltageLimit</id>
+                <value>
+                    <access method="GETPUTCB" type="double" transport="ca">${PV}voltageLimit</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>Readback Value</name>
+                <id>${PV}</id>
+                <value>
+                    <access method="GETCB" type="double" transport="ca">${PV}</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
 	    	include "channel_ext_options_part.xtmpl"
+            <option>
+                <name>Severity</name>
+                <id>${PV}.SEVR</id>
+                <value>
+                    <access method="GETCB" monitor="true" type="string" transport="ca">${PV}.SEVR</access>
+                    <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>Status</name>
+                <id>${PV}.STAT</id>
+                <value>
+                    <access method="GETCB" monitor="true" type="string" transport="ca">${PV}.STAT</access>
+                    <value type="string">NO_ALARM,READ,WRITE,HIHI,HIGH,LOLO,LOW,STATE,COS,COMM,TIMEOUT,HWLIMIT,CALC,SCAN,LINK,SOFT</value>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
         </motor>

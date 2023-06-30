@@ -1,77 +1,77 @@
-                <!-- extended options part for detector channels -->
-                <option>
-                    <name>Hi Error Limit</name>
-                    <id>${Prefix=""}${PV}.HIHI</id>
-                    <value>
-                        <access method="GETPUTCB" transport="ca" type="double">${PV}.HIHI</access>
-                    </value>
-                    <displaygroup>detail</displaygroup>
-                </option>
-                <option monitor="true">
-                    <name>Hi Error Severity</name>
-                    <id>${Prefix=""}${PV}.HHSV</id>
-                    <value>
-                        <access method="GETCB" transport="ca" type="string">${PV}.HHSV</access>
-                        <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
-                    </value>
-                    <displaygroup>detail</displaygroup>
-                </option>
-                <option>
-                    <name>Hi Warn Limit</name>
-                    <id>${Prefix=""}${PV}.HIGH</id>
-                    <value>
-                        <access method="GETPUTCB" transport="ca" type="double">${PV}.HIGH</access>
-                    </value>
-                    <displaygroup>detail</displaygroup>
-                </option>
-                <option monitor="true">
-                    <name>Hi Warn Severity</name>
-                    <id>${Prefix=""}${PV}.HSV</id>
-                    <value>
-                        <access method="GETCB" transport="ca" type="string">${PV}.HSV</access>
-                        <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
-                    </value>
-                    <displaygroup>detail</displaygroup>
-                </option>
-                <option monitor="true">
-                    <name>Monitor Deadband</name>
-                    <id>${Prefix=""}${PV}.MDEL</id>
-                    <value>
-                        <access method="GETPUTCB" transport="ca" type="double">${PV}.MDEL</access>
-                    </value>
-                    <displaygroup>detail</displaygroup>
-                </option>
-                <option>
-                    <name>Low Warn Limit</name>
-                    <id>${Prefix=""}${PV}.LOW</id>
-                    <value>
-                        <access method="GETPUTCB" transport="ca" type="double">${PV}.LOW</access>
-                    </value>
-                    <displaygroup>detail</displaygroup>
-                </option>
-                <option monitor="true">
-                    <name>Low Warn Severity</name>
-                    <id>${Prefix=""}${PV}.LSV</id>
-                    <value>
-                        <access method="GETCB" transport="ca" type="string">${PV}.LSV</access>
-                        <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
-                    </value>
-                    <displaygroup>detail</displaygroup>
-                </option>
-                <option>
-                    <name>Low Error Limit</name>
-                    <id>${Prefix=""}${PV}.LOLO</id>
-                    <value>
-                        <access method="GETPUTCB" transport="ca" type="double">${PV}.LOLO</access>
-                    </value>
-                    <displaygroup>detail</displaygroup>
-                </option>
-                <option monitor="true">
-                    <name>Low Error Severity</name>
-                    <id>${Prefix=""}${PV}.LLSV</id>
-                    <value>
-                        <access method="GETCB" transport="ca" type="string">${PV}.LLSV</access>
-                        <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
-                    </value>
-                    <displaygroup>detail</displaygroup>
-                </option>
+            <!-- extended options part for detector channels -->
+            <option>
+                <name>Hi Error Limit</name>
+                <id>${Prefix=""}${PV}.HIHI</id>
+                <value>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}.HIHI</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Hi Error Severity</name>
+                <id>${Prefix=""}${PV}.HHSV</id>
+                <value>
+                    <access method="GETCB" transport="ca" type="string">${PV}.HHSV</access>
+                    <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option>
+                <name>Hi Warn Limit</name>
+                <id>${Prefix=""}${PV}.HIGH</id>
+                <value>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}.HIGH</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Hi Warn Severity</name>
+                <id>${Prefix=""}${PV}.HSV</id>
+                <value>
+                    <access method="GETCB" transport="ca" type="string">${PV}.HSV</access>
+                    <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Monitor Deadband</name>
+                <id>${Prefix=""}${PV}.MDEL</id>
+                <value>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}.MDEL</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option>
+                <name>Low Warn Limit</name>
+                <id>${Prefix=""}${PV}.LOW</id>
+                <value>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}.LOW</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Low Warn Severity</name>
+                <id>${Prefix=""}${PV}.LSV</id>
+                <value>
+                    <access method="GETCB" transport="ca" type="string">${PV}.LSV</access>
+                    <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option>
+                <name>Low Error Limit</name>
+                <id>${Prefix=""}${PV}.LOLO</id>
+                <value>
+                    <access method="GETPUTCB" transport="ca" type="double">${PV}.LOLO</access>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option monitor="true">
+                <name>Low Error Severity</name>
+                <id>${Prefix=""}${PV}.LLSV</id>
+                <value>
+                    <access method="GETCB" transport="ca" type="string">${PV}.LLSV</access>
+                    <value type="string">NO_ALARM,MINOR,MAJOR,INVALID</value>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>

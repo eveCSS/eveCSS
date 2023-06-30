@@ -4,13 +4,20 @@
             <name>${Name=""}</name>
             <id>${PV}</id>
             include "detector_trigger_ohne_trigger_part.xtmpl"
-            include "keithley2000Channel.xtmpl"
+            <channel>
+                <class>${Ch_Class=""}</class>
+                <name>${Name=""}</name>
+                <id>${PV}chan1</id>
+                include "channel_read_part.xtmpl"
+                include "channel_unit_part.xtmpl"
+            </channel>
+           	include "detector_scan_ohne_trigger_part.xtmpl"
             <option monitor="true">
-                <name>function</name>
-                <id>${PV}function</id>
-                <value>
-                    <access method="GETPUTCB" transport="ca" type="string">${PV}function</access>
-                    <value type="string">VAC,VDC,AAC,ADC,Ohms,V/I Ohms,Freq,Temp/C</value>
+               	<name>function</name>
+               	<id>${PV}function</id>
+               	<value>
+                   	<access method="GETPUTCB" transport="ca" type="string">${PV}function</access>
+                   	<value type="string">VAC,VDC,AAC,ADC,Ohms,V/I Ohms,Freq,Temp/C</value>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -32,5 +39,7 @@
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
-            include "detector_scan_ohne_trigger_part.xtmpl"
+   	        include "channel_spec_options_part.xtmpl"
+            include "channel_ext_options_part.xtmpl"
+       	    include "channel_option_part.xtmpl"
         </detector>
