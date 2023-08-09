@@ -178,6 +178,14 @@
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option monitor="true">
+                    <name>Max Velocity</name>
+                    <id>${Prefix=""}${PV}.VMAX</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">${PV}.VMAX</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
                     <name>Acceleration</name>
                     <id>${Prefix=""}${PV}.ACCL</id>
                     <value>

@@ -1,0 +1,226 @@
+                <option monitor="true">
+                    <name>Power Stage GET</name>
+                    <id>${Prefix=""}${PV}-PWR-STAGE-MODE_GET</id>
+                    <value>
+                        <access method="GETCB" type="string" transport="ca">${PV}-PWR-STAGE-MODE_GET</access>
+                        <value type="string">Deactivate,Activate</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Power Stage SET</name>
+                    <id>${Prefix=""}${PV}-PWR-STAGE-MODE_SET</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}-PWR-STAGE-MODE_SET</access>
+                        <value type="string">Deactivate,Activate</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Power Stage Temperature</name>
+                    <id>${Prefix=""}${PV}-PS-TEMPERATURE</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">${PV}-PS-TEMPERATURE</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Motor Temperature</name>
+                    <id>${Prefix=""}${PV}-MOTOR-TEMP</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">${PV}-MOTOR-TEMP</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Power Stage Monitoring GET</name>
+                    <id>${Prefix=""}${PV}-PS-MONITOR_GET</id>
+                    <value>
+                        <access method="GETCB" type="string" transport="ca">${PV}-PS-MONITOR_GET</access>
+                        <value type="string">OFF,ON</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Power Stage Monitoring SET</name>
+                    <id>${Prefix=""}${PV}-PS-MONITOR_SET</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}-PS-MONITOR_SET</access>
+                        <value type="string">Deactivate,Activate</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Axis Mode GET</name>
+                    <id>${Prefix=""}${PV}-MOVE-TYP_GET</id>
+                    <value>
+                        <access method="GETCB" type="string" transport="ca">${PV}-MOVE-TYP_GET</access>
+                        <value type="string">Rotational,HW switch</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Axis Mode SET</name>
+                    <id>${Prefix=""}${PV}-MOVE-TYP_SET</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}-MOVE-TYP_SET</access>
+                        <value type="string">Rotational,HW switch</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Limit Switch GET</name>
+                    <id>${Prefix=""}${PV}-SWITCH-TYP_GET</id>
+                    <value>
+                        <access method="GETCB" type="string" transport="ca">${PV}-SWITCH-TYP_GET</access>
+                        <value type="string">NCC/NCC/NCC,NCC/NCC/NOC,NOC/NCC/NCC,NOC/NCC/NOC,NCC/NOC/NCC,NCC/NOC/NOC,NOC/NOC/NCC,NOC/NOC/NOC</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Limit Switch SET</name>
+                    <id>${Prefix=""}${PV}-SWITCH-TYP_SET</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}-SWITCH-TYP_SET</access>
+                        <value type="string">NCC/NCC/NCC,NCC/NCC/NOC,NOC/NCC/NCC,NOC/NCC/NOC,NCC/NOC/NCC,NCC/NOC/NOC,NOC/NOC/NCC,NOC/NOC/NOC</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Step Resolution GET</name>
+                    <id>${Prefix=""}${PV}-STEP-RES_GET</id>
+                    <value>
+                        <access method="GETCB" type="string" transport="ca">${PV}-STEP-RES_GET</access>
+                        <value type="string">1,1/2,1/2.5,1/4,1/5,1/8,1/10,1/16,1/20,1/32,1/64,1/128</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Step Resolution SET</name>
+                    <id>${Prefix=""}${PV}-STEP-RES_SET</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}-STEP-RES_SET</access>
+                        <value type="string">1,1/2,1/2.5,1/4,1/5,1/8,1/10,1/16,1/20,1/32,1/64,1/128</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Stop Current GET / mA</name>
+                    <id>${Prefix=""}${PV}-STOP-CURRENT_GET</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">${PV}-STOP-CURRENT_GET</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Stop Current SET / mA</name>
+                    <id>${Prefix=""}${PV}-STOP-CURRENT_SET</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">${PV}-STOP-CURRENT_SET</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Run Current GET / mA</name>
+                    <id>${Prefix=""}${PV}-RUN-CURRENT_GET</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">${PV}-RUN-CURRENT_GET</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Run Current SET / mA</name>
+                    <id>${Prefix=""}${PV}-RUN-CURRENT_SET</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">${PV}-RUN-CURRENT_SET</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Boost Current GET / mA</name>
+                    <id>${Prefix=""}${PV}-BOOST-CURRENT_GET</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">${PV}-BOOST-CURRENT_GET</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Boost Current SET / mA</name>
+                    <id>${Prefix=""}${PV}-BOOST-CURRENT_SET</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">${PV}-BOOST-CURRENT_SET</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Boost Type GET</name>
+                    <id>${Prefix=""}${PV}-BOOST_GET</id>
+                    <value>
+                        <access method="GETCB" type="string" transport="ca">${PV}-BOOST_GET</access>
+                        <value type="string">OFF,ON MOTOR RUN,ON ACCELERATION</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Boost Type SET</name>
+                    <id>${Prefix=""}${PV}-BOOST_SET</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}-BOOST_SET</access>
+                        <value type="string">OFF,ON MOTOR RUN,ON ACCELERATION</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Encoder Type GET</name>
+                    <id>${Prefix=""}${PV}-ENC-TYP_GET</id>
+                    <value>
+                        <access method="GETCB" type="string" transport="ca">${PV}-ENC-TYP_GET</access>
+                        <value type="string">No encoder,Incremental 5.0V,Incremental 5.5V,SSI Binary 5.0V,SSI Binary 5.5V,SSI Gray 5.0V,SSI Gray 5.5V,EnDat 5.0V,EnDat 5.5V,Resolver,4-Draht-LVDT,5/6-Draht-LVDT,BiSS 5,0 V,BiSS 24,0 V</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Encoder Type SET</name>
+                    <id>${Prefix=""}${PV}-ENC-TYP_SET</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}-ENC-TYP_SET</access>
+                        <value type="string">No encoder,Incremental 5.0V,Incremental 5.5V,SSI Binary 5.0V,SSI Binary 5.5V,SSI Gray 5.0V,SSI Gray 5.5V,EnDat 5.0V,EnDat 5.5V,Resolver,4-Draht-LVDT,5/6-Draht-LVDT,BiSS 5,0 V,BiSS 24,0 V</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>Encoder Direction GET</name>
+                    <id>${Prefix=""}${PV}-ENC-DIR_GET</id>
+                    <value>
+                        <access method="GETCB" type="string" transport="ca">${PV}-ENC-DIR_GET</access>
+                        <value type="string">Positive,Negative</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Encoder Direction SET</name>
+                    <id>${Prefix=""}${PV}-ENC-DIR_SET</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}-ENC-DIR_SET</access>
+                        <value type="string">Positive,Negative</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option monitor="true">
+                    <name>BISS-C Encoder Resolution GET</name>
+                    <id>${Prefix=""}${PV}-ENC-RES_GET</id>
+                    <value>
+                        <access method="GETCB" type="string" transport="ca">${PV}-ENC-RES_GET</access>
+                        <value type="double">Rotational,HW switch</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>BISS-C Encoder Resolution SET</name>
+                    <id>${Prefix=""}${PV}-ENC-RES_SET</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">${PV}-ENC-RES_SET</access>
+                        <value type="double">Rotational,HW switch</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>

@@ -11,5 +11,7 @@
                     <access monitor="true" method="${Method=GETCB}" transport="ca" type="${Type=string}">${PV} {"longString":true}</access>
                 </read>
             </channel>
+       		include "detector_scan_ohne_trigger_part.xtmpl"
+			include "channel_option_part.xtmpl"
         </detector>
 
