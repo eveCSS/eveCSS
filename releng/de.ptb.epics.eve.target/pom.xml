@@ -4,10 +4,10 @@
     <parent>
         <groupId>de.ptb.epics.eve</groupId>
         <artifactId>de.ptb.epics.eve.releng</artifactId>
-        <version>1.39.2</version>
+        <version>1.39.3</version>
     </parent>
     <groupId>de.ptb.epics.eve</groupId>
     <artifactId>de.ptb.epics.eve.target</artifactId>
-    <version>1.39.2</version>
+    <version>1.39.3</version>
     <packaging>eclipse-target-definition</packaging>
 </project>
